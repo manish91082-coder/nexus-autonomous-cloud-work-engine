@@ -59,7 +59,7 @@ def main():
     invoices=load_csv(a.invoices,{"invoice_id","amount","currency","due_date","status"})
     events=json.loads(Path(a.messages).read_text(encoding="utf-8"))
     payload=build_payload(leads,events,invoices)
-    Path(a.out).write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+    Path(a.out).write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(f"json_written={a.out}")
 
 
