@@ -1,0 +1,37 @@
+name: Build Travel Revenue Automation Demo
+on:
+  push:
+    paths:
+      - 'products/travel-revenue-demo/**'
+      - '.github/workflows/build-travel-revenue-demo.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: travel-revenue-demo
+  cancel-in-progress: false
+jobs:
+  test-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run unit tests
+        run: python -m unittest discover -s products/travel-revenue-demo/tests -v
+      - name: Generate synthetic demo
+        run: |
+          python products/travel-revenue-demo/engine.py --leads products/travel-revenue-demo/samples/leads.csv --packages products/travel-revenue-demo/samples/packages.csv --owners products/travel-revenue-demo/samples/owners.json --out /tmp/travel-demo.json
+          python -c 'import json; d=json.load(open("/tmp/travel-demo.json")); assert len(d["records"]) == 4; assert d["records"][0]["qualification"] == "qualified"; assert d["records"][1]["qualification"] == "consent_required"; assert d["records"][2]["followup_stopped"] is True; assert d["controls"]["messages_sent"] is False; assert d["controls"]["booking_created"] is False'
+      - name: Package and checksum
+        run: |
+          mkdir -p dist
+          cp -r products/travel-revenue-demo dist/
+          cd dist
+          zip -qr travel-revenue-demo.zip travel-revenue-demo
+          sha256sum travel-revenue-demo.zip > SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: travel-revenue-demo
+          path: |
+            dist/travel-revenue-demo.zip
+            dist/SHA256SUMS.txt
+          if-no-files-found: error
