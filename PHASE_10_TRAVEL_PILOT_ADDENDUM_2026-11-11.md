@@ -136,3 +136,13 @@ The travel CRM optimization listing remains the only relatively low-competition 
 - Tender research is selective pipeline only, not near-term cash engine. Prioritize direct paid contracts and qualified partner delivery where permitted in writing.
 - Detailed report: research/PHASE_15_TENDER_ELIGIBILITY_AUDIT_2026-11-12.md; commit ee554fe0faa8b1a005c76b30bfe73a1016eaf96b.
 - No bids, outreach, registration, EMD, fee, KYC, terms acceptance or signatures. Receipts remain ₹0 gross / ₹0 net.
+
+
+## Phase 16 — Delivery partnership channel audit (2026-11-12)
+- Reviewed public partnership and service pages for STERP, Infobyd, Osswal Infosystem, ByteFlow Technologies, WebReinvent, OneMetric and Murmu Software Infotech.
+- Key distinction: STERP's Become Partner page is a sales/channel referral model, not proven subcontracting. Infobyd is a Zoho Advanced Partner/implementation vendor, but no public subcontractor intake or funded overflow assignment found. Osswal, ByteFlow likewise had no public subcontractor demand evidence. WebReinvent, OneMetric and Murmu market white-label fulfillment as suppliers to agencies, not evidence that they need our subcontracting services.
+- No partner is a verified buyer; no funded overflow assignment, signed subcontractor intake, rate card or payment terms found. Do not claim these are active opportunities.
+- Qualification gates: legal entity/signatory, named customer backlog and permission to subcontract, written scope/acceptance, fee/tax terms, milestone payment protection, IP/NDA/data/security, non-solicit, change/dispute/termination and positive net margin.
+- Decision: no registration/outreach. Continue searching for actual buyer-side overflow requests or project-specific subcontractor calls; avoid reseller-only channels unless no upfront fees/quota and compatible with low-sales preference.
+- Detailed report: research/PHASE_16_DELIVERY_PARTNERSHIP_CHANNEL_AUDIT_2026-11-12.md; commit 2409f40acf76e3bb30e3b67134306c5611fd8fcb.
+- Scoreboard unchanged: gross ₹0, net ₹0, paid contracts 0, outreach 0.
