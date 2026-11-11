@@ -22,7 +22,9 @@ jobs:
       - name: Generate sample report
         run: |
           python products/ai-ops-starter/ops_report.py --leads products/ai-ops-starter/templates/leads.csv --invoices products/ai-ops-starter/templates/invoices.csv --out /tmp/sample-report.md
-          test -s /tmp/sample-report.md\n          python products/ai-ops-starter/job_cash_report.py --jobs products/ai-ops-starter/templates/jobs.csv --out /tmp/job-cash-report.md\n          test -s /tmp/job-cash-report.md
+          test -s /tmp/sample-report.md
+          python products/ai-ops-starter/job_cash_report.py --jobs products/ai-ops-starter/templates/jobs.csv --out /tmp/job-cash-report.md
+          test -s /tmp/job-cash-report.md
       - name: Package downloadable product
         run: |
           mkdir -p dist
