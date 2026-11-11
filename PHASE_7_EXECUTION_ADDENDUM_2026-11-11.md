@@ -125,3 +125,12 @@
 - Immediate next build: sanitized demo of message-to-action automation with sample data, human approval, deduplication, retry/error log, audit export and failure-recovery tests; then produce evidence-backed case study. No external submission without explicit approval.
 - Scorecard unchanged: verified gross receipts ₹0; verified net receipts ₹0; active paid contracts 0.
 - Detailed evidence and source links: research/DIRECT_AI_AUTOMATION_CONTRACT_DISCOVERY_2026-11-11.md.
+
+
+## Multi-source full-automation mandate — 2026-11-11
+- User explicitly confirmed the revenue engine must use multiple sources, not a single method/platform. Discover across sources continuously; verify each opportunity independently; immediately execute and complete any opportunity meeting full-automation criteria and existing authorization boundaries; then advance to the next qualified item. Parallel discovery continues while one bounded task is executing.
+- Added formal protocol: strategy/MULTI_SOURCE_FULL_AUTOMATION_OPERATING_PROTOCOL_2026-11-11.md.
+- Live source audit: Upwork has fresh automation demand but requires human contractor proposal/account actions; Jobbi is aggregate discovery only; BasedAgents requires owner-controlled identity/wallet signing; Riner visible inventory currently includes low-value promotional/astroturfing tasks and an expired pentest; AgentsBay visible inventory is spam-like; TaskForce advertises agent API + USDC milestone escrow but live inventory/payout verification remains outstanding; TaskPool is physical human work and excluded.
+- No proposal, outreach, registration, legal acceptance, KYC, wallet creation/signing/transaction, paid purchase, claim or submission was performed.
+- Full-automation protocol separates DISCOVERED, VERIFIED, ECONOMICALLY_QUALIFIED, AUTHORIZATION_REQUIRED, EXECUTING, TESTED, SUBMITTED, ACCEPTED, PAID and RECONCILED states. Unknown facts fail closed. One blocked source never blocks the other source queues.
+- Scoreboard remains verified gross INR 0, net INR 0, active paid contracts 0.
