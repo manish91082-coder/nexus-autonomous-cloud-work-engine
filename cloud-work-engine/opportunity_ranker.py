@@ -41,7 +41,7 @@ def assess(item):
         score += 25
         reasons.append("task_level_funding_evidence_present")
     else:
-        blockers.append("funding_not_independently_verified")
+        blockers.append("task_specific_funding_not_verified_pool_deposit_or_tx_reference_is_insufficient")
     # Explicit AI/agent permission only. Unknown is a hard review gate.
     worker = str(raw.get("eligibleWorkerTypes") or raw.get("workerType") or item.get("worker_type") or "").lower()
     ai_allowed = raw.get("aiAllowed") is True or raw.get("agentAllowed") is True or worker in ("agent", "ai_agent", "both", "human_and_agent")
