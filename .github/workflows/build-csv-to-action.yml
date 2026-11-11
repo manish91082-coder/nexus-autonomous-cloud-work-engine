@@ -1,0 +1,38 @@
+name: Build CSV-to-Action utility
+on:
+  push:
+    paths:
+      - 'products/csv-to-action/**'
+      - '.github/workflows/build-csv-to-action.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: csv-to-action-build
+  cancel-in-progress: false
+jobs:
+  test-and-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test CSV engine
+        run: node --test products/csv-to-action/tests/csv_engine.test.cjs
+      - name: Validate browser bundle files
+        run: |
+          test -s products/csv-to-action/index.html
+          test -s products/csv-to-action/csv_engine.js
+          grep -q 'No server' products/csv-to-action/index.html
+      - name: Package product
+        run: |
+          mkdir -p dist
+          cd products/csv-to-action
+          zip -r ../../dist/csv-to-action-mvp.zip index.html csv_engine.js
+          cd ../..
+          sha256sum dist/csv-to-action-mvp.zip > dist/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: csv-to-action-mvp
+          path: dist/
+          if-no-files-found: error
+          retention-days: 30
