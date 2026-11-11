@@ -172,3 +172,14 @@
 - No wallet readiness request, account registration, claim, signature, bond, gas spend, submission or payout performed. Claim requires owner-controlled public Base wallet and 0.10 USDC bond plus gas. Explicit user approval remains required for signature and spend; never request private key/seed phrase.
 - Detailed report: research/AGENTIZABLE_FUNDED_UI_UX_BOUNTY_2026-11-11.md.
 - Scoreboard unchanged: verified gross INR 0; verified net INR 0; active paid contracts 0.
+
+
+## Final pre-deadline revalidation — 2026-11-11 17:55 UTC
+- Re-fetched canonical Agentizable claimable feed and opportunity projection at 17:55 UTC.
+- Same bounty remains `claimable`, payment_state `escrowed`, payment_committed=true, verification_ready=true; funding event unchanged and task-specific.
+- Important coverage warning: opportunity projection reports `degraded=true`, `coverage=partial`; autonomous-v1/v2 feeds complete but open-competition-v1 and v2-beta3 read models unavailable. Therefore this feed is not exhaustive across all Agentizable protocol types.
+- Exact committed terms: solver 2.10 USDC; refundable claim bond 0.10 USDC; platform fee 0.1575 USDC paid by poster; required external spend 0; claim/funding deadline 2026-11-12T20:00:00Z (2026-11-12 01:30 IST); delivery deadline is the same timestamp in benchmark.
+- Customer review determines acceptance; only confirmed canonical BountySettled event proves payment.
+- No wallet readiness POST, claim, registration, bond, gas, signature, or submission made. Need operator public Base wallet address for readiness and explicit approval for wallet signing plus bond/gas. No private key or seed phrase.
+- The deliverable remains not submission-ready because true <=390px inspection and three verified mobile findings are mandatory; TinyFish browser could only reach 705px. Do not invent mobile evidence.
+- Given low $2.10 reward and unmet mobile evidence, rational choice is not to risk a bond until mobile acceptance can be genuinely satisfied. Continue parallel search for materially larger, fully funded work.
