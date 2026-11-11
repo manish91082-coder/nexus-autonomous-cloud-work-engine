@@ -146,3 +146,18 @@ The travel CRM optimization listing remains the only relatively low-competition 
 - Decision: no registration/outreach. Continue searching for actual buyer-side overflow requests or project-specific subcontractor calls; avoid reseller-only channels unless no upfront fees/quota and compatible with low-sales preference.
 - Detailed report: research/PHASE_16_DELIVERY_PARTNERSHIP_CHANNEL_AUDIT_2026-11-12.md; commit 2409f40acf76e3bb30e3b67134306c5611fd8fcb.
 - Scoreboard unchanged: gross ₹0, net ₹0, paid contracts 0, outreach 0.
+
+
+## Phase 17 — Buyer-side recurring operations and overflow qualification (2026-11-12)
+- Searched MSP, accounting/bookkeeping/compliance and IT-consulting subcontracting/overflow channels plus recent buyer-issued project listings.
+- No verified MSP/IT consulting overflow package, funded subcontractor intake, accounting-firm vendor onboarding or published rate/payment arrangement found.
+- Weekly Excel + ChatGPT reconciliation listing described 6+ month recurring work at $8–10/hour, >30 hours/week, but direct page now says no longer available; 50+ proposals, 24 interviewing, 2 hired, client $323 spend, paid ChatGPT capacity preferred. Closed/stale; no application.
+- Multifamily monthly-close listing describes genuine operational pain (140 units, delayed close and investor/lender reporting) but lists $20 fixed price, Expert, 20–50 proposals and 1 interview; buyer $10K spend/262 hires. Scope/budget mismatch; no bid.
+- Retail bookkeeping listing: $20 fixed, Expert, one-time, 20–50 proposals; buyer $10K spend/262 hires. Requires ledger, tax, inventory/COGS expertise; no bid.
+- QuickBooks historical cleanup: page says no longer available, $10 fixed, 20–50 proposals, 1 hired. Closed; no bid.
+- QuickBooks 2025/26 cleanup: $20–40/hour, 50+ proposals, buyer newly joined and no visible spend; near deadline; no bid.
+- AppFolio cleanup: $30 fixed, 10–15 proposals, 1 hire; buyer $165 spend; requires AppFolio/accounting expertise; no bid.
+- Decision: do not pivot into bookkeeping/accounting execution. Retain only adjacent non-ledger reporting: file validation, exception registers, human-reviewed KPI packs, source-linked audit trails. No journal entries, tax advice, statutory accounts or money movement.
+- Detailed report: research/PHASE_17_BUYER_SIDE_RECURRING_OPERATIONS_AUDIT_2026-11-12.md.
+- No proposals, outreach, registrations, KYC, terms, subscriptions, paid tests or customer-data access. No production claims.
+- Scoreboard remains ₹0 gross / ₹0 net; costs not yet reconciled.
