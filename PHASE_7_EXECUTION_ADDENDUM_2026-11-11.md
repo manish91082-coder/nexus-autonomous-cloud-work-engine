@@ -25,3 +25,14 @@
 2. Inspect the product build workflow run triggered by the shell fix; verify tests, sample report generation, ZIP packaging and SHA256.
 3. Audit current marketplace candidates individually for task-specific funding, AI permission, India payout, fees, acceptance criteria and competition. Do not start unpaid work.
 4. Update this addendum with actual run IDs and outcomes.
+
+## Verification update — product build passed
+- Product workflow correction commit: `c51636d7318e8cb54fbcdc12f9e73a25aefc5373`.
+- Run `43054962026`: SUCCESS. Test product, generate sample report, package downloadable product, and upload artifact all passed.
+- Artifact `ai-ops-starter-product`, ID `13871526223`, SHA-256 `4e9728ef31b59ef9634fa4e7b8f9ed2db7513b6ff149e7231fcb9496f39b1a66`.
+- This verifies build integrity only. It does not establish demand, seller eligibility, a sale, payout readiness, or revenue.
+
+## Bounty workflow trigger alignment
+- Updated `.github/workflows/nexus-bounty-agent.yml` push paths to include `cloud-work-engine/opportunity_ranker.py` and `cloud-work-engine/tests/test_opportunity_ranker.py`.
+- Commit: `f16114f299ab1bb7083b2c66256b1b9b700659ab`.
+- This ensures future ranker gate/test changes also trigger the shared bounty-agent test suite. Verify the resulting run before treating bounty workflow as healthy.
