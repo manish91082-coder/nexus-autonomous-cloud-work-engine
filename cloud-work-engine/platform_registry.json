@@ -1,0 +1,102 @@
+{
+  "generated_at": "2026-11-11",
+  "policy": {
+    "required_for_autonomous_paid_work": [
+      "current_open_work",
+      "explicit_agent_automation_permission",
+      "verifiable_task_level_funding_or_escrow",
+      "clear_acceptance_and_dispute_terms",
+      "India_compatible_payout_route",
+      "no_unapproved_upfront_cost",
+      "positive_expected_net_value"
+    ],
+    "never_count_as_income": [
+      "advertised_budget",
+      "unfunded_listing",
+      "wallet_balance",
+      "unconfirmed_transaction",
+      "pending_approval",
+      "token_reward_without_verified_realizable_value"
+    ]
+  },
+  "platforms": [
+    {
+      "id": "agentgigs",
+      "name": "AgentGigs",
+      "official_url": "https://www.agentgigs.io/",
+      "api_docs": "https://www.agentgigs.io/docs/api",
+      "status": "CONDITIONAL_DEFER",
+      "live_open_jobs_observed": 0,
+      "agent_api": true,
+      "automation_permission": "Official docs describe API autonomous browse/apply/deliver",
+      "funding_model": "Client accepts agent then funds escrow",
+      "free_tier_commission_percent": 10,
+      "human_gates": [
+        "email_verification",
+        "Stripe_Connect_KYC"
+      ],
+      "india_payout": "UNVERIFIED",
+      "india_stripe_constraints": "Stripe India is invite-only; Stripe support documents Connect marketplace restrictions. Confirm US platform supports Indian connected accounts before onboarding.",
+      "payout_timing": "Terms state 1-10 business day cooldown; pricing page says 2-3 business days. Clarify discrepancy.",
+      "reason": "Strong technical fit, but no current open jobs and India payout is unverified. No signup or KYC initiated."
+    },
+    {
+      "id": "agentizable",
+      "name": "Agentizable.ai (formerly Agent Bounties)",
+      "official_url": "https://agentizable.ai/",
+      "api_docs": "https://agentizable.ai/protocol.json",
+      "status": "BLOCKED_PROTOCOL_V1_RETIRED_AND_FEED_DEGRADED",
+      "live_feed": "ready_to_earn projection returned empty items, degraded=true, partial coverage",
+      "protocol_v1": "recovery_only",
+      "protocol_v1_creation_enabled": false,
+      "protocol_v1_funding_enabled": false,
+      "protocol_v1_claims_enabled": false,
+      "protocol_v2": "one source record in projection but read model unavailable; no actionable item returned",
+      "reason": "Do not interact with legacy v1; retry v2 only when authoritative task feed is healthy."
+    },
+    {
+      "id": "aibtc",
+      "name": "AIBTC Bounty Board",
+      "official_url": "https://aibtc.com/bounties",
+      "status": "DEFER_SPECIALIZED_AND_WALLET_GATED",
+      "public_feed_observed": "8 open records in observed response",
+      "examples": [
+        "Stacks/Clarity smart-contract security audits",
+        "Proof-of-Agent tasks requiring identity and wallet activity"
+      ],
+      "payout": "sBTC to Stacks address",
+      "human_gates": [
+        "wallet_identity",
+        "on_chain_transactions",
+        "specialist_capability",
+        "competitive ranking"
+      ],
+      "reason": "Potential work, but specialist, competitive and wallet-gated. No wallet or submission."
+    },
+    {
+      "id": "agentbazaar",
+      "name": "AgentBazaar",
+      "official_url": "https://github.com/ptreezh/agentmarket",
+      "status": "EXCLUDE_CREDIT_ONLY",
+      "payout": "GIG internal credits, not cash",
+      "reason": "Virtual karma credits have no cash payout."
+    },
+    {
+      "id": "agentbadge",
+      "name": "AgentBadge",
+      "official_url": "https://agentbadge.xyz/market",
+      "status": "EXCLUDE_CURRENT_TEST_MICRO_JOB",
+      "live_open_jobs_observed": 1,
+      "observed_reward_usdc": "0.01",
+      "reason": "Current public feed returned a durability/regression probe only."
+    },
+    {
+      "id": "moltask",
+      "name": "Moltask",
+      "official_url": "https://www.moltask.com/",
+      "status": "EXCLUDE_UNAUDITED_TOKEN_AND_STALE_FEED",
+      "payout": "MOLT",
+      "reason": "Official site warns beta contracts are unaudited; current feed contains old/duplicate promotional records."
+    }
+  ]
+}
