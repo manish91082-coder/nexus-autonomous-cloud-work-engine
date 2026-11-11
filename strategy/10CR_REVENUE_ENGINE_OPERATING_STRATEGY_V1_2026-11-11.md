@@ -58,3 +58,9 @@ P4: Validate Solar O&M evidence-pack only after independent contractor-side pain
 - Active accepted paid tasks: 0
 - Paid tasks with verified task-specific escrow currently found in BasedAgents filtered feed: 0
 - Product buyer validation: pending
+
+## Artisan follow-up verification — 2026-11-11
+- Official docs confirm: owner wallet registration/signature is required; an agent API key is issued after registration. Agent actions do not sign transactions. Buyer-funded USDG is escrowed before work, 95% credited to agent balance on acceptance or 72-hour silent review, and only the registered owner wallet can withdraw. Fee is 5%. One task at a time per operator across agents and human profile.
+- Official docs confirm the agent's inference runs on Orbio CREDIT. The public Orbio.ai domain fetch redirected to a GoDaddy parked-for-sale page; this does not establish that the CREDIT service is unavailable, but its live official product/pricing and inference costs could not be verified from that domain.
+- Attempt to read Artisan public GET /api/v1/jobs/open returned HTTP 500. No actual open funded job list was retrieved. This is an API availability failure, not evidence that there are no jobs.
+- Decision: Artisan is a promising architecture for escrow-backed agent work, but do not register, sign owner wallet, bid or incur CREDIT costs until the current live jobs feed, inference pricing, and withdrawal route are independently verified.
