@@ -19,8 +19,10 @@
       if(quoted){ if(c==='"'&&n==='"'){cell+='"';i++;} else if(c==='"'){quoted=false;} else {cell+=c;} }
       else if(c==='"'){ if(cell.length) throw new Error("Unexpected quote inside an unquoted field."); quoted=true; }
       else if(c===","){row.push(cell);cell="";}
-      else if(c==="\n"){row.push(cell);rows.push(row);row=[];cell="";}
-      else if(c==="\r"){ if(n==="\n") i++; row.push(cell);rows.push(row);row=[];cell="";}
+      else if(c==="
+"){row.push(cell);rows.push(row);row=[];cell="";}
+      else if(c==="\r"){ if(n==="
+") i++; row.push(cell);rows.push(row);row=[];cell="";}
       else {cell+=c;}
     }
     if(quoted) throw new Error("CSV ends inside a quoted field.");
@@ -87,11 +89,16 @@
       if((status.toLowerCase()==="completed"||status.toLowerCase()==="delivered")&&inv===0) actions.push("Completed without invoice amount");
       results.push({line:index+2,id,customer,status,currency:value("currency"),invoice:inv,received:paid,balance,due:due||"",follow:follow||"",owner:value("owner"),issues,actions,raw:r});
     });
-    const currencySet=new Set(results.map(r=>r.currency).filter(Boolean));\n    const totals=results.reduce((a,r)=>{if(r.invoice!==null)a.invoice+=r.invoice;if(r.received!==null)a.received+=r.received;if(r.balance!==null)a.balance+=r.balance;a.issues+=r.issues.length;a.actions+=r.actions.length;return a;},{invoice:0,received:0,balance:0,issues:0,actions:0});\n    totals.mixedCurrencies=currencySet.size>1; totals.currencyLabels=[...currencySet];
+    const currencySet=new Set(results.map(r=>r.currency).filter(Boolean));
+    const totals=results.reduce((a,r)=>{if(r.invoice!==null)a.invoice+=r.invoice;if(r.received!==null)a.received+=r.received;if(r.balance!==null)a.balance+=r.balance;a.issues+=r.issues.length;a.actions+=r.actions.length;return a;},{invoice:0,received:0,balance:0,issues:0,actions:0});
+    totals.mixedCurrencies=currencySet.size>1; totals.currencyLabels=[...currencySet];
     return {map,missing,results,totals,today:now};
   }
-  function csvEscape(v){const s=String(v??"");return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
-  function toCSV(headers,rows){return [headers.map(csvEscape).join(","),...rows.map(r=>headers.map(h=>csvEscape(r[h])).join(","))].join("\r\n")+"\r\n";}
+  function csvEscape(v){const s=String(v??"");return /[",\r
+]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
+  function toCSV(headers,rows){return [headers.map(csvEscape).join(","),...rows.map(r=>headers.map(h=>csvEscape(r[h])).join(","))].join("\r
+")+"\r
+";}
   const api={REQUIRED,parseCSV,mapColumns,analyze,toCSV};
   if(typeof module!=="undefined"&&module.exports) module.exports=api;
   root.CSVActionEngine=api;
