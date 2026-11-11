@@ -104,3 +104,14 @@ The travel CRM optimization listing remains the only relatively low-competition 
 2. If it remains unqualified, shift effort toward a narrow reusable CRM health-check/reporting diagnostic rather than a bespoke production build.
 3. Build a deterministic synthetic CRM audit demo only if it materially strengthens this offer; keep it offline and evidence-led.
 4. Continue seeking current buyer-side workflow demand, but reject opportunities with weak net economics, overcrowding or requirements outside verified capability.
+
+
+## Phase 12 — live opportunity requalification (2026-11-12)
+- Re-opened the Freelancer Excel Data Cleanup & Dashboard listing directly: still Open, paid on delivery, ₹12,500–₹37,500 budget, posted about 4 hours before capture, 6 days remaining, 41 proposals, average bid ₹16,919, active 32 minutes before capture. Strong technical fit but crowded with freelancers showing 29–62 reviews; no task-specific escrow/funded milestone proof verified. Decision: defer/no bid.
+- New Upwork Zoho CRM Plus + WhatsApp integration listing: $300 fixed, 5–10 proposals, 2 interviewing, client $3.8K total spend/34 hires. Scope includes CRM, scoring, Zoho Mail, Campaigns, Social, Analytics, live WhatsApp shared inbox, testing and training. Budget/scope mismatch and capability evidence gap; reject.
+- New $1,500 AI workflow automation listing: 50+ proposals and explicit demand for prior production client proof. Our repository demos are synthetic and must not be misrepresented as production client deployments. Defer/no bid.
+- New $500 RAG chatbot listing: 50+ proposals, production deployment and shipped-client proof required; reject/defer due crowding and scope economics.
+- Re-opened India Travel Holiday CRM Optimization directly: still shows open, posted 6 days ago, less than 5 proposals, zero interviews, $20–30/hour, 1–3 months. Client member since 2025-08-22; total spend/payment verification/reviews and exact stack not visible. Retain watchlist only.
+- Detailed report: `research/LIVE_OPPORTUNITY_REQUALIFICATION_2026-11-12.md`; commit `7841820b4a3dd416f71bb672a5b62a0fa897b8dd`.
+- No bids, proposals, outreach, account creation, KYC, legal acceptance or paid activity.
+- Verified receipts remain ₹0 gross and ₹0 net. No revenue claim.
