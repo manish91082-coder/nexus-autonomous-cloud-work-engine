@@ -1,0 +1,38 @@
+name: Build Message-to-Action Reliability Demo
+on:
+  push:
+    paths:
+      - 'products/message-to-action-reliability/**'
+      - '.github/workflows/build-message-action-demo.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: message-to-action-demo
+  cancel-in-progress: false
+jobs:
+  test-and-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: |
+          PYTHONPATH=. python -m unittest discover -s products/message-to-action-reliability/tests -v
+      - name: Generate demo output
+        run: |
+          python products/message-to-action-reliability/engine.py --input products/message-to-action-reliability/samples/events.json --out /tmp/message-demo
+          test -s /tmp/message-demo/approval_queue.csv
+          test -s /tmp/message-demo/error_log.csv
+          test -s /tmp/message-demo/report.md
+      - name: Package
+        run: |
+          mkdir -p dist
+          zip -r dist/message-to-action-reliability-demo.zip products/message-to-action-reliability
+          sha256sum dist/message-to-action-reliability-demo.zip > dist/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: message-to-action-reliability-demo
+          path: dist/
+          if-no-files-found: error
+          retention-days: 30
