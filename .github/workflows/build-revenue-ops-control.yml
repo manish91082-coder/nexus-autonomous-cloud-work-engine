@@ -1,0 +1,39 @@
+name: Build Revenue Operations Control Demo
+on:
+  push:
+    paths:
+      - 'products/revenue-ops-control/**'
+      - '.github/workflows/build-revenue-ops-control.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: revenue-ops-control-build
+  cancel-in-progress: false
+jobs:
+  test-and-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run unit tests
+        run: python -m unittest discover -s products/revenue-ops-control/tests -v
+      - name: Generate synthetic demo report
+        run: |
+          python products/revenue-ops-control/engine.py --leads products/revenue-ops-control/samples/leads.csv --messages products/revenue-ops-control/samples/messages.json --invoices products/revenue-ops-control/samples/invoices.csv --out /tmp/revenue-ops-report.md
+          test -s /tmp/revenue-ops-report.md
+          grep -q 'Duplicate lead records flagged: 1' /tmp/revenue-ops-report.md
+          grep -q 'Overdue invoices: 1' /tmp/revenue-ops-report.md
+      - name: Package and checksum
+        run: |
+          mkdir -p dist
+          cd products
+          zip -r ../dist/revenue-ops-control-demo.zip revenue-ops-control
+          cd ..
+          sha256sum dist/revenue-ops-control-demo.zip > dist/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: revenue-ops-control-demo
+          path: dist/
+          if-no-files-found: error
+          retention-days: 30
