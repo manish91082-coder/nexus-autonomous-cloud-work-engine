@@ -793,3 +793,18 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Qualified funded assignments: 0; submitted proposals/outreach: 0.
 - Gross receipts ₹0; net receipts ₹0; costs not reconciled.
 - Full report: `research/PHASE_20_SOLAR_ASSET_MANAGER_BUYER_QUALIFICATION_2026-11-12.md`
+
+
+## Phase 21: Solar O&M Subcontractability and Live Buying-Trigger Audit (2026-11-12)
+
+- Tested Phase 20's missing link: whether live project contracts permit a separable reporting/data-QA subcontract and whether current awards/tenders create concrete reporting workloads.
+- Verified official SECI Gaya 60 MW AC / 84 MWp EPC + five-year O&M tender SECI/C&P/OP/11/0007/26-27 (SECI000284; CPPP 2026_SECI_852713_1), online deadline 03-Dec-2026 18:00 IST. Official tender page: https://www.seci.co.in/tender-details/Ympz.
+- Contractual tender GCC Clause 30.1 (printed pages 41–43) permits subcontracting other than labour engagement subject to Owner/Employer information, but also requires written consent for transfer/subletting, prohibits 100% back-to-back subcontracting, requires subcontractor details, and leaves the prime fully responsible. This is not blanket approval.
+- Technical tender establishes a real reporting workload: SCADA/data acquisition, 1-minute and 15-minute source records, daily generation reporting, monthly energy/downtime records, accurate operating logs and monthly O&M reports. Evidence is in the official technical tender PDF: https://www.seci.co.in/uploads/tenders/Technical_tender_document_60_MW_Gaya.pdf.
+- Direct prime bidding is not our route: tender bid information sheet states ₹6,43,60,000 EMD and ₹25,000 + GST processing fee. Prime award is pending; no named winning contractor, approved reporting subcontract, budget or buyer request verified.
+- Additional channel evidence: Waaree Renewable Technologies disclosed a five-year O&M agreement for 360 MWp (LOA/intimation 31-Oct-2026); public summary does not disclose IPP identity or reporting subcontract scope. Solarium Green's 50 MW AC / 65 MW DC EPC + three-year O&M award was reported as a subcontract under MAHAGENCO, demonstrating subcontract delivery exists but not proving downstream reporting demand.
+- REIL GeM bid GEM/2026/B/8251647 (AI/ML/DL integration for PV monitoring, reported ₹4.42 Cr and closing 27-Nov-2026) is secondary-index evidence only; primary bid eligibility and any subcontract route were not independently verified. Watch only.
+- Narrow offer hypothesis retained: Solar O&M Reporting QA and Evidence Pack using buyer-authorized exports, schema/time/unit/interval validation, meter reconciliation, exception register, buyer-approved KPI calculations, draft reports and traceability. No SCADA/PPC control, engineering diagnosis, field O&M, safety sign-off or guarantees.
+- Qualified funded subcontract assignments: 0; outreach/proposals: 0; verified gross/net receipts: ₹0/₹0; costs not reconciled. Research only; no registration, KYC, tender bid, customer-data access or external write action.
+- Full report: `research/PHASE_21_SOLAR_OM_SUBCONTRACTABILITY_AUDIT_2026-11-12.md`.
+- Next: Phase 22 monitors official SECI Gaya amendments/award to identify the prime, verifies any authorized vendor/subcontract intake, and continues the Waaree/Solarium evidence chain. Keep marketplace opportunity scoring in parallel; `cloud-work-engine/opportunity_ranker.py` and its workflow integration already exist. Do not rebuild.
