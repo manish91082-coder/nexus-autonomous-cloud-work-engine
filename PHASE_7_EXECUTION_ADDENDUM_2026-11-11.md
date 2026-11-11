@@ -213,3 +213,19 @@
 - At checkpoint, run #7 for the import correction had failed due JSON newline issue, and the newline fix had just been pushed. Latest CI result for commit `416473b` is pending verification; do not claim JSON-export CI success yet.
 - Core demo CI run #1 remains successful; machine-readable export tests have passed 9/9 unit tests in run #7 before the JSON parsing assertion failed.
 - No production integration, customer contact, public listing, paid work, acceptance, or receipts. Gross and net verified receipts remain INR 0.
+
+
+## Revenue Operations JSON KPI verification — 2026-11-11
+- Corrected JSON newline serialization in `products/revenue-ops-control/kpi_export.py`.
+- Final Revenue Ops workflow run 43076251740 SUCCESS, 10 seconds, one artifact.
+- Artifact `revenue-ops-control-demo`, 22.5 KB, SHA256 `90aba10c032bdbdcaa0a4b677eded6e8f1e57f74901b795ac75d8a057331f907`.
+- Machine-readable JSON assertions and 9 unit tests passed; CI verifies duplicate leads, overdue invoices and no messages/payments sent or verified.
+- Workflow: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43076251740
+
+## Travel Revenue Automation Demo — initial implementation — 2026-11-11
+- Added `products/travel-revenue-demo/`: synthetic offline lead qualification with consent gate, destination/budget/duration package matching, deterministic owner assignment, indicative quote draft, guarded booking state transitions, follow-up suppression, and explicit no-external-action control flags.
+- Added 7 unit tests, synthetic leads/package/owner fixtures, README and CI workflow `.github/workflows/build-travel-revenue-demo.yml`.
+- No WhatsApp/email/CRM/supplier/payment/booking integration; no real availability or payment verification; no customer contact.
+- CI run created: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43076638980. At checkpoint it was still running; outcome and artifact checksum pending verification.
+- Source commit: `38c064bf3b0930f85fe98ebc497bc46df013583c`; workflow commit: `ab73ed315209ffa6751de4d666e127a76682fc6e`.
+- Buyer validation, proposal/outreach, paid pilot, sales and receipts remain absent. Verified gross/net receipts remain INR 0.
