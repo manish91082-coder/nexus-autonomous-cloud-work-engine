@@ -183,3 +183,13 @@
 - No wallet readiness POST, claim, registration, bond, gas, signature, or submission made. Need operator public Base wallet address for readiness and explicit approval for wallet signing plus bond/gas. No private key or seed phrase.
 - The deliverable remains not submission-ready because true <=390px inspection and three verified mobile findings are mandatory; TinyFish browser could only reach 705px. Do not invent mobile evidence.
 - Given low $2.10 reward and unmet mobile evidence, rational choice is not to risk a bond until mobile acceptance can be genuinely satisfied. Continue parallel search for materially larger, fully funded work.
+
+
+## Multi-market AI automation contract audit — 2026-11-11
+- Expanded discovery beyond bounty marketplaces to Upwork, Freelancer, PeoplePerHour and Workana.
+- Best demand signal: Upwork India travel CRM AI sales platform, $2,000 fixed price, buyer states 5k–20k leads/month and 20–50 salespeople, $19k historical spend/22 hires, but 50+ proposals and 3 interviews. Large scope: WhatsApp/web lead intake, approved package matching, routing, agent inbox/human handover, quotation and booking sync, follow-up controls, dashboards, consent/security, 7-day pilot. Not an easy win; no proposal submitted.
+- Other audited opportunities: Upwork Shopify WhatsApp/RAG $1k (client $56 spend, 50+ proposals; reject); WhatsApp outreach/GHL $800 (20–50 proposals, 1 hire, modest spend and contract-to-hire; reject); lead chatbot $500 (50+ proposals, 1 hire, 2 interviews; reject); HubSpot AI CRM listing headline extensive scope but actual budget $10 (reject due budget mismatch); Freelancer workflow automation $250–750 actually service-provider advertising, 122 proposals (reject); PeoplePerHour Apollo/Claude/Salesforce setup $94 and 25 proposals (reject); Workana POS/WhatsApp integration budget/payment details unverified; other Freelancer listings not escrow-qualified.
+- Core wedge identified: revenue-operations automation, not generic chatbot: source-aware lead intake, deduplication, qualification, routing, approved response, quote/order sync, follow-up stop conditions, reporting and audit trail.
+- Detailed evidence: research/MULTI_MARKET_AI_AUTOMATION_CONTRACT_AUDIT_2026-11-11.md.
+- No proposal, registration, outreach, legal acceptance, payment or public submission performed.
+- Revenue scoreboard unchanged: gross INR 0; net INR 0; accepted paid contracts 0.
