@@ -5,7 +5,10 @@ A small, offline-first operations kit for solo operators and micro-businesses. I
 ## What is included
 - Lead pipeline CSV template
 - Invoice and payment follow-up CSV template
-- Daily report generator (no API keys, cloud account, GPU, database or paid package)
+- Daily lead and invoice report generator
+- Job-to-cash control: one job ID links agreed amount, invoice, partial receipts, outstanding balance and next follow-up
+- Exception report flags overdue entered balances, missing next actions and completed jobs with no invoice
+- No API keys, cloud account, GPU, database or paid package
 - Sample data and automated tests
 - Hindi quick-start guide
 
@@ -19,12 +22,12 @@ Consultants, small agencies, freelancers, service businesses and solo operators 
 4. Run:
 
 ```bash
-python ops_report.py --leads templates/leads.csv --invoices templates/invoices.csv --out daily-report.md
+python ops_report.py --leads templates/leads.csv --invoices templates/invoices.csv --out daily-report.md\npython job_cash_report.py --jobs templates/jobs.csv --out job-cash-report.md
 ```
 
 5. Open `daily-report.md` and work through the action list.
 
-## Data handling
+## Job-to-cash workflow\nUse `templates/jobs.csv` and run `job_cash_report.py`. Each `job_id` should be unique. Enter invoice and received amounts from your own records. Partial receipts are supported. The report flags exceptions but does not verify bank deposits or payment processor settlements.\n\n## Data handling
 - All processing is local. No data is uploaded.
 - Use synthetic/sample data for demos.
 - Do not store card numbers, bank credentials, passwords, government IDs or other secrets in CSV files.
