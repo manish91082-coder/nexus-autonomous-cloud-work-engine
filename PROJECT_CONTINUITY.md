@@ -1,5 +1,6 @@
 # PROJECT CONTINUITY — Nexus Autonomous Cloud Work Engine
-**Canonical project:** `manish91082-coder/ai-content-system`  
+**Canonical working copy:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Original source (read-only, do not modify):** `manish91082-coder/ai-content-system`  
 **Primary branch:** `master`  
 **Continuity version:** 1.0  
 **Last updated:** 2026-11-11 (Phase 6 verified at commit 0f1f75a)  
@@ -719,3 +720,15 @@ Continue from this Phase 6 checkpoint and current `master` HEAD. Do not restart 
   - https://aibtc.com/api/bounties?status=open&limit=100
 
 - Final cloud verification for the admission-gate implementation: run `43043802807`, SUCCESS; 140 tests passed; platform gate step completed successfully; artifact `13865349152`. Workflow URL: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43043802807
+
+## 15. Productized digital revenue pilot — 2026-11-11
+
+- Selected a zero-upfront, offline-first digital product prototype: `products/ai-ops-starter/`.
+- Product: Zero-Cost AI Operations Starter Kit for solo operators and micro-businesses. Includes English/Hindi guides, lead and invoice CSV templates, local Python daily action report generator, MIT license, synthetic sample data, test suite, and honest product page. No API key, paid service, GPU, cloud account, database or third-party package required.
+- Safety: no messages sent, no invoices issued, no payments collected, no customer data uploaded. Amounts are not verified receivables; no accounting/tax claims.
+- Product build workflow: `.github/workflows/build-ai-ops-starter.yml`.
+- Verified GitHub Actions run: `43044295469`, SUCCESS; 4/4 tests passed; sample report generated; ZIP built and uploaded.
+- Artifact: `ai-ops-starter-product`, ID `13865254538`, URL https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43044295469/artifacts/13865254538
+- Gumroad official payout documentation lists India INR bank payouts, with a general USD 100 payout minimum, a minimum 7-day holding period for weekly/monthly/quarterly payouts, and account review. This is only a payout-rail eligibility check, not a seller account activation or confirmed payout. Official reference: https://gumroad.com/help/article/13-getting-paid
+- No Gumroad account created, no KYC submitted, no listing published, no sale or income claimed. Seller identity, bank details and payout activation remain human-only.
+- Next: audit buyer demand and comparable products using public evidence; improve differentiation and product QA; then prepare a listing draft. Do not create seller account or publish without explicit user approval.
