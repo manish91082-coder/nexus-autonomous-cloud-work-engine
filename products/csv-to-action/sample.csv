@@ -1,0 +1,5 @@
+job_id,customer,job_status,invoice_amount,received_amount,invoice_due_date,next_follow_up,currency,owner
+DEMO-001,Sample Design Studio,completed,18000,7000,2026-11-05,2026-11-10,INR,Operator A
+DEMO-002,Example Retail,active,9500,0,2026-11-25,2026-11-14,INR,Operator B
+DEMO-003,Northwind Sample,delivered,12500,12500,2026-11-08,,INR,Operator A
+DEMO-004,Illustrative Works,active,7200,0,,2026-11-12,INR,Operator C
