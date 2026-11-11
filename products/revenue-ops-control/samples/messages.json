@@ -1,0 +1,6 @@
+[
+  {"event_id":"MSG-001","source":"website","text":"Interested in pricing for your ERP demo"},
+  {"event_id":"MSG-002","source":"whatsapp","text":"Urgent, our integration is not working today"},
+  {"event_id":"MSG-003","source":"email","text":"Please refund, payment charged twice"},
+  {"event_id":"MSG-001","source":"website","text":"Interested in pricing for your ERP demo"}
+]
