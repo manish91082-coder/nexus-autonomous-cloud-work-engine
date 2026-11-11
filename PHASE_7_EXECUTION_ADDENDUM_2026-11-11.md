@@ -65,3 +65,14 @@
 - Frantic public homepage at live fetch stated there was nothing currently active and total settled $0; it is not a current earning route at this checkpoint.
 - No bounty was claimed, no issue commented on, no PR submitted, and no work started unpaid.
 - Decision: reject these noisy high-dollar candidates; improve freshness/competition checks and search alternative work rails. Continue only when task-specific eligibility, payout route and expected net value are independently established.
+
+
+## Product-market discovery checkpoint — 2026-11-11
+- Public research found Meta Business AI launched in India for eligible SMBs, offering native-language customer responses, lead capture and appointment booking. Generic WhatsApp FAQ/lead-response bots are therefore not selected as our wedge. Official source: https://about.fb.com/news/2026/05/introducing-business-ai-on-whatsapp-for-small-businesses-in-india/
+- Indian field-service vendors publicly list substantial overlapping functionality and pricing: ServicePilot ₹2,499/₹4,999/₹7,499 per month excluding GST; Crystal CRM offers a free tier and paid per-agent service-agency CRM; KaryaFlow and VORA CRM also publish low-cost price points. Vendor claims/prices are not independently tested.
+- PaisaBaki publicly offers invoice follow-up, promise/blocker capture and next-action tracking, so a generic receivables reminder product is also crowded.
+- Decision: do not build another generic chatbot, FSM/CRM suite or invoice reminder. Keep Job-to-Cash Control Kit as prototype only; no buyer validation or revenue established.
+- Narrow hypothesis for further validation: voice note/photo to verified field-job closeout, parts/approval exception and customer-update draft for one specific service vertical. This is a hypothesis, not established demand.
+- New research record: `research/PRODUCT_MARKET_VALIDATION_2026-11-11.md`.
+- Found and fixed literal escaped newline sequences in `products/ai-ops-starter/README.md`; the quick-start commands and Markdown sections are now properly separated. Build status remains previously verified; this documentation correction is a new commit.
+- Next: gather independent customer-side evidence (not vendor copy) for solar, RO, AC, CCTV and electrical service operators; do not code the next product until the repeated pain, buyer, willingness-to-pay and India payment route are substantiated.
