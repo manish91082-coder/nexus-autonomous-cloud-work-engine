@@ -19,9 +19,13 @@ class EconomicGateTests(unittest.TestCase):
         row={"platform":"Taskmarket","status":"open","title":"Shop and buy the product","description":"Purchase required","reward_amount":"15","reward_currency":"USDC","raw":{"status":"open","escrowTxHash":"0xabc"}}
         self.assertEqual(gate.evaluate(row)[0],"EXCLUDE_PURCHASE_REQUIRED")
 
-    def test_taskmarket_first_timer_is_deferred(self):
-        row={"platform":"Taskmarket","status":"open","title":"First-timers only chain research","reward_amount":"1","reward_currency":"USDC","raw":{"status":"open","escrowTxHash":"0xabc"}}
+    def test_taskmarket_first_timer_no_purchase_is_deferred(self):
+        row={"platform":"Taskmarket","status":"open","title":"First-timers only chain research","description":"No purchase is needed and a buy never qualifies.","reward_amount":"1","reward_currency":"USDC","raw":{"status":"open","escrowTxHash":"0xabc"}}
         self.assertEqual(gate.evaluate(row)[0],"DEFER_ELIGIBILITY")
+
+    def test_taskmarket_explicit_buy_is_excluded(self):
+        row={"platform":"Taskmarket","status":"open","title":"Shopping challenge","description":"Buy the product and submit the receipt.","reward_amount":"15","reward_currency":"USDC","raw":{"status":"open","escrowTxHash":"0xabc"}}
+        self.assertEqual(gate.evaluate(row)[0],"EXCLUDE_PURCHASE_REQUIRED")
 
     def test_taskmarket_micro_reward_is_excluded(self):
         row={"platform":"Taskmarket","status":"open","title":"Small code fix","reward_amount":"0.25","reward_currency":"OUSD","raw":{"status":"open","escrowTxHash":"0xabc"}}
