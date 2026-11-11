@@ -87,7 +87,7 @@
       if((status.toLowerCase()==="completed"||status.toLowerCase()==="delivered")&&inv===0) actions.push("Completed without invoice amount");
       results.push({line:index+2,id,customer,status,currency:value("currency"),invoice:inv,received:paid,balance,due:due||"",follow:follow||"",owner:value("owner"),issues,actions,raw:r});
     });
-    const totals=results.reduce((a,r)=>{if(r.invoice!==null)a.invoice+=r.invoice;if(r.received!==null)a.received+=r.received;if(r.balance!==null)a.balance+=r.balance;a.issues+=r.issues.length;a.actions+=r.actions.length;return a;},{invoice:0,received:0,balance:0,issues:0,actions:0});
+    const currencySet=new Set(results.map(r=>r.currency).filter(Boolean));\n    const totals=results.reduce((a,r)=>{if(r.invoice!==null)a.invoice+=r.invoice;if(r.received!==null)a.received+=r.received;if(r.balance!==null)a.balance+=r.balance;a.issues+=r.issues.length;a.actions+=r.actions.length;return a;},{invoice:0,received:0,balance:0,issues:0,actions:0});\n    totals.mixedCurrencies=currencySet.size>1; totals.currencyLabels=[...currencySet];
     return {map,missing,results,totals,today:now};
   }
   function csvEscape(v){const s=String(v??"");return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
