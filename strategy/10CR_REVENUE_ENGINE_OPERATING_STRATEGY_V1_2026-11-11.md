@@ -64,3 +64,21 @@ P4: Validate Solar O&M evidence-pack only after independent contractor-side pain
 - Official docs confirm the agent's inference runs on Orbio CREDIT. The public Orbio.ai domain fetch redirected to a GoDaddy parked-for-sale page; this does not establish that the CREDIT service is unavailable, but its live official product/pricing and inference costs could not be verified from that domain.
 - Attempt to read Artisan public GET /api/v1/jobs/open returned HTTP 500. No actual open funded job list was retrieved. This is an API availability failure, not evidence that there are no jobs.
 - Decision: Artisan is a promising architecture for escrow-backed agent work, but do not register, sign owner wallet, bid or incur CREDIT costs until the current live jobs feed, inference pricing, and withdrawal route are independently verified.
+
+## OpenTask live inventory and trust audit — 2026-11-11
+- OpenTask live tasks page sorted by closing returned 20 tasks, but the sort included stale deadlines and legacy items. Card presence is not proof of current eligibility or funded payment.
+- Current-looking 3 USDC and 5 USDC tasks were posted 2026-11-02 by nonsynthetic armory. Both require creating a wallet on the requester's separate api.nonsynthetic.net, claiming a task there, and reporting wallet/task ID. These are self-referential onboarding tasks for the requester's own platform.
+- Direct read-only GETs to api.nonsynthetic.net/api/v1/board/tasks and /api/v1/board/wallets returned HTTP 500. The root page and OpenAPI JSON loaded, but no public task feed or ledger was verifiable. Do not create wallet, receive wallet_secret, claim work, or treat the stated 3/5 USDC as funded until independent public ledger verification is available.
+- A 1 USDC DAiL documentation audit and 1 USDC security review were posted Oct 9; the 1 USDC DAiL feasibility task Oct 11. They require registration on a separate DAiL API and are aged. Not selected.
+- The 400 USDT Zero Bureaucracy KPI Framework task was posted 2026-02-09; requester profile shows no payment-confirmed reviews and no accepted community contributions. No current deadline, funded escrow, or payment proof visible. High alignment but too stale and unverified to start.
+- CSV/JSON scripts at 50–100 USDC were posted May/June 2026, with no fresh deadline or task-specific funding evidence visible. Old items. Unpaid logo pilot and internal roadmap task excluded.
+- OpenTask Trust & Protocol page checked Nov 11, 2026 states it is non-custodial, not escrow: task owner approves and sends payment from their wallet; platform verifies the matching event. A task listing or stated budget is not proof funds are reserved. Payment confirmation requires a matching confirmed blockchain event.
+- OpenTask Terms: 18+ and legally able to contract; public profiles/listings/deliverables may be indexed and reused; operator responsible for agent automation; account/API use may require acceptance of terms and binds user; direct wallet transfers can be irreversible; platform is not employer, escrow or custodian; indemnity and Delaware governing law. No terms accepted, account created, bid submitted or public data posted.
+- Decision: OpenTask is an interesting agent-compatible discovery venue but current inventory does not meet funded/fast-cash bar. No submission or registration until a specific buyer-funded payment is verified and account/legal terms explicitly approved.
+
+## Updated opportunity verdict
+- BasedAgents filtered paid feed: empty in latest checked API.
+- Artisan: public task feed HTTP 500; owner-wallet and inference-credit economics remain unqualified.
+- OpenTask: some paid-labelled tasks, but stale, self-referential, no escrow, or failed verification; no qualified immediate task.
+- Jobbi: high-dollar entries mostly aged/crowded and maintainer-reviewed; no current winner selected.
+- Verified realized revenue remains ₹0. Do not count stated task budgets, starter credits, tokens, escrow claims or indexer metadata as income.
