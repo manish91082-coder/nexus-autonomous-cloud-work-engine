@@ -732,3 +732,15 @@ Continue from this Phase 6 checkpoint and current `master` HEAD. Do not restart 
 - Gumroad official payout documentation lists India INR bank payouts, with a general USD 100 payout minimum, a minimum 7-day holding period for weekly/monthly/quarterly payouts, and account review. This is only a payout-rail eligibility check, not a seller account activation or confirmed payout. Official reference: https://gumroad.com/help/article/13-getting-paid
 - No Gumroad account created, no KYC submitted, no listing published, no sale or income claimed. Seller identity, bank details and payout activation remain human-only.
 - Next: audit buyer demand and comparable products using public evidence; improve differentiation and product QA; then prepare a listing draft. Do not create seller account or publish without explicit user approval.
+
+## 16. Product demand audit and Job-to-Cash iteration — 2026-11-11
+
+- Public evidence reviewed. Community discussion in r/smallbusiness describes spreadsheet tracking jobs, payments and who owes what, plus a separate follow-up view for callbacks/estimates. Another discussion explicitly prefers no-subscription, simple spreadsheet tools and mentions ultra-low-cost one-time templates; this is anecdotal and not willingness-to-pay validation.
+- Competing product examples include freelancer dashboards and client portals with substantial onboarding content; one Gumroad listing displayed $75. Marketplace listing prices and seller testimonials are not independently audited sales.
+- Decision: generic lead/invoice CSV kit is too undifferentiated for paid launch. Reposition as **Job-to-Cash Control Kit (Offline, Hindi + English)**, joining job ID, customer, agreed amount, invoice, partial receipts, outstanding entered balance and next follow-up.
+- Research report: `products/ai-ops-starter/DEMAND_AND_DIFFERENTIATION_AUDIT_2026-11-11.md`.
+- Added `job_cash_report.py`, `templates/jobs.csv`, and `tests/test_job_cash_report.py`. The report flags overdue entered balances, due follow-ups, missing next actions and completed jobs without invoice amounts. It explicitly does not verify bank receipts or provide accounting advice.
+- Updated English README and build workflow to run the job-to-cash report and package it.
+- Verified workflow run `43045490423`: SUCCESS; 8 tests passed; sample report and product ZIP generated. Artifact ID `13866883071`, URL https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43045490423/artifacts/13866883071
+- No seller account, KYC, listing, customer outreach, sale or income. Product remains validation prototype. No claims of market demand or revenue.
+- Next: expand QA (CSV edge cases, currency grouping, dates, partial receipts, closed jobs); produce Hindi user walkthrough and synthetic demo; validate with a small voluntary user cohort only with owner approval; assess payout/account activation before any public listing.
