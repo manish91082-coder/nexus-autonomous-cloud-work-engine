@@ -161,3 +161,16 @@ The travel CRM optimization listing remains the only relatively low-competition 
 - Detailed report: research/PHASE_17_BUYER_SIDE_RECURRING_OPERATIONS_AUDIT_2026-11-12.md.
 - No proposals, outreach, registrations, KYC, terms, subscriptions, paid tests or customer-data access. No production claims.
 - Scoreboard remains ₹0 gross / ₹0 net; costs not yet reconciled.
+
+
+## Phase 18 — Solar O&M and field operations buyer qualification (2026-11-12)
+- Verified industry reporting need through Tata Power's 11-May-2026 O&M guide: SCADA/real-time monitoring, preventive/corrective maintenance, performance reporting, fault alerts, SLA and safety evidence are part of O&M vendor evaluation. This is vendor guidance, not a buyer request.
+- MAHAPREIT/NCI RFP MAHAPREIT/NCI/O&M/RFP-2/2026-27: five-year 3 MW solar O&M at Kelapur, Wardha; deadline 15-Oct-2026, closed. ₹5,000+GST RFP document, ₹10,000+GST processing fee, ₹1 lakh EMD (limited MSME exemption). Requires full O&M provider, site engineer/technicians/cleaning/security, SCADA, spares, safety, insurance and statutory compliance. Not a reporting-only subcontract.
+- PPCL/Pragati Power Station-III floating solar tender 1000014422/PPCL/FSPV/CAPEX/2026-27: full EPC + five-year comprehensive O&M for 2.904 MWp, full-capacity bidder, portal/tender/auction fees, 1% security deposit and 10% PBG. Requires open API, SCADA, timestamped logs, 15-minute data push, Excel-compatible data and performance monitoring. This evidences technical reporting requirements but not separable subcontract demand. No bid/registration.
+- SECI official tender index lists Gaya 60 MW AC solar project with O&M and listed end date 03-Dec-2026, but index does not show a reporting-only procurement.
+- Upwork Solar EDA/KPI listing: $11–35/hour, one-time, 50+ proposals, client joined 27-Oct-2026 with $18 spend, last viewed 2 weeks ago; defer/no bid.
+- Upwork Illinois Solar PV/BESS permitting listing: paid pilot + possible ongoing, 5–10 proposals, buyer $58K spend, but requires hands-on ComEd/Ameren jurisdiction-specific experience; no bid.
+- Upwork Solar Administrative Operations Assistant is full-time employment-style and excluded by user's no-job preference.
+- Decision: no current qualified paid contract. Do not bid on public tenders or prime full EPC/O&M work. A narrow Solar O&M Evidence Pack and Reporting QA service is a hypothesis only: buyer-provided exports/forms → validation, exception register, performance trend summary and human-reviewed report draft. No SCADA integration, plant control, technical diagnosis, field work, safety sign-off or generation guarantees.
+- Detailed report: research/PHASE_18_SOLAR_OM_FIELD_OPERATIONS_BUYER_AUDIT_2026-11-12.md.
+- No proposals, outreach, registrations, KYC, tender fees, EMD, PBG, DSC, subscriptions or data access. Receipts remain ₹0 gross / ₹0 net; costs not yet reconciled.
