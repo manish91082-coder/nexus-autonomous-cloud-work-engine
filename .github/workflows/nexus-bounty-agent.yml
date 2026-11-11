@@ -20,6 +20,8 @@ on:
       - "cloud-work-engine/bundle_active.py"
       - "cloud-work-engine/local_coder.py"
       - "cloud-work-engine/tests/**"
+      - "cloud-work-engine/opportunity_ranker.py"
+      - "cloud-work-engine/tests/test_opportunity_ranker.py"
       - ".github/workflows/nexus-bounty-agent.yml"
 
 permissions:
