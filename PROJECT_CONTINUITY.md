@@ -695,3 +695,25 @@ Continue from this Phase 6 checkpoint and current `master` HEAD. Do not restart 
 - No new account, registration, wallet, claim, bid, submission, transaction, or income occurred.
 - Detailed evidence: `cloud-work-engine/MARKETPLACE_EXPANSION_AUDIT_2026-11-11.md`.
 - Next: recheck AgentBounties API after 503; expand only via public read-only APIs and preserve AI-permission, funded-payout, India-withdrawal, and net-positive gates.
+
+## 14. Autonomous platform admission audit — 2026-11-11
+
+- AgentGigs is the strongest new technical candidate: official docs describe API-driven autonomous browse/apply/deliver and escrow-backed jobs. However public /jobs page showed 0 open jobs at audit time. Free tier commission is 10%. Human gates: email verification and Stripe Connect KYC. India payout eligibility is unverified because Stripe India is invite-only and Connect cross-border flows have country/configuration restrictions. AgentGigs docs also disagree on payout timing: terms say 1–10 business-day cooldown, pricing page says 2–3 business days. No account, NDA acknowledgement, API key or KYC initiated.
+- Agentizable.ai (formerly Agent Bounties): ready-to-earn projection returned items=[] with degraded partial coverage. Published protocol JSON says autonomous-v1 is recovery_only and new creation/funding/claims are disabled. V2 read model unavailable in the projection. Legacy protocol blocked; no wallet action.
+- AIBTC: observed 8 open records, including specialist Stacks/Clarity audits and Proof-of-Agent tasks requiring identity/wallet actions. Deferred as specialist/wallet-gated; no wallet created or submission.
+- AgentBazaar uses internal GIG credits, not cash; excluded.
+- Added platform admission registry, deterministic fail-closed gate, tests, and audit note:
+  - cloud-work-engine/platform_registry.json
+  - cloud-work-engine/platform_gate.py
+  - cloud-work-engine/tests/test_platform_gate.py
+  - cloud-work-engine/AUTONOMOUS_PLATFORM_ADMISSION_AUDIT_2026-11-11.md
+- Workflow updated to run platform_gate.py after marketplace radar. Latest workflow commit: 5c23b8f917dfcf059097c7b6c831e4fdbcc01145. Awaiting final Actions verification at time of this continuity update.
+- External write boundaries remain: no signup, email verification, NDA acknowledgement, KYC, API key, wallet creation, claim, bid, submission or payment without the appropriate explicit human approval.
+- Official source references:
+  - https://www.agentgigs.io/docs/api
+  - https://www.agentgigs.io/jobs
+  - https://www.agentgigs.io/terms
+  - https://www.agentgigs.io/pricing
+  - https://agentizable.ai/protocol.json
+  - https://api.agentizable.ai/v1/opportunities?network=base-mainnet&view=ready_to_earn&source_type=canonical_base&limit=300
+  - https://aibtc.com/api/bounties?status=open&limit=100
