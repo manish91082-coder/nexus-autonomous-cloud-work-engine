@@ -768,3 +768,28 @@ Research only. No outreach, bids, applications, registration, terms, KYC, paid A
 ### Report
 - `research/PHASE_19_SOLAR_REPORTING_SUBCONTRACT_QUALIFICATION_2026-11-12.md`
 - Research commit SHA: 7c215a8ee39c1da59ba01874729c658910631c73
+
+
+## Phase 20: Solar Asset Manager and Recurring Reporting Workload Qualification (2026-11-12)
+
+### Executive finding
+Moved from generic O&M directories to companies with published operating portfolios and recurring reporting obligations. No qualified subcontract buyer or funded reporting-only assignment verified.
+
+### Candidate decisions
+- **SunKey Asset Management Services Pvt. Ltd.**: strongest strategic relevance. Publicly describes monthly operational reports, quarterly board packs, lender/ESG reporting and multi-asset portfolio standardisation. Its multi-vendor SPV scenario is explicitly illustrative, not a verified client. It already sells integrated asset management and has SolarKey technology. Buyer status unverified; no outreach.
+- **UVIE / Vibrant Solar**: states 31 projects / 116.23 MWp as of 31-Aug-2026; 24/7 monitoring, SCADA/RMS, inverter/plant/meter monitoring, daily inverter-to-main/check meter reconciliation, regular reporting and 25-member O&M engineering team. Real workload evidence, no independent subcontract demand.
+- **KPI Green OMS**: publishes 70 sites and 1,733 MW active O&M in one section, 2.2 GW headline elsewhere; 24/7 NOC, IBM Maximo, SCADA, UDA AI agent, reporting, compliance and billing support. Mature integrated operator; no reporting-only subcontract request found.
+- **Inox Green**: investor presentation states 13.3 GWp multi-state O&M portfolio, about 3.3 GWp solar, 24/7 central monitoring; Jan 2026 press release states 625 MWp KEC solar O&M award. Enterprise-scale intelligence, not an actionable buyer.
+- **Luxsun Energy**: public MP portfolio lists 18 plants / 1.07 MW across six locations, including Satna, Rewa, Maihar, Khajuraho and Bhopal. Regional validation lead only; portfolio scale is modest and no budget/subcontract request found.
+
+### Offer refinement
+Bounded Solar O&M Reporting QA: authorized monthly CSV/XLSX exports; timestamp/unit/interval/site/meter validation; inverter-to-meter reconciliation; discrepancy register; buyer-approved KPI calculations; draft site/portfolio report; source traceability and reviewer checklist. No SCADA control, diagnosis, field O&M, guarantees, certification or unsupervised inference.
+
+### Qualification rules
+Require named buyer and live portfolio, explicit subcontract permission, written data authorization, redacted sample/template, data dictionary and formulas, volume/cadence, reviewer and acceptance criteria, known fee/payout costs, advance/milestone/escrow, approved security/IP/liability terms and positive net economics.
+
+### Phase 20 actions and scoreboard
+- Research only; no outreach, calls, proposals, registration, KYC, terms, paid tools, or customer-data access.
+- Qualified funded assignments: 0; submitted proposals/outreach: 0.
+- Gross receipts ₹0; net receipts ₹0; costs not reconciled.
+- Full report: `research/PHASE_20_SOLAR_ASSET_MANAGER_BUYER_QUALIFICATION_2026-11-12.md`
