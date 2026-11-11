@@ -193,3 +193,13 @@
 - Detailed evidence: research/MULTI_MARKET_AI_AUTOMATION_CONTRACT_AUDIT_2026-11-11.md.
 - No proposal, registration, outreach, legal acceptance, payment or public submission performed.
 - Revenue scoreboard unchanged: gross INR 0; net INR 0; accepted paid contracts 0.
+
+
+## Revenue Operations Control portfolio demo — 2026-11-11
+- Reuse audit inspected existing Message-to-Action Reliability, AI Ops Starter, job-to-cash and reporting assets. No production integrations were present; they were reused as patterns only.
+- Added `products/revenue-ops-control/`: offline Python standard-library lead-to-cash demo combining normalized email/phone duplicate lead detection, follow-up due detection, inbound message triage/deduplication with mandatory human approval, invoice aging and entered balance reporting, validation and safety disclosures. Synthetic records only.
+- Added seven unit tests and CI workflow `.github/workflows/build-revenue-ops-control.yml`.
+- GitHub Actions run 43075715108 SUCCESS (13 sec). Artifact revenue-ops-control-demo, 14.2 KB, SHA256 `723795a35de224587d4eb830949df643734a5ee31ce12d8d41192391d022363a`.
+- Build verification report: `products/revenue-ops-control/BUILD_VERIFICATION_2026-11-11.md`.
+- Important boundary: CI success verifies offline demo and package only; no real WhatsApp/CRM/payment integrations, buyer acceptance, sale or income. No outreach or external write action occurred.
+- Revenue scoreboard unchanged: gross INR 0; net INR 0; accepted paid contracts 0.
