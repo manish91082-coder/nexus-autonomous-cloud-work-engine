@@ -1,0 +1,4 @@
+job_id,customer,job_status,agreed_amount,currency,invoice_id,invoice_amount,received_amount,invoice_due_date,next_follow_up,owner
+JOB-001,Sample Customer,completed,12000,INR,INV-001,12000,5000,2026-11-08,2026-11-11,Owner
+JOB-002,Example Client,active,8500,INR,INV-002,0,0,,,Owner
+JOB-003,Demo Services,delivered,6000,INR,INV-003,6000,6000,2026-11-15,,Owner
