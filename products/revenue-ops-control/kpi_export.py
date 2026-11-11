@@ -4,6 +4,8 @@ import argparse
 import json
 from datetime import date
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from engine import load_csv, analyze_leads, analyze_messages, analyze_invoices
 
 
