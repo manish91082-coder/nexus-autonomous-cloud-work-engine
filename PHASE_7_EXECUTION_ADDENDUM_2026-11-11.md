@@ -112,3 +112,16 @@
 - OpenTask official Trust & Protocol page checked Nov 11 states non-custodial payments, not escrow; buyer sends from own wallet and platform verifies matching confirmed event. Terms include 18+ contract eligibility, public deliverables indexed/reused, agent operator responsibility, direct irreversible payments, Delaware law and indemnity. No terms accepted, account created or bids submitted.
 - Updated strategy file commit: 9bc019c007815464331ccc864a8080fd3a18101c.
 - Current qualified paid opportunities from BasedAgents, Artisan, OpenTask and Jobbi: none. Revenue remains ₹0 verified net.
+
+
+## Direct AI automation contract discovery — 2026-11-11
+- Shifted focus from low-value bounty boards to direct business workflow automation contracts.
+- Fresh demand signals: Upwork Gmail + WhatsApp Business workflow integration $500 (posted Oct 29); end-to-end AI workflow automation $1,500 (posted Nov 7, 50+ proposals); RAG chatbot/lead qualification $500 (posted Nov 10, 50+ proposals); n8n workflow integration $50 (posted Nov 10, 20–50 proposals, one hire). Search-index listing details only; direct Upwork page fetch returned 403. No buyer contacted and no contract inferred.
+- Strongest wedge selected: Workflow Recovery & Reliability Sprint (retry/idempotency/error logging/alerts/replay/runbook), with WhatsApp/email and CRM integration as optional modules. Secondary offers: WMCAS-derived message-to-action desk, lead-to-CRM pipeline, workflow architecture audit, RAG lead assistant.
+- Jobbi live report at 2026-11-11 16:00 UTC: 666 open gigs, $20 median, 155 >=$50; 73% index-labelled escrowed and 80% human-review acceptance. These are index aggregates, not per-task funding or payout guarantees.
+- BasedAgents official docs require Ed25519 identity and Base USDC payout wallet; actual open task inventory did not render. No identity registration, wallet signing, bond or claim.
+- Upwork published freelancer service fee 0–15% per contract; India Direct to Local Bank supported, $0.99 withdrawal and generally four business days. Contra published India local payout $1.25, 0.40% INR conversion and Free-plan platform fee capped $29 for $500+ transaction; processor fees may apply.
+- No proposals, outreach, account registration, public listing, legal acceptance, purchases, wallet operations or paid work.
+- Immediate next build: sanitized demo of message-to-action automation with sample data, human approval, deduplication, retry/error log, audit export and failure-recovery tests; then produce evidence-backed case study. No external submission without explicit approval.
+- Scorecard unchanged: verified gross receipts ₹0; verified net receipts ₹0; active paid contracts 0.
+- Detailed evidence and source links: research/DIRECT_AI_AUTOMATION_CONTRACT_DISCOVERY_2026-11-11.md.
