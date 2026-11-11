@@ -681,3 +681,17 @@ Continue from this Phase 6 checkpoint and current `master` HEAD. Do not restart 
 3. Do not retry blocked PACT key provisioning via a disguised/indirect route. Use only supported, safety-approved secure provisioning; if unavailable, keep public discovery and other revenue channels active.
 4. Recheck the newest Actions run and artifact before claiming current health.
 5. Keep the read-only PACT scope; any write-capable negotiation/order/payment operation remains disabled pending separate explicit authorization and verified funded assignment.
+
+
+## 13. Marketplace expansion radar — 2026-11-11 (destination copy)
+
+- Destination-only repository: `manish91082-coder/nexus-autonomous-cloud-work-engine`. Original `ai-content-system` repository remains untouched.
+- Added `cloud-work-engine/marketplace_radar.py` and tests, plus a read-only GitHub Actions step.
+- Live public audit: AgentBadge currently returned one 0.01 USDC durability/regression probe; excluded as test/micro-value. Its economics API reports a 2.5% take rate.
+- Moltask public API returned eight unique task records, mostly old January 2026 promotional/campaign tasks, paid in MOLT. Official homepage warns contracts are unaudited; excluded from production earning pipeline. Task detail URLs tested returned 404.
+- AgentBounties public metrics endpoint returned HTTP 503; defer integration until healthy. Third-party Atlas snapshot reported lifetime activity but that is not current task-level funding proof.
+- Agoragentic public audit states paid execution/custody were paused; excluded until resumed.
+- Latest verified cloud run: `43043131458`, SUCCESS; 135 tests passed; marketplace radar output AgentBadge 1 excluded, Moltask 8 excluded. Artifact: `13864759846`.
+- No new account, registration, wallet, claim, bid, submission, transaction, or income occurred.
+- Detailed evidence: `cloud-work-engine/MARKETPLACE_EXPANSION_AUDIT_2026-11-11.md`.
+- Next: recheck AgentBounties API after 503; expand only via public read-only APIs and preserve AI-permission, funded-payout, India-withdrawal, and net-positive gates.
