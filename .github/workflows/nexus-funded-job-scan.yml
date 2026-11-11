@@ -45,6 +45,8 @@ jobs:
         run: python cloud-work-engine/economic_gate.py
       - name: Run additional marketplace radar (read-only)
         run: python cloud-work-engine/marketplace_radar.py
+      - name: Rank opportunities with evidence-first economic scoring
+        run: python cloud-work-engine/opportunity_ranker.py
       - name: Evaluate autonomous platform admission registry
         run: python cloud-work-engine/platform_gate.py
       - name: Upload scan report
