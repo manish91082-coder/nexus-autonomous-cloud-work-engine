@@ -115,3 +115,14 @@ The travel CRM optimization listing remains the only relatively low-competition 
 - Detailed report: `research/LIVE_OPPORTUNITY_REQUALIFICATION_2026-11-12.md`; commit `7841820b4a3dd416f71bb672a5b62a0fa897b8dd`.
 - No bids, proposals, outreach, account creation, KYC, legal acceptance or paid activity.
 - Verified receipts remain ₹0 gross and ₹0 net. No revenue claim.
+
+
+## Phase 14 — Institutional procurement and cash-conversion audit (2026-11-12)
+- Project is deliberately diversifying beyond freelance marketplaces and repetitive CRM/AI automation listings.
+- Verified official NeGD/Digital India Corporation RFE: AI-Enabled Software Development Partners, Tender ID 2026_DIT_929901_1; deadline 17 Nov 2026 18:00; EMD ₹5 lakh; exemption allowed but not established for this project; tender value unspecified. Full eligibility, past-performance, financial, exemption and work-allocation clauses remain to be audited. No bid.
+- Verified official NICSI website/mobile app development agency empanelment, Tender ID 2026_NICSI_296009_1; deadline 30 Nov 2026 15:00; EMD ₹25 lakh; exemption allowed but not established. No direct bid; possible qualified-prime channel only if subcontracting is permitted and contractually protected.
+- A separate NeGD AI/ML resource RFE shows submission ended 27 Oct 2026; closed, not an active opportunity.
+- PIB reports CPSE MSME invoice settlements routed through RBI-authorised TReDS; invoice discounting is a cash-conversion mechanism, not guaranteed immediate payment. MSME status and invoice eligibility must be proven.
+- Strategic route: investigate qualified prime contractors and permitted subcontracting; continue direct B2B recurring buyer research in parallel so slow procurement does not monopolize execution.
+- Report: research/PHASE_14_INSTITUTIONAL_PROCUREMENT_AUDIT_2026-11-12.md; commit d09b2e9bf396584c53b706485e32087b7f691d87.
+- No bid, partner outreach, registration, fee, EMD, KYC, terms acceptance or signature. Gross receipts ₹0; net receipts ₹0; paid contracts/pilots 0.
