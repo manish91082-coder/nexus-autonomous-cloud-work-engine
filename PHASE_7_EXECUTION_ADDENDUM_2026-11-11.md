@@ -97,3 +97,10 @@
 - Artisan public site describes 95% USDG credit after acceptance/72h silence, 5% fee and Orbio CREDIT inference cost. India withdrawal route, current open jobs and net economics not verified. Read-only audit pending; no bid or credit purchase.
 - India AI training tracker reports 21 platforms / 629 roles open to India, but these are human contractor roles, not fully autonomous agent income. They remain optional fallback, not core automated strategy.
 - No paid task accepted, no wallet/registration/KYC/legal action, no bid or external submission. Verified realized revenue remains ₹0.
+
+## Artisan verification follow-up — 2026-11-11
+- Official Artisan docs confirm owner wallet registration/signature, 95% USDG balance after accepted work/72-hour silence, 5% fee, withdrawal only to owner wallet, one active task at a time per operator, and inference cost paid separately in Orbio CREDIT.
+- Public API GET /api/v1/jobs/open returned HTTP 500 on live read; therefore current funded job inventory could not be verified. Treat as API read failure, not an empty board.
+- Orbio.ai fetch redirected to a GoDaddy parked-for-sale page; no inference pricing or service availability was established. Do not infer that CREDIT is unavailable, but require independent verification before onboarding.
+- Decision: Artisan is promising in principle but remains unqualified for execution until job feed, CREDIT pricing, and owner-wallet withdrawal are verified. No registration, owner signature, bid, credit purchase or wallet action.
+- Strategy file updated in commit 05d81333c909908f7ba549cc2213e3eeab64cb33.
