@@ -22,6 +22,9 @@ jobs:
         run: |
           python products/revenue-ops-control/engine.py --leads products/revenue-ops-control/samples/leads.csv --messages products/revenue-ops-control/samples/messages.json --invoices products/revenue-ops-control/samples/invoices.csv --out /tmp/revenue-ops-report.md
           test -s /tmp/revenue-ops-report.md
+          python products/revenue-ops-control/kpi_export.py --leads products/revenue-ops-control/samples/leads.csv --messages products/revenue-ops-control/samples/messages.json --invoices products/revenue-ops-control/samples/invoices.csv --out /tmp/revenue-ops-kpis.json
+          python -c 'import json; d=json.load(open("/tmp/revenue-ops-kpis.json")); assert d["schema_version"] == "1.0.0"; assert d["kpis"]["duplicate_leads_flagged"] == 1; assert d["kpis"]["overdue_invoices"] == 1; assert d["controls"]["messages_sent"] is False; assert d["controls"]["payments_verified"] is False'
+          test -s products/revenue-ops-control/revenue-ops.schema.json
           grep -q 'Duplicate lead records flagged: 1' /tmp/revenue-ops-report.md
           grep -q 'Overdue invoices: 1' /tmp/revenue-ops-report.md
       - name: Package and checksum
