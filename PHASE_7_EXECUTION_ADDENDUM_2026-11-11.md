@@ -134,3 +134,15 @@
 - No proposal, outreach, registration, legal acceptance, KYC, wallet creation/signing/transaction, paid purchase, claim or submission was performed.
 - Full-automation protocol separates DISCOVERED, VERIFIED, ECONOMICALLY_QUALIFIED, AUTHORIZATION_REQUIRED, EXECUTING, TESTED, SUBMITTED, ACCEPTED, PAID and RECONCILED states. Unknown facts fail closed. One blocked source never blocks the other source queues.
 - Scoreboard remains verified gross INR 0, net INR 0, active paid contracts 0.
+
+
+## Message-to-Action Reliability Demo — build and CI verification
+- Implemented offline, zero-paid-dependency prototype under products/message-to-action-reliability/.
+- Features: deterministic message triage, event fingerprinting/deduplication, human approval queue, simulated transient failure + retry, error log, CSV export and Markdown report. Synthetic sample data only; no Gmail/WhatsApp/CRM integration or outbound messages.
+- First CI run 43062918404 failed because Python import treated a hyphenated directory as a package. Root cause captured from job log; corrected tests to load engine.py by file path.
+- Corrected commit: d20b712e3f60cf589bc25d3f2562dc9acb7f4c8d.
+- Verified CI run: 43063000254, conclusion SUCCESS.
+- Artifact: message-to-action-reliability-demo, ID 13872664779, SHA-256 8bd81f86cedef87cfdd3231d5beb7fa3fc4b18475f232fb59d03346793bb5e91.
+- CI success verifies tests, sample output generation, packaging and artifact upload only. It is not a production connector, buyer validation, sale, or revenue.
+- Next: independently verify TaskForce live task feed/API and payout/escrow evidence; continue task-level Jobbi/agent-market scans; prepare direct-contract proposal assets but do not submit or contact without approval.
+- Revenue score remains verified gross INR 0 and verified net INR 0.
