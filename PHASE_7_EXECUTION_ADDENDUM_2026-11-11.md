@@ -203,3 +203,13 @@
 - Build verification report: `products/revenue-ops-control/BUILD_VERIFICATION_2026-11-11.md`.
 - Important boundary: CI success verifies offline demo and package only; no real WhatsApp/CRM/payment integrations, buyer acceptance, sale or income. No outreach or external write action occurred.
 - Revenue scoreboard unchanged: gross INR 0; net INR 0; accepted paid contracts 0.
+
+
+## Revenue Operations Control — machine-readable KPI layer — 2026-11-11
+- Added `kpi_export.py` for machine-readable JSON output with schema version, report date, lead/follow-up/message/invoice KPIs, exception source-row references and explicit safety control invariants.
+- Added `revenue-ops.schema.json` (JSON Schema draft 2020-12) to document the output contract.
+- Added two unit tests for KPI correctness and control invariants.
+- CI runs #5 and #6 exposed two real defects: import path in isolated test loading, then a literal backslash-n serialized at JSON end. Both defects were traced from job logs; import path corrected in commit `0387864105b9f52181bf0ecbfbc8ca3e25dc1512`; JSON newline corrected in commit `416473b31d2e0ad087757a8b7377e18c9796a630`.
+- At checkpoint, run #7 for the import correction had failed due JSON newline issue, and the newline fix had just been pushed. Latest CI result for commit `416473b` is pending verification; do not claim JSON-export CI success yet.
+- Core demo CI run #1 remains successful; machine-readable export tests have passed 9/9 unit tests in run #7 before the JSON parsing assertion failed.
+- No production integration, customer contact, public listing, paid work, acceptance, or receipts. Gross and net verified receipts remain INR 0.
