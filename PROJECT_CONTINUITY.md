@@ -744,3 +744,27 @@ Continue from this Phase 6 checkpoint and current `master` HEAD. Do not restart 
 - Verified workflow run `43045490423`: SUCCESS; 8 tests passed; sample report and product ZIP generated. Artifact ID `13866883071`, URL https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43045490423/artifacts/13866883071
 - No seller account, KYC, listing, customer outreach, sale or income. Product remains validation prototype. No claims of market demand or revenue.
 - Next: expand QA (CSV edge cases, currency grouping, dates, partial receipts, closed jobs); produce Hindi user walkthrough and synthetic demo; validate with a small voluntary user cohort only with owner approval; assess payout/account activation before any public listing.
+
+
+## Phase 19: Solar O&M Reporting Subcontract Qualification (2026-11-12)
+
+### Executive decision
+- Market evidence confirms recurring SCADA/MIS, monthly generation, downtime, reconciliation and owner-facing reporting work.
+- No live, funded, independently subcontractable reporting-only assignment was verified.
+- Strongest direct buyer signal: Freelancer “Monthly Renewable Asset Report” for a multi-state solar/wind/hybrid portfolio, ₹12,500–₹37,500, recurring monthly PDF + Excel/Power BI with SCADA traceability; listing was CLOSED with 45 proposals when inspected. Historical demand signal only; no application.
+- Voltiq explicitly invites EPC/O&M white-label platform partners, but this is a channel/platform model, not a paid reporting analyst overflow contract. No registration/contact.
+- Renevik, SolarPro, EnerMAN, UVIE, Stactiv, Bridgeway Power and Solarworld describe relevant reporting/SCADA/asset-management capabilities. These are service providers or adjacent competitors, not verified buyers of our subcontracted reporting work.
+- Procurement clauses in PPCL/GUDC/REC evidence embed reporting inside wider EPC/O&M scopes. No independent subcontract permission established; never infer it.
+
+### Narrow offer hypothesis
+Solar O&M Reporting QA and Monthly Evidence Pack: buyer-authorized CSV/XLSX SCADA/inverter exports; timestamp/unit/schema checks; missing/duplicate interval and total-reconciliation exceptions; site/portfolio actual-vs-buyer-target summaries; source-linked draft report and reviewer checklist. No SCADA control, electrical diagnosis, field O&M, safety sign-off, performance guarantees, certification or unsupervised inference.
+
+### Mandatory gates
+Named legal buyer; live portfolio and reporting period; written permission to subcontract exact scope; authorized redacted sample and template; data-security requirements; volume/cadence; named reviewer and acceptance criteria; fixed fee and payout costs; advance/milestone/escrow protection; liability boundary; positive net economics. No work on unfunded promises or unprotected pay-when-paid terms.
+
+### Phase 19 actions
+Research only. No outreach, bids, applications, registration, terms, KYC, paid API, spending, customer/plant data access or public claims. Qualified funded reporting-only assignments: 0. Direct live buyer requests: 0. Gross receipts ₹0; net receipts ₹0; costs not reconciled.
+
+### Report
+- `research/PHASE_19_SOLAR_REPORTING_SUBCONTRACT_QUALIFICATION_2026-11-12.md`
+- Research commit SHA: 7c215a8ee39c1da59ba01874729c658910631c73
