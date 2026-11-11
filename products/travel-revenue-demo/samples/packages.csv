@@ -1,0 +1,5 @@
+package_id,name,destination,price_per_person_inr,duration_days
+G01,Goa Coastal Escape,Goa,18000,4
+G02,Goa Heritage and Beach,Goa,26000,5
+K01,Kerala Backwaters,Kerala,24000,5
+J01,Jaipur Heritage,Jaipur,15000,3
