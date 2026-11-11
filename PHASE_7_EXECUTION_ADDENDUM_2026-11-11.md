@@ -76,3 +76,14 @@
 - New research record: `research/PRODUCT_MARKET_VALIDATION_2026-11-11.md`.
 - Found and fixed literal escaped newline sequences in `products/ai-ops-starter/README.md`; the quick-start commands and Markdown sections are now properly separated. Build status remains previously verified; this documentation correction is a new commit.
 - Next: gather independent customer-side evidence (not vendor copy) for solar, RO, AC, CCTV and electrical service operators; do not code the next product until the repeated pain, buyer, willingness-to-pay and India payment route are substantiated.
+
+
+## Solar O&M workflow research — 2026-11-11
+- Primary procurement evidence: Oil India solar CAMC tender specifications require monthly maintenance/health reports and quarterly invoices submitted with those reports; one document says invoices without accompanying reports will not be entertained. Sources: https://www.oil-india.com/files/oldtender/national/NIT_SJI8084P19.pdf and https://www.oil-india.com/files/oldtender/national/NIT_SDI5233P18.pdf
+- ISRO e-procurement annexure also specifies monthly generation, preventive/breakdown maintenance and downtime reporting: https://eproc.isro.gov.in/common/viewDocument?id=ff8081819a713e5f019ae36b69097761&indentId=SH2025000200
+- Narrow hypothesis advanced for validation: solar O&M evidence-pack assistant converting technician voice notes/photos/readings/checklists into a human-reviewed service report, exception list and invoice-supporting monthly pack. Never fabricate measurements, completed work, credentials or sign-offs.
+- This is a contract-specific workflow signal, not proof of broad SME demand or willingness to pay. No new product implementation until customer-side validation is complete.
+- Research report extended in commit `f6b7ed9fb1d5efbcca472b947c651726daa13139`.
+- README formatting correction committed in `243a919e01269c179318464a096b06eec92db303`.
+- Research checkpoint file committed in `00b7755a2ee131c95bac8ecb4f21f7c476900bb3`; addendum update commit `247d68eebe6e4cce67917eb7394ca2b202f21c66`.
+- Income remains ₹0 verified; no outreach or customer-facing activity occurred.
