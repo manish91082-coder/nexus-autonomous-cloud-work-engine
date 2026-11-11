@@ -1,0 +1,5 @@
+lead_id,name,destination,budget_inr,trip_days,travellers,consent_to_contact,status,opted_out
+T001,Sample A,Goa,45000,5,2,yes,new,no
+T002,Sample B,Kerala,30000,6,2,no,new,no
+T003,Sample C,Goa,12000,4,1,yes,booked,no
+T004,Sample D,Jaipur,0,3,2,yes,new,no
