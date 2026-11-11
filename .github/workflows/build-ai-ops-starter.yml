@@ -1,0 +1,39 @@
+name: Build AI Operations Starter product
+on:
+  push:
+    paths:
+      - 'products/ai-ops-starter/**'
+      - '.github/workflows/build-ai-ops-starter.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ai-ops-starter-build
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Test product
+        run: python -m unittest discover -s products/ai-ops-starter/tests -v
+      - name: Generate sample report
+        run: |
+          python products/ai-ops-starter/ops_report.py --leads products/ai-ops-starter/templates/leads.csv --invoices products/ai-ops-starter/templates/invoices.csv --out /tmp/sample-report.md
+          test -s /tmp/sample-report.md
+      - name: Package downloadable product
+        run: |
+          mkdir -p dist
+          cd products
+          zip -r ../dist/ai-ops-starter.zip ai-ops-starter
+          cd ..
+          sha256sum dist/ai-ops-starter.zip > dist/SHA256SUMS.txt
+      - name: Upload product package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-ops-starter-product
+          path: dist/
+          if-no-files-found: error
+          retention-days: 30
