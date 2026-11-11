@@ -1,0 +1,4 @@
+invoice_id,client,amount,currency,due_date,status
+INV-1001,Sample Solar,25000,INR,2026-11-08,sent
+INV-1002,Sample ERP,12000,INR,2026-11-20,sent
+INV-1003,Sample Media,8000,INR,2026-11-01,paid
