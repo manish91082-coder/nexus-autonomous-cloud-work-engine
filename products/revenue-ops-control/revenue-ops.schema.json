@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/revenue-ops-control/1.0.0",
+  "title": "Revenue Operations Control Report",
+  "type": "object",
+  "required": ["schema_version", "report_date", "data_scope", "kpis", "exceptions", "message_approval_queue", "duplicate_message_event_ids", "controls"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "report_date": {"type": "string", "format": "date"},
+    "data_scope": {"const": "user_supplied_records_only"},
+    "kpis": {
+      "type": "object",
+      "required": ["leads_received", "duplicate_leads_flagged", "followups_due", "unique_messages_awaiting_approval", "duplicate_messages_skipped", "open_invoices", "overdue_invoices", "entered_open_invoice_amount", "invoice_amount_verified"],
+      "properties": {
+        "leads_received": {"type": "integer", "minimum": 0},
+        "duplicate_leads_flagged": {"type": "integer", "minimum": 0},
+        "followups_due": {"type": "integer", "minimum": 0},
+        "unique_messages_awaiting_approval": {"type": "integer", "minimum": 0},
+        "duplicate_messages_skipped": {"type": "integer", "minimum": 0},
+        "open_invoices": {"type": "integer", "minimum": 0},
+        "overdue_invoices": {"type": "integer", "minimum": 0},
+        "entered_open_invoice_amount": {"type": "number", "minimum": 0},
+        "invoice_amount_verified": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "exceptions": {"type": "array", "items": {"type": "object"}},
+    "message_approval_queue": {"type": "array", "items": {"type": "object"}},
+    "duplicate_message_event_ids": {"type": "array", "items": {"type": "string"}},
+    "controls": {
+      "type": "object",
+      "required": ["external_systems_modified", "messages_sent", "payments_verified", "human_approval_required"],
+      "properties": {
+        "external_systems_modified": {"const": false},
+        "messages_sent": {"const": false},
+        "payments_verified": {"const": false},
+        "human_approval_required": {"const": true}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
