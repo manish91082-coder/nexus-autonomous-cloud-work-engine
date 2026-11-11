@@ -8,7 +8,10 @@ from pathlib import Path
 
 REPORT_DIR = Path(os.getenv("REPORT_DIR", "report"))
 MIN_REWARD = Decimal(os.getenv("NEXUS_MIN_REWARD", "5"))
-PURCHASE_TERMS = ("purchase", "buy ", "shopping", "shop ", "pay for", "buy any", "buy the")
+PURCHASE_PATTERNS = (re.compile(r"\b(?:buy|purchase)\s+(?:the|a|an|any|one|your)\b"), re.compile(r"\b(?:must|required|requires|need)\s+(?:to\s+)?(?:buy|purchase)\b"), re.compile(r"\bshopping\s+(?:challenge|task|requirement)\b"), re.compile(r"\bpay\s+for\s+(?:the|a|an|any)\b"))
+
+def requires_purchase(text):
+    return any(pattern.search(text) for pattern in PURCHASE_PATTERNS)
 RESTRICTED_TERMS = ("first-timers only", "first timer only", "first-time participants only")
 
 def dec(value):
@@ -51,7 +54,7 @@ def evaluate(item):
     elif platform == "Taskmarket":
         if raw.get("stakeRequired") is True or int(raw.get("stakeBps") or 0) > 0:
             return "EXCLUDE_STAKE_REQUIRED", ["task requires a stake"]
-        if any(term in body for term in PURCHASE_TERMS):
+        if requires_purchase(body):
             return "EXCLUDE_PURCHASE_REQUIRED", ["task requires purchases or upfront spending"]
         if any(term in body for term in RESTRICTED_TERMS):
             return "DEFER_ELIGIBILITY", ["first-timer eligibility must be verified"]
