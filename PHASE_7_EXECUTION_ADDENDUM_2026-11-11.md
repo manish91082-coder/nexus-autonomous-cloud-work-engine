@@ -229,3 +229,10 @@
 - CI run created: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43076638980. At checkpoint it was still running; outcome and artifact checksum pending verification.
 - Source commit: `38c064bf3b0930f85fe98ebc497bc46df013583c`; workflow commit: `ab73ed315209ffa6751de4d666e127a76682fc6e`.
 - Buyer validation, proposal/outreach, paid pilot, sales and receipts remain absent. Verified gross/net receipts remain INR 0.
+
+
+## Travel Revenue Automation Demo — CI verification — 2026-11-11
+- Workflow run 43076638980 SUCCESS in 8 seconds; 7/7 unit tests and synthetic output assertions passed.
+- Artifact: `travel-revenue-demo`, 11.5 KB, SHA256 `315777b5c77841cdafb692715a8a97f892588b6db4188b0c1c8c887cb1553452`.
+- Run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43076638980
+- This is an offline synthetic demonstration only, not a live travel CRM or booking product.
