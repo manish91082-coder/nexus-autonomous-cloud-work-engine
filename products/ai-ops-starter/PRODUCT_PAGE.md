@@ -1,14 +1,16 @@
-# Zero-Cost AI Operations Starter Kit
+# Job-to-Cash Control Kit (working product direction)
 
-**Category:** Offline business operations toolkit  
+**Category:** Offline job-to-cash and follow-up control toolkit  
 **Format:** Downloadable ZIP (Python script, CSV templates, sample data, English + Hindi guide)  
 **Target users:** Consultants, freelancers, solo founders, small service businesses  
-**Core outcome:** Turn two simple CSV trackers into a daily action list for leads, follow-ups and overdue invoices.
+**Core outcome:** Join each job, estimate, invoice, receipt, balance due and next follow-up under one job ID, then produce a daily exception report. This is the intended next product direction, not yet fully implemented.
 
 ## Suggested launch offer (not a verified market price)
 - Free sampler: templates + quick-start guide
 - Paid complete kit: report generator + test suite + future template updates
-- Do not publish a price until comparable products and buyer demand are researched.
+- Public competition and community signals were reviewed on 2026-11-11. They show a recurring workflow problem but also strong free/low-price competition. No willingness-to-pay or sales demand is validated.
+- See DEMAND_AND_DIFFERENTIATION_AUDIT_2026-11-11.md.
+- Do not publish a price until user validation and payout eligibility are complete.
 
 ## Honest claims
 - Runs offline with Python standard library.
