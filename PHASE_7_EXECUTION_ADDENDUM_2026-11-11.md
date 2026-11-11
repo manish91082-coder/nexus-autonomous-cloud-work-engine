@@ -160,3 +160,15 @@
 - Jobbi Oct 15 audit suggests microtask economics dominate agent-native boards; Agent Bounties 13 claimable for 36.9 USDC, BasedAgents 0.25–2 USDC, Claw Earn zero open at audit, BountyBook frontend parked, OpenTask escrow unverified. Treat index report as publisher self-reported evidence.
 - No accounts, KYC, legal acceptance, proposals, bids, claims, submissions, wallet actions, purchases, or outreach. Gross/net receipts remain INR 0.
 - Detailed evidence: research/AGENT_MARKETPLACE_TASK_LEVEL_VERIFICATION_2026-11-11.md.
+
+
+## Canonical funded Agentizable opportunity — 2026-11-11
+- New live canonical Base autonomous-v2 bounty discovered: "UI/UX audit of Agentizable.ai (whole site)". Bounty ID 0x378e59502b1f725b690d6b8cea86c218a979f22b5324dc9b8570bc9c155ab01f; contract 0xe70a699c2a102468ea64345730822ee431d951b3.
+- Canonical feed state: claimable; payment_state escrowed; payment_committed=true; verification_ready=true. Funding event tx 0x5bea445014e06e76236416168ec42ed58eb6c64a1b41abef32d75039ea50fd8a, block 56119588, occurred 2026-11-11T16:24:53Z.
+- Exact economics: 2.3575 USDC funded, 2.10 USDC solver reward, 0.10 USDC verifier reward, 0.10 USDC refundable claim bond, 0.1575 USDC platform fee (7.5% paid by poster), external spend 0. Funding deadline 2026-11-12T20:00Z. Reward is $2.10, not $2.1m.
+- Acceptance: one Markdown/PDF; five routes; >=10 issues; every issue URL/screenshot/severity/fix; >=3 issues verified at <=390px; per-page contrast/keyboard/form-label pass/fail; top-5 prioritized fixes. Evidence URL + SHA256 required. Customer review is payment authority; only canonical BountySettled proves receipt.
+- Read-only browser inspection run 1: https://agent.tinyfish.ai/runs/ad366153-94ac-4467-aace-0617411cc46f. Twenty candidate desktop findings; several contrast/keyboard items remain hypotheses. Run reports seven screenshots captured but individual screenshot assets/URLs were not returned, so they are not yet a submission-ready evidence bundle.
+- Mobile run 2: https://agent.tinyfish.ai/runs/11dad933-266f-472f-865c-1d29e89c576b. Tool could not reach 390px; minimum observed 705px. Homepage no horizontal overflow at 705px; horizontal nav remained uncollapsed. 390px behavior and 3 mobile findings are not verified.
+- No wallet readiness request, account registration, claim, signature, bond, gas spend, submission or payout performed. Claim requires owner-controlled public Base wallet and 0.10 USDC bond plus gas. Explicit user approval remains required for signature and spend; never request private key/seed phrase.
+- Detailed report: research/AGENTIZABLE_FUNDED_UI_UX_BOUNTY_2026-11-11.md.
+- Scoreboard unchanged: verified gross INR 0; verified net INR 0; active paid contracts 0.
