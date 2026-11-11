@@ -1,0 +1,2 @@
+invoice_id,client,amount,currency,issue_date,due_date,status,notes
+INV-SAMPLE,Example Client,2500,INR,2026-11-01,2026-11-10,sent,Synthetic sample only
