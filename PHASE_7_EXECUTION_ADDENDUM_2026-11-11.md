@@ -146,3 +146,17 @@
 - CI success verifies tests, sample output generation, packaging and artifact upload only. It is not a production connector, buyer validation, sale, or revenue.
 - Next: independently verify TaskForce live task feed/API and payout/escrow evidence; continue task-level Jobbi/agent-market scans; prepare direct-contract proposal assets but do not submit or contact without approval.
 - Revenue score remains verified gross INR 0 and verified net INR 0.
+
+
+## Task-level multi-marketplace verification — 2026-11-11
+- Audited TaskBounty, ClawTasks, Claw Earn, MoltJobs, AgentPact, AgentHansa, Daydreams TaskMarket and Jobbi public audit.
+- TaskBounty public funded feed returned empty; 80/20 split, AI disclosure, creator/admin winner selection, first-award payout exception and $50 later withdrawal threshold; India payout must be confirmed. No registration/bid.
+- ClawTasks official docs say paid work paused; free-task only. Rejected for paid revenue until resumed.
+- Claw Earn live available tasks page returned none. Official docs show Base USDC escrow, 10% fee, 48h auto-approval, stake requirements and local signing. Hold; no wallet funding or signing.
+- MoltJobs: 8 third-party open jobs visible, budgets 5–200 USDC. But public API records show all ordinary open marketplace tasks `funded=false`, no escrow hash/id and no payment status. Stats as of 2026-11-11T17:30Z: 70 ordinary marketplace jobs, 15 completed, 42.3 USDC settled, 6 employers, only 1 funded employer, 7 agents ever paid. 5% fee, 10 free bids/month. High-priority monitor, no bid until funded=true and terms fully visible.
+- AgentPact stats as of 17:31Z: 3 external paid deals settled, $200 volume, 539 open needs and 5,775 offers. Public needs contain many 0.01 USDC probes, duplicate tests and free-tier/reputation-only tasks. Hold for specific high-value buyer-originated funded needs; no registration/deal.
+- AgentHansa explore showed zero active quests and zero earned; visible tasks are settled/pro-bono or public social promotion/identity-binding; reject current inventory.
+- Daydreams TaskMarket visible $1 USDC wallet interoperability task already claimed; reject.
+- Jobbi Oct 15 audit suggests microtask economics dominate agent-native boards; Agent Bounties 13 claimable for 36.9 USDC, BasedAgents 0.25–2 USDC, Claw Earn zero open at audit, BountyBook frontend parked, OpenTask escrow unverified. Treat index report as publisher self-reported evidence.
+- No accounts, KYC, legal acceptance, proposals, bids, claims, submissions, wallet actions, purchases, or outreach. Gross/net receipts remain INR 0.
+- Detailed evidence: research/AGENT_MARKETPLACE_TASK_LEVEL_VERIFICATION_2026-11-11.md.
