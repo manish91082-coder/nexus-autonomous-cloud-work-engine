@@ -31,15 +31,19 @@ def assess(item):
         reasons.append("below_50_usd_priority_floor")
     else:
         reasons.append("currency_not_comparable_without_verified_fx")
-    # Funding proof must be task-specific and stronger than a tx reference.
-    receipt = item.get("receipt_verification") or raw.get("_receipt_verification") or {}
-    receipt_ok = (isinstance(receipt, dict) and receipt.get("status") == "SUCCESS_RECEIPT"
-                  and receipt.get("deposit_transfer_covers_listed_reward") is True)
+    # Contract-level pool deposits and transaction references do not prove task-specific funding.
+    task_escrow = raw.get("taskEscrow") if isinstance(raw.get("taskEscrow"), dict) else {}
+    allocation = dec(task_escrow.get("allocatedAmount"))
+    escrow_task_id = str(task_escrow.get("taskId") or "")
+    task_id = str(item.get("task_id") or "")
+    task_escrow_ok = (task_escrow.get("status") == "funded" and escrow_task_id == task_id
+                      and allocation is not None and reward is not None and allocation >= reward)
     explicit = str(item.get("funded_or_escrow_status") or "").upper()
-    funding_ok = receipt_ok or explicit in ("FUNDED_AND_VERIFIED", "ESCROW_FUNDED_VERIFIED")
+    explicit_proof = raw.get("taskFundingVerified") is True and bool(raw.get("taskFundingEvidenceRef"))
+    funding_ok = task_escrow_ok or explicit_proof or explicit in ("FUNDED_AND_VERIFIED", "ESCROW_FUNDED_VERIFIED")
     if funding_ok:
         score += 25
-        reasons.append("task_level_funding_evidence_present")
+        reasons.append("task_specific_funding_evidence_present")
     else:
         blockers.append("task_specific_funding_not_verified_pool_deposit_or_tx_reference_is_insufficient")
     # Explicit AI/agent permission only. Unknown is a hard review gate.
