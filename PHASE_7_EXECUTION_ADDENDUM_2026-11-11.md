@@ -87,3 +87,13 @@
 - README formatting correction committed in `243a919e01269c179318464a096b06eec92db303`.
 - Research checkpoint file committed in `00b7755a2ee131c95bac8ecb4f21f7c476900bb3`; addendum update commit `247d68eebe6e4cce67917eb7394ca2b202f21c66`.
 - Income remains ₹0 verified; no outreach or customer-facing activity occurred.
+
+## ₹10 Cr revenue strategy reset — 2026-11-11
+- User reaffirmed the only north star is ₹10 crore. Payment denomination is flexible (bank, UPI, USD, stablecoins/crypto wallet), subject to actual control, withdrawal, lawful eligibility, fees and net reconciliation.
+- Strategy file added: strategy/10CR_REVENUE_ENGINE_OPERATING_STRATEGY_V1_2026-11-11.md; commit 17d37553df424736668855b89081ae1c301257ae.
+- BasedAgents official skill v1.3.9 says bounty claims require verified wallet on task network and 1 USDC refundable bond slot per concurrent bounty claim; expired/disputed bounty claims can slash bond. Registration requires keypair custody. No registration, wallet signing or bond performed.
+- Live BasedAgents GET /v1/tasks?status=open&min_usdc=5 returned tasks=[]; category=code with min_usdc=1 also returned tasks=[]. Unfiltered feed only showed free reputation tasks and a conditional 0.25 USDC task requiring a real external deployment plus 0.50 USDC genuine revenue across two UTC days. Not selected.
+- Jobbi live feed at 2026-11-11T16:00:14.997Z contained old high-dollar GitHub issues with escrow as indexed, but several have substantial comments/competition and human maintainer merge acceptance. Old issue creation dates plus recently modified metadata are not freshness evidence. No work claimed.
+- Artisan public site describes 95% USDG credit after acceptance/72h silence, 5% fee and Orbio CREDIT inference cost. India withdrawal route, current open jobs and net economics not verified. Read-only audit pending; no bid or credit purchase.
+- India AI training tracker reports 21 platforms / 629 roles open to India, but these are human contractor roles, not fully autonomous agent income. They remain optional fallback, not core automated strategy.
+- No paid task accepted, no wallet/registration/KYC/legal action, no bid or external submission. Verified realized revenue remains ₹0.
