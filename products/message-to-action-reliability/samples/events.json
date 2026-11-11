@@ -1,0 +1,7 @@
+[
+  {"event_id":"evt-001","source":"email_sample","text":"Interested in a demo and pricing for your service."},
+  {"event_id":"evt-002","source":"whatsapp_sample","text":"Urgent: our system is broken and not working today."},
+  {"event_id":"evt-003","source":"email_sample","text":"I was charged twice, please investigate the payment."},
+  {"event_id":"evt-004","source":"webform_sample","text":"Can you send a quote for 12 seats?"},
+  {"event_id":"evt-004","source":"webform_sample","text":"Can you send a quote for 12 seats?"}
+]
