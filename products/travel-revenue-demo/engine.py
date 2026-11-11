@@ -79,6 +79,6 @@ def main():
     p.add_argument("--owners",required=True);p.add_argument("--out",default="travel-demo.json")
     a=p.parse_args()
     result=build_demo(load_csv(a.leads),load_csv(a.packages),json.loads(Path(a.owners).read_text()))
-    Path(a.out).write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+    Path(a.out).write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print("demo_written="+a.out)
 if __name__=="__main__": main()
