@@ -35,3 +35,12 @@ Research customer-side evidence for solar/RO/AC/CCTV/electrical service operator
 
 ## Revenue state
 Verified realized revenue remains ₹0. The product build artifact is not a sale or payment.
+
+
+## Additional customer-workflow evidence — solar O&M (11 Nov 2026)
+- Public procurement specifications from Oil India describe monthly preventive maintenance, detailed maintenance/health reports, and quarterly invoices submitted with those reports; one tender states invoices without accompanying reports will not be entertained. Source: https://www.oil-india.com/files/oldtender/national/NIT_SJI8084P19.pdf
+- A separate Oil India specification describes monthly maintenance reporting and quarterly billing, reinforcing that evidence packs are part of the contractor's billing workflow. Source: https://www.oil-india.com/files/oldtender/national/NIT_SDI5233P18.pdf
+- An ISRO e-procurement annexure specifies breakdown response, qualified personnel, and monthly reports of generation, preventive/breakdown maintenance and downtime. Source: https://eproc.isro.gov.in/common/viewDocument?id=ff8081819a713e5f019ae36b69097761&indentId=SH2025000200
+- These are real procurement requirements for particular contracts, not proof that all small rooftop EPCs face the same requirement or will pay for software.
+- Stronger narrow hypothesis: a **solar O&M evidence-pack assistant** that turns technician voice notes, photos, meter readings and checklist selections into a human-reviewed visit report, exception list and invoice-supporting monthly pack. It should export PDF/CSV and attach source evidence; it must never invent readings, work completed, technician qualifications, sign-offs or generation figures.
+- This wedge is narrower than a CRM/FSM and ties directly to report-backed billing requirements. Still not validated for SMB willingness to pay. Before implementation, collect 10+ independent contractor-side examples, identify a reachable buyer segment, and test willingness to pay. No public outreach yet.
