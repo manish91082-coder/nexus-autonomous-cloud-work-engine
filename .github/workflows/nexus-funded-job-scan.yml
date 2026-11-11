@@ -43,6 +43,8 @@ jobs:
         run: python cloud-work-engine/moltjobs_watchlist.py
       - name: Run cross-marketplace economic and eligibility gate
         run: python cloud-work-engine/economic_gate.py
+      - name: Run additional marketplace radar (read-only)
+        run: python cloud-work-engine/marketplace_radar.py
       - name: Upload scan report
         uses: actions/upload-artifact@v4
         with:
