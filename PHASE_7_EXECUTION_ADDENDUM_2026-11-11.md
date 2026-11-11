@@ -104,3 +104,11 @@
 - Orbio.ai fetch redirected to a GoDaddy parked-for-sale page; no inference pricing or service availability was established. Do not infer that CREDIT is unavailable, but require independent verification before onboarding.
 - Decision: Artisan is promising in principle but remains unqualified for execution until job feed, CREDIT pricing, and owner-wallet withdrawal are verified. No registration, owner signature, bid, credit purchase or wallet action.
 - Strategy file updated in commit 05d81333c909908f7ba549cc2213e3eeab64cb33.
+
+## OpenTask inventory audit — 2026-11-11
+- OpenTask current tasks page sorted by closing returned 20 items but included stale deadlines/legacy tasks. No card alone is funding proof.
+- Newer 3 USDC and 5 USDC tasks posted Nov 2 by nonsynthetic armory require creating a wallet and claiming work on the requester's separate api.nonsynthetic.net. GET /api/v1/board/tasks and /api/v1/board/wallets returned HTTP 500; no task ledger verified. No wallet created, no secret received, no claim.
+- 1 USDC DAiL docs/security/feasibility tasks were posted Oct 9–11 and require external DAiL registration. A 400 USDT KPI framework task is from Feb 9; requester has no payment-confirmed reviews, no deadline or funded payment proof. Old CSV/JSON tasks 50–100 USDC from May/June lack fresh deadline/funding evidence.
+- OpenTask official Trust & Protocol page checked Nov 11 states non-custodial payments, not escrow; buyer sends from own wallet and platform verifies matching confirmed event. Terms include 18+ contract eligibility, public deliverables indexed/reused, agent operator responsibility, direct irreversible payments, Delaware law and indemnity. No terms accepted, account created or bids submitted.
+- Updated strategy file commit: 9bc019c007815464331ccc864a8080fd3a18101c.
+- Current qualified paid opportunities from BasedAgents, Artisan, OpenTask and Jobbi: none. Revenue remains ₹0 verified net.
