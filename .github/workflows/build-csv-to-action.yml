@@ -27,7 +27,7 @@ jobs:
         run: |
           mkdir -p dist
           cd products/csv-to-action
-          zip -r ../../dist/csv-to-action-mvp.zip index.html csv_engine.js
+          zip -r ../../dist/csv-to-action-mvp.zip index.html csv_engine.js sample.csv README.md README_HI.md LICENSE
           cd ../..
           sha256sum dist/csv-to-action-mvp.zip > dist/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
