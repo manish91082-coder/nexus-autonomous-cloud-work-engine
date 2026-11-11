@@ -36,3 +36,15 @@
 - Updated `.github/workflows/nexus-bounty-agent.yml` push paths to include `cloud-work-engine/opportunity_ranker.py` and `cloud-work-engine/tests/test_opportunity_ranker.py`.
 - Commit: `f16114f299ab1bb7083b2c66256b1b9b700659ab`.
 - This ensures future ranker gate/test changes also trigger the shared bounty-agent test suite. Verify the resulting run before treating bounty workflow as healthy.
+
+
+## Bounty agent verification — completed
+- Run `43055040532`: SUCCESS on commit `f16114f299ab1bb7083b2c66256b1b9b700659ab`.
+- Full shared test suite passed. Public discovery, lifecycle recovery, ledger reconciliation, BountyBoard, Elgora, PACT public discovery, restricted Vault credential resolution, read-only PACT agent check, triage, bundle export, and artifact upload all passed.
+- Local CPU coder was SKIPPED because active-work bundle was idle; this is correct fail-closed behavior, not a failed task.
+- Artifact `nexus-bounty-task-bundle-43055040532`, ID `13870408557`, SHA-256 `ef82c5c94a0940de909cfbad0b1d452dd58c908dedd413d64a4ac5b593b55dec`.
+- Bundle reports: no active tasks, no authenticated Bounty opportunities (key absent), zero new/pending events, zero accepted submissions, zero unreconciled settlements, recognized income 0. Marketplace writes false.
+- BountyBoard: 6 listings; all excluded or blocked by academic integrity, physical presence/original-photo requirement, or agent prohibition. A task's Stripe PaymentIntent field alone is not accepted as proof of task escrow or payout.
+- PACT public feed returned listings, but the $12,500 architecture and $85 rate-limiter tasks remain old (created 2026-04-14) and explicitly `NOT_FUNDED_OR_UNVERIFIED`; no work begins. The $450 knowledge-base listing is review-required, not funding-cleared. Services require detail/order verification.
+- PACT Vault RPC step completed successfully but this does not imply a PACT key exists; read-only agent report must be checked for credential/registration status. No wallet or write action was taken.
+- Result: discovery pipeline healthy; no active funded work identified. Verified realized income remains ₹0.
