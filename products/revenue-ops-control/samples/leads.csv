@@ -1,0 +1,4 @@
+lead_id,company,email,phone,status,next_follow_up,owner
+L-1001,Sample Solar,hello@example.test,+910000000001,qualified,2026-11-10,Sales A
+L-1002,Sample Solar Duplicate,HELLO@example.test,,new,2026-11-12,Sales B
+L-1003,Sample ERP,erp@example.test,+910000000003,contacted,2026-11-11,Sales A
