@@ -91,7 +91,7 @@
     totals.mixedCurrencies=currencySet.size>1;totals.currencyLabels=[...currencySet];
     return {map,results,totals,today:now};
   }
-  function csvEscape(v){const s=String(v??"");return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
+  function csvEscape(v){let s=String(v??"");if(/^[\s]*[=+@]/.test(s)||/^[\s]*-/.test(s))s="'"+s;return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
   function toCSV(headers,rows){return [headers.map(csvEscape).join(","),...rows.map(r=>headers.map(h=>csvEscape(r[h])).join(","))].join("\r\n")+"\r\n";}
   const api={REQUIRED,parseCSV,mapColumns,analyze,toCSV};
   if(typeof module!=="undefined"&&module.exports)module.exports=api;
