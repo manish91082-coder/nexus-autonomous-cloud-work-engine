@@ -126,3 +126,13 @@ The travel CRM optimization listing remains the only relatively low-competition 
 - Strategic route: investigate qualified prime contractors and permitted subcontracting; continue direct B2B recurring buyer research in parallel so slow procurement does not monopolize execution.
 - Report: research/PHASE_14_INSTITUTIONAL_PROCUREMENT_AUDIT_2026-11-12.md; commit d09b2e9bf396584c53b706485e32087b7f691d87.
 - No bid, partner outreach, registration, fee, EMD, KYC, terms acceptance or signature. Gross receipts ₹0; net receipts ₹0; paid contracts/pilots 0.
+
+
+## Phase 15 — Tender eligibility audit and deadline correction (2026-11-12)
+- Critical correction: Phase 14's NeGD/DIC AI-enabled software partner deadline was incorrectly reported as 17 Nov. The tender record displays 02-Nov-2026 18:00; as of 12 Nov it is CLOSED. This correction supersedes the earlier deadline statement.
+- NeGD tender ID 2026_DIT_929901_1, EMD ₹5 lakh (exemption allowed, not established), tender fee ₹0, empanelment; closed 2 Nov 2026.
+- C-DAC AI Compute ASP RFE C-DAC/GPU/01/2026, tender ID 2026_DIT_929273_1, closed 29 Oct 2026. RFE requires at least 512 AICUs per cluster at one data centre, end-to-end provider responsibility, and explicitly prohibits subcontracting/outsourcing AI compute services; incompatible with current zero-capital cloud-first model. No-go.
+- NICSI website/mobile app empanelment tender 2026_NICSI_296009_1 remains open: deadline 30-Nov-2026 15:00; EMD ₹25 lakh, exemption allowed but project eligibility unverified; fee ₹0 with no fee exemption; empanelment, work period 365 days, tender value ₹0. Full RFE eligibility, financial/experience thresholds, JV/subcontracting permission, payment terms and work allocation remain unverified. Not qualified; no bid.
+- Tender research is selective pipeline only, not near-term cash engine. Prioritize direct paid contracts and qualified partner delivery where permitted in writing.
+- Detailed report: research/PHASE_15_TENDER_ELIGIBILITY_AUDIT_2026-11-12.md; commit ee554fe0faa8b1a005c76b30bfe73a1016eaf96b.
+- No bids, outreach, registration, EMD, fee, KYC, terms acceptance or signatures. Receipts remain ₹0 gross / ₹0 net.
