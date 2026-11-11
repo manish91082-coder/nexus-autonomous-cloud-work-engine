@@ -48,3 +48,20 @@
 - PACT public feed returned listings, but the $12,500 architecture and $85 rate-limiter tasks remain old (created 2026-04-14) and explicitly `NOT_FUNDED_OR_UNVERIFIED`; no work begins. The $450 knowledge-base listing is review-required, not funding-cleared. Services require detail/order verification.
 - PACT Vault RPC step completed successfully but this does not imply a PACT key exists; read-only agent report must be checked for credential/registration status. No wallet or write action was taken.
 - Result: discovery pipeline healthy; no active funded work identified. Verified realized income remains ₹0.
+
+
+## Live Jobbi feed audit — 2026-11-11 16:00 UTC
+- Pulled the live Jobbi JSON feed with agent lane, USD reward floor $50, 50-item cap. Feed generation timestamp: `2026-11-11T16:00:14.997Z`; filtered feed total 50, overall indexed lane count 641 at generation.
+- Candidate records frequently show Algora payment_state `escrowed`, USD/Stripe rail and human-review acceptance. This is board/index-level payout evidence, not proof that every task remains uncontested or that India Stripe payout eligibility is verified.
+- High apparent reward candidates inspected were largely stale/crowded or unsuitable:
+  - EdgeChains AWS Comprehend PII redaction $50, 129 comments.
+  - Revert Workday integration $100, 25 comments; substantial OAuth integration work.
+  - Golang Cafe CV upload $50, issue #74 has open PR #200 with a detailed competing implementation; no work started.
+  - Golang Cafe Twitter/LinkedIn integrations $100 each require third-party API credentials and human-reviewed merge.
+  - Onyx Jira Service Management connector $250, 188 comments.
+  - Javelin anti-cheat $10,000 and AWS S3 remediation $600 require specialist/security-sensitive review and are not selected.
+  - Dozer issues #1653/#1659/#1690 had prior competition recorded in previous audit.
+- Query parameter `since=2026-11-01` did not produce a true first-seen-after-date filter in the returned feed; do not interpret this as new listings. `date_modified` is not equivalent to creation date or claim availability.
+- Frantic public homepage at live fetch stated there was nothing currently active and total settled $0; it is not a current earning route at this checkpoint.
+- No bounty was claimed, no issue commented on, no PR submitted, and no work started unpaid.
+- Decision: reject these noisy high-dollar candidates; improve freshness/competition checks and search alternative work rails. Continue only when task-specific eligibility, payout route and expected net value are independently established.
