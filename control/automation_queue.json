@@ -1157,7 +1157,45 @@
         "job_conclusion": "success",
         "test_command": "python3 -m unittest discover -s tests -p 'test_recruitment_revenue_assurance.py' -v",
         "test_result": "7 tests passed; test_untrusted_text_is_html_escaped ... ok; unittest output OK",
-        "verified_at": "2026-11-12T11:31:58Z"
+        "verified_at": "2026-11-12T11:31:58Z",
+        "supplemental_latest_head_validation": {
+          "verified_head": "3c05f3beb296ef0c134e418eb94dee0a04845bfb",
+          "commit_url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/commit/3c05f3beb296ef0c134e418eb94dee0a04845bfb",
+          "worker": {
+            "run_number": 122,
+            "run_id": 43268975394,
+            "conclusion": "success",
+            "job_id": 131360070417,
+            "counts": {
+              "ai_worker_safety": 2,
+              "msme_product_smoke": 3,
+              "recruitment_product": 7
+            },
+            "recruitment_regression": "test_untrusted_text_is_html_escaped ... ok"
+          },
+          "packaging": {
+            "run_number": 34,
+            "run_id": 43268975392,
+            "conclusion": "success",
+            "job_id": 131360070701,
+            "product_zip_sha256": "645dbd226c8f4802fc073a2a85fdcc449b08e8b317642652ae5b4ff9d218a405",
+            "artifact_id": 13966678659,
+            "artifact_digest": "sha256:805ba6aef321faf9ce2bdaab0656e98da02126c7c5c64330e7b1bdadc371727f",
+            "artifact_size_bytes": 17181
+          },
+          "browser_qa": {
+            "run_number": 28,
+            "run_id": 43268975664,
+            "conclusion": "success",
+            "job_id": 131360072024,
+            "browsers": [
+              "Chromium",
+              "Firefox"
+            ],
+            "result": "BROWSER_QA_PASS chromium+firefox"
+          },
+          "verified_at": "2026-11-12T17:25:46Z"
+        }
       }
     },
     {
