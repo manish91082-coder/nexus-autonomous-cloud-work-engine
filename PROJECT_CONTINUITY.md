@@ -979,3 +979,12 @@ Require named buyer and live portfolio, explicit subcontract permission, written
   - `.github/workflows/nexus-jobbi-gigs.yml` current blob SHA `ac11c8108420623bd5a7e8d0167dd140c92041d5`
 - This pauses future automated recurring scans and push-triggered runs; it does not delete their source or historical artifacts and does not cancel any already-running GitHub Actions run.
 - Next: Phase 29 governance/control-plane implementation and active-workflow audit, followed by a fresh revenue-source ranking. Do not continue product feature work until its next gate is documented.
+
+
+### Cross-thread governance clarification
+- If the user resumes the same mission in Project NCR1, NCR2 or NCR3 ChatGPT threads, all three are working sessions under one project constitution, not independent plans.
+- Canonical repository: `manish91082-coder/nexus-autonomous-cloud-work-engine`.
+- Canonical plan: `MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V2.md`.
+- Verified tree snapshot at master HEAD `0048f2944c0ffa2b6c2ed04723e8f004905b3eba`: 169 entries, recursive tree not truncated. The earlier 166-entry count was the pre-governance baseline; three governance files explain the increase.
+- The separate original source repository `manish91082-coder/ai-content-system` is referenced by legacy documents. It was not modified and is not the canonical working repository for the current strategy.
+- Phase 29 begins with shared control-plane/registry/ledger and final repository active-vs-archive labeling, then fresh revenue-source ranking. No new product build before an opportunity passes the master gates.
