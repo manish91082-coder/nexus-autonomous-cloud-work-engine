@@ -1309,3 +1309,10 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - P42-004 active: prepare private problem-validation pack with 5–8 small agency owners, synthetic-data tasks and explicit kill criteria. No cold outreach or public publication by assistant.
 - Revenue channels: Getvik primary, Topmate secondary, Payhip+Razorpay backup; account/KYC/legal/payout gates remain owner-controlled.
 - Finance: verified realized net receipts INR 0; authorized spend INR 0.
+
+
+## Phase 42 demand experiment packet ready — 2026-11-12
+- P42-004 completed: [Private Demand Validation Pack](products/recruitment-agency-revenue-assurance/PRIVATE_DEMAND_VALIDATION_PACK.md) prepared for 5–8 small recruitment agencies. Includes neutral workflow interview, synthetic-data task script, scorecard, privacy safeguards and predeclared stop/reposition/continue thresholds.
+- P42-005 is BLOCKED only on real owner-arranged opt-in participants. No participants contacted, no sessions performed and no willingness-to-pay evidence exists. Assistant must not fabricate user evidence or perform unsolicited outreach.
+- Product remains PRIVATE_VALIDATION_HOLD. Do not add features or publish before the validation result.
+- Finance: realized net receipts INR 0; authorized spend INR 0.
