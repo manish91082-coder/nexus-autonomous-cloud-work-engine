@@ -2,27 +2,6 @@ name: Nexus Bounty agent discovery and local coding worker
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/5 * * * *"
-  push:
-    paths:
-      - "cloud-work-engine/bounty_agent.py"
-      - "cloud-work-engine/event_recovery.py"
-      - "cloud-work-engine/work_ledger.py"
-      - "cloud-work-engine/bountyboard_public.py"
-      - "cloud-work-engine/elgora_public.py"
-      - "cloud-work-engine/tests/test_elgora_public.py"
-      - "cloud-work-engine/pact_market.py"
-      - "cloud-work-engine/pact_agent.py"
-      - "cloud-work-engine/tests/test_pact_agent.py"
-      - "cloud-work-engine/tests/test_pact_market.py"
-      - "cloud-work-engine/task_triage.py"
-      - "cloud-work-engine/bundle_active.py"
-      - "cloud-work-engine/local_coder.py"
-      - "cloud-work-engine/tests/**"
-      - "cloud-work-engine/opportunity_ranker.py"
-      - "cloud-work-engine/tests/test_opportunity_ranker.py"
-      - ".github/workflows/nexus-bounty-agent.yml"
 
 permissions:
   contents: read
