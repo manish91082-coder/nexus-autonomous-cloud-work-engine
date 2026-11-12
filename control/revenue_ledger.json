@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "currency": "INR",
+  "verified_realized_net_receipts_inr": 0,
+  "entries": [],
+  "rules": [
+    "Pending balances are not receipts",
+    "Fiat counts only after settlement",
+    "Unconverted crypto is separately reported until controlled and independently valued",
+    "Never count receipt and conversion twice",
+    "Subtract fees refunds reversals and attributable costs"
+  ],
+  "updated_at": "2026-11-12"
+}
