@@ -10,7 +10,8 @@ VERSION = "0.2.0"
 INCLUDED = [
     "index.html",
     "README.md",
-    "USER_GUIDE_HI.md",\n    "CUSTOMER_FAQ_HI.md",
+    "USER_GUIDE_HI.md",
+    "CUSTOMER_FAQ_HI.md",
 ]
 PACKAGE_NOTE = """Recruitment Agency Revenue Assurance Desk v0.2.0
 
@@ -34,7 +35,7 @@ def main():
     manifest = {
         "product": "Recruitment Agency Revenue Assurance Desk",
         "version": VERSION,
-        "included_files": INCLUDED + ["PACKAGE_README.txt"],
+        "included_files": INCLUDED + ["PACKAGE_README.txt", "PACKAGE_MANIFEST.json"],
         "distribution_status": "PRIVATE_DRAFT_NOT_FOR_PUBLICATION",
         "sha256": {},
     }
