@@ -202,6 +202,91 @@
         "network fees"
       ],
       "note": "No token speculation, airdrop farming or compliance evasion."
+    },
+    {
+      "id": "ITCH-IO-COLLECTED-PAYOUTS",
+      "category": "interactive_software_digital_goods",
+      "platform": "itch.io",
+      "tier": "P0",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "partial payout evidence",
+      "payout_evidence": {
+        "minimum": "USD 5",
+        "transaction_wait": "7 days",
+        "payout_review": "minimum 7 days; typically 10-14 days",
+        "methods": "PayPal or Payoneer",
+        "source": "https://itch.io/docs/creators/payments"
+      },
+      "automation_fit": "high",
+      "unknowns": [
+        "India Payoneer eligibility",
+        "account-specific onboarding",
+        "buyer demand and platform discoverability"
+      ]
+    },
+    {
+      "id": "ETSY-INDIA-DIGITAL",
+      "category": "digital_goods_marketplace",
+      "platform": "Etsy India",
+      "tier": "REJECTED_ZERO_COST_GATE",
+      "status": "REJECTED",
+      "score": null,
+      "score_confidence": "official India setup requirements",
+      "payout_evidence": {
+        "one_time_setup_fee": "USD 10",
+        "requirements": "GSTIN and Payoneer",
+        "sales_scope": "international only; Indian buyers cannot purchase digital items from Indian shops",
+        "processing_fee": "5% + INR 25",
+        "source": "https://help.etsy.com/hc/en-in/articles/6742925359255-How-to-Accept-Payments-as-a-Seller-in-India"
+      },
+      "automation_fit": "high",
+      "unknowns": [
+        "No further validation until spending is approved"
+      ],
+      "note": "Fails ₹0 upfront hard gate; do not onboard or pay."
+    },
+    {
+      "id": "YOUTUBE-PARTNER-MONETIZATION",
+      "category": "audience_platform_monetization",
+      "platform": "YouTube Partner Program",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "partial payout evidence",
+      "payout_evidence": {
+        "requirements": "YPP plus identity/address/tax/payment thresholds",
+        "schedule": "monthly, typically 21st-26th if threshold and holds cleared",
+        "source": "https://support.google.com/youtube/answer/14727140?hl=en"
+      },
+      "automation_fit": "medium_high",
+      "unknowns": [
+        "YPP eligibility thresholds and account-specific status",
+        "audience growth and retention",
+        "content policy and monetization eligibility"
+      ]
+    },
+    {
+      "id": "APPLE-APP-STORE",
+      "category": "software_distribution",
+      "platform": "Apple App Store",
+      "tier": "HOLD_ZERO_COST_GATE",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "partial payout evidence",
+      "payout_evidence": {
+        "requirements": "Paid Apps Agreement, bank details, monthly threshold, invoicing",
+        "schedule": "within 45 days of fiscal month-end",
+        "source": "https://developer.apple.com/help/app-store-connect/getting-paid/overview-of-receiving-payments"
+      },
+      "automation_fit": "high",
+      "unknowns": [
+        "India developer fees",
+        "merchant eligibility",
+        "tax/invoicing requirements",
+        "app review and distribution economics"
+      ],
+      "note": "Do not activate if mandatory paid developer membership violates ₹0 spend."
     }
   ],
   "required_evidence": [
