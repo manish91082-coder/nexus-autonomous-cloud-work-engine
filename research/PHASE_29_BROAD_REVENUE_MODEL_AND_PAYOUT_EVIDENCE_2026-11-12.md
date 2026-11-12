@@ -59,3 +59,18 @@ The universe is expanded: one-time owner setup is permitted; recurring human lab
 ## Limitations
 
 This scan does not establish that an account is approved, a specific payment provider will onboard this user, any product will sell, or any platform will accept AI-generated material. All terms must be rechecked immediately before onboarding or publication. No income projection is made.
+
+
+## Additional verified candidates (second evidence batch)
+
+| Candidate | Official evidence | Decision |
+|---|---|---|
+| itch.io creator payouts | Collected-by-itch.io payouts allow PayPal/Payoneer; USD 5 minimum; transaction funds normally wait 7 days; payout request has at least 7 days review and typically 10–14 days processing. https://itch.io/docs/creators/payments | P0 validation candidate, but India-specific Payoneer onboarding and account eligibility must be confirmed. |
+| Etsy India digital goods | India shops may open, but require a one-time USD 10 setup fee, GSTIN, Payoneer; new Indian shops sell internationally only and digital products cannot be bought from India; processing fee 5% + ₹25. https://help.etsy.com/hc/en-in/articles/6742925359255-How-to-Accept-Payments-as-a-Seller-in-India | Fails ₹0 upfront gate unless the user explicitly approves the fee; do not activate now. |
+| YouTube platform monetisation | Requires YPP and identity/address/tax/payment-method thresholds; payment threshold varies by currency. Finalised earnings are paid on a monthly cycle, typically by 21st–26th if thresholds and holds are clear. https://support.google.com/youtube/answer/14727140?hl=en and https://support.google.com/youtube/answer/14728151?hl=en | P2 audience compounding; not quick cash because eligibility and audience thresholds precede payout. |
+| Apple App Store | Paid Apps Agreement, bank details, monthly threshold and invoicing requirements are mandatory; proceeds are paid within 45 days of fiscal month-end when conditions are met. https://developer.apple.com/help/app-store-connect/getting-paid/overview-of-receiving-payments | HOLD/likely fails zero-upfront default due Apple Developer Program fee; verify exact India account fees before any future reconsideration. |
+
+### Important exclusion surfaced by research
+Etsy India is not a zero-cost-first pilot: its official India seller instructions require a USD 10 one-time shop setup fee and GSTIN. This is a hard-gate failure under the current ₹0 spend rule unless explicit spending approval is later granted. We will not silently incur it.
+
+The expanded list now covers 12 specific platform candidates across digital publishing, downloadable goods, stock licensing, creator marketplaces, affiliate, HTML5 games, developer assets, app stores, audience monetisation, and direct-wallet licensing. The requirement for a broader 25+ opportunity sweep remains open.
