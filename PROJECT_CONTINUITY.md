@@ -1077,3 +1077,11 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Commits: executor `22a9d66099e9e81d4cf4d61d9ad46d41efc0c022`; tests `801f79b8f9a2e7340226fa625cbffd0b17378929`; setup `91a0421666014bb6716b4baa5d40b1db489458e2`; workflow `35031d4aadcd34ab9dd2afd2a0ad9b19602eae2f`; state `9926b900f1dc682ad53a333a81e7339d18d76b07`; queue `612e5d210e9ebec4b29520abd9899f69b541c916`; report `f6b7702b28c78dbf4646413e77f0ffc82b3e4454`.
 - Not yet proven: scheduled cron execution after this change, provider-backed inference, productive task completion, crash recovery, or 24-hour soak. This is a bounded recurring worker architecture, not yet a certified 24×7 autonomous AI operator.
 - Next: inspect the Actions run triggered by the workflow update; fix any test/CI failures; owner reviews `AI_WORKER_SETUP.md` and configures secrets only after verifying zero-billing eligibility; then run provider-backed test and 24-hour soak. Continue P29-004 revenue-source research in parallel through the daily supervisor.
+
+
+### Phase 30 first integrated worker CI verification
+- Integrated run: [43149321969](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43149321969), event `push`, conclusion SUCCESS, 2026-11-12 03:36:17–03:36:29 UTC.
+- Job `bounded-worker`: mission guard PASS (13 checks, 0 errors); new worker safety tests 2/2 PASS; deterministic queue heartbeat PASS; AI adapter step PASS; artifact uploaded (ID `13912718947`, SHA-256 `ca81f6309ead5e63435ba5efc5d9a75228d9b42d9619e6a3e5e3efbf98fae35c`, retained until 2026-11-26).
+- Crucial runtime proof: all five provider-related environment variables were empty. AI worker returned `WAITING_FOR_OWNER_CONFIGURATION`; daily calls used 0; no inference request was made. This validates fail-closed behavior only, not productive AI execution.
+- A later push-triggered run `43149438347` on state commit `c9eadd37cfcb6566ff3d9a127a69288deaf2a90c` was in progress at the latest poll; its conclusion is not yet verified.
+- Scheduled cron run is still unverified; the observed successful integrated run was push-triggered.
