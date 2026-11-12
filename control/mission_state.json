@@ -10,8 +10,8 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 2,
   "execution_mode": "FIVE_MINUTE_GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED; CHATGPT_SUPERVISOR_AND_REPOSITORY_EXECUTION; REVENUE_FIRST_PRODUCT_BUILD",
-  "last_verified_head": "e6ec97ee38896f951424214ed12f0ef8aac7d1a5",
-  "current_focus": "P43-001..007 complete. P43-008 active: compare India payout rails for creator support. Preliminary: GitHub Sponsors India-supported, 0% personal fee, first payout 60 days; Buy Me a Coffee India via Stripe Express, 5% + processor fees, $10 first payout review; Patreon 10% + processing and account-specific India payout; Ko-fi direct but PayPal India international-only and full Stripe Connect required. No accounts/KYC/terms accepted. CSV to Action private adoption plan ready; public release owner-gated. Receipts INR 0; spend INR 0; AI provider unconfigured.",
+  "last_verified_head": "32323d0ed7f820aaeaa041045940b19288624bb5",
+  "current_focus": "P43-001..009 complete. P43-009 completed: multi-rail activation sequence prepared. P43-010 BLOCKED: owner approval required for standalone public release of CSV to Action under MIT; no repo creation or publication without approval. GitHub Sponsors/BMC/Patreon setup remains separate KYC/tax/bank/terms gate. P42-005 real agency validation and Orbit Relay human playtest also require owner-arranged participants. Receipts INR 0; spend INR 0; AI provider unconfigured.",
   "owner_gates": [
     "KYC",
     "tax_declarations",

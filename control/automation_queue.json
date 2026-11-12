@@ -1045,6 +1045,43 @@
           "https://www.paypal.com/in/cshelp/article/can-i-use-paypal-to-receive-payments-from-indian-customers-help1049"
         ]
       }
+    },
+    {
+      "id": "P43-009",
+      "title": "Prepare consolidated multi-rail revenue activation sequence with owner gates",
+      "priority": "P0",
+      "status": "COMPLETED",
+      "depends_on": [
+        "P43-008"
+      ],
+      "idempotency_key": "phase43-revenue-rail-activation-sequence-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-12",
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "plan": "strategy/REVENUE_RAIL_ACTIVATION_SEQUENCE_PRIVATE_2026-11-12.md",
+        "decision": "Domestic product sales, OSS sponsorship, international support, memberships, publishing and marketplace subscriptions separated; activation gated by demand, payout and owner approval"
+      }
+    },
+    {
+      "id": "P43-010",
+      "title": "Owner approval for standalone public release of CSV to Action as an MIT open-source project",
+      "priority": "P0",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P43-006",
+        "P43-007"
+      ],
+      "idempotency_key": "phase43-csv-to-action-public-release-owner-gate-v1",
+      "owner_gate": true,
+      "last_updated": "2026-11-12",
+      "blocker": "Public release/standalone repository creation and explicit confirmation of copyright/license ownership require owner approval. No repo creation, publication, sponsor account setup, KYC or terms acceptance will be performed without approval.",
+      "acceptance": [
+        "Owner explicitly approves standalone public repository and MIT license scope",
+        "Owner confirms copyright holder/attribution and project name",
+        "After approval, create repository and publish tested source package with security/contact docs",
+        "Keep GitHub Sponsors and Buy Me a Coffee profile setup as separate later owner gates"
+      ]
     }
   ],
   "dead_letter": [],

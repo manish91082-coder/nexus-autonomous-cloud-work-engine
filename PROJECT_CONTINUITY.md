@@ -1389,3 +1389,10 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Ko-fi is a low-priority international-only fallback: 0–5% service fee and direct provider payment, but India PayPal cannot receive domestic payments and Ko-fi requires full Stripe Connect rather than Stripe Express.
 - Detailed report: [Creator Funding Rails Comparison](research/PHASE_43_CREATOR_FUNDING_RAILS_COMPARISON_2026-11-12.md).
 - No accounts, KYC, tax/bank submission, terms acceptance or pages created. Finance remains receipts INR 0, spend INR 0.
+
+
+## Phase 43 multi-rail activation plan — 2026-11-12
+- P43-009 completed: prepared [Revenue Rail Activation Sequence](strategy/REVENUE_RAIL_ACTIVATION_SEQUENCE_PRIVATE_2026-11-12.md), separating domestic product sales, OSS sponsorship, international support, memberships, publishing royalties and paid developer apps. Each rail has a demand/payout/owner-approval gate.
+- P43-010 is BLOCKED on explicit owner approval to create a standalone public repository and release CSV to Action under its nested MIT license. Current parent repo is public but has no root license; no new repo/publication will occur without approval. Sponsorship account/KYC/terms remain separate later gates.
+- Other real-user evidence remains owner-dependent: P42-005 requires opt-in agency owners; Orbit Relay playtest requires real testers. No results are fabricated.
+- Finance: realized receipts INR 0; authorized spend INR 0.
