@@ -23,7 +23,7 @@ function render(){
  $("level").textContent=level;$("moves").textContent=moves;$("time").textContent=timeLeft;$("best").textContent=best();$("pathInfo").textContent=puzzle.size+" × "+puzzle.size+" / "+puzzle.pathLength+" relays";
 }
 function updateHUD(){$("moves").textContent=moves;$("time").textContent=timeLeft;$("best").textContent=best()}
-function showOverlay(){const overlay=$("overlay");overlay.style.display="flex";$("modalBtn").focus();}\nfunction hideOverlay(){$("overlay").style.display="none";const first=$("board").querySelector(".tile:not(.empty)");if(first)first.focus();}\n$("overlay").addEventListener("keydown",event=>{if(event.key==="Tab"){event.preventDefault();$("modalBtn").focus()}else if(event.key==="Escape"){event.preventDefault()}});\nfunction stopTimer(){if(timer){clearInterval(timer);timer=null}}
+function showOverlay(){const overlay=$("overlay");overlay.style.display="flex";$("modalBtn").focus();}\nfunction hideOverlay(){$("overlay").style.display="none";}\n$("overlay").addEventListener("keydown",event=>{if(event.key==="Tab"){event.preventDefault();$("modalBtn").focus()}else if(event.key==="Escape"){event.preventDefault()}});\nfunction stopTimer(){if(timer){clearInterval(timer);timer=null}}
 function startTimer(){stopTimer();timer=setInterval(()=>{if(paused)return;timeLeft--;updateHUD();if(timeLeft<=0){stopTimer();showFailure()}},1000)}
 function newLevel(restart=false){
  stopTimer();paused=false;moves=0;hints=0;timeLeft=Math.max(45,90-Math.floor((level-1)/2)*5);
