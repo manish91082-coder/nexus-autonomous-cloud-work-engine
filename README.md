@@ -115,3 +115,12 @@ No employment, manual gigs, freelance bids, cold outreach, recurring client serv
 - Private v0.3.0 package [43160901484](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901484) passed. Artifact ID 13917713420, SHA-256 `e3ece9f15c3738e1ecea86cccd6b39799b5a60cf41140dfb0a61f67548421195`.
 - Product remains private. Getvik KYC, payout declaration, legal acceptance and explicit public-release approval are owner-only gates.
 - Realized receipts ₹0; authorized spend ₹0.
+
+
+## Phase 36 — Candidate scan and revenue channel ranking
+
+- [29-candidate scorecard](research/PHASE_36_29_CANDIDATE_SCORECARD_2026-11-12.md) completed: 29 candidates, 17 categories, 28 scored, one hard-gate rejected. No candidate scores 80+.
+- Top bounded validation channels: Getvik 78, ownstreet 74, Topmate 72, Payhip+Razorpay 70. Scores are preliminary; product-specific demand is not proven.
+- P29-004 candidate scan, P29-005 pilot selection and P29-006 owner setup packet are complete.
+- Product v0.3.0 is built, browser-tested and privately packaged. It remains unpublished pending owner-only Getvik KYC, payout declaration, legal acceptance and explicit public-release approval.
+- No account or terms activated, no spend. Verified realized receipts ₹0.
