@@ -31,7 +31,7 @@ Rail-neutral: accept and evaluate lawful bank, UPI, international transfer, PayP
 ## Automation layers
 
 - ChatGPT scheduled agent runs: strategic research, ranking and supervision.
-- GitHub Actions: five-minute safe bootstrap tick is configured and has one successful push-triggered run; AI task execution is the next engineering milestone.
+- GitHub Actions: five-minute bounded worker is configured. The first integrated push run (43149321969) passed mission validation and 2/2 AI-worker safety tests. The AI step correctly failed closed because owner secrets are absent; no inference request was made.
 - Provider-neutral inference adapter: planned with strict free-quota circuit breakers; not yet enabled.
 - Persistent JSON registries + continuity file: durable memory and recovery across chat-thread limits.
 - Owner gates: KYC, legal, financial, wallet signing, provider secrets, public release and spending remain explicit.
@@ -43,3 +43,13 @@ Phase 29 control-plane installation. The daily reasoning task and hourly progres
 ## Scope discipline
 
 No employment, manual gigs, freelance bids, cold outreach, recurring client services, physical/field operations, fake traffic, spam, IP infringement or regulatory evasion. Historical experiments remain archived for auditability.
+
+
+## Phase 30 autonomous worker
+
+- [Worker setup and owner secret instructions](AI_WORKER_SETUP.md)
+- [Phase 30 deployment and verification report](research/PHASE_30_BOUNDED_AUTONOMOUS_AI_WORKER_2026-11-12.md)
+- Worker code: `scripts/ai_task_executor.py`; safety tests: `tests/test_ai_task_executor.py`.
+- First integrated CI run: [43149321969](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43149321969), SUCCESS; mission guard PASS; AI worker safety tests 2/2 PASS; heartbeat PASS; artifact uploaded.
+- The run confirmed all five provider secrets were empty. Worker status was `WAITING_FOR_OWNER_CONFIGURATION`; zero inference calls were made. This is correct fail-closed behavior, not productive AI execution.
+- Five-minute schedule is configured; scheduled cron-triggered execution and a 24-hour soak test are still pending verification.
