@@ -113,16 +113,16 @@ Stop or reposition if 100 qualified product-page visits produce zero paid orders
 
 
 ## Latest QA evidence
-- Chromium + Firefox Playwright run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901456 (SUCCESS).
+- Latest completed Chromium + Firefox Playwright run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43277812722 (SUCCESS, retry attempt 2; tested parent commit e430517def212a76bddd858ec28be7acd43155d6).
 - Checks include full placement/receipt/commission/guarantee journey, persistence, JSON backup/restore, financial-history deletion guard, labelled form controls, keyboard navigation, mobile overflow and no external network requests.
-- Latest private package run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452 (SUCCESS).
-- Latest verified private artifact ID: `13971177755` (package workflow run #37).
-- Package artifact SHA-256 digest: `sha256:63b772631c51ee73b8ab6708e557fb9794f0a184d18c579925817ac38ac2e796` (GitHub artifact ZIP digest; distinct from the product ZIP checksum).
-- The product ZIP's own checksum is stored in `dist/SHA256SUMS.txt` and was verified successfully by `sha256sum -c` in run #37.
+- Latest private package run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43277956809 (SUCCESS on commit 743ec56ecd5cd25acb7b2a549b80d46d8d66e7a2).
+- Latest verified private artifact ID: `13971801662` (package workflow run #38).
+- Package artifact SHA-256 digest: `sha256:ed0126a6236f1582f16385cca5107ce0280c9328c08915ed0bfbbeff8e60824d` (GitHub artifact ZIP digest; distinct from the product ZIP checksum).
+- Product ZIP checksum is stored in `dist/SHA256SUMS.txt` and passed `sha256sum -c` in package run #38.
 
 - Buyer FAQ: [CUSTOMER_FAQ_HI.md](CUSTOMER_FAQ_HI.md). It clarifies local storage, backups, receipt policy, commission calculation, guarantee event behavior and limitations to reduce recurring support.
 
-- Latest package includes `CUSTOMER_FAQ_HI.md` and passed ZIP/CRC/checksum validation: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452.
+- Latest package includes `CUSTOMER_FAQ_HI.md` and passed ZIP/CRC/checksum validation: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43277956809.
 
 
 ## v0.3.0 product differentiation gate
