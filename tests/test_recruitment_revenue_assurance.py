@@ -79,7 +79,7 @@ const concentration = clientConcentration([
 ]);
 assert.deepEqual(concentration.C1, {amount: 11500, count: 2});
 assert.equal(concentration.C2, undefined);
-console.log('formula assertions: 22 passed');
+console.log('formula assertions: 24 passed');
 """
         with tempfile.NamedTemporaryFile("w", suffix=".js", encoding="utf-8") as handle:
             handle.write(harness)
