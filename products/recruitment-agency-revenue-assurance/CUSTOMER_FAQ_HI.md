@@ -43,7 +43,7 @@ Claim opened event से status Claim Open होता है। Claim resolve
 नहीं। यह tax, GST, TDS, invoicing, statutory accounting या legal compliance का विकल्प नहीं है।
 
 ## 15. क्या multiple staff एक साथ data देख सकते हैं?
-नहीं। v0.2.0 local browser storage उपयोग करता है। Cloud sync और multi-user collaboration शामिल नहीं हैं।
+नहीं। v0.3.0 local browser storage उपयोग करता है। Cloud sync और multi-user collaboration शामिल नहीं हैं।
 
 ## 16. क्या seller setup या custom implementation शामिल है?
 नहीं। यह self-serve download है। Bespoke configuration, candidate sourcing, recruitment work या recurring consulting शामिल नहीं है।
