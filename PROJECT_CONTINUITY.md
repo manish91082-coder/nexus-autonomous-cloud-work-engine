@@ -1325,3 +1325,11 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - P42-005 remains blocked pending owner-arranged opt-in users; no real user sessions or willingness-to-pay evidence claimed.
 - Phase 43 P43-001 active: audit existing private products and reusable IP, identify differentiated demand-backed lanes, compare automation, discovery and India settlement economics; no new build until a viable wedge passes.
 - Finance remains realized receipts INR 0; authorized spend INR 0. Provider-backed AI inference remains unconfigured.
+
+
+## Phase 43 existing asset audit — 2026-11-12
+- P43-001 completed: audited all eight repository product assets and registered previously unlisted prototypes in `control/product_registry.json`. No current asset clears paid-launch gate.
+- Travel Revenue Demo faces free competitors: Travkonnect, Just Travel India and TourFiles offer free lead/quotation/booking capabilities. Message-to-Action remains a synthetic demo without live connectors. Other finance/CSV prototypes overlap free utilities. Orbit Relay still requires real human playtest.
+- Detailed evidence: [Phase 43 Existing Asset Portfolio Audit](research/PHASE_43_EXISTING_ASSET_PORTFOLIO_AUDIT_2026-11-12.md).
+- P43-002 active: research specialized public-data products with explicit commercial reuse rights, recurring buyer decisions, existing competitor pricing, source update cadence and feasible automation. Generic tender alerts are already crowded; any data product must add a narrow decision advantage.
+- No new product build until a viable niche passes demand, licensing, distribution and payout gates. Finance: realized receipts INR 0; authorized spend INR 0.

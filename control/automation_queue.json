@@ -796,7 +796,7 @@
       "id": "P43-001",
       "title": "Re-select next revenue asset from existing IP and products using buyer demand, automation and India settlement gates",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P42-006"
       ],
@@ -809,6 +809,38 @@
         "Compare marketplace discovery, India payout, fees, delivery automation and rights",
         "Reject generic saturated products and candidates requiring recurring manual service",
         "Select one bounded pilot only if demand and net economics pass; otherwise report no-go"
+      ],
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "report": "research/PHASE_43_EXISTING_ASSET_PORTFOLIO_AUDIT_2026-11-12.md",
+        "assets_audited": 8,
+        "decision": "No current asset clears paid launch gate; retain existing holds, no new build",
+        "findings": [
+          "Travel CRM demo faces free Indian CRM competitors with lead/quotation/booking workflows",
+          "Generic finance/CSV utilities overlap free tools",
+          "Message-to-action demo lacks live integrations",
+          "Orbit Relay lacks human demand evidence"
+        ],
+        "product_registry": "All discovered repository products registered with private/no-demand status"
+      }
+    },
+    {
+      "id": "P43-002",
+      "title": "Research specialized Indian public-data products with commercial reuse and buyer demand evidence",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P43-001"
+      ],
+      "idempotency_key": "phase43-public-data-product-niche-research-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-12",
+      "acceptance": [
+        "Identify datasets with explicit commercial reuse rights and per-dataset licence checks",
+        "Find at least three buyer segments with recurring decisions dependent on those datasets",
+        "Audit existing paid/free competitors and price points",
+        "Verify source update cadence, completeness and automation feasibility",
+        "Select a narrow niche only if buyer demand and data rights support it; otherwise reject"
       ]
     }
   ],
