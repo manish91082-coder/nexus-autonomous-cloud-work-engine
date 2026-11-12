@@ -139,6 +139,41 @@
         "Fees/refunds/costs reconciled",
         "No double counting"
       ]
+    },
+    {
+      "id": "P31-001",
+      "title": "Validate and package MSME Ops Desk Lite as first self-serve digital product",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P29-001"
+      ],
+      "idempotency_key": "phase31-msme-ops-desk-mvp-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "Offline HTML app has no external network dependency or telemetry",
+        "Core calculators and registers have automated smoke/formula tests",
+        "User guide, backup/restore and privacy notes are complete",
+        "Net proceeds are compared across eligible zero-upfront platforms",
+        "Product is packaged as private draft; publication and account terms remain owner gates"
+      ]
+    },
+    {
+      "id": "P31-002",
+      "title": "Qualify top India-first and international digital product payout rails",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P29-004"
+      ],
+      "idempotency_key": "phase31-payout-rail-qualification-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "At least two independent channels have official India eligibility and payout terms documented",
+        "Fees, thresholds, holds, refunds and FX are compared at multiple price points",
+        "Account-level unknowns and one-time owner actions are explicit",
+        "No paid setup or terms acceptance occurs without approval"
+      ]
     }
   ],
   "dead_letter": [],
