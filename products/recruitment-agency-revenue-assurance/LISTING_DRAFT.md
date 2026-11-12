@@ -35,7 +35,7 @@ ATS, job board, candidate database, CV storage, sourcing, job placement service,
 - Works locally in a modern browser.
 - Data is stored in local browser storage on the device. Users must export and secure JSON backups.
 - Do not enter candidate names, phone numbers, email addresses, CVs, Aadhaar, PAN or other personal/sensitive data.
-- Receivable ageing uses placement date as a proxy, not contractual invoice due date. It is not statutory accounting ageing.
+- Receivable ageing uses the contractual invoice due date when supplied; if missing, placement date is visibly marked as a proxy. This is not statutory accounting ageing.
 
 ## License and support
 Commercial single-organization internal-use license is proposed but not yet approved. No technical license-key enforcement exists in v0.3.0. Seller must approve final license, refund terms and support channel before publication. No implementation or recurring service is included. Reasonable buyer support may still be required under platform terms.
