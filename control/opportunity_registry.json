@@ -317,22 +317,26 @@
       "category": "digital_goods_marketplace",
       "platform": "Getvik",
       "tier": "P0",
-      "status": "HOLD_FOR_EVIDENCE",
-      "score": null,
-      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "status": "VALIDATION",
+      "score": 78,
+      "score_confidence": "Medium; official current seller terms plus visible marketplace sales counts, but sales are platform-reported and not independently audited",
       "payout_evidence": {
-        "summary": "UPI/cards/netbanking; platform claims ₹100 payout minimum and 2-3 business day settlement",
-        "source": "https://getvik.com/"
+        "india_eligibility": "Indian sellers; PAN, legal name, own-name UPI ID and bank details required before publishing/payout",
+        "minimum": "₹100 settled balance; manual payout request",
+        "settlement": "Usually 2–3 business days per current platform help page; Terms allow risk/fraud holds",
+        "fees": "Free 10% platform fee + 18% GST on fee + Cashfree gateway fee and GST; no paid plan needed for pilot",
+        "demand_signal": "Public Discover page displays completed-sale counts, including 416 sold for a ₹99 Big4 guide, 148 sold for a ₹199 Excel workbook, 51 sold for a ₹799 Excel Career Pack, and 21 sold for a ₹199 Pivot Table workbook; platform-displayed counts only",
+        "source": "https://getvik.com/terms-of-service"
       },
       "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
       "india_eligibility": "India-first payout claims; legal entity, KYC and operating reliability not independently verified",
       "unknowns": [
-        "Account-specific onboarding/KYC and payout validation",
-        "Buyer demand and organic discovery",
-        "Refund, fee, FX and tax treatment where applicable",
-        "IP/content policy and acceptance criteria"
+        "Actual account-specific KYC and payout verification",
+        "Buyer demand for recruitment-agency cashflow software specifically",
+        "Exact Cashfree gateway charges by payment method and GST treatment",
+        "Refund/chargeback reserve behavior for this account"
       ],
-      "note": "Newer platform; do not make it the only payment rail"
+      "note": "Best first validation storefront among currently reviewed channels because it combines public discovery, UPI checkout, automatic delivery and a low ₹100 payout threshold; do not infer our product will sell from other creators' counts."
     },
     {
       "id": "PAYHIP-RAZORPAY-IN",
@@ -580,23 +584,75 @@
       "id": "QXEL-DIGITAL-MARKETPLACE",
       "category": "digital_goods_marketplace",
       "platform": "Qxel",
-      "tier": "P2",
+      "tier": "P1",
       "status": "HOLD_FOR_EVIDENCE",
-      "score": null,
-      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "score": 69,
+      "score_confidence": "Medium-low; official pricing page has 6% standard rate and temporary 2% first-anniversary offer through 17 Jan; payout 3–5 business days; public search returned no products at time of review",
       "payout_evidence": {
-        "summary": "Platform claims 2% per-sale fee, no monthly subscription and UPI withdrawals",
-        "source": "https://www.qxel.in/"
+        "india_eligibility": "India storefront and UPI payout claims; account-level KYC unknown",
+        "minimum": "Not confirmed in accessible official documentation",
+        "settlement": "3–5 business days after withdrawal request according to pricing page",
+        "fees": "6% standard platform commission plus gateway/taxes; temporary 2% promotion stated for 1 Nov 2026 to 17 Jan 2027; gateway charges and taxes separate",
+        "source": "https://www.qxel.in/pricing"
       },
       "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
       "india_eligibility": "India-first UPI claims; legal entity, seller terms and payout reliability not independently verified",
       "unknowns": [
-        "Account-specific onboarding/KYC and payout validation",
-        "Buyer demand and organic discovery",
-        "Refund, fee, FX and tax treatment where applicable",
-        "IP/content policy and acceptance criteria"
+        "Payout documentation link returned 404 during review",
+        "Account-level KYC, payout minimum and settlement confirmation",
+        "Marketplace demand/sales evidence",
+        "Promotion expiry and actual gateway costs"
       ],
       "note": "Early-stage provider; do not rely on it as sole checkout"
+    },
+    {
+      "id": "OWNSTREET-CREATOR-MARKETPLACE",
+      "category": "digital_goods_marketplace",
+      "platform": "ownstreet Creator Marketplace",
+      "tier": "P1",
+      "status": "VALIDATION",
+      "score": 74,
+      "score_confidence": "Medium; official help and public marketplace list 326 creators and public sales counters, but discovery only unlocks after the first paid sale",
+      "payout_evidence": {
+        "india_eligibility": "India UPI/Razorpay checkout; bank payout route documented, PAN and bank details required",
+        "minimum": "Not stated in reviewed help page",
+        "settlement": "Bank payouts in Razorpay batches often same day or T+1–2 working days; weekends/holidays slower",
+        "fees": "0% ownstreet platform fee; Razorpay gateway charges apply. Free plan limited to one live product and five completed paid sales; marketplace listing only after first paid sale",
+        "demand_signal": "Public marketplace displayed 326 creator stores and multiple products with sales counts, including 1,704 sales for a ₹30 exam-prep PDF and 468 sales for a ₹300–999 exam-prep guide; platform-displayed counts only",
+        "source": "https://ownstreet.in/help"
+      },
+      "automation_fit": "High for digital download, auto delivery and self-serve checkout",
+      "unknowns": [
+        "First completed sale needed before marketplace listing",
+        "Five-sale Free plan cap means upgrade or other arrangement needed after five completed sales",
+        "Account-level payout KYC and refund terms",
+        "No guarantee that marketplace traffic converts for our niche"
+      ],
+      "note": "Strong secondary channel after the first genuine paid sale; no monthly fee required for first five paid sales."
+    },
+    {
+      "id": "SROTABASE-CREATOR-MARKETPLACE",
+      "category": "digital_goods_membership",
+      "platform": "Srotabase",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 65,
+      "score_confidence": "Low-medium; official terms and published fee model found, but account-level payout timing and independent demand evidence remain unverified",
+      "payout_evidence": {
+        "india_eligibility": "Indian bank payouts and UPI checkout claimed; seller KYC/payout details required",
+        "minimum": "Not found in reviewed public terms",
+        "settlement": "Site states 7-day buyer-protection window before release; exact bank settlement schedule not confirmed",
+        "fees": "4% own-sale platform fee, 10% marketplace-originated sale fee; 0.4% UPI MDR on payments above ₹2,000 from 15 Oct 2026; GST/TDS may apply",
+        "source": "https://srotabase.com/terms"
+      },
+      "automation_fit": "High for digital downloads, memberships and license-key delivery",
+      "unknowns": [
+        "Actual demand and active buyer volume",
+        "Payout minimum and bank settlement timing",
+        "Exact platform fee schedule in account and gateway fee treatment",
+        "Refund policy and dispute reserve"
+      ],
+      "note": "Keep in evidence queue only; do not select as first pilot until payout schedule and buyer traction are verified."
     }
   ],
   "required_evidence": [
