@@ -1,55 +1,32 @@
-# Phase 43 — GitHub Sponsors and Marketplace Audit
+# Phase 43 — GitHub Sponsors Readiness Dossier
 
 **Date:** 2026-11-12  
-**Task:** P43-004 completed  
-**Decision:** GitHub Sponsors is the more feasible long-horizon OSS funding lane; paid GitHub Marketplace Apps are not a near-term path.
+**Task:** P43-005 completed  
+**Decision:** GitHub Sponsors remains P2 long-horizon. Prepare the safe OSS candidate, but do not submit a Sponsors application or publish tiers until owner approval and community traction.
 
-## 1. GitHub Marketplace paid apps
-Official requirements:
-- App must be owned by a GitHub organization that has completed publisher verification; verified domain, contact information and enforced 2FA are required.
-- Paid GitHub Apps need at least 100 installations before paid listing eligibility.
-- Paid plans must include monthly and annual pricing, Marketplace purchase-event handling, listing review and financial onboarding.
-- Payout threshold is USD 500 revenue for a month; payment is sent electronically at the end of the following month.
-- GitHub retains 5% for transactions after Jan 1, 2021.
-- India-specific seller payout method and bank onboarding were not confirmed in the public docs reviewed.
+## Candidate assessment
+**Preferred candidate:** CSV to Action, a browser-local CSV exception-analysis utility.
+- Nested MIT license file exists in the product directory.
+- No account, server, upload or external dependency is described in README; must be confirmed by code review and network tests.
+- README and Hindi README exist; browser tests are present.
+- No standalone repository, no meaningful adoption, no known sponsor base.
+- Parent Nexus repository has no root license; nested license must not be generalized to the parent repository.
 
-Sources:
-- https://docs.github.com/en/apps/github-marketplace/github-marketplace-overview/about-github-marketplace-for-apps
-- https://docs.github.com/en/apps/github-marketplace/creating-apps-for-github-marketplace/requirements-for-listing-an-app
-- https://docs.github.com/en/apps/github-marketplace/selling-your-app-on-github-marketplace/receiving-payment-for-app-purchases
+**Secondary:** Job-to-Cash Control Kit, a local Python/CSV tool with a nested MIT license and tests, but a broader and more crowded use case.
 
-## 2. GitHub Sponsors
-Official terms:
-- India is a supported receiving country.
-- Personal-account sponsorships have 0% GitHub fee; organization sponsorships may incur up to 6% fee.
-- One-time and monthly sponsorship tiers are supported.
-- First sponsorship payout is processed 60 days after the first sponsorship is initiated.
-- Thereafter, payments are processed within 30 days after the close of the month. Stripe Connect payouts are generally initiated on the 22nd; cross-border minimums may apply.
-- KYC, tax and bank details are mandatory owner-controlled steps; account eligibility and India payout details still need account-level verification.
+**Not selected:** Crypto trading software due financial-risk and unverified marketing claims; Ghost Hunter research repos have no root license; AI Content System has no root license and negligible adoption.
 
-Sources:
-- https://docs.github.com/en/sponsors/getting-started-with-github-sponsors/about-github-sponsors
-- https://docs.github.com/en/site-policy/github-terms/github-sponsors-additional-terms
-- https://docs.github.com/en/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-personal-account
+## Private tier draft
+- $3/month Supporter: opt-in public thanks and monthly changelog.
+- $10/month Builder: plus early access to tagged releases and public roadmap polls.
+- $25/month Project Backer: plus quarterly public architecture/maintenance report.
+- One-time support from $5 with no ongoing service.
+No custom development, private support, guaranteed response time or financial outcomes are promised.
 
-## 3. Existing public repository audit
-Accessible user-owned repositories reviewed: 11.
-- `ghost-hunter-research-all-block-chains`: 2 stars, no root license detected.
-- `ai-content-system`: 1 star, no root license detected.
-- `crypto-trading-bot-ai-based`: MIT license, 0 stars; trading/financial-risk software, not selected as a flagship sponsor asset until claims, security and risk controls are independently audited.
-- `ghost-hunter-ai-smart` and `full-ai-ghost-hunter-universe`: no root license detected, no stars.
-- `nexus-autonomous-cloud-work-engine`: public, 0 stars, no root license at repository root. Nested `products/ai-ops-starter` and `products/csv-to-action` contain MIT license files, but the repository as a whole is not licensed under a root license.
-- Other accessible repos are private or not suitable for a public sponsor lane at present.
+## Owner-only checklist
+2FA, Sponsors profile, application approval, Stripe Connect, KYC, tax and bank details, exact India cross-border minimum/fees, acceptance of additional terms, then tier publication. None has been performed.
 
-This is a snapshot, not an exhaustive legal review. A license in a nested product directory applies only within its intended scope; do not imply that the entire parent repository is MIT-licensed.
-
-## 4. Decision and ranking
-| Lane | Entry barrier | Payout | Current demand readiness | Decision |
-|---|---|---|---|---|
-| GitHub Sponsors | Supported region, public OSS contribution, 2FA, profile, bank/tax onboarding and approval | First payment 60 days; then monthly; cross-border minimum may apply | Very low organic traction today | P2 validation |
-| Paid GitHub Marketplace App | Verified organization, 100 installations, app review, monthly+annual plans and financial onboarding | USD 500 monthly threshold, paid following month; 5% GitHub retention | No suitable production GitHub App or 100 installations | Hold / not near-term |
-
-## 5. Next task
-P43-005: prepare a readiness dossier for safe, useful, properly licensed open-source assets. Propose low-maintenance tiers (public roadmap, changelog, early access to releases, sponsor acknowledgement only) without promising personal support or services. Do not create a Sponsors profile, submit KYC/tax/bank details, accept terms or publish tiers without owner approval.
+## Next task
+P43-006: prepare a release-readiness package for CSV to Action: validate privacy/no-network behavior, CSV formula-injection safety, input limits, license scope, security contact, support and contribution policies. Keep standalone repo creation and public release owner-gated.
 
 **Financial truth:** verified realized net receipts INR 0; authorized spend INR 0.

@@ -1356,3 +1356,11 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Public repo audit found minimal traction: one repo 2 stars, one 1 star, most 0. Root Nexus repo has no root license; nested Job-to-Cash and CSV-to-Action MIT license files apply only within those subfolders. Do not treat whole repository as open source.
 - P43-005 active: prepare safe OSS sponsorship readiness dossier and low-maintenance tier proposal. No account setup, KYC, tax/bank data, terms acceptance or public sponsorship profile without owner approval.
 - Finance: realized receipts INR 0; authorized spend INR 0.
+
+
+## Phase 43 GitHub Sponsors readiness — 2026-11-12
+- P43-005 completed: [Private GitHub Sponsors Readiness Dossier](research/GITHUB_SPONSORS_READINESS_DOSSIER_PRIVATE_2026-11-12.md) prepared. Candidate: CSV to Action (nested MIT, browser-local, no upload claim); secondary Job-to-Cash Control Kit. Current adoption is low, so no sponsor revenue forecast.
+- Draft low-maintenance tiers ($3 / $10 / $25 monthly plus one-time support) prepared for future owner review; no personal support or manual-service promises.
+- P43-006 active: prepare CSV to Action open-source release-readiness package covering privacy/network verification, CSV formula-injection safety, limits, license scope, security/support policies and reproducible tests. Standalone repo creation and public release remain owner-gated.
+- No GitHub Sponsors application, 2FA changes, KYC, tax/bank submission, terms acceptance or tier publication performed.
+- Finance remains realized receipts INR 0; authorized spend INR 0.

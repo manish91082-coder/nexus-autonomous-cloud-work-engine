@@ -927,7 +927,7 @@
       "id": "P43-005",
       "title": "Prepare GitHub Sponsors readiness dossier for existing safe open-source assets",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P43-004"
       ],
@@ -940,6 +940,32 @@
         "Define low-maintenance sponsorship tiers without manual service promises",
         "Prepare owner-only KYC/bank/tax/2FA checklist",
         "Do not create profile, accept terms or publish sponsorship tiers without owner approval"
+      ],
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "dossier": "research/GITHUB_SPONSORS_READINESS_DOSSIER_PRIVATE_2026-11-12.md",
+        "candidate": "CSV to Action (MIT, browser-local, no upload) with Job-to-Cash Control Kit as secondary",
+        "status": "Private readiness dossier and low-maintenance tier proposal prepared; no Sponsors application or KYC submitted",
+        "traction": "Current public repo adoption low: most repos 0 stars; AI content system 1 star; Ghost Hunter research 2 stars"
+      }
+    },
+    {
+      "id": "P43-006",
+      "title": "Prepare CSV to Action open-source release-readiness package for possible GitHub Sponsors adoption",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P43-005"
+      ],
+      "idempotency_key": "phase43-csv-to-action-oss-readiness-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-12",
+      "acceptance": [
+        "Audit privacy/security and test coverage of CSV to Action",
+        "Clarify MIT license scope and README claims",
+        "Prepare security reporting, support and contribution policies",
+        "Prepare standalone release notes and usage screenshots without publishing",
+        "Keep sponsor profile and public release owner-gated"
       ]
     }
   ],
