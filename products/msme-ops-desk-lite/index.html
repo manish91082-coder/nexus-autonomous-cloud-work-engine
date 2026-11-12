@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827">
+<meta name="description" content="An offline-first operations toolkit for small businesses.">
+<title>MSME Ops Desk Lite</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--panel:#121d2e;--panel2:#172438;--line:#29384d;--text:#edf3fb;--muted:#9eacc0;--accent:#7dd3fc;--good:#86efac;--warn:#fcd34d;--danger:#fca5a5}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#0b1220,#101b2b 55%,#0b1220);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{max-width:1180px;margin:auto;padding:28px 22px 16px;display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}
+.brand{display:flex;gap:13px;align-items:center}.mark{width:44px;height:44px;border-radius:14px;background:#18364b;border:1px solid #31546b;display:grid;place-items:center;color:var(--accent);font-weight:800;font-size:20px}
+h1{font-size:clamp(23px,4vw,34px);margin:0;letter-spacing:-.04em}header p{margin:3px 0 0;color:var(--muted)}
+main{max-width:1180px;margin:auto;padding:0 22px 42px}.notice{border:1px solid #35516b;background:#10263a;border-radius:14px;padding:12px 15px;color:#c9e9fb;margin:10px 0 18px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}button,.button{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:10px 14px;border-radius:10px;cursor:pointer;font:inherit}
+button:hover,.button:hover{border-color:var(--accent)}button.active{background:#18364b;border-color:#47728d;color:#dff5ff}button.primary{background:#15516b;border-color:#397d9c}button.danger{border-color:#75404a;color:#fecaca}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}.card{grid-column:span 6;background:rgba(18,29,46,.94);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}.card.full{grid-column:1/-1}.card.third{grid-column:span 4}.card h2{margin:0 0 4px;font-size:18px}.sub{color:var(--muted);margin:0 0 15px;font-size:13px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.kpi{background:#0d1726;border:1px solid var(--line);border-radius:12px;padding:13px}.kpi small{display:block;color:var(--muted)}.kpi strong{font-size:23px;display:block;margin-top:4px;letter-spacing:-.03em}
+label{display:block;color:#c8d4e4;font-size:13px;margin:10px 0 5px}input,select{width:100%;background:#0b1422;border:1px solid #34455d;border-radius:9px;padding:10px;color:var(--text);font:inherit;min-width:0}input:focus,select:focus{outline:2px solid #4d94b7;outline-offset:1px}
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.result{margin-top:13px;padding:12px;border-radius:11px;background:#0b1724;border:1px solid #2b4055}.result strong{color:var(--good);font-size:21px}.muted{color:var(--muted)}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:550px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);font-size:13px}th{color:#bfd0e4;font-weight:600}td input{min-width:95px;padding:7px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.pill{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:3px 8px;color:var(--muted);font-size:11px}
+footer{max-width:1180px;margin:auto;padding:18px 22px 34px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+.panel{display:none}.panel.active{display:block}.empty{padding:25px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px}
+@media(max-width:760px){.card,.card.third{grid-column:1/-1}.kpis{grid-template-columns:repeat(2,1fr)}header{padding-top:20px}.formgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="mark">OD</div><div><h1>MSME Ops Desk Lite</h1><p>Simple operating numbers for India's small businesses</p></div></div><span class="pill">OFFLINE-FIRST · NO ACCOUNT · NO CLOUD</span></header>
+<main>
+<div class="notice"><strong>Your data stays in this browser.</strong> No server, analytics, external scripts or network calls. Export a backup regularly. This is an operational planning aid, not accounting, tax, legal or investment advice.</div>
+<nav aria-label="Toolkit sections">
+<button class="active" data-tab="overview">Overview</button><button data-tab="margin">Margin & break-even</button><button data-tab="stock">Stock reorder</button><button data-tab="receivables">Receivables</button><button data-tab="sales">Sales log</button>
+</nav>
+<section id="overview" class="panel active">
+<div class="kpis">
+<div class="kpi"><small>Sales recorded</small><strong id="kSales">₹0</strong></div><div class="kpi"><small>Outstanding</small><strong id="kDue">₹0</strong></div><div class="kpi"><small>Sales entries</small><strong id="kCount">0</strong></div><div class="kpi"><small>Local records</small><strong id="kRecords">0</strong></div>
+</div>
+<div class="grid" style="margin-top:14px">
+<div class="card third"><h2>Quick start</h2><p class="sub">Use one tool at a time. Values are estimates based on your inputs.</p><ul><li>Calculate contribution margin and break-even.</li><li>Plan stock reorder quantity.</li><li>Track customer dues and ageing.</li><li>Record daily sales and export CSV.</li></ul></div>
+<div class="card third"><h2>Privacy by design</h2><p class="sub">All data is saved locally in this browser's storage. Nothing is uploaded.</p><p class="muted">Use Export backup before changing devices, clearing browser data or uninstalling the browser.</p></div>
+<div class="card third"><h2>Product status</h2><p class="sub">Starter edition</p><p><span class="pill">No subscription</span> <span class="pill">No external dependency</span></p><p class="muted">Designed for micro and small businesses that need quick operational visibility without a full ERP.</p></div>
+<div class="card full"><h2>Backup & restore</h2><p class="sub">Download a JSON backup or restore a previous backup on this device.</p><div class="actions"><button class="primary" id="backup">Export backup</button><label class="button" for="restore" style="margin:0">Restore backup</label><input id="restore" type="file" accept="application/json" hidden><button class="danger" id="clear">Clear all local data</button></div><p id="backupMsg" class="muted" aria-live="polite"></p></div>
+</div></section>
+<section id="margin" class="panel"><div class="grid">
+<div class="card"><h2>Unit economics calculator</h2><p class="sub">Estimate contribution and gross margin for one product or service.</p>
+<div class="formgrid"><div><label for="price">Selling price (₹)</label><input id="price" type="number" min="0" value="1000"></div><div><label for="variable">Variable cost per unit (₹)</label><input id="variable" type="number" min="0" value="600"></div><div><label for="fixed">Monthly fixed costs (₹)</label><input id="fixed" type="number" min="0" value="20000"></div><div><label for="target">Target monthly operating surplus (₹)</label><input id="target" type="number" min="0" value="30000"></div></div>
+<div class="result"><div class="muted">Contribution per unit</div><strong id="contribution">₹400</strong><div class="muted" id="marginPct">Contribution margin: 40%</div><hr style="border:0;border-top:1px solid var(--line)"><div class="muted">Break-even units / month</div><strong id="breakeven">50</strong><div class="muted">Units for target surplus</div><strong id="targetUnits">125</strong></div></div>
+<div class="card"><h2>Cash runway estimator</h2><p class="sub">A simple planning estimate, not a cash-flow forecast.</p><label for="cash">Available operating cash (₹)</label><input id="cash" type="number" min="0" value="100000"><label for="burn">Expected monthly net cash outflow (₹)</label><input id="burn" type="number" min="0" value="25000"><div class="result"><div class="muted">Estimated runway</div><strong id="runway">4 months</strong><p class="muted">If monthly outflow is zero, runway is not limited by this calculation.</p></div></div>
+</div></section>
+<section id="stock" class="panel"><div class="grid">
+<div class="card"><h2>Reorder planner</h2><p class="sub">Estimate when to reorder and how much buffer stock to hold.</p><div class="formgrid"><div><label for="daily">Average daily usage (units)</label><input id="daily" type="number" min="0" value="5"></div><div><label for="lead">Supplier lead time (days)</label><input id="lead" type="number" min="0" value="7"></div><div><label for="buffer">Safety stock (days)</label><input id="buffer" type="number" min="0" value="3"></div><div><label for="onhand">Current stock (units)</label><input id="onhand" type="number" min="0" value="40"></div></div><div class="result"><div class="muted">Reorder point</div><strong id="rop">50 units</strong><div class="muted">Suggested order trigger</div><strong id="stockStatus">Reorder not yet due</strong></div></div>
+<div class="card"><h2>How to use</h2><p class="sub">Inputs should come from actual stock movement and supplier history.</p><ul><li>Use a representative sales/usage period.</li><li>Update lead time when supplier performance changes.</li><li>Safety stock is a management choice, not a universal constant.</li><li>Review slow-moving, expired or obsolete inventory separately.</li></ul></div>
+</div></section>
+<section id="receivables" class="panel"><div class="grid">
+<div class="card full"><h2>Receivables register</h2><p class="sub">Track amounts due, due dates and ageing. Do not enter sensitive customer identity details.</p>
+<div class="formgrid"><div><label for="debtor">Customer reference (avoid personal data)</label><input id="debtor" maxlength="40" placeholder="e.g. Customer A / Invoice 001"></div><div><label for="amount">Amount due (₹)</label><input id="amount" type="number" min="0" placeholder="0"></div><div><label for="dueDate">Due date</label><input id="dueDate" type="date"></div><div><label for="paid">Amount received (₹)</label><input id="paid" type="number" min="0" value="0"></div></div><div class="actions"><button class="primary" id="addDue">Add receivable</button></div>
+<div class="tablewrap" style="margin-top:16px"><table><thead><tr><th>Reference</th><th>Due</th><th>Received</th><th>Balance</th><th>Age</th><th></th></tr></thead><tbody id="dueRows"></tbody></table></div><p id="dueEmpty" class="empty">No receivables recorded yet.</p></div></div></section>
+<section id="sales" class="panel"><div class="grid">
+<div class="card full"><h2>Daily sales log</h2><p class="sub">Keep a lightweight local record of daily totals. Avoid storing payment card, bank or identity data.</p>
+<div class="formgrid"><div><label for="saleDate">Date</label><input id="saleDate" type="date"></div><div><label for="saleRef">Reference / product</label><input id="saleRef" maxlength="50" placeholder="e.g. Counter sales"></div><div><label for="saleAmount">Sales amount (₹)</label><input id="saleAmount" type="number" min="0" placeholder="0"></div><div><label for="saleNote">Note (optional)</label><input id="saleNote" maxlength="80" placeholder="Short operational note"></div></div><div class="actions"><button class="primary" id="addSale">Add sales entry</button><button id="exportCsv">Export sales CSV</button></div>
+<div class="tablewrap" style="margin-top:16px"><table><thead><tr><th>Date</th><th>Reference</th><th>Amount</th><th>Note</th><th></th></tr></thead><tbody id="saleRows"></tbody></table></div><p id="saleEmpty" class="empty">No sales entries recorded yet.</p></div></div></section>
+</main>
+<footer>MSME Ops Desk Lite · Local-first starter product · Version 0.1.0 · Use at your own discretion. Always reconcile estimates against original business records.</footer>
+<script>
+(function(){
+"use strict";
+const KEY="msme_ops_desk_lite_v1";
+const $=id=>document.getElementById(id);
+const money=n=>"₹"+Math.round(Number(n)||0).toLocaleString("en-IN");
+const safeNum=id=>Math.max(0,Number($(id).value)||0);
+let state={sales:[],dues:[]};
+function load(){try{const v=JSON.parse(localStorage.getItem(KEY)||"{}");if(Array.isArray(v.sales)&&Array.isArray(v.dues))state=v;}catch(e){state={sales:[],dues:[]};}}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));render();}
+function download(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;a.click();URL.revokeObjectURL(url);}
+function calc(){
+ const p=safeNum("price"),v=safeNum("variable"),f=safeNum("fixed"),t=safeNum("target"),c=p-v;
+ $("contribution").textContent=money(c);$("marginPct").textContent="Contribution margin: "+(p?((c/p)*100).toFixed(1):"0.0")+"%";
+ $("breakeven").textContent=c>0?Math.ceil(f/c)+" units":"Not calculable (contribution must be positive)";
+ $("targetUnits").textContent=c>0?Math.ceil((f+t)/c)+" units":"Not calculable (contribution must be positive)";
+ const cash=safeNum("cash"),burn=safeNum("burn");$("runway").textContent=burn>0?(cash/burn).toFixed(1)+" months":"No monthly outflow entered";
+ const rop=safeNum("daily")*(safeNum("lead")+safeNum("buffer"));$("rop").textContent=rop.toFixed(1)+" units";$("stockStatus").textContent=safeNum("onhand")<=rop?"Reorder threshold reached":"Reorder not yet due";
+}
+function age(date){if(!date)return "Date missing";const days=Math.floor((Date.now()-new Date(date+"T00:00:00").getTime())/86400000);return days<0?Math.abs(days)+" days until due":days+" days overdue";}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function render(){
+ const total=state.sales.reduce((a,x)=>a+Number(x.amount||0),0),due=state.dues.reduce((a,x)=>a+Math.max(0,Number(x.amount||0)-Number(x.paid||0)),0);
+ $("kSales").textContent=money(total);$("kDue").textContent=money(due);$("kCount").textContent=state.sales.length;$("kRecords").textContent=state.sales.length+state.dues.length;
+ $("saleRows").innerHTML=state.sales.map((x,i)=>"<tr><td>"+esc(x.date)+"</td><td>"+esc(x.ref)+"</td><td>"+money(x.amount)+"</td><td>"+esc(x.note)+"</td><td><button data-del-sale='"+i+"' class='danger'>Delete</button></td></tr>").join("");
+ $("saleEmpty").hidden=state.sales.length>0;
+ $("dueRows").innerHTML=state.dues.map((x,i)=>{const bal=Math.max(0,Number(x.amount)-Number(x.paid));return "<tr><td>"+esc(x.ref)+"</td><td>"+money(x.amount)+"</td><td>"+money(x.paid)+"</td><td>"+money(bal)+"</td><td>"+esc(age(x.date))+"</td><td><button data-del-due='"+i+"' class='danger'>Delete</button></td></tr>";}).join("");
+ $("dueEmpty").hidden=state.dues.length>0;
+}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".panel").forEach(x=>x.classList.toggle("active",x.id===b.dataset.tab));}));
+["price","variable","fixed","target","cash","burn","daily","lead","buffer","onhand"].forEach(id=>$(id).addEventListener("input",calc));
+$("addSale").addEventListener("click",()=>{const amount=safeNum("saleAmount"),date=$("saleDate").value;if(!date||amount<=0){alert("Enter a valid date and amount.");return;}state.sales.unshift({date,ref:$("saleRef").value.trim(),amount,note:$("saleNote").value.trim()});save();$("saleRef").value="";$("saleAmount").value="";$("saleNote").value="";});
+$("addDue").addEventListener("click",()=>{const ref=$("debtor").value.trim(),amount=safeNum("amount"),date=$("dueDate").value,paid=safeNum("paid");if(!ref||!date||amount<=0||paid>amount){alert("Enter a reference, date and valid amount. Received cannot exceed due.");return;}state.dues.unshift({ref,amount,date,paid});save();$("debtor").value="";$("amount").value="";$("paid").value="0";});
+document.addEventListener("click",e=>{if(e.target.dataset.delSale!==undefined){state.sales.splice(Number(e.target.dataset.delSale),1);save();}if(e.target.dataset.delDue!==undefined){state.dues.splice(Number(e.target.dataset.delDue),1);save();}});
+$("backup").addEventListener("click",()=>{download("msme-ops-desk-backup.json",JSON.stringify(state,null,2),"application/json");$("backupMsg").textContent="Backup created. Store it somewhere safe.";});
+$("restore").addEventListener("change",async e=>{const f=e.target.files[0];if(!f)return;try{const v=JSON.parse(await f.text());if(!Array.isArray(v.sales)||!Array.isArray(v.dues))throw Error("Invalid backup");state=v;save();$("backupMsg").textContent="Backup restored on this device.";}catch(err){alert("Could not restore this file. Please choose a valid Ops Desk backup.");}e.target.value="";});
+$("clear").addEventListener("click",()=>{if(confirm("Permanently clear all Ops Desk data saved in this browser? Export a backup first if needed.")){state={sales:[],dues:[]};save();localStorage.removeItem(KEY);$("backupMsg").textContent="Local data cleared."; }});
+$("exportCsv").addEventListener("click",()=>{const rows=[["date","reference","amount_inr","note"],...state.sales.map(x=>[x.date,x.ref,x.amount,x.note])];const csv=rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\n");download("msme-ops-sales.csv",csv,"text/csv");});
+const today=new Date().toISOString().slice(0,10);$("saleDate").value=today;$("dueDate").value=today;load();render();calc();
+})();
+</script>
+</body>
+</html>
