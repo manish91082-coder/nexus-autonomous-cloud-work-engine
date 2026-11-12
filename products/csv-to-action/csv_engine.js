@@ -36,7 +36,9 @@
     const headers=rows.shift().map(h=>h.trim());
     if(headers.some(h=>!h))throw new Error("Every column needs a header.");
     if(new Set(headers.map(h=>h.toLowerCase())).size!==headers.length)throw new Error("Duplicate column headers are not allowed.");
-    const data=rows.filter(r=>!(r.length===1&&r[0]==="")).map((r,i)=>{
+    const dataRows=rows.filter(r=>!(r.length===1&&r[0]===""));
+    if(dataRows.length>100000)throw new Error("CSV exceeds the 100,000 data-row safety limit.");
+    const data=dataRows.map((r,i)=>{
       if(r.length>headers.length)throw new Error("Row "+(i+2)+" has more values than headers.");
       const out={};headers.forEach((h,j)=>out[h]=(r[j]??"").trim());return out;
     });
@@ -91,7 +93,7 @@
     totals.mixedCurrencies=currencySet.size>1;totals.currencyLabels=[...currencySet];
     return {map,results,totals,today:now};
   }
-  function csvEscape(v){let s=String(v??"");if(/^[\s]*[=+@]/.test(s)||/^[\s]*-/.test(s))s="'"+s;return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
+  function csvEscape(v){let s=String(v??"");if(/^[\s\uFEFF]*[=+\-@]/.test(s))s="'"+s;return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
   function toCSV(headers,rows){return [headers.map(csvEscape).join(","),...rows.map(r=>headers.map(h=>csvEscape(r[h])).join(","))].join("\r\n")+"\r\n";}
   const api={REQUIRED,parseCSV,mapColumns,analyze,toCSV};
   if(typeof module!=="undefined"&&module.exports)module.exports=api;
