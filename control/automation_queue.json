@@ -725,7 +725,7 @@
       "id": "P42-004",
       "title": "Prepare private demand experiment pack for offline recruitment finance-control niche",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P42-003"
       ],
@@ -738,6 +738,32 @@
         "No public listing, cold outreach, account setup, spend or personal-data collection",
         "Deliver a one-page owner-ready validation pack"
       ],
+      "last_updated": "2026-11-12",
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "pack": "products/recruitment-agency-revenue-assurance/PRIVATE_DEMAND_VALIDATION_PACK.md",
+        "status": "Ready for owner-led 5–8 agency validation; no participants contacted and no sessions performed",
+        "controls": "No cold outreach, no scraping, synthetic data only, no candidate/customer PII, no public release"
+      }
+    },
+    {
+      "id": "P42-005",
+      "title": "Collect and audit first 5–8 agency-owner validation sessions",
+      "priority": "P0",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P42-004"
+      ],
+      "idempotency_key": "phase42-first-agency-validation-cohort-v1",
+      "owner_gate": true,
+      "acceptance": [
+        "5–8 independent target agencies complete synthetic-data tasks",
+        "Anonymous scorecards and observed behavior recorded",
+        "Compare actual workflow gaps against free/low-cost competitors",
+        "Apply predeclared stop/reposition/continue thresholds",
+        "No demand or willingness-to-pay claim without evidence"
+      ],
+      "blocker": "Requires owner to arrange voluntary opt-in participants and conduct sessions; assistant cannot fabricate interviews or contact people without explicit authorization.",
       "last_updated": "2026-11-12"
     }
   ],
