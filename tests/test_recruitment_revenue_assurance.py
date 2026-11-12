@@ -21,7 +21,7 @@ class RevenueAssuranceTests(unittest.TestCase):
         source = HTML.read_text(encoding="utf-8")
         for field in ('id="booked"', 'id="collected"', 'id="outstanding"', 'id="exposure"', 'id="watchRows"', 'id="ledgerRows"'):
             self.assertIn(field, source)
-        self.assertIn("Recruiter share due", source)
+        self.assertIn("Share due", source)
         self.assertIn("Export JSON backup", source)
 
     def test_embedded_javascript_syntax(self):
