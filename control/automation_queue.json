@@ -29,12 +29,12 @@
       "id": "P29-002",
       "title": "Deploy and prove bounded autonomous AI task worker",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "BLOCKED",
       "depends_on": [
         "P29-001"
       ],
       "idempotency_key": "phase29-scheduled-ci-v1",
-      "owner_gate": false,
+      "owner_gate": true,
       "acceptance": [
         "Five-minute GitHub Actions wake-up, push trigger and manual dispatch are configured with non-overlapping concurrency",
         "Worker validates mission state, queue dependencies, receipt ledger and emits machine-readable heartbeat",
@@ -44,7 +44,9 @@
         "Automated safety tests pass in GitHub Actions",
         "Owner provider setup is completed without exposing secrets in chat/repository and first productive provider run is verified",
         "Crash recovery, idempotency, quota accounting and a 24-hour soak test pass before calling the system autonomous"
-      ]
+      ],
+      "blocker": "Provider-backed AI inference requires owner-configured provider credentials and explicit zero-billing confirmation. Continue revenue research and product engineering without waiting on this task.",
+      "last_updated": "2026-11-12"
     },
     {
       "id": "P29-003",
