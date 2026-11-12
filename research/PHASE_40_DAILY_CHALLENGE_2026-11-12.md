@@ -31,7 +31,8 @@ Added a Chromium browser test that:
 ## CI
 - Earlier workflows were cancelled by later pushes under the workflow's concurrency policy.
 - Final-head workflow: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43171069764
-- Status at report creation: pending. Do not claim the daily challenge passes until this run completes successfully and browser logs show all tests pass, followed by file validation and artifact upload.
+- Final CI [43171069764](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43171069764): SUCCESS. All 13 Node/puzzle/browser tests passed, including deterministic daily restart and same-day completion persistence; file validation and offline package upload passed.
+- Artifact ID 13922182475; size 8,809 bytes; SHA-256 `83564b63f5287581499b4d045a683c0d959f2a4db18a6f9c8bb3425dbd8e7ae2`.
 
 ## Boundaries
 This creates a deterministic daily game challenge, not evidence of retention or player demand. Human playtest remains unperformed. The game remains private and unpublished; title clearance, account/KYC/tax/bank, legal terms, submission, public release and monetization remain owner-gated.
