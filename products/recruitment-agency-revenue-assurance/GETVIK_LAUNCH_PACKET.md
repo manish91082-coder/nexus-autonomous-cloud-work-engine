@@ -61,8 +61,10 @@ Stop or reposition if 100 qualified product-page visits produce zero paid orders
 ## Latest QA evidence
 - Chromium + Firefox Playwright run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159499045 (SUCCESS).
 - Checks include full placement/receipt/commission/guarantee journey, persistence, JSON backup/restore, financial-history deletion guard, labelled form controls, keyboard navigation, mobile overflow and no external network requests.
-- Latest private package run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159443230 (SUCCESS).
-- Current artifact ID: 13916598950.
-- Current artifact SHA-256: `e7649325a2e1a28a08720f3cb2344a588240f81938fadd18ad6d9793470ce225`.
+- Latest private package run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452 (SUCCESS).
+- Current artifact ID: 13917108363.
+- Current artifact SHA-256: `7d8e802de63c31ba68ccd64b668c8b6143b0ea5057178754f404898772dc1cba`.
 
 - Buyer FAQ: [CUSTOMER_FAQ_HI.md](CUSTOMER_FAQ_HI.md). It clarifies local storage, backups, receipt policy, commission calculation, guarantee event behavior and limitations to reduce recurring support.
+
+- Latest package includes `CUSTOMER_FAQ_HI.md` and passed ZIP/CRC/checksum validation: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452.
