@@ -621,6 +621,50 @@
         "artifact_size_bytes": 8810,
         "artifact_sha256": "35fba7a0fa6547c897c9da3ee3e56c2d7a50070be812512e68990a17a45d48a9"
       }
+    },
+    {
+      "id": "P42-001",
+      "title": "Prepare low-friction human playtest and demand evidence protocol for Orbit Relay",
+      "priority": "P0",
+      "status": "COMPLETED",
+      "depends_on": [
+        "P41-001"
+      ],
+      "idempotency_key": "phase42-human-playtest-protocol-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "Create a 10–15 minute tester script with no leading prompts",
+        "Capture completion, time-to-first-action, hints, retries, confusion and voluntary replay",
+        "Separate usability signals from willingness-to-pay and demand evidence",
+        "Provide privacy-safe feedback template; collect no unnecessary personal data",
+        "Document sample-size limitations and decision thresholds"
+      ],
+      "last_updated": "2026-11-12",
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "protocol": "products/orbit-relay/HUMAN_PLAYTEST_PROTOCOL.md",
+        "report": "research/PHASE_42_DEMAND_VALIDATION_AND_REVENUE_LANE_REBALANCE_2026-11-12.md",
+        "status": "Protocol prepared; actual human playtest not yet performed"
+      }
+    },
+    {
+      "id": "P42-002",
+      "title": "Revalidate fastest zero-upfront India-eligible revenue lanes and select independent second pilot",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P42-001"
+      ],
+      "idempotency_key": "phase42-multilane-revenue-revalidation-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "Recheck official current India eligibility, payout minimums, fees, hold and settlement for leading candidates",
+        "Compare at least three independent channels and their discovery mechanics",
+        "Rank by risk-adjusted time-to-first-sale and time-to-settlement",
+        "Reject or HOLD any channel with unsupported eligibility, recurring manual work or mandatory spend",
+        "Select one second lane that can be prepared privately without KYC, terms acceptance or publication"
+      ],
+      "last_updated": "2026-11-12"
     }
   ],
   "dead_letter": [],
