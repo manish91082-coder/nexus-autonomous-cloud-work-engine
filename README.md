@@ -26,17 +26,19 @@ Rail-neutral: accept and evaluate lawful bank, UPI, international transfer, PayP
 ## Execution visibility
 
 - [Execution Status Protocol](EXECUTION_STATUS_PROTOCOL.md) — explains scheduled runs, hourly notifications, status states and the difference between scheduled automation and continuous execution.
+- [Zero-cost continuous worker architecture](research/PHASE_29_ZERO_COST_CONTINUOUS_WORKER_ARCHITECTURE_2026-11-12.md) — selected five-minute bounded cloud execution design, free AI inference constraints, safety gates and acceptance tests.
 
 ## Automation layers
 
-- ChatGPT scheduled agent runs: research, rank and advance safe tasks without requiring a repeated “next” prompt.
-- GitHub Actions: deterministic scheduled validation of mission state and task queue.
-- Persistent JSON registries + continuity file: resume across chat-thread limits.
-- Owner gates: KYC, legal, financial, wallet signing, public release and spending remain explicit.
+- ChatGPT scheduled agent runs: strategic research, ranking and supervision.
+- GitHub Actions: deterministic validation now; bounded queue-consuming worker is the next engineering milestone.
+- Provider-neutral inference adapter: planned with strict free-quota circuit breakers; not yet enabled.
+- Persistent JSON registries + continuity file: durable memory and recovery across chat-thread limits.
+- Owner gates: KYC, legal, financial, wallet signing, provider secrets, public release and spending remain explicit.
 
 ## Current state
 
-Phase 29 control-plane installation. Verified realized receipts: ₹0. Authorized spend: ₹0. No revenue claim is made from prototypes, listings, traffic or pending balances.
+Phase 29 control-plane installation. The daily reasoning task and hourly progress watcher are configured; at audit, neither had a recorded run. The continuity guard workflow is committed but its scheduled execution was not yet verified. No always-on or continuous AI worker is currently deployed or proven. Verified realized receipts: ₹0. Authorized spend: ₹0.
 
 ## Scope discipline
 
