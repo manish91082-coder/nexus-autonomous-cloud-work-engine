@@ -1,0 +1,32 @@
+name: Mission Continuity Guard
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 08:11 Asia/Kolkata (02:41 UTC), deliberately off the top of the hour.
+    - cron: "41 2 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mission-continuity-guard
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout canonical state
+        uses: actions/checkout@v4
+      - name: Validate mission state and queue
+        run: python3 scripts/mission_guard.py
+      - name: Preserve machine-readable run report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mission-guard-report
+          path: mission_guard_report.json
+          if-no-files-found: warn
+          retention-days: 14
