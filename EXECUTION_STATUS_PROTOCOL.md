@@ -9,6 +9,17 @@
 2. **Hourly progress watcher:** ChatGPT task “₹10 Cr Progress Watch”, hourly. It checks repository/CI/task state and notifies only on meaningful progress, failure, blockers, material drift, unexpected inactivity or verified payout.
 3. **GitHub deterministic guard:** `.github/workflows/mission-continuity-guard.yml`, currently scheduled daily at 08:11 Asia/Kolkata plus manual dispatch. It validates JSON and task dependencies. It does not perform AI research or product execution.
 
+## Latest verified execution checkpoint — 2026-11-12
+
+- Five-minute bootstrap workflow: `.github/workflows/mission-autonomous-worker.yml` (schedule `3-59/5 * * * *`, push-triggered and manual dispatch).
+- First real run: [43147582665](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43147582665), triggered by push, completed **success** at 2026-11-12 03:20:59 UTC (08:50:59 IST).
+- Job: `bounded-worker-tick`; registry validation and queue poll both passed; heartbeat artifact `mission-worker-tick-43147582665` uploaded.
+- Heartbeat evidence: 8 queue tasks; 2 eligible; selected P29-002; 13 opportunity candidates; 0 payout providers; verified realized receipts ₹0; authorized spend ₹0.
+- Important limitation: this is a safe bootstrap poller. It validates/selects work and writes a heartbeat; it does not yet perform AI research, write product code autonomously, publish, or move funds.
+- The five-minute recurring schedule is configured, but the first scheduled (cron-triggered) run has not yet been verified. The successful run above was push-triggered.
+- AI inference/execution adapter is not deployed. Cloudflare Workers AI is the first provider candidate; current official free allocation is 10,000 Neurons/day and some models require paid plans. No provider token is configured or authorized yet. See https://developers.cloudflare.com/workers-ai/platform/pricing/.
+- Current mission therefore has a successful automated cloud bootstrap, **not yet a full autonomous 24×7 AI worker**.
+
 ## User-facing status states
 
 - **SCHEDULED:** future run exists; no run evidence yet.
