@@ -9,9 +9,9 @@
   "verified_realized_net_receipts_inr": 0,
   "authorized_spend_inr": 0,
   "active_build_limit": 2,
-  "execution_mode": "SCHEDULED_AGENT_PLUS_DETERMINISTIC_CI",
-  "last_verified_head": "9c7240ee649c801bae4bbec6e7c41edc7ac024bd",
-  "current_focus": "Complete P29-002 CI execution verification and P29-004 25+ candidate multi-category research; choose P0 and P1 pilots after hard gates.",
+  "execution_mode": "SCHEDULED_AGENT_PLUS_DETERMINISTIC_CI; CONTINUOUS_WORKER_DESIGN_SELECTED_NOT_DEPLOYED",
+  "last_verified_head": "452909ad5d36f2dd14f5e6a54013fc077c22f9c5",
+  "current_focus": "Verify mission-continuity-guard execution; complete P29-002 by implementing a bounded 5-minute queue worker with heartbeat, leases, retries and safe execution; continue P29-004 evidence scan and select revenue pilots only after payout/compliance hard gates.",
   "owner_gates": [
     "KYC",
     "tax_declarations",
@@ -19,7 +19,8 @@
     "bank_or_wallet_setup",
     "wallet_signing",
     "public_release",
-    "spend"
+    "spend",
+    "AI_provider_account_and_secret_setup"
   ],
   "updated_at": "2026-11-12"
 }
