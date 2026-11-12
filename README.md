@@ -1,35 +1,39 @@
 # ₹10 Cr Autonomous Revenue Ecosystem
 
-**This repository is the canonical engineering and evidence repository for the ₹10 crore Internet-only Autonomous Revenue Ecosystem.**
+**Canonical execution and evidence repository for the ₹10 crore autonomous revenue mission.**
 
-## Start here
+## Start here (authority order)
 
-1. [Master Plan & Operating Constitution v2.0](MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V2.md) — controlling scope, constraints, revenue lanes, qualification gates, automation architecture and roadmap.
-2. [Project Continuity](PROJECT_CONTINUITY.md) — current checkpoint and cross-chat recovery.
-3. [Repository Scope Audit](REPOSITORY_SCOPE_AUDIT_2026-11-12.md) — inventory and classification of legacy experiments and active work.
-4. [Phase 28 report](research/PHASE_28_ORBIT_RELAY_QA_AND_CRAZYGAMES_READINESS_2026-11-12.md) — latest game QA and distribution readiness evidence.
+1. [Master Constitution v3.0](MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V3.md) — authoritative scope, payment rails, opportunity scoring, automation and continuity.
+2. [Machine mission state](control/mission_state.json) — current machine-readable phase and execution state.
+3. [Persistent execution queue](control/automation_queue.json) — exact next tasks and dependencies.
+4. [Opportunity registry](control/opportunity_registry.json) — candidate scoring and evidence schema.
+5. [Payout registry](control/payout_registry.json) — bank, wallet, platform and crypto payout evidence.
+6. [Revenue ledger](control/revenue_ledger.json) — verified receipts only.
+7. [Project continuity](PROJECT_CONTINUITY.md) — human-readable cross-thread checkpoint.
+8. [Repository scope audit](REPOSITORY_SCOPE_AUDIT_2026-11-12.md) — legacy/active classification.
 
 ## Mission
 
-Build multiple independent, self-serve, Internet-only revenue channels with maximum practical automation, zero upfront capital and a target of ₹10,00,00,000 in verified realized net receipts.
+Build multiple independent, Internet-only revenue systems that can be configured once and then operated with maximum practical automation. Human involvement may be required for one-time KYC, account ownership, legal acceptance, payout setup, wallet signing and final publication approval. Recurring manual labour is not the intended business model.
 
-Revenue is counted only after actual payout is received and reconciled. The target is ambitious and not guaranteed.
+Target: ₹10,00,00,000 in verified realized net receipts. ₹0 upfront spend by default. The target is ambitious and not guaranteed.
 
-## Current active pilot
+## Payment policy
 
-- Orbit Relay is an internal codename for one HTML5 game experiment.
-- Browser QA and seeded puzzle tests pass.
-- It is not publicly published, accepted by any portal or monetized.
-- The public title must change after title/trademark screening.
+Rail-neutral: accept and evaluate lawful bank, UPI, international transfer, PayPal/Payoneer/Skrill, platform balances, e-wallet and crypto-wallet receipts where country eligibility, compliance, fees, control and real usability are verified. Crypto is separately reconciled and is not automatically counted as bank cash.
 
-## Hard constraints
+## Automation layers
 
-- ₹0 upfront spend; no paid tools, infrastructure, ads, credits or deposits without explicit approval.
-- No jobs, manual gigs, freelance bids, client services, cold outreach, physical operations, solar O&M or field work.
-- Self-serve/inbound distribution only.
-- Owner-only KYC, tax, legal, account, bank and consequential publication actions remain approval-gated.
-- Hindi-first reporting and evidence-backed engineering.
+- ChatGPT scheduled agent runs: research, rank and advance safe tasks without requiring a repeated “next” prompt.
+- GitHub Actions: deterministic scheduled validation of mission state and task queue.
+- Persistent JSON registries + continuity file: resume across chat-thread limits.
+- Owner gates: KYC, legal, financial, wallet signing, public release and spending remain explicit.
 
-## Repository hygiene
+## Current state
 
-Historical prototypes and old research are retained for auditability. They are not automatically active. The master plan defines which work is active, held, archived or excluded. Never add unrelated projects to this repository.
+Phase 29 control-plane installation. Verified realized receipts: ₹0. Authorized spend: ₹0. No revenue claim is made from prototypes, listings, traffic or pending balances.
+
+## Scope discipline
+
+No employment, manual gigs, freelance bids, cold outreach, recurring client services, physical/field operations, fake traffic, spam, IP infringement or regulatory evasion. Historical experiments remain archived for auditability.
