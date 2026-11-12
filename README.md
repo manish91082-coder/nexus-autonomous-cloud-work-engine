@@ -63,3 +63,13 @@ No employment, manual gigs, freelance bids, cold outreach, recurring client serv
 - [Hindi user guide](products/msme-ops-desk-lite/USER_GUIDE_HI.md)
 - [Private storefront listing draft](products/msme-ops-desk-lite/LISTING_DRAFT.md)
 - Product CI: [run 43150403509](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43150403509) passed both AI-worker tests and initial product smoke tests. A newer JavaScript syntax validation test has been added and is awaiting its run.
+
+
+## Phase 32 — Product differentiation
+
+- [Product-market fit audit](research/PHASE_32_PRODUCT_MARKET_FIT_AUDIT_2026-11-12.md)
+- [Product registry](control/product_registry.json)
+- [Recruitment Agency Revenue Assurance Desk](products/recruitment-agency-revenue-assurance/README.md) — private MVP, no candidate PII, not published.
+- [MSME Ops Desk Lite](products/msme-ops-desk-lite/README.md) — keep as a free-sample candidate; generic functionality is crowded by free/low-priced competitors.
+- Integrated CI [43151200515](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43151200515) passed: mission guard 17/17 checks, AI worker 2/2 tests, MSME product 3/3 tests, recruitment product 3/3 tests.
+- AI provider execution remains disabled by design because provider credentials are not configured. No inference request was made. Revenue remains ₹0.
