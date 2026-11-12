@@ -38,7 +38,7 @@ Rail-neutral: accept and evaluate lawful bank, UPI, international transfer, PayP
 
 ## Current state
 
-Phase 34 — marketplace validation and product QA. Opportunity registry: 27 candidates across 16 categories. Payout registry: 11 platform payout routes documented, with account-level verification still pending for several. First product MVP, [MSME Ops Desk Lite](products/msme-ops-desk-lite/README.md), has been built as an offline-first HTML tool with Hindi user guide and private listing draft. It is not published and product-market fit is unproven. Realized net receipts remain ₹0; authorized spend remains ₹0.
+Phase 35 — payment-linked guarantee risk differentiation. Opportunity registry: 27 candidates across 16 categories. Payout registry: 11 platform payout routes documented, with account-level verification still pending for several. First product MVP, [MSME Ops Desk Lite](products/msme-ops-desk-lite/README.md), has been built as an offline-first HTML tool with Hindi user guide and private listing draft. It is not published and product-market fit is unproven. Realized net receipts remain ₹0; authorized spend remains ₹0.
 
 Latest research: [Phase 31 revenue-first pivot](research/PHASE_31_REVENUE_FIRST_PIVOT_AND_MSME_PRODUCT_2026-11-12.md), [Phase 32 product-market fit audit](research/PHASE_32_PRODUCT_MARKET_FIT_AUDIT_2026-11-12.md), and [Phase 33 payout rail revalidation](research/PHASE_33_PAYOUT_RAIL_REVALIDATION_2026-11-12.md).
 
@@ -93,3 +93,14 @@ No employment, manual gigs, freelance bids, cold outreach, recurring client serv
 - [Getvik owner launch packet](products/recruitment-agency-revenue-assurance/GETVIK_LAUNCH_PACKET.md) documents fees, payout terms, KYC/legal gates and a no-spend demand test. [License draft](products/recruitment-agency-revenue-assurance/LICENSE_DRAFT.md) is not approved for publication.
 - Cross-browser Playwright QA for Chromium and Firefox is configured in [workflow](.github/workflows/recruitment-browser-qa.yml); latest run [43159499045](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159499045) must be checked before claiming pass.
 - Getvik is only a validation candidate. No account, KYC, terms acceptance, public listing or paid plan has been activated. Realized net receipts remain ₹0; authorized spend ₹0.
+
+
+## Phase 35 — Product-market fit and differentiation gate
+
+- [Demand and competitive risk audit](research/PHASE_35_RECRUITMENT_CASHFLOW_DEMAND_RISK_AUDIT_2026-11-12.md) found anecdotal late-payment/guarantee pain but material feature overlap with agency software already offering invoice/commission/guarantee controls.
+- Decision: keep Recruitment Agency Revenue Assurance Desk v0.2.0 private; do not publish until the due-date/payment-linked guarantee differentiator is implemented and buyer demand is tested.
+- Next build P35-001: invoice date/due date, due-date-based receivable ageing, late-payment detection and a user-configured guarantee-payment clause flag. It will show operational warnings only, not legal interpretations.
+- Getvik Free remains first validation channel but public launch is blocked on owner-only KYC, legal acceptance, payout declaration and explicit publication approval.
+- Latest FAQ-enabled private package: [run 43159877452](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452), artifact ID 13917108363, SHA-256 `7d8e802de63c31ba68ccd64b668c8b6143b0ea5057178754f404898772dc1cba`.
+- Browser QA [run 43159499045](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159499045) passed Chromium and Firefox.
+- No product published, no KYC/legal acceptance, no paid plan or spend. Realized net receipts remain ₹0.
