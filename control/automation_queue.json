@@ -860,7 +860,7 @@
       "id": "P43-003",
       "title": "Validate original technical publishing as a long-horizon compounding lane",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P43-002"
       ],
@@ -873,6 +873,39 @@
         "Identify an original, demonstrably differentiated manuscript angle using already available technical research only",
         "Estimate production and review burden; reject low-value AI-generated content farms",
         "Decide whether to create a private sample chapter or hold"
+      ],
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "report": "research/PHASE_43_PUBLISHING_AND_MARKETPLACE_MONETIZATION_AUDIT_2026-11-12.md",
+        "decision": "KDP retained as P2 long-horizon only; no manuscript build until original niche and buyer demand are validated",
+        "official_facts": "India supports Hindi eBooks; KDP pays approximately 60 days after month-end; direct deposit is supported; 70% India royalty requires KDP Select and price conditions; AI-generated content disclosure required; public-domain-heavy works limited to 35% royalty",
+        "market_signal": "Indian AI/automation ebooks and kits observed at ₹49–₹1,799; market is crowded and no sales data independently verified",
+        "sources": [
+          "https://kdp.amazon.com/en_US/help/topic/GK2MKZUL6U3SFBPZ",
+          "https://kdp.amazon.com/en_US/help/topic/GJD7DFFX6X88AK46",
+          "https://kdp.amazon.com/en_US/help/topic/G200634500",
+          "https://kdp.amazon.com/en_US/help/topic/G200672390",
+          "https://kdp.amazon.com/en_US/help/topic/G202124400"
+        ]
+      }
+    },
+    {
+      "id": "P43-004",
+      "title": "Evaluate GitHub Marketplace Apps as a developer-tool recurring revenue lane",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P43-003"
+      ],
+      "idempotency_key": "phase43-github-marketplace-app-lane-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-12",
+      "acceptance": [
+        "Map official paid-app requirements and settlement thresholds",
+        "Identify a narrowly differentiated app candidate from existing repository capabilities",
+        "Compare competitors and installation demand",
+        "Verify India payment onboarding only from official documentation or mark unknown",
+        "Do not create organization, accept terms, submit listing or build app until demand and payout gates pass"
       ]
     }
   ],

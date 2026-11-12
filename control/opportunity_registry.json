@@ -20,16 +20,31 @@
       "payout_evidence": {
         "india_direct_deposit": "INR supported per official country table",
         "eft_threshold": "no platform threshold",
-        "settlement": "approximately 60 days after month-end; India bank may take 7-10 additional business days",
-        "source": "https://kdp.amazon.com/en_US/help/topic/GK2MKZUL6U3SFBPZ"
+        "settlement": "approximately 60 days after month-end; India direct deposit supported and may take 7–10 additional business days",
+        "source": "https://kdp.amazon.com/en_US/help/topic/GK2MKZUL6U3SFBPZ",
+        "royalty": "35% or 70%; India 70% requires KDP Select enrollment and list-price requirements; public-domain-heavy content only 35%",
+        "ai_policy": "AI-generated text/images/translations must be disclosed; AI-assisted editing does not require disclosure",
+        "india_languages": "Hindi, Tamil, Malayalam, Marathi and Gujarati eBooks supported; no paperback for Indian languages",
+        "sources": [
+          "https://kdp.amazon.com/en_US/help/topic/GK2MKZUL6U3SFBPZ",
+          "https://kdp.amazon.com/en_US/help/topic/GJD7DFFX6X88AK46",
+          "https://kdp.amazon.com/en_US/help/topic/G200634500",
+          "https://kdp.amazon.com/en_US/help/topic/G200672390",
+          "https://kdp.amazon.com/en_US/help/topic/G202124400"
+        ]
       },
       "automation_fit": "high with editorial and owner publication gate",
       "unknowns": [
         "niche demand",
         "account eligibility/KYC/tax",
-        "content quality and rights"
+        "content quality and rights",
+        "Original differentiated niche and real reader demand",
+        "Manuscript quality and independent review effort",
+        "KDP Select exclusivity implications for the eBook",
+        "Account-level tax and payout setup"
       ],
-      "note": "High-value compounding, not fast-cash promise."
+      "note": "High-value compounding, not fast-cash promise.",
+      "last_revalidated": "2026-11-12"
     },
     {
       "id": "GUMROAD-DIGITAL-GOODS",
@@ -667,6 +682,37 @@
         "Refund policy and dispute reserve"
       ],
       "note": "Keep in evidence queue only; do not select as first pilot until payout schedule and buyer traction are verified."
+    },
+    {
+      "id": "GITHUB-MARKETPLACE-APP",
+      "category": "developer_tools_subscription",
+      "platform": "GitHub Marketplace Apps",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 58,
+      "score_confidence": "Low-medium: official marketplace payment and publisher requirements documented; India payout eligibility and buyer demand for a specific app not verified.",
+      "payout_evidence": {
+        "minimum": "USD 500 revenue per month",
+        "schedule": "electronic payment at end of following month after minimum reached",
+        "platform_fee": "GitHub retains 5% for transactions after Jan 1 2021",
+        "source": "https://docs.github.com/en/apps/github-marketplace/selling-your-app-on-github-marketplace/receiving-payment-for-app-purchases"
+      },
+      "requirements": {
+        "paid_app": "organization-owned app; verified publisher; minimum 100 GitHub App installations; monthly and annual plans; marketplace billing events; approval and financial onboarding",
+        "owner_gates": [
+          "organization ownership and publisher verification",
+          "verified domain and enforced 2FA",
+          "accept Marketplace Developer Agreement",
+          "financial onboarding and India payout confirmation"
+        ]
+      },
+      "unknowns": [
+        "India payout/bank route and tax documents",
+        "specific developer pain and competing apps",
+        "cost of hosting/inference and support",
+        "100 installation threshold",
+        "publisher account owner setup"
+      ]
     }
   ],
   "required_evidence": [

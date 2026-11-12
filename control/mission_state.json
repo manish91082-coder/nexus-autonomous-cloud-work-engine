@@ -10,8 +10,8 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 2,
   "execution_mode": "FIVE_MINUTE_GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED; CHATGPT_SUPERVISOR_AND_REPOSITORY_EXECUTION; REVENUE_FIRST_PRODUCT_BUILD",
-  "last_verified_head": "69c307bebd5879570ae9238a62c0e32c81b0ba63",
-  "current_focus": "P43-001 completed: 8 existing assets audited; none clears paid launch gate. P43-002 completed: no immediate public-data pilot; generic tender alerts saturated, MSME district data competitor exists, tourism/renewable/crop data freshness and granularity limitations. P43-003 active: validate original technical publishing as long-horizon compounding lane with official KDP India payout, royalties, language, AI disclosure, content quality and competition audit. No new build until a differentiated demand case. P42-005 remains blocked on owner-arranged human sessions. Receipts INR 0; spend INR 0; AI provider unconfigured.",
+  "last_verified_head": "aff4e1b08afaeb7032a206f1f2c29d933d49b86f",
+  "current_focus": "P43-001 complete: eight existing assets audited; none clears paid launch gate. P43-002 complete: no immediate public-data pilot due competition, data freshness/granularity and buyer evidence gaps. P43-003 complete: KDP P2 long-horizon only; India direct deposit, ~60-day payout, Hindi eBooks, 70% India royalty requires KDP Select/price rules, AI-generated disclosure mandatory; generic AI books crowded. P43-004 active: evaluate GitHub Marketplace Apps recurring revenue lane; 100 installations, verified organization, USD 500/month payout threshold, next-month settlement, India payout unknown. No new build until evidence. Receipts INR 0; spend INR 0; AI provider unconfigured.",
   "owner_gates": [
     "KYC",
     "tax_declarations",

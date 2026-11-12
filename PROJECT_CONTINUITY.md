@@ -1341,3 +1341,10 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Detailed report: [Phase 43 Public-Data Product Market Audit](research/PHASE_43_PUBLIC_DATA_PRODUCT_MARKET_AUDIT_2026-11-12.md).
 - P43-003 active: validate original technical publishing as a long-horizon compounding lane. Must verify KDP payout, India royalties, language, AI disclosure and quality/IP rules; no assumption of sales or quick cash.
 - No new product build or listing. Finance remains realized receipts INR 0; authorized spend INR 0.
+
+
+## Phase 43 publishing audit and GitHub Marketplace research — 2026-11-12
+- P43-003 completed: KDP is retained as a P2 long-horizon channel only. India direct deposit is supported; payouts are about 60 days after month-end; Hindi eBooks supported; India 70% royalty requires KDP Select and price conditions; AI-generated text/images/translations must be disclosed. Generic AI automation ebooks are already crowded at ₹49–₹1,799. No manuscript/account/publication/KYC started.
+- Detailed report: [Publishing and Marketplace Monetization Audit](research/PHASE_43_PUBLISHING_AND_MARKETPLACE_MONETIZATION_AUDIT_2026-11-12.md).
+- P43-004 active: evaluate GitHub Marketplace Apps as a developer-tool recurring revenue lane. Official gate: paid GitHub App needs organization ownership, publisher verification, at least 100 installations, approved listing and financial onboarding. Payment minimum USD 500/month; payment at end of following month; GitHub retains 5%. India payout route remains unverified. No organization setup, terms acceptance or listing submission.
+- No product build until buyer demand, India payout and differentiation pass. Finance remains realized receipts INR 0; authorized spend INR 0.
