@@ -32,13 +32,15 @@ Rail-neutral: accept and evaluate lawful bank, UPI, international transfer, PayP
 
 - ChatGPT scheduled agent runs: strategic research, ranking and supervision.
 - GitHub Actions: five-minute bounded worker is configured. The first integrated push run (43149321969) passed mission validation and 2/2 AI-worker safety tests. The AI step correctly failed closed because owner secrets are absent; no inference request was made.
-- Provider-neutral inference adapter: planned with strict free-quota circuit breakers; not yet enabled.
+- Bounded AI adapter: committed and integrated, but deliberately disabled because no owner-configured zero-billing provider credentials are present.
 - Persistent JSON registries + continuity file: durable memory and recovery across chat-thread limits.
 - Owner gates: KYC, legal, financial, wallet signing, provider secrets, public release and spending remain explicit.
 
 ## Current state
 
-Phase 29 control-plane installation. The daily reasoning task and hourly progress watcher are configured. The five-minute worker bootstrap run [43147582665](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43147582665) completed successfully and uploaded a heartbeat artifact; its recurring cron run is not yet verified. The bootstrap only validates/selects queue work; AI execution is not deployed. Opportunity registry has 13 candidates; payout provider registry has 0 verified providers. No realized receipts: ₹0. Authorized spend: ₹0.
+Phase 31 — revenue-first product validation. Opportunity registry: 27 candidates across 16 categories. Payout registry: 11 platform payout routes documented, with account-level verification still pending for several. First product MVP, [MSME Ops Desk Lite](products/msme-ops-desk-lite/README.md), has been built as an offline-first HTML tool with Hindi user guide and private listing draft. It is not published and product-market fit is unproven. Realized net receipts remain ₹0; authorized spend remains ₹0.
+
+Latest research: [Phase 31 revenue-first pivot and product report](research/PHASE_31_REVENUE_FIRST_PIVOT_AND_MSME_PRODUCT_2026-11-12.md).
 
 ## Scope discipline
 
@@ -53,3 +55,11 @@ No employment, manual gigs, freelance bids, cold outreach, recurring client serv
 - First integrated CI run: [43149321969](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43149321969), SUCCESS; mission guard PASS; AI worker safety tests 2/2 PASS; heartbeat PASS; artifact uploaded.
 - The run confirmed all five provider secrets were empty. Worker status was `WAITING_FOR_OWNER_CONFIGURATION`; zero inference calls were made. This is correct fail-closed behavior, not productive AI execution.
 - Five-minute schedule is configured; scheduled cron-triggered execution and a 24-hour soak test are still pending verification.
+
+
+## First revenue product
+
+- [MSME Ops Desk Lite app](products/msme-ops-desk-lite/index.html)
+- [Hindi user guide](products/msme-ops-desk-lite/USER_GUIDE_HI.md)
+- [Private storefront listing draft](products/msme-ops-desk-lite/LISTING_DRAFT.md)
+- Product CI: [run 43150403509](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43150403509) passed both AI-worker tests and initial product smoke tests. A newer JavaScript syntax validation test has been added and is awaiting its run.
