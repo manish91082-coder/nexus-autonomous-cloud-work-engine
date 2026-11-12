@@ -425,12 +425,12 @@
       "id": "P37-002",
       "title": "Complete public title, domain and trademark screening for Circuit Loom and Grid Current",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "BLOCKED",
       "depends_on": [
         "P37-001"
       ],
       "idempotency_key": "phase37-game-brand-clearance-v1",
-      "owner_gate": false,
+      "owner_gate": true,
       "acceptance": [
         "Exact and phonetic searches across major game portals and app stores",
         "Domain availability checked for practical primary domains",
@@ -438,8 +438,31 @@
         "Evidence and conflicts recorded; no legal clearance claim",
         "One provisional public title selected or both rejected"
       ],
-      "blocker": "Initial web search is not a trademark clearance. Need official registry and domain checks before public branding.",
+      "blocker": "Formal IP India wordmark/phonetic search requires OTP plus CAPTCHA in the official portal. WIPO terms prohibit automated querying; use the official UI manually. Domain RDAP endpoints were inaccessible in this session. Search-engine absence is not clearance.",
       "last_updated": "2026-11-12"
+    },
+    {
+      "id": "P37-003",
+      "title": "Reconcile latest Orbit Relay seeded puzzle CI, browser QA and offline package evidence",
+      "priority": "P0",
+      "status": "COMPLETED",
+      "depends_on": [],
+      "idempotency_key": "phase37-orbit-relay-ci-reconcile-v1",
+      "owner_gate": false,
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "report": "research/PHASE_37_1_ORBIT_RELAY_CI_RECONCILIATION_2026-11-12.md",
+        "workflow_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43132045102",
+        "tested_commit": "fd80cd20cff7fb0cc4706ebaeaa10d0df4ca448e",
+        "conclusion": "SUCCESS",
+        "checks": [
+          "240 seeded level/seed combinations",
+          "Chromium browser interaction suite",
+          "mobile viewport overflow",
+          "offline package build and artifact upload"
+        ],
+        "release_status": "PRIVATE_HOLD_NO_SUBMISSION_NO_MONETIZATION"
+      }
     }
   ],
   "dead_letter": [],
