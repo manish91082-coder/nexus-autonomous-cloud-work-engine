@@ -31,6 +31,11 @@ class RevenueAssuranceTests(unittest.TestCase):
                       "REPLACEMENT_COMPLETED", "Receivable ageing", "Client concentration"):
             self.assertIn(token, self.source)
 
+    def test_legacy_migration_does_not_resurrect_cleared_records(self):
+        self.assertIn("const hasV2=localStorage.getItem(KEY)!==null", self.script)
+        self.assertIn('localStorage.removeItem("recruitment_revenue_assurance_v1")', self.script)
+        self.assertIn('localStorage.removeItem(KEY)', self.script)
+
     def test_formula_level_business_logic(self):
         node = shutil.which("node")
         self.assertIsNotNone(node, "Node.js is required in the GitHub runner")
