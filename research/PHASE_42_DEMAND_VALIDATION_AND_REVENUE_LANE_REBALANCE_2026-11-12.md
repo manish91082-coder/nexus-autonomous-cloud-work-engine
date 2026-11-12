@@ -47,3 +47,8 @@ No account creation, KYC, tax declaration, bank/UPI setup, terms acceptance, pub
 - Decision: product remains PRIVATE_VALIDATION_HOLD. No additional feature development or paid listing. The only plausible differentiation hypothesis is offline/no-account/no-candidate-PII financial control beside an existing ATS, with installment-level cash receipts and cash-basis commissions. This is unproven.
 - Detailed audit: [POSITIONING_AND_COMPETITOR_AUDIT.md](../products/recruitment-agency-revenue-assurance/POSITIONING_AND_COMPETITOR_AUDIT.md).
 - P42-004 active: prepare private 5–8-owner problem validation pack and explicit kill criteria.
+
+
+## P42-004 completed: private validation pack
+- Created [PRIVATE_DEMAND_VALIDATION_PACK.md](../products/recruitment-agency-revenue-assurance/PRIVATE_DEMAND_VALIDATION_PACK.md), including a 25-minute task-based session, synthetic invoice/installment/commission/guarantee scenarios, anonymous scorecard, competitor comparison prompts and explicit kill criteria.
+- P42-005 is BLOCKED pending genuine owner-arranged opt-in agency participants. No interviews, user tests, purchase commitments or willingness-to-pay signals have been observed. Do not infer demand.
