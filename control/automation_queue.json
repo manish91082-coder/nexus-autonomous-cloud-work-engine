@@ -953,7 +953,7 @@
       "id": "P43-006",
       "title": "Prepare CSV to Action open-source release-readiness package for possible GitHub Sponsors adoption",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P43-005"
       ],
@@ -966,6 +966,37 @@
         "Prepare security reporting, support and contribution policies",
         "Prepare standalone release notes and usage screenshots without publishing",
         "Keep sponsor profile and public release owner-gated"
+      ],
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "report": "products/csv-to-action/OPEN_SOURCE_RELEASE_READINESS.md",
+        "tested_commit": "34de9cd7bf3c4618e3110107978a5a820ede3d62",
+        "workflow_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43174416025",
+        "ci_conclusion": "SUCCESS",
+        "tests": "11/11 passed; parser edge cases, formula injection (including tab/newline/BOM), 100,000-row cap and static no-remote-network API/link check",
+        "artifact_id": 13923467272,
+        "artifact_size_bytes": 10757,
+        "artifact_sha256": "33c06764bf6aca501df71b5d80cdb735a6ed29fadcd874c9044a34576541957d",
+        "remaining": "Independent runtime network capture, standalone repo creation/public release, owner licensing approval, security contact and human adoption evidence remain pending"
+      }
+    },
+    {
+      "id": "P43-007",
+      "title": "Prepare a low-touch community adoption plan for CSV to Action before GitHub Sponsors activation",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P43-006"
+      ],
+      "idempotency_key": "phase43-csv-to-action-community-adoption-plan-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-12",
+      "acceptance": [
+        "Define relevant developer/operator communities and compliant sharing rules",
+        "Create a useful free demo and concise product description without unsupported claims",
+        "Design feedback and issue-triage loop that does not require manual customer support",
+        "Set adoption thresholds before GitHub Sponsors activation",
+        "No public outreach, publication or account changes without owner approval"
       ]
     }
   ],
