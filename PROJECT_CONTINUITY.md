@@ -1234,3 +1234,20 @@ Require named buyer and live portfolio, explicit subcontract permission, written
   - https://docs.crazygames.com/resources/ad-monetization-guide/
 - Next: inspect viewport CI and fix any failures; add Edge/Chromebook testing only where a credible runner is available; arrange genuine human playtest. Continue parallel payout/channel research, but count revenue only after settled receipt evidence.
 - Verified realized net receipts INR 0; authorized spend INR 0.
+
+
+## Phase 38–39 execution checkpoint — 2026-11-12
+
+- Phase 38 P38-001: title-neutral CrazyGames submission packet completed at `products/orbit-relay/CRAZYGAMES_SUBMISSION_PACKET_DRAFT.md`.
+- Phase 38 P38-002: official ten-viewport Chromium/touch matrix passed in workflow [43168578797](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43168578797), tested commit `1e5b739213b5e087e3771053140d36012373645b`. The test checked overflow, board bounds, tile/action target dimensions, tile tap, hint, pause and resume.
+- Phase 39 source audit found unlocked campaign level was not persisted; only best score was stored.
+- Implemented local, versioned `orbit-relay-progress-v1` storage in `products/orbit-relay/game.js`. Highest unlocked level is monotonic, validated, bounded and safely falls back to level 1 when storage is unavailable or malformed. No network or personal data.
+- Start screen offers Continue level N; successful level completion unlocks N+1.
+- Browser regression added to verify level 2 resumes after a full page reload.
+- Report: [PHASE_39_CAMPAIGN_PROGRESS_PERSISTENCE_2026-11-12.md](research/PHASE_39_CAMPAIGN_PROGRESS_PERSISTENCE_2026-11-12.md).
+- Implementation commit: `01bb1851f41c57d9ff9d70bfef5af069a3596fcc`; regression test commit: `62954c610cf7ed939c17e93e3c3e5be86c67e815`.
+- CI runs [43170182667](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43170182667) and [43170187825](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43170187825) were still in progress/queued at checkpoint creation. Do not mark P39-001 complete until both relevant runs succeed and logs confirm browser test, file validation and artifact packaging.
+- P38-002 is COMPLETED; P39-001 is IN_PROGRESS in `control/automation_queue.json`.
+- Next after CI: inspect and fix any regression; if successful, complete P39-001 and begin a small daily challenge/replayability design with deterministic date seeds, local-only privacy and tests. Human playtest remains unperformed.
+- Game remains private and unpublished. Brand/title clearance, CrazyGames account, KYC/tax/bank, terms, submission, public release and monetization remain owner-gated.
+- Mission finance truth: verified realized net receipts INR 0; authorized spend INR 0. No platform acceptance or player demand is implied.
