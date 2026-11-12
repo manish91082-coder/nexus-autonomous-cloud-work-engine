@@ -1,0 +1,39 @@
+name: Build Orbit Relay HTML5 game
+on:
+  push:
+    paths:
+      - 'products/orbit-relay/**'
+      - '.github/workflows/build-orbit-relay.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: orbit-relay-build
+  cancel-in-progress: false
+jobs:
+  test-and-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test puzzle generation and connectivity
+        run: node --test products/orbit-relay/tests/puzzle.test.cjs
+      - name: Validate game files
+        run: |
+          test -s products/orbit-relay/index.html
+          test -s products/orbit-relay/puzzle.js
+          test -s products/orbit-relay/game.js
+          grep -q 'No uploads' products/orbit-relay/index.html
+      - name: Package offline game build
+        run: |
+          mkdir -p dist
+          cd products/orbit-relay
+          zip -r ../../dist/orbit-relay-html5.zip index.html puzzle.js game.js README.md
+          cd ../..
+          sha256sum dist/orbit-relay-html5.zip > dist/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: orbit-relay-html5
+          path: dist/
+          if-no-files-found: error
+          retention-days: 30
