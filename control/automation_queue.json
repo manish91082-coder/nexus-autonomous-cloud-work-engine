@@ -597,7 +597,7 @@
       "id": "P41-001",
       "title": "Test Daily Challenge UTC rollover and localStorage failure resilience",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P40-001"
       ],
@@ -609,7 +609,18 @@
         "Campaign and daily completion states remain isolated",
         "All browser tests pass and offline package is generated"
       ],
-      "last_updated": "2026-11-12"
+      "last_updated": "2026-11-12",
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "report": "research/PHASE_41_DAILY_CHALLENGE_EDGE_CASE_QA_2026-11-12.md",
+        "ci_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43171334887",
+        "ci_conclusion": "SUCCESS",
+        "tested_commit": "2ca867c8a26c47d2a936852d2b86f4b957808fd9",
+        "browser_tests": "7/7 passed; UTC rollover, campaign isolation, localStorage blocked fallback, daily restart, desktop, mobile and ten-viewport matrix",
+        "artifact_id": 13922102247,
+        "artifact_size_bytes": 8810,
+        "artifact_sha256": "35fba7a0fa6547c897c9da3ee3e56c2d7a50070be812512e68990a17a45d48a9"
+      }
     }
   ],
   "dead_letter": [],
