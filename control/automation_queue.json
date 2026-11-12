@@ -532,7 +532,7 @@
       "id": "P39-001",
       "title": "Persist unlocked campaign level and verify resume after reload",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P38-002"
       ],
@@ -551,8 +551,35 @@
         "test_commit": "62954c610cf7ed939c17e93e3c3e5be86c67e815",
         "implementation_ci": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43170182667",
         "regression_ci": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43170187825",
-        "status_note": "Await CI completion; do not claim pass yet."
+        "status_note": "Await CI completion; do not claim pass yet.",
+        "regression_ci_conclusion": "SUCCESS",
+        "regression_ci_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43170187825",
+        "browser_tests": "4/4 passed; reload resumes level 2",
+        "artifact_id": 13921009763,
+        "artifact_sha256": "0deeae75bc7b4f5e1355f0d2fbf20efe3af23f8908a99fe423d0350c50dea20d",
+        "package_size_bytes": 8411
       },
+      "last_updated": "2026-11-12",
+      "completed_at": "2026-11-12"
+    },
+    {
+      "id": "P40-001",
+      "title": "Implement deterministic Daily Challenge with local completion marker",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P39-001"
+      ],
+      "idempotency_key": "phase40-daily-challenge-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "UTC-date deterministic puzzle seed gives same daily puzzle across reloads and devices",
+        "Daily Challenge entry point clearly separated from campaign",
+        "Completion marker stored locally per UTC date; no account or network",
+        "Browser tests cover deterministic restart and same-day completion state",
+        "Existing campaign progression and score behavior remain intact",
+        "CI browser suite, validation and offline package pass"
+      ],
       "last_updated": "2026-11-12"
     }
   ],
