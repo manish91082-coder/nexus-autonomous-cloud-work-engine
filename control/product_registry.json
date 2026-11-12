@@ -32,11 +32,19 @@
       "owner_gate": "public_release",
       "package_status": "PRIVATE_DRAFT_PACKAGE_BUILT",
       "package_artifact": {
-        "workflow_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159443230",
+        "workflow_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452",
         "artifact_name": "recruitment-agency-revenue-assurance-v0.2.0-private",
-        "artifact_id": 13916598950,
-        "sha256": "e7649325a2e1a28a08720f3cb2344a588240f81938fadd18ad6d9793470ce225",
-        "expires_at": "2026-12-12T05:09:19Z"
+        "artifact_id": 13917108363,
+        "sha256": "7d8e802de63c31ba68ccd64b668c8b6143b0ea5057178754f404898772dc1cba",
+        "expires_at": "2026-12-12T05:13:05Z",
+        "included_files": [
+          "index.html",
+          "README.md",
+          "USER_GUIDE_HI.md",
+          "CUSTOMER_FAQ_HI.md",
+          "PACKAGE_README.txt",
+          "PACKAGE_MANIFEST.json"
+        ]
       }
     }
   ],
