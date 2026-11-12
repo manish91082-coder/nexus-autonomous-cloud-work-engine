@@ -34,9 +34,9 @@ jobs:
       - name: Upload private package artifact
         uses: actions/upload-artifact@v4
         with:
-          name: recruitment-agency-revenue-assurance-v0.2.0-private
+          name: recruitment-agency-revenue-assurance-v0.3.0-private
           path: |
-            dist/recruitment-agency-revenue-assurance-v0.2.0.zip
+            dist/recruitment-agency-revenue-assurance-v0.3.0.zip
             dist/SHA256SUMS.txt
           if-no-files-found: error
           retention-days: 30
