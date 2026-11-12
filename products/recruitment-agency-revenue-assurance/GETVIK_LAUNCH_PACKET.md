@@ -59,7 +59,7 @@ Stop or reposition if 100 qualified product-page visits produce zero paid orders
 
 
 ## Latest QA evidence
-- Chromium + Firefox Playwright run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159499045 (SUCCESS).
+- Chromium + Firefox Playwright run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901456 (SUCCESS).
 - Checks include full placement/receipt/commission/guarantee journey, persistence, JSON backup/restore, financial-history deletion guard, labelled form controls, keyboard navigation, mobile overflow and no external network requests.
 - Latest private package run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452 (SUCCESS).
 - Current artifact ID: 13917108363.
@@ -72,3 +72,5 @@ Stop or reposition if 100 qualified product-page visits produce zero paid orders
 
 ## v0.3.0 product differentiation gate
 The product now records invoice reference/date/due date, uses due date for ageing, detects late receipts and shows a payment-linked guarantee risk flag only when the seller selects the signed-contract rule. It does not determine legal validity or void a guarantee. This is a stronger operational angle, but willingness-to-pay is still unproven.
+
+- v0.3.0 formula/mission CI passed: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160680889.
