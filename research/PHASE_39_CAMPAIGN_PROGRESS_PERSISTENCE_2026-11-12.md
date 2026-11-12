@@ -28,7 +28,8 @@ Extended the Chromium browser test to:
 - Browser regression test: `62954c610cf7ed939c17e93e3c3e5be86c67e815`
 - Implementation workflow: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43170182667
 - Regression workflow: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43170187825
-- CI status at report creation: queued/in progress; no pass claim until both relevant checks finish successfully.
+- Implementation CI [43170182667](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43170182667): SUCCESS. Puzzle tests, existing browser interaction suite, file validation and offline packaging passed. Artifact ID 13922395129; SHA-256 `b0581c8f72e5c3482f7943fd07a77357d965f69f71c6117ab88e5737b97d8a7f`.
+- Regression CI [43170187825](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43170187825): pending/in progress at last check; do not claim campaign-resume regression passed until it completes successfully.
 
 ## Acceptance and limits
 This is a local-device convenience feature, not cloud sync. Clearing browser storage or changing devices will remove local progress. Human playtesting, demand, platform acceptance and monetization remain unverified. Game remains private and unpublished.
