@@ -391,6 +391,55 @@
         ],
         "remaining": "Manual assistive technology testing, product-specific willingness-to-pay, owner KYC/legal/publication approval remain open."
       }
+    },
+    {
+      "id": "P37-001",
+      "title": "Revalidate CrazyGames India payout rail, contractual settlement and public game-title collisions",
+      "priority": "P0",
+      "status": "COMPLETED",
+      "depends_on": [],
+      "idempotency_key": "phase37-crazygames-payout-title-revalidation-v1",
+      "owner_gate": false,
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "report": "research/PHASE_37_CRAZYGAMES_PAYOUT_AND_TITLE_REVALIDATION_2026-11-12.md",
+        "payout_decision": "PUBLIC_EVIDENCE_SUPPORTS_INDIA_ROUTE_ACCOUNT_LEVEL_CONFIRMATION_PENDING",
+        "publisher_entity": "Maxflow BV, Belgium",
+        "payout_terms": "EUR 100 minimum; NET 60 contractual; faster monthly processing target is not guaranteed",
+        "title_collisions": [
+          "Orbit Relay",
+          "Signal Weave",
+          "Orbit Loom: Signal Weave",
+          "Pulse Path",
+          "Relay Grid",
+          "Signal Circuit"
+        ],
+        "provisional_names": [
+          "Circuit Loom",
+          "Grid Current"
+        ],
+        "restrictions": "No account, KYC, legal acceptance, publication or spend"
+      }
+    },
+    {
+      "id": "P37-002",
+      "title": "Complete public title, domain and trademark screening for Circuit Loom and Grid Current",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P37-001"
+      ],
+      "idempotency_key": "phase37-game-brand-clearance-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "Exact and phonetic searches across major game portals and app stores",
+        "Domain availability checked for practical primary domains",
+        "IP India and WIPO trademark search performed for relevant software/game classes",
+        "Evidence and conflicts recorded; no legal clearance claim",
+        "One provisional public title selected or both rejected"
+      ],
+      "blocker": "Initial web search is not a trademark clearance. Need official registry and domain checks before public branding.",
+      "last_updated": "2026-11-12"
     }
   ],
   "dead_letter": [],
