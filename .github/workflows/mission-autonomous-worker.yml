@@ -1,6 +1,12 @@
 name: Mission Worker Tick (safe bootstrap)
 
 on:
+  push:
+    paths:
+      - 'scripts/worker_tick.py'
+      - 'scripts/mission_guard.py'
+      - 'control/**'
+      - '.github/workflows/mission-autonomous-worker.yml'
   workflow_dispatch:
   schedule:
     # Every five minutes, offset from the top of the hour to reduce schedule contention.
