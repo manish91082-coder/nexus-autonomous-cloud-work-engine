@@ -942,3 +942,15 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Final artifact for this run: ID 13905676397; size 8,229 bytes; SHA-256 3988dc93f7c11738ac709a9f6bfc566781c8f206bac08ef2baa6e38e705a4625; expires 2026-12-12.
 - Previous failed iterations are retained as audit evidence; latest successful run supersedes them for the current source state.
 - Next: perform game quality/difficulty review, original store asset design, exact-title/trademark screening and current CrazyGames SDK/India payout documentation audit. No account, submission, exclusivity, legal acceptance, KYC, bank setup or monetization has been activated.
+
+
+### Phase 28 research and stress-test closure (2026-11-12)
+
+- Added research/PHASE_28_ORBIT_RELAY_QA_AND_CRAZYGAMES_READINESS_2026-11-12.md; commit dad833e19bd09d46cd7ad74bb05d255edb970f6b.
+- Public title screening found several existing mobile games with exact title Orbit Relay. Keep it as internal codename only; do not publish under that name. This is a public-market collision screen, not formal trademark clearance. Choose a new distinctive title only after app-store, portal, domain and trademark-registry screening.
+- Official CrazyGames documentation audit: Basic Launch is a 7–21 day limited audience soft launch and is not monetized; the official FAQ/launch guide specifies 500 plays and at least 7 days, with a 21-day cap if 500 plays are not reached. Full Launch is curated, requires SDK/full QA, and monetization begins only after Full Launch. SDK v3 uses async init; Basic SDK integration optional, ads disabled during Basic Launch. Full Launch requires gameplay start/stop events.
+- CrazyGames cover package requirements: 1920x1080 landscape, 800x1200 portrait, 800x800 square; two silent preview videos (landscape 16:9 and portrait 2:3, 15–20 seconds max, 50MB max). Initial download limit 50MB, 20MB for mobile homepage eligibility; total 250MB and 1,500 files.
+- Official payouts use Tipalti; options vary by country, EUR 100 minimum; contractual NET60 but current stated operational aim is typically by the 10th of following month. India-specific method/bank settlement not confirmed publicly; owner onboarding required before any agreement/submission.
+- Seeded stress test added: 24 levels × 10 deterministic seeds; verifies unsolved starts, meaningful path length, and hint convergence. Commit fd80cd20cff7fb0cc4706ebaeaa10d0df4ca448e.
+- Stress-test CI run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43132045102; run ID 43132045102; conclusion SUCCESS. Exact logs: 8 puzzle tests passed, 0 failed; 3 Playwright browser tests passed, 0 failed; all validation/package/artifact steps passed.
+- Next: complete gameplay quality review/human playtest design, title clearance and original cover/video creation. No CrazyGames account, KYC, agreement, SDK monetization, submission or revenue.
