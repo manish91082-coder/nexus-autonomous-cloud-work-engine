@@ -23,7 +23,8 @@ jobs:
           npx --yes playwright install --with-deps chromium
       - name: Run real-browser interaction tests
         run: |
-          npx --yes -p playwright -c "node --test products/orbit-relay/tests/browser.test.cjs"
+          npm install --no-save playwright
+          node --test products/orbit-relay/tests/browser.test.cjs
       - name: Validate game files
         run: |
           test -s products/orbit-relay/index.html
