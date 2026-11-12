@@ -69,7 +69,7 @@ test("daily challenge uses a deterministic UTC-date puzzle and persists same-day
   const { browser, page } = await launch();
   try {
     await page.getByRole("button", { name: /Daily Challenge/i }).click();
-    assert.match(await page.locator("#pathInfo").textContent(), /DAILY · \\d{4}-\\d{2}-\\d{2}/);
+    assert.match(await page.locator("#pathInfo").textContent(), /DAILY · \d{4}-\d{2}-\d{2}/);
     const firstBoard = await page.locator("#board .tile:not(.empty) svg").evaluateAll(nodes => nodes.map(n => n.style.transform));
     await page.getByRole("button", { name: "Restart level" }).click();
     const restartedBoard = await page.locator("#board .tile:not(.empty) svg").evaluateAll(nodes => nodes.map(n => n.style.transform));
