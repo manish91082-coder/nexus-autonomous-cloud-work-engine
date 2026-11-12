@@ -39,3 +39,11 @@ P42-003: audit differentiated buyer demand and competing alternatives for Recrui
 
 ## Owner gates and financial truth
 No account creation, KYC, tax declaration, bank/UPI setup, terms acceptance, public listing, publication or spend performed. Orbit Relay remains private. Verified realized net receipts INR 0; authorized spend INR 0. Scheduled worker remains deterministic; provider-backed AI inference is not configured.
+
+
+## P42-003 competitor audit result — 2026-11-12
+- Direct competitors found: MoneyGence, IT Ways Placement Agency CRM, WePlacement and HireXL.
+- MoneyGence publicly offers recruitment-agency client finance, invoice/collection/receivable workflows and a free first-two-client tier. IT Ways advertises placement invoicing, payment ageing, recruiter incentive ledger and replacement warranty tracking at ₹999–₹1,999/month. WePlacement advertises payment-linked commission release, GST/TDS billing and guarantee tracking with first owner seat free. HireXL offers revenue/placement and commission tracking with a free solo tier and paid tiers from ₹4,999/month.
+- Decision: product remains PRIVATE_VALIDATION_HOLD. No additional feature development or paid listing. The only plausible differentiation hypothesis is offline/no-account/no-candidate-PII financial control beside an existing ATS, with installment-level cash receipts and cash-basis commissions. This is unproven.
+- Detailed audit: [POSITIONING_AND_COMPETITOR_AUDIT.md](../products/recruitment-agency-revenue-assurance/POSITIONING_AND_COMPETITOR_AUDIT.md).
+- P42-004 active: prepare private 5–8-owner problem validation pack and explicit kill criteria.
