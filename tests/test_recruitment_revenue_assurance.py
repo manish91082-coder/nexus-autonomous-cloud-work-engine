@@ -19,7 +19,7 @@ class RevenueAssuranceTests(unittest.TestCase):
         self.assertIn("NO CANDIDATE PII", self.source)
         self.assertNotRegex(self.source, r'<script[^>]+src=')
         self.assertNotRegex(self.source, r'https?://[^"\\s]+')
-        for field in ("placementId", "clientId", "recruiterId", "fee", "share", "guaranteeDays"):
+        for field in ("placementId", "clientId", "recruiterId", "invoiceRef", "invoiceDate", "dueDate", "guaranteePaymentRule", "fee", "share", "guaranteeDays"):
             self.assertIn('id="'+field+'"', self.source)
 
     def test_cash_commission_guarantee_and_ageing_controls_exist(self):
@@ -28,7 +28,8 @@ class RevenueAssuranceTests(unittest.TestCase):
                       'id="recruiterRows"', 'id="eventRows"'):
             self.assertIn(field, self.source)
         for token in ("CLIENT_RECEIPT", "COMMISSION_PAID", "CLAIM_OPENED",
-                      "REPLACEMENT_COMPLETED", "Receivable ageing", "Client concentration"):
+                      "REPLACEMENT_COMPLETED", "Receivable ageing", "Client concentration",
+                      "Payment-linked guarantee review", "Contractual payment due date"):
             self.assertIn(token, self.source)
 
     def test_legacy_migration_does_not_resurrect_cleared_records(self):
@@ -51,6 +52,9 @@ assert.equal(outstanding(placement), 6500);
 assert.equal(commissionEarned(placement), 437.5);
 assert.equal(commissionBalance(commissionEarned(placement), 100), 337.5);
 assert.equal(commissionBalance(commissionEarned(placement), 500), 0);
+assert.equal(ageDays({placedDate:'2026-11-01', dueDate:'2026-11-10'}, '2026-11-12'), 2);
+assert.equal(ageDays({placedDate:'2026-11-01', dueDate:'2026-11-20'}, '2026-11-12'), -8);
+assert.equal(ageBucket(-1), 'NOT_DUE');
 assert.equal(ageBucket(0), '0-30');
 assert.equal(ageBucket(30), '0-30');
 assert.equal(ageBucket(31), '31-60');
@@ -58,6 +62,16 @@ assert.equal(ageBucket(60), '31-60');
 assert.equal(ageBucket(61), '61-90');
 assert.equal(ageBucket(90), '61-90');
 assert.equal(ageBucket(91), '90+');
+const latePaid = {fee: 1000, share: 10, dueDate:'2026-11-05', guaranteePaymentRule:'ON_TIME_PAYMENT_REQUIRED', receipts:[{amount:500,date:'2026-11-06'}]};
+assert.equal(paymentRisk(latePaid, '2026-11-12'), 'PAID_LATE');
+const overdueOpen = {fee:1000, share:10, dueDate:'2026-11-05', guaranteePaymentRule:'ON_TIME_PAYMENT_REQUIRED', receipts:[]};
+assert.equal(paymentRisk(overdueOpen, '2026-11-12'), 'OVERDUE_OPEN');
+const notDue = {fee:1000, share:10, dueDate:'2026-11-20', guaranteePaymentRule:'ON_TIME_PAYMENT_REQUIRED', receipts:[]};
+assert.equal(paymentRisk(notDue, '2026-11-12'), 'CURRENT');
+assert.equal(paymentRisk({fee:1000,share:10,guaranteePaymentRule:'ON_TIME_PAYMENT_REQUIRED',receipts:[]}, '2026-11-12'), 'DUE_DATE_MISSING');
+assert.equal(paymentRisk({fee:1000,share:10,guaranteePaymentRule:'NOT_REVIEWED',receipts:[]}, '2026-11-12'), 'REVIEW_REQUIRED');
+assert.equal(paymentRisk({fee:1000,share:10,guaranteePaymentRule:'PAYMENT_INDEPENDENT',receipts:[]}, '2026-11-12'), 'NOT_LINKED');
+assert.equal(paymentRisk({fee:1000,share:10,guaranteePaymentRule:'CUSTOM_REVIEW',receipts:[]}, '2026-11-12'), 'MANUAL_REVIEW');
 const concentration = clientConcentration([
   {fee: 10000, clientId: 'C1', receipts: [{amount: 2500}]},
   {fee: 5000, clientId: 'C1', receipts: [{amount: 1000}]},
@@ -65,7 +79,7 @@ const concentration = clientConcentration([
 ]);
 assert.deepEqual(concentration.C1, {amount: 11500, count: 2});
 assert.equal(concentration.C2, undefined);
-console.log('formula assertions: 12 passed');
+console.log('formula assertions: 22 passed');
 """
         with tempfile.NamedTemporaryFile("w", suffix=".js", encoding="utf-8") as handle:
             handle.write(harness)
