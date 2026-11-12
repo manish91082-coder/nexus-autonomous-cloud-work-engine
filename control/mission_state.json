@@ -10,8 +10,8 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 2,
   "execution_mode": "FIVE_MINUTE_GITHUB_ACTIONS_SAFE_BOOTSTRAP_PLUS_DAILY_CHATGPT_AGENT_PLUS_HOURLY_WATCH; AI_EXECUTOR_NOT_DEPLOYED",
-  "last_verified_head": "c27863a512ea8ca4850302706e9555d107ee6625",
-  "current_focus": "P29-002: implement bounded AI task executor with quota breaker, leases/idempotency and recovery; P29-004: grow 13 candidate registry to 25+ across 8+ categories with verified India payout evidence.",
+  "last_verified_head": "69dc0659aeef95d4c76be037bab5ecf1c22f948a",
+  "current_focus": "P29-002: implement provider-neutral bounded AI task execution with strict free-quota circuit-breaker, lease/idempotency and recovery; P29-004: expand the 13-candidate registry to 25+ candidates across 8+ categories with verified India payout evidence.",
   "owner_gates": [
     "KYC",
     "tax_declarations",
