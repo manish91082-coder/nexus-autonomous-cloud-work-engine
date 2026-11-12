@@ -1293,3 +1293,11 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Existing candidates include Getvik, Topmate, Payhip+Razorpay, KDP, Gumroad, itch.io and CrazyGames. Account-level KYC, admission and payout remain unverified gates.
 - No new product build until a buyer/problem signal and differentiation are evidenced. No spend, account creation, legal acceptance, KYC, publication or submission without owner approval.
 - Finance remains: realized net receipts INR 0; authorized spend INR 0.
+
+
+## Phase 42 channel decision — 2026-11-12
+- P42-001 completed: [Human Playtest Protocol](products/orbit-relay/HUMAN_PLAYTEST_PROTOCOL.md) prepared; no actual human sessions yet.
+- P42-002 completed after official channel revalidation. Decision: Getvik primary validation storefront; Topmate independent secondary; Payhip+Razorpay backup; itch.io payouts held for account/payout uncertainty. Detailed terms, discovery constraints and source URLs are in [Phase 42 report](research/PHASE_42_DEMAND_VALIDATION_AND_REVENUE_LANE_REBALANCE_2026-11-12.md).
+- P42-003 active: audit specific buyer demand and competitor alternatives for Recruitment Agency Revenue Assurance Desk. No new build until demand/differentiation evidence exists.
+- Public platform terms do not establish actual account eligibility, buyer demand or settled revenue. No account/KYC/legal acceptance/publication/spend.
+- Finance remains: realized net receipts INR 0; authorized spend INR 0.

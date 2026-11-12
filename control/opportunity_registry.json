@@ -222,8 +222,10 @@
       "unknowns": [
         "India Payoneer eligibility",
         "account-specific onboarding",
-        "buyer demand and platform discoverability"
-      ]
+        "buyer demand and platform discoverability",
+        "Payout requires completed and validated tax interview; India PayPal/Payoneer account eligibility remains unverified"
+      ],
+      "last_revalidated": "2026-11-12"
     },
     {
       "id": "ETSY-INDIA-DIGITAL",
@@ -297,8 +299,9 @@
       "score": 72,
       "score_confidence": "Medium: official India payout and fee terms captured; discovery is not sufficient without creator audience and first-sale delay applies.",
       "payout_evidence": {
-        "summary": "10% own-link; 20% marketplace; transaction charge >=2% INR / 3%-6% international; no monthly fee; UPI/card checkout",
-        "source": "https://topmate.io/fees"
+        "summary": "No monthly fee; 10% own-link or 20% marketplace commission; INR transaction charge at least 2%; ₹500+ INR withdrawal no fee, below ₹500 flat ₹20; first payout request opens 7 days after first paid sale; INR payout processed within 7 days of request, plus possible bank delay up to 48h",
+        "source": "https://topmate.io/fees",
+        "payout_source": "https://topmate72420835211887570.freshdesk.com/support/solutions/articles/1070000141051-topmate-payout-guidelines"
       },
       "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
       "india_eligibility": "India-first INR/UPI seller ecosystem; exact payout timing account-level pending",
@@ -310,7 +313,8 @@
         "Refund, fee, FX and tax treatment where applicable",
         "IP/content policy and acceptance criteria"
       ],
-      "note": "Marketplace discovery and instant digital delivery; payout settlement and product demand still need validation"
+      "note": "Selected as independent secondary validation channel for self-serve digital products; marketplace acquisition costs 20% commission and most first bookings still come from creator's own audience. No account setup or publication performed.",
+      "last_revalidated": "2026-11-12"
     },
     {
       "id": "GETVIK-DIGITAL-GOODS",
@@ -322,11 +326,15 @@
       "score_confidence": "Medium: official current seller terms plus public marketplace sales counters; counts are platform-reported, and our niche demand remains unproven.",
       "payout_evidence": {
         "india_eligibility": "Indian sellers; PAN, legal name, own-name UPI ID and bank details required before publishing/payout",
-        "minimum": "₹100 settled balance; manual payout request",
-        "settlement": "Usually 2–3 business days per current platform help page; Terms allow risk/fraud holds",
-        "fees": "Free 10% platform fee + 18% GST on fee + Cashfree gateway fee and GST; no paid plan needed for pilot",
+        "minimum": "₹100 settled balance; creator requests payout",
+        "settlement": "Usually 2–3 business days after request per current Getvik site; risk/compliance holds remain possible",
+        "fees": "Free plan: 10% platform fee + 18% GST on that fee + Cashfree gateway charges and GST",
         "demand_signal": "Public Discover page displays completed-sale counts, including 416 sold for a ₹99 Big4 guide, 148 sold for a ₹199 Excel workbook, 51 sold for a ₹799 Excel Career Pack, and 21 sold for a ₹199 Pivot Table workbook; platform-displayed counts only",
-        "source": "https://getvik.com/terms-of-service"
+        "source": "https://getvik.com/terms-of-service",
+        "sources": [
+          "https://getvik.com/",
+          "https://getvik.com/privacy-policy"
+        ]
       },
       "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
       "india_eligibility": "India-first payout claims; legal entity, KYC and operating reliability not independently verified",
@@ -336,7 +344,8 @@
         "Exact Cashfree gateway charges by payment method and GST treatment",
         "Refund/chargeback reserve behavior for this account"
       ],
-      "note": "Best first validation storefront among currently reviewed channels because it combines public discovery, UPI checkout, automatic delivery and a low ₹100 payout threshold; do not infer our product will sell from other creators' counts."
+      "note": "Preferred first validation storefront: India UPI checkout, automatic delivery, ₹100 payout threshold and ₹0 monthly plan. Distribution still requires creator/store link or compliant social channel; marketplace discovery and account-specific payout are not guaranteed.",
+      "last_revalidated": "2026-11-12"
     },
     {
       "id": "PAYHIP-RAZORPAY-IN",
@@ -348,7 +357,10 @@
       "score_confidence": "Medium-low: official India Razorpay integration and free-plan fee captured; no marketplace discovery, seller must bring qualified traffic.",
       "payout_evidence": {
         "summary": "Razorpay supports India sellers; UPI/cards; Payhip free plan adds 5% platform fee plus gateway charges",
-        "source": "https://help.payhip.com/article/368-connect-your-razorpay-account"
+        "source": "https://help.payhip.com/article/368-connect-your-razorpay-account",
+        "marketplace": "At least USD 10 total sales, account review and individual product approval before marketplace listing",
+        "marketplace_source": "https://help.payhip.com/article/307-marketplace",
+        "fee_source": "https://help.payhip.com/article/102-billing-and-upgrading"
       },
       "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
       "india_eligibility": "India seller route documented; Razorpay KYC/activation and settlement remain account gates",
@@ -356,9 +368,11 @@
         "Account-specific onboarding/KYC and payout validation",
         "Buyer demand and organic discovery",
         "Refund, fee, FX and tax treatment where applicable",
-        "IP/content policy and acceptance criteria"
+        "IP/content policy and acceptance criteria",
+        "Payhip marketplace eligibility requires at least USD 10 total sales, account review and individual product approval; approval target is up to 10 days and may take longer"
       ],
-      "note": "High automation; verify current Razorpay fees and payout timing"
+      "note": "Keep as backup storefront/payment rail; not a fastest-first-sale choice because marketplace discovery is gated until USD 10 sales and approval. Razorpay KYC and settlement are account-level gates.",
+      "last_revalidated": "2026-11-12"
     },
     {
       "id": "INSTAMOJO-DIGITAL-PRODUCTS",

@@ -651,7 +651,7 @@
       "id": "P42-002",
       "title": "Revalidate fastest zero-upfront India-eligible revenue lanes and select independent second pilot",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P42-001"
       ],
@@ -663,6 +663,40 @@
         "Rank by risk-adjusted time-to-first-sale and time-to-settlement",
         "Reject or HOLD any channel with unsupported eligibility, recurring manual work or mandatory spend",
         "Select one second lane that can be prepared privately without KYC, terms acceptance or publication"
+      ],
+      "last_updated": "2026-11-12",
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "report": "research/PHASE_42_DEMAND_VALIDATION_AND_REVENUE_LANE_REBALANCE_2026-11-12.md",
+        "decision": "Getvik primary; Topmate secondary; Payhip+Razorpay backup; itch.io hold",
+        "sources": [
+          "https://getvik.com/",
+          "https://getvik.com/privacy-policy",
+          "https://topmate.io/fees",
+          "https://topmate72420835211887570.freshdesk.com/support/solutions/articles/1070000141051-topmate-payout-guidelines",
+          "https://help.payhip.com/article/102-billing-and-upgrading",
+          "https://help.payhip.com/article/307-marketplace",
+          "https://itch.io/docs/creators/payments"
+        ],
+        "constraints": "No account, KYC, legal acceptance, publication or spend; public terms do not establish buyer demand or account-level payout readiness"
+      }
+    },
+    {
+      "id": "P42-003",
+      "title": "Audit differentiated buyer demand and competitive alternatives for Recruitment Agency Revenue Assurance Desk",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P42-002"
+      ],
+      "idempotency_key": "phase42-recruitment-desk-demand-audit-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "Identify specific buyer segments and recurring high-cost workflow problems",
+        "Compare direct alternatives and public pricing using dated evidence",
+        "Map product features to buyer outcomes and identify unsupported claims",
+        "Define a zero-cost, non-public demand test that does not require manual selling",
+        "Make a go/hold/stop decision before further product development or publication"
       ],
       "last_updated": "2026-11-12"
     }
