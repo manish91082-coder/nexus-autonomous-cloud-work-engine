@@ -107,6 +107,26 @@ console.log('guarantee date assertions: 2 passed');
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("2 passed", result.stdout)
 
+    def test_untrusted_text_is_html_escaped(self):
+        start = self.script.index("function esc(s)")
+        end = self.script.index("function populateSelect", start)
+        sanitizer = self.script[start:end]
+        harness = sanitizer + r"""
+const assert = require('node:assert/strict');
+assert.equal(esc('<script>alert(1)</script>'), '&lt;script&gt;alert(1)&lt;/script&gt;');
+assert.equal(esc('A&B "quoted" \'single\''), 'A&amp;B &quot;quoted&quot; &#39;single&#39;');
+assert.equal(esc(null), '');
+console.log('HTML escaping assertions: 3 passed');
+"""
+        node = shutil.which("node")
+        self.assertIsNotNone(node, "Node.js is required in the GitHub runner")
+        with tempfile.NamedTemporaryFile("w", suffix=".js", encoding="utf-8") as handle:
+            handle.write(harness)
+            handle.flush()
+            result = subprocess.run([node, handle.name], text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("3 passed", result.stdout)
+
     def test_embedded_javascript_syntax(self):
         node = shutil.which("node")
         self.assertIsNotNone(node, "Node.js is required in the GitHub runner")
