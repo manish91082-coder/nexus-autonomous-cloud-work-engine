@@ -2,8 +2,8 @@
 **Canonical working copy:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
 **Original source (read-only, do not modify):** `manish91082-coder/ai-content-system`  
 **Primary branch:** `master`  
-**Continuity version:** 1.0  
-**Last updated:** 2026-11-11 (Phase 6 verified at commit 0f1f75a)  
+**Continuity version:** 2.0  
+**Last updated:** 2026-11-12 (Master Strategy v2.0; repository scope audit; obsolete schedules paused)  
 **Purpose:** Preserve the complete operating context so a new ChatGPT thread can resume without losing decisions, constraints, implementation status, or next actions.
 
 ---
@@ -964,3 +964,18 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Seeded stress test added: 24 levels × 10 deterministic seeds; verifies unsolved starts, meaningful path length, and hint convergence. Commit fd80cd20cff7fb0cc4706ebaeaa10d0df4ca448e.
 - Stress-test CI run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43132045102; run ID 43132045102; conclusion SUCCESS. Exact logs: 8 puzzle tests passed, 0 failed; 3 Playwright browser tests passed, 0 failed; all validation/package/artifact steps passed.
 - Next: complete gameplay quality review/human playtest design, title clearance and original cover/video creation. No CrazyGames account, KYC, agreement, SDK monetization, submission or revenue.
+
+
+## Latest governance checkpoint — 2026-11-12
+
+- Controlling constitution: `MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V2.md`.
+- Repository front door: `README.md`.
+- Full recursive inventory: `REPOSITORY_SCOPE_AUDIT_2026-11-12.md` (166 tree entries at baseline HEAD 10b967b1d61185584fa50ab60c69b8ee68745cb1; includes directories and files).
+- The repository was not cleanly segregated: it contained historical marketplace/bounty automation, pre-Phase-23 physical/solar/client-operations research, five held legacy product experiments, and one current game pilot. These are now classified by the master constitution. No unrelated election/livestock/ERP/crypto/spiritual projects appeared in the current recursive tree.
+- Orbit Relay remains the only active product pilot; internal codename only. Current browser tests 3/3 and puzzle tests 8/8 passed in verified CI runs.
+- Removed schedule and push triggers from the three obsolete workflows; they are now manual-dispatch-only:
+  - `.github/workflows/nexus-bounty-agent.yml` current blob SHA `5c8612c0e91c7d6a2cf1e6bae4f7cb71a1472955`
+  - `.github/workflows/nexus-funded-job-scan.yml` current blob SHA `576b8883ebf7e68ebc991061469451686392dd67`
+  - `.github/workflows/nexus-jobbi-gigs.yml` current blob SHA `ac11c8108420623bd5a7e8d0167dd140c92041d5`
+- This pauses future automated recurring scans and push-triggered runs; it does not delete their source or historical artifacts and does not cancel any already-running GitHub Actions run.
+- Next: Phase 29 governance/control-plane implementation and active-workflow audit, followed by a fresh revenue-source ranking. Do not continue product feature work until its next gate is documented.
