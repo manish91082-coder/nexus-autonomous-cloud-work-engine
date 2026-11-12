@@ -897,3 +897,15 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Phase 27 report: `research/PHASE_27_DEVELOPER_DEMAND_AND_WEB_GAME_LANE_2026-11-12.md`; commit `c5ed018c59acdba990c926d01b0865b275701738`.
 - No game account created, no portal submission, no terms accepted, no KYC/tax/bank setup, no ads enabled, no revenue. Verified receipts ₹0. No spending.
 - Next: conduct actual human playtest on desktop/mobile and revise the game before preparing CrazyGames metadata/SDK adapter. Do not submit or accept platform agreement until owner approval and India Tipalti payout method confirmation.
+
+
+## Phase 28: Orbit Relay real-browser QA foundation (2026-11-12)
+
+- Re-fetched the canonical master branch files before continuing. The Orbit Relay source and previous Phase 27 artifact remained present.
+- Source audit confirmed the existing 7 Node tests cover puzzle generation/logic only; they do not exercise browser UI, timer, modal, touch layout or user interactions.
+- Added products/orbit-relay/tests/browser.test.cjs using Playwright + Chromium. Coverage includes desktop start/pause/resume/hint/restart/solve/next-level, accelerated timer expiry/retry, and mobile viewport overflow/touch-control sizing.
+- Updated .github/workflows/build-orbit-relay.yml to install Chromium and run the browser tests before file validation and packaging. Workflow is push-triggered for the Orbit Relay product path.
+- Commits: browser test c502f8bbf981a28cb8af99245409547d48927720; initial workflow integration 446b07163c70bc69d9494fcbf37f4ae2f0941c71; explicit Playwright install correction bcdb75a2a10cfb9a4d3a3a9d4f9261a94f32456a.
+- Verification status: source and workflow commits are confirmed by fetching the files from GitHub. A successful Phase 28 Actions run and browser-test result have NOT yet been independently retrieved. Do not call browser QA passed until run logs show all browser tests passing.
+- No portal submission, account creation, KYC, agreement acceptance, SDK monetization or spend. Revenue received remains INR 0.
+- Next: inspect the Phase 28 Actions run once available; fix test/runtime failures; then address keyboard/focus accessibility and conduct deeper gameplay/difficulty review. Keep CrazyGames submission and all owner-only legal/payment gates closed.
