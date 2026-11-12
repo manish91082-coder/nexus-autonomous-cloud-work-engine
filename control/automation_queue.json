@@ -1082,6 +1082,89 @@
         "After approval, create repository and publish tested source package with security/contact docs",
         "Keep GitHub Sponsors and Buy Me a Coffee profile setup as separate later owner gates"
       ]
+    },
+    {
+      "id": "P44-001",
+      "title": "Run Getvik product pre-launch integrity audit and identify launch-blocking defects",
+      "priority": "P0",
+      "status": "COMPLETED",
+      "depends_on": [],
+      "idempotency_key": "phase44-getvik-prelaunch-integrity-audit-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-12",
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "report": "research/PHASE_44_GETVIK_PRELAUNCH_INTEGRITY_AUDIT_2026-11-12.md",
+        "scope": "HTML source, Python tests, listing, README, FAQ, license draft and launch packet reviewed",
+        "findings": "Static source review found localStorage-only persistence and no fetch/XHR/eval/new Function/document.write; user-controlled dynamic strings in inspected HTML templates use esc(); no independent runtime network capture or complete security audit claimed."
+      }
+    },
+    {
+      "id": "P44-002",
+      "title": "Correct pre-launch documentation inconsistencies and add HTML-escaping regression test",
+      "priority": "P0",
+      "status": "COMPLETED",
+      "depends_on": [
+        "P44-001"
+      ],
+      "idempotency_key": "phase44-getvik-docs-and-escaping-test-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-12",
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "changes": [
+          "Replace literal backslash-n sequences in listing and README",
+          "Update commercial license version reference to v0.3.0",
+          "Clarify Chromium/Firefox QA and Safari not verified",
+          "Add test_untrusted_text_is_html_escaped with three assertions"
+        ],
+        "commits": [
+          "3d7b4fc4e38781108d773c3bece5cf9b10a0f9e6",
+          "eb15aa9f7f4376d258bee158ea4b1a5dfd026b7b",
+          "1c6bd9b7334a28ab9164de77a2ef4807435545ae",
+          "92356ae1dc8bee3083a856a13377c090df5102fc",
+          "68da1588d85649952b76ceed03f0540e58cae883"
+        ]
+      }
+    },
+    {
+      "id": "P44-003",
+      "title": "Verify CI after Phase 44 documentation and security-regression changes",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P44-002"
+      ],
+      "idempotency_key": "phase44-getvik-ci-verification-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-12",
+      "acceptance": [
+        "Observe a workflow run on or after the latest test commit",
+        "Confirm all product and mission tests pass",
+        "Record run URL, tested commit and exact test count",
+        "If CI does not trigger, identify workflow trigger and use available permitted execution path"
+      ],
+      "blocker": "No post-change CI result has yet been observed; do not claim the new escaping test passes until verified."
+    },
+    {
+      "id": "P44-004",
+      "title": "Owner approval and secure platform onboarding for Getvik first-sale pilot",
+      "priority": "P0",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P44-003"
+      ],
+      "idempotency_key": "phase44-getvik-owner-launch-gate-v1",
+      "owner_gate": true,
+      "last_updated": "2026-11-12",
+      "acceptance": [
+        "Owner reviews and accepts Getvik terms directly on platform",
+        "Owner completes PAN/KYC and own-name bank/UPI payout settings directly on platform",
+        "Owner reviews payout declaration, commercial license, refund policy, support contact and price",
+        "Owner explicitly approves public product listing",
+        "No paid plan, ad spend or unapproved transaction"
+      ],
+      "blocker": "Private account/KYC/banking/legal actions and public publication require explicit owner action and approval."
     }
   ],
   "dead_letter": [],
