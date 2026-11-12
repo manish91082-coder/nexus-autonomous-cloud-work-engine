@@ -922,3 +922,11 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Artifact: ID 13905007420, name orbit-relay-html5, 8,108 bytes, SHA-256 1d3dfab91a928fb5d1134c48bf42931d0dc42dcb63700ce5fb48178542e7b263. Retention expiry shown as 2026-12-12.
 - This verifies the tested UI paths and build pipeline, not human fun/retention, cross-device physical touch performance, portal acceptance, or monetization.
 - Next: audit accessibility (modal focus, keyboard flow, screen-reader announcements, contrast) and game fairness/difficulty. Then create original store assets and verify CrazyGames SDK + current India payout terms. No submission or owner-only action without explicit approval.
+
+
+### Phase 28 accessibility hardening in progress
+
+- Added modal focus management to products/orbit-relay/game.js: focus moves to the modal action when win/fail overlay opens, Tab remains within the single-action modal, Escape does not dismiss a mandatory result, and focus returns to the first playable tile after Next/Retry.
+- Extended browser tests to assert modal focus, Tab trapping and focus restoration after both win and failure/retry.
+- Code commits: focus management 93633aa5fdf9bab8ce844612b16902b2b17e92ba; browser assertions 91e6e8036bbbda299afa3bd9db757d42d331a530.
+- Validation run 43131129078 was observed in progress: puzzle logic and Chromium installation succeeded; browser interaction step was still running at the latest job poll. Do not count this accessibility change as verified until its run completes and the logs are inspected.
