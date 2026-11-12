@@ -6,14 +6,14 @@ import json
 ROOT = Path(__file__).resolve().parents[1]
 PRODUCT = ROOT / "products" / "recruitment-agency-revenue-assurance"
 DIST = ROOT / "dist"
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 INCLUDED = [
     "index.html",
     "README.md",
     "USER_GUIDE_HI.md",
     "CUSTOMER_FAQ_HI.md",
 ]
-PACKAGE_NOTE = """Recruitment Agency Revenue Assurance Desk v0.2.0
+PACKAGE_NOTE = """Recruitment Agency Revenue Assurance Desk v0.3.0
 
 START
 1. Extract this ZIP to a local folder.
