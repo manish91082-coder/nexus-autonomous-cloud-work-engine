@@ -31,14 +31,14 @@ Rail-neutral: accept and evaluate lawful bank, UPI, international transfer, PayP
 ## Automation layers
 
 - ChatGPT scheduled agent runs: strategic research, ranking and supervision.
-- GitHub Actions: deterministic validation now; bounded queue-consuming worker is the next engineering milestone.
+- GitHub Actions: five-minute safe bootstrap tick is configured and has one successful push-triggered run; AI task execution is the next engineering milestone.
 - Provider-neutral inference adapter: planned with strict free-quota circuit breakers; not yet enabled.
 - Persistent JSON registries + continuity file: durable memory and recovery across chat-thread limits.
 - Owner gates: KYC, legal, financial, wallet signing, provider secrets, public release and spending remain explicit.
 
 ## Current state
 
-Phase 29 control-plane installation. The daily reasoning task and hourly progress watcher are configured; at audit, neither had a recorded run. The continuity guard workflow is committed but its scheduled execution was not yet verified. No always-on or continuous AI worker is currently deployed or proven. Verified realized receipts: ₹0. Authorized spend: ₹0.
+Phase 29 control-plane installation. The daily reasoning task and hourly progress watcher are configured. The five-minute worker bootstrap run [43147582665](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43147582665) completed successfully and uploaded a heartbeat artifact; its recurring cron run is not yet verified. The bootstrap only validates/selects queue work; AI execution is not deployed. Opportunity registry has 13 candidates; payout provider registry has 0 verified providers. No realized receipts: ₹0. Authorized spend: ₹0.
 
 ## Scope discipline
 
