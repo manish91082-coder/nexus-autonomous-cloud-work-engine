@@ -909,3 +909,16 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Verification status: source and workflow commits are confirmed by fetching the files from GitHub. A successful Phase 28 Actions run and browser-test result have NOT yet been independently retrieved. Do not call browser QA passed until run logs show all browser tests passing.
 - No portal submission, account creation, KYC, agreement acceptance, SDK monetization or spend. Revenue received remains INR 0.
 - Next: inspect the Phase 28 Actions run once available; fix test/runtime failures; then address keyboard/focus accessibility and conduct deeper gameplay/difficulty review. Keep CrazyGames submission and all owner-only legal/payment gates closed.
+
+
+### Phase 28 browser QA execution result
+
+- First Playwright attempt exposed a real CI wiring issue: the Playwright browser binary was installed, but the Node module was not resolvable (`Cannot find module 'playwright'`). This was diagnosed from the failed job log, not guessed.
+- Corrected workflow order: install Playwright locally first, then install its Chromium runtime, then execute the browser suite.
+- Successful GitHub Actions run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43130778213
+- Run ID 43130778213; commit 54b7a5f273a93511cf037a36cdc023ec7ebdbc39; conclusion SUCCESS.
+- All job steps passed: checkout; 7 existing puzzle logic tests; Playwright + Chromium installation; 3 real-browser tests; file validation; ZIP packaging; artifact upload.
+- Browser suite result: 3 tests, 3 passed, 0 failed. Verified desktop start/pause/resume/hint/restart/solve/next-level; accelerated timeout/failure/retry; mobile 390px viewport without horizontal overflow and with usable action-control sizing.
+- Artifact: ID 13905007420, name orbit-relay-html5, 8,108 bytes, SHA-256 1d3dfab91a928fb5d1134c48bf42931d0dc42dcb63700ce5fb48178542e7b263. Retention expiry shown as 2026-12-12.
+- This verifies the tested UI paths and build pipeline, not human fun/retention, cross-device physical touch performance, portal acceptance, or monetization.
+- Next: audit accessibility (modal focus, keyboard flow, screen-reader announcements, contrast) and game fairness/difficulty. Then create original store assets and verify CrazyGames SDK + current India payout terms. No submission or owner-only action without explicit approval.
