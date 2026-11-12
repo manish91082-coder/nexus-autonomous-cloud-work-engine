@@ -3,7 +3,7 @@
 **Original source (read-only, do not modify):** `manish91082-coder/ai-content-system`  
 **Primary branch:** `master`  
 **Continuity version:** 3.0  
-**Last updated:** 2026-11-12 (Master Constitution v3.0; persistent queue and payout registries; scheduled continuity guard)  
+**Last updated:** 2026-11-12 (Master Constitution v3.0; queue/payout registries; worker architecture checkpoint)  
 **Purpose:** Preserve the complete operating context so a new ChatGPT thread can resume without losing decisions, constraints, implementation status, or next actions.
 
 ---
@@ -17,6 +17,19 @@
 > Current active product pilot: Orbit Relay (internal codename only). All other prototypes are held/archived pending demand, payout and automation gates. The old bounty/task marketplace schedules are paused; manual dispatch only.
 >
 > Canonical front door: [README.md](README.md). Repository inventory and status: [REPOSITORY_SCOPE_AUDIT_2026-11-12.md](REPOSITORY_SCOPE_AUDIT_2026-11-12.md).
+
+## Current execution checkpoint — 2026-11-12
+
+- Latest verified repository HEAD at this checkpoint: `d6eee147326531c55948d72a7d21544b618eb1e2` (README updated with continuous-worker architecture).
+- The daily ChatGPT execution automation and hourly condition-watch are enabled, but both had null recorded run history at the audit time. The daily task was manually invoked from the active conversation and returned an inline execution prompt; its run result must be reported separately from the scheduler's future daily run.
+- GitHub Actions shows historic scheduled bounty discovery run `43141971798` completed successfully before the workflow was changed to manual dispatch only. It is not proof of a currently recurring mission worker.
+- Mission continuity guard is committed but no scheduled run was visible in the latest 20 workflow runs at audit. Its first successful run remains unverified.
+- Queue: P29-001 COMPLETED; P29-002 IN_PROGRESS; P29-003 COMPLETED; P29-004 IN_PROGRESS; P29-005 through P29-008 BLOCKED/dependent.
+- Mission state: ₹0 verified realized net receipts; ₹0 authorized spend. No continuous AI worker is currently deployed or proven.
+- Architecture decision: five-minute bounded GitHub Actions queue worker, event-triggered wakeups, durable repository queue/checkpoints, idempotency/leases/retries, and a provider-neutral inference adapter with strict free-quota circuit breaker. Cloudflare Workers AI is the first candidate provider, not yet provisioned or authorized.
+- Architecture evidence: [PHASE_29_ZERO_COST_CONTINUOUS_WORKER_ARCHITECTURE_2026-11-12.md](research/PHASE_29_ZERO_COST_CONTINUOUS_WORKER_ARCHITECTURE_2026-11-12.md).
+- Immediate engineering order: implement queue consumer and heartbeat; add safe dry-run workflow; verify a real scheduled/manual run; then enable AI inference only after secure one-time provider setup and a zero-billing test.
+- Do not describe the system as 24×7 autonomous until it passes the architecture report's acceptance criteria and a 24-hour soak test.
 
 ## 1. Mission (historical record, superseded where conflicting)
 
