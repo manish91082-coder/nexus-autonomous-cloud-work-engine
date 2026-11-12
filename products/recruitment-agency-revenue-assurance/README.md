@@ -38,10 +38,10 @@ Private validation draft. No publication, platform connection, KYC, legal accept
 - Private launch packet: [GETVIK_LAUNCH_PACKET.md](GETVIK_LAUNCH_PACKET.md).
 - License draft for review: [LICENSE_DRAFT.md](LICENSE_DRAFT.md).
 - Private package workflow: [package-recruitment-product.yml](../../.github/workflows/package-recruitment-product.yml).
-- Package artifact run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452.
-- Artifact SHA-256: `7d8e802de63c31ba68ccd64b668c8b6143b0ea5057178754f404898772dc1cba`.
+- Package artifact run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901484.
+- Artifact SHA-256: `e3ece9f15c3738e1ecea86cccd6b39799b5a60cf41140dfb0a61f67548421195`.
 - Package is marked PRIVATE_DRAFT_NOT_FOR_PUBLICATION. No seller account or terms have been activated.
-- Chromium + Firefox Playwright QA passed: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159499045.
+- Chromium + Firefox Playwright QA passed: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901456.
 - Added [Hindi customer FAQ](CUSTOMER_FAQ_HI.md) to reduce repetitive support and clarify offline storage, backups, receipts, commission, guarantee events and product limitations.
 - Latest private package includes `CUSTOMER_FAQ_HI.md`; ZIP and SHA-256 validation passed in run https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452.
 
@@ -51,3 +51,4 @@ Private validation draft. No publication, platform connection, KYC, legal accept
 - Late receipts and overdue balances are flagged.
 - User selects whether the signed guarantee clause requires on-time payment, is independent of payment, or requires manual review.
 - The app never determines legal validity or voids a guarantee. It displays an operational signal only.
+- v0.3.0 formula/mission CI passed: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160680889.
