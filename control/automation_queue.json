@@ -36,9 +36,12 @@
       "idempotency_key": "phase29-scheduled-ci-v1",
       "owner_gate": false,
       "acceptance": [
-        "Workflow supports schedule and manual dispatch",
-        "Runner validates registries",
-        "Run result is inspectable"
+        "Workflow supports five-minute offset schedule, push-triggered wake-up and manual dispatch",
+        "Safe worker tick validates control registries and dependency graph",
+        "Worker emits a durable machine-readable heartbeat with run ID, HEAD, selected task and receipts",
+        "Concurrency prevents overlapping queue consumers",
+        "A real GitHub Actions run completes successfully and its artifact/logs are inspectable",
+        "AI execution adapter, quota breaker, lease/idempotency and crash recovery are implemented and soak-tested before calling the system autonomous"
       ]
     },
     {
