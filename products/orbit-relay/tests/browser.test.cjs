@@ -89,6 +89,68 @@ test("daily challenge uses a deterministic UTC-date puzzle and persists same-day
   }
 });
 
+test("daily completion rolls over at UTC midnight and never unlocks campaign levels", async () => {
+  const browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext();
+  await context.addInitScript(() => {
+    const NativeDate = Date;
+    let instant = "2026-11-12T12:00:00.000Z";
+    class FixedDate extends NativeDate {
+      constructor(...args) { if (args.length === 0) super(instant); else super(...args); }
+      static now() { return new NativeDate(instant).getTime(); }
+    }
+    Object.defineProperty(window, "Date", { configurable: true, value: FixedDate });
+    window.__advanceUtcDay = () => { instant = "2026-11-13T12:00:00.000Z"; };
+  });
+  const page = await context.newPage();
+  try {
+    await page.goto(html);
+    await page.getByRole("button", { name: /Daily Challenge/i }).click();
+    assert.match(await page.locator("#pathInfo").textContent(), /2026-11-12/);
+    for (let i = 0; i < 60; i++) {
+      if (await page.locator("#overlay").evaluate(el => getComputedStyle(el).display !== "none")) break;
+      await page.getByRole("button", { name: /Use hint/i }).click();
+    }
+    await page.waitForSelector("#overlay", { state: "visible" });
+    assert.equal(await page.evaluate(() => localStorage.getItem("orbit-relay-progress-v1")), null);
+    await page.evaluate(() => window.__advanceUtcDay());
+    await page.getByRole("button", { name: /Back to menu/i }).click();
+    assert.match(await page.locator("#dailyBtn").textContent(), /2026-11-13/);
+    assert.doesNotMatch(await page.locator("#dailyBtn").textContent(), /Completed today/);
+    await page.getByRole("button", { name: /Daily Challenge/i }).click();
+    assert.match(await page.locator("#pathInfo").textContent(), /2026-11-13/);
+  } finally {
+    await browser.close();
+  }
+});
+
+test("daily challenge remains playable when browser localStorage is blocked", async () => {
+  const browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext();
+  await context.addInitScript(() => {
+    Object.defineProperty(window, "localStorage", {
+      configurable: true,
+      get() { throw new DOMException("Storage blocked for test", "SecurityError"); }
+    });
+  });
+  const page = await context.newPage();
+  try {
+    await page.goto(html);
+    await page.getByRole("button", { name: /Daily Challenge/i }).click();
+    assert.match(await page.locator("#pathInfo").textContent(), /DAILY/);
+    for (let i = 0; i < 60; i++) {
+      if (await page.locator("#overlay").evaluate(el => getComputedStyle(el).display !== "none")) break;
+      await page.getByRole("button", { name: /Use hint/i }).click();
+    }
+    await page.waitForSelector("#overlay", { state: "visible" });
+    assert.match(await page.locator("#modalTitle").textContent(), /Daily signal restored/i);
+    await page.getByRole("button", { name: /Back to menu/i }).click();
+    assert.match(await page.locator("#dailyBtn").textContent(), /Daily Challenge/);
+  } finally {
+    await browser.close();
+  }
+});
+
 test("timer expiry shows failure and retry keeps the same level", async () => {
   const { browser, page } = await launch({ width: 1280, height: 800 }, true);
   try {
