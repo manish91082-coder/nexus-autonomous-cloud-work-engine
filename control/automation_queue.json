@@ -499,7 +499,7 @@
       "id": "P38-002",
       "title": "Add CrazyGames published viewport matrix to automated browser QA",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P38-001"
       ],
@@ -513,7 +513,45 @@
       ],
       "evidence": {
         "commit": "1e5b739213b5e087e3771053140d36012373645b",
-        "workflow_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43168555068"
+        "workflow_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43168578797",
+        "conclusion": "SUCCESS",
+        "tested_commit": "1e5b739213b5e087e3771053140d36012373645b",
+        "tested_viewports": 10,
+        "checks": [
+          "no horizontal overflow",
+          "board inside viewport",
+          "minimum tile dimensions",
+          "action target width",
+          "touch tile/hint/pause/resume"
+        ]
+      },
+      "last_updated": "2026-11-12",
+      "completed_at": "2026-11-12"
+    },
+    {
+      "id": "P39-001",
+      "title": "Persist unlocked campaign level and verify resume after reload",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P38-002"
+      ],
+      "idempotency_key": "phase39-campaign-progress-persistence-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "Store highest unlocked level locally with safe validation and monotonic progression",
+        "Resume saved level after full reload",
+        "Preserve offline-only/no-network behavior",
+        "Chromium browser regression passes",
+        "Offline build validation and artifact packaging pass"
+      ],
+      "evidence": {
+        "report": "research/PHASE_39_CAMPAIGN_PROGRESS_PERSISTENCE_2026-11-12.md",
+        "implementation_commit": "01bb1851f41c57d9ff9d70bfef5af069a3596fcc",
+        "test_commit": "62954c610cf7ed939c17e93e3c3e5be86c67e815",
+        "implementation_ci": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43170182667",
+        "regression_ci": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43170187825",
+        "status_note": "Await CI completion; do not claim pass yet."
       },
       "last_updated": "2026-11-12"
     }
