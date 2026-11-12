@@ -25,11 +25,19 @@
       "status": "PRIVATE_VALIDATION",
       "build_status": "V0.2.0_BUILT_CI_PASS",
       "ci_status": "PASS_2026-11-12_RUN_43157319205",
-      "distribution": "Topmate/Gumroad/Payhip candidates only; not activated",
-      "pricing_status": "HYPOTHESIS_ONLY; no willingness-to-pay evidence",
+      "distribution": "Getvik Free first validation channel (not activated); ownstreet secondary after first paid sale; Topmate/Gumroad/Payhip as alternate rails",
+      "pricing_status": "UNVALIDATED_HYPOTHESES_499_799_999; no buyer willingness-to-pay evidence; Getvik Free 10% + GST on fee + Cashfree gateway charges",
       "differentiation": "Installment cash receipts, commission payable/paid reconciliation, guarantee event log, receivable ageing and client concentration; anonymous references only",
-      "next_action": "Cross-browser/accessibility QA and buyer-demand validation; no publication before owner approval",
-      "owner_gate": "public_release"
+      "next_action": "Cross-browser/accessibility QA; owner-only Getvik KYC/legal approval/publication gate; collect genuine buyer conversion and settled payout evidence",
+      "owner_gate": "public_release",
+      "package_status": "PRIVATE_DRAFT_PACKAGE_BUILT",
+      "package_artifact": {
+        "workflow_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159154725",
+        "artifact_name": "recruitment-agency-revenue-assurance-v0.2.0-private",
+        "artifact_id": 13916748314,
+        "sha256": "8922555b32ab88ffabccff39ac33dfae9797b7528e6b445867ca17cc55b70b34",
+        "expires_at": "2026-12-12T05:06:45Z"
+      }
     }
   ],
   "max_active_builds": 2,
