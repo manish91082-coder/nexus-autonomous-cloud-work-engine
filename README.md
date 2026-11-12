@@ -23,6 +23,10 @@ Target: ₹10,00,00,000 in verified realized net receipts. ₹0 upfront spend by
 
 Rail-neutral: accept and evaluate lawful bank, UPI, international transfer, PayPal/Payoneer/Skrill, platform balances, e-wallet and crypto-wallet receipts where country eligibility, compliance, fees, control and real usability are verified. Crypto is separately reconciled and is not automatically counted as bank cash.
 
+## Execution visibility
+
+- [Execution Status Protocol](EXECUTION_STATUS_PROTOCOL.md) — explains scheduled runs, hourly notifications, status states and the difference between scheduled automation and continuous execution.
+
 ## Automation layers
 
 - ChatGPT scheduled agent runs: research, rank and advance safe tasks without requiring a repeated “next” prompt.
