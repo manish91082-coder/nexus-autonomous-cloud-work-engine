@@ -42,3 +42,4 @@ Private validation draft. No publication, platform connection, KYC, legal accept
 - Artifact SHA-256: `e7649325a2e1a28a08720f3cb2344a588240f81938fadd18ad6d9793470ce225`.
 - Package is marked PRIVATE_DRAFT_NOT_FOR_PUBLICATION. No seller account or terms have been activated.
 - Chromium + Firefox Playwright QA passed: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159499045.
+- Added [Hindi customer FAQ](CUSTOMER_FAQ_HI.md) to reduce repetitive support and clarify offline storage, backups, receipts, commission, guarantee events and product limitations.
