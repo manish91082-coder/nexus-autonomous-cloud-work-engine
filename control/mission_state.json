@@ -10,8 +10,8 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 2,
   "execution_mode": "FIVE_MINUTE_GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED; CHATGPT_SUPERVISOR_AND_REPOSITORY_EXECUTION; REVENUE_FIRST_PRODUCT_BUILD",
-  "last_verified_head": "b83b830a5ce47933913dfe5114bd20304a2dfb17",
-  "current_focus": "P44-001 and P44-002 completed: Getvik v0.3.0 pre-launch integrity audit, documentation corrections and HTML-escaping regression test committed. P44-003 in progress: observe CI after latest changes and verify exact results; do not claim new test passes until confirmed. P44-004 blocked on owner-only Getvik terms/KYC/PAN/own-name bank+UPI/payout declaration and explicit public listing approval. Product remains private; demand unproven. No new product build or broad research. CSV to Action remains secondary and public release owner-gated; Orbit Relay held. Receipts INR 0; authorized spend INR 0; AI provider inference unconfigured.",
+  "last_verified_head": "582d3cbf3c78404f186e071bf87a50f52b6e626d",
+  "current_focus": "P44-001, P44-002 and P44-003 completed. Exact-HEAD CI run #120 passed on 582d3cb, including 7/7 Recruitment Revenue Assurance tests and the new HTML-escaping regression test. P44-004 remains blocked on owner-only Getvik terms, account/KYC/PAN, own-name bank+UPI, payout declaration and explicit public listing approval. Product remains private; demand unproven. No new product build or broad research. Next milestone after secure owner onboarding is the bounded 14-day no-paid-plan/no-ad-spend first-sale experiment. CSV to Action remains secondary and public release owner-gated; Orbit Relay held. Receipts INR 0; authorized spend INR 0; AI provider inference unconfigured.",
   "owner_gates": [
     "KYC",
     "tax_declarations",
