@@ -38,9 +38,9 @@ Rail-neutral: accept and evaluate lawful bank, UPI, international transfer, PayP
 
 ## Current state
 
-Phase 31 — revenue-first product validation. Opportunity registry: 27 candidates across 16 categories. Payout registry: 11 platform payout routes documented, with account-level verification still pending for several. First product MVP, [MSME Ops Desk Lite](products/msme-ops-desk-lite/README.md), has been built as an offline-first HTML tool with Hindi user guide and private listing draft. It is not published and product-market fit is unproven. Realized net receipts remain ₹0; authorized spend remains ₹0.
+Phase 33 — revenue-channel qualification and product validation. Opportunity registry: 27 candidates across 16 categories. Payout registry: 11 platform payout routes documented, with account-level verification still pending for several. First product MVP, [MSME Ops Desk Lite](products/msme-ops-desk-lite/README.md), has been built as an offline-first HTML tool with Hindi user guide and private listing draft. It is not published and product-market fit is unproven. Realized net receipts remain ₹0; authorized spend remains ₹0.
 
-Latest research: [Phase 31 revenue-first pivot and product report](research/PHASE_31_REVENUE_FIRST_PIVOT_AND_MSME_PRODUCT_2026-11-12.md).
+Latest research: [Phase 31 revenue-first pivot](research/PHASE_31_REVENUE_FIRST_PIVOT_AND_MSME_PRODUCT_2026-11-12.md), [Phase 32 product-market fit audit](research/PHASE_32_PRODUCT_MARKET_FIT_AUDIT_2026-11-12.md), and [Phase 33 payout rail revalidation](research/PHASE_33_PAYOUT_RAIL_REVALIDATION_2026-11-12.md).
 
 ## Scope discipline
 
@@ -62,7 +62,7 @@ No employment, manual gigs, freelance bids, cold outreach, recurring client serv
 - [MSME Ops Desk Lite app](products/msme-ops-desk-lite/index.html)
 - [Hindi user guide](products/msme-ops-desk-lite/USER_GUIDE_HI.md)
 - [Private storefront listing draft](products/msme-ops-desk-lite/LISTING_DRAFT.md)
-- Product CI: [run 43150403509](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43150403509) passed both AI-worker tests and initial product smoke tests. A newer JavaScript syntax validation test has been added and is awaiting its run.
+- Product CI: [run 43150403509](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43150403509) passed initial product smoke tests; current status remains a free-sample candidate, not a priced/published product.
 
 
 ## Phase 32 — Product differentiation
@@ -73,3 +73,13 @@ No employment, manual gigs, freelance bids, cold outreach, recurring client serv
 - [MSME Ops Desk Lite](products/msme-ops-desk-lite/README.md) — keep as a free-sample candidate; generic functionality is crowded by free/low-priced competitors.
 - Integrated CI [43151200515](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43151200515) passed: mission guard 17/17 checks, AI worker 2/2 tests, MSME product 3/3 tests, recruitment product 3/3 tests.
 - AI provider execution remains disabled by design because provider credentials are not configured. No inference request was made. Revenue remains ₹0.
+
+
+## Phase 33 — Revenue channel qualification and product validation
+
+- [Recruitment Agency Revenue Assurance Desk v0.2.0](products/recruitment-agency-revenue-assurance/README.md) adds installment receipts, recruiter commission payable/paid reconciliation, guarantee event history, receivable ageing and client concentration.
+- Product formula/date, privacy/offline and JavaScript checks passed in [GitHub Actions run 43157319205](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43157319205). Browser/device accessibility QA and real buyer demand are still open.
+- [Payout rail revalidation report](research/PHASE_33_PAYOUT_RAIL_REVALIDATION_2026-11-12.md) corrects Topmate's current INR withdrawal timeline/minimum and compares Topmate, Gumroad and Payhip+Razorpay.
+- Topmate is not instant payout: first withdrawal unlocks after 7 days from first paid booking; INR request processing is within 7 days; ₹500 minimum, with ₹20 fee below that threshold.
+- No product is published, no platform account/terms/KYC activated, no spend authorized. Realized receipts ₹0.
+- Mission phase: `PHASE_33_REVENUE_CHANNEL_QUALIFICATION_AND_PRODUCT_VALIDATION`.
