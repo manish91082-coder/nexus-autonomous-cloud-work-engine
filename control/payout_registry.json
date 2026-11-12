@@ -56,21 +56,26 @@
     },
     {
       "provider": "Getvik",
-      "platform": "Digital products and creator storefront",
-      "country_eligibility": "India UPI/card and bank payout claims published by platform",
-      "account_type": "creator storefront",
-      "kyc_requirements": "PAN, legal name, UPI ID and bank details per platform website",
+      "platform": "India digital product marketplace with public discovery and automatic delivery",
+      "country_eligibility": "India seller route; PAN, legal name, own-name UPI ID and bank details required before publishing/payout",
+      "account_type": "Creator",
+      "kyc_requirements": "PAN, legal name, UPI ID and bank account in the creator's own name; accept Payout Declaration before publish/payout",
       "rail": "UPI",
       "currency": "INR",
-      "minimum": "INR 100 claimed",
-      "fees": "platform fee and gateway fee require exact verification",
-      "hold_period": "not confirmed",
-      "settlement_schedule": "usually 2-3 business days claimed by platform",
-      "fx_or_conversion": "not applicable for INR payouts",
-      "reversibility_and_chargebacks": "refund/dispute policy pending review",
-      "official_source_url": "https://getvik.com/",
+      "minimum": "₹100 settled balance; manual payout request",
+      "fees": "Free plan: 10% platform fee + 18% GST on platform fee + Cashfree gateway charges and GST; no monthly fee required",
+      "hold_period": "Earnings only become withdrawable after payment provider confirms funds; fraud/chargeback holds possible",
+      "settlement_schedule": "Usually 2–3 business days after payout request per official help page; payout may be held for risk/compliance review",
+      "fx_or_conversion": "INR checkout and UPI payout; no FX for domestic sales",
+      "reversibility_and_chargebacks": "Refunds, chargebacks and reversed payment provider funds can reverse seller earnings; balances can go negative",
+      "official_source_url": "https://getvik.com/terms-of-service",
+      "official_sources": [
+        "https://getvik.com/terms-of-service",
+        "https://getvik.com/",
+        "https://getvik.com/discover"
+      ],
       "captured_at": "2026-11-12",
-      "verification_status": "PLATFORM_CLAIM_UNINDEPENDENTLY_VERIFIED"
+      "verification_status": "OFFICIAL_TERMS_AND_PUBLIC_MARKETPLACE_CAPTURED_ACCOUNT_KYC_PENDING"
     },
     {
       "provider": "Payhip + Razorpay",
@@ -215,6 +220,74 @@
       "official_source_url": "https://www.canva.com/help/set-up-payout-details/",
       "captured_at": "2026-11-12",
       "verification_status": "OFFICIAL_PAYOUT_TERMS_CAPTURED_PROGRAM_GATE_PENDING"
+    },
+    {
+      "provider": "ownstreet",
+      "platform": "India creator storefront and digital product discovery marketplace",
+      "country_eligibility": "India bank payout / UPI checkout documented; seller adds PAN and bank account; optional live Razorpay keys",
+      "account_type": "Creator",
+      "kyc_requirements": "PAN and bank account for bank payout route; live Razorpay keys optional; account approval status to be confirmed",
+      "rail": "BANK_INR",
+      "currency": "INR",
+      "minimum": "Not stated in reviewed official help",
+      "fees": "0% ownstreet platform fee on product sales; Razorpay gateway fee applies; Free plan limited to 1 live product and 5 completed paid sales",
+      "hold_period": "Razorpay payment/settlement batches; exact risk reserve not independently verified",
+      "settlement_schedule": "Often same day or T+1–2 working days per official help; weekends and holidays may delay",
+      "fx_or_conversion": "INR bank payout; international prices require live Razorpay keys and international payments enabled",
+      "reversibility_and_chargebacks": "Seller handles product refunds; Razorpay disputes/chargebacks apply; terms require checking before acceptance",
+      "official_source_url": "https://ownstreet.in/help",
+      "official_sources": [
+        "https://ownstreet.in/help",
+        "https://ownstreet.in/marketplace",
+        "https://ownstreet.in/blog/creator-marketplace-india-2026-guide"
+      ],
+      "captured_at": "2026-11-12",
+      "verification_status": "OFFICIAL_HELP_AND_MARKETPLACE_CAPTURED_ACCOUNT_PAYOUT_PENDING"
+    },
+    {
+      "provider": "Srotabase",
+      "platform": "India creator marketplace and storefront",
+      "country_eligibility": "Indian bank payouts and UPI checkout stated by platform; seller KYC required",
+      "account_type": "Creator / seller",
+      "kyc_requirements": "Accurate account, KYC and payout details; legal/tax declarations; account-level verification pending",
+      "rail": "BANK_INR",
+      "currency": "INR",
+      "minimum": "Not found in public terms reviewed",
+      "fees": "4% own-sale and 10% marketplace-sale platform fee published; 0.4% UPI MDR on payments above ₹2,000 from 15 Oct 2026; GST/TDS where applicable; verify exact dashboard fee",
+      "hold_period": "7-day buyer-protection window stated on site; refunds, fraud and chargebacks can delay/withhold payout",
+      "settlement_schedule": "Exact bank settlement schedule and minimum not confirmed; terms say verified bank settlement after standard settlement/refund hold",
+      "fx_or_conversion": "INR local payout; international availability requires account confirmation",
+      "reversibility_and_chargebacks": "Refunds under published refund policy; platform may delay or withhold payouts for suspected fraud, chargebacks or breach",
+      "official_source_url": "https://srotabase.com/terms",
+      "official_sources": [
+        "https://srotabase.com/terms",
+        "https://srotabase.com/",
+        "https://srotabase.com/refund-policy"
+      ],
+      "captured_at": "2026-11-12",
+      "verification_status": "OFFICIAL_TERMS_CAPTURED_PAYOUT_TIMING_AND_ACCOUNT_GATE_PENDING"
+    },
+    {
+      "provider": "Qxel",
+      "platform": "India digital product marketplace and storefront",
+      "country_eligibility": "India-first storefront; UPI and Indian payout methods claimed; seller account verification not tested",
+      "account_type": "Creator",
+      "kyc_requirements": "Account and payout identity requirements not confirmed from accessible public docs; payout documentation link returned 404 during review",
+      "rail": "UPI",
+      "currency": "INR",
+      "minimum": "Not confirmed",
+      "fees": "Standard 6% platform commission plus payment gateway charges and applicable taxes; temporary 2% first-anniversary offer shown for 1 Nov 2026 to 17 Jan 2027; verify checkout ledger",
+      "hold_period": "Not confirmed",
+      "settlement_schedule": "Pricing page says 3–5 business days after withdrawal request",
+      "fx_or_conversion": "Domestic UPI; international buyer/payout terms not verified",
+      "reversibility_and_chargebacks": "Seller agreement and refund policy require review before acceptance",
+      "official_source_url": "https://www.qxel.in/pricing",
+      "official_sources": [
+        "https://www.qxel.in/",
+        "https://www.qxel.in/pricing"
+      ],
+      "captured_at": "2026-11-12",
+      "verification_status": "OFFICIAL_PRICING_CAPTURED_PAYOUT_DOCUMENTATION_INCOMPLETE"
     }
   ],
   "required_fields": [
