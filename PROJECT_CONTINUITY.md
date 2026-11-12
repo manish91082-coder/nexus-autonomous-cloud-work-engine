@@ -20,16 +20,18 @@
 
 ## Current execution checkpoint — 2026-11-12
 
-- Latest verified repository HEAD at this checkpoint: `d6eee147326531c55948d72a7d21544b618eb1e2` (README updated with continuous-worker architecture).
-- The daily ChatGPT execution automation and hourly condition-watch are enabled, but both had null recorded run history at the audit time. The daily task was manually invoked from the active conversation and returned an inline execution prompt; its run result must be reported separately from the scheduler's future daily run.
-- GitHub Actions shows historic scheduled bounty discovery run `43141971798` completed successfully before the workflow was changed to manual dispatch only. It is not proof of a currently recurring mission worker.
-- Mission continuity guard is committed but no scheduled run was visible in the latest 20 workflow runs at audit. Its first successful run remains unverified.
-- Queue: P29-001 COMPLETED; P29-002 IN_PROGRESS; P29-003 COMPLETED; P29-004 IN_PROGRESS; P29-005 through P29-008 BLOCKED/dependent.
-- Mission state: ₹0 verified realized net receipts; ₹0 authorized spend. No continuous AI worker is currently deployed or proven.
-- Architecture decision: five-minute bounded GitHub Actions queue worker, event-triggered wakeups, durable repository queue/checkpoints, idempotency/leases/retries, and a provider-neutral inference adapter with strict free-quota circuit breaker. Cloudflare Workers AI is the first candidate provider, not yet provisioned or authorized.
-- Architecture evidence: [PHASE_29_ZERO_COST_CONTINUOUS_WORKER_ARCHITECTURE_2026-11-12.md](research/PHASE_29_ZERO_COST_CONTINUOUS_WORKER_ARCHITECTURE_2026-11-12.md).
-- Immediate engineering order: implement queue consumer and heartbeat; add safe dry-run workflow; verify a real scheduled/manual run; then enable AI inference only after secure one-time provider setup and a zero-billing test.
-- Do not describe the system as 24×7 autonomous until it passes the architecture report's acceptance criteria and a 24-hour soak test.
+- Latest audited HEAD before this checkpoint update: `c27863a512ea8ca4850302706e9555d107ee6625`; mission-state checkpoint update commit: `0ac60f999e0410d592ef87756fcb536312cf296b`.
+- Five-minute bootstrap workflow: `.github/workflows/mission-autonomous-worker.yml`, scheduled `3-59/5 * * * *`, with push-trigger and manual dispatch.
+- First real bootstrap run: [43147582665](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43147582665), push-triggered, completed SUCCESS at 2026-11-12 03:20:59 UTC / 08:50:59 IST. Registry validation and queue polling passed; artifact `mission-worker-tick-43147582665` uploaded.
+- Heartbeat recorded: queue 8 tasks; 2 eligible; selected P29-002; 13 opportunity candidates; payout provider registry 0; realized net receipts ₹0; authorized spend ₹0.
+- This is a safe bootstrap poller only. It validates/selects work and emits heartbeat; no AI inference/task executor is deployed. First recurring cron-triggered run remains unverified. Do not call it a 24×7 autonomous AI worker.
+- Daily ChatGPT reasoning task and hourly progress watcher are enabled. The daily task was manually invoked through the active conversation's inline execution path; that is separate from its next scheduled daily run. Automation delivery/run history should be checked before claiming successful background delivery.
+- Mission queue: P29-001 COMPLETED; P29-002 IN_PROGRESS; P29-003 COMPLETED; P29-004 IN_PROGRESS; P29-005 through P29-008 BLOCKED/dependent.
+- Architecture: five-minute bounded GitHub Actions worker, event wake-ups, durable queue/checkpoints, idempotency/leases/retries, and provider-neutral AI inference with a strict free-quota circuit breaker. Cloudflare Workers AI is first candidate only; no account/token configured.
+- Official Cloudflare Workers AI free allocation: 10,000 Neurons/day; some models require paid plans. Use only free-eligible models and fail closed before paid usage. Reference: https://developers.cloudflare.com/workers-ai/platform/pricing/.
+- Architecture report: [PHASE_29_ZERO_COST_CONTINUOUS_WORKER_ARCHITECTURE_2026-11-12.md](research/PHASE_29_ZERO_COST_CONTINUOUS_WORKER_ARCHITECTURE_2026-11-12.md).
+- Next: implement provider-neutral AI task executor, secure one-time provider setup packet, quota circuit-breaker, evidence-only task handlers and 24-hour soak test. Separately expand candidate registry from 13 to at least 25 with verified payout evidence.
+- No realized receipts: ₹0. Authorized spend: ₹0. No private credentials or financial actions authorized.
 
 ## 1. Mission (historical record, superseded where conflicting)
 
