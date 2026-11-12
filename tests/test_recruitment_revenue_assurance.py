@@ -86,7 +86,7 @@ console.log('formula assertions: 24 passed');
             handle.flush()
             result = subprocess.run([node, handle.name], text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("12 passed", result.stdout)
+        self.assertIn("24 passed", result.stdout)
 
     def test_guarantee_date_math(self):
         node = shutil.which("node")
