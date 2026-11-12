@@ -1217,3 +1217,20 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - P37-003 COMPLETED. P37-002 moved to BLOCKED_OWNER_INPUT: IP India wordmark/phonetic search requires OTP+CAPTCHA; WIPO explicitly prohibits automated querying of its database; domain RDAP endpoints were inaccessible in this session. Do not infer clearance from search-engine absence.
 - Next independent work: complete game launch-readiness audit and prepare a title-neutral submission packet while the public title is held. Owner-only trademark UI verification, human playtest, developer agreement, Tipalti onboarding and public submission remain gated.
 - No accounts, KYC, tax/bank data, legal acceptance, publication or spend. Verified receipts INR 0.
+
+
+## Phase 38 — CrazyGames title-neutral submission readiness (2026-11-12)
+- Rechecked current official CrazyGames documentation. Basic Launch SDK is optional and monetization is disabled; Full Launch requires SDK v3 and gameplay events. Basic Launch evaluation requires at least 7 days and 500 plays to end at day 7, otherwise the period ends at 21 days. Engagement KPIs include average session playtime, Day 1 retention and one-minute conversion; platform guide describes 10+ minute average playtime, 10–15% D1 retention and 80%+ conversion as indicative strong/top performance, not guaranteed acceptance thresholds.
+- Prepared `products/orbit-relay/CRAZYGAMES_SUBMISSION_PACKET_DRAFT.md`: title-neutral metadata, controls, content/privacy declaration, technical requirements, official viewport matrix, covers/videos specs, Basic-vs-Full Launch separation, KPI experiment plan, monetization deferral and owner gates.
+- Official cover specs: 1920×1080 landscape, 800×1200 portrait, 800×800 square. Preview videos: 15–20 seconds max, ≤50 MB, landscape 16:9 and portrait 2:3, no sound/cursor/black bars/promo overlay, opening frame matches cover.
+- Current prototype remains internal codename Orbit Relay; public title, artwork and submission remain held pending formal clearance and human playtest. No CrazyGames account, legal terms, KYC, tax/bank setup, submission or spend performed.
+- Added published 10-viewport browser QA matrix to `products/orbit-relay/tests/browser.test.cjs` in commit `1e5b739213b5e087e3771053140d36012373645b`; test checks overflow, board bounds, tile minimum size, action widths, touch tile/hint/pause/resume. CI run: [43168555068](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43168555068), pending at checkpoint. P38-001 COMPLETED; P38-002 IN_PROGRESS pending CI.
+- Official docs:
+  - https://docs.crazygames.com/requirements/intro/
+  - https://docs.crazygames.com/resources/basic-launch-metrics/
+  - https://docs.crazygames.com/requirements/gameplay/
+  - https://docs.crazygames.com/requirements/game-covers/
+  - https://docs.crazygames.com/sdk/intro/
+  - https://docs.crazygames.com/resources/ad-monetization-guide/
+- Next: inspect viewport CI and fix any failures; add Edge/Chromebook testing only where a credible runner is available; arrange genuine human playtest. Continue parallel payout/channel research, but count revenue only after settled receipt evidence.
+- Verified realized net receipts INR 0; authorized spend INR 0.
