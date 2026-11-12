@@ -1,42 +1,73 @@
-name: Mission Worker Tick (safe bootstrap)
+name: Mission Autonomous AI Worker (bounded, fail-closed)
 
 on:
   push:
     paths:
       - 'scripts/worker_tick.py'
+      - 'scripts/ai_task_executor.py'
       - 'scripts/mission_guard.py'
-      - 'control/**'
+      - 'tests/test_ai_task_executor.py'
+      - 'control/automation_queue.json'
+      - 'control/mission_state.json'
+      - 'AI_WORKER_SETUP.md'
       - '.github/workflows/mission-autonomous-worker.yml'
   workflow_dispatch:
   schedule:
-    # Every five minutes, offset from the top of the hour to reduce schedule contention.
+    # Five-minute wake-up. Each run is bounded and exits; this is not a permanent daemon.
     - cron: "3-59/5 * * * *"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: mission-autonomous-worker
   cancel-in-progress: false
 
 jobs:
-  bounded-worker-tick:
+  bounded-worker:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
       - name: Checkout canonical mission state
         uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Validate control-plane state
         run: python3 scripts/mission_guard.py
-      - name: Poll queue and write heartbeat
+      - name: Run AI worker safety tests
+        run: python3 -m unittest discover -s tests -p 'test_ai_task_executor.py' -v
+      - name: Poll queue and write deterministic heartbeat
         run: python3 scripts/worker_tick.py
-      - name: Preserve machine-readable heartbeat
+      - name: Execute one bounded AI work packet (fails closed without owner secrets)
+        env:
+          MISSION_AI_ENABLED: ${{ secrets.MISSION_AI_ENABLED }}
+          MISSION_AI_ZERO_BILLING_CONFIRMED: ${{ secrets.MISSION_AI_ZERO_BILLING_CONFIRMED }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_AI_MODEL: ${{ secrets.CLOUDFLARE_AI_MODEL }}
+        run: python3 scripts/ai_task_executor.py
+      - name: Commit only productive AI work packet and quota state
+        if: success()
+        run: |
+          if [ -f ai_worker_report.json ] && grep -q '"status": "DRAFT_READY_FOR_EVIDENCE_REVIEW"' ai_worker_report.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add ai_worker_report.json control/ai_usage_state.json
+            if ! git diff --cached --quiet; then
+              git commit -m "Record bounded AI mission work packet"
+              git push
+            fi
+          fi
+      - name: Preserve machine-readable worker evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: mission-worker-tick-${{ github.run_id }}
+          name: mission-autonomous-worker-${{ github.run_id }}
           path: |
             worker_tick_report.json
             mission_guard_report.json
+            ai_worker_report.json
           if-no-files-found: warn
-          retention-days: 7
+          retention-days: 14
