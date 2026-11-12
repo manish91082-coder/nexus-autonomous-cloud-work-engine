@@ -1,0 +1,36 @@
+name: Mission Worker Tick (safe bootstrap)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every five minutes, offset from the top of the hour to reduce schedule contention.
+    - cron: "3-59/5 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mission-autonomous-worker
+  cancel-in-progress: false
+
+jobs:
+  bounded-worker-tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout canonical mission state
+        uses: actions/checkout@v4
+      - name: Validate control-plane state
+        run: python3 scripts/mission_guard.py
+      - name: Poll queue and write heartbeat
+        run: python3 scripts/worker_tick.py
+      - name: Preserve machine-readable heartbeat
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mission-worker-tick-${{ github.run_id }}
+          path: |
+            worker_tick_report.json
+            mission_guard_report.json
+          if-no-files-found: warn
+          retention-days: 7
