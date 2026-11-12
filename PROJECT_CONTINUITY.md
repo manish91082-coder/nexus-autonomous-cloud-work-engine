@@ -1195,3 +1195,15 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Current mission phase: `PHASE_36_PRODUCT_DEMAND_VALIDATION_AND_RELEASE_GATE`.
 - Next decision point: owner completes secure Getvik KYC/legal/payout setup and explicitly approves publication, or product stays private while alternative zero-upfront channels continue to be researched. Do not collect secrets or identity/bank data in chat.
 - Verified realized net receipts ₹0; authorized spend ₹0.
+
+
+## Phase 37 — CrazyGames payout rail and game-title revalidation (2026-11-12)
+- Verified current CrazyGames payout documentation: Tipalti handles monthly payments; supported method families are wire, direct deposit/ACH, eCheck and PayPal subject to country; minimum is EUR 100. CrazyGames describes NET 60 contractual terms while aiming to process earlier, typically by the 10th of the following month. Plan against NET 60, not the operational target.
+- Current developer terms identify the publisher as Maxflow BV, Belgium. Tipalti's UK/EU payer coverage lists India INR local-bank routes; its footnote says payments to India are unavailable for India-based payer entities. Because CrazyGames' publisher is Belgian, public evidence supports a plausible India payout route, but the actual method remains account-level pending. No payout is guaranteed until the CrazyGames billing portal confirms it.
+- Exact-title screening rejects Orbit Relay, Signal Weave, Orbit Loom: Signal Weave, Pulse Path, Relay Grid and Signal Circuit due to existing uses/collisions in game/app listings.
+- Preliminary candidates for further clearance: Circuit Loom and Grid Current. No trademark/domain clearance claim; official IP India/WIPO and domain checks remain open.
+- Report: `research/PHASE_37_CRAZYGAMES_PAYOUT_AND_TITLE_REVALIDATION_2026-11-12.md`.
+- Queue: P37-001 COMPLETED; P37-002 IN_PROGRESS (exact/phonetic title, domain and trademark screening).
+- This is a parallel game-distribution lane, not an assertion that the recruitment product is released. Both remain private. No account, KYC, tax/bank data, legal acceptance, submission, publication or spend occurred.
+- Verified realized net receipts remain INR 0; authorized spend remains INR 0.
+- Next: complete official trademark/domain screening; then finish game submission readiness and prepare owner-only CrazyGames account/terms/payout gate. Keep any game submission and monetization disabled until owner approval.
