@@ -1,26 +1,33 @@
-# Recruitment Agency Revenue Assurance Desk — Product Draft v0.1.0
+# Recruitment Agency Revenue Assurance Desk — Product Draft v0.2.0
 
 ## Positioning
-An offline-first revenue-control tool for recruitment agency owners and finance/operations leads. It is not an ATS and does not store candidate personal data.
+Offline-first cash-flow and guarantee-control desk for recruitment agency owners and finance/operations leads. Not an ATS, job board, employment service or manual recruiting service.
 
-## Core workflow
-- Record placement reference, client reference, recruiter reference and joining date.
-- Record booked placement fee and cash collected.
-- Calculate outstanding placement fee and recruiter share on collected cash.
-- Track contractual replacement/guarantee periods and upcoming expiry exposure.
-- Monitor collection ratio and open guarantee exposure.
-- Export/restore local JSON backup.
+## Modules
+- Anonymous placement, client and recruiter references.
+- Installment-level client cash receipt ledger with date and optional reference.
+- Booked fee, actual cash collected and outstanding balance.
+- Recruiter commission earned only on collected cash.
+- Recruiter commission paid ledger with overpayment guard.
+- Guarantee claim, replacement and resolution event log.
+- Receivable ageing buckets and client concentration.
+- Guarantee expiry watchlist.
+- JSON backup/restore with legacy v0.1.0 migration.
 
-## Differentiation hypothesis
-Most generic recruitment trackers focus on candidate pipelines. This tool focuses on agency cash conversion and post-placement obligations: billed vs collected fees, recruiter split on collections, and guarantee/replacement exposure. It deliberately avoids candidate PII and ATS scope.
+## Calculation policy
+- Outstanding = max(0, agreed placement fee − sum of receipt events).
+- Commission earned = sum of receipt events × recruiter share %.
+- Commission payable balance = max(0, earned − recorded payments).
+- Ageing currently uses placement date as a proxy, not contractual invoice due date. Do not treat this as statutory accounting ageing.
+- Client concentration = client's outstanding / total outstanding.
 
-## Privacy
-Single HTML file; no server, network, telemetry or external libraries. Local browser storage only. Do not enter candidate names, phone numbers, email addresses, CVs or other personal data. Use a compliant ATS for candidate records.
+## Privacy / architecture
+Single HTML file, no server, no network calls, telemetry or external libraries. Local browser storage only. No candidate PII fields. Do not store candidate names, contact details, CVs, government identifiers or sensitive personal data.
 
 ## Status
-Private MVP draft only. Product-market fit unproven. Not published, no platform account connected, no terms accepted.
+Private validation draft. No publication, platform connection, KYC, legal acceptance or revenue. Product-market fit and willingness to pay remain unproven.
 
 ## QA
-- Offline/no-external-script smoke test
-- Required module presence
-- Embedded JavaScript syntax check via Node.js
+- Offline/privacy contract checks
+- Embedded JavaScript syntax check
+- Formula-level tests for receipts, outstanding, commission, ageing and client concentration
