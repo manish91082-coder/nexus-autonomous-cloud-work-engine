@@ -984,7 +984,7 @@
       "id": "P43-007",
       "title": "Prepare a low-touch community adoption plan for CSV to Action before GitHub Sponsors activation",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P43-006"
       ],
@@ -997,6 +997,37 @@
         "Design feedback and issue-triage loop that does not require manual customer support",
         "Set adoption thresholds before GitHub Sponsors activation",
         "No public outreach, publication or account changes without owner approval"
+      ],
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "plan": "products/csv-to-action/COMMUNITY_ADOPTION_PLAN_PRIVATE.md",
+        "sources": [
+          "https://docs.github.com/en/repositories/creating-and-managing-repositories/best-practices-for-repositories",
+          "https://news.ycombinator.com/showhn.html",
+          "https://news.ycombinator.com/newsguidelines.html",
+          "https://support.reddithelp.com/hc/en-us/articles/360043504051-Spam",
+          "https://support.reddithelp.com/hc/en-us/articles/28012014962580-How-do-I-keep-spam-out-of-my-community"
+        ],
+        "status": "Private low-touch plan prepared; no outreach or publication performed"
+      }
+    },
+    {
+      "id": "P43-008",
+      "title": "Compare India-eligible creator support and open-source funding rails for independent payout redundancy",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P43-007"
+      ],
+      "idempotency_key": "phase43-creator-funding-rails-comparison-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-12",
+      "acceptance": [
+        "Verify official India creator payout eligibility, platform fees, payout thresholds and timing for GitHub Sponsors, Buy Me a Coffee, Patreon and Ko-fi",
+        "Separate domestic INR product sales from international creator support",
+        "Rank primary/secondary/backup payout rails by net payout and settlement certainty",
+        "Record owner KYC/tax/bank requirements and unresolved account-level items",
+        "Update payout and opportunity registries; do not create accounts or accept terms"
       ]
     }
   ],

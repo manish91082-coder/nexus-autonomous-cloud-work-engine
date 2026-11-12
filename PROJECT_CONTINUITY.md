@@ -1372,3 +1372,9 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Artifact ID `13923467272`, size 10,757 bytes, SHA-256 `33c06764bf6aca501df71b5d80cdb735a6ed29fadcd874c9044a34576541957d`.
 - Remaining release gaps: independent runtime network capture, owner-approved standalone repo/release and license scope, security contact, and actual human adoption evidence. Do not describe static network-source inspection as a full security audit.
 - P43-007 active: prepare a low-touch community adoption plan for CSV to Action; no public outreach or account changes without approval.
+
+
+## Phase 43 creator funding rail comparison — 2026-11-12
+- P43-007 completed: prepared [CSV to Action Community Adoption Plan](products/csv-to-action/COMMUNITY_ADOPTION_PLAN_PRIVATE.md). It explicitly prohibits automated Reddit promotion, mass messages, fake engagement and AI-generated Show HN posts; no outreach performed.
+- P43-008 active: compare India payout rails. Preliminary official findings: GitHub Sponsors India supported with 0% personal-account platform fee; Buy Me a Coffee India supported via Stripe Express with 5% platform fee + processing and USD 10 first-payout threshold; Patreon new creators pay 10% platform fee plus processing/payout/FX and India method needs account confirmation; Ko-fi pays direct but requires PayPal or full Stripe Connect, while PayPal India cannot receive domestic payments and Ko-fi does not support Stripe Express.
+- Detailed terms and unresolved account gates are in opportunity and payout registries. No account creation, KYC, tax/bank details or terms acceptance.

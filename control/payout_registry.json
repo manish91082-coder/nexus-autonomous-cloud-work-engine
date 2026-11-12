@@ -288,6 +288,24 @@
       ],
       "captured_at": "2026-11-12",
       "verification_status": "OFFICIAL_PRICING_CAPTURED_PAYOUT_DOCUMENTATION_INCOMPLETE"
+    },
+    {
+      "provider": "Buy Me a Coffee",
+      "platform": "Creator support, memberships and digital content",
+      "country_eligibility": "India explicitly listed via Stripe Express",
+      "account_type": "Creator",
+      "kyc_requirements": "Stripe Express KYC and bank verification; owner-only",
+      "rail": "BANK_INR",
+      "currency": "Local Stripe account currency; confirm INR payout in onboarding",
+      "minimum": "USD 10 before first payout request/review",
+      "fees": "5% platform + Stripe processing 2.9% + USD 0.30; international +1%; subscription +0.5%; payout processing +0.5%",
+      "hold_period": "First payout review/transfer typically 7–14 days",
+      "settlement_schedule": "Weekly Wednesday platform payout; Stripe bank settlement typically 2–7 business days",
+      "fx_or_conversion": "Stripe cross-border conversion and bank fees account-dependent",
+      "reversibility_and_chargebacks": "Stripe review, refunds and chargebacks apply",
+      "official_source_url": "https://help.buymeacoffee.com/en/articles/6258038-supported-countries-for-payouts-on-buymeacoffee",
+      "captured_at": "2026-11-12",
+      "verification_status": "OFFICIAL_INDIA_STRIPE_EXPRESS_AND_FEES_CAPTURED_ACCOUNT_LEVEL_PENDING"
     }
   ],
   "required_fields": [

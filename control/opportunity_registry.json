@@ -737,6 +737,77 @@
         "Project license/maintenance readiness and community traction"
       ],
       "note": "Better than paid GitHub Marketplace Apps for low-friction OSS funding, but long-horizon only until a safe, licensed, useful project earns organic adoption."
+    },
+    {
+      "id": "BUYMEACOFFEE-CREATOR-SUPPORT",
+      "category": "creator_support_memberships",
+      "platform": "Buy Me a Coffee",
+      "tier": "P2",
+      "status": "VALIDATION",
+      "score": 67,
+      "score_confidence": "Medium-high on India payout availability and fees from official docs; low on audience and account-level Stripe Express approval.",
+      "payout_evidence": {
+        "india": "India explicitly supported via Stripe Express",
+        "platform_fee": "5%",
+        "processing": "2.9% + USD 0.30 standard; +1% international; +0.5% subscription; +0.5% payout processing per current help page",
+        "minimum": "USD 10 before first payout review",
+        "first_payout": "typically 7–14 days for first review/transfer; account approval required",
+        "ongoing": "weekly Wednesday payout schedule; Stripe bank settlement typically 2–7 business days",
+        "source": "https://help.buymeacoffee.com/en/articles/6258038-supported-countries-for-payouts-on-buymeacoffee"
+      },
+      "unknowns": [
+        "Account-specific Stripe Express onboarding and India KYC",
+        "Exact INR payout and bank/FX fees",
+        "Audience and recurring support demand"
+      ],
+      "note": "Potential international supporter rail for OSS creators; not domestic UPI sales channel."
+    },
+    {
+      "id": "PATREON-CREATOR-MEMBERSHIPS",
+      "category": "creator_memberships_digital_products",
+      "platform": "Patreon",
+      "tier": "P3",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 53,
+      "score_confidence": "Medium on global payout and fee terms; exact India payout options and audience demand account-specific.",
+      "payout_evidence": {
+        "platform_fee": "10% standard for new creators after Aug 4 2025, plus processing, currency conversion, payout fees and applicable taxes",
+        "payout_methods": "outside US: bank transfer via Payoneer, PayPal or Payoneer Wallet where country eligible",
+        "minimums": "PayPal USD 10; Payoneer wallet USD 25",
+        "timing": "5-day hold after first payout method or first payment; auto withdrawal on 5th; typically 1–5 days to payout account",
+        "source": "https://support.patreon.com/hc/en-us/articles/11111747095181-Creator-fees-overview"
+      },
+      "unknowns": [
+        "Exact INR direct bank payout option for India account",
+        "Actual payout fees for selected method",
+        "Audience and recurring membership demand"
+      ],
+      "note": "Higher platform fee than GitHub Sponsors/BMC; useful only with recurring content/community."
+    },
+    {
+      "id": "KOFI-CREATOR-SUPPORT",
+      "category": "creator_support_digital_goods",
+      "platform": "Ko-fi",
+      "tier": "P3",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 46,
+      "score_confidence": "Medium on fees and direct payouts; low on India creator account eligibility because Stripe Express not supported and PayPal India is international-only.",
+      "payout_evidence": {
+        "platform_fee": "0–5% depending feature/plan",
+        "payout": "direct to connected PayPal or Stripe, no Ko-fi minimum balance or payout delay",
+        "india_constraint": "PayPal India cannot receive domestic payments, only international; Ko-fi requires full Stripe Connect account and does not support Stripe Express",
+        "sources": [
+          "https://help.ko-fi.com/hc/en-us/articles/115003980093-How-do-I-get-paid",
+          "https://help.ko-fi.com/hc/en-us/articles/360009265834-Can-I-use-Stripe-in-my-country",
+          "https://www.paypal.com/in/cshelp/article/can-i-use-paypal-to-receive-payments-from-indian-customers-help1049"
+        ]
+      },
+      "unknowns": [
+        "India Stripe Connect account eligibility and onboarding",
+        "Cross-border PayPal fee and FX net",
+        "Audience"
+      ],
+      "note": "Possible international-only fallback if PayPal/Stripe account is approved; not a primary India rail."
     }
   ],
   "required_evidence": [
