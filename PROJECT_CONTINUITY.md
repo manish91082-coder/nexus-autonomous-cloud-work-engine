@@ -1155,3 +1155,16 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Mission phase: `PHASE_34_MARKETPLACE_VALIDATION_AND_PRODUCT_QA`.
 - No seller account created, no KYC, no terms accepted, no product published, no spend. Verified realized receipts ₹0; authorized spend ₹0.
 - Next: finish Chromium/Firefox QA and fix defects; validate final package artifact after product changes; prepare a single owner action packet for Getvik account/legal approval; do not publish until explicit approval. After any owner-approved launch, measure genuine qualified views, checkouts, paid orders, refunds, net payout and support minutes. No paid plan.
+
+
+## Phase 35 — Recruitment cashflow demand and differentiation audit (2026-11-12)
+- Product-market-fit review found a real but anecdotal pain point: recruitment agencies face delayed contingent-search invoices and guarantee disputes when payment is late. Reddit discussions show these scenarios but do not establish market size.
+- Competitor overlap is material. WePlacement advertises invoice-linked commission payout guards, GST/TDS invoicing and replacement guarantee tracking; IT Ways lists placement invoicing, guarantee tracker and recruiter split ledger in a ₹1,499/month Growth plan; HireMitra and EnlistIndia cover placement fee/collection and ledger workflows.
+- Report: `research/PHASE_35_RECRUITMENT_CASHFLOW_DEMAND_RISK_AUDIT_2026-11-12.md`.
+- Decision: keep v0.2.0 private; do not publish as a paid product yet. Differentiate with invoice due dates, due-date-based ageing, late-payment detection and user-configured payment-linked guarantee risk. The tool must show operational warnings only and never decide whether a legal guarantee is void.
+- Added Hindi customer FAQ to reduce support load and clarify offline storage, backup/restore, receipt rules, commission, guarantee events, and limitations.
+- Packaging script initially failed because a literal escaped newline was inserted into its Python list. Failure was inspected in CI logs, corrected, and rerun successfully. Final FAQ-enabled package run [43159877452](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452) SUCCESS; artifact ID 13917108363; SHA-256 `7d8e802de63c31ba68ccd64b668c8b6143b0ea5057178754f404898772dc1cba`; includes app, README, Hindi user guide, Hindi FAQ, package note and manifest; expires 12 Dec 2026.
+- Chromium + Firefox browser QA [43159499045](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159499045) SUCCESS: placement/receipt/commission/guarantee journey, persistence, JSON backup/restore, audit-safe deletion, labels, keyboard navigation, mobile overflow, no external network requests and no page errors.
+- Queue P34-002 COMPLETED. P34-001 Getvik publication remains BLOCKED on owner-only KYC/legal/payout declaration/publication approval. P35-001 payment-linked guarantee risk enhancement is IN_PROGRESS. P29-004 candidate evidence scan remains IN_PROGRESS. P31-001 MSME generic tool remains BLOCKED as free-sample candidate.
+- Current mission phase: `PHASE_35_PAYMENT_LINKED_GUARANTEE_RISK`.
+- No seller account created, no KYC submitted, no terms accepted, no product published, no spend. Realized net receipts ₹0; authorized spend ₹0.
