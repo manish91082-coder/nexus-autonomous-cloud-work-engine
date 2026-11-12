@@ -1,4 +1,4 @@
-# Getvik Launch Packet — Recruitment Agency Revenue Assurance Desk v0.2.0
+# Getvik Launch Packet — Recruitment Agency Revenue Assurance Desk v0.3.0
 
 **Decision:** Getvik is the first channel to validate, not an approved/public launch.
 **Current status:** Private package draft only. No seller account created, no KYC submitted, no terms accepted, no listing published.
@@ -68,3 +68,7 @@ Stop or reposition if 100 qualified product-page visits produce zero paid orders
 - Buyer FAQ: [CUSTOMER_FAQ_HI.md](CUSTOMER_FAQ_HI.md). It clarifies local storage, backups, receipt policy, commission calculation, guarantee event behavior and limitations to reduce recurring support.
 
 - Latest package includes `CUSTOMER_FAQ_HI.md` and passed ZIP/CRC/checksum validation: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452.
+
+
+## v0.3.0 product differentiation gate
+The product now records invoice reference/date/due date, uses due date for ageing, detects late receipts and shows a payment-linked guarantee risk flag only when the seller selects the signed-contract rule. It does not determine legal validity or void a guarantee. This is a stronger operational angle, but willingness-to-pay is still unproven.
