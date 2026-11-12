@@ -74,6 +74,25 @@ console.log('formula assertions: 12 passed');
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("12 passed", result.stdout)
 
+    def test_guarantee_date_math(self):
+        node = shutil.which("node")
+        self.assertIsNotNone(node, "Node.js is required in the GitHub runner")
+        start = self.script.index("function endDate")
+        end = self.script.index("function daysLeft", start)
+        function = self.script[start:end]
+        harness = function + r"""
+const assert = require('node:assert/strict');
+assert.equal(endDate({placedDate:'2026-01-31', guaranteeDays:30}).toISOString().slice(0,10), '2026-03-02');
+assert.equal(endDate({placedDate:'2026-02-01', guaranteeDays:0}).toISOString().slice(0,10), '2026-02-01');
+console.log('guarantee date assertions: 2 passed');
+"""
+        with tempfile.NamedTemporaryFile("w", suffix=".js", encoding="utf-8") as handle:
+            handle.write(harness)
+            handle.flush()
+            result = subprocess.run([node, handle.name], text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("2 passed", result.stdout)
+
     def test_embedded_javascript_syntax(self):
         node = shutil.which("node")
         self.assertIsNotNone(node, "Node.js is required in the GitHub runner")
