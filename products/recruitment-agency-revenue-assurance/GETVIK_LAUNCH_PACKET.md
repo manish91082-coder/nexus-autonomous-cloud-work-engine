@@ -116,9 +116,9 @@ Stop or reposition if 100 qualified product-page visits produce zero paid orders
 - Chromium + Firefox Playwright run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901456 (SUCCESS).
 - Checks include full placement/receipt/commission/guarantee journey, persistence, JSON backup/restore, financial-history deletion guard, labelled form controls, keyboard navigation, mobile overflow and no external network requests.
 - Latest private package run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452 (SUCCESS).
-- Latest verified private artifact ID: `13966678659` (package workflow run #34).
-- Product ZIP SHA-256: `645dbd226c8f4802fc073a2a85fdcc449b08e8b317642652ae5b4ff9d218a405`.
-- Artifact-wrapper digest: `sha256:805ba6aef321faf9ce2bdaab0656e98da02126c7c5c64330e7b1bdadc371727f`.
+- Latest verified private artifact ID: `13971177755` (package workflow run #37).
+- Package artifact SHA-256 digest: `sha256:63b772631c51ee73b8ab6708e557fb9794f0a184d18c579925817ac38ac2e796` (GitHub artifact ZIP digest; distinct from the product ZIP checksum).
+- The product ZIP's own checksum is stored in `dist/SHA256SUMS.txt` and was verified successfully by `sha256sum -c` in run #37.
 
 - Buyer FAQ: [CUSTOMER_FAQ_HI.md](CUSTOMER_FAQ_HI.md). It clarifies local storage, backups, receipt policy, commission calculation, guarantee event behavior and limitations to reduce recurring support.
 
