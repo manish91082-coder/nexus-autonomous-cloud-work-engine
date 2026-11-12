@@ -930,3 +930,15 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Extended browser tests to assert modal focus, Tab trapping and focus restoration after both win and failure/retry.
 - Code commits: focus management 93633aa5fdf9bab8ce844612b16902b2b17e92ba; browser assertions 91e6e8036bbbda299afa3bd9db757d42d331a530.
 - Validation run 43131129078 was observed in progress: puzzle logic and Chromium installation succeeded; browser interaction step was still running at the latest job poll. Do not count this accessibility change as verified until its run completes and the logs are inspected.
+
+
+### Phase 28 accessibility QA closure (2026-11-12)
+
+- Accessibility test iteration exposed two concrete implementation defects: the focus-restoration hook was initially inserted with literal backslash-n characters, causing a browser JavaScript parse failure; after syntax repair, the board focus was being set before a render that replaced the focused element. Both were diagnosed from CI logs and corrected.
+- Final fix: valid JavaScript line breaks; focus moves to the first playable relay only after each level render completes; modal focus remains on its action button while Tab is pressed; focus assertions cover win/next-level and timeout/retry paths.
+- Final successful CI run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43131745746
+- Run ID 43131745746; commit f3b95d271b7ae3ad38ceafb5051a142d307152b8; conclusion SUCCESS. All 10 reported job steps succeeded.
+- Browser suite: 3/3 passed, 0 failed. Desktop interaction/progression, timer failure/retry with modal focus, and mobile layout/touch sizing all passed. The test run is automated Chromium in GitHub Actions, not physical-device testing.
+- Final artifact for this run: ID 13905676397; size 8,229 bytes; SHA-256 3988dc93f7c11738ac709a9f6bfc566781c8f206bac08ef2baa6e38e705a4625; expires 2026-12-12.
+- Previous failed iterations are retained as audit evidence; latest successful run supersedes them for the current source state.
+- Next: perform game quality/difficulty review, original store asset design, exact-title/trademark screening and current CrazyGames SDK/India payout documentation audit. No account, submission, exclusivity, legal acceptance, KYC, bank setup or monetization has been activated.
