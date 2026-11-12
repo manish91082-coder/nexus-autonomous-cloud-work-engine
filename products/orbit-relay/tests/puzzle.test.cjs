@@ -33,3 +33,19 @@ test("level size scales but stays within the seven by seven limit",()=>{
  assert.equal(G.createPuzzle(99,1).size,7);
 });
 test("empty cells cannot be rotated",()=>{const p=G.createPuzzle(1,9);let empty=null;for(let y=0;y<p.size;y++)for(let x=0;x<p.size;x++)if(!p.board[y][x])empty={x,y};assert.ok(empty);assert.equal(G.rotateTile(p,empty.x,empty.y),false)});
+
+test("seed and difficulty matrix stays solvable and hints converge",()=>{
+ for(let level=1;level<=24;level++){
+  for(let seed=1;seed<=10;seed++){
+   const p=G.createPuzzle(level,seed*7919+level*104729);
+   assert.equal(G.solved(p),false,"level "+level+" seed "+seed+" must start unsolved");
+   assert.ok(p.pathLength>=p.size+1,"level "+level+" must create a meaningful route");
+   let hints=0;
+   while(!G.solved(p)&&hints<p.size*p.size){
+    assert.ok(G.applyHint(p),"hint should find a misaligned relay");
+    hints++;
+   }
+   assert.equal(G.solved(p),true,"hints must converge at level "+level+" seed "+seed);
+  }
+ }
+});
