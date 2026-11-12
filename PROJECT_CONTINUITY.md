@@ -8,7 +8,17 @@
 
 ---
 
-## 1. Mission (locked)
+> **CURRENT AUTHORITY NOTICE — 2026-11-12**
+>
+> The controlling mission constitution is now [MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V2.md](MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V2.md). The original sections below preserve historical continuity and must be read as legacy records wherever they conflict with v2.
+>
+> Current mission: Internet-only, self-serve, multi-source Autonomous Revenue Ecosystem targeting ₹10 crore in verified realized net receipts, ₹0 upfront capital, maximum practical automation. No jobs, manual gigs, freelance bids, client services, cold outreach, physical operations, solar O&M or field work.
+>
+> Current active product pilot: Orbit Relay (internal codename only). All other prototypes are held/archived pending demand, payout and automation gates. The old bounty/task marketplace schedules are paused; manual dispatch only.
+>
+> Canonical front door: [README.md](README.md). Repository inventory and status: [REPOSITORY_SCOPE_AUDIT_2026-11-12.md](REPOSITORY_SCOPE_AUDIT_2026-11-12.md).
+
+## 1. Mission (historical record, superseded where conflicting)
 
 Build a **zero-cost-first, cloud-hosted, highly autonomous AI Work-to-Earn Engine**. The system should discover legitimate paid work from AI companies, AI-training/data/research/coding/evaluation providers, and agent-native marketplaces; qualify opportunities; execute suitable work using AI agents; quality-check deliverables; submit through permitted interfaces; monitor acceptance; and reconcile actual payments.
 
