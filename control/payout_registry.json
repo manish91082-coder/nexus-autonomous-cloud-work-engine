@@ -34,20 +34,25 @@
     {
       "provider": "Topmate",
       "platform": "India-first digital products and creator storefront",
-      "country_eligibility": "India INR/UPI checkout documented; seller payout timing not yet verified",
+      "country_eligibility": "India bank payout supported; INR checkout and payout documented in official support articles",
       "account_type": "creator account",
-      "kyc_requirements": "seller onboarding and payout details to be confirmed",
-      "rail": "UPI",
+      "kyc_requirements": "Seller onboarding and payout bank identity verification; profile name should match bank/PayPal; account-level checks pending",
+      "rail": "BANK_INR",
       "currency": "INR",
-      "minimum": "not confirmed",
-      "fees": "10% own-page/link; 20% marketplace discovery; transaction fee at least 2% INR",
-      "hold_period": "not confirmed",
-      "settlement_schedule": "not confirmed from accessible official fee page",
-      "fx_or_conversion": "international fees/currency depend on gateway",
-      "reversibility_and_chargebacks": "platform/gateway rules to be checked",
+      "minimum": "INR 500 withdrawal with no fee; below INR 500 flat INR 20; INR 20 or less cannot be requested",
+      "fees": "10% own-page/link or 20% marketplace commission; INR transaction charge 2% minimum or actual gateway charge if higher; 18% GST applies to Topmate fee for INR payments",
+      "hold_period": "First withdrawal available 7 days after first paid booking; payout request reviewed before release",
+      "settlement_schedule": "From 22 Oct 2026 guideline: INR withdrawal processed within 7 days of request; bank downtime may add up to 48 hours after processing; bank holidays delay settlement",
+      "fx_or_conversion": "International non-INR gateway charges vary; INR fees and withdrawal minimum apply",
+      "reversibility_and_chargebacks": "Payout requests undergo automated and manual review; gateway/refund and platform terms apply",
       "official_source_url": "https://topmate.io/fees",
       "captured_at": "2026-11-12",
-      "verification_status": "PARTIAL_OFFICIAL_TERMS_ACCOUNT_PAYOUT_PENDING"
+      "verification_status": "OFFICIAL_FEES_AND_PAYOUT_GUIDELINES_CAPTURED_ACCOUNT_LEVEL_PENDING",
+      "official_sources": [
+        "https://topmate.io/fees",
+        "https://topmate72420835211887570.freshdesk.com/support/solutions/articles/1070000141051-topmate-payout-guidelines",
+        "https://topmate72420835211887570.freshdesk.com/support/solutions/articles/1070000111278-payouts"
+      ]
     },
     {
       "provider": "Getvik",
