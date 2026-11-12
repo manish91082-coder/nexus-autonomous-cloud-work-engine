@@ -56,3 +56,11 @@ A listing is not demand proof. The first gate is genuine completed paid orders f
 - support minutes per sale
 
 Stop or reposition if 100 qualified product-page visits produce zero paid orders, or if support burden requires recurring manual work. This is a proposed experiment threshold, not a platform benchmark.
+
+
+## Latest QA evidence
+- Chromium + Firefox Playwright run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159499045 (SUCCESS).
+- Checks include full placement/receipt/commission/guarantee journey, persistence, JSON backup/restore, financial-history deletion guard, labelled form controls, keyboard navigation, mobile overflow and no external network requests.
+- Latest private package run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159443230 (SUCCESS).
+- Current artifact ID: 13916598950.
+- Current artifact SHA-256: `e7649325a2e1a28a08720f3cb2344a588240f81938fadd18ad6d9793470ce225`.
