@@ -713,6 +713,30 @@
         "100 installation threshold",
         "publisher account owner setup"
       ]
+    },
+    {
+      "id": "GITHUB-SPONSORS",
+      "category": "open_source_sponsorship",
+      "platform": "GitHub Sponsors",
+      "tier": "P2",
+      "status": "VALIDATION",
+      "score": 64,
+      "score_confidence": "Medium on India eligibility and payout terms; low on audience/demand because current public repos show minimal stars and no recurring sponsor base.",
+      "payout_evidence": {
+        "india_supported": true,
+        "personal_account_fee": "0% GitHub platform fee",
+        "organization_account_fee": "up to 6%",
+        "first_payout": "60 days after first sponsorship",
+        "ongoing": "payments processed within 30 days after month-end; Stripe Connect payouts generally on 22nd; cross-border minimum may apply",
+        "source": "https://docs.github.com/en/site-policy/github-terms/github-sponsors-additional-terms"
+      },
+      "unknowns": [
+        "Account-level KYC, bank and tax verification",
+        "Stripe cross-border payout minimum and India fees",
+        "Actual sponsor demand and conversion",
+        "Project license/maintenance readiness and community traction"
+      ],
+      "note": "Better than paid GitHub Marketplace Apps for low-friction OSS funding, but long-horizon only until a safe, licensed, useful project earns organic adoption."
     }
   ],
   "required_evidence": [

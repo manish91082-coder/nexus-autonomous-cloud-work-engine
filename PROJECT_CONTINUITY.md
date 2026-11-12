@@ -1348,3 +1348,11 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Detailed report: [Publishing and Marketplace Monetization Audit](research/PHASE_43_PUBLISHING_AND_MARKETPLACE_MONETIZATION_AUDIT_2026-11-12.md).
 - P43-004 active: evaluate GitHub Marketplace Apps as a developer-tool recurring revenue lane. Official gate: paid GitHub App needs organization ownership, publisher verification, at least 100 installations, approved listing and financial onboarding. Payment minimum USD 500/month; payment at end of following month; GitHub retains 5%. India payout route remains unverified. No organization setup, terms acceptance or listing submission.
 - No product build until buyer demand, India payout and differentiation pass. Finance remains realized receipts INR 0; authorized spend INR 0.
+
+
+## Phase 43 GitHub monetization audit — 2026-11-12
+- P43-004 completed: GitHub Sponsors is more feasible than paid GitHub Marketplace Apps as a long-horizon OSS funding rail. India is supported; personal account fee 0%; first payout after 60 days, subsequent monthly payouts within 30 days of month-end; Stripe Connect around 22nd, cross-border minimum may apply. Owner KYC/tax/bank and approval required.
+- Paid GitHub Marketplace Apps are not near-term: verified organization, at least 100 installations, monthly+annual plans, review, USD 500/month threshold and 5% GitHub fee.
+- Public repo audit found minimal traction: one repo 2 stars, one 1 star, most 0. Root Nexus repo has no root license; nested Job-to-Cash and CSV-to-Action MIT license files apply only within those subfolders. Do not treat whole repository as open source.
+- P43-005 active: prepare safe OSS sponsorship readiness dossier and low-maintenance tier proposal. No account setup, KYC, tax/bank data, terms acceptance or public sponsorship profile without owner approval.
+- Finance: realized receipts INR 0; authorized spend INR 0.

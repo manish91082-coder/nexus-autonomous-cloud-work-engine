@@ -893,7 +893,7 @@
       "id": "P43-004",
       "title": "Evaluate GitHub Marketplace Apps as a developer-tool recurring revenue lane",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P43-003"
       ],
@@ -906,6 +906,40 @@
         "Compare competitors and installation demand",
         "Verify India payment onboarding only from official documentation or mark unknown",
         "Do not create organization, accept terms, submit listing or build app until demand and payout gates pass"
+      ],
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "report": "research/PHASE_43_GITHUB_SPONSORS_AND_MARKETPLACE_AUDIT_2026-11-12.md",
+        "decision": "GitHub Sponsors is a more feasible long-horizon lane than paid GitHub Marketplace App, but no current repo has sufficient adoption and KYC/bank setup remains owner-gated",
+        "marketplace": "Paid GitHub App requires verified organization ownership, 100 installations, approved listing and financial onboarding; USD 500 monthly payout threshold; payment at end of following month; GitHub retains 5%",
+        "sponsors": "India supported; personal-account sponsorship fee 0%; first payout 60 days after first sponsorship, subsequent monthly payments within 30 days after month close; Stripe Connect payout around 22nd; cross-border minimum may apply",
+        "repo_audit": "11 accessible repos; only 2 stars on ghost-hunter-research-all-block-chains; 1 star on ai-content-system; 0 stars on most; root Nexus repo no root LICENSE; nested Job-to-Cash and CSV-to-Action MIT licenses",
+        "sources": [
+          "https://docs.github.com/en/sponsors/getting-started-with-github-sponsors/about-github-sponsors",
+          "https://docs.github.com/en/site-policy/github-terms/github-sponsors-additional-terms",
+          "https://docs.github.com/en/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-personal-account",
+          "https://docs.github.com/en/apps/github-marketplace/creating-apps-for-github-marketplace/requirements-for-listing-an-app",
+          "https://docs.github.com/en/apps/github-marketplace/selling-your-app-on-github-marketplace/receiving-payment-for-app-purchases"
+        ]
+      }
+    },
+    {
+      "id": "P43-005",
+      "title": "Prepare GitHub Sponsors readiness dossier for existing safe open-source assets",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P43-004"
+      ],
+      "idempotency_key": "phase43-github-sponsors-readiness-dossier-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-12",
+      "acceptance": [
+        "Identify safe, useful, properly licensed candidate repositories",
+        "Audit root and nested license scope, documentation, security and maintenance readiness",
+        "Define low-maintenance sponsorship tiers without manual service promises",
+        "Prepare owner-only KYC/bank/tax/2FA checklist",
+        "Do not create profile, accept terms or publish sponsorship tiers without owner approval"
       ]
     }
   ],
