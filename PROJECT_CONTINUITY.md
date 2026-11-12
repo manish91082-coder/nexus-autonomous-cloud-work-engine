@@ -2,17 +2,17 @@
 **Canonical working copy:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
 **Original source (read-only, do not modify):** `manish91082-coder/ai-content-system`  
 **Primary branch:** `master`  
-**Continuity version:** 2.0  
-**Last updated:** 2026-11-12 (Master Strategy v2.0; repository scope audit; obsolete schedules paused)  
+**Continuity version:** 3.0  
+**Last updated:** 2026-11-12 (Master Constitution v3.0; persistent queue and payout registries; scheduled continuity guard)  
 **Purpose:** Preserve the complete operating context so a new ChatGPT thread can resume without losing decisions, constraints, implementation status, or next actions.
 
 ---
 
 > **CURRENT AUTHORITY NOTICE — 2026-11-12**
 >
-> The controlling mission constitution is now [MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V2.md](MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V2.md). The original sections below preserve historical continuity and must be read as legacy records wherever they conflict with v2.
+> The controlling mission constitution is now [MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V3.md](MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V3.md). The original sections below preserve historical continuity and must be read as legacy records wherever they conflict with v3.
 >
-> Current mission: Internet-only, self-serve, multi-source Autonomous Revenue Ecosystem targeting ₹10 crore in verified realized net receipts, ₹0 upfront capital, maximum practical automation. No jobs, manual gigs, freelance bids, client services, cold outreach, physical operations, solar O&M or field work.
+> Current mission: broad, rail-neutral, Internet-only autonomous revenue ecosystem targeting ₹10 crore in verified realized net receipts. Any lawful revenue model is eligible if it can be configured once and then run with maximum practical automation; one-time human KYC/legal/payout/publication setup is allowed. ₹0 upfront capital; no recurring manual labour, employment, manual gigs, freelance bids, cold outreach or physical operations.
 >
 > Current active product pilot: Orbit Relay (internal codename only). All other prototypes are held/archived pending demand, payout and automation gates. The old bounty/task marketplace schedules are paused; manual dispatch only.
 >
@@ -988,3 +988,39 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Verified tree snapshot at master HEAD `0048f2944c0ffa2b6c2ed04723e8f004905b3eba`: 169 entries, recursive tree not truncated. The earlier 166-entry count was the pre-governance baseline; three governance files explain the increase.
 - The separate original source repository `manish91082-coder/ai-content-system` is referenced by legacy documents. It was not modified and is not the canonical working repository for the current strategy.
 - Phase 29 begins with shared control-plane/registry/ledger and final repository active-vs-archive labeling, then fresh revenue-source ranking. No new product build before an opportunity passes the master gates.
+
+
+## 12. Master Constitution v3.0 and autonomous continuation — 2026-11-12
+
+### Scope update
+- V3 supersedes V2 as the controlling mission constitution.
+- Any legal Internet-based revenue method is eligible if recurring operations can be automated after one-time setup. The revenue universe now explicitly includes software, APIs, SaaS, plugins, games, digital goods, publishing, stock/licensing royalties, affiliate/referral, audience/platform monetisation, data products, self-serve marketplaces and compliant on-chain/wallet-based monetisation.
+- Bank, UPI, international bank, PayPal, Payoneer, Skrill, other compliant wallets, platform balances and crypto-wallet receipts are all eligible rails subject to India eligibility, lawful use, provider/counterparty checks, fees, tax evidence and settlement verification.
+- Prioritisation is based on risk-adjusted time-to-first-sale/time-to-settlement plus scalable net upside. High headline rates without verified demand/payout do not rank highly.
+- One-time owner setup is allowed: KYC, legal acceptance, bank/wallet setup, account ownership, wallet signing and final publication approval. Recurring manual work remains excluded.
+
+### Files installed
+- `MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V3.md` — authoritative constitution.
+- `control/mission_state.json` — machine-readable mission state.
+- `control/automation_queue.json` — persistent tasks P29-001 through P29-008.
+- `control/opportunity_registry.json` — opportunity evidence/scoring schema.
+- `control/payout_registry.json` — rail-neutral payout evidence schema.
+- `control/revenue_ledger.json` — realized receipt ledger, currently ₹0.
+- `scripts/mission_guard.py` — deterministic JSON, queue and ledger validator.
+- `.github/workflows/mission-continuity-guard.yml` — scheduled GitHub Actions validator at 08:11 Asia/Kolkata plus manual dispatch.
+
+### Continuity design
+- Repository state is the memory authority, not chat transcript length.
+- Every thread reads V3, this file, mission state, queue, latest phase report, GitHub HEAD and latest workflow run before continuing.
+- Every material step records task ID, evidence, commit, tests, blockers and next task.
+- ChatGPT scheduled agent runs are the reasoning/execution layer; GitHub Actions is only a deterministic validation layer. GitHub Actions does not independently perform AI research or private-account actions.
+- Owner-only tasks pause individually; unrelated safe queue tasks continue.
+- Resume phrase: “₹10 Cr mission resume. Read MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V3.md, PROJECT_CONTINUITY.md and control/ state/queue. Verify GitHub HEAD and latest CI, then execute the highest-priority unblocked task. Do not wait for me to type next.”
+
+### Current exact checkpoint
+- Phase: PHASE_29_CONTROL_PLANE.
+- Queue: P29-001 to P29-004 READY; P29-005 to P29-008 blocked on evidence/dependencies.
+- Current verified receipts: ₹0. Authorized spend: ₹0.
+- New deterministic scheduled guard is committed; first scheduled execution is still pending verification.
+- Next: validate script locally/CI, inspect latest workflow run, audit all workflows, then perform broad multi-category revenue/payout research and rank P0/P1 candidates.
+- Do not claim scheduled ChatGPT agent automation exists until its creation result is confirmed; do not claim CI passed until a run is observed.
