@@ -1065,3 +1065,15 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Workflow run check: no run of `.github/workflows/mission-continuity-guard.yml` was present at the latest query. The workflow is committed and scheduled but its first execution is not yet verified.
 - Latest verified GitHub HEAD at checkpoint: `1ddcfbcd36b3085c66b233ac2ceced9450186136`.
 - Actual realized receipts: ₹0. Authorized spend: ₹0.
+
+
+## Phase 30 — Bounded Autonomous AI Worker deployment (2026-11-12)
+- User requested a cloud worker that continues the ₹10 Cr mission without repeated manual “Next” prompts.
+- Added `scripts/ai_task_executor.py`, `tests/test_ai_task_executor.py`, and `AI_WORKER_SETUP.md`.
+- Updated `.github/workflows/mission-autonomous-worker.yml` to run every five minutes, validate mission state, run safety tests, write a heartbeat, and invoke the AI adapter. Productive AI output is committed with quota state; nonproductive/blocked runs only produce artifacts.
+- Adapter is disabled by default and fails closed unless explicit zero-billing confirmation plus Cloudflare account ID, restricted API token and exact model ID are configured as GitHub Actions secrets. No secrets belong in chat or repository.
+- Hard caps: 6 inference calls per UTC day, 30-minute minimum interval, 900 output tokens. Model output is untrusted draft; no generated code execution, public publication, KYC/legal acceptance, wallet signing, private-key access, spend or funds movement.
+- Updated mission state to reflect that provider secrets are not configured and productive AI run/24-hour soak remain pending. P29-002 acceptance now explicitly includes productive run, recovery and soak test.
+- Commits: executor `22a9d66099e9e81d4cf4d61d9ad46d41efc0c022`; tests `801f79b8f9a2e7340226fa625cbffd0b17378929`; setup `91a0421666014bb6716b4baa5d40b1db489458e2`; workflow `35031d4aadcd34ab9dd2afd2a0ad9b19602eae2f`; state `9926b900f1dc682ad53a333a81e7339d18d76b07`; queue `612e5d210e9ebec4b29520abd9899f69b541c916`; report `f6b7702b28c78dbf4646413e77f0ffc82b3e4454`.
+- Not yet proven: scheduled cron execution after this change, provider-backed inference, productive task completion, crash recovery, or 24-hour soak. This is a bounded recurring worker architecture, not yet a certified 24×7 autonomous AI operator.
+- Next: inspect the Actions run triggered by the workflow update; fix any test/CI failures; owner reviews `AI_WORKER_SETUP.md` and configures secrets only after verifying zero-billing eligibility; then run provider-backed test and 24-hour soak. Continue P29-004 revenue-source research in parallel through the daily supervisor.
