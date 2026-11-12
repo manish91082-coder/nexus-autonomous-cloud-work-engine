@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "scoring": {
+    "demand": 25,
+    "payout_certainty_and_speed": 20,
+    "automation": 20,
+    "net_economics_and_zero_cost": 15,
+    "distribution_and_differentiation": 10,
+    "risk_and_compliance": 10
+  },
+  "candidates": [],
+  "required_evidence": [
+    "official_terms_url",
+    "captured_at",
+    "india_eligibility",
+    "payout_methods",
+    "minimum_threshold",
+    "hold_and_settlement",
+    "fees_and_fx",
+    "demand_evidence",
+    "automation_percent",
+    "recurring_human_work",
+    "unit_economics",
+    "ip_and_policy_status",
+    "score",
+    "decision"
+  ],
+  "decision_states": [
+    "DISCOVERED",
+    "HOLD_FOR_EVIDENCE",
+    "VALIDATION",
+    "PILOT_ELIGIBLE",
+    "ACTIVE",
+    "REJECTED",
+    "ARCHIVED"
+  ],
+  "updated_at": "2026-11-12"
+}
