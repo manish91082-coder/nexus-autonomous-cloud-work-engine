@@ -146,7 +146,7 @@
       "id": "P31-001",
       "title": "Validate and package MSME Ops Desk Lite as first self-serve digital product",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "BLOCKED",
       "depends_on": [
         "P29-001"
       ],
@@ -158,13 +158,15 @@
         "User guide, backup/restore and privacy notes are complete",
         "Net proceeds are compared across eligible zero-upfront platforms",
         "Product is packaged as private draft; publication and account terms remain owner gates"
-      ]
+      ],
+      "blocker": "Generic MSME Ops Desk feature set is commoditized by free/low-cost alternatives. Keep as FREE_SAMPLE_CANDIDATE only; defer packaging/paid distribution until a validated lead funnel or buyer demand signal exists. No third product build.",
+      "last_updated": "2026-11-12"
     },
     {
       "id": "P31-002",
       "title": "Qualify top India-first and international digital product payout rails",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P29-004"
       ],
@@ -175,7 +177,24 @@
         "Fees, thresholds, holds, refunds and FX are compared at multiple price points",
         "Account-level unknowns and one-time owner actions are explicit",
         "No paid setup or terms acceptance occurs without approval"
-      ]
+      ],
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "qualified_channels": [
+          "Getvik",
+          "ownstreet",
+          "Topmate",
+          "Payhip+Razorpay",
+          "Gumroad",
+          "Qxel",
+          "Srotabase"
+        ],
+        "payout_registry_count": 14,
+        "fee_comparisons": "Getvik Free and Topmate own-link/marketplace fee arithmetic compared at ₹499/₹799/₹999/₹1,499; thresholds, holds and settlement documented where available",
+        "report": "research/PHASE_34_MARKETPLACE_SELECTION_AND_PRIVATE_PRODUCT_PACKAGE_2026-11-12.md",
+        "decision": "Getvik Free first validation channel; ownstreet secondary after first sale; Qxel/Srotabase held for evidence",
+        "remaining": "Account-level KYC, actual fee quote and owner approval remain gates."
+      }
     },
     {
       "id": "P32-001",
@@ -230,6 +249,47 @@
         ],
         "remaining": "Cross-browser visual/accessibility QA and real buyer demand remain open; product is private and unpublished."
       }
+    },
+    {
+      "id": "P34-001",
+      "title": "Prepare Getvik Free launch for Recruitment Agency Revenue Assurance Desk",
+      "priority": "P0",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P32-002",
+        "P31-002"
+      ],
+      "idempotency_key": "phase34-getvik-private-launch-v1",
+      "owner_gate": true,
+      "acceptance": [
+        "Private package built and checksum verified",
+        "Current Getvik Terms, fees, payout minimum and refund/support obligations reviewed",
+        "Commercial license and product listing draft prepared",
+        "Owner completes PAN/own-name bank+UPI setup and accepts Payout Declaration securely on platform",
+        "Owner explicitly approves public product publication",
+        "No paid plan or spend without approval"
+      ],
+      "blocker": "Owner-only KYC, payout declaration, legal acceptance and public-release approval are required. Do not register, submit identity/bank data, accept terms or publish on the owner's behalf.",
+      "last_updated": "2026-11-12"
+    },
+    {
+      "id": "P34-002",
+      "title": "Cross-browser, accessibility and product interaction QA for v0.2.0",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P32-002"
+      ],
+      "idempotency_key": "phase34-browser-accessibility-qa-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "Automated browser interaction tests run on Chromium and Firefox or document environment limitation",
+        "Keyboard navigation and focus visibility checked",
+        "Form labels, live status messages and table semantics checked",
+        "Data backup/restore and no-network behavior verified",
+        "Critical defects fixed and CI evidence recorded"
+      ],
+      "last_updated": "2026-11-12"
     }
   ],
   "dead_letter": [],
