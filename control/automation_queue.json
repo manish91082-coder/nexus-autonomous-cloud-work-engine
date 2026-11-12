@@ -1195,6 +1195,21 @@
             "result": "BROWSER_QA_PASS chromium+firefox"
           },
           "verified_at": "2026-11-12T17:25:46Z"
+        },
+        "reconciliation_verification": {
+          "verified_head": "fe63addebfa114d206206cc39be2b9e7e3b37722",
+          "workflow_run_number": 123,
+          "workflow_run_id": 43272581570,
+          "workflow_url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43272581570",
+          "workflow_conclusion": "success",
+          "job_id": 131360070417,
+          "tests": {
+            "ai_worker_safety": 2,
+            "msme_product_smoke": 3,
+            "recruitment_product": 7
+          },
+          "html_escaping_regression": "passed",
+          "verified_at": "2026-11-12T17:44:27Z"
         }
       }
     },
