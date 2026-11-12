@@ -65,6 +65,30 @@ test("desktop: start, pause/resume, hint, restart and solve progression", async 
   }
 });
 
+test("daily challenge uses a deterministic UTC-date puzzle and persists same-day completion", async () => {
+  const { browser, page } = await launch();
+  try {
+    await page.getByRole("button", { name: /Daily Challenge/i }).click();
+    assert.match(await page.locator("#pathInfo").textContent(), /DAILY · \\d{4}-\\d{2}-\\d{2}/);
+    const firstBoard = await page.locator("#board .tile:not(.empty) svg").evaluateAll(nodes => nodes.map(n => n.style.transform));
+    await page.getByRole("button", { name: "Restart level" }).click();
+    const restartedBoard = await page.locator("#board .tile:not(.empty) svg").evaluateAll(nodes => nodes.map(n => n.style.transform));
+    assert.deepEqual(restartedBoard, firstBoard, "daily puzzle must retain its date seed on restart");
+    for (let i = 0; i < 60; i++) {
+      if (await page.locator("#overlay").evaluate(el => getComputedStyle(el).display !== "none")) break;
+      await page.getByRole("button", { name: /Use hint/i }).click();
+    }
+    await page.waitForSelector("#overlay", { state: "visible" });
+    assert.match(await page.locator("#modalTitle").textContent(), /Daily signal restored/i);
+    await page.getByRole("button", { name: /Back to menu/i }).click();
+    assert.match(await page.locator("#dailyBtn").textContent(), /Completed today/i);
+    await page.reload();
+    assert.match(await page.locator("#dailyBtn").textContent(), /Completed today/i);
+  } finally {
+    await browser.close();
+  }
+});
+
 test("timer expiry shows failure and retry keeps the same level", async () => {
   const { browser, page } = await launch({ width: 1280, height: 800 }, true);
   try {
