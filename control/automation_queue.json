@@ -566,7 +566,7 @@
       "id": "P40-001",
       "title": "Implement deterministic Daily Challenge with local completion marker",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P39-001"
       ],
@@ -579,6 +579,35 @@
         "Browser tests cover deterministic restart and same-day completion state",
         "Existing campaign progression and score behavior remain intact",
         "CI browser suite, validation and offline package pass"
+      ],
+      "last_updated": "2026-11-12",
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "report": "research/PHASE_40_DAILY_CHALLENGE_2026-11-12.md",
+        "ci_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43171069764",
+        "ci_conclusion": "SUCCESS",
+        "browser_tests": "13/13 total passed; daily deterministic restart and completion persistence passed",
+        "artifact_id": 13922182475,
+        "artifact_sha256": "83564b63f5287581499b4d045a683c0d959f2a4db18a6f9c8bb3425dbd8e7ae2",
+        "artifact_size_bytes": 8809,
+        "tested_commit": "a5df4771938000b6a35c8f01e4711b3c65ee0c55"
+      }
+    },
+    {
+      "id": "P41-001",
+      "title": "Test Daily Challenge UTC rollover and localStorage failure resilience",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P40-001"
+      ],
+      "idempotency_key": "phase41-daily-boundary-storage-tests-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "Daily completion state rolls over correctly at UTC date boundary",
+        "Daily mode remains playable when localStorage is blocked",
+        "Campaign and daily completion states remain isolated",
+        "All browser tests pass and offline package is generated"
       ],
       "last_updated": "2026-11-12"
     }
