@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.0",
+  "queue_policy": {
+    "max_active_builds": 2,
+    "priority_order": [
+      "P0",
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "retry_policy": "bounded_exponential_backoff",
+    "owner_gates_pause_only_affected_task": true
+  },
+  "tasks": [
+    {
+      "id": "P29-001",
+      "title": "Install mission control-plane schemas and validators",
+      "priority": "P0",
+      "status": "READY",
+      "depends_on": [],
+      "idempotency_key": "phase29-control-plane-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "All control JSON files validate",
+        "Schema and task-state rules documented"
+      ]
+    },
+    {
+      "id": "P29-002",
+      "title": "Add deterministic scheduled CI runner and evidence report",
+      "priority": "P0",
+      "status": "READY",
+      "depends_on": [
+        "P29-001"
+      ],
+      "idempotency_key": "phase29-scheduled-ci-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "Workflow supports schedule and manual dispatch",
+        "Runner validates registries",
+        "Run result is inspectable"
+      ]
+    },
+    {
+      "id": "P29-003",
+      "title": "Audit all workflows and recurring automation",
+      "priority": "P0",
+      "status": "READY",
+      "depends_on": [
+        "P29-001"
+      ],
+      "idempotency_key": "phase29-workflow-audit-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "Every workflow classified",
+        "Unwanted schedules identified and paused"
+      ]
+    },
+    {
+      "id": "P29-004",
+      "title": "Broad revenue-source and payout evidence scan",
+      "priority": "P0",
+      "status": "READY",
+      "depends_on": [
+        "P29-001"
+      ],
+      "idempotency_key": "phase29-source-scan-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "At least 25 candidates across 8 categories",
+        "India eligibility and payout source captured",
+        "P0/P1 ranking with confidence and unknowns"
+      ]
+    },
+    {
+      "id": "P29-005",
+      "title": "Select fastest credible pilot and high-upside secondary pilot",
+      "priority": "P0",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P29-004"
+      ],
+      "idempotency_key": "phase29-pilot-selection-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "All hard gates pass",
+        "Risk-adjusted time-to-settlement scored",
+        "No recurring manual labour"
+      ]
+    },
+    {
+      "id": "P29-006",
+      "title": "Prepare owner setup packet for selected platforms",
+      "priority": "P1",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P29-005"
+      ],
+      "idempotency_key": "phase29-owner-setup-v1",
+      "owner_gate": true,
+      "acceptance": [
+        "Exact KYC/legal/payment actions documented",
+        "No secrets collected in chat or repository"
+      ]
+    },
+    {
+      "id": "P29-007",
+      "title": "Implement product/distribution adapters after pilot gates",
+      "priority": "P1",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P29-005",
+        "P29-006"
+      ],
+      "idempotency_key": "phase29-adapters-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "Automated build/QA",
+        "Publication remains approval gated"
+      ]
+    },
+    {
+      "id": "P29-008",
+      "title": "Verify first settled payout and reconcile ledger",
+      "priority": "P1",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P29-007"
+      ],
+      "idempotency_key": "phase29-first-payout-v1",
+      "owner_gate": true,
+      "acceptance": [
+        "Provider statement and receipt evidence",
+        "Fees/refunds/costs reconciled",
+        "No double counting"
+      ]
+    }
+  ],
+  "dead_letter": [],
+  "updated_at": "2026-11-12"
+}
