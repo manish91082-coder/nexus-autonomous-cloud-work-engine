@@ -7,6 +7,8 @@ on:
       - 'scripts/ai_task_executor.py'
       - 'scripts/mission_guard.py'
       - 'tests/test_ai_task_executor.py'
+      - 'tests/test_msme_ops_desk.py'
+      - 'products/msme-ops-desk-lite/**'
       - 'control/automation_queue.json'
       - 'control/mission_state.json'
       - 'AI_WORKER_SETUP.md'
@@ -38,6 +40,8 @@ jobs:
         run: python3 scripts/mission_guard.py
       - name: Run AI worker safety tests
         run: python3 -m unittest discover -s tests -p 'test_ai_task_executor.py' -v
+      - name: Run product smoke tests
+        run: python3 -m unittest discover -s tests -p 'test_msme_ops_desk.py' -v
       - name: Poll queue and write deterministic heartbeat
         run: python3 scripts/worker_tick.py
       - name: Execute one bounded AI work packet (fails closed without owner secrets)
