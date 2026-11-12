@@ -1024,3 +1024,17 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - New deterministic scheduled guard is committed; first scheduled execution is still pending verification.
 - Next: validate script locally/CI, inspect latest workflow run, audit all workflows, then perform broad multi-category revenue/payout research and rank P0/P1 candidates.
 - Do not claim scheduled ChatGPT agent automation exists until its creation result is confirmed; do not claim CI passed until a run is observed.
+
+
+### Phase 29 execution update — 2026-11-12 (V3 installed)
+- V3 master constitution created and made authoritative. It explicitly permits any lawful Internet revenue model that can be configured once and then run with maximum practical automation; one-time KYC/legal/payout/wallet/publication setup is allowed.
+- Payment policy is rail-neutral: bank, UPI, international transfer, e-wallets, platform balances and compliant crypto-wallet receipts are candidate rails. Crypto must be separately evidenced, valued, screened and tax-reviewed; no circumvention.
+- Installed machine registries: `control/mission_state.json`, `automation_queue.json`, `opportunity_registry.json`, `payout_registry.json`, `revenue_ledger.json`. All five files passed JSON parsing through GitHub retrieval.
+- Added `scripts/mission_guard.py` and scheduled workflow `.github/workflows/mission-continuity-guard.yml` at 08:11 Asia/Kolkata daily plus manual dispatch. **Workflow is committed but its first execution is not yet verified.**
+- Audited all 10 current workflow files. The new mission guard is the only recurring schedule; legacy bounty/task workflows remain manual-dispatch-only; product build workflows are push/manual triggers. No other cron trigger was found in the workflow directory.
+- Added official-source scan: `research/PHASE_29_BROAD_REVENUE_MODEL_AND_PAYOUT_EVIDENCE_2026-11-12.md`. Initial candidate set includes KDP, Gumroad, Adobe Stock, Envato, Amazon Associates India, CrazyGames, Unity Asset Store, Google Play/Chrome Web Store and direct-wallet licensing. All are candidates, not approved/earning channels.
+- Queue status: P29-001 COMPLETED (schemas installed and JSON-valid); P29-002 IN_PROGRESS (scheduled guard committed, CI run pending); P29-003 COMPLETED (10 workflow files audited); P29-004 IN_PROGRESS (initial 9 candidates researched; expand to 25+ across 8 categories).
+- A daily ChatGPT task automation was successfully created for 08:30 Asia/Kolkata, starting 2026-11-13. It is instructed to read the canonical state, execute the highest-priority unblocked task, update GitHub evidence and continuity, and not wait for a manual “next”. It cannot bypass owner gates and is not a 24/7 daemon.
+- Latest known HEAD at the time of the update should be re-read from GitHub before any subsequent commit; latest observed HEAD before these checkpoint updates was `85a1d8c32cc6b4a78b45fcd27a34af0efa22cbbb`.
+- Actual verified receipts remain ₹0; authorised spend remains ₹0.
+- Next exact actions: obtain first mission-guard workflow run and inspect job logs; broaden revenue candidate research to 25+ specific opportunities; verify actual India eligibility and payout account details only via owner-run portal steps, never by collecting credentials/KYC in chat.
