@@ -31,7 +31,7 @@ function startTimer(){stopTimer();timer=setInterval(()=>{if(paused)return;timeLe
 function newLevel(restart=false){
  stopTimer();paused=false;moves=0;hints=0;timeLeft=Math.max(45,90-Math.floor((level-1)/2)*5);
  const s=restart&&levelSeed?levelSeed:(levelSeed=seed());puzzle=OrbitRelay.createPuzzle(level,s);$("board").classList.remove("solved");$("message").textContent="Find the route. Rotate each relay to connect the signal.";
- $("pauseBtn").textContent="Pause";render();startTimer();
+ $("pauseBtn").textContent="Pause";render();const first=$("board").querySelector(".tile:not(.empty)");if(first)first.focus();startTimer();
 }
 function checkSolved(){
  if(!OrbitRelay.solved(puzzle))return;
