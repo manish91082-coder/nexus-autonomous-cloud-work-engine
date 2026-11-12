@@ -38,7 +38,7 @@ Rail-neutral: accept and evaluate lawful bank, UPI, international transfer, PayP
 
 ## Current state
 
-Phase 33 — revenue-channel qualification and product validation. Opportunity registry: 27 candidates across 16 categories. Payout registry: 11 platform payout routes documented, with account-level verification still pending for several. First product MVP, [MSME Ops Desk Lite](products/msme-ops-desk-lite/README.md), has been built as an offline-first HTML tool with Hindi user guide and private listing draft. It is not published and product-market fit is unproven. Realized net receipts remain ₹0; authorized spend remains ₹0.
+Phase 34 — marketplace validation and product QA. Opportunity registry: 27 candidates across 16 categories. Payout registry: 11 platform payout routes documented, with account-level verification still pending for several. First product MVP, [MSME Ops Desk Lite](products/msme-ops-desk-lite/README.md), has been built as an offline-first HTML tool with Hindi user guide and private listing draft. It is not published and product-market fit is unproven. Realized net receipts remain ₹0; authorized spend remains ₹0.
 
 Latest research: [Phase 31 revenue-first pivot](research/PHASE_31_REVENUE_FIRST_PIVOT_AND_MSME_PRODUCT_2026-11-12.md), [Phase 32 product-market fit audit](research/PHASE_32_PRODUCT_MARKET_FIT_AUDIT_2026-11-12.md), and [Phase 33 payout rail revalidation](research/PHASE_33_PAYOUT_RAIL_REVALIDATION_2026-11-12.md).
 
@@ -83,3 +83,13 @@ No employment, manual gigs, freelance bids, cold outreach, recurring client serv
 - Topmate is not instant payout: first withdrawal unlocks after 7 days from first paid booking; INR request processing is within 7 days; ₹500 minimum, with ₹20 fee below that threshold.
 - No product is published, no platform account/terms/KYC activated, no spend authorized. Realized receipts ₹0.
 - Mission phase: `PHASE_33_REVENUE_CHANNEL_QUALIFICATION_AND_PRODUCT_VALIDATION`.
+
+
+## Phase 34 — Marketplace selection and private product package
+
+- [Marketplace selection report](research/PHASE_34_MARKETPLACE_SELECTION_AND_PRIVATE_PRODUCT_PACKAGE_2026-11-12.md): Getvik Free selected as the first validation storefront; ownstreet is secondary after a first paid sale.
+- Opportunity registry now contains 29 candidates across 17 categories; payout registry contains 14 documented routes. Several account-level and payout unknowns remain explicit.
+- Recruitment Agency Revenue Assurance Desk v0.2.0 has a private ZIP package. [Packaging workflow](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159154725) passed and uploaded artifact `recruitment-agency-revenue-assurance-v0.2.0-private` (ID 13916748314, SHA-256 `8922555b32ab88ffabccff39ac33dfae9797b7528e6b445867ca17cc55b70b34`). It expires 12 Dec 2026.
+- [Getvik owner launch packet](products/recruitment-agency-revenue-assurance/GETVIK_LAUNCH_PACKET.md) documents fees, payout terms, KYC/legal gates and a no-spend demand test. [License draft](products/recruitment-agency-revenue-assurance/LICENSE_DRAFT.md) is not approved for publication.
+- Cross-browser Playwright QA for Chromium and Firefox is configured in [workflow](.github/workflows/recruitment-browser-qa.yml); latest run [43159499045](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159499045) must be checked before claiming pass.
+- Getvik is only a validation candidate. No account, KYC, terms acceptance, public listing or paid plan has been activated. Realized net receipts remain ₹0; authorized spend ₹0.
