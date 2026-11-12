@@ -27,7 +27,7 @@
     },
     {
       "id": "P29-002",
-      "title": "Add deterministic scheduled CI runner and evidence report",
+      "title": "Deploy and prove bounded autonomous AI task worker",
       "priority": "P0",
       "status": "IN_PROGRESS",
       "depends_on": [
@@ -36,12 +36,14 @@
       "idempotency_key": "phase29-scheduled-ci-v1",
       "owner_gate": false,
       "acceptance": [
-        "Workflow supports five-minute offset schedule, push-triggered wake-up and manual dispatch",
-        "Safe worker tick validates control registries and dependency graph",
-        "Worker emits a durable machine-readable heartbeat with run ID, HEAD, selected task and receipts",
-        "Concurrency prevents overlapping queue consumers",
-        "A real GitHub Actions run completes successfully and its artifact/logs are inspectable",
-        "AI execution adapter, quota breaker, lease/idempotency and crash recovery are implemented and soak-tested before calling the system autonomous"
+        "Five-minute GitHub Actions wake-up, push trigger and manual dispatch are configured with non-overlapping concurrency",
+        "Worker validates mission state, queue dependencies, receipt ledger and emits machine-readable heartbeat",
+        "Provider-neutral AI adapter is fail-closed when owner secrets or zero-billing confirmation are absent",
+        "Daily inference-call cap, minimum interval, bounded output and failure circuit-breaker are enforced",
+        "AI output is stored as untrusted draft evidence; no model-generated code is executed and owner-only actions remain gated",
+        "Automated safety tests pass in GitHub Actions",
+        "Owner provider setup is completed without exposing secrets in chat/repository and first productive provider run is verified",
+        "Crash recovery, idempotency, quota accounting and a 24-hour soak test pass before calling the system autonomous"
       ]
     },
     {
