@@ -1,0 +1,42 @@
+name: Package Recruitment Revenue Assurance Product
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "products/recruitment-agency-revenue-assurance/**"
+      - "scripts/package_recruitment_product.py"
+      - ".github/workflows/package-recruitment-product.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: recruitment-product-package
+  cancel-in-progress: true
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout canonical product
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build private distribution ZIP
+        run: python scripts/package_recruitment_product.py
+      - name: Verify package checksum
+        working-directory: dist
+        run: sha256sum -c SHA256SUMS.txt
+      - name: Upload private package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: recruitment-agency-revenue-assurance-v0.2.0-private
+          path: |
+            dist/recruitment-agency-revenue-assurance-v0.2.0.zip
+            dist/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 30
