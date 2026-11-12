@@ -38,7 +38,7 @@ Rail-neutral: accept and evaluate lawful bank, UPI, international transfer, PayP
 
 ## Current state
 
-Phase 35 — payment-linked guarantee risk differentiation. Opportunity registry: 27 candidates across 16 categories. Payout registry: 11 platform payout routes documented, with account-level verification still pending for several. First product MVP, [MSME Ops Desk Lite](products/msme-ops-desk-lite/README.md), has been built as an offline-first HTML tool with Hindi user guide and private listing draft. It is not published and product-market fit is unproven. Realized net receipts remain ₹0; authorized spend remains ₹0.
+Phase 36 — product demand validation and release gate. Opportunity registry: 27 candidates across 16 categories. Payout registry: 11 platform payout routes documented, with account-level verification still pending for several. First product MVP, [MSME Ops Desk Lite](products/msme-ops-desk-lite/README.md), has been built as an offline-first HTML tool with Hindi user guide and private listing draft. It is not published and product-market fit is unproven. Realized net receipts remain ₹0; authorized spend remains ₹0.
 
 Latest research: [Phase 31 revenue-first pivot](research/PHASE_31_REVENUE_FIRST_PIVOT_AND_MSME_PRODUCT_2026-11-12.md), [Phase 32 product-market fit audit](research/PHASE_32_PRODUCT_MARKET_FIT_AUDIT_2026-11-12.md), and [Phase 33 payout rail revalidation](research/PHASE_33_PAYOUT_RAIL_REVALIDATION_2026-11-12.md).
 
@@ -104,3 +104,14 @@ No employment, manual gigs, freelance bids, cold outreach, recurring client serv
 - Latest FAQ-enabled private package: [run 43159877452](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452), artifact ID 13917108363, SHA-256 `7d8e802de63c31ba68ccd64b668c8b6143b0ea5057178754f404898772dc1cba`.
 - Browser QA [run 43159499045](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159499045) passed Chromium and Firefox.
 - No product published, no KYC/legal acceptance, no paid plan or spend. Realized net receipts remain ₹0.
+
+
+## Phase 35 — Payment-linked guarantee risk v0.3.0
+
+- Added invoice reference/date/due date, due-date-based receivable ageing, late-payment detection and a user-configured guarantee-payment clause flag.
+- Legal boundary: the product shows operational warnings only; it never interprets a contract or declares a guarantee void/valid.
+- Formula/mission CI [43160680889](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160680889) passed.
+- Chromium + Firefox browser QA [43160901456](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901456) passed.
+- Private v0.3.0 package [43160901484](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901484) passed. Artifact ID 13917713420, SHA-256 `e3ece9f15c3738e1ecea86cccd6b39799b5a60cf41140dfb0a61f67548421195`.
+- Product remains private. Getvik KYC, payout declaration, legal acceptance and explicit public-release approval are owner-only gates.
+- Realized receipts ₹0; authorized spend ₹0.
