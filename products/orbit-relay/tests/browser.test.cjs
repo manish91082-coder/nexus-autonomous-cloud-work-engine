@@ -47,7 +47,11 @@ test("desktop: start, pause/resume, hint, restart and solve progression", async 
     }
     await page.waitForSelector("#overlay", { state: "visible" });
     assert.match(await page.locator("#modalTitle").textContent(), /Signal restored/i);
+    assert.equal(await page.evaluate(() => document.activeElement.id), "modalBtn");
+    await page.keyboard.press("Tab");
+    assert.equal(await page.evaluate(() => document.activeElement.id), "modalBtn");
     await page.getByRole("button", { name: /Next level/i }).click();
+    assert.equal(await page.evaluate(() => document.activeElement.classList.contains("tile")), true);
     assert.equal(await page.locator("#level").textContent(), "2");
     assert.equal(await page.locator("#board .tile").count(), 25);
   } finally {
@@ -61,7 +65,9 @@ test("timer expiry shows failure and retry keeps the same level", async () => {
     await page.getByRole("button", { name: /Start relay/i }).click();
     await page.waitForSelector("#overlay", { state: "visible", timeout: 5000 });
     assert.match(await page.locator("#modalTitle").textContent(), /Signal lost/i);
+    assert.equal(await page.evaluate(() => document.activeElement.id), "modalBtn");
     await page.getByRole("button", { name: /Retry level/i }).click();
+    assert.equal(await page.evaluate(() => document.activeElement.classList.contains("tile")), true);
     assert.equal(await page.locator("#level").textContent(), "1");
     await page.waitForSelector("#overlay", { state: "hidden" });
   } finally {
