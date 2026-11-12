@@ -174,6 +174,42 @@
         "Account-level unknowns and one-time owner actions are explicit",
         "No paid setup or terms acceptance occurs without approval"
       ]
+    },
+    {
+      "id": "P32-001",
+      "title": "Complete product-market fit audit and reposition generic MSME tool as lead magnet",
+      "priority": "P0",
+      "status": "COMPLETED",
+      "depends_on": [
+        "P31-001"
+      ],
+      "idempotency_key": "phase32-product-market-fit-audit-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "Audit direct competitors and public pricing",
+        "Identify overlap with free/low-cost alternatives",
+        "Update product registry with differentiated product roles",
+        "Document evidence and next product strategy"
+      ]
+    },
+    {
+      "id": "P32-002",
+      "title": "Extend recruitment agency revenue assurance tool into installment-level cash and guarantee control",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P32-001"
+      ],
+      "idempotency_key": "phase32-recruitment-cash-guarantee-v2",
+      "owner_gate": false,
+      "acceptance": [
+        "Add installment-level collection events with date and amount",
+        "Track recruiter commission payable vs paid based only on collected cash",
+        "Add guarantee claim/replacement event log",
+        "Add outstanding receivable ageing and client concentration",
+        "Add unit tests for collection, commission, guarantee and date calculations",
+        "Maintain no-candidate-PII and offline-only design"
+      ]
     }
   ],
   "dead_letter": [],
