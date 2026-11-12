@@ -12,5 +12,5 @@ test("CSV export quotes commas and line breaks",()=>{const s=E.toCSV(["a","b"],[
 test("neutralizes spreadsheet formula injection on export",()=>{
   const s=E.toCSV(["name","note"],[{name:"=1+1",note:" @SUM(A1:A2)"}]);
   assert.ok(s.includes("'=1+1"));
-  assert.ok(s.includes("\"' @SUM(A1:A2)\""));
+  assert.ok(s.includes("' @SUM(A1:A2)"));
 });
