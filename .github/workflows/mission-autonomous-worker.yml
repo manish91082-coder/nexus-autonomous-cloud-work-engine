@@ -11,6 +11,8 @@ on:
       - 'tests/test_recruitment_revenue_assurance.py'
       - 'products/msme-ops-desk-lite/**'
       - 'products/recruitment-agency-revenue-assurance/**'
+      - 'control/product_registry.json'
+      - 'research/PHASE_32_PRODUCT_MARKET_FIT_AUDIT_2026-11-12.md'
       - 'control/automation_queue.json'
       - 'control/mission_state.json'
       - 'AI_WORKER_SETUP.md'
