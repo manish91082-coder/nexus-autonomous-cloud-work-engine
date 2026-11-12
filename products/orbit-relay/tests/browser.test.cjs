@@ -54,6 +54,12 @@ test("desktop: start, pause/resume, hint, restart and solve progression", async 
     assert.equal(await page.evaluate(() => document.activeElement.classList.contains("tile")), true);
     assert.equal(await page.locator("#level").textContent(), "2");
     assert.equal(await page.locator("#board .tile").count(), 25);
+
+    // Campaign progress survives a full reload on the same device.
+    await page.reload();
+    assert.match(await page.locator("#startBtn").textContent(), /Continue level 2/i);
+    await page.getByRole("button", { name: /Continue level 2/i }).click();
+    assert.equal(await page.locator("#level").textContent(), "2");
   } finally {
     await browser.close();
   }
