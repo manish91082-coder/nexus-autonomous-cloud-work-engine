@@ -32,6 +32,10 @@ for (const [name, engine] of browsers) {
   await page.locator("#clientId").fill("CLIENT-QA");
   await page.locator("#recruiterId").fill("REC-QA");
   await page.locator("#placedDate").fill("2026-11-01");
+  await page.locator("#invoiceRef").fill("INV-QA-001");
+  await page.locator("#invoiceDate").fill("2026-10-30");
+  await page.locator("#dueDate").fill("2026-11-03");
+  await page.locator("#guaranteePaymentRule").selectOption("ON_TIME_PAYMENT_REQUIRED");
   await page.locator("#fee").fill("10000");
   await page.locator("#received").fill("1000");
   await page.locator("#share").fill("10");
@@ -47,6 +51,7 @@ for (const [name, engine] of browsers) {
   await page.locator("#receiptRef").fill("QA-REF-01");
   await page.locator("#addReceipt").click();
   await page.waitForFunction(() => document.querySelector("#collected").textContent.includes("3,000"));
+  assert.match(await page.locator("#paymentRiskCount").textContent(), /1/);
 
   await page.locator("#commissionRecruiter").fill("REC-QA");
   await page.locator("#commissionDate").fill("2026-11-06");
@@ -60,6 +65,8 @@ for (const [name, engine] of browsers) {
 
   await page.locator('nav button[data-tab="analysis"]').click();
   assert.match(await page.locator("#ageRows").innerText(), /7,000/);
+  assert.match(await page.locator("#ageRows").innerText(), /2026-11-03/);
+  assert.match(await page.locator("#riskRows").innerText(), /Paid late/);
   const recruiterSummary = await page.locator("#recruiterRows").innerText();
   assert.match(recruiterSummary, /REC-QA/);
   assert.match(recruiterSummary, /200/);
