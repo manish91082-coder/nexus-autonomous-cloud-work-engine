@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "updated_at": "2026-11-12",
+  "policy": "Private drafts only. No product is published or treated as revenue until owner approval and settlement evidence.",
+  "products": [
+    {
+      "id": "MSME-OPS-DESK-LITE",
+      "name": "MSME Ops Desk Lite",
+      "path": "products/msme-ops-desk-lite/",
+      "version": "0.1.0",
+      "status": "FREE_SAMPLE_CANDIDATE",
+      "build_status": "MVP_BUILT",
+      "ci_status": "INITIAL_SMOKE_AND_JS_SYNTAX_PASSED",
+      "distribution": "Topmate/Gumroad/Payhip candidates only; not activated",
+      "pricing_status": "NOT_PRICED; generic competitor saturation observed",
+      "differentiation": "Offline-first no-account utility; currently overlaps free/low-price tools",
+      "next_action": "Keep as free lead magnet or redesign only after buyer signal",
+      "owner_gate": "public_release"
+    },
+    {
+      "id": "RECRUITMENT-REVENUE-ASSURANCE",
+      "name": "Recruitment Agency Revenue Assurance Desk",
+      "path": "products/recruitment-agency-revenue-assurance/",
+      "version": "0.1.0",
+      "status": "PRIVATE_VALIDATION",
+      "build_status": "MVP_BUILT",
+      "ci_status": "PENDING_LATEST_RUN",
+      "distribution": "Topmate/Gumroad/Payhip candidates only; not activated",
+      "pricing_status": "HYPOTHESIS_ONLY; no willingness-to-pay evidence",
+      "differentiation": "Booked-vs-collected placement fees, commission on collected cash, guarantee exposure; no candidate PII",
+      "next_action": "Build installment-level cash ledger, recruiter payable/paid reconciliation and guarantee claim event log",
+      "owner_gate": "public_release"
+    }
+  ],
+  "max_active_builds": 2,
+  "verified_product_revenue_inr": 0
+}
