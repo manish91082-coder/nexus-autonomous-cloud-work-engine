@@ -14,7 +14,7 @@
 >
 > Current mission: broad, rail-neutral, Internet-only autonomous revenue ecosystem targeting ₹10 crore in verified realized net receipts. Any lawful revenue model is eligible if it can be configured once and then run with maximum practical automation; one-time human KYC/legal/payout/publication setup is allowed. ₹0 upfront capital; no recurring manual labour, employment, manual gigs, freelance bids, cold outreach or physical operations.
 >
-> Current active product pilot: Orbit Relay (internal codename only). All other prototypes are held/archived pending demand, payout and automation gates. The old bounty/task marketplace schedules are paused; manual dispatch only.
+> Current primary first-cash pilot: Recruitment Agency Revenue Assurance Desk via Getvik Free, subject to owner-only KYC, payout setup, terms acceptance and explicit publication approval. CSV to Action is the secondary open-source adoption lane and remains public-release gated. Orbit Relay is on hold pending real human playtest, platform acceptance and India payout evidence. No new product build or broad source scan should displace the first-sale experiment. See strategy/PHASE_44_REVENUE_FIRST_SEQUENCE_AND_DRIFT_AUDIT_2026-11-12.md. The old bounty/task marketplace schedules are paused; manual dispatch only.
 >
 > Canonical front door: [README.md](README.md). Repository inventory and status: [REPOSITORY_SCOPE_AUDIT_2026-11-12.md](REPOSITORY_SCOPE_AUDIT_2026-11-12.md).
 
@@ -1396,3 +1396,13 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - P43-010 is BLOCKED on explicit owner approval to create a standalone public repository and release CSV to Action under its nested MIT license. Current parent repo is public but has no root license; no new repo/publication will occur without approval. Sponsorship account/KYC/terms remain separate later gates.
 - Other real-user evidence remains owner-dependent: P42-005 requires opt-in agency owners; Orbit Relay playtest requires real testers. No results are fabricated.
 - Finance: realized receipts INR 0; authorized spend INR 0.
+
+
+## Current authoritative checkpoint — Phase 44 (2026-11-12)
+
+- Latest mission sequence is governed by [Phase 44 Revenue-First Sequence and Drift Audit](strategy/PHASE_44_REVENUE_FIRST_SEQUENCE_AND_DRIFT_AUDIT_2026-11-12.md).
+- End goal remains ₹10 crore in verified realized net receipts. No mission drift in target, but execution had over-weighted payout-rail research and OSS readiness relative to first-cash conversion.
+- Primary pilot is Recruitment Agency Revenue Assurance Desk via Getvik Free. The product remains private; product-specific demand is unproven. Getvik identity/PAN, own-name bank/UPI, payout declaration, legal terms and public listing require owner action/approval.
+- CSV to Action is secondary; its standalone public release and MIT scope remain owner-gated. Orbit Relay is held pending real human playtest and platform/payout evidence.
+- Freeze new builds and broad research for this cycle. After owner-authorized Getvik launch, run a bounded 14-day no-paid-plan/no-ad-spend experiment and count only settled net receipts.
+- Verified receipts ₹0; authorized spend ₹0; no KYC/terms/publication completed. GitHub worker remains a bounded deterministic poller; AI provider inference is not configured.
