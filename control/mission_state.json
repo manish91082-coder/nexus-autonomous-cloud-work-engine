@@ -10,8 +10,8 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 2,
   "execution_mode": "FIVE_MINUTE_GITHUB_ACTIONS_SAFE_BOOTSTRAP_PLUS_DAILY_CHATGPT_AGENT_PLUS_HOURLY_WATCH; AI_EXECUTOR_NOT_DEPLOYED",
-  "last_verified_head": "37271b805a7631ad23026be8dccd672b4f5ca14e",
-  "current_focus": "P29-002: convert safe five-minute queue poller into a provider-neutral bounded AI executor with lease/idempotency/recovery and strict zero-spend quota breaker; P29-004: expand 13 candidates to 25+ across 8+ categories with verified India payout evidence.",
+  "last_verified_head": "c27863a512ea8ca4850302706e9555d107ee6625",
+  "current_focus": "P29-002: implement bounded AI task executor with quota breaker, leases/idempotency and recovery; P29-004: grow 13 candidate registry to 25+ across 8+ categories with verified India payout evidence.",
   "owner_gates": [
     "KYC",
     "tax_declarations",
