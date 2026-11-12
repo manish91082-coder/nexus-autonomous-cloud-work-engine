@@ -10,7 +10,7 @@ VERSION = "0.2.0"
 INCLUDED = [
     "index.html",
     "README.md",
-    "USER_GUIDE_HI.md",
+    "USER_GUIDE_HI.md",\n    "CUSTOMER_FAQ_HI.md",
 ]
 PACKAGE_NOTE = """Recruitment Agency Revenue Assurance Desk v0.2.0
 
