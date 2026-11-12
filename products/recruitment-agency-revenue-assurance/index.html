@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827"><meta name="description" content="Offline recruitment agency placement fee, collections and guarantee control desk.">
+<title>Recruitment Agency Revenue Assurance Desk</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--panel:#121d2e;--panel2:#172438;--line:#29384d;--text:#edf3fb;--muted:#9eacc0;--accent:#7dd3fc;--good:#86efac;--warn:#fcd34d;--bad:#fca5a5}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#0b1220,#101b2b 55%,#0b1220);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header,main,footer{max-width:1180px;margin:auto;padding-left:22px;padding-right:22px}header{padding-top:28px;padding-bottom:15px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}.mark{width:44px;height:44px;border-radius:14px;background:#18364b;border:1px solid #31546b;display:grid;place-items:center;color:var(--accent);font-weight:900}
+h1{font-size:clamp(22px,4vw,32px);letter-spacing:-.04em;margin:0}header p{margin:3px 0 0;color:var(--muted)}main{padding-bottom:40px}
+.notice{background:#10263a;border:1px solid #35516b;border-radius:14px;padding:12px 15px;color:#c9e9fb;margin:10px 0 17px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}button,.filebtn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:9px 13px;border-radius:10px;cursor:pointer;font:inherit}button:hover,.filebtn:hover{border-color:var(--accent)}button.active{background:#18364b;border-color:#47728d}button.primary{background:#15516b;border-color:#397d9c}button.danger{border-color:#75404a;color:#fecaca}
+.panel{display:none}.panel.active{display:block}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}.card{grid-column:span 6;background:rgba(18,29,46,.94);border:1px solid var(--line);border-radius:16px;padding:17px;min-width:0}.card.full{grid-column:1/-1}
+.card h2{margin:0 0 4px;font-size:18px}.sub{color:var(--muted);font-size:13px;margin:0 0 14px}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.kpi{background:#0d1726;border:1px solid var(--line);border-radius:12px;padding:13px}.kpi small{display:block;color:var(--muted)}.kpi strong{display:block;font-size:22px;margin-top:4px}
+label{display:block;color:#c8d4e4;font-size:13px;margin:9px 0 5px}input,select{width:100%;background:#0b1422;border:1px solid #34455d;border-radius:9px;padding:10px;color:var(--text);font:inherit;min-width:0}input:focus,select:focus{outline:2px solid #4d94b7;outline-offset:1px}
+.formgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.tablewrap{overflow:auto;margin-top:15px}table{border-collapse:collapse;width:100%;min-width:900px}th,td{text-align:left;padding:9px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:top}th{color:#bfd0e4}td input{min-width:84px;padding:7px}.pill{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:3px 8px;color:var(--muted);font-size:11px}.result{background:#0b1724;border:1px solid #2b4055;border-radius:11px;padding:12px;margin-top:12px}.muted{color:var(--muted)}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.empty{padding:20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px}
+footer{border-top:1px solid var(--line);padding-top:17px;padding-bottom:30px;color:var(--muted);font-size:12px}
+@media(max-width:780px){.card{grid-column:1/-1}.kpis{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.formgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="mark">RA</div><div><h1>Recruitment Agency Revenue Assurance Desk</h1><p>Placements · collections · recruiter splits · guarantee exposure</p></div></div><span class="pill">OFFLINE-FIRST · NO CANDIDATE PII</span></header>
+<main>
+<div class="notice"><strong>Privacy-first agency control.</strong> Use anonymous placement, client and recruiter reference IDs only. Do not enter candidate names, phone numbers, email addresses, CVs or other personal data. Data stays in this browser. Export backups regularly.</div>
+<nav><button class="active" data-tab="dashboard">Dashboard</button><button data-tab="add">Add placement</button><button data-tab="ledger">Placement ledger</button><button data-tab="backup">Backup & policy</button></nav>
+<section id="dashboard" class="panel active">
+<div class="kpis">
+<div class="kpi"><small>Placement fees booked</small><strong id="booked">₹0</strong></div>
+<div class="kpi"><small>Cash collected</small><strong id="collected">₹0</strong></div>
+<div class="kpi"><small>Outstanding fees</small><strong id="outstanding">₹0</strong></div>
+<div class="kpi"><small>Active guarantee exposure</small><strong id="exposure">0</strong></div>
+</div>
+<div class="grid" style="margin-top:14px">
+<div class="card"><h2>Collection efficiency</h2><p class="sub">Cash collected divided by total placement fees booked.</p><div class="result"><strong id="collectionRate" class="good">0%</strong><p class="muted" id="collectionText">No placements recorded.</p></div></div>
+<div class="card"><h2>Guarantee watchlist</h2><p class="sub">Placement guarantees ending within the next 14 days.</p><div class="result"><strong id="expiring">0</strong><p class="muted">This is a reminder aid, not a legal interpretation of any client contract.</p></div></div>
+<div class="card full"><h2>Upcoming and open exposure</h2><div class="tablewrap"><table><thead><tr><th>Placement ID</th><th>Client ID</th><th>Guarantee end</th><th>Days left</th><th>Fee outstanding</th><th>Status</th></tr></thead><tbody id="watchRows"></tbody></table></div><p id="watchEmpty" class="empty">No active guarantee exposure recorded.</p></div>
+</div></section>
+<section id="add" class="panel"><div class="grid"><div class="card full">
+<h2>Record a placement</h2><p class="sub">Store references and commercial amounts only. No candidate personal data.</p>
+<div class="formgrid">
+<div><label for="placementId">Placement reference *</label><input id="placementId" maxlength="32" placeholder="PL-2026-001"></div>
+<div><label for="clientId">Client reference *</label><input id="clientId" maxlength="32" placeholder="CLIENT-001"></div>
+<div><label for="recruiterId">Recruiter reference</label><input id="recruiterId" maxlength="32" placeholder="REC-001"></div>
+<div><label for="placedDate">Joining / placement date *</label><input id="placedDate" type="date"></div>
+<div><label for="fee">Agreed placement fee (₹) *</label><input id="fee" type="number" min="0" placeholder="0"></div>
+<div><label for="received">Amount collected to date (₹)</label><input id="received" type="number" min="0" value="0"></div>
+<div><label for="share">Recruiter share of collected amount (%)</label><input id="share" type="number" min="0" max="100" value="0"></div>
+<div><label for="guaranteeDays">Guarantee period (days)</label><input id="guaranteeDays" type="number" min="0" value="90"></div>
+<div><label for="guaranteeStatus">Guarantee status</label><select id="guaranteeStatus"><option value="ACTIVE">Active</option><option value="FULFILLED">Fulfilled</option><option value="CLAIM_OPEN">Claim open</option><option value="WAIVED">Waived / not applicable</option></select></div>
+</div>
+<div class="actions"><button class="primary" id="addPlacement">Save placement</button></div><p id="addMsg" class="muted" aria-live="polite"></p>
+</div></div></section>
+<section id="ledger" class="panel"><div class="grid"><div class="card full">
+<h2>Placement and fee ledger</h2><p class="sub">Update collections and status as cash is actually received. Recruiter share is calculated on collected amount, not booked amount.</p>
+<div class="tablewrap"><table><thead><tr><th>Placement</th><th>Client</th><th>Recruiter</th><th>Placed</th><th>Fee booked</th><th>Collected (editable)</th><th>Outstanding</th><th>Recruiter share %</th><th>Share due</th><th>Guarantee end</th><th>Status</th><th></th></tr></thead><tbody id="ledgerRows"></tbody></table></div><p id="ledgerEmpty" class="empty">No placement records yet.</p>
+</div></div></section>
+<section id="backup" class="panel"><div class="grid">
+<div class="card"><h2>Data backup</h2><p class="sub">Download or restore your private local ledger.</p><div class="actions"><button class="primary" id="exportJson">Export JSON backup</button><label class="filebtn" for="importJson" style="margin:0">Restore backup</label><input id="importJson" type="file" accept="application/json" hidden><button class="danger" id="clearData">Clear all data</button></div><p id="backupMsg" class="muted" aria-live="polite"></p></div>
+<div class="card"><h2>Policy and calculation notes</h2><ul><li>Outstanding = booked placement fee minus cash collected.</li><li>Recruiter share due = collected amount × configured share percentage.</li><li>Guarantee end = placement date + configured guarantee days.</li><li>Only cash actually collected should be entered in collected amount.</li><li>Tax, GST, TDS, legal contract interpretation and invoice compliance are outside this tool.</li><li>No candidate PII should be stored. Use a separate compliant ATS for candidate records.</li></ul></div>
+</div></section>
+</main>
+<footer>Recruitment Agency Revenue Assurance Desk · Version 0.1.0 · Private product draft · Local browser storage only.</footer>
+<script>
+(function(){
+"use strict";
+const KEY="recruitment_revenue_assurance_v1", $=id=>document.getElementById(id);
+const money=n=>"₹"+Math.round(Number(n)||0).toLocaleString("en-IN");
+let records=[];
+function load(){try{const v=JSON.parse(localStorage.getItem(KEY)||"[]");records=Array.isArray(v)?v:[];}catch(e){records=[];}}
+function save(){localStorage.setItem(KEY,JSON.stringify(records));render();}
+function endDate(r){const d=new Date(r.placedDate+"T00:00:00");d.setDate(d.getDate()+Number(r.guaranteeDays||0));return d;}
+function daysLeft(r){return Math.ceil((endDate(r).getTime()-new Date().setHours(0,0,0,0))/86400000);}
+function active(r){return r.guaranteeStatus==="ACTIVE"||r.guaranteeStatus==="CLAIM_OPEN";}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function render(){
+ const booked=records.reduce((a,r)=>a+Number(r.fee||0),0),collected=records.reduce((a,r)=>a+Number(r.received||0),0),outstanding=records.reduce((a,r)=>a+Math.max(0,Number(r.fee||0)-Number(r.received||0)),0);
+ const exposure=records.filter(active).length,expiring=records.filter(r=>active(r)&&daysLeft(r)>=0&&daysLeft(r)<=14);
+ $("booked").textContent=money(booked);$("collected").textContent=money(collected);$("outstanding").textContent=money(outstanding);$("exposure").textContent=exposure;
+ $("collectionRate").textContent=(booked?collected/booked*100:0).toFixed(1)+"%";$("collectionText").textContent=records.length+" placement record(s); amounts are based on manual cash updates.";
+ $("expiring").textContent=expiring.length;
+ $("watchRows").innerHTML=records.filter(active).map(r=>({r,days:daysLeft(r)})).sort((a,b)=>a.days-b.days).map(({r,days})=>"<tr><td>"+esc(r.placementId)+"</td><td>"+esc(r.clientId)+"</td><td>"+endDate(r).toISOString().slice(0,10)+"</td><td>"+(days<0?"Expired "+Math.abs(days)+"d":days+"d")+"</td><td>"+money(Math.max(0,r.fee-r.received))+"</td><td>"+esc(r.guaranteeStatus)+"</td></tr>").join("");
+ $("watchEmpty").hidden=records.some(active);
+ $("ledgerRows").innerHTML=records.map((r,i)=>{const due=Math.max(0,Number(r.fee)-Number(r.received)),share=Number(r.received)*Number(r.share)/100;return "<tr><td>"+esc(r.placementId)+"</td><td>"+esc(r.clientId)+"</td><td>"+esc(r.recruiterId||"—")+"</td><td>"+esc(r.placedDate)+"</td><td>"+money(r.fee)+"</td><td><input type='number' min='0' max='"+Number(r.fee)+"' value='"+Number(r.received)+"' data-received='"+i+"' aria-label='Collected amount'></td><td>"+money(due)+"</td><td>"+Number(r.share)+"%</td><td>"+money(share)+"</td><td>"+endDate(r).toISOString().slice(0,10)+"</td><td><select data-status='"+i+"'><option "+(r.guaranteeStatus==="ACTIVE"?"selected":"")+" value='ACTIVE'>Active</option><option "+(r.guaranteeStatus==="FULFILLED"?"selected":"")+" value='FULFILLED'>Fulfilled</option><option "+(r.guaranteeStatus==="CLAIM_OPEN"?"selected":"")+" value='CLAIM_OPEN'>Claim open</option><option "+(r.guaranteeStatus==="WAIVED"?"selected":"")+" value='WAIVED'>Waived</option></select></td><td><button class='danger' data-delete='"+i+"'>Delete</button></td></tr>";}).join("");
+ $("ledgerEmpty").hidden=records.length>0;
+}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".panel").forEach(x=>x.classList.toggle("active",x.id===b.dataset.tab));}));
+$("addPlacement").addEventListener("click",()=>{const placementId=$("placementId").value.trim(),clientId=$("clientId").value.trim(),placedDate=$("placedDate").value,fee=Number($("fee").value),received=Number($("received").value)||0,share=Number($("share").value)||0,guaranteeDays=Number($("guaranteeDays").value)||0;
+ if(!placementId||!clientId||!placedDate||!Number.isFinite(fee)||fee<=0||received<0||received>fee||share<0||share>100||guaranteeDays<0){$("addMsg").textContent="Please check required fields and numeric limits.";return;}
+ if(records.some(r=>r.placementId.toLowerCase()===placementId.toLowerCase())){$("addMsg").textContent="Placement reference already exists.";return;}
+ records.unshift({placementId,clientId,recruiterId:$("recruiterId").value.trim(),placedDate,fee,received,share,guaranteeDays,guaranteeStatus:$("guaranteeStatus").value});save();$("addMsg").textContent="Placement saved locally.";
+ ["placementId","clientId","recruiterId","fee","received"].forEach(id=>$(id).value="");$("received").value="0";
+});
+document.addEventListener("change",e=>{if(e.target.dataset.received!==undefined){const i=Number(e.target.dataset.received),v=Number(e.target.value);if(v<0||v>records[i].fee){alert("Collected amount cannot be below zero or above the booked fee.");render();return;}records[i].received=v;save();}if(e.target.dataset.status!==undefined){records[Number(e.target.dataset.status)].guaranteeStatus=e.target.value;save();}});
+document.addEventListener("click",e=>{if(e.target.dataset.delete!==undefined){const i=Number(e.target.dataset.delete);if(confirm("Delete this placement record?")){records.splice(i,1);save();}}});
+function download(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;a.click();URL.revokeObjectURL(url);}
+$("exportJson").addEventListener("click",()=>{download("recruitment-revenue-assurance-backup.json",JSON.stringify(records,null,2),"application/json");$("backupMsg").textContent="Backup exported. Keep it private and secure.";});
+$("importJson").addEventListener("change",async e=>{const f=e.target.files[0];if(!f)return;try{const v=JSON.parse(await f.text());if(!Array.isArray(v)||v.some(r=>!r.placementId||!r.clientId||!r.placedDate))throw Error("bad");records=v;save();$("backupMsg").textContent="Backup restored.";}catch(err){alert("Invalid backup file.");}e.target.value="";});
+$("clearData").addEventListener("click",()=>{if(confirm("Permanently delete all locally saved placement records? Export a backup first.")){records=[];localStorage.removeItem(KEY);render();$("backupMsg").textContent="All local data cleared."; }});
+$("placedDate").value=new Date().toISOString().slice(0,10);load();render();
+})();
+</script>
+</body></html>
