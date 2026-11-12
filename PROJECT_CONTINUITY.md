@@ -1182,3 +1182,16 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - P35-001 marked COMPLETED. Product remains PRIVATE_VALIDATION_HOLD; no account created, no KYC submitted, no terms accepted, no product published, no spend.
 - Current mission phase: `PHASE_36_PRODUCT_DEMAND_VALIDATION_AND_RELEASE_GATE`.
 - Next: continue 29-candidate evidence scan, prepare owner-only Getvik launch steps, and keep product unpublished until owner explicitly approves legal/KYC/payout setup and release. Revenue remains ₹0.
+
+
+## Phase 36 — 29-candidate scorecard and primary channel selection (2026-11-12)
+- Completed evidence-based scorecard for 29 candidates across 17 categories; 28 scored and one (Etsy India) hard-gate rejected. Google Play/Chrome and Apple distribution also rejected for paid registration under ₹0 upfront rule.
+- Report: `research/PHASE_36_29_CANDIDATE_SCORECARD_2026-11-12.md`.
+- Ranked bounded validation candidates: Getvik 78, ownstreet 74, Topmate 72, Payhip+Razorpay 70. No candidate scores 80+, so none is a fully validated pilot. Scores are preliminary and platform demand signals are not independently audited.
+- P29-004 broad candidate scan COMPLETED; P29-005 pilot selection COMPLETED; P29-006 owner setup packet COMPLETED. Payout registry has 14 documented providers/routes. Account-level KYC and payout unknowns remain explicit.
+- Product v0.3.0 is packaged privately and has formula/mission CI PASS [43160680889](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160680889), Chromium/Firefox browser QA PASS [43160901456](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901456), and private package PASS [43160901484](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901484).
+- Current package artifact ID 13917713420, SHA-256 `e3ece9f15c3738e1ecea86cccd6b39799b5a60cf41140dfb0a61f67548421195`, expires 12 Dec 2026.
+- Product remains PRIVATE_VALIDATION_HOLD. Getvik account registration/terms acceptance, PAN/UPI/bank KYC, Payout Declaration and public release are owner-only. No account created, no KYC, no terms accepted, no product published.
+- Current mission phase: `PHASE_36_PRODUCT_DEMAND_VALIDATION_AND_RELEASE_GATE`.
+- Next decision point: owner completes secure Getvik KYC/legal/payout setup and explicitly approves publication, or product stays private while alternative zero-upfront channels continue to be researched. Do not collect secrets or identity/bank data in chat.
+- Verified realized net receipts ₹0; authorized spend ₹0.
