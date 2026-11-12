@@ -321,7 +321,7 @@
       "id": "P35-001",
       "title": "Add invoice due-date and payment-linked guarantee risk controls",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P32-002",
         "P34-002"
@@ -337,7 +337,27 @@
         "Add formula/date tests for overdue, paid-late and not-due cases",
         "Maintain offline-only, no-candidate-PII design"
       ],
-      "last_updated": "2026-11-12"
+      "last_updated": "2026-11-12",
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "product_version": "0.3.0",
+        "app_path": "products/recruitment-agency-revenue-assurance/index.html",
+        "formula_ci": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160680889",
+        "browser_qa": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901456",
+        "package_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901484",
+        "package_artifact_id": 13917713420,
+        "package_sha256": "e3ece9f15c3738e1ecea86cccd6b39799b5a60cf41140dfb0a61f67548421195",
+        "features": [
+          "invoice reference/date/due date",
+          "due-date-based receivable ageing with visible placement-date fallback",
+          "late-receipt detection",
+          "user-configured guarantee payment clause",
+          "operational risk flags without legal conclusions",
+          "formula tests for overdue, paid-late and not-due",
+          "Chromium and Firefox interaction QA"
+        ],
+        "remaining": "Manual assistive technology testing, product-specific willingness-to-pay, owner KYC/legal/publication approval remain open."
+      }
     }
   ],
   "dead_letter": [],
