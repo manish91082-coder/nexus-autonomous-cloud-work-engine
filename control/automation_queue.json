@@ -316,6 +316,28 @@
         "package_sha256": "e7649325a2e1a28a08720f3cb2344a588240f81938fadd18ad6d9793470ce225",
         "remaining": "Manual assistive-technology testing and real-user validation remain open."
       }
+    },
+    {
+      "id": "P35-001",
+      "title": "Add invoice due-date and payment-linked guarantee risk controls",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P32-002",
+        "P34-002"
+      ],
+      "idempotency_key": "phase35-payment-linked-guarantee-risk-v1",
+      "owner_gate": false,
+      "acceptance": [
+        "Capture invoice reference, invoice date and contractual due date per placement",
+        "Calculate receivable ageing from due date; visibly flag fallback to placement date when due date is absent",
+        "Track receipts after due date separately from open overdue balances",
+        "Add user-configurable guarantee-payment clause flag; never infer legal validity",
+        "Show an operational payment/guarantee risk signal with transparent calculation",
+        "Add formula/date tests for overdue, paid-late and not-due cases",
+        "Maintain offline-only, no-candidate-PII design"
+      ],
+      "last_updated": "2026-11-12"
     }
   ],
   "dead_letter": [],
