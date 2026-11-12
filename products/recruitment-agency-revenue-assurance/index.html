@@ -71,7 +71,7 @@ const money=n=>"₹"+Math.round(Number(n)||0).toLocaleString("en-IN");
 let records=[];
 function load(){try{const v=JSON.parse(localStorage.getItem(KEY)||"[]");records=Array.isArray(v)?v:[];}catch(e){records=[];}}
 function save(){localStorage.setItem(KEY,JSON.stringify(records));render();}
-function endDate(r){const d=new Date(r.placedDate+"T00:00:00");d.setDate(d.getDate()+Number(r.guaranteeDays||0));return d;}
+function localDate(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return y+"-"+m+"-"+day;}\nfunction endDate(r){const d=new Date(r.placedDate+"T00:00:00");d.setDate(d.getDate()+Number(r.guaranteeDays||0));return d;}
 function daysLeft(r){return Math.ceil((endDate(r).getTime()-new Date().setHours(0,0,0,0))/86400000);}
 function active(r){return r.guaranteeStatus==="ACTIVE"||r.guaranteeStatus==="CLAIM_OPEN";}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
@@ -81,7 +81,7 @@ function render(){
  $("booked").textContent=money(booked);$("collected").textContent=money(collected);$("outstanding").textContent=money(outstanding);$("exposure").textContent=exposure;
  $("collectionRate").textContent=(booked?collected/booked*100:0).toFixed(1)+"%";$("collectionText").textContent=records.length+" placement record(s); amounts are based on manual cash updates.";
  $("expiring").textContent=expiring.length;
- $("watchRows").innerHTML=records.filter(active).map(r=>({r,days:daysLeft(r)})).sort((a,b)=>a.days-b.days).map(({r,days})=>"<tr><td>"+esc(r.placementId)+"</td><td>"+esc(r.clientId)+"</td><td>"+endDate(r).toISOString().slice(0,10)+"</td><td>"+(days<0?"Expired "+Math.abs(days)+"d":days+"d")+"</td><td>"+money(Math.max(0,r.fee-r.received))+"</td><td>"+esc(r.guaranteeStatus)+"</td></tr>").join("");
+ $("watchRows").innerHTML=records.filter(active).map(r=>({r,days:daysLeft(r)})).sort((a,b)=>a.days-b.days).map(({r,days})=>"<tr><td>"+esc(r.placementId)+"</td><td>"+esc(r.clientId)+"</td><td>"+localDate(endDate(r))+"</td><td>"+(days<0?"Expired "+Math.abs(days)+"d":days+"d")+"</td><td>"+money(Math.max(0,r.fee-r.received))+"</td><td>"+esc(r.guaranteeStatus)+"</td></tr>").join("");
  $("watchEmpty").hidden=records.some(active);
  $("ledgerRows").innerHTML=records.map((r,i)=>{const due=Math.max(0,Number(r.fee)-Number(r.received)),share=Number(r.received)*Number(r.share)/100;return "<tr><td>"+esc(r.placementId)+"</td><td>"+esc(r.clientId)+"</td><td>"+esc(r.recruiterId||"—")+"</td><td>"+esc(r.placedDate)+"</td><td>"+money(r.fee)+"</td><td><input type='number' min='0' max='"+Number(r.fee)+"' value='"+Number(r.received)+"' data-received='"+i+"' aria-label='Collected amount'></td><td>"+money(due)+"</td><td>"+Number(r.share)+"%</td><td>"+money(share)+"</td><td>"+endDate(r).toISOString().slice(0,10)+"</td><td><select data-status='"+i+"'><option "+(r.guaranteeStatus==="ACTIVE"?"selected":"")+" value='ACTIVE'>Active</option><option "+(r.guaranteeStatus==="FULFILLED"?"selected":"")+" value='FULFILLED'>Fulfilled</option><option "+(r.guaranteeStatus==="CLAIM_OPEN"?"selected":"")+" value='CLAIM_OPEN'>Claim open</option><option "+(r.guaranteeStatus==="WAIVED"?"selected":"")+" value='WAIVED'>Waived</option></select></td><td><button class='danger' data-delete='"+i+"'>Delete</button></td></tr>";}).join("");
  $("ledgerEmpty").hidden=records.length>0;
@@ -99,7 +99,7 @@ function download(name,content,type){const blob=new Blob([content],{type}),url=U
 $("exportJson").addEventListener("click",()=>{download("recruitment-revenue-assurance-backup.json",JSON.stringify(records,null,2),"application/json");$("backupMsg").textContent="Backup exported. Keep it private and secure.";});
 $("importJson").addEventListener("change",async e=>{const f=e.target.files[0];if(!f)return;try{const v=JSON.parse(await f.text());if(!Array.isArray(v)||v.some(r=>!r.placementId||!r.clientId||!r.placedDate))throw Error("bad");records=v;save();$("backupMsg").textContent="Backup restored.";}catch(err){alert("Invalid backup file.");}e.target.value="";});
 $("clearData").addEventListener("click",()=>{if(confirm("Permanently delete all locally saved placement records? Export a backup first.")){records=[];localStorage.removeItem(KEY);render();$("backupMsg").textContent="All local data cleared."; }});
-$("placedDate").value=new Date().toISOString().slice(0,10);load();render();
+$("placedDate").value=localDate(new Date());load();render();
 })();
 </script>
 </body></html>
