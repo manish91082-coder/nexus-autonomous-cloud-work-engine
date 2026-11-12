@@ -1,9 +1,9 @@
-# Private Getvik Listing Draft — Recruitment Agency Revenue Assurance Desk v0.2.0
+# Private Getvik Listing Draft — Recruitment Agency Revenue Assurance Desk v0.3.0
 
 **Status:** Private draft only. Not published. Getvik account/KYC/legal acceptance not completed. Owner approval required.
 
 ## Product title
-Recruitment Agency Cashflow & Guarantee Control Desk — Offline Software v0.2.0
+Recruitment Agency Cashflow & Guarantee Control Desk — Offline Software v0.3.0
 
 ## Short description
 An offline-first business utility for recruitment agency owners to reconcile placement-fee installments, actual cash collections, recruiter commission earned versus paid, guarantee claims/replacements, receivable ageing and client concentration. No candidate personal data is required or stored.
@@ -16,7 +16,7 @@ An offline-first business utility for recruitment agency owners to reconcile pla
 - Recruiter commission earned only on cash actually collected
 - Recruiter commission paid/unpaid reconciliation
 - Guarantee claim, replacement and resolution event log
-- Receivable ageing and client concentration views
+- Invoice reference, invoice date and contractual due date\n- Due-date-based receivable ageing, with placement-date proxy visibly marked if due date is missing\n- Late-payment detection and user-configured payment-linked guarantee risk flags (operational reminders only, not legal interpretation)\n- Client concentration views
 - Guarantee expiry watchlist
 - JSON backup and restore
 - Hindi user guide
@@ -35,7 +35,7 @@ ATS, job board, candidate database, CV storage, sourcing, job placement service,
 - Receivable ageing uses placement date as a proxy, not contractual invoice due date. It is not statutory accounting ageing.
 
 ## License and support
-Commercial single-organization internal-use license is proposed but not yet approved. No technical license-key enforcement exists in v0.2.0. Seller must approve final license, refund terms and support channel before publication. No implementation or recurring service is included. Reasonable buyer support may still be required under platform terms.
+Commercial single-organization internal-use license is proposed but not yet approved. No technical license-key enforcement exists in v0.3.0. Seller must approve final license, refund terms and support channel before publication. No implementation or recurring service is included. Reasonable buyer support may still be required under platform terms.
 
 ## Price test
 No price selected. ₹499, ₹799 and ₹999 are test hypotheses only. Getvik Free currently charges 10% of sale + 18% GST on that fee + payment gateway charges. Do not use a paid seller plan until actual settled sales justify it.
