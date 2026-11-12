@@ -20,7 +20,7 @@ Offline-first cash-flow and guarantee-control desk for recruitment agency owners
 - Outstanding = max(0, agreed placement fee − sum of receipt events).
 - Commission earned = sum of receipt events × recruiter share %.
 - Commission payable balance = max(0, earned − recorded payments).
-- Ageing currently uses placement date as a proxy, not contractual invoice due date. Do not treat this as statutory accounting ageing.
+- Ageing uses the contractual invoice due date when supplied; if missing, placement date is visibly marked as a proxy. This is not statutory accounting ageing.
 - Client concentration = client's outstanding / total outstanding.
 
 ## Privacy / architecture
@@ -40,8 +40,9 @@ Private validation draft. No publication, platform connection, KYC, legal accept
 - Private launch packet: [GETVIK_LAUNCH_PACKET.md](GETVIK_LAUNCH_PACKET.md).
 - License draft for review: [LICENSE_DRAFT.md](LICENSE_DRAFT.md).
 - Private package workflow: [package-recruitment-product.yml](../../.github/workflows/package-recruitment-product.yml).
-- Package artifact run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901484.
-- Artifact SHA-256: `e3ece9f15c3738e1ecea86cccd6b39799b5a60cf41140dfb0a61f67548421195`.
+- Latest verified private package run #34: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43268975392.
+- Product ZIP SHA-256: `645dbd226c8f4802fc073a2a85fdcc449b08e8b317642652ae5b4ff9d218a405`.
+- Uploaded private artifact ID: `13966678659`. Chromium + Firefox QA run #28 passed: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43268975664.
 - Package is marked PRIVATE_DRAFT_NOT_FOR_PUBLICATION. No seller account or terms have been activated.
 - Chromium + Firefox Playwright QA passed: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901456.
 - Added [Hindi customer FAQ](CUSTOMER_FAQ_HI.md) to reduce repetitive support and clarify offline storage, backups, receipts, commission, guarantee events and product limitations.
