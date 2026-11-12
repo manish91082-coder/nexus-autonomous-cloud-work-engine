@@ -1,4 +1,4 @@
-# Recruitment Agency Revenue Assurance Desk — Product Draft v0.2.0
+# Recruitment Agency Revenue Assurance Desk — Product Draft v0.3.0
 
 ## Positioning
 Offline-first cash-flow and guarantee-control desk for recruitment agency owners and finance/operations leads. Not an ATS, job board, employment service or manual recruiting service.
@@ -10,7 +10,7 @@ Offline-first cash-flow and guarantee-control desk for recruitment agency owners
 - Recruiter commission earned only on collected cash.
 - Recruiter commission paid ledger with overpayment guard.
 - Guarantee claim, replacement and resolution event log.
-- Receivable ageing buckets and client concentration.
+- Invoice reference/date/due date and due-date-based receivable ageing (placement-date proxy visibly marked when due date is missing).\n- Late-payment and payment-linked guarantee risk flags based on a user-selected contract clause; operational reminders only, never legal interpretation.\n- Client concentration.
 - Guarantee expiry watchlist.
 - JSON backup/restore with legacy v0.1.0 migration.
 
@@ -44,3 +44,10 @@ Private validation draft. No publication, platform connection, KYC, legal accept
 - Chromium + Firefox Playwright QA passed: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159499045.
 - Added [Hindi customer FAQ](CUSTOMER_FAQ_HI.md) to reduce repetitive support and clarify offline storage, backups, receipts, commission, guarantee events and product limitations.
 - Latest private package includes `CUSTOMER_FAQ_HI.md`; ZIP and SHA-256 validation passed in run https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452.
+
+
+## v0.3.0 differentiation
+- Contractual invoice due date drives receivable ageing when provided.
+- Late receipts and overdue balances are flagged.
+- User selects whether the signed guarantee clause requires on-time payment, is independent of payment, or requires manual review.
+- The app never determines legal validity or voids a guarantee. It displays an operational signal only.
