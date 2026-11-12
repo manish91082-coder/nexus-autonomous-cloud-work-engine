@@ -22,13 +22,13 @@
       "name": "Recruitment Agency Revenue Assurance Desk",
       "path": "products/recruitment-agency-revenue-assurance/",
       "version": "0.2.0",
-      "status": "PRIVATE_VALIDATION",
+      "status": "PRIVATE_VALIDATION_HOLD",
       "build_status": "V0.2.0_BUILT_CI_PASS",
       "ci_status": "PASS_2026-11-12_RUN_43157319205; BROWSER_QA_PASS_43159499045; PACKAGE_PASS_43159443230",
       "distribution": "Getvik Free first validation channel (not activated); ownstreet secondary after first paid sale; Topmate/Gumroad/Payhip as alternate rails",
       "pricing_status": "UNVALIDATED_HYPOTHESES_499_799_999; no buyer willingness-to-pay evidence; Getvik Free 10% + GST on fee + Cashfree gateway charges",
       "differentiation": "Installment cash receipts, commission payable/paid reconciliation, guarantee event log, receivable ageing and client concentration; anonymous references only",
-      "next_action": "Owner-only Getvik legal/KYC/payout declaration and explicit publication approval; no public release until then",
+      "next_action": "Implement invoice due-date and payment-linked guarantee risk controls in v0.3.0; do not publish v0.2.0 until differentiation and support obligations are reviewed",
       "owner_gate": "public_release",
       "package_status": "PRIVATE_DRAFT_PACKAGE_BUILT",
       "package_artifact": {
@@ -45,7 +45,8 @@
           "PACKAGE_README.txt",
           "PACKAGE_MANIFEST.json"
         ]
-      }
+      },
+      "market_evidence": "Phase 35 audit found real anecdotal late-payment/guarantee pain but strong competitor feature overlap; direct willingness-to-pay remains unproven"
     }
   ],
   "max_active_builds": 2,
