@@ -1,7 +1,7 @@
 (()=>{
 "use strict";
 const $=id=>document.getElementById(id);
-let level=1,puzzle=null,moves=0,timeLeft=90,timer=null,paused=false,hints=0,score=0;
+let level=1,puzzle=null,moves=0,timeLeft=90,timer=null,paused=false,hints=0,score=0,levelSeed=0;
 const bestKey="orbit-relay-best-v1";
 function best(){try{return Number(localStorage.getItem(bestKey)||0)}catch{return 0}}
 function setBest(v){try{localStorage.setItem(bestKey,String(v))}catch{}}
@@ -27,7 +27,7 @@ function stopTimer(){if(timer){clearInterval(timer);timer=null}}
 function startTimer(){stopTimer();timer=setInterval(()=>{if(paused)return;timeLeft--;updateHUD();if(timeLeft<=0){stopTimer();showFailure()}},1000)}
 function newLevel(restart=false){
  stopTimer();paused=false;moves=0;hints=0;timeLeft=Math.max(45,90-Math.floor((level-1)/2)*5);
- const s=seed();puzzle=OrbitRelay.createPuzzle(level,s);$("board").classList.remove("solved");$("message").textContent="Find the route. Rotate each relay to connect the signal.";
+ const s=restart&&levelSeed?levelSeed:(levelSeed=seed());puzzle=OrbitRelay.createPuzzle(level,s);$("board").classList.remove("solved");$("message").textContent="Find the route. Rotate each relay to connect the signal.";
  $("pauseBtn").textContent="Pause";render();startTimer();
 }
 function checkSolved(){
