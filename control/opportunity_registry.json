@@ -287,6 +287,316 @@
         "app review and distribution economics"
       ],
       "note": "Do not activate if mandatory paid developer membership violates ₹0 spend."
+    },
+    {
+      "id": "TOPMATE-DIGITAL-PRODUCTS",
+      "category": "digital_goods_marketplace",
+      "platform": "Topmate Digital Products",
+      "tier": "P0",
+      "status": "VALIDATION",
+      "score": null,
+      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "payout_evidence": {
+        "summary": "10% own-link; 20% marketplace; transaction charge >=2% INR / 3%-6% international; no monthly fee; UPI/card checkout",
+        "source": "https://topmate.io/fees"
+      },
+      "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
+      "india_eligibility": "India-first INR/UPI seller ecosystem; exact payout timing account-level pending",
+      "demand_evidence": "Platform reports 30,700 paid digital-product sales by 1,694 creators in Oct 2026; platform-reported only",
+      "demand_source": "https://topmate.io/blog/how-to-sell-digital-products-in-india",
+      "unknowns": [
+        "Account-specific onboarding/KYC and payout validation",
+        "Buyer demand and organic discovery",
+        "Refund, fee, FX and tax treatment where applicable",
+        "IP/content policy and acceptance criteria"
+      ],
+      "note": "Marketplace discovery and instant digital delivery; payout settlement and product demand still need validation"
+    },
+    {
+      "id": "GETVIK-DIGITAL-GOODS",
+      "category": "digital_goods_marketplace",
+      "platform": "Getvik",
+      "tier": "P0",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "payout_evidence": {
+        "summary": "UPI/cards/netbanking; platform claims ₹100 payout minimum and 2-3 business day settlement",
+        "source": "https://getvik.com/"
+      },
+      "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
+      "india_eligibility": "India-first payout claims; legal entity, KYC and operating reliability not independently verified",
+      "unknowns": [
+        "Account-specific onboarding/KYC and payout validation",
+        "Buyer demand and organic discovery",
+        "Refund, fee, FX and tax treatment where applicable",
+        "IP/content policy and acceptance criteria"
+      ],
+      "note": "Newer platform; do not make it the only payment rail"
+    },
+    {
+      "id": "PAYHIP-RAZORPAY-IN",
+      "category": "digital_goods_software",
+      "platform": "Payhip with Razorpay India",
+      "tier": "P1",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "payout_evidence": {
+        "summary": "Razorpay supports India sellers; UPI/cards; Payhip free plan adds 5% platform fee plus gateway charges",
+        "source": "https://help.payhip.com/article/368-connect-your-razorpay-account"
+      },
+      "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
+      "india_eligibility": "India seller route documented; Razorpay KYC/activation and settlement remain account gates",
+      "unknowns": [
+        "Account-specific onboarding/KYC and payout validation",
+        "Buyer demand and organic discovery",
+        "Refund, fee, FX and tax treatment where applicable",
+        "IP/content policy and acceptance criteria"
+      ],
+      "note": "High automation; verify current Razorpay fees and payout timing"
+    },
+    {
+      "id": "INSTAMOJO-DIGITAL-PRODUCTS",
+      "category": "digital_goods_marketplace",
+      "platform": "Instamojo digital products",
+      "tier": "P1",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "payout_evidence": {
+        "summary": "Digital product fee 5% + ₹3 per transaction plus 18% GST on fee",
+        "source": "https://instamojo.zendesk.com/hc/en-us/articles/209153605-How-to-sell-products-online"
+      },
+      "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
+      "india_eligibility": "India-focused platform; seller KYC and settlement timing need confirmation",
+      "unknowns": [
+        "Account-specific onboarding/KYC and payout validation",
+        "Buyer demand and organic discovery",
+        "Refund, fee, FX and tax treatment where applicable",
+        "IP/content policy and acceptance criteria"
+      ],
+      "note": "Verify current digital product feature availability and refund policy"
+    },
+    {
+      "id": "PATREON-DIGITAL-MEMBERSHIPS",
+      "category": "membership_recurring",
+      "platform": "Patreon",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "payout_evidence": {
+        "summary": "India listed for local currency bank transfer via Payoneer payout infrastructure; fees depend on currency/method",
+        "source": "https://support.patreon.com/hc/en-gb/articles/39694936541965-Payout-guide-for-creators-outside-the-US"
+      },
+      "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
+      "india_eligibility": "India appears in official payout country table; KYC and exact account option pending",
+      "unknowns": [
+        "Account-specific onboarding/KYC and payout validation",
+        "Buyer demand and organic discovery",
+        "Refund, fee, FX and tax treatment where applicable",
+        "IP/content policy and acceptance criteria"
+      ],
+      "note": "Requires recurring content and audience retention"
+    },
+    {
+      "id": "POND5-STOCK-ASSETS",
+      "category": "licensing_royalties",
+      "platform": "Pond5 Contributor",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "payout_evidence": {
+        "summary": "$25 threshold; PayPal/Skrill/Payoneer; monthly 15th payout",
+        "source": "https://www.pond5.com/help/en/articles/10086161-how-do-i-get-paid-for-earnings"
+      },
+      "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
+      "india_eligibility": "India-specific provider/account eligibility must be checked",
+      "unknowns": [
+        "Account-specific onboarding/KYC and payout validation",
+        "Buyer demand and organic discovery",
+        "Refund, fee, FX and tax treatment where applicable",
+        "IP/content policy and acceptance criteria"
+      ],
+      "note": "Recurring licensing; content curation and rights evidence required"
+    },
+    {
+      "id": "CANVA-CREATORS-ROYALTIES",
+      "category": "design_assets_royalties",
+      "platform": "Canva Creators",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "payout_evidence": {
+        "summary": "Payoneer/bank transfer or PayPal; $10 bank/PayPal or $25 wire threshold; aims for monthly 15th",
+        "source": "https://www.canva.com/help/set-up-payout-details/"
+      },
+      "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
+      "india_eligibility": "India-specific account setup and creator-program acceptance remain unverified",
+      "unknowns": [
+        "Account-specific onboarding/KYC and payout validation",
+        "Buyer demand and organic discovery",
+        "Refund, fee, FX and tax treatment where applicable",
+        "IP/content policy and acceptance criteria"
+      ],
+      "note": "Program admission/invitation and royalty pool variability"
+    },
+    {
+      "id": "KOFI-DIGITAL-SHOP",
+      "category": "digital_goods_membership",
+      "platform": "Ko-fi Shop",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "payout_evidence": {
+        "summary": "Direct PayPal/Stripe; no Ko-fi balance threshold; 0-5% platform service fee plus processor fees",
+        "source": "https://help.ko-fi.com/hc/en-us/articles/115003980093-How-do-I-get-paid"
+      },
+      "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
+      "india_eligibility": "India PayPal receiving and Stripe new-account eligibility require verification; Stripe India is invite-only for new accounts",
+      "unknowns": [
+        "Account-specific onboarding/KYC and payout validation",
+        "Buyer demand and organic discovery",
+        "Refund, fee, FX and tax treatment where applicable",
+        "IP/content policy and acceptance criteria"
+      ],
+      "note": "No marketplace discovery algorithm; creator must bring traffic"
+    },
+    {
+      "id": "ADSENSE-WEB-PUBLISHING",
+      "category": "audience_platform_monetization",
+      "platform": "Google AdSense",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "payout_evidence": {
+        "summary": "USD account payment threshold $100; monthly payout typically 21st-26th after threshold/holds",
+        "source": "https://support.google.com/adsense/answer/1709871?hl=en-IN"
+      },
+      "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
+      "india_eligibility": "India payment profile and EFT availability must be confirmed in account",
+      "unknowns": [
+        "Account-specific onboarding/KYC and payout validation",
+        "Buyer demand and organic discovery",
+        "Refund, fee, FX and tax treatment where applicable",
+        "IP/content policy and acceptance criteria"
+      ],
+      "note": "Site approval, original content and traffic are major constraints"
+    },
+    {
+      "id": "UDEMY-RECORDED-COURSES",
+      "category": "digital_publishing_education",
+      "platform": "Udemy Marketplace",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "payout_evidence": {
+        "summary": "$25 minimum payable balance; Payoneer/PayPal for non-US; monthly after 30-day refund period",
+        "source": "https://support.udemy.com/hc/en-us/articles/229604008-Instructor-Payment-Overview"
+      },
+      "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
+      "india_eligibility": "International instructor payout methods documented; India provider/account eligibility pending",
+      "unknowns": [
+        "Account-specific onboarding/KYC and payout validation",
+        "Buyer demand and organic discovery",
+        "Refund, fee, FX and tax treatment where applicable",
+        "IP/content policy and acceptance criteria"
+      ],
+      "note": "Requires premium instructor approval and course quality review"
+    },
+    {
+      "id": "CREATIVE-MARKET-ASSETS",
+      "category": "marketplace_assets",
+      "platform": "Creative Market",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "payout_evidence": {
+        "summary": "$20 minimum; India ACH/eCheck and wire listed; PayPal unavailable in India; wire/FX fees may apply",
+        "source": "https://support.creativemarket.com/hc/en-us/articles/115004067573-Which-payout-methods-are-available-in-my-country"
+      },
+      "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
+      "india_eligibility": "India explicitly listed for ACH/eCheck and wire; tax form and bank compatibility required",
+      "unknowns": [
+        "Account-specific onboarding/KYC and payout validation",
+        "Buyer demand and organic discovery",
+        "Refund, fee, FX and tax treatment where applicable",
+        "IP/content policy and acceptance criteria"
+      ],
+      "note": "Shop approval, commission/share and demand remain unknown"
+    },
+    {
+      "id": "FREEPIK-CONTRIBUTOR",
+      "category": "licensing_royalties",
+      "platform": "Freepik Contributor / Magnific",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "payout_evidence": {
+        "summary": "$25 / €50 threshold; PayPal/Payoneer; first payment generated after two months from first upload",
+        "source": "https://www.freepik.com/ai/contributors/payment-information"
+      },
+      "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
+      "india_eligibility": "Payoneer availability and current India contributor acceptance require confirmation",
+      "unknowns": [
+        "Account-specific onboarding/KYC and payout validation",
+        "Buyer demand and organic discovery",
+        "Refund, fee, FX and tax treatment where applicable",
+        "IP/content policy and acceptance criteria"
+      ],
+      "note": "Portal/brand transition and AI content policy need revalidation"
+    },
+    {
+      "id": "SHUTTERSTOCK-ORIGINAL-ASSETS",
+      "category": "licensing_royalties",
+      "platform": "Shutterstock Contributor",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "payout_evidence": {
+        "summary": "AI-generated contributor submissions are prohibited; India payout terms still need official verification",
+        "source": "https://submit.shutterstock.com/help/en/articles/10594676-ai-generated-content-on-shutterstock-contributor-faq"
+      },
+      "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
+      "india_eligibility": "India payout route not verified",
+      "unknowns": [
+        "Account-specific onboarding/KYC and payout validation",
+        "Buyer demand and organic discovery",
+        "Refund, fee, FX and tax treatment where applicable",
+        "IP/content policy and acceptance criteria"
+      ],
+      "note": "Only human-created/original assets with provable rights; no AI-generated uploads"
+    },
+    {
+      "id": "QXEL-DIGITAL-MARKETPLACE",
+      "category": "digital_goods_marketplace",
+      "platform": "Qxel",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "Official/platform-published payout evidence captured; account-level eligibility, demand and commercial terms remain to be verified",
+      "payout_evidence": {
+        "summary": "Platform claims 2% per-sale fee, no monthly subscription and UPI withdrawals",
+        "source": "https://www.qxel.in/"
+      },
+      "automation_fit": "Potentially high for original self-serve digital assets; distribution and policy gates remain",
+      "india_eligibility": "India-first UPI claims; legal entity, seller terms and payout reliability not independently verified",
+      "unknowns": [
+        "Account-specific onboarding/KYC and payout validation",
+        "Buyer demand and organic discovery",
+        "Refund, fee, FX and tax treatment where applicable",
+        "IP/content policy and acceptance criteria"
+      ],
+      "note": "Early-stage provider; do not rely on it as sole checkout"
     }
   ],
   "required_evidence": [
