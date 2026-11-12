@@ -67,7 +67,7 @@
       "id": "P29-004",
       "title": "Broad revenue-source and payout evidence scan",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P29-001"
       ],
@@ -77,13 +77,27 @@
         "At least 25 candidates across 8 categories",
         "India eligibility and payout source captured",
         "P0/P1 ranking with confidence and unknowns"
-      ]
+      ],
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "candidate_count": 29,
+        "scored_count": 28,
+        "hard_gate_rejected": 3,
+        "categories": 17,
+        "report": "research/PHASE_36_29_CANDIDATE_SCORECARD_2026-11-12.md",
+        "registries": [
+          "control/opportunity_registry.json",
+          "control/payout_registry.json"
+        ],
+        "ranking": "Getvik 78, ownstreet 74, Topmate 72, Payhip+Razorpay 70; no candidate >=80",
+        "unknowns": "All account-level and payout uncertainties explicitly recorded; score is preliminary, not demand proof."
+      }
     },
     {
       "id": "P29-005",
       "title": "Select fastest credible pilot and high-upside secondary pilot",
       "priority": "P0",
-      "status": "BLOCKED",
+      "status": "COMPLETED",
       "depends_on": [
         "P29-004"
       ],
@@ -93,13 +107,24 @@
         "All hard gates pass",
         "Risk-adjusted time-to-settlement scored",
         "No recurring manual labour"
-      ]
+      ],
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "primary": "Getvik Free (score 78, bounded validation only)",
+        "secondary": "ownstreet Free after first genuine paid sale (score 74)",
+        "alternates": [
+          "Topmate (72)",
+          "Payhip+Razorpay (70)"
+        ],
+        "decision_report": "research/PHASE_36_29_CANDIDATE_SCORECARD_2026-11-12.md",
+        "hard_gates": "No publication, KYC, legal acceptance or paid plan without owner approval."
+      }
     },
     {
       "id": "P29-006",
       "title": "Prepare owner setup packet for selected platforms",
       "priority": "P1",
-      "status": "BLOCKED",
+      "status": "COMPLETED",
       "depends_on": [
         "P29-005"
       ],
@@ -108,7 +133,15 @@
       "acceptance": [
         "Exact KYC/legal/payment actions documented",
         "No secrets collected in chat or repository"
-      ]
+      ],
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "owner_packet": "products/recruitment-agency-revenue-assurance/GETVIK_LAUNCH_PACKET.md",
+        "product_listing": "products/recruitment-agency-revenue-assurance/LISTING_DRAFT.md",
+        "license_draft": "products/recruitment-agency-revenue-assurance/LICENSE_DRAFT.md",
+        "package_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901484",
+        "owner_actions": "PAN, own-name UPI/bank, Payout Declaration, legal terms and explicit publication approval remain owner-only; no secrets in chat/repo."
+      }
     },
     {
       "id": "P29-007",
