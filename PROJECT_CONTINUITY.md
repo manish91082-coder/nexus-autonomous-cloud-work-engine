@@ -858,3 +858,24 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Full market report: `research/PHASE_25_PRODUCT_DEMAND_COMPETITIVE_AUDIT_2026-11-12.md`; commit `ce2c23145a1593dcc4d4312541c887d927615d5d`.
 - No seller account, KYC/tax, bank/payment setup, public listing, sale or payout. Verified settled revenue ₹0. No paid tools or infrastructure.
 - Next: verify latest formula-injection CI; then run a cross-category opportunity scan across source-specific data tools, developer utilities, creator workflows, structured datasets, niche reference products and platform-native digital assets. Rank evidence, competition, build time, self-serve potential, IP/policy fit, India payout and support burden. Select one defensible product; kill weak ideas early.
+
+
+## Phase 26: Cross-Category Opportunity & India Payout Channel Audit (2026-11-12)
+
+- Verified latest CSV-to-Action formula-injection hardening CI: run `43128923697`, SUCCESS; all 8 tests, validation, package and artifact upload passed. Artifact ID `13904800815`, size 10,210 bytes, SHA-256 `6f8c410fa1a2fd5eb96952bc55453f9ac82e9126a611bf37af43ef43dc8bfe73`. Run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43128923697.
+- New India-native storefront research:
+  - Srotabase: 4% own-sale fee, 10% marketplace-attributed sale fee; 0.4% UPI MDR above ₹2,000; public claim of INR bank payout after 7-day buyer-protection window; KYC, seller obligations, TDS u/s 194-O and applicable GST in terms. Candidate #1 only for owner-approved pilot; exact settlement details need verification.
+  - MintLink: published 8.26% all-in ordinary-sale deduction, minimum product price ₹5, weekly IMPS/NEFT payout, short hold and minimum threshold not disclosed in FAQ. Candidate #2.
+  - Qxel: Seller Agreement standard commission 6%, plus gateway charges; temporary 2% anniversary offer runs Nov 1–Jan 17; Nov 6 payment update says gateway charges and GST on platform fee deducted from seller; seller remains responsible for own product taxes and invoices. Payout docs link returned 404 and dashboard schedule not public. Conditional only.
+  - ownstreet: 0% platform fee on marketplace-discovered sales, but gateway charges apply; listing eligibility requires live product, payment setup and at least one completed paid sale; free plan has one live product/up to five paid sales. Second-stage channel after first sale.
+- Technical channels:
+  - Cloudflare Workers Free docs: 100,000 requests/day, 10 ms CPU, 128 MB, 50 subrequests/request; good for lightweight endpoints under quota.
+  - Chrome Web Store requires one-time developer registration fee; excluded as prerequisite under ₹0 budget.
+  - Paid GitHub Marketplace apps require verified publisher and 100 GitHub App installations or 200 OAuth users; defer.
+  - KDP remains long-tail (approx. 60 days after month-end; India bank posting 7–10 business days). itch.io payout uses $5 threshold, tax interview, PayPal/Payoneer, 7-day wait and possible 30-day hold.
+- Cross-category research priority (heuristic, not revenue probability): narrow developer workflow utilities / downloadable source kits lead, followed by niche bilingual technical reference products and source-specific seller data tools. Generic CSV cleaners, invoice trackers, generic prompts/AI ebooks/planners are low priority due competition and weak differentiation.
+- Product decision: no new paid flagship selected yet. CSV-to-Action remains a free engineering pilot, not a paid generic CSV checker. Build a narrow developer utility only after a 10-problem/5-competitor evidence scan identifies a real gap.
+- Storefront strategy: Srotabase candidate #1 and MintLink #2 for possible future owner-approved pilot; Qxel conditional due fee/payout documentation inconsistency; ownstreet second-stage after a genuine first paid sale; Gumroad for international/high-ticket; KDP for long tail; itch.io only if a game/software asset fits.
+- Full report: `research/PHASE_26_CROSS_CATEGORY_OPPORTUNITY_AUDIT_2026-11-12.md`; commit `d5915ae4d0edd3f3d9ec3019f7bcb6f7833f06c6`.
+- No account creation, KYC, terms acceptance, bank/payment setup, public listing, sale or settled bank receipt. No spend. Verified revenue ₹0.
+- Next Phase 27: focused demand scan for narrow developer workflows and source-specific data tasks. Identify at least 10 problems with public user complaints/search demand/paid alternatives, map 5+ competitors each, then choose one vertical-slice MVP only if gap, self-serve delivery and low support burden are demonstrable.
