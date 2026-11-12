@@ -1,13 +1,23 @@
 (()=>{
 "use strict";
 const $=id=>document.getElementById(id);
-let level=1,puzzle=null,moves=0,timeLeft=90,timer=null,paused=false,hints=0,score=0,levelSeed=0;
-const bestKey="orbit-relay-best-v1",progressKey="orbit-relay-progress-v1";
+let level=1,puzzle=null,moves=0,timeLeft=90,timer=null,paused=false,hints=0,score=0,levelSeed=0,dailyMode=false,dailyDate="";
+const bestKey="orbit-relay-best-v1",progressKey="orbit-relay-progress-v1",dailyKey="orbit-relay-daily-complete-v1";
 function best(){try{return Number(localStorage.getItem(bestKey)||0)}catch{return 0}}
 function setBest(v){try{localStorage.setItem(bestKey,String(v))}catch{}}
 function loadProgress(){try{const p=JSON.parse(localStorage.getItem(progressKey)||"{}");return Number.isInteger(p.unlockedLevel)&&p.unlockedLevel>0?Math.min(999,p.unlockedLevel):1}catch{return 1}}
 function saveProgress(unlockedLevel){try{const current=loadProgress();localStorage.setItem(progressKey,JSON.stringify({unlockedLevel:Math.max(current,unlockedLevel)}))}catch{}}
-function seed(){const day=new Date().toISOString().slice(0,10);return OrbitRelay.seedFromString(day+"-level-"+level+"-"+Date.now())}
+function utcDate(){return new Date().toISOString().slice(0,10)}
+function dailySeed(date){return OrbitRelay.seedFromString("orbit-relay-daily-"+date)}
+function dailyCompleted(date){try{return localStorage.getItem(dailyKey)===date}catch{return false}}
+function markDailyCompleted(date){try{localStorage.setItem(dailyKey,date)}catch{}}
+function updateEntryButtons(){
+ const unlocked=loadProgress();
+ $("startBtn").textContent=unlocked>1?"Continue level "+unlocked+" →":"Start relay →";
+ const today=utcDate();
+ $("dailyBtn").textContent=dailyCompleted(today)?"Daily Challenge · Completed today":"Daily Challenge · "+today;
+}
+function seed(){const day=utcDate();return OrbitRelay.seedFromString(day+"-level-"+level+"-"+Date.now())}
 function portsSVG(tile){const ports=OrbitRelay.getPorts(tile);const points=[[50,8],[92,50],[50,92],[8,50]];return ports.map(d=>'<path d="M50 50 L'+points[d][0]+' '+points[d][1]+'"/>').join("")+'<circle class="core" cx="50" cy="50" r="10"/>'}
 function render(){
  const board=$("board");board.style.gridTemplateColumns="repeat("+puzzle.size+",1fr)";board.innerHTML="";
@@ -22,7 +32,8 @@ function render(){
   b.addEventListener("click",()=>{if(paused)return;OrbitRelay.rotateTile(puzzle,x,y);moves++;updateHUD();render();checkSolved()});
   board.appendChild(b);
  }
- $("level").textContent=level;$("moves").textContent=moves;$("time").textContent=timeLeft;$("best").textContent=best();$("pathInfo").textContent=puzzle.size+" × "+puzzle.size+" / "+puzzle.pathLength+" relays";
+ $("level").textContent=dailyMode?"D":level;$("moves").textContent=moves;$("time").textContent=timeLeft;$("best").textContent=best();
+ $("pathInfo").textContent=(dailyMode?"DAILY · "+dailyDate+" · ":"")+puzzle.size+" × "+puzzle.size+" / "+puzzle.pathLength+" relays";
 }
 function updateHUD(){$("moves").textContent=moves;$("time").textContent=timeLeft;$("best").textContent=best()}
 function showOverlay(){const overlay=$("overlay");overlay.style.display="flex";$("modalBtn").focus();}
@@ -35,18 +46,34 @@ function newLevel(restart=false){
  const s=restart&&levelSeed?levelSeed:(levelSeed=seed());puzzle=OrbitRelay.createPuzzle(level,s);$("board").classList.remove("solved");$("message").textContent="Find the route. Rotate each relay to connect the signal.";
  $("pauseBtn").textContent="Pause";render();const first=$("board").querySelector(".tile:not(.empty)");if(first)first.focus();startTimer();
 }
+function returnToMenu(){stopTimer();hideOverlay();$("game").style.display="none";$("start").style.display="block";updateEntryButtons();$("startBtn").focus()}
 function checkSolved(){
  if(!OrbitRelay.solved(puzzle))return;
  stopTimer();$("board").classList.add("solved");
  score=Math.max(100,1000+level*100+timeLeft*5-moves*10-hints*100);
- if(score>best()){setBest(score)}
- saveProgress(level+1);
- $("modalTitle").textContent="Signal restored!";$("modalText").textContent="The source reached the destination."; $("modalScore").textContent=score.toLocaleString()+" pts";$("modalSub").textContent="Time left: "+timeLeft+"s · Moves: "+moves+" · Hints: "+hints;
- $("modalBtn").textContent="Next level →";$("modalBtn").onclick=()=>{hideOverlay();level++;newLevel()};showOverlay();
+ if(score>best())setBest(score);
+ if(dailyMode){
+  markDailyCompleted(dailyDate);
+  $("modalTitle").textContent="Daily signal restored!";
+  $("modalText").textContent="Today's shared-seed challenge is complete.";
+  $("modalSub").textContent="Come back after the UTC date changes for a new daily network.";
+  $("modalBtn").textContent="Back to menu";$("modalBtn").onclick=returnToMenu;
+ }else{
+  saveProgress(level+1);
+  $("modalTitle").textContent="Signal restored!";$("modalText").textContent="The source reached the destination.";
+  $("modalSub").textContent="Time left: "+timeLeft+"s · Moves: "+moves+" · Hints: "+hints;
+  $("modalBtn").textContent="Next level →";$("modalBtn").onclick=()=>{hideOverlay();level++;newLevel()};
+ }
+ $("modalScore").textContent=score.toLocaleString()+" pts";showOverlay();
 }
-function showFailure(){$("modalTitle").textContent="Signal lost";$("modalText").textContent="The network timed out. Every relay is ready for another attempt."; $("modalScore").textContent="Try again";$("modalSub").textContent="Best score: "+best().toLocaleString()+" pts";$("modalBtn").textContent="Retry level";$("modalBtn").onclick=()=>{hideOverlay();newLevel(true)};showOverlay()}
-$("startBtn").textContent=loadProgress()>1?"Continue level "+loadProgress()+" →":"Start relay →";
-$("startBtn").onclick=()=>{$("start").style.display="none";$("game").style.display="block";level=loadProgress();newLevel()};
+function showFailure(){
+ $("modalTitle").textContent="Signal lost";$("modalText").textContent="The network timed out. Every relay is ready for another attempt.";
+ $("modalScore").textContent="Try again";$("modalSub").textContent="Best score: "+best().toLocaleString()+" pts";
+ $("modalBtn").textContent="Retry level";$("modalBtn").onclick=()=>{hideOverlay();newLevel(true)};showOverlay()
+}
+updateEntryButtons();
+$("startBtn").onclick=()=>{dailyMode=false;level=loadProgress();levelSeed=0;$("start").style.display="none";$("game").style.display="block";newLevel()};
+$("dailyBtn").onclick=()=>{dailyMode=true;dailyDate=utcDate();level=1;levelSeed=dailySeed(dailyDate);$("start").style.display="none";$("game").style.display="block";newLevel(true)};
 $("hintBtn").onclick=()=>{if(paused)return;const p=OrbitRelay.applyHint(puzzle);if(!p){$("message").textContent="No hint needed.";return}hints++;moves++;render();$("message").textContent="A relay was aligned. Hint penalty: 100 points.";checkSolved()};
 $("restartBtn").onclick=()=>newLevel(true);
 $("pauseBtn").onclick=()=>{if(!puzzle)return;paused=!paused;$("pauseBtn").textContent=paused?"Resume":"Pause";$("message").textContent=paused?"Paused. Take your time.":"Back online. Find the route."};
