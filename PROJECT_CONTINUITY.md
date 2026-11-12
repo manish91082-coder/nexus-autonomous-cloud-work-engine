@@ -1378,3 +1378,14 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - P43-007 completed: prepared [CSV to Action Community Adoption Plan](products/csv-to-action/COMMUNITY_ADOPTION_PLAN_PRIVATE.md). It explicitly prohibits automated Reddit promotion, mass messages, fake engagement and AI-generated Show HN posts; no outreach performed.
 - P43-008 active: compare India payout rails. Preliminary official findings: GitHub Sponsors India supported with 0% personal-account platform fee; Buy Me a Coffee India supported via Stripe Express with 5% platform fee + processing and USD 10 first-payout threshold; Patreon new creators pay 10% platform fee plus processing/payout/FX and India method needs account confirmation; Ko-fi pays direct but requires PayPal or full Stripe Connect, while PayPal India cannot receive domestic payments and Ko-fi does not support Stripe Express.
 - Detailed terms and unresolved account gates are in opportunity and payout registries. No account creation, KYC, tax/bank details or terms acceptance.
+
+
+## Phase 43 creator funding rail comparison completed — 2026-11-12
+- P43-008 completed. Distinguish domestic INR digital-product checkout from creator-support rails.
+- Domestic products: Getvik remains first validation storefront; Topmate secondary; Payhip+Razorpay backup.
+- Open-source: GitHub Sponsors is the preferred long-horizon rail (India supported, personal-account fee 0%, first payout 60 days; account KYC and cross-border minimum remain owner/account gates).
+- International community support: Buy Me a Coffee is the preferred secondary rail (India Stripe Express supported; 5% platform fee + Stripe processing, USD 10 first payout threshold, first review usually 7–14 days; bank/FX exacts account-level).
+- Patreon is an optional membership rail (India local INR bank transfer via Payoneer; 10% platform fee + processing/FX/payout fees; USD 10 or local equivalent payout minimum; 5-day holds; monthly auto-withdrawal).
+- Ko-fi is a low-priority international-only fallback: 0–5% service fee and direct provider payment, but India PayPal cannot receive domestic payments and Ko-fi requires full Stripe Connect rather than Stripe Express.
+- Detailed report: [Creator Funding Rails Comparison](research/PHASE_43_CREATOR_FUNDING_RAILS_COMPARISON_2026-11-12.md).
+- No accounts, KYC, tax/bank submission, terms acceptance or pages created. Finance remains receipts INR 0, spend INR 0.

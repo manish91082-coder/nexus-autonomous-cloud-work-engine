@@ -736,7 +736,8 @@
         "Actual sponsor demand and conversion",
         "Project license/maintenance readiness and community traction"
       ],
-      "note": "Better than paid GitHub Marketplace Apps for low-friction OSS funding, but long-horizon only until a safe, licensed, useful project earns organic adoption."
+      "note": "Better than paid GitHub Marketplace Apps for low-friction OSS funding, but long-horizon only until a safe, licensed, useful project earns organic adoption.",
+      "last_revalidated": "2026-11-12"
     },
     {
       "id": "BUYMEACOFFEE-CREATOR-SUPPORT",
@@ -760,14 +761,15 @@
         "Exact INR payout and bank/FX fees",
         "Audience and recurring support demand"
       ],
-      "note": "Potential international supporter rail for OSS creators; not domestic UPI sales channel."
+      "note": "Potential international supporter rail for OSS creators; not domestic UPI sales channel.",
+      "last_revalidated": "2026-11-12"
     },
     {
       "id": "PATREON-CREATOR-MEMBERSHIPS",
       "category": "creator_memberships_digital_products",
       "platform": "Patreon",
       "tier": "P3",
-      "status": "HOLD_FOR_EVIDENCE",
+      "status": "VALIDATION",
       "score": 53,
       "score_confidence": "Medium on global payout and fee terms; exact India payout options and audience demand account-specific.",
       "payout_evidence": {
@@ -775,14 +777,16 @@
         "payout_methods": "outside US: bank transfer via Payoneer, PayPal or Payoneer Wallet where country eligible",
         "minimums": "PayPal USD 10; Payoneer wallet USD 25",
         "timing": "5-day hold after first payout method or first payment; auto withdrawal on 5th; typically 1–5 days to payout account",
-        "source": "https://support.patreon.com/hc/en-us/articles/11111747095181-Creator-fees-overview"
+        "source": "https://support.patreon.com/hc/en-gb/articles/39694936541965-Payout-guide-for-creators-outside-the-US",
+        "india": "India listed for local INR bank transfer via Payoneer; local payout fee shown as approx USD 0.50 equivalent; $10 or local equivalent minimum"
       },
       "unknowns": [
         "Exact INR direct bank payout option for India account",
         "Actual payout fees for selected method",
         "Audience and recurring membership demand"
       ],
-      "note": "Higher platform fee than GitHub Sponsors/BMC; useful only with recurring content/community."
+      "note": "Higher platform fee than GitHub Sponsors/BMC; useful only with recurring content/community.",
+      "last_revalidated": "2026-11-12"
     },
     {
       "id": "KOFI-CREATOR-SUPPORT",
@@ -807,7 +811,8 @@
         "Cross-border PayPal fee and FX net",
         "Audience"
       ],
-      "note": "Possible international-only fallback if PayPal/Stripe account is approved; not a primary India rail."
+      "note": "Possible international-only fallback if PayPal/Stripe account is approved; not a primary India rail.",
+      "last_revalidated": "2026-11-12"
     }
   ],
   "required_evidence": [

@@ -1015,7 +1015,7 @@
       "id": "P43-008",
       "title": "Compare India-eligible creator support and open-source funding rails for independent payout redundancy",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P43-007"
       ],
@@ -1028,7 +1028,23 @@
         "Rank primary/secondary/backup payout rails by net payout and settlement certainty",
         "Record owner KYC/tax/bank requirements and unresolved account-level items",
         "Update payout and opportunity registries; do not create accounts or accept terms"
-      ]
+      ],
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "report": "research/PHASE_43_CREATOR_FUNDING_RAILS_COMPARISON_2026-11-12.md",
+        "decision": "GitHub Sponsors primary for OSS; Buy Me a Coffee secondary for international support; Patreon optional membership platform; Ko-fi international-only hold; Getvik/Topmate remain domestic digital-product rails",
+        "sources": [
+          "https://docs.github.com/en/sponsors/getting-started-with-github-sponsors/about-github-sponsors",
+          "https://docs.github.com/en/site-policy/github-terms/github-sponsors-additional-terms",
+          "https://help.buymeacoffee.com/en/articles/6258038-supported-countries-for-payouts-on-buymeacoffee",
+          "https://help.buymeacoffee.com/en/articles/8105744-how-to-calculate-charges-on-your-payment",
+          "https://help.buymeacoffee.com/en/articles/6364717-when-are-payouts-processed",
+          "https://support.patreon.com/hc/en-us/articles/11111747095181-Creator-fees-overview",
+          "https://support.patreon.com/hc/en-gb/articles/39694936541965-Payout-guide-for-creators-outside-the-US",
+          "https://help.ko-fi.com/hc/en-us/articles/360009265834-Can-I-use-Stripe-in-my-country",
+          "https://www.paypal.com/in/cshelp/article/can-i-use-paypal-to-receive-payments-from-indian-customers-help1049"
+        ]
+      }
     }
   ],
   "dead_letter": [],

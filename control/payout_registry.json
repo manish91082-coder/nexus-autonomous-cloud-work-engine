@@ -115,21 +115,21 @@
     },
     {
       "provider": "Patreon",
-      "platform": "Memberships and recurring digital content",
-      "country_eligibility": "India included in local-currency bank transfer country table",
-      "account_type": "creator",
-      "kyc_requirements": "identity and payout provider verification",
+      "platform": "Memberships and digital products",
+      "country_eligibility": "India supported for local INR bank transfer via Payoneer; PayPal/Payoneer wallet also available where eligible",
+      "account_type": "Creator",
+      "kyc_requirements": "Identity, tax and payout method verification; owner-only",
       "rail": "BANK_INR",
-      "currency": "INR",
-      "minimum": "method/country-specific; verify account",
-      "fees": "payout conversion fees may include USD 0.25 + 1.55% for USD to local currency",
-      "hold_period": "5-day payout lock when payout method is added/changed",
-      "settlement_schedule": "creator payout schedule and balance holds apply",
-      "fx_or_conversion": "local currency payout via Payoneer rails",
-      "reversibility_and_chargebacks": "refunds, disputes and platform holds apply",
+      "currency": "INR local bank transfer or USD via Payoneer options",
+      "minimum": "USD 10 or local equivalent for bank transfer; PayPal USD 10; Payoneer Wallet USD 25",
+      "fees": "10% standard platform fee for new creators + payment processing (USD card 2.9% + USD 0.30 for >USD 3; non-US PayPal 3.9% + USD 0.30) + 2.5% member currency conversion if applicable + payout fee; local INR bank transfer fee about USD 0.50 equivalent",
+      "hold_period": "5-day hold after first payout method/first payment",
+      "settlement_schedule": "Auto-withdrawal on 5th; typically 1–5 days after initiation",
+      "fx_or_conversion": "2.5% if member currency differs from creator payout currency; USD-to-local bank transfer incurs 1.55% + USD 0.25 when chosen",
+      "reversibility_and_chargebacks": "Refunds, chargebacks and payout holds apply",
       "official_source_url": "https://support.patreon.com/hc/en-gb/articles/39694936541965-Payout-guide-for-creators-outside-the-US",
       "captured_at": "2026-11-12",
-      "verification_status": "OFFICIAL_COUNTRY_TABLE_CAPTURED_ACCOUNT_LEVEL_PENDING"
+      "verification_status": "OFFICIAL_INDIA_INR_PAYOUT_AND_FEES_CAPTURED_ACCOUNT_LEVEL_PENDING"
     },
     {
       "provider": "Pond5",
@@ -306,6 +306,24 @@
       "official_source_url": "https://help.buymeacoffee.com/en/articles/6258038-supported-countries-for-payouts-on-buymeacoffee",
       "captured_at": "2026-11-12",
       "verification_status": "OFFICIAL_INDIA_STRIPE_EXPRESS_AND_FEES_CAPTURED_ACCOUNT_LEVEL_PENDING"
+    },
+    {
+      "provider": "Ko-fi",
+      "platform": "Tips, memberships and digital shop",
+      "country_eligibility": "PayPal supported for international payments; India PayPal cannot receive domestic payments. Stripe requires full Stripe Connect account; Ko-fi does not support Stripe Express.",
+      "account_type": "Creator",
+      "kyc_requirements": "PayPal PAN/bank/purpose-code KYC or Stripe full account onboarding; owner-only",
+      "rail": "PAYPAL",
+      "currency": "USD/international receipts; PayPal India only international",
+      "minimum": "No Ko-fi balance minimum; provider rules apply",
+      "fees": "0–5% Ko-fi service fee depending feature/plan + PayPal/Stripe processor fees and FX",
+      "hold_period": "No Ko-fi payout hold; direct payments to connected provider",
+      "settlement_schedule": "Immediate transfer to PayPal/Stripe account; provider/bank processing applies",
+      "fx_or_conversion": "PayPal India currency conversion and withdrawal fees apply",
+      "reversibility_and_chargebacks": "Provider refunds/chargebacks apply",
+      "official_source_url": "https://help.ko-fi.com/hc/en-us/articles/115003980093-How-do-I-get-paid",
+      "captured_at": "2026-11-12",
+      "verification_status": "OFFICIAL_PROVIDER_CONSTRAINTS_CAPTURED_ACCOUNT_LEVEL_STRIPE_PENDING"
     }
   ],
   "required_fields": [
