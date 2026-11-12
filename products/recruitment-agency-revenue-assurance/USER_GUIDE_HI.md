@@ -1,31 +1,25 @@
 # Recruitment Agency Revenue Assurance Desk — हिंदी मार्गदर्शिका
 
 ## उद्देश्य
-यह टूल recruitment agency के मालिक को placement fees, वास्तविक collections, recruiter share और replacement/guarantee अवधि का वित्तीय संचालन नियंत्रण देता है। यह ATS नहीं है।
+यह offline-first tool recruitment agency के placement cash-flow, recruiter commission और contractual guarantee events को नियंत्रित करता है। यह ATS, job board या recruitment service नहीं है।
 
-## डेटा भरना
-1. Placement reference: प्रत्येक placement के लिए unique ID।
-2. Client reference: client का internal code, नाम नहीं।
-3. Recruiter reference: recruiter का internal code।
-4. Joining date: placement/joining date।
-5. Agreed fee: client से तय placement fee।
-6. Collected amount: केवल वास्तविक प्राप्त cash।
-7. Recruiter share: collected amount पर लागू percentage।
-8. Guarantee days: signed commercial agreement में लिखी अवधि।
+## 1. Placement दर्ज करें
+Placement, client और recruiter के anonymous reference IDs भरें। Joining date, agreed fee, recruiter share (%) और guarantee days दर्ज करें। शुरुआती प्राप्त राशि हो तो उसे opening receipt के रूप में रिकॉर्ड किया जाएगा।
 
-## Dashboard
-- Booked fees: सभी placements की agreed fee का योग।
-- Cash collected: अब तक प्राप्त वास्तविक राशि।
-- Outstanding: booked fee minus collected amount।
-- Collection ratio: collected / booked।
-- Active guarantee exposure: Active या Claim Open स्थिति वाले placements।
-- 14-day watchlist: अगले 14 दिनों में समाप्त होने वाली active guarantees।
+## 2. हर वास्तविक receipt अलग दर्ज करें
+Cash & events tab में placement चुनें, receipt date और वास्तविक प्राप्त राशि भरें। एक placement पर कई installments दर्ज हो सकते हैं। कुल receipt booked fee से अधिक नहीं हो सकती। Invoice, promise या pending transfer को cash receipt न मानें।
 
-## Privacy
-Candidate का नाम, phone, email, CV या अन्य personal data इस tool में न डालें। केवल reference IDs उपयोग करें। Candidate records के लिए अलग compliant ATS का उपयोग करें।
+## 3. Recruiter commission reconcile करें
+Commission earned = placement से वास्तव में collected cash × agreed recruiter share percentage। Commission payment केवल earned और unpaid balance तक दर्ज हो सकता है। Recruiter reference, date, amount और optional payment reference भरें।
 
-## सीमाएँ
-यह accounting, GST/TDS calculator, invoice system, legal guarantee interpretation या ATS नहीं है। Guarantee days और status केवल आपके वास्तविक signed contract से लें। अंतिम वित्तीय और कानूनी निर्णय अपने records/professional adviser से verify करें।
+## 4. Guarantee / replacement events
+Claim opened, replacement started, replacement completed, claim resolved या waived event दर्ज करें। Event note में candidate personal information न लिखें। Claim opened से status Claim Open और resolved/completed से Fulfilled हो जाता है।
 
-## Backup
-Backup & policy tab से JSON export करें। Browser data clear करने से पहले backup लें। Restore केवल इसी tool के valid backup file से करें।
+## 5. Ageing और client concentration
+Ageing buckets 0–30, 31–60, 61–90 और 90+ दिन हैं। वर्तमान MVP में age placement date से गिनी जाती है, invoice due date से नहीं। इसलिए इसे conservative operational signal समझें, statutory/accounting ageing नहीं। Client concentration outstanding receivables में client reference का हिस्सा दिखाता है।
+
+## 6. Backup / migration
+JSON backup में placements, receipt events, commission payments और guarantee events शामिल हैं। पुराने v0.1.0 local data को पहली बार v0.2.0 खोलने पर migrate करने का प्रयास होता है। Migration के बाद backup export करें। पुराने और नए browser storage को manually साफ करने से पहले backup रखें।
+
+## Privacy और सीमाएँ
+Candidate name, phone, email, CV, Aadhaar, PAN या कोई personal/sensitive data दर्ज न करें। केवल anonymous references रखें। Tool local browser storage उपयोग करता है; device/browser access रखने वाला व्यक्ति local data देख सकता है। यह accounting, GST/TDS, invoice, legal contract interpretation या ATS का विकल्प नहीं है।
