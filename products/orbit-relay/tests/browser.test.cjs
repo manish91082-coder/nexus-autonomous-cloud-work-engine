@@ -95,3 +95,49 @@ test("mobile viewport has no horizontal overflow and usable touch controls", asy
     await browser.close();
   }
 });
+
+
+test("CrazyGames published viewport matrix: board, overflow and touch actions remain usable", async () => {
+  const browser = await chromium.launch({ headless: true });
+  const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, hasTouch: true });
+  const viewports = [
+    [907, 510], [1216, 684], [1077, 606], [821, 462],
+    [1366, 768], [1920, 1080], [1536, 864], [1280, 720],
+    [800, 450], [1080, 607]
+  ];
+  try {
+    for (const [width, height] of viewports) {
+      await page.setViewportSize({ width, height });
+      await page.goto(html);
+      await page.getByRole("button", { name: /Start relay/i }).click();
+      const metrics = await page.evaluate(() => {
+        const board = document.querySelector("#board").getBoundingClientRect();
+        const tile = document.querySelector("#board .tile:not(.empty)").getBoundingClientRect();
+        return {
+          viewport: document.documentElement.clientWidth,
+          page: document.documentElement.scrollWidth,
+          boardLeft: board.left,
+          boardRight: board.right,
+          tileWidth: tile.width,
+          tileHeight: tile.height,
+          actionWidths: [...document.querySelectorAll(".actions button")].map(b => b.getBoundingClientRect().width)
+        };
+      });
+      assert.ok(metrics.page <= metrics.viewport, width + "x" + height + " horizontal overflow: " + JSON.stringify(metrics));
+      assert.ok(metrics.boardLeft >= 0 && metrics.boardRight <= width, width + "x" + height + " board outside viewport: " + JSON.stringify(metrics));
+      assert.ok(metrics.tileWidth >= 32 && metrics.tileHeight >= 32, width + "x" + height + " tile too small: " + JSON.stringify(metrics));
+      assert.ok(metrics.actionWidths.every(w => w >= 44), width + "x" + height + " action control too narrow: " + JSON.stringify(metrics));
+      const tile = page.locator("#board .tile:not(.empty)").first();
+      await tile.scrollIntoViewIfNeeded();
+      await tile.tap();
+      await page.locator("#hintBtn").scrollIntoViewIfNeeded();
+      await page.getByRole("button", { name: /Use hint/i }).tap();
+      await page.locator("#pauseBtn").scrollIntoViewIfNeeded();
+      await page.getByRole("button", { name: "Pause" }).tap();
+      assert.equal(await page.locator("#pauseBtn").textContent(), "Resume", width + "x" + height + " pause failed");
+      await page.getByRole("button", { name: "Resume" }).tap();
+    }
+  } finally {
+    await browser.close();
+  }
+});
