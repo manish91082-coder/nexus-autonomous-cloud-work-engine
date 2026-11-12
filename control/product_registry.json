@@ -8,13 +8,13 @@
       "name": "MSME Ops Desk Lite",
       "path": "products/msme-ops-desk-lite/",
       "version": "0.1.0",
-      "status": "FREE_SAMPLE_CANDIDATE",
+      "status": "FREE_SAMPLE_ONLY_HOLD",
       "build_status": "MVP_BUILT",
       "ci_status": "PASS_2026-11-12_RUN_43151200515",
       "distribution": "Topmate/Gumroad/Payhip candidates only; not activated",
-      "pricing_status": "NOT_PRICED; generic competitor saturation observed",
-      "differentiation": "Offline-first no-account utility; currently overlaps free/low-price tools",
-      "next_action": "Keep as free lead magnet or redesign only after buyer signal",
+      "pricing_status": "NO_PAID_LAUNCH; free calculators and invoice trackers saturate generic feature set",
+      "differentiation": "Offline-first no-account utility, but margin, cash runway, reorder, receivables and sales-log features overlap free calculators and trackers; differentiation and buyer demand unproven.",
+      "next_action": "Freeze feature development. Retain as optional free sample/lead magnet only after a real audience and distribution path are evidenced.",
       "owner_gate": "public_release"
     },
     {

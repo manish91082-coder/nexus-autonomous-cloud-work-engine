@@ -765,6 +765,51 @@
       ],
       "blocker": "Requires owner to arrange voluntary opt-in participants and conduct sessions; assistant cannot fabricate interviews or contact people without explicit authorization.",
       "last_updated": "2026-11-12"
+    },
+    {
+      "id": "P42-006",
+      "title": "Audit adjacent staffing-finance calculator and free-tool competition before creating any new product",
+      "priority": "P0",
+      "status": "COMPLETED",
+      "depends_on": [
+        "P42-003"
+      ],
+      "idempotency_key": "phase42-staffing-calculator-saturation-audit-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-12",
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "report": "research/PHASE_42_STAFFING_TOOL_SATURATION_AUDIT_2026-11-12.md",
+        "decision": "NO_GO for generic calculator or invoice-tracker product; free and low-cost alternatives already cover bill-rate, margin, commission, DSO, invoice ageing and staffing cash-flow",
+        "sources": [
+          "https://alluvo.ai/en/tools",
+          "https://vayora.co/tools/",
+          "https://ats.hiresoft.in/tools",
+          "https://www.zeniahr.com/staffing-software/",
+          "https://tagaada.com/tools/",
+          "https://lekhiva.com/tools/invoice-payment-tracker/",
+          "https://aisevak.in/service/staff-cashflow"
+        ]
+      }
+    },
+    {
+      "id": "P43-001",
+      "title": "Re-select next revenue asset from existing IP and products using buyer demand, automation and India settlement gates",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P42-006"
+      ],
+      "idempotency_key": "phase43-existing-asset-revenue-reselection-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-12",
+      "acceptance": [
+        "Audit all existing private products and reusable IP assets without starting new builds",
+        "Identify at least three plausible product/asset lanes and their demand evidence",
+        "Compare marketplace discovery, India payout, fees, delivery automation and rights",
+        "Reject generic saturated products and candidates requiring recurring manual service",
+        "Select one bounded pilot only if demand and net economics pass; otherwise report no-go"
+      ]
     }
   ],
   "dead_letter": [],
