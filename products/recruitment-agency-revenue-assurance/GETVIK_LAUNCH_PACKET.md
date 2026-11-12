@@ -64,3 +64,5 @@ Stop or reposition if 100 qualified product-page visits produce zero paid orders
 - Latest private package run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159443230 (SUCCESS).
 - Current artifact ID: 13916598950.
 - Current artifact SHA-256: `e7649325a2e1a28a08720f3cb2344a588240f81938fadd18ad6d9793470ce225`.
+
+- Buyer FAQ: [CUSTOMER_FAQ_HI.md](CUSTOMER_FAQ_HI.md). It clarifies local storage, backups, receipt policy, commission calculation, guarantee event behavior and limitations to reduce recurring support.
