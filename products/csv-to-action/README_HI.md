@@ -4,7 +4,7 @@
 
 ## उपयोग
 1. आधुनिक browser में `index.html` खोलें। Installation या server की आवश्यकता नहीं।
-2. CSV फाइल चुनें (अधिकतम 10 MB) या synthetic demo लोड करें।
+2. CSV फाइल चुनें (अधिकतम 10 MB और 100,000 data rows) या synthetic demo लोड करें।
 3. **Analyze file** दबाएँ।
 4. Data issues और action queue देखें।
 5. Cleaned CSV या Markdown action report export करें।
@@ -17,6 +17,8 @@
 
 ## गोपनीयता और सीमाएँ
 - फाइल browser JavaScript में locally पढ़ी जाती है। कोई file upload, analytics endpoint या remote processing नहीं है।
+- Static automated test में remote network APIs और external script/link URLs की अनुपस्थिति जाँची गई है। यह स्वतंत्र runtime security audit का विकल्प नहीं है।
+- Exported CSV में spreadsheet formula prefixes (=, +, -, @) और leading whitespace/BOM वाले मामलों को apostrophe लगाकर neutralize करने का प्रयास किया जाता है। Spreadsheet software में खोलने से पहले exported file जाँचें।
 - CSV में password, bank credentials, card number, सरकारी पहचान संख्या या secret न रखें।
 - Amounts user-entered data हैं, bank records से verified नहीं।
 - अलग-अलग currencies के total को जोड़कर नहीं दिखाया जाता। FX conversion नहीं होता।
