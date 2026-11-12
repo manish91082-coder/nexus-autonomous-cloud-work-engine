@@ -1,4 +1,4 @@
-# ग्राहक सहायता FAQ — Recruitment Agency Revenue Assurance Desk v0.2.0
+# ग्राहक सहायता FAQ — Recruitment Agency Revenue Assurance Desk v0.3.0
 
 ## 1. क्या इसे install करना पड़ता है?
 नहीं। ZIP extract करें और `index.html` को Chrome, Edge, Firefox या Safari के आधुनिक desktop version में खोलें।
@@ -33,8 +33,8 @@ Commission earned = actual collected cash × recruiter share percentage। Commi
 ## 11. क्या guarantee status अपने-आप बदलता है?
 Claim opened event से status Claim Open होता है। Claim resolved या replacement completed event से Fulfilled होता है। अन्य contractual निर्णय user को स्वयं दर्ज करने हैं।
 
-## 12. Receivable ageing क्या statutory accounting ageing है?
-नहीं। v0.2.0 में ageing placement date से calculate होती है, invoice due date से नहीं। इसे केवल operational indicator समझें।
+## 12. Receivable ageing कैसे calculate होती है?
+जहाँ contractual payment due date दर्ज है, ageing उसी date से calculate होती है। Due date खाली होने पर placement date proxy के रूप में इस्तेमाल होती है और table में proxy लिखा दिखता है। यह statutory accounting ageing नहीं है।
 
 ## 13. Placement delete क्यों नहीं हो रहा?
 यदि placement में cash receipts, guarantee events या संबंधित recruiter commission payment history है, तो audit trail बचाने के लिए deletion block होता है। ऐसे record का status बदलें; historical record मिटाने का प्रयास न करें।
@@ -53,3 +53,10 @@ Claim opened event से status Claim Open होता है। Claim resolve
 
 ## 18. सहायता कैसे माँगें?
 जिस marketplace से product खरीदा है, उसी के order/support channel पर product version, browser version और समस्या के चरण लिखें। Candidate या client की व्यक्तिगत/गोपनीय जानकारी साझा न करें।
+
+
+## 19. Payment-linked guarantee flag क्या legal decision है?
+नहीं। यह केवल operational reminder है। User signed contract पढ़कर clause चुनता है। यदि “On-time payment required” चुना है, तो due date के बाद unpaid balance या due date के बाद receipt को flag किया जाता है। यह tool guarantee को void, valid या enforceable घोषित नहीं करता।
+
+## 20. Invoice due date और invoice reference क्यों दर्ज करें?
+ताकि receivable ageing वास्तविक contractual due date से हो, न कि placement date से। Invoice reference optional है; personal/candidate information न डालें।
