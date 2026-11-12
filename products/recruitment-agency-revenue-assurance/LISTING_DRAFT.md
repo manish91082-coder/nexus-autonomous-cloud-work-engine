@@ -16,7 +16,10 @@ An offline-first business utility for recruitment agency owners to reconcile pla
 - Recruiter commission earned only on cash actually collected
 - Recruiter commission paid/unpaid reconciliation
 - Guarantee claim, replacement and resolution event log
-- Invoice reference, invoice date and contractual due date\n- Due-date-based receivable ageing, with placement-date proxy visibly marked if due date is missing\n- Late-payment detection and user-configured payment-linked guarantee risk flags (operational reminders only, not legal interpretation)\n- Client concentration views
+- Invoice reference, invoice date and contractual due date
+- Due-date-based receivable ageing, with placement-date proxy visibly marked if due date is missing
+- Late-payment detection and user-configured payment-linked guarantee risk flags (operational reminders only, not legal interpretation)
+- Client concentration views
 - Guarantee expiry watchlist
 - JSON backup and restore
 - Hindi user guide
