@@ -20,11 +20,10 @@ jobs:
         run: node --test products/orbit-relay/tests/puzzle.test.cjs
       - name: Install browser test runtime
         run: |
-          npx --yes playwright install --with-deps chromium
+          npm install --no-save --no-audit --no-fund playwright
+          npx playwright install --with-deps chromium
       - name: Run real-browser interaction tests
-        run: |
-          npm install --no-save playwright
-          node --test products/orbit-relay/tests/browser.test.cjs
+        run: node --test products/orbit-relay/tests/browser.test.cjs
       - name: Validate game files
         run: |
           test -s products/orbit-relay/index.html
