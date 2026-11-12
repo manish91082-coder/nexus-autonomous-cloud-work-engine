@@ -12,8 +12,8 @@
 ## Latest verified execution checkpoint — 2026-11-12
 
 - Five-minute bootstrap workflow: `.github/workflows/mission-autonomous-worker.yml` (schedule `3-59/5 * * * *`, push-triggered and manual dispatch).
-- First real run: [43147582665](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43147582665), triggered by push, completed **success** at 2026-11-12 03:20:59 UTC (08:50:59 IST).
-- Job: `bounded-worker-tick`; registry validation and queue poll both passed; heartbeat artifact `mission-worker-tick-43147582665` uploaded.
+- Four push-triggered smoke runs completed **success**: [43147582665](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43147582665), [43147665810](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43147665810), [43147681829](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43147681829), [43147728279](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43147728279). Latest completed at 2026-11-12 03:22:07 UTC (08:52:07 IST).
+- Job: `bounded-worker-tick`; registry validation and queue poll passed; heartbeat artifacts uploaded. These were push-triggered smoke runs, not scheduled cron runs.
 - Heartbeat evidence: 8 queue tasks; 2 eligible; selected P29-002; 13 opportunity candidates; 0 payout providers; verified realized receipts ₹0; authorized spend ₹0.
 - Important limitation: this is a safe bootstrap poller. It validates/selects work and writes a heartbeat; it does not yet perform AI research, write product code autonomously, publish, or move funds.
 - The five-minute recurring schedule is configured, but the first scheduled (cron-triggered) run has not yet been verified. The successful run above was push-triggered.
