@@ -38,8 +38,9 @@ Private validation draft. No publication, platform connection, KYC, legal accept
 - Private launch packet: [GETVIK_LAUNCH_PACKET.md](GETVIK_LAUNCH_PACKET.md).
 - License draft for review: [LICENSE_DRAFT.md](LICENSE_DRAFT.md).
 - Private package workflow: [package-recruitment-product.yml](../../.github/workflows/package-recruitment-product.yml).
-- Package artifact run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159443230.
-- Artifact SHA-256: `e7649325a2e1a28a08720f3cb2344a588240f81938fadd18ad6d9793470ce225`.
+- Package artifact run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452.
+- Artifact SHA-256: `7d8e802de63c31ba68ccd64b668c8b6143b0ea5057178754f404898772dc1cba`.
 - Package is marked PRIVATE_DRAFT_NOT_FOR_PUBLICATION. No seller account or terms have been activated.
 - Chromium + Firefox Playwright QA passed: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159499045.
 - Added [Hindi customer FAQ](CUSTOMER_FAQ_HI.md) to reduce repetitive support and clarify offline storage, backups, receipts, commission, guarantee events and product limitations.
+- Latest private package includes `CUSTOMER_FAQ_HI.md`; ZIP and SHA-256 validation passed in run https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452.
