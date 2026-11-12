@@ -1251,3 +1251,17 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Next after CI: inspect and fix any regression; if successful, complete P39-001 and begin a small daily challenge/replayability design with deterministic date seeds, local-only privacy and tests. Human playtest remains unperformed.
 - Game remains private and unpublished. Brand/title clearance, CrazyGames account, KYC/tax/bank, terms, submission, public release and monetization remain owner-gated.
 - Mission finance truth: verified realized net receipts INR 0; authorized spend INR 0. No platform acceptance or player demand is implied.
+
+
+## Phase 39–40 execution checkpoint — 2026-11-12
+
+- Phase 39 P39-001 campaign progress persistence is COMPLETED. Unlocked campaign level stored locally; returning player can continue from the highest unlocked level.
+- Implementation CI [43170182667](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43170182667): SUCCESS; puzzle tests, browser suite, file validation and offline package passed.
+- Reload regression CI [43170187825](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43170187825): SUCCESS; 4/4 browser tests passed, including complete level → level 2 → reload → resume level 2. Offline artifact ID 13921009763, SHA-256 `0deeae75bc7b4f5e1355f0d2fbf20efe3af23f8908a99fe423d0350c50dea20d`.
+- Phase 40 P40-001: deterministic Daily Challenge implemented. Seed derives from fixed namespace plus UTC date; restart preserves daily puzzle. Completion marker is stored locally and campaign progression remains separate.
+- Added browser test for same-day deterministic restart, completion and completion-state persistence after reload.
+- Report: [PHASE_40_DAILY_CHALLENGE_2026-11-12.md](research/PHASE_40_DAILY_CHALLENGE_2026-11-12.md).
+- Final-head CI [43171069764](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43171069764) was pending when checkpoint written. Earlier CI runs were cancelled by later pushes under concurrency policy. Do not mark P40-001 complete until final-head CI succeeds, logs show all browser tests pass, and offline artifact is uploaded.
+- Next: verify CI; fix any failures; then test daily date-boundary behavior (UTC rollover), storage failure fallback and daily completion isolation from campaign progress. Only after this should human playtesting and external distribution be prepared.
+- Game remains private and unpublished. Brand/title clearance, human playtest, account/KYC/tax/bank, terms, submission, public release and monetization remain owner-gated.
+- Finance: verified realized net receipts INR 0; authorized spend INR 0.
