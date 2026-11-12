@@ -10,7 +10,9 @@ Offline-first cash-flow and guarantee-control desk for recruitment agency owners
 - Recruiter commission earned only on collected cash.
 - Recruiter commission paid ledger with overpayment guard.
 - Guarantee claim, replacement and resolution event log.
-- Invoice reference/date/due date and due-date-based receivable ageing (placement-date proxy visibly marked when due date is missing).\n- Late-payment and payment-linked guarantee risk flags based on a user-selected contract clause; operational reminders only, never legal interpretation.\n- Client concentration.
+- Invoice reference/date/due date and due-date-based receivable ageing (placement-date proxy visibly marked when due date is missing).
+- Late-payment and payment-linked guarantee risk flags based on a user-selected contract clause; operational reminders only, never legal interpretation.
+- Client concentration.
 - Guarantee expiry watchlist.
 - JSON backup/restore with legacy v0.1.0 migration.
 
