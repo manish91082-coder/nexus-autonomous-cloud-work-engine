@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "policy": "Rail-neutral; India eligibility and lawful usability must be verified per platform/account.",
+  "rails": [
+    "BANK_INR",
+    "UPI",
+    "INTERNATIONAL_BANK_WIRE",
+    "PAYPAL",
+    "PAYONEER",
+    "SKRILL",
+    "OTHER_E_WALLET",
+    "PLATFORM_BALANCE",
+    "CRYPTO_WALLET"
+  ],
+  "providers": [],
+  "required_fields": [
+    "provider",
+    "platform",
+    "country_eligibility",
+    "account_type",
+    "kyc_requirements",
+    "rail",
+    "currency",
+    "minimum",
+    "fees",
+    "hold_period",
+    "settlement_schedule",
+    "fx_or_conversion",
+    "reversibility_and_chargebacks",
+    "official_source_url",
+    "captured_at",
+    "verification_status"
+  ],
+  "crypto_required_fields": [
+    "chain",
+    "asset",
+    "tx_hash",
+    "wallet_control_evidence",
+    "timestamp",
+    "quantity",
+    "INR_valuation_source",
+    "network_fee",
+    "conversion_evidence",
+    "compliance_review"
+  ],
+  "updated_at": "2026-11-12"
+}
