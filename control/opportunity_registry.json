@@ -8,7 +8,202 @@
     "distribution_and_differentiation": 10,
     "risk_and_compliance": 10
   },
-  "candidates": [],
+  "candidates": [
+    {
+      "id": "KDP-ORIGINAL-PUBLISHING",
+      "category": "digital_publishing",
+      "platform": "Amazon KDP",
+      "tier": "P1",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "partial payout evidence",
+      "payout_evidence": {
+        "india_direct_deposit": "INR supported per official country table",
+        "eft_threshold": "no platform threshold",
+        "settlement": "approximately 60 days after month-end; India bank may take 7-10 additional business days",
+        "source": "https://kdp.amazon.com/en_US/help/topic/GK2MKZUL6U3SFBPZ"
+      },
+      "automation_fit": "high with editorial and owner publication gate",
+      "unknowns": [
+        "niche demand",
+        "account eligibility/KYC/tax",
+        "content quality and rights"
+      ],
+      "note": "High-value compounding, not fast-cash promise."
+    },
+    {
+      "id": "GUMROAD-DIGITAL-GOODS",
+      "category": "digital_goods_software",
+      "platform": "Gumroad",
+      "tier": "P0",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "partial payout evidence",
+      "payout_evidence": {
+        "india_bank_payout": "India listed; INR local bank payout",
+        "minimum": "USD 100",
+        "hold": "7 days for weekly/monthly/quarterly balance",
+        "source": "https://gumroad.com/help/article/13-getting-paid"
+      },
+      "automation_fit": "high",
+      "unknowns": [
+        "account-specific payout settings",
+        "fees/refunds",
+        "buyer demand and discovery"
+      ]
+    },
+    {
+      "id": "ADOBE-STOCK-ORIGINAL-ASSETS",
+      "category": "licensing_royalties",
+      "platform": "Adobe Stock",
+      "tier": "P0",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "partial payout evidence",
+      "payout_evidence": {
+        "minimum": "USD 25",
+        "first_sale_wait": "45 days after first sale",
+        "methods": "PayPal/Payoneer/Skrill; regional availability varies",
+        "source": "https://helpx.adobe.com/in/stock/contributor/payments-earnings/payment-taxes/payment-requirements.html"
+      },
+      "automation_fit": "high with human curation",
+      "unknowns": [
+        "India provider availability",
+        "acceptance rates",
+        "demand",
+        "tool licence and AI disclosure"
+      ]
+    },
+    {
+      "id": "ENVATO-AUTHOR-ASSETS",
+      "category": "marketplace_assets",
+      "platform": "Envato",
+      "tier": "P1",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "partial payout evidence",
+      "payout_evidence": {
+        "minimum": "USD 50",
+        "schedule": "monthly around 15th",
+        "methods": "bank transfer/PayPal; availability varies by country",
+        "source": "https://help.author.envato.com/hc/en-us/articles/20535795834393-Setting-up-your-Payout-profile"
+      },
+      "automation_fit": "high",
+      "unknowns": [
+        "India rail and fees",
+        "author admission",
+        "marketplace demand",
+        "support requirements"
+      ]
+    },
+    {
+      "id": "AMAZON-ASSOCIATES-IN",
+      "category": "affiliate",
+      "platform": "Amazon Associates India",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "partial payout evidence",
+      "payout_evidence": {
+        "method": "NEFT or cheque",
+        "minimum_neft": "INR 1000",
+        "settlement": "approximately 60 days after month-end",
+        "source": "https://affiliate-program.amazon.in/help/node/topic/GKDG94FQSRXSJCGK"
+      },
+      "automation_fit": "high with compliant inbound content",
+      "unknowns": [
+        "traffic and conversion",
+        "commission by category",
+        "policy/disclosure and qualifying sales"
+      ]
+    },
+    {
+      "id": "CRAZYGAMES-HTML5",
+      "category": "interactive_software",
+      "platform": "CrazyGames",
+      "tier": "P1",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "partial payout evidence",
+      "payout_evidence": {
+        "minimum": "EUR 100",
+        "schedule": "monthly; NET 60 terms",
+        "methods": "country/regulation dependent",
+        "source": "https://docs.crazygames.com/payouts/"
+      },
+      "automation_fit": "high after approval",
+      "unknowns": [
+        "India method",
+        "acceptance",
+        "traffic/retention",
+        "monetisation approval"
+      ]
+    },
+    {
+      "id": "UNITY-ASSET-STORE",
+      "category": "developer_assets",
+      "platform": "Unity Asset Store",
+      "tier": "P1",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "partial payout evidence",
+      "payout_evidence": {
+        "methods": "monthly PayPal or quarterly bank transfer",
+        "currency": "USD",
+        "source": "https://docs.unity.com/en-us/asset-store/publishing/asset-packages/revenue/payouts"
+      },
+      "automation_fit": "high",
+      "unknowns": [
+        "India method",
+        "publisher admission",
+        "fees",
+        "market demand"
+      ]
+    },
+    {
+      "id": "GOOGLE-PLAY-CHROME",
+      "category": "software_distribution",
+      "platform": "Google Play / Chrome Web Store",
+      "tier": "HOLD",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "partial payout evidence",
+      "payout_evidence": {
+        "schedule": "monthly on 15th for previous month sales",
+        "source": "https://support.google.com/paymentscenter/answer/7159355?hl=en-IN"
+      },
+      "automation_fit": "high",
+      "unknowns": [
+        "zero-cost registration feasibility",
+        "merchant eligibility",
+        "store approval",
+        "platform fees",
+        "India account payout"
+      ]
+    },
+    {
+      "id": "DIRECT-CRYPTO-WALLET-LICENSING",
+      "category": "onchain_licensing",
+      "platform": "Direct wallet / smart contract",
+      "tier": "P3",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": null,
+      "score_confidence": "low",
+      "payout_evidence": {
+        "rail": "crypto wallet",
+        "source": "https://www.incometaxindia.gov.in/documents/20117/42998/Taxation-of-Virtual-Digital-Asset-VDA_2026-01-06_06-43-57_cfe04a_en.pdf/153706c8-7b5c-77d4-fc56-624c50ece1b0?t=1774007412959&version=1.0"
+      },
+      "automation_fit": "potentially high",
+      "unknowns": [
+        "Indian legal/tax classification",
+        "FIU/provider compliance",
+        "demand",
+        "custody/conversion",
+        "network fees"
+      ],
+      "note": "No token speculation, airdrop farming or compliance evasion."
+    }
+  ],
   "required_evidence": [
     "official_terms_url",
     "captured_at",
