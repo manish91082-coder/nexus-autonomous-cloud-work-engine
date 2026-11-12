@@ -1333,3 +1333,11 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Detailed evidence: [Phase 43 Existing Asset Portfolio Audit](research/PHASE_43_EXISTING_ASSET_PORTFOLIO_AUDIT_2026-11-12.md).
 - P43-002 active: research specialized public-data products with explicit commercial reuse rights, recurring buyer decisions, existing competitor pricing, source update cadence and feasible automation. Generic tender alerts are already crowded; any data product must add a narrow decision advantage.
 - No new product build until a viable niche passes demand, licensing, distribution and payout gates. Finance: realized receipts INR 0; authorized spend INR 0.
+
+
+## Phase 43 public-data audit and publishing research — 2026-11-12
+- P43-002 completed: Government Open Data License-India permits commercial derivative use only for datasets covered by the licence, with source attribution and third-party-rights exclusions. Individual dataset licence metadata must be checked.
+- No public-data pilot selected: generic tender alerts are crowded (e.g. TenderPulse ₹199–₹1,499/month); district MSME data has an active paid competitor (DataRankIndia ₹299–₹2,999 products); tourism data is mainly state/UT and annual; renewable-energy records are fragmented/old; crop production is annual/older.
+- Detailed report: [Phase 43 Public-Data Product Market Audit](research/PHASE_43_PUBLIC_DATA_PRODUCT_MARKET_AUDIT_2026-11-12.md).
+- P43-003 active: validate original technical publishing as a long-horizon compounding lane. Must verify KDP payout, India royalties, language, AI disclosure and quality/IP rules; no assumption of sales or quick cash.
+- No new product build or listing. Finance remains realized receipts INR 0; authorized spend INR 0.
