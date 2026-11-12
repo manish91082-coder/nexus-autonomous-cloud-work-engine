@@ -1168,3 +1168,17 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Queue P34-002 COMPLETED. P34-001 Getvik publication remains BLOCKED on owner-only KYC/legal/payout declaration/publication approval. P35-001 payment-linked guarantee risk enhancement is IN_PROGRESS. P29-004 candidate evidence scan remains IN_PROGRESS. P31-001 MSME generic tool remains BLOCKED as free-sample candidate.
 - Current mission phase: `PHASE_35_PAYMENT_LINKED_GUARANTEE_RISK`.
 - No seller account created, no KYC submitted, no terms accepted, no product published, no spend. Realized net receipts ₹0; authorized spend ₹0.
+
+
+## Phase 35 — Payment-linked guarantee risk v0.3.0 completed (2026-11-12)
+- Added invoice reference, invoice date, contractual payment due date and a user-configured guarantee-payment clause to the placement form.
+- Receivable ageing now uses contractual due date. If no due date is supplied, placement date is used as a clearly marked proxy. Buckets: Not due, 0–30, 31–60, 61–90 and 90+ days overdue.
+- Added operational risk flags: current, overdue open, paid late, due date missing, clause not reviewed, manual review, or no payment link.
+- The tool never interprets a legal contract or declares a guarantee void/valid. User selects the payment condition from the signed contract; the tool only displays a date/receipt-based reminder.
+- Added formula tests for overdue/not-due/paid-late, ageing boundaries and rule states. An initial test run caught a duplicate legacy `ageBucket` function shadowing the new due-date logic; removed the duplicate. A subsequent CI run caught a stale test output assertion (12 vs 24 assertions); corrected it.
+- Formula/mission CI run [43160680889](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160680889) SUCCESS.
+- Chromium + Firefox browser QA run [43160901456](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901456) SUCCESS. The browser test covers invoice due date, late payment flag, ageing, commission, guarantee event, backup/restore, deletion guard, keyboard navigation, labels, mobile overflow and no external requests.
+- Private v0.3.0 package run [43160901484](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901484) SUCCESS. Artifact `recruitment-agency-revenue-assurance-v0.3.0-private`, ID 13917713420, SHA-256 `e3ece9f15c3738e1ecea86cccd6b39799b5a60cf41140dfb0a61f67548421195`, includes app, README, Hindi guide, Hindi FAQ, package note and manifest; expires 12 Dec 2026.
+- P35-001 marked COMPLETED. Product remains PRIVATE_VALIDATION_HOLD; no account created, no KYC submitted, no terms accepted, no product published, no spend.
+- Current mission phase: `PHASE_36_PRODUCT_DEMAND_VALIDATION_AND_RELEASE_GATE`.
+- Next: continue 29-candidate evidence scan, prepare owner-only Getvik launch steps, and keep product unpublished until owner explicitly approves legal/KYC/payout setup and release. Revenue remains ₹0.
