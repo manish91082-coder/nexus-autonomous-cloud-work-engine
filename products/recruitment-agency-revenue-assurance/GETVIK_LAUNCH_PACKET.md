@@ -46,6 +46,23 @@ Do not activate a paid Getvik plan. It is uneconomic before recurring sales evid
 - Digital goods are generally final sale subject to consumer law and defects/non-delivery rules.
 - Do not publish until support and license details are complete. This product is not technically license-key protected.
 
+## Current Terms audit — material owner risks (9 November 2026)
+
+The official Terms are a binding contract. Registration, accessing or using the platform is stated to constitute acceptance; do not create an account or proceed to signup until the owner has reviewed the live Terms and Privacy Policy and independently chosen to accept them.
+
+- **Buyer license default:** If no license type is designated, the Terms grant a personal, non-commercial license. The proposed agency internal-use license therefore needs an explicit compatible license selection (the Terms list custom licensing as an option) and the final text must be visible to the buyer before purchase. Verify the actual creator-dashboard control before publication; do not assume the draft alone overrides the default.
+- **Support duty:** The creator must maintain active contact channels and provide reasonable, timely buyer support. The product is intentionally not a service/SLA, but the owner still needs a monitored support contact and a bounded response policy before listing.
+- **Refund and chargeback exposure:** Change-of-mind refunds are generally excluded, subject to consumer law. Refunds may still be required when the product differs materially from the listing, cannot be downloaded due to a platform/creator issue, contains malware, or law requires it. On a refund, creator earnings are reversed proportionally and the balance can go negative; the Terms state Getvik covers its own platform fee and payment charges for that sale. Copyright removal has a harsher rule: the creator may owe the full sale amount including platform fees and charges.
+- **Payout uncertainty:** ₹100 is the current manual request threshold, but payout is conditional on cleared/settled processor funds. Getvik may delay payouts or place reserves for fraud, disputes, chargebacks or legal requests. On account termination, pending balances may be held for up to 180 days for actual refund/chargeback exposure, with remaining undisputed balance payable after verification.
+- **IP and content standards:** The creator warrants ownership or sufficient rights to all product IP. The Terms prohibit low-effort, mass-produced AI-generated content; keep this as a tested, useful software utility with accurate feature claims and preserve the source/test evidence. Do not claim that a platform reviewer has pre-approved it.
+- **Privacy/payout data:** Getvik's Privacy Policy describes processing of legal name, PAN where required, UPI/bank payout details, transaction records and usage data. Submit such data only through the platform's secure authenticated flow, never chat or GitHub.
+
+### Proposed refund wording for owner/legal review (not approved)
+
+"Digital software access is generally final after successful delivery, except where applicable consumer law requires otherwise. If the delivered file is materially different from the listing, cannot be accessed because of a platform or seller issue, contains malware, or another legally required refund ground applies, contact the seller through the support channel shown on this listing. Requests will be reviewed under applicable law and Getvik's current Terms."
+
+This wording is a draft only. The owner must insert a real monitored support contact, confirm the wording against the actual Getvik listing fields and current consumer-law obligations, and approve it before publication. Never publish an empty or invented contact route.
+
 ## Commercial unit-economics sensitivity (illustrative, not a forecast)
 
 The figures below apply the documented 11.8% platform deduction only. Gateway charges, GST on gateway charges, seller tax, refunds, chargebacks and operating costs remain excluded until the seller dashboard and actual settlement statement provide exact amounts. These figures are therefore a contribution ceiling before the remaining deductions, not take-home income.
@@ -115,10 +132,7 @@ Stop or reposition if 100 qualified product-page visits produce zero paid orders
 ## Latest QA evidence
 - Latest completed Chromium + Firefox Playwright run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43277812722 (SUCCESS, retry attempt 2; tested parent commit e430517def212a76bddd858ec28be7acd43155d6).
 - Checks include full placement/receipt/commission/guarantee journey, persistence, JSON backup/restore, financial-history deletion guard, labelled form controls, keyboard navigation, mobile overflow and no external network requests.
-- Latest private package run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43277956809 (SUCCESS on commit 743ec56ecd5cd25acb7b2a549b80d46d8d66e7a2).
-- Latest verified private artifact ID: `13971801662` (package workflow run #38).
-- Package artifact SHA-256 digest: `sha256:ed0126a6236f1582f16385cca5107ce0280c9328c08915ed0bfbbeff8e60824d` (GitHub artifact ZIP digest; distinct from the product ZIP checksum).
-- Product ZIP checksum is stored in `dist/SHA256SUMS.txt` and passed `sha256sum -c` in package run #38.
+- Previous verified private package run #41 (before this Terms-audit update): https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43278428111. It passed on commit `9e93880283c4baa6720878b06d086b78dc4fadd1`; artifact ID `13970818108`, GitHub artifact ZIP digest `sha256:e5e82c8d95798fff4994688867a90793876f5b88ba56ea76a540249420ab1236`. The product ZIP checksum in `dist/SHA256SUMS.txt` passed validation. The Terms-audit update will trigger a fresh private package build; use that newer run's artifact rather than this historical ID.
 
 - Buyer FAQ: [CUSTOMER_FAQ_HI.md](CUSTOMER_FAQ_HI.md). It clarifies local storage, backups, receipt policy, commission calculation, guarantee event behavior and limitations to reduce recurring support.
 
