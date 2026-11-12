@@ -1038,3 +1038,15 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Latest known HEAD at the time of the update should be re-read from GitHub before any subsequent commit; latest observed HEAD before these checkpoint updates was `85a1d8c32cc6b4a78b45fcd27a34af0efa22cbbb`.
 - Actual verified receipts remain ₹0; authorised spend remains ₹0.
 - Next exact actions: obtain first mission-guard workflow run and inspect job logs; broaden revenue candidate research to 25+ specific opportunities; verify actual India eligibility and payout account details only via owner-run portal steps, never by collecting credentials/KYC in chat.
+
+
+### Phase 29 research expansion — 2026-11-12
+- Official payout evidence scan expanded from 9 to 12 named platform candidates.
+- Added itch.io: USD 5 minimum, 7-day transaction hold, payout review at least 7 days and typically 10–14 days; India Payoneer eligibility still needs account-level verification.
+- Added Etsy India as a documented zero-cost gate failure: official help requires USD 10 one-time setup fee, GSTIN and Payoneer; new shops sell internationally only and cannot sell digital items to Indian buyers. Rejected under ₹0 spend rule; no payment or account setup.
+- Added YouTube monetisation as P2 due YPP/audience thresholds and monthly payout cycle; Apple App Store held pending developer membership cost and India terms.
+- Research report: `research/PHASE_29_BROAD_REVENUE_MODEL_AND_PAYOUT_EVIDENCE_2026-11-12.md`.
+- Opportunity registry now includes 12 named candidates. The 25+ candidate, 8-category sweep remains IN_PROGRESS; no scores or approvals are fabricated.
+- Workflow run check: no run of `.github/workflows/mission-continuity-guard.yml` was present at the latest query. The workflow is committed and scheduled but its first execution is not yet verified.
+- Latest verified GitHub HEAD at checkpoint: `1ddcfbcd36b3085c66b233ac2ceced9450186136`.
+- Actual realized receipts: ₹0. Authorized spend: ₹0.
