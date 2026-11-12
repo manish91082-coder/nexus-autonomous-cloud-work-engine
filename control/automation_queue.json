@@ -198,7 +198,7 @@
       "id": "P32-002",
       "title": "Extend recruitment agency revenue assurance tool into installment-level cash and guarantee control",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETED",
       "depends_on": [
         "P32-001"
       ],
@@ -211,7 +211,25 @@
         "Add outstanding receivable ageing and client concentration",
         "Add unit tests for collection, commission, guarantee and date calculations",
         "Maintain no-candidate-PII and offline-only design"
-      ]
+      ],
+      "completed_at": "2026-11-12",
+      "evidence": {
+        "product_version": "0.2.0",
+        "app_path": "products/recruitment-agency-revenue-assurance/index.html",
+        "test_path": "tests/test_recruitment_revenue_assurance.py",
+        "integrated_ci_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43157319205",
+        "ci_conclusion": "success",
+        "verified_features": [
+          "installment receipts",
+          "commission earned on collected cash and paid reconciliation",
+          "guarantee claim/replacement events",
+          "receivable ageing",
+          "client concentration",
+          "legacy migration and clear-data safety",
+          "formula/date tests"
+        ],
+        "remaining": "Cross-browser visual/accessibility QA and real buyer demand remain open; product is private and unpublished."
+      }
     }
   ],
   "dead_letter": [],
