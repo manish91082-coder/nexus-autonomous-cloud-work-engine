@@ -16,7 +16,7 @@
       "id": "P29-001",
       "title": "Install mission control-plane schemas and validators",
       "priority": "P0",
-      "status": "READY",
+      "status": "COMPLETED",
       "depends_on": [],
       "idempotency_key": "phase29-control-plane-v1",
       "owner_gate": false,
@@ -29,7 +29,7 @@
       "id": "P29-002",
       "title": "Add deterministic scheduled CI runner and evidence report",
       "priority": "P0",
-      "status": "READY",
+      "status": "IN_PROGRESS",
       "depends_on": [
         "P29-001"
       ],
@@ -45,7 +45,7 @@
       "id": "P29-003",
       "title": "Audit all workflows and recurring automation",
       "priority": "P0",
-      "status": "READY",
+      "status": "COMPLETED",
       "depends_on": [
         "P29-001"
       ],
@@ -60,7 +60,7 @@
       "id": "P29-004",
       "title": "Broad revenue-source and payout evidence scan",
       "priority": "P0",
-      "status": "READY",
+      "status": "IN_PROGRESS",
       "depends_on": [
         "P29-001"
       ],
