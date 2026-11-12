@@ -1,7 +1,7 @@
 # ग्राहक सहायता FAQ — Recruitment Agency Revenue Assurance Desk v0.3.0
 
 ## 1. क्या इसे install करना पड़ता है?
-नहीं। ZIP extract करें और `index.html` को Chrome, Edge, Firefox या Safari के आधुनिक desktop version में खोलें।
+नहीं। ZIP extract करें और `index.html` को Chrome, Edge या Firefox के desktop version (Chromium और Firefox पर QA किया गया है; Safari का अलग QA अभी नहीं हुआ है) में खोलें।
 
 ## 2. क्या internet या server चाहिए?
 नहीं। यह single-file offline utility है। कोई login, cloud server, analytics या बाहरी script नहीं है।
