@@ -1112,3 +1112,30 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - Product CI currently checks privacy/offline contract, required feature presence and embedded JavaScript syntax. Full browser interaction, formula correctness, accessibility and real-user validation remain outstanding.
 - Realized net receipts remain ₹0. No product is published; no seller account/terms/KYC/payout settings have been touched.
 - Next: implement installment-level collection events, recruiter commission payable/paid reconciliation, guarantee claim/replacement event log, receivable ageing and client concentration; add logic-level tests before any pricing/publication test.
+
+
+## Phase 32 — Recruitment Agency Revenue Assurance Desk v0.2.0 build complete (2026-11-12)
+- Enhanced `products/recruitment-agency-revenue-assurance/index.html` from a single collected-amount field to an event-based cash ledger.
+- Added installment-level receipt events with dates and optional internal references; outstanding balances derive from receipt-event sums.
+- Added recruiter commission earned only on actual collected cash and a commission-paid ledger that prevents recording payments above earned unpaid commission.
+- Added guarantee claim/replacement/resolution event log and state transitions.
+- Added receivable ageing buckets (0–30, 31–60, 61–90, 90+) and client concentration by outstanding balance.
+- Added JSON backup/restore for placements, receipts, commission payments and guarantee events.
+- Added legacy v0.1.0 migration and a guard preventing cleared legacy data from reappearing after migration.
+- Updated Hindi guide, product README and private listing draft. Product version 0.2.0; remains PRIVATE_VALIDATION and unpublished.
+- Formula tests cover installment sums, outstanding balance, earned/payable commission, ageing boundaries, client concentration and guarantee-date boundary math. Privacy/offline checks and embedded JS syntax checks remain enabled.
+- Integrated GitHub Actions run [43157319205](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43157319205) completed SUCCESS. Job `bounded-worker` and all steps passed, including recruitment product tests. This is CI evidence, not a full browser-device/accessibility audit.
+- Queue task P32-002 marked COMPLETED. Remaining product gates: cross-browser visual/accessibility QA, real buyer demand, platform payout account confirmation and owner approval before publication.
+- No candidate PII is stored. No account was created, no platform terms accepted, no publication, no spend. Realized receipts remain ₹0.
+
+## Phase 33 — Revenue channel qualification and payout revalidation (2026-11-12)
+- Corrected Topmate payout assumptions using its current official guideline modified 21 Oct 2026: first withdrawal eligibility 7 days after first paid booking; INR withdrawal processing within 7 days of request; ₹500 minimum with no fee, below ₹500 flat ₹20, ₹20 or less not withdrawable; bank downtime/holidays may extend settlement.
+- Topmate current fee model: 10% own-link/profile or 20% marketplace commission, INR transaction charge at least 2% (or higher actual gateway charge), plus 18% GST on Topmate's fee for INR payments.
+- Added indicative Topmate net arithmetic at ₹499/₹999/₹1,499/₹2,999 for own-link and marketplace routes. ₹499 single-sale balance falls below the ₹500 withdrawal minimum. These are fee calculations, not a product pricing decision or demand forecast.
+- Revalidated Gumroad official fee schedule: direct 10% + USD 0.50 + card processing 2.9% + USD 0.30; marketplace Discover 30%; India local bank INR payout listed, standard USD 100 threshold, 7-day balance hold, Tuesday bank payout and 2–7 business days bank processing.
+- Payhip Free plan 5% plus Razorpay transaction fee (typically around 2%, payment-method/region dependent); India Razorpay integration is documented, but merchant KYC and settlement settings remain account-level gates.
+- Research report: `research/PHASE_33_PAYOUT_RAIL_REVALIDATION_2026-11-12.md`.
+- Payout registry Topmate entry corrected; no seller account created, terms accepted, product published or payment made.
+- CI latest product test run: [43157319205](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43157319205) SUCCESS on code/test head `ac4a8d46e3da89bd95715240bb8fe3adc8b32f91`. Later payout-registry/report commits are research/documentation changes; no new product-code changes after that tested head.
+- Current mission phase: `PHASE_33_REVENUE_CHANNEL_QUALIFICATION_AND_PRODUCT_VALIDATION`.
+- Next: finish multi-price fee model for Gumroad and Payhip/Razorpay where processor currency and account terms allow; complete remaining candidate evidence scan; run cross-browser/accessibility checks; validate demand with a no-spend, owner-approved self-serve release. Revenue remains ₹0; authorized spend ₹0.
