@@ -46,6 +46,60 @@ Do not activate a paid Getvik plan. It is uneconomic before recurring sales evid
 - Digital goods are generally final sale subject to consumer law and defects/non-delivery rules.
 - Do not publish until support and license details are complete. This product is not technically license-key protected.
 
+## Commercial unit-economics sensitivity (illustrative, not a forecast)
+
+The figures below apply the documented 11.8% platform deduction only. Gateway charges, GST on gateway charges, seller tax, refunds, chargebacks and operating costs remain excluded until the seller dashboard and actual settlement statement provide exact amounts. These figures are therefore a contribution ceiling before the remaining deductions, not take-home income.
+
+| Test price | Platform fee + GST on that fee | Balance before gateway/tax/refunds |
+|---:|---:|---:|
+| ₹499 | ₹58.88 | ₹440.12 |
+| ₹799 | ₹94.28 | ₹704.72 |
+| ₹999 | ₹117.88 | ₹881.12 |
+
+Do not compare these balances with settled net receipts. Reconcile each actual order using:
+- gross paid amount and currency;
+- platform fee and GST on platform fee;
+- payment-gateway fee and GST on gateway fee;
+- refunds, reversals and chargebacks;
+- seller taxes/withholding where applicable;
+- amount credited to withdrawable platform balance;
+- payout fee, if any, and amount actually settled to the owner's bank;
+- attributable operating cost and final net INR.
+
+No price or margin becomes approved merely because the arithmetic is positive.
+
+## Pre-publication completeness gate
+
+Before any public listing is enabled, ensure one owner-approved version of each item exists:
+- product binary/package and SHA-256 checksum;
+- final product title, version, screenshots and compatibility statement;
+- commercial license text and license scope;
+- refund/cancellation wording consistent with current platform terms and applicable consumer law;
+- support channel monitored by the seller and a bounded support promise;
+- exact price and complete seller-side deductions;
+- privacy/data-handling statement (offline local storage, no candidate PII);
+- truthful limitations (no ATS, cloud sync, accounting/GST/TDS computation, legal advice or license-key enforcement);
+- final public listing preview and explicit publication authorization.
+
+A missing item is a release blocker, not a detail to improvise after purchase.
+
+## 14-day experiment measurement protocol
+
+Start the clock only after the owner has completed secure onboarding and approved publication. No paid seller plan and no ad spend.
+
+Daily record, using platform analytics/export where available:
+- qualified product page views (define the platform's metric and avoid double-counting);
+- checkout starts, if exposed;
+- paid orders and distinct unrelated buyers;
+- order gross, refunds/reversals and dispute status;
+- platform/gateway/withholding deductions;
+- withdrawable balance and payout request status;
+- bank-settled amount and settlement date;
+- support minutes and issue category.
+
+Day 7: diagnose discovery vs conversion vs product objections; do not change multiple variables at once.
+Day 14: decide continue/reposition/stop from observed evidence. A zero-order result is not fixed by inventing demand or buying traffic.
+
 ## Buyer-demand validation rule
 A listing is not demand proof. The first gate is genuine completed paid orders from unrelated buyers. Track:
 - qualified product page views
