@@ -1406,3 +1406,14 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - CSV to Action is secondary; its standalone public release and MIT scope remain owner-gated. Orbit Relay is held pending real human playtest and platform/payout evidence.
 - Freeze new builds and broad research for this cycle. After owner-authorized Getvik launch, run a bounded 14-day no-paid-plan/no-ad-spend experiment and count only settled net receipts.
 - Verified receipts ₹0; authorized spend ₹0; no KYC/terms/publication completed. GitHub worker remains a bounded deterministic poller; AI provider inference is not configured.
+
+
+## Phase 44 — Getvik pre-launch integrity checkpoint (2026-11-12)
+
+- Report: [Getvik Pre-launch Integrity Audit](research/PHASE_44_GETVIK_PRELAUNCH_INTEGRITY_AUDIT_2026-11-12.md).
+- Reviewed v0.3.0 HTML source, Python tests, listing, README, Hindi FAQ, commercial license draft and Getvik launch packet.
+- Corrected literal escaped line breaks in listing/README, corrected commercial license version reference to v0.3.0, and narrowed FAQ browser claims to evidenced Chromium/Firefox QA (Safari not independently tested).
+- Added `test_untrusted_text_is_html_escaped` to the product regression suite. It checks script-like markup, ampersands, quotes, apostrophes and null input. **The new test is not yet claimed as passing; post-change CI evidence is pending.**
+- Static source review: app persistence uses localStorage; no fetch/XHR/eval/new Function/document.write found. Dynamic HTML templates inspected use the `esc()` helper for user-entered strings. This is not a full security audit or independent runtime network capture.
+- Queue: P44-001 and P44-002 complete; P44-003 post-change CI verification in progress; P44-004 owner-only Getvik onboarding/publication blocked pending explicit approval.
+- No account, KYC, terms, payout details, public listing, paid plan or spend performed. Receipts ₹0; authorized spend ₹0.
