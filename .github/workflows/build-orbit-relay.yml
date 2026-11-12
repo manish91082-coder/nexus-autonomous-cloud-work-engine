@@ -18,6 +18,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Test puzzle generation and connectivity
         run: node --test products/orbit-relay/tests/puzzle.test.cjs
+      - name: Install browser test runtime
+        run: |
+          npx --yes playwright install --with-deps chromium
+      - name: Run real-browser interaction tests
+        run: |
+          npx --yes -p playwright -c "node --test products/orbit-relay/tests/browser.test.cjs"
       - name: Validate game files
         run: |
           test -s products/orbit-relay/index.html
