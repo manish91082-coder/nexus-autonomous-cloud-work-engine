@@ -40,13 +40,12 @@ Private validation draft. No publication, platform connection, KYC, legal accept
 - Private launch packet: [GETVIK_LAUNCH_PACKET.md](GETVIK_LAUNCH_PACKET.md).
 - License draft for review: [LICENSE_DRAFT.md](LICENSE_DRAFT.md).
 - Private package workflow: [package-recruitment-product.yml](../../.github/workflows/package-recruitment-product.yml).
-- Latest verified private package run #34: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43268975392.
-- Product ZIP SHA-256: `645dbd226c8f4802fc073a2a85fdcc449b08e8b317642652ae5b4ff9d218a405`.
-- Uploaded private artifact ID: `13966678659`. Chromium + Firefox QA run #28 passed: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43268975664.
+- Latest verified private package run #38: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43277956809.
+- Uploaded private artifact ID: `13971801662`; GitHub artifact ZIP digest: `sha256:ed0126a6236f1582f16385cca5107ce0280c9328c08915ed0bfbbeff8e60824d`. Product ZIP checksum is in `dist/SHA256SUMS.txt` and was verified in run #38. Chromium + Firefox QA run #31 retry passed on parent commit `e430517def212a76bddd858ec28be7acd43155d6`: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43277812722. Exact latest HEAD browser QA remains pending retry.
 - Package is marked PRIVATE_DRAFT_NOT_FOR_PUBLICATION. No seller account or terms have been activated.
-- Chromium + Firefox Playwright QA passed: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901456.
+- Chromium + Firefox Playwright QA passed on the tested revision noted above: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43277812722.
 - Added [Hindi customer FAQ](CUSTOMER_FAQ_HI.md) to reduce repetitive support and clarify offline storage, backups, receipts, commission, guarantee events and product limitations.
-- Latest private package includes `CUSTOMER_FAQ_HI.md`; ZIP and SHA-256 validation passed in run https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452.
+- Latest private package includes `CUSTOMER_FAQ_HI.md`; ZIP and SHA-256 validation passed in run https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43277956809.
 
 
 ## v0.3.0 differentiation
