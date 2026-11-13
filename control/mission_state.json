@@ -1,46 +1,62 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_45_MULTI_RAIL_REVENUE_MODEL_AUDIT",
+  "phase": "PHASE_46_REVENUE_PRIORITY_AND_PRODUCT_GAP_QUALIFICATION",
   "canonical_branch": "master",
-  "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V3.md",
+  "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md",
   "continuity": "PROJECT_CONTINUITY.md",
   "verified_realized_net_receipts_inr": 0,
   "authorized_spend_inr": 0,
-  "active_build_limit": 2,
-  "execution_mode": "FIVE_MINUTE_GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED; CHATGPT_SUPERVISOR_AND_REPOSITORY_EXECUTION; REVENUE_FIRST_PRODUCT_BUILD",
-  "last_verified_head": "4c3b7ec0c352cacb751f52d4ece3194591ef0ba2",
-  "current_focus": "Phase 45 multi-rail audit is complete; Gumroad's 16-Sep-2026 prohibited-products revision was rechecked and the current recruitment receivable/commission SaaS remains HOLD_FOR_EVIDENCE there. Getvik remains the only first-cash pilot and P44-004 is the next P0 owner gate. Queue poll on exact source HEAD 4c3b7ec0c352cacb751f52d4ece3194591ef0ba2 returned 45 tasks, 0 eligible tasks and no selected task. P29-007 adapters and all additional product/distribution work remain deferred until the Getvik first-sale experiment; no stale research or parallel build. Worker run #155 SUCCESS on exact source HEAD; deterministic control, safety, product and recruitment tests passed. AI provider is not configured, so no inference was called. ₹0 verified realized net receipts; ₹0 authorized spend; no evidenced paying customers. No KYC, terms acceptance, publication, spend or money movement.",
+  "active_build_limit": 1,
+  "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; RESEARCH_AND_EVIDENCE_GATED; PLATFORM_WALLET_FIRST; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
+  "last_verified_head": "5267a9e4fa00db6012c9af5f1dd01ed8f1a7cde4",
+  "current_focus": "V4 wallet-credited earnings KPI and descending platform ranking have been committed. Atlassian Marketplace/Forge is the first platform-level research lane because of documented paid ecosystem scale and Forge economics. Direct Jira Automation cost-audit clones are not approved because multiple recent competing listings exist. Next task P46-002: qualify the AI Business Automation Reviewer as a self-serve paid product by auditing n8n/Power Automate/Jira competitors, buyer signals and recurring paid gap. If no defensible gap exists, record NO_GO and move to the next platform. No build, public listing, account/KYC/terms acceptance or spend is authorized by this research step.",
   "owner_gates": [
-    "KYC",
-    "tax_declarations",
-    "legal_terms",
-    "bank_or_wallet_setup",
-    "wallet_signing",
+    "account_creation_if_required",
+    "KYC_if_required",
+    "mandatory_platform_terms",
+    "seller_eligibility_and_rights",
+    "tax_declarations_when_required",
+    "bank_or_wallet_setup_when_required",
     "public_release",
     "spend",
     "AI_provider_account_and_secret_setup"
   ],
   "updated_at": "2026-11-13",
-  "current_source_head_before_update": "4c3b7ec0c352cacb751f52d4ece3194591ef0ba2",
-  "latest_workflow_before_update": {
-    "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
-    "run_number": 155,
-    "run_id": 43358556806,
-    "conclusion": "success",
-    "head_sha": "4c3b7ec0c352cacb751f52d4ece3194591ef0ba2",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43358556806",
-    "note": "Exact-HEAD run #155 validated the Gumroad policy correction. Queue heartbeat found zero eligible tasks; no owner-gated action was attempted."
-  },
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
-    "run_number": 155,
-    "run_id": 43358556806,
+    "run_number": 157,
+    "run_id": 43381101573,
     "conclusion": "success",
-    "head_sha": "4c3b7ec0c352cacb751f52d4ece3194591ef0ba2",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43358556806",
-    "completed_at": "2026-11-13T03:22:54Z",
-    "checks": "Exact-HEAD job bounded-worker completed successfully: mission/control-plane validation; 2 AI-worker safety tests; 3 MSME product smoke tests; 7 recruitment revenue assurance tests including HTML-escaping regression; deterministic heartbeat (45 tasks, 0 eligible, no errors); AI executor failed closed with WAITING_FOR_OWNER_CONFIGURATION and made no inference request; machine-readable artifact uploaded."
-  }
+    "head_sha": "49297bff63c1f2b6be93fc48901298ea30b83c8a",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43381101573",
+    "note": "Latest observed worker run before Phase 46 documentation commits; it is NOT an exact-head check for 5267a9e4... or subsequent Phase 46 commits."
+  },
+  "verified_platform_credited_net_earnings_inr": 0,
+  "verified_bank_settled_net_receipts_inr": 0,
+  "restricted_or_held_platform_earnings_inr": 0,
+  "withdrawable_platform_balance_inr": 0,
+  "primary_kpi": "VERIFIED_PLATFORM_CREDITED_NET_EARNINGS_INR",
+  "secondary_kpis": [
+    "WITHDRAWABLE_PLATFORM_BALANCE_INR",
+    "VERIFIED_BANK_SETTLED_NET_RECEIPTS_INR"
+  ],
+  "revenue_recognition_policy": "Count only independent-customer earnings credited/earned in the owner's platform seller/creator account after platform share and attributable usage/processing costs, excluding pending authorisations, promo credits, self-purchases, refunds, disputed, restricted or forfeitable balances. Track restricted, withdrawable and bank-settled values separately. Never double-count platform balance when withdrawn.",
+  "current_revenue_priority": [
+    "ATLASSIAN_MARKETPLACE_FORGE",
+    "SHOPIFY_APP_STORE",
+    "MICROSOFT_MARKETPLACE_AI_APPS_AGENTS",
+    "APIFY_STORE_ACTORS",
+    "GETVIK_DIGITAL_PRODUCTS",
+    "CRAZYGAMES_HTML5",
+    "GITHUB_SPONSORS_CONTENT_ASSETS_AFFILIATE"
+  ],
+  "last_exact_head_ci_status": "NO_EXACT_HEAD_WORKFLOW_RUN_OR_COMBINED_CHECK_STATUS_FOUND_FOR_5267a9e4fa00db6012c9af5f1dd01ed8f1a7cde4",
+  "phase46_control_commits": [
+    "72230902a478552d007d94d330e216238c9b2982",
+    "ae552163e2b1e65590fc98454d8f7817bc73fa92",
+    "7d0477a7eea1f0a23619dca4c976a88b09d21dd0",
+    "a6f6996f9466a49b61424dc4bc6e00b111b71a5d"
+  ]
 }
