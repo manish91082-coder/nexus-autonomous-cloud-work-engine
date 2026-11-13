@@ -82,7 +82,7 @@ It must not claim runtime verification when it only analyses a static export. It
 - Atlassian community discussion of the new usage model: https://community.atlassian.com/forums/discussion/very-dissatisfied-with-the-new-automation-per-step-usage-limit/3287594
 
 ### Shopify
-- Q3 2026 results: https://www.shopify.com/investors/press-releases/shopify-sustains-rapid-rapid-growth-revenue-32-and-free-cash-flow-margin-22
+- Q3 2026 results: https://www.shopify.com/investors/press-releases/shopify-sustains-rapid-growth-revenue-32-and-free-cash-flow-margin-22
 - App Store revenue share: https://shopify.dev/docs/apps/launch/distribution/revenue-share
 - Merchant ecosystem: https://www.shopify.com/investors
 
