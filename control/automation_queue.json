@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "queue_policy": {
-    "max_active_builds": 2,
+    "max_active_builds": 1,
     "priority_order": [
       "P0",
       "P1",
@@ -9,7 +9,10 @@
       "P3"
     ],
     "retry_policy": "bounded_exponential_backoff",
-    "owner_gates_pause_only_affected_task": true
+    "owner_gates_pause_only_affected_task": true,
+    "sequence_mode": "ONE_REVENUE_PRODUCT_AT_A_TIME_IN_DESCENDING_RISK_ADJUSTED_OPPORTUNITY_ORDER",
+    "revenue_priority_order_file": "REVENUE_OPPORTUNITY_RANKING_2026-11-13.md",
+    "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md"
   },
   "tasks": [
     {
@@ -1337,6 +1340,118 @@
         "next_task": "P44-004",
         "status": "All packets prepared privately; no account, KYC, terms, public release, spend or money movement performed."
       }
+    },
+    {
+      "id": "P46-001",
+      "title": "Adopt V4 revenue-wallet-first mission constitution and descending platform opportunity sequence",
+      "priority": "P0",
+      "status": "COMPLETED",
+      "depends_on": [
+        "P45-002"
+      ],
+      "idempotency_key": "phase46-v4-wallet-kpi-and-priority-sequence-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-13",
+      "completed_at": "2026-11-13",
+      "acceptance": [
+        "Define platform-credited net earnings separately from restricted, pending, withdrawable and bank-settled balances",
+        "Preserve V3 and prior evidence as historical records while making V4 the current authority",
+        "Rank revenue platforms by scalable, risk-adjusted potential using current evidence",
+        "Record marketplace competitor saturation and product-specific unknowns",
+        "Publish current scope/cleanup classification without deleting historical assets"
+      ],
+      "evidence": {
+        "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md",
+        "ranking": "REVENUE_OPPORTUNITY_RANKING_2026-11-13.md",
+        "scope_audit": "REPOSITORY_SCOPE_AND_CLEANUP_2026-11-13.md",
+        "created_commits": [
+          "72230902a478552d007d94d330e216238c9b2982",
+          "ae552163e2b1e65590fc98454d8f7817bc73fa92",
+          "7d0477a7eea1f0a23619dca4c976a88b09d21dd0"
+        ],
+        "decision": "Atlassian Marketplace/Forge is the first platform-level research lane; no direct Jira Automation cost-audit clone is approved. AI Business Automation Reviewer remains a product hypothesis pending paid-gap validation."
+      }
+    },
+    {
+      "id": "P46-002",
+      "title": "Qualify the AI Business Automation Reviewer as a paid, self-serve product against actual competitor and buyer evidence",
+      "priority": "P0",
+      "status": "READY",
+      "depends_on": [
+        "P46-001"
+      ],
+      "idempotency_key": "phase46-automation-reviewer-product-gap-qualification-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-13",
+      "acceptance": [
+        "Inspect the existing canonical repository's automation-related product assets and determine what is genuinely reusable",
+        "Compare n8n, Power Automate, Jira/Atlassian and other relevant workflow-review tools using official documentation and live listings",
+        "Record competitors, free substitutes, install/review/pricing evidence, buyer complaints and known limitations",
+        "Define one narrow buyer persona and one recurring paid outcome, or record NO_GO",
+        "Separate static export analysis from genuine runtime monitoring; do not claim runtime proof from static input",
+        "Recommend one platform for distribution based on buyer discovery, recurring economics and zero-spend feasibility"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "P46-003",
+      "title": "Build, test and privately package the single P46 product selected by the evidence gate",
+      "priority": "P0",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P46-002"
+      ],
+      "idempotency_key": "phase46-first-product-build-after-gap-gate-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-13",
+      "acceptance": [
+        "Product scope and buyer value proposition approved by evidence",
+        "Deterministic requirements, test fixtures, security/privacy threat model and failure criteria documented",
+        "Build on existing canonical assets where safe; no duplicate prototype without a reuse audit",
+        "Automated tests, accessibility, data-handling and package checks pass",
+        "Private package and rollback point created; no public listing yet"
+      ],
+      "blocker": "Do not begin implementation until P46-002 identifies a specific defensible paid gap."
+    },
+    {
+      "id": "P46-004",
+      "title": "Publish and activate the selected product on its highest-ranked eligible marketplace",
+      "priority": "P0",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P46-003"
+      ],
+      "idempotency_key": "phase46-first-product-marketplace-live-gate-v1",
+      "owner_gate": true,
+      "last_updated": "2026-11-13",
+      "acceptance": [
+        "Confirm platform terms, data rights, seller-country eligibility and actual category support",
+        "Prepare listing, privacy/security statements, support and refund information",
+        "Owner completes only platform-required private identity, seller and legal gates",
+        "Owner explicitly approves publication and any spend",
+        "Verify public listing URL and actual availability before marking LIVE"
+      ],
+      "blocker": "Publication requires the selected platform's account-owner steps and explicit owner approval."
+    },
+    {
+      "id": "P46-005",
+      "title": "Measure first independent buyer transactions and platform-credited net earnings",
+      "priority": "P0",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P46-004"
+      ],
+      "idempotency_key": "phase46-first-platform-wallet-revenue-proof-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-13",
+      "acceptance": [
+        "Record genuine independent customer transactions from platform statement/export",
+        "Reconcile gross sales, platform commission, processor fees, direct runtime costs, refunds and reversals",
+        "Separate credited, restricted, withdrawable and bank-settled balances",
+        "Count only verified Platform-Credited Net Earnings under V4",
+        "Use actual conversion rates and timestamps for any non-INR earnings"
+      ],
+      "blocker": "No product is live; no paid transaction is evidenced."
     }
   ],
   "dead_letter": [],
