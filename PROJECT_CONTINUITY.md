@@ -1510,3 +1510,12 @@ Getvik remains the only P1 first-cash pilot. Cashfree Direct is a P2 domestic fa
 - All steps completed successfully, including mission guard, AI worker safety tests, product smoke tests, Recruitment Revenue Assurance product tests, queue heartbeat, fail-closed bounded AI step and artifact preservation.
 - The final commit in this checkpoint only updates this continuity document. It does not change runtime code, revenue registries, queue or product artifacts, and is intentionally outside the worker's path filter.
 - Latest package #44 and browser QA #38 remain successful on `c945ec955efc4d375e5a332e9363f8559d02fed7`; no package/browser QA rerun was required because Phase 45 made no product-code or UI changes.
+
+
+### Phase 45 evidence correction and exact-HEAD validation — 2026-11-13
+- Commit: `c60451c6a03108294f5eb666740aa50f11a65a04` — https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/commit/c60451c6a03108294f5eb666740aa50f11a65a04
+- Cashfree offer corrected: 0% platform-fee waiver does not remove GST on the standard 1.95% fee; official example ₹351 per ₹1 lakh eligible GMV. General UPI page says T+2 while new-merchant offer page advertises T+1; plan T+2 until written account terms. International card 2.99% + GST; optional instant settlement from 0.30% + GST.
+- Paddle AUP product-fit gate tightened: regulated financial services/advice and payment services are prohibited. Exact recruitment-agency receivable/commission SaaS now score 63 and status HOLD_FOR_EVIDENCE pending written Paddle category approval. No account or integration.
+- GitHub Actions run **#147 SUCCESS** on exact commit `c60451c6a03108294f5eb666740aa50f11a65a04`: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43357162800
+- All control-plane, safety, product smoke, recruitment product, queue heartbeat, fail-closed worker and artifact steps passed. No KYC, legal acceptance, publication, spend or money movement.
+- Current accounting remains ₹0 verified realized net receipts and ₹0 authorized spend.
