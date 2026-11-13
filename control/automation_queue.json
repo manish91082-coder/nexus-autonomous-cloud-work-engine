@@ -2169,7 +2169,14 @@
       ],
       "evidence": {
         "report": "research/PHASE_53_B2B_APP_MARKETPLACE_REQUALIFICATION_2026-11-13.md",
-        "checkpoint": "Initial platform comparison and HubSpot Calendar-to-Contact hypothesis audited; no product selected yet."
+        "checkpoint": "Initial platform comparison and HubSpot Calendar-to-Contact hypothesis audited; no product selected yet.",
+        "latest_batch": "WordPress/WooCommerce generic audit logs rejected (mature free installs and paid extensions); generic Google Sheets automation/quota monitoring rejected/held (Sheet Flow plus native Apps Script monitoring).",
+        "candidate_statuses": {
+          "hubspot_calendar_to_contact": "NO_GO_AS_SCOPED",
+          "wordpress_woocommerce_audit_log": "NO_GO_GENERIC",
+          "google_sheets_automation": "NO_GO_AS_CLONE",
+          "apps_script_quota_monitor": "HOLD_NATIVE_MONITORING_AND_NO_PAID_DEMAND"
+        }
       }
     },
     {
