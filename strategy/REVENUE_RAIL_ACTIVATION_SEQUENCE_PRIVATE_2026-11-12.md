@@ -62,7 +62,7 @@ Only the last item counts toward realized net receipts.
 
 - Getvik remains the only first-cash P1 pilot; P44-004 owner onboarding/publication is still the next gate.
 - Cashfree Direct is added as a P2 domestic fallback: eligible new-merchant promotional 0% platform fee up to ₹20 lakh through 31-Mar-2027; default T+2; no marketplace discovery.
-- Paddle Billing is added as a P2 high-upside software/MoR route: India absent from unsupported list; 5% + USD 0.50; USD 100 monthly payout threshold; by the 15th, up to 3 working days; UPI Autopay listed, ordinary one-time UPI not confirmed. Product must pass AUP; no automated candidate scoring/ranking or people categorization.
+- Paddle Billing is added as a P2 high-upside software/MoR route: India absent from unsupported list; 5% + USD 0.50; USD 100 monthly payout threshold; by the 15th, up to 3 working days; UPI one-time and subscription checkout in INR confirmed. Product must pass AUP; no automated candidate scoring/ranking or people categorization.
 - Lemon Squeezy is backup/hold: India bank payouts listed but new Stripe India accounts invite-only; PayPal fallback carries 13-day hold, USD 50 threshold and extra fees.
 - PayPal/Payoneer are payout endpoints, not acquisition channels. Payoneer low-volume annual fee is a reason not to open early.
 - Crypto/VDA remains not activated. FIU-IND registration is not a financial-sector licence or endorsement; direct wallet and smart-contract routes require transaction-specific legal, CA and AD-bank review.

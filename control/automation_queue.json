@@ -1261,7 +1261,7 @@
           "LEMON-SQUEEZY-MERCHANT-OF-RECORD"
         ],
         "existing_candidate_revalidated": "DIRECT-CRYPTO-WALLET-LICENSING",
-        "decision": "Getvik remains first-cash P1; Cashfree direct and Paddle are P2 validation lanes; Lemon Squeezy is backup/hold; no crypto rail is currently qualified for activation.",
+        "decision": "Getvik remains first-cash P1; Cashfree Direct is P2 validation; Paddle is P2 HOLD pending written product-category approval; Lemon Squeezy is backup/hold; no crypto rail is currently qualified for activation.",
         "sources": [
           "https://www.cashfree.com/payment-gateway-charges/",
           "https://www.paddle.com/help/manage/get-paid/when-and-how-do-i-get-paid",
@@ -1288,7 +1288,7 @@
         "paddle_upi_confirmation": {
           "source": "https://developer.paddle.com/concepts/payment-methods/upi/",
           "findings": "Paddle officially supports UPI for one-time purchases and subscriptions in India, processed in INR; seller does not need a local Indian bank account or UPI merchant account. This is buyer checkout, not seller payout.",
-          "decision": "Corrects the earlier uncertainty. Seller payout remains wire/Payoneer with USD 100 minimum monthly threshold. Paddle candidate remains HOLD_FOR_EVIDENCE due AUP financial-services/payment-services category gate."
+          "decision": "Indian buyer UPI one-time and subscription checkout is confirmed. Seller payout remains wire/Payoneer with USD 100 minimum monthly threshold. Paddle candidate remains HOLD_FOR_EVIDENCE due AUP financial-services/payment-services category gate."
         }
       }
     },

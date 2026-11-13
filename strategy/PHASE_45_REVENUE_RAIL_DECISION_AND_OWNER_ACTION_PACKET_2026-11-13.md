@@ -38,7 +38,7 @@ No PAN, OTP, bank detail or password should be sent in chat or committed to GitH
 - Read the current Master Services Agreement (last updated 6-Oct-2026) and AUP.
 - Confirm India supplier approval and exact account/entity eligibility.
 - Confirm the product is bona fide software; no consulting, marketplace, sponsorship or automated candidate scoring/ranking/people categorization.
-- Confirm whether the buyer use case supports UPI Autopay; do not assume ordinary one-time UPI.
+- Paddle's official developer docs confirm UPI for one-time purchases and subscriptions in INR for Indian buyers. Verify the buyer-country/product configuration in sandbox; seller payout remains wire/Payoneer.
 - Confirm 5% + USD 0.50 checkout fee, USD 100 monthly payout threshold, monthly schedule and potential USD/EUR/GBP 15 SWIFT fee.
 - Compare wire vs Payoneer route and total bank/FX costs.
 - Have CA/AD bank confirm the Indian inward-remittance and documentation process.

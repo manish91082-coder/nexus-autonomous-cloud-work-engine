@@ -919,7 +919,7 @@
       "recurring_human_work": "Low but non-zero after setup: software maintenance, security updates, customer support, refund/chargeback evidence and policy reviews.",
       "unit_economics": "At a USD 20 checkout, 5% + USD 0.50 = USD 1.50 (7.5%) before payout/FX/bank costs. At USD 5, the same fee is USD 0.75 (15%); Paddle directs sellers with products below USD 10 to request custom pricing.",
       "ip_and_policy_status": "Paddle AUP prohibits regulated financial products/services, payment services, trading/financial advice, marketplaces, human services, certain content generation and automated people-decision/categorization. Recruitment Agency Revenue Assurance Desk is intended as administrative billing/commission/receivable software, not payment processing, financial advice, lending, investment, trading or candidate decisioning. Because the boundary is material, obtain written Paddle pre-approval for the exact product before account creation or integration.",
-      "decision": "VALIDATION",
+      "decision": "HOLD_FOR_EVIDENCE",
       "payout_evidence": {
         "india_eligibility": "India is absent from current unsupported seller-country list; account/product approval remains required. Indian buyers can pay by UPI for one-time purchases and subscriptions in INR per official Paddle developer docs.",
         "payout_methods": "Seller payout: wire transfer or Payoneer. Buyer checkout in India: UPI for one-time purchases and subscriptions, processed in INR; seller does not need a local Indian bank or UPI merchant account.",
