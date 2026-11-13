@@ -129,15 +129,17 @@ A listing is not demand proof. The first gate is genuine completed paid orders f
 Stop or reposition if 100 qualified product-page visits produce zero paid orders, or if support burden requires recurring manual work. This is a proposed experiment threshold, not a platform benchmark.
 
 
-## Latest QA evidence
-- Latest completed Chromium + Firefox Playwright run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43277812722 (SUCCESS, retry attempt 2; tested parent commit e430517def212a76bddd858ec28be7acd43155d6).
-- Checks include full placement/receipt/commission/guarantee journey, persistence, JSON backup/restore, financial-history deletion guard, labelled form controls, keyboard navigation, mobile overflow and no external network requests.
-- Previous verified private package run #41 (before this Terms-audit update): https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43278428111. It passed on commit `9e93880283c4baa6720878b06d086b78dc4fadd1`; artifact ID `13970818108`, GitHub artifact ZIP digest `sha256:e5e82c8d95798fff4994688867a90793876f5b88ba56ea76a540249420ab1236`. The product ZIP checksum in `dist/SHA256SUMS.txt` passed validation. The Terms-audit update will trigger a fresh private package build; use that newer run's artifact rather than this historical ID.
+## Latest QA and package evidence at this packet revision
 
-- Buyer FAQ: [CUSTOMER_FAQ_HI.md](CUSTOMER_FAQ_HI.md). It clarifies local storage, backups, receipt policy, commission calculation, guarantee event behavior and limitations to reduce recurring support.
+- Exact source revision tested: `419196c36440f812758c7d2334dfc6b142a99995`.
+- Chromium + Firefox Playwright QA run #36: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43278628388 — SUCCESS on the exact source revision. Both browsers passed interaction, persistence, JSON backup/restore, accessibility labels, keyboard navigation, mobile overflow and offline checks.
+- Mission Worker run #140: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43335244940 — SUCCESS on the same exact source revision; bounded worker and product tests passed.
+- Private package run #42: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43278628329 — SUCCESS on the same exact source revision.
+- Private artifact ID: `13970703537`; GitHub artifact ZIP digest: `sha256:e3ac302eaff0c4c28ef19596062decb4801c4dcae84198ae4724479f34f31e3b`.
+- The product ZIP's own SHA-256 is recorded in `dist/SHA256SUMS.txt` and checksum verification passed in run #42. The GitHub artifact digest above is a separate wrapper/archive digest.
+- These are engineering/package proofs only. They do not prove customer demand, public approval, a paid order or settled revenue.
 
-- Latest package includes `CUSTOMER_FAQ_HI.md` and passed ZIP/CRC/checksum validation: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43277956809.
-
+- Buyer FAQ: [CUSTOMER_FAQ_HI.md](CUSTOMER_FAQ_HI.md). It clarifies local storage, backups, receipt policy, commission calculation, guarantee event behavior and limitations.
 
 ## v0.3.0 product differentiation gate
 The product now records invoice reference/date/due date, uses due date for ageing, detects late receipts and shows a payment-linked guarantee risk flag only when the seller selects the signed-contract rule. It does not determine legal validity or void a guarantee. This is a stronger operational angle, but willingness-to-pay is still unproven.
