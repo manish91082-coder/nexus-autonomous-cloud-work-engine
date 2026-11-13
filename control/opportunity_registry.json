@@ -905,7 +905,7 @@
       },
       "official_terms_url": "https://www.paddle.com/legal/terms",
       "captured_at": "2026-11-13",
-      "india_eligibility": "India is not on Paddle's current unsupported-country list. This is not account approval; Paddle may request further information or delay/restrict payment for risk and compliance. India seller onboarding remains owner-only.",
+      "india_eligibility": "India is absent from Paddle's current unsupported seller-country list; seller account approval and product review remain required. Paddle's official UPI developer documentation confirms Indian buyers can pay by UPI for one-time purchases and subscriptions, processed in INR, without the seller needing an Indian bank account or UPI merchant account. This buyer-collection feature does not change the seller payout route, which remains wire or Payoneer.",
       "payout_methods": [
         "INTERNATIONAL_BANK_WIRE",
         "PAYONEER"
@@ -913,7 +913,7 @@
       "minimum_threshold": "USD 100 minimum (or GBP 100 / EUR 100 when the balance currency is GBP/EUR); threshold is configurable upward, not downward.",
       "hold_and_settlement": "No on-demand withdrawal. Balance is assessed on the 1st of each month; if threshold is met, Paddle sends by the 15th; bank/Payoneer arrival may take up to 3 working days. No fixed per-transaction hold duration is published in the reviewed payout page.",
       "fees_and_fx": "Paddle Checkout fee is 5% of the suggested retail price plus USD 0.50. If payout currency differs from the bank country's local currency, a USD/EUR/GBP 15 SWIFT fee may apply, plus receiving-bank charges. Payoneer fees apply if selected.",
-      "demand_evidence": "Paddle is a billing/reseller rail, not a guaranteed customer-acquisition channel. The official supported-method list includes UPI Autopay; it does not establish ordinary one-time UPI availability for Indian buyers. No product-specific buyer demand has been demonstrated.",
+      "demand_evidence": "Official Paddle UPI docs confirm one-time and subscription UPI in INR for Indian buyers without a local seller bank/UPI merchant account. This reduces checkout friction, not buyer acquisition; no product-specific demand is proven.",
       "time_to_first_sale": "Not estimable from public platform evidence. Requires supplier approval, product approval, integration and independent acquisition; no marketplace discovery is assumed.",
       "automation_percent": null,
       "recurring_human_work": "Low but non-zero after setup: software maintenance, security updates, customer support, refund/chargeback evidence and policy reviews.",
@@ -921,12 +921,12 @@
       "ip_and_policy_status": "Paddle AUP prohibits regulated financial products/services, payment services, trading/financial advice, marketplaces, human services, certain content generation and automated people-decision/categorization. Recruitment Agency Revenue Assurance Desk is intended as administrative billing/commission/receivable software, not payment processing, financial advice, lending, investment, trading or candidate decisioning. Because the boundary is material, obtain written Paddle pre-approval for the exact product before account creation or integration.",
       "decision": "VALIDATION",
       "payout_evidence": {
-        "india_eligibility": "India absent from unsupported-country list; seller approval and account-level verification pending.",
-        "payout_methods": "Wire transfer or Payoneer; not on-demand.",
+        "india_eligibility": "India is absent from current unsupported seller-country list; account/product approval remains required. Indian buyers can pay by UPI for one-time purchases and subscriptions in INR per official Paddle developer docs.",
+        "payout_methods": "Seller payout: wire transfer or Payoneer. Buyer checkout in India: UPI for one-time purchases and subscriptions, processed in INR; seller does not need a local Indian bank or UPI merchant account.",
         "minimum": "USD 100 (or GBP/EUR 100 according to balance currency).",
         "settlement": "Monthly: threshold on day 1, sent by day 15, up to 3 working days after sent.",
         "fees": "5% + USD 0.50 checkout; possible USD/EUR/GBP 15 SWIFT fee when payout currency differs from bank-country currency; bank and Payoneer fees may apply.",
-        "demand_signal": "No platform-discovery assumption; UPI Autopay is listed, but standard one-time UPI is not verified by the current official methods page.",
+        "demand_signal": "Paddle's official UPI developer docs confirm one-time and subscription UPI checkout in India; NPCI rail scale is large but does not prove product demand. Paddle has no guaranteed marketplace discovery; independent acquisition remains required.",
         "source": "https://www.paddle.com/help/manage/get-paid/when-and-how-do-i-get-paid",
         "sources": [
           "https://www.paddle.com/help/start/intro-to-paddle/which-countries-are-supported-by-paddle",
@@ -934,7 +934,8 @@
           "https://www.paddle.com/help/start/intro-to-paddle/what-am-i-not-allowed-to-sell-on-paddle",
           "https://www.paddle.com/legal/terms",
           "https://www.paddle.com/pricing",
-          "https://www.paddle.com/help/manage/get-paid/is-there-a-fee-taken-for-payouts"
+          "https://www.paddle.com/help/manage/get-paid/is-there-a-fee-taken-for-payouts",
+          "https://developer.paddle.com/concepts/payment-methods/upi/"
         ]
       },
       "automation_fit": "High after a stable SaaS product, hosted checkout, subscription lifecycle and webhook-driven access control exist; it does not automate product-market fit or customer acquisition.",
@@ -946,7 +947,7 @@
         "No product-specific buyer demand or willingness-to-pay evidence",
         "Written Paddle pre-approval that this specific recruitment-agency billing/commission/receivable SaaS is not treated as a prohibited financial service or payment service."
       ],
-      "note": "High-upside global SaaS option only if Paddle provides written product-category approval. Do not create an account, accept terms or build integration before that approval and Getvik first-sale evidence.",
+      "note": "High-upside global SaaS option only if Paddle provides written product-category approval. Indian buyers can use UPI for one-time purchases and subscriptions, but seller payout remains wire/Payoneer with a $100 monthly threshold. Do not create an account, accept terms or build integration before category approval and Getvik first-sale evidence.",
       "last_revalidated": "2026-11-13"
     },
     {

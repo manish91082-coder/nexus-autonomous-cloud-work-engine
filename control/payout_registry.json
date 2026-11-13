@@ -351,14 +351,14 @@
     },
     {
       "provider": "Paddle Billing",
-      "platform": "Merchant of Record / reseller billing for SaaS and software",
-      "country_eligibility": "India is absent from the current unsupported-country list; supplier onboarding and risk approval remain mandatory",
+      "platform": "Merchant of Record / reseller billing for SaaS and software; India buyer checkout supports UPI one-time purchases and subscriptions",
+      "country_eligibility": "India is absent from current unsupported seller-country list; account/product approval remains mandatory. Indian buyers can use UPI for one-time purchases and subscriptions in INR; this does not imply local INR seller payouts.",
       "account_type": "Software supplier",
       "kyc_requirements": "Supplier account verification, product/domain approval, payout settings and owner acceptance of current Master Services Agreement; owner-only",
       "rail": "INTERNATIONAL_BANK_WIRE",
       "currency": "USD/EUR/GBP/AUD/CAD balance currencies; exact India bank payout currency to confirm",
       "minimum": "USD 100 (or GBP 100 / EUR 100 according to balance currency)",
-      "fees": "5% + USD 0.50 per Paddle Checkout; USD/EUR/GBP 15 SWIFT fee may apply when payout currency differs from bank-country local currency; bank/Payoneer fees may apply",
+      "fees": "5% + USD 0.50 per Paddle Checkout; USD/EUR/GBP 15 SWIFT fee may apply when payout currency differs from bank-country local currency; bank/Payoneer fees may apply Indian buyer UPI payments are processed in INR per Paddle developer docs; seller payouts remain wire or Payoneer.",
       "hold_period": "No on-demand withdrawal; fixed per-sale hold duration not disclosed in reviewed payout page; risk/compliance review may delay release",
       "settlement_schedule": "Monthly; balance threshold checked on 1st, sent by 15th, up to 3 working days to arrive",
       "fx_or_conversion": "SWIFT and bank FX charges may apply; Payoneer account fees apply if that route is selected",
@@ -369,10 +369,11 @@
         "https://www.paddle.com/help/start/intro-to-paddle/which-payment-methods-do-you-support",
         "https://www.paddle.com/help/start/intro-to-paddle/what-am-i-not-allowed-to-sell-on-paddle",
         "https://www.paddle.com/legal/terms",
-        "https://www.paddle.com/help/manage/get-paid/is-there-a-fee-taken-for-payouts"
+        "https://www.paddle.com/help/manage/get-paid/is-there-a-fee-taken-for-payouts",
+        "https://developer.paddle.com/concepts/payment-methods/upi/"
       ],
       "captured_at": "2026-11-13",
-      "verification_status": "OFFICIAL_COUNTRY_AUP_METHODS_FEES_AND_PAYOUT_CAPTURED_PRODUCT_CATEGORY_APPROVAL_PENDING"
+      "verification_status": "OFFICIAL_COUNTRY_UPI_ONE_TIME_AND_SUBSCRIPTION_FEES_PAYOUT_CAPTURED_PRODUCT_CATEGORY_APPROVAL_PENDING"
     },
     {
       "provider": "Lemon Squeezy",

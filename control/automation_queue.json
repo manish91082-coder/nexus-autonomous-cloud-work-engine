@@ -1284,6 +1284,11 @@
           "source": "https://www.paddle.com/help/start/intro-to-paddle/what-am-i-not-allowed-to-sell-on-paddle",
           "findings": "Paddle AUP prohibits regulated financial services/advice and payment services, in addition to marketplaces, human services and automated people-decision categories. The exact recruitment-agency receivable/commission SaaS requires written product-category approval.",
           "decision": "Paddle candidate moved from VALIDATION to HOLD_FOR_EVIDENCE; no account or integration."
+        },
+        "paddle_upi_confirmation": {
+          "source": "https://developer.paddle.com/concepts/payment-methods/upi/",
+          "findings": "Paddle officially supports UPI for one-time purchases and subscriptions in India, processed in INR; seller does not need a local Indian bank account or UPI merchant account. This is buyer checkout, not seller payout.",
+          "decision": "Corrects the earlier uncertainty. Seller payout remains wire/Payoneer with USD 100 minimum monthly threshold. Paddle candidate remains HOLD_FOR_EVIDENCE due AUP financial-services/payment-services category gate."
         }
       }
     },

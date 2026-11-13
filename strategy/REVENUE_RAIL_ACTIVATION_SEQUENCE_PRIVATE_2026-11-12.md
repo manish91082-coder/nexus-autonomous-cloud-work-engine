@@ -74,3 +74,9 @@ Only the last item counts toward realized net receipts.
 - Cashfree 0% is a platform-fee waiver, not a zero-cost rail: GST on the standard 1.95% platform fee may still apply (official example ₹351 per ₹1 lakh eligible domestic GMV). Cashfree's UPI page says T+2 while its new-merchant offer page advertises T+1; plan T+2 until written terms confirm. International card pricing 2.99% + GST; optional instant settlement from 0.30% + GST.
 - Paddle's AUP also prohibits regulated financial services/advice and payment services. The exact recruitment-agency receivable/commission SaaS needs written product-category approval. Candidate score 63; status HOLD_FOR_EVIDENCE; no account or integration.
 - Official sources: https://www.cashfree.com/blog/payment-gateway-offers/ ; https://www.cashfree.com/upi-payment-gateway/ ; https://www.cashfree.com/instant-settlements/ ; https://www.paddle.com/help/start/intro-to-paddle/what-am-i-not-allowed-to-sell-on-paddle
+
+
+### Paddle UPI clarification — 13-Nov-2026
+- Paddle developer documentation confirms UPI for one-time purchases and subscriptions in INR for Indian buyers; seller does not need an Indian bank/UPI merchant account: https://developer.paddle.com/concepts/payment-methods/upi/
+- Seller payout remains wire or Payoneer, minimum USD 100, monthly by the 15th. UPI buyer collection is not INR seller payout.
+- Candidate remains HOLD_FOR_EVIDENCE because the AUP prohibits regulated financial services/advice and payment services; written product-category approval for the recruitment-agency receivable/commission SaaS is still required.

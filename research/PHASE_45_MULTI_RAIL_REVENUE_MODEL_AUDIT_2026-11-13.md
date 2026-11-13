@@ -320,3 +320,18 @@ Paddle's current AUP explicitly prohibits regulated financial products/services,
 The Recruitment Agency Revenue Assurance Desk is designed as administrative receivable, commission and guarantee-event software, not as a payment processor, lender, investment/trading product or financial adviser. However, because the product is adjacent to financial administration, no inference of eligibility is safe. The Paddle candidate score is reduced from 66 to 63 and status changed from VALIDATION to **HOLD_FOR_EVIDENCE**. Obtain written Paddle pre-approval for the exact product description before account creation or integration. If Paddle classifies it as a prohibited financial service/payment service, remove Paddle from the plan.
 
 This correction supersedes any earlier statement that Paddle was ready for ordinary validation. It remains a potential high-upside route only after written product-category clearance and the Getvik first-sale gate.
+
+
+## 14. Paddle UPI method clarification — 13-Nov-2026
+
+The official Paddle Developer Docs explicitly state that Indian customers can pay through **UPI for both one-time purchases and subscriptions**, with payments processed in INR. The seller does not need an Indian bank account or a separate UPI merchant account to add UPI as a buyer payment method:
+- https://developer.paddle.com/concepts/payment-methods/upi/
+
+This supersedes the earlier uncertainty based only on the broader payment-method list, which surfaced UPI Autopay. The distinction remains essential:
+
+- **Buyer collection:** UPI one-time and subscriptions in INR are confirmed.
+- **Seller payout:** still wire transfer or Payoneer; minimum USD 100 (or EUR/GBP equivalent), monthly payout sent by the 15th, up to 3 working days to arrive.
+- **Demand:** UPI lowers checkout friction; it does not provide marketplace discovery or prove demand for our product.
+- **Approval:** Paddle's AUP financial-services/payment-services gate still applies. The exact recruitment-agency receivable/commission SaaS remains HOLD_FOR_EVIDENCE until written product-category approval.
+
+The commercial candidate remains score 63 / P2 / HOLD_FOR_EVIDENCE. No account or integration is authorized.

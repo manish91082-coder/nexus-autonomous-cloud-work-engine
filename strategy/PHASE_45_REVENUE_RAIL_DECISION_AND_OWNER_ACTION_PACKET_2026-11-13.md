@@ -85,3 +85,11 @@ Count only the net amount actually credited to the controlled bank account after
 
 ### Paddle category clearance
 Paddle AUP explicitly prohibits regulated financial services/advice and payment services. The recruitment-agency receivable/commission product must receive written category approval from Paddle before account creation or integration. If the product is classified as a prohibited financial service/payment service, do not use Paddle. The candidate is HOLD_FOR_EVIDENCE, not approved for validation.
+
+
+## Paddle UPI confirmation — 13-Nov-2026
+
+Paddle's official Developer Docs confirm that Indian buyers can pay with UPI for **one-time purchases and subscriptions**, processed in INR, without the seller needing a local Indian bank account or separate UPI merchant account:
+https://developer.paddle.com/concepts/payment-methods/upi/
+
+Do not confuse this with seller payout. The seller still receives money through wire transfer or Payoneer, subject to the USD 100 minimum monthly payout threshold and the 15th-of-month schedule. This improves buyer checkout convenience but does not create marketplace traffic. The written product-category approval gate under Paddle's AUP remains mandatory.
