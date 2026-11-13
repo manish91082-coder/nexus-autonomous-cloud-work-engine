@@ -334,15 +334,17 @@
       "rail": "BANK_INR",
       "currency": "INR",
       "minimum": "No universal public payout minimum confirmed; account-specific",
-      "fees": "Eligible new merchants: 0% promotional platform fee up to ₹20 lakh sales through 31-Mar-2027; published standard rate 1.95% when offer is not applicable. Confirm GST and mode-specific exclusions in written offer.",
+      "fees": "Eligible new merchants: 0% platform fee on first ₹20 lakh cumulative eligible domestic GMV through 31-Mar-2027, but GST on the standard 1.95% platform fee may still be charged (official example ₹351 per ₹1 lakh GMV). Standard 1.95% + GST otherwise. International cards: 2.99% + GST. Optional instant settlement starts at 0.30% + GST.",
       "hold_period": "Risk review, chargeback and merchant-category holds may apply; account-specific",
-      "settlement_schedule": "Default T+2 per Cashfree UPI gateway documentation; optional instant settlement within 15 minutes at additional cost",
-      "fx_or_conversion": "International collection in 140+ currencies advertised; India export and settlement terms require account-level written confirmation",
+      "settlement_schedule": "Public pages conflict: general UPI gateway page says default T+2; new-merchant offer page advertises T+1 for eligible merchants. Plan T+2 until written account-specific confirmation. Instant settlement within 15 minutes is paid (starts at 0.30% + GST).",
+      "fx_or_conversion": "Cashfree says its RBI-authorised PA-CB (E&I) route accepts international payments in 140+ currencies and settles INR at T+2, with FIRA reporting. Published international card pricing is 2.99% + GST; merchant approval and exact corridor/method terms apply.",
       "reversibility_and_chargebacks": "Refunds, chargebacks, fraud reviews and settlement reserves may reverse or delay funds",
       "official_source_url": "https://www.cashfree.com/payment-gateway-charges/",
       "official_sources": [
         "https://www.cashfree.com/payment-gateway-charges/",
-        "https://www.cashfree.com/upi-payment-gateway/"
+        "https://www.cashfree.com/upi-payment-gateway/",
+        "https://www.cashfree.com/blog/payment-gateway-offers/",
+        "https://www.cashfree.com/instant-settlements/"
       ],
       "captured_at": "2026-11-13",
       "verification_status": "OFFICIAL_PRICING_UPI_AND_SETTLEMENT_CAPTURED_ACCOUNT_LEVEL_PENDING"
@@ -360,7 +362,7 @@
       "hold_period": "No on-demand withdrawal; fixed per-sale hold duration not disclosed in reviewed payout page; risk/compliance review may delay release",
       "settlement_schedule": "Monthly; balance threshold checked on 1st, sent by 15th, up to 3 working days to arrive",
       "fx_or_conversion": "SWIFT and bank FX charges may apply; Payoneer account fees apply if that route is selected",
-      "reversibility_and_chargebacks": "Paddle handles buyer order support and applicable sales-tax administration under its agreement; supplier remains responsible for product delivery, product legality, IP warranties and other supplier obligations",
+      "reversibility_and_chargebacks": "Paddle handles buyer order support and applicable sales-tax administration under its agreement; supplier remains responsible for product delivery, product legality, IP warranties and other supplier obligations Product-category gate: Paddle AUP also prohibits regulated financial services/advice and payment services; obtain written pre-approval for the exact administrative recruitment-agency receivable/commission product before any account or integration.",
       "official_source_url": "https://www.paddle.com/help/manage/get-paid/when-and-how-do-i-get-paid",
       "official_sources": [
         "https://www.paddle.com/help/start/intro-to-paddle/which-countries-are-supported-by-paddle",
@@ -370,7 +372,7 @@
         "https://www.paddle.com/help/manage/get-paid/is-there-a-fee-taken-for-payouts"
       ],
       "captured_at": "2026-11-13",
-      "verification_status": "OFFICIAL_COUNTRY_AUP_METHODS_FEES_AND_PAYOUT_CAPTURED_ACCOUNT_LEVEL_PENDING"
+      "verification_status": "OFFICIAL_COUNTRY_AUP_METHODS_FEES_AND_PAYOUT_CAPTURED_PRODUCT_CATEGORY_APPROVAL_PENDING"
     },
     {
       "provider": "Lemon Squeezy",

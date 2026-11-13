@@ -68,3 +68,9 @@ Only the last item counts toward realized net receipts.
 - Crypto/VDA remains not activated. FIU-IND registration is not a financial-sector licence or endorsement; direct wallet and smart-contract routes require transaction-specific legal, CA and AD-bank review.
 - No parallel launch, no new product build, no spend, no KYC, no terms acceptance and no public release. The revenue ledger remains unchanged at ₹0 because no settled transaction exists.
 - Full audit: `research/PHASE_45_MULTI_RAIL_REVENUE_MODEL_AUDIT_2026-11-13.md`; owner packet: `strategy/PHASE_45_REVENUE_RAIL_DECISION_AND_OWNER_ACTION_PACKET_2026-11-13.md`.
+
+
+### Phase 45 evidence correction — Cashfree and Paddle (13-Nov-2026)
+- Cashfree 0% is a platform-fee waiver, not a zero-cost rail: GST on the standard 1.95% platform fee may still apply (official example ₹351 per ₹1 lakh eligible domestic GMV). Cashfree's UPI page says T+2 while its new-merchant offer page advertises T+1; plan T+2 until written terms confirm. International card pricing 2.99% + GST; optional instant settlement from 0.30% + GST.
+- Paddle's AUP also prohibits regulated financial services/advice and payment services. The exact recruitment-agency receivable/commission SaaS needs written product-category approval. Candidate score 63; status HOLD_FOR_EVIDENCE; no account or integration.
+- Official sources: https://www.cashfree.com/blog/payment-gateway-offers/ ; https://www.cashfree.com/upi-payment-gateway/ ; https://www.cashfree.com/instant-settlements/ ; https://www.paddle.com/help/start/intro-to-paddle/what-am-i-not-allowed-to-sell-on-paddle

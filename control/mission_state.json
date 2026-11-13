@@ -10,8 +10,8 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 2,
   "execution_mode": "FIVE_MINUTE_GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED; CHATGPT_SUPERVISOR_AND_REPOSITORY_EXECUTION; REVENUE_FIRST_PRODUCT_BUILD",
-  "last_verified_head": "3a805d95d9fa10379207d53c5a3683b7af2f38be",
-  "current_focus": "Phase 45 multi-rail model audit and owner-action packets completed. Getvik remains the only first-cash pilot and P44-004 remains owner-gated. New evidence adds Cashfree direct INR checkout (P2), Paddle software MoR (P2, $100 monthly payout threshold, UPI Autopay listed but ordinary one-time UPI not verified) and Lemon Squeezy (P2 hold due India Stripe invite-only and higher PayPal fees). PayPal and Payoneer are payout endpoints, not demand channels. Crypto remains NOT ACTIVATED: FIU-IND activity-based registration, AML/CDD/Travel Rule, unhosted-wallet risk and tax classification require written legal/CA/AD-bank review. No parallel launch, new product build, paid plan, KYC, legal acceptance or publication. Latest source before this update was 41a241cb6cb0dede49e00903db3bf2ee39d4b6e0; latest worker #143 SUCCESS was on 4be1c5823bfb36c1623f81f2ede886462026ae83, not exact current HEAD. ₹0 verified realized net receipts; ₹0 authorized spend; no evidenced paying customer. Exact-HEAD worker run #144 completed SUCCESS on b00683de05400504f69e4dc52ad7614b0c3295f0. P45 registry/control changes passed. No new AI provider call, KYC, publication or money movement occurred. Exact-HEAD worker run #145 completed SUCCESS on 3a805d95d9fa10379207d53c5a3683b7af2f38be; all validation/test/heartbeat/artifact steps passed.",
+  "last_verified_head": "c75e204cc3c58275e87e3b70f9c274c0ffaa2942",
+  "current_focus": "Phase 45 multi-rail model audit and owner-action packets completed. Getvik remains the only first-cash pilot and P44-004 remains owner-gated. New evidence adds Cashfree direct INR checkout (P2), Paddle software MoR (P2, $100 monthly payout threshold, UPI Autopay listed but ordinary one-time UPI not verified) and Lemon Squeezy (P2 hold due India Stripe invite-only and higher PayPal fees). PayPal and Payoneer are payout endpoints, not demand channels. Crypto remains NOT ACTIVATED: FIU-IND activity-based registration, AML/CDD/Travel Rule, unhosted-wallet risk and tax classification require written legal/CA/AD-bank review. No parallel launch, new product build, paid plan, KYC, legal acceptance or publication. Latest source before this update was 41a241cb6cb0dede49e00903db3bf2ee39d4b6e0; latest worker #143 SUCCESS was on 4be1c5823bfb36c1623f81f2ede886462026ae83, not exact current HEAD. ₹0 verified realized net receipts; ₹0 authorized spend; no evidenced paying customer. Exact-HEAD worker run #144 completed SUCCESS on b00683de05400504f69e4dc52ad7614b0c3295f0. P45 registry/control changes passed. No new AI provider call, KYC, publication or money movement occurred. Exact-HEAD worker run #145 completed SUCCESS on 3a805d95d9fa10379207d53c5a3683b7af2f38be; all validation/test/heartbeat/artifact steps passed. Evidence correction: Cashfree 0% offer still may charge GST on the standard 1.95% fee (official example ₹351 per ₹1 lakh GMV); Cashfree public pages conflict T+1 vs T+2. Paddle AUP also prohibits regulated financial services/advice and payment services, so its candidate is now HOLD_FOR_EVIDENCE pending written category approval for the exact administrative receivable/commission SaaS. No integration or account.",
   "owner_gates": [
     "KYC",
     "tax_declarations",
@@ -35,12 +35,12 @@
   },
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
-    "run_number": 145,
-    "run_id": 43356796382,
+    "run_number": 146,
+    "run_id": 43356881410,
     "conclusion": "success",
-    "head_sha": "3a805d95d9fa10379207d53c5a3683b7af2f38be",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43356796382",
-    "completed_at": "2026-11-13T03:07:27Z",
+    "head_sha": "c75e204cc3c58275e87e3b70f9c274c0ffaa2942",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43356881410",
+    "completed_at": "2026-11-13T03:08:09Z",
     "checks": "Control-plane validation, AI worker safety tests, product smoke tests, recruitment revenue assurance product tests, deterministic queue heartbeat, fail-closed bounded AI step and artifact preservation all completed successfully."
   }
 }

@@ -74,3 +74,14 @@ No self-custody wallet, P2P transfer, stablecoin payment, NFT/token issue, smart
 Count only the net amount actually credited to the controlled bank account after platform fees, processor fees, GST on fees, FX/bank charges, refunds and reversals. Pending balances, marketplace counters and on-chain confirmations do not count.
 
 **Current baseline:** ₹0 verified realized net receipts; ₹0 authorized spend; 0 evidenced paying customers.
+
+## Evidence correction — 13-Nov-2026
+
+### Cashfree offer economics and settlement
+- 0% waives the eligible domestic platform fee only; GST on the standard 1.95% platform fee may still be charged. Cashfree's official example is ₹351 per ₹1 lakh eligible GMV.
+- General UPI page states T+2; new-merchant offer page advertises T+1 for eligible merchants. Use T+2 until the signed/owner-visible merchant terms confirm T+1.
+- International card rate is 2.99% + GST and is outside the domestic promotion.
+- Instant settlement starts at 0.30% + GST; do not enable under the ₹0 spend rule.
+
+### Paddle category clearance
+Paddle AUP explicitly prohibits regulated financial services/advice and payment services. The recruitment-agency receivable/commission product must receive written category approval from Paddle before account creation or integration. If the product is classified as a prohibited financial service/payment service, do not use Paddle. The candidate is HOLD_FOR_EVIDENCE, not approved for validation.

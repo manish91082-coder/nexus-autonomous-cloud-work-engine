@@ -851,27 +851,29 @@
         "BANK_INR_SETTLEMENT"
       ],
       "minimum_threshold": "No universal public payout minimum confirmed in the reviewed pages; merchant-account terms apply.",
-      "hold_and_settlement": "Cashfree's UPI gateway page states default T+2 settlement. Instant Settlement can make funds accessible within 15 minutes, but is an additional-cost option and is not included in the ₹0-spend baseline.",
-      "fees_and_fx": "Promotional 0% platform fee for eligible new merchants up to ₹20 lakh in sales through 31 March 2027; standard published platform fee 1.95% after/when offer is not applicable. Confirm GST, mode-specific exclusions and written offer terms before relying on the promotion.",
+      "hold_and_settlement": "Published pages differ: the UPI gateway page states default T+2, while Cashfree's new-merchant offer page advertises T+1 for eligible merchants. Treat settlement as account/offer-specific and budget conservatively at T+2 until the owner receives written confirmation. Instant settlement is optional and paid.",
+      "fees_and_fx": "Eligible new merchants: 0% platform fee on first ₹20 lakh cumulative eligible domestic GMV through 31-Mar-2027; this does not mean zero transaction cost. Cashfree's official offer explainer says GST on the standard 1.95% platform fee may still be charged even while the platform fee is waived (illustrative ₹351 GST per ₹1 lakh eligible GMV). Standard rate after/when ineligible: 1.95% + applicable GST. International cards are excluded from the domestic offer; published international rate is 2.99% + GST. Instant settlement starts at 0.30% + GST and is excluded from the ₹0 spend plan.",
       "demand_evidence": "NPCI reported 25,466.70 million UPI transactions worth ₹31,52,929.46 crore in October 2026 across 758 live banks. This proves rail scale, not demand for our product. Direct checkout has no marketplace discovery; own traffic is required.",
       "time_to_first_sale": "Unknown and traffic-dependent. Payment Links can shorten checkout setup but do not create buyers.",
       "automation_percent": null,
       "recurring_human_work": "Low after checkout and delivery automation, but ongoing support, refunds, chargebacks, merchant compliance and software maintenance remain.",
-      "unit_economics": "Eligible promotional platform fee can be 0% within the cap and dates; otherwise the published standard rate is 1.95% before any applicable taxes/other fees. No ad spend or paid instant-settlement option is included.",
+      "unit_economics": "Eligible domestic offer: 0% platform fee but GST on the standard 1.95% fee may remain; Cashfree's official example is ₹351 GST per ₹1 lakh eligible GMV before other charges. Standard 1.95% + GST when not eligible/after the offer. International card rate 2.99% + GST. Optional instant settlement starts at 0.30% + GST; do not use it.",
       "ip_and_policy_status": "Merchant must sell lawful original products and meet the gateway's prohibited-business and KYC rules. Product ownership and customer terms remain the merchant's responsibility.",
       "decision": "VALIDATION",
       "payout_evidence": {
         "india_eligibility": "Indian merchant onboarding; KYC and account approval required. New-merchant promotional eligibility must be confirmed.",
         "payout_methods": "UPI collection; settlement to merchant bank account.",
         "minimum": "Not stated in reviewed public docs; account terms apply.",
-        "settlement": "Default T+2; instant settlement within 15 minutes is optional and paid.",
-        "fees": "0% promotional platform fee for eligible new merchants up to ₹20 lakh through 31-Mar-2027; standard 1.95% published rate otherwise.",
+        "settlement": "Published pages conflict: general UPI gateway page says T+2; current new-merchant offer page advertises T+1 for eligible merchants. Use T+2 as conservative planning assumption until written account-specific terms confirm T+1.",
+        "fees": "0% platform fee on first ₹20 lakh cumulative eligible domestic GMV for eligible new merchants through 31-Mar-2027; GST on standard 1.95% platform fee may still be charged (Cashfree official example: ₹351 per ₹1 lakh GMV). Standard 1.95% + GST otherwise. International cards: 2.99% + GST; optional instant settlement starts at 0.30% + GST.",
         "demand_signal": "NPCI UPI volume is macro payment-rail evidence only; no built-in discovery and no product-specific demand.",
         "source": "https://www.cashfree.com/payment-gateway-charges/",
         "sources": [
           "https://www.cashfree.com/payment-gateway-charges/",
           "https://www.cashfree.com/upi-payment-gateway/",
-          "https://www.npci.org.in/product/upi/product-statistics?financialYear=2026-27"
+          "https://www.npci.org.in/product/upi/product-statistics?financialYear=2026-27",
+          "https://www.cashfree.com/blog/payment-gateway-offers/",
+          "https://www.cashfree.com/instant-settlements/"
         ]
       },
       "automation_fit": "High for payment collection plus webhook-based automatic delivery; unlike marketplaces, Cashfree does not supply buyer discovery.",
@@ -879,25 +881,27 @@
         "Whether the exact business and merchant category qualify for the promotional 0% offer",
         "Offer exclusions, GST treatment and mode-specific fees in the merchant agreement",
         "Account-specific T+2/hold/reserve settings",
-        "No independent acquisition funnel or product-specific demand proof"
+        "No independent acquisition funnel or product-specific demand proof",
+        "Cashfree public UPI page says T+2 while the new-merchant offer page advertises T+1; obtain written account-specific settlement confirmation."
       ],
-      "note": "Potential independent INR/UPI fallback after the Getvik experiment. Do not launch a second checkout in parallel before first-sale evidence."
+      "note": "Potential independent INR/UPI fallback after the Getvik experiment. Do not launch a second checkout in parallel before first-sale evidence.",
+      "last_revalidated": "2026-11-13"
     },
     {
       "id": "PADDLE-SOFTWARE-SUBSCRIPTIONS",
       "category": "developer_tools_subscription",
       "platform": "Paddle Billing / Merchant of Record",
       "tier": "P2",
-      "status": "VALIDATION",
-      "score": 66,
-      "score_confidence": "Medium: official country, AUP, payment-method, fee and payout terms captured; seller approval, India account payout route and product-specific demand remain unverified.",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 63,
+      "score_confidence": "Medium-low: official AUP explicitly excludes certain financial services/advice and payment services. The product appears to be administrative receivable/commission software, not a regulated financial product, but written Paddle category approval is required before any integration.",
       "score_components": {
         "demand": 10,
         "payout_certainty_and_speed": 14,
         "automation": 18,
         "net_economics_and_zero_cost": 12,
         "distribution_and_differentiation": 5,
-        "risk_and_compliance": 7
+        "risk_and_compliance": 4
       },
       "official_terms_url": "https://www.paddle.com/legal/terms",
       "captured_at": "2026-11-13",
@@ -914,7 +918,7 @@
       "automation_percent": null,
       "recurring_human_work": "Low but non-zero after setup: software maintenance, security updates, customer support, refund/chargeback evidence and policy reviews.",
       "unit_economics": "At a USD 20 checkout, 5% + USD 0.50 = USD 1.50 (7.5%) before payout/FX/bank costs. At USD 5, the same fee is USD 0.75 (15%); Paddle directs sellers with products below USD 10 to request custom pricing.",
-      "ip_and_policy_status": "Paddle's AUP is software-first and excludes human services, digital marketplaces, donations/sponsorships and certain content-generation or automated people-decision products. It specifically restricts automated decision-making or categorization of people. Current Recruitment Agency Revenue Assurance Desk scope must remain financial/commission administration only, with no candidate scoring, ranking or hiring recommendation. Seller must warrant IP rights and review the 6 Oct 2026 Master Services Agreement before acceptance.",
+      "ip_and_policy_status": "Paddle AUP prohibits regulated financial products/services, payment services, trading/financial advice, marketplaces, human services, certain content generation and automated people-decision/categorization. Recruitment Agency Revenue Assurance Desk is intended as administrative billing/commission/receivable software, not payment processing, financial advice, lending, investment, trading or candidate decisioning. Because the boundary is material, obtain written Paddle pre-approval for the exact product before account creation or integration.",
       "decision": "VALIDATION",
       "payout_evidence": {
         "india_eligibility": "India absent from unsupported-country list; seller approval and account-level verification pending.",
@@ -939,9 +943,11 @@
         "Exact INR bank conversion, receiving-bank fees and SWIFT treatment for the chosen payout route",
         "Any account-specific reserve, review or payout delay",
         "Paddle AUP approval for the exact recruitment-finance product and its user/data model",
-        "No product-specific buyer demand or willingness-to-pay evidence"
+        "No product-specific buyer demand or willingness-to-pay evidence",
+        "Written Paddle pre-approval that this specific recruitment-agency billing/commission/receivable SaaS is not treated as a prohibited financial service or payment service."
       ],
-      "note": "High-upside global SaaS lane for a later stage, not the first-cash channel. Do not open an account, accept terms or build an integration before the Getvik first-sale gate and owner review."
+      "note": "High-upside global SaaS option only if Paddle provides written product-category approval. Do not create an account, accept terms or build integration before that approval and Getvik first-sale evidence.",
+      "last_revalidated": "2026-11-13"
     },
     {
       "id": "LEMON-SQUEEZY-MERCHANT-OF-RECORD",

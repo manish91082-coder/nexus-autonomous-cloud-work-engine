@@ -293,3 +293,30 @@ Owner स्वयं:
 - Gumroad originality / prohibited content: https://gumroad.com/help/article/155-things-you-cant-sell-on-gumroad
 
 **Final mission truth:** ₹0 verified net receipts; ₹0 authorized spend; no account/KYC/terms/publication/money movement performed.
+
+## 13. Evidence correction / stricter product-fit gate — 13-Nov-2026
+
+### Cashfree: “0%” is not zero transaction cost
+
+A further review of Cashfree's own offer explainer and instant-settlement pricing adds three important caveats:
+
+1. The promotional 0% waives the platform fee for eligible domestic GMV, but **GST on the standard 1.95% platform fee may still be charged**. Cashfree's own example states ₹351 GST per ₹1 lakh of eligible GMV, before other charges. The route is zero setup/AMC per the published plan, not zero transaction cost.
+2. Cashfree's general UPI gateway page says default **T+2**, while the current new-merchant offer page advertises **T+1** for eligible merchants. These public pages conflict. Use T+2 as the conservative model until the owner receives written account-specific terms.
+3. International card pricing is published at **2.99% + GST** and is excluded from the domestic 0% offer. Optional instant settlement starts at **0.30% + GST**; it is not part of the ₹0 spend plan.
+
+Sources:
+- https://www.cashfree.com/blog/payment-gateway-offers/
+- https://www.cashfree.com/upi-payment-gateway/
+- https://www.cashfree.com/instant-settlements/
+
+Cashfree also states on its official site that it holds an RBI-authorised PA- CB (E&I) route, accepts international payments in 140+ currencies and generates FIRA reporting. This is the provider's own representation; owner must verify current authorisation, product eligibility, exact currency corridor and written merchant terms before relying on it:
+- https://www.cashfree.com/
+
+### Paddle: product-category gate tightened
+
+Paddle's current AUP explicitly prohibits regulated financial products/services, payment services, trading/financial advice, digital marketplaces, human services and certain content-generation/automated people-decision products:
+- https://www.paddle.com/help/start/intro-to-paddle/what-am-i-not-allowed-to-sell-on-paddle
+
+The Recruitment Agency Revenue Assurance Desk is designed as administrative receivable, commission and guarantee-event software, not as a payment processor, lender, investment/trading product or financial adviser. However, because the product is adjacent to financial administration, no inference of eligibility is safe. The Paddle candidate score is reduced from 66 to 63 and status changed from VALIDATION to **HOLD_FOR_EVIDENCE**. Obtain written Paddle pre-approval for the exact product description before account creation or integration. If Paddle classifies it as a prohibited financial service/payment service, remove Paddle from the plan.
+
+This correction supersedes any earlier statement that Paddle was ready for ordinary validation. It remains a potential high-upside route only after written product-category clearance and the Getvik first-sale gate.

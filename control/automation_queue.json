@@ -1270,7 +1270,21 @@
           "https://www.payoneer.com/en-in/about/pricing/",
           "https://fiuindia.gov.in/pdfs/downloads/VDA08012026.pdf",
           "https://sansad.in/getFile/loksabhaquestions/annex/187/AU5805_lMTYNK.pdf?source=pqals"
-        ]
+        ],
+        "cashfree_correction": {
+          "source": "https://www.cashfree.com/blog/payment-gateway-offers/",
+          "findings": "0% waives platform fee, not all charges; GST on standard 1.95% fee may remain (official example ₹351 per ₹1 lakh GMV); new-merchant offer page says T+1 while general UPI page says T+2; international card fee 2.99% + GST; instant settlement starts 0.30% + GST.",
+          "sources": [
+            "https://www.cashfree.com/upi-payment-gateway/",
+            "https://www.cashfree.com/blog/payment-gateway-offers/",
+            "https://www.cashfree.com/instant-settlements/"
+          ]
+        },
+        "paddle_category_gate": {
+          "source": "https://www.paddle.com/help/start/intro-to-paddle/what-am-i-not-allowed-to-sell-on-paddle",
+          "findings": "Paddle AUP prohibits regulated financial services/advice and payment services, in addition to marketplaces, human services and automated people-decision categories. The exact recruitment-agency receivable/commission SaaS requires written product-category approval.",
+          "decision": "Paddle candidate moved from VALIDATION to HOLD_FOR_EVIDENCE; no account or integration."
+        }
       }
     },
     {
