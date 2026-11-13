@@ -73,3 +73,30 @@ The GitHub worker is a bounded scheduled queue validator/poller. Provider-backed
 ## 7. Decision
 
 The mission is **ON-GO**, but the next meaningful milestone is no longer another research phase. It is the first verified direct-sale transaction through the Getvik pilot. All non-essential build/research work is subordinated to reaching that milestone.
+
+
+## 8. Getvik marketplace-fit recheck — 2026-11-13
+
+**Purpose:** Test whether the selected storefront offers genuine category discovery, rather than assuming that a hosted store itself brings buyers.
+
+### Public evidence observed
+- Getvik has a public Discover marketplace with category navigation, filters and bestseller ordering: https://getvik.com/discover
+- The Business & Finance category is live: https://getvik.com/discover/business-finance
+- The current public Discover page displays examples such as an Excel practice workbook with 148 displayed sales and an Excel Career Pack with 51 displayed sales. These counters are platform-displayed and not independently audited; they demonstrate marketplace transactions for adjacent digital-learning products, not demand for our product.
+- A public HR-adjacent Excel product, Employee Leave & Meeting Calendar Dashboard, displays 11 sales at ₹99: https://getvik.com/excel-simplified/product/employee-leave-meeting-calendar-dashboard
+- An Excel Career Pack page displays 48 sales at ₹399 in the indexed product detail: https://getvik.com/ctrlplus-excel/product/excel-career-pack
+- The public Business & Finance category is populated mainly by low-priced guides, creator resources and general business templates. In this bounded review, no direct recruitment-agency cashflow / placement-fee / commission / guarantee-control product was found. Absence from the reviewed public pages is not proof that none exists.
+- Getvik's own About page explicitly says a storefront does not create demand: https://getvik.com/about-us
+- Current homepage pricing: Free ₹0/month, 10% sales fee + GST on that fee, plus payment gateway charges; payout request from ₹100 and usually 2–3 business days after request, subject to payout setup: https://getvik.com/
+
+### Decision and implications
+1. Keep Getvik as the first zero-monthly-cost storefront experiment, but classify its Discover traffic as **possible distribution, not guaranteed acquisition**.
+2. Do not claim product-market fit or a proven B2B buyer pool. The observed analogues support only weak category adjacency (HR/business templates), not willingness to pay for a recruitment agency financial-control application.
+3. Keep the product private until the owner completes secure onboarding, accepts current terms personally, approves commercial license/refund/support details, and explicitly authorizes publication.
+4. If published, select the closest truthful Business & Finance category and test marketplace discovery before any paid plan or ad spend. Measure actual qualified views, checkout starts, independent paid orders, refunds, fees and bank-settled net receipts.
+5. Do not lower price or change product scope solely from other sellers' displayed counts. The existing ₹499/₹799/₹999 figures remain unapproved hypotheses until the owner reviews the listing and actual seller-side deductions.
+6. No new build, extra channel, outreach campaign or spend is authorized by this evidence.
+
+**Evidence quality:** Public platform pages and displayed counters, checked 2026-11-13. Counters may change and are not independently audited. No account analytics, seller dashboard, customer interview or product-specific transaction evidence was accessible.
+
+**Mission truth unchanged:** ₹0 verified realized net receipts; ₹0 authorized spend; no evidenced paying customer for this product.
