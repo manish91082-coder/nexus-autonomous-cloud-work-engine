@@ -1527,3 +1527,11 @@ Getvik remains the only P1 first-cash pilot. Cashfree Direct is a P2 domestic fa
 - Control-plane validation, AI worker safety tests, product smoke tests, Recruitment Revenue Assurance tests, queue heartbeat, fail-closed bounded AI step and artifact preservation all passed.
 - The final continuity-only update does not change registries, runtime code, queue or product artifacts and is outside the worker's path filter.
 - Final Phase 45 commercial decision remains: Getvik first-cash owner gate; Cashfree P2 with non-zero GST and T+1/T+2 uncertainty; Paddle P2 HOLD pending written product-category approval; Lemon Squeezy backup/hold; PayPal/Payoneer payout-only; crypto not activated.
+
+
+### Paddle UPI correction and exact-HEAD validation — 2026-11-13
+- Official Paddle Developer Docs now confirm Indian buyers can pay by UPI for one-time purchases and subscriptions in INR without the seller needing an Indian bank/UPI merchant account: https://developer.paddle.com/concepts/payment-methods/upi/
+- This supersedes the earlier statement that one-time UPI was not verified. Seller payout remains wire/Payoneer with USD 100 minimum on a monthly schedule. Buyer UPI collection and seller payout are separate rails.
+- Paddle remains **HOLD_FOR_EVIDENCE** (score 63) because the AUP prohibits regulated financial services/advice and payment services; the exact recruitment-agency receivable/commission SaaS requires written product-category approval.
+- GitHub Actions worker run **#149 SUCCESS** on exact commit `6cf4c91d899f4a7da6a9f5f6357460840e41a53d`: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43357364244
+- All control-plane, safety, product smoke, recruitment product, heartbeat, fail-closed bounded-worker and artifact steps passed. No account, KYC, terms acceptance, public release, spend or fund movement.
