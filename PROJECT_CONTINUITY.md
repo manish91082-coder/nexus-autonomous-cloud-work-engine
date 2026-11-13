@@ -1462,3 +1462,36 @@ Require named buyer and live portfolio, explicit subcontract permission, written
 - CSV to Action remains secondary and owner-gated. Orbit Relay remains held. No accounts, KYC, terms, bank/UPI details, publication, paid plan or spend action was performed.
 - `control/mission_state.json` was reconciled in commit `be821b6069e36124b420421b9102e53d5a4e5abc` to record the verified source HEAD and Worker #124 evidence. This is a control-plane continuity update only.
 - Mission truth: target ₹10,00,00,000 verified realized net receipts; actual realized net receipts INR 0; authorized spend INR 0; AI provider inference NOT CONFIGURED.
+
+
+## Phase 45 — multi-rail revenue model audit and compliance requalification (2026-11-13)
+
+**Canonical source at milestone:** `b00683de05400504f69e4dc52ad7614b0c3295f0`  
+**Commit:** https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/commit/b00683de05400504f69e4dc52ad7614b0c3295f0  
+**Research report:** `research/PHASE_45_MULTI_RAIL_REVENUE_MODEL_AUDIT_2026-11-13.md`  
+**Owner packet:** `strategy/PHASE_45_REVENUE_RAIL_DECISION_AND_OWNER_ACTION_PACKET_2026-11-13.md`
+
+### Exact repository changes
+- Added three evidence-backed candidates to `control/opportunity_registry.json`: Cashfree Direct INR Checkout (P2, 68), Paddle Software Subscriptions (P2, 66), Lemon Squeezy MoR (P2, 60).
+- Revalidated `DIRECT-CRYPTO-WALLET-LICENSING` and kept it HOLD / NOT ACTIVATED after FIU-IND and Parliament evidence.
+- Expanded `control/payout_registry.json` to 22 provider/rail entries, adding Cashfree, Paddle, Lemon Squeezy, PayPal India, Payoneer India and an explicit unapproved VDA rail record.
+- Added P45-001 and P45-002 as completed tasks. Queue now has 45 tasks; 9 remain blocked. P44-004 is still the next first-cash owner gate.
+- Updated the private activation sequence. `control/revenue_ledger.json` was intentionally unchanged because no settled receipt exists.
+
+### Verification
+- GitHub Actions run #144: **SUCCESS** on exact commit `b00683de05400504f69e4dc52ad7614b0c3295f0`.
+- Control-plane validation: success.
+- AI worker safety tests: success.
+- Product smoke tests: success.
+- Recruitment Revenue Assurance product tests: success.
+- Deterministic queue heartbeat and bounded AI worker step: success; the worker remains fail-closed without owner configuration/provider secrets and did not perform account, publication or money actions.
+- No new package or browser-QA workflow was triggered by this research/registry-only commit. Latest package run #44 and browser-QA run #38 remain successful on `c945ec955efc4d375e5a332e9363f8559d02fed7`; they are not evidence of a new build on Phase 45.
+
+### Revenue and spend truth
+- Verified realized net receipts: **₹0**.
+- Authorized spend: **₹0**.
+- Evidenced paying customers: **0**.
+- Public releases, KYC, legal acceptance and money movement performed by automation: **none**.
+
+### Decision
+Getvik remains the only P1 first-cash pilot. Cashfree Direct is a P2 domestic fallback; Paddle is a P2 high-upside SaaS route with a $100 monthly payout threshold and UPI Autopay only confirmed in the reviewed methods list; Lemon Squeezy is a higher-friction backup; PayPal/Payoneer are payout endpoints; crypto remains legally gated and inactive. No parallel launch or new product build is authorized before the Getvik first-sale experiment.
