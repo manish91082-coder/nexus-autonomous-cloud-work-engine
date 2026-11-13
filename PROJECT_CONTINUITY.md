@@ -5,7 +5,7 @@
 **Authority:** `MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md`  
 **Current phase:** `PHASE_53_B2B_APP_MARKETPLACE_RESEARCH`  
 **Current task:** `P53-001` — compare B2B app/developer marketplaces and identify one evidence-backed self-serve product gap.  
-**Master HEAD reconciled during this follow-up audit:** `1cd3b310560eebcfeadbc9029a8ec55397052f48`.
+**HEAD resume rule:** fetch the actual `master` HEAD at the start of every continuation; any SHA recorded in mission state is an audit snapshot, not a substitute for checking the live branch.
 
 ## One mission, one repository
 
