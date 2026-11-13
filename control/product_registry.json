@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-11-12",
+  "updated_at": "2026-11-13",
   "policy": "Private drafts only. No product is published or treated as revenue until owner approval and settlement evidence.",
   "products": [
     {
@@ -25,10 +25,10 @@
       "status": "PRIVATE_VALIDATION_HOLD",
       "build_status": "V0.3.0_BUILT_CI_AND_BROWSER_QA_PASS",
       "ci_status": "FORMULA_AND_MISSION_CI_PASS_43160680889; CHROMIUM_FIREFOX_QA_PASS_43160901456; PACKAGE_PASS_43160901484",
-      "distribution": "Getvik Free primary validation rail; Topmate secondary; Payhip+Razorpay backup; none activated",
+      "distribution": "Getvik Free is a lower-ranked validation candidate; no account onboarding, KYC, terms or publication active.",
       "pricing_status": "UNVALIDATED_HYPOTHESES_499_799_999; no buyer willingness-to-pay evidence; Getvik Free 10% + GST on fee + Cashfree gateway charges",
       "differentiation": "Narrow offline, no-account financial-control layer beside an existing ATS: installment receipts, cash-collected commission payable, due-date ageing, late-payment detection, payment-linked guarantee risk flags and guarantee event log; no candidate PII. Differentiation versus free finance dashboards and ATS suites remains weak/unproven and must be validated.",
-      "next_action": "HOLD further product development and publication. Run a no-publication demand experiment with 5–8 small recruitment agency owners; test whether offline/no-candidate-PII and cash-basis commission/guarantee controls solve a problem not adequately served by free/low-cost alternatives. No willingness-to-pay claims until observed.",
+      "next_action": "Keep v0.3.0 private and freeze feature development. Reconsider only after higher-ranked platform/product qualification or a fresh, evidenced buyer-demand decision. No Getvik launch is currently the leading workstream.",
       "owner_gate": "public_release",
       "package_status": "PRIVATE_DRAFT_PACKAGE_BUILT",
       "package_artifact": {
