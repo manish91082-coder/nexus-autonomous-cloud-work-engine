@@ -27,22 +27,22 @@ Build lawful, self-serve, Internet-native products and software that generate re
 9. [Cross-chat continuity](PROJECT_CONTINUITY.md)
 10. [Repository scope and cleanup audit](REPOSITORY_SCOPE_AND_CLEANUP_2026-11-13.md)
 
-Older V1/V2/V3 plans and phase reports are preserved as history. V4 is authoritative.
+Older V1/V2/V3 plans and old phase reports are preserved as history. V4 is authoritative.
 
 ## Current checkpoint — 13 November 2026
 
-- Mission phase: **PHASE 48 — Microsoft Marketplace Product Qualification**.
-- Platform order: Atlassian Marketplace / Forge (rank #1), Shopify App Store (rank #2), Microsoft Marketplace AI Apps & Agents (rank #3), Apify Store (rank #4).
-- Phase 46: Generic AI Business Automation Reviewer is **NO-GO**. Native n8n, Power Platform and Make features plus Datvero, Pulse, FlowOversee and free static review tools cover the generic proposal.
-- Phase 47: Shopify Flow Action Reliability Gateway is **NO-GO**. Custom partner Flow tasks are Plus-only, native retry/HTTP actions and durable-execution substitutes exist, and no paid buyer evidence was established.
-- Phase 48 candidate: Microsoft Marketplace AI app/agent. Research only; no product selected and no build approved.
-- Recruitment Agency Revenue Assurance Desk v0.3.0 remains a private lower-priority asset.
+- Mission phase: **PHASE 50 — Getvik Existing Product Requalification**.
+- Platform order: Atlassian Marketplace / Forge (rank #1), Shopify App Store (#2), Microsoft Marketplace (#3), Apify Store (#4), Getvik digital products (#5), CrazyGames (#6), long-horizon assets (#7).
+- Phase 46: Generic AI Business Automation Reviewer is **NO-GO**.
+- Phase 47: Shopify Flow Action Reliability Gateway is **NO-GO**.
+- Phase 48: Generic Microsoft Marketplace AI app/agent categories audited are **NO-GO**.
+- Phase 49: Current Apify raw-data/extraction Actor niches are **NO-GO** after 27 listings reviewed. No Actor built or run. Broad RAG/web scraping has strong Apify-maintained incumbents; PDF/SEC/ClinicalTrials/Federal Register/GovCon wrappers mostly have low price and very small public usage counters.
+- Phase 50 candidate: Recruitment Agency Revenue Assurance Desk v0.3.0 on Getvik Free. Research only; product remains private. No buyer demand or willingness-to-pay evidence is established.
 - Verified platform-credited net earnings: **₹0**.
 - Verified bank-settled net receipts: **₹0**.
 - Authorised new spend: **₹0**.
 - No public product listing is verified in this mission.
-- Microsoft transactable SaaS requires a live onboarding page, Entra SSO, SaaS Fulfillment APIs and a 24/7 connection webhook; do not claim this is a zero-cost hosted service without measuring it.
-- AI inference provider credentials remain unconfigured. The GitHub Actions worker is bounded validation/queue infrastructure, not an always-on autonomous reasoning agent.
+- AI inference provider credentials remain unconfigured. GitHub Actions worker is bounded queue/validation infrastructure, not an always-on autonomous reasoning agent.
 
 ## Revenue recognition
 
@@ -54,14 +54,17 @@ Tax and payout-method optimisation remain deferred; mandatory seller eligibility
 
 `RESEARCH → BUYER/COMPETITOR GAP → TECHNICAL/ECONOMIC FEASIBILITY → PRIVATE MVP → SECURITY/QA → OWNER/PLATFORM GATES → PUBLISH → PLATFORM-CREDITED EARNINGS → OPTIMISE OR KILL`
 
-- P46-002: Generic automation reviewer — COMPLETED, NO-GO.
-- P47-001: Shopify Flow gateway — COMPLETED, NO-GO. P47-002 through P47-005 cancelled.
-- P48-001: Microsoft Marketplace product qualification — READY; only current task.
-- P48-002: Private MVP — BLOCKED until P48-001 passes.
-- P48-004: Public listing — owner-gated.
-- P48-005: First independent transaction and PCNE verification.
+- P46-002: generic reviewer — COMPLETED, NO-GO.
+- P47-001: Shopify Flow gateway — COMPLETED, NO-GO.
+- P48-001: generic Microsoft Marketplace AI categories — COMPLETED, NO-GO.
+- P49-001: Apify niche audit — COMPLETED, NO-GO; 27 competitors audited.
+- P50-001: Requalify existing Recruitment Revenue Assurance Desk against current competitors, Getvik discovery, seller terms/fees and order-volume economics — READY; only current task.
+- P50-002: final listing/package changes — BLOCKED until P50-001 GO.
+- P50-003: release QA — BLOCKED.
+- P50-004: seller onboarding/publication — owner-gated.
+- P50-005: verify independent customer earnings — BLOCKED until live.
 
-If Microsoft Marketplace has no defensible paid gap or has unacceptable hosting/SSO/fulfillment cost, record NO-GO and move to Apify Store. Do not build for the sake of activity.
+If Getvik fails the paid-gap or realistic scale gate, record NO-GO and move to the next ranked opportunity. Do not publish just because a product already exists.
 
 ## Existing product dispositions
 
@@ -69,8 +72,9 @@ If Microsoft Marketplace has no defensible paid gap or has unacceptable hosting/
 |---|---|
 | AI Business Automation Reviewer (generic) | NO-GO; not built |
 | Shopify Flow Action Reliability Gateway | NO-GO; not built |
-| Microsoft Marketplace AI app/agent | Research only; no product selected |
-| Recruitment Agency Revenue Assurance Desk v0.3.0 | Private lower-tier validation asset |
+| Microsoft generic AI app/agent categories | NO-GO; no product selected |
+| Apify raw-data/extraction Actor niches audited | NO-GO; no Actor built |
+| Recruitment Agency Revenue Assurance Desk v0.3.0 | Private requalification pending; not published |
 | MSME Ops Desk Lite | Free-sample-only hold |
 | CSV to Action | Private prototype; public release owner-gated |
 | Message-to-Action Reliability | Synthetic technical demo; no live connectors |
