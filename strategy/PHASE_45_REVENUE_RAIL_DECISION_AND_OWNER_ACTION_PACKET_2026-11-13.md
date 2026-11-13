@@ -106,3 +106,11 @@ RBI sources:
 - https://www.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=4236
 - https://www.rbi.org.in/Scripts/PublicationsView.aspx?id=12043
 - https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12896
+
+
+## Gumroad policy gate — 13-Nov-2026
+
+Gumroad's prohibited-products page (revised 16-Sep-2026) bans AI services, billing services, money service businesses, money transmission and cryptocurrency/NFT products:
+https://gumroad.com/prohibited
+
+Do not list the Recruitment Agency Revenue Assurance Desk on Gumroad until Gumroad confirms in writing that administrative receivable/commission tracking software is outside its prohibited billing-services category. Do not use Gumroad for hosted AI service access or crypto/NFT products. Static original downloadable templates are a separate possible category, subject to policy review.

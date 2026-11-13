@@ -387,3 +387,18 @@ Sources:
 - https://www.cashfree.com/instant-settlements/
 
 **Updated rail decision:** Cashfree is the best-supported domestic + international bank-settlement gateway candidate in this audit, but it still requires owner KYC, merchant-category approval, own distribution and written terms. It is P2 and remains deferred until the Getvik first-sale gate.
+
+
+## 16. Gumroad policy recheck — 13-Nov-2026
+
+Gumroad's official Prohibited Products page was revised **16-Sep-2026**. It expressly prohibits:
+- AI services, including selling access to AI tools, chatbots, image/content-generation services, or subscriptions to AI services fulfilled outside Gumroad;
+- billing services, including accepting payment for services rendered or billing for future services;
+- money service businesses and money transmission;
+- cryptocurrency, virtual currency and NFTs.
+
+Source: https://gumroad.com/prohibited
+
+This does **not** mean every static AI-assisted downloadable workbook or template is automatically prohibited. It does mean the Recruitment Agency Revenue Assurance Desk must not be listed on Gumroad until Gumroad gives written confirmation that the exact administrative receivable/commission tracking software is not a prohibited billing service. Do not use Gumroad for hosted AI-service access or any crypto/NFT product.
+
+The existing Gumroad candidate remains score 64 / P2 / HOLD_FOR_EVIDENCE. Its payout terms do not override product eligibility.

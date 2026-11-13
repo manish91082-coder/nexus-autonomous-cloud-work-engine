@@ -88,3 +88,9 @@ Only the last item counts toward realized net receipts.
 - Domestic Cashfree 0% offer still has GST on standard 1.95% fee basis; offer signup eligibility conflicts across official pages and must be confirmed in writing. T+1 offer vs T+2 general UPI page: budget T+2.
 - Payoneer remains a possible platform payout wallet only after exact entity/service verification, not a verified independent India merchant-collection PA-CB.
 - Sources: https://www.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=4236 ; https://www.rbi.org.in/Scripts/PublicationsView.aspx?id=12043 ; https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12896 ; https://www.cashfree.com/international-payment-gateway/
+
+
+### Gumroad policy recheck — 13-Nov-2026
+- Gumroad's prohibited-products list (revised 16-Sep-2026) bans AI services, billing services, money service businesses, money transmission and crypto/NFT products.
+- The recruitment-agency receivable/commission SaaS must not be listed until Gumroad provides written confirmation that it is not a prohibited billing service. Static original downloadable templates are a separate possible use case.
+- Source: https://gumroad.com/prohibited

@@ -1304,6 +1304,12 @@
             "https://www.rbi.org.in/Scripts/PublicationsView.aspx?id=12043",
             "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12896"
           ]
+        },
+        "gumroad_policy_recheck": {
+          "source": "https://gumroad.com/prohibited",
+          "revised": "2026-09-16",
+          "findings": "Gumroad prohibits AI services, billing services, money service businesses, money transmission and cryptocurrency/NFT products. Static original downloadable goods may be distinct, but the recruitment receivable/commission software needs written product-specific classification.",
+          "decision": "Gumroad remains HOLD_FOR_EVIDENCE; do not use for the current SaaS or crypto rails without written policy clearance."
         }
       }
     },

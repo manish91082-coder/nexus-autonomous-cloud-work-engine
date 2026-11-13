@@ -26,10 +26,13 @@
       "hold_period": "7 days standard balance hold",
       "settlement_schedule": "weekly payout schedule; bank transfer typically 2-7 business days",
       "fx_or_conversion": "sales converted at sale-time exchange rate",
-      "reversibility_and_chargebacks": "refunds and chargebacks may reverse balance",
+      "reversibility_and_chargebacks": "refunds and chargebacks may reverse balance Current prohibited-products policy also bans AI services, billing services, money service businesses, money transmission and crypto/NFT products; exact software classification must be confirmed before use.",
       "official_source_url": "https://gumroad.com/help/article/13-getting-paid",
       "captured_at": "2026-11-12",
-      "verification_status": "OFFICIAL_TERMS_CAPTURED_ACCOUNT_LEVEL_PENDING"
+      "verification_status": "OFFICIAL_PAYOUT_TERMS_CAPTURED_PRODUCT_POLICY_HOLD",
+      "official_sources": [
+        "https://gumroad.com/prohibited"
+      ]
     },
     {
       "provider": "Topmate",

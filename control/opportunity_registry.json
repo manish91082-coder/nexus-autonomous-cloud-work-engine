@@ -64,8 +64,12 @@
       "unknowns": [
         "account-specific payout settings",
         "fees/refunds",
-        "buyer demand and discovery"
-      ]
+        "buyer demand and discovery",
+        "Written Gumroad classification for administrative receivable/commission tracking software; the current prohibited-products list includes billing services, AI services, money services and crypto/NFTs."
+      ],
+      "ip_and_policy_status": "Gumroad's current prohibited-products page (revised 16-Sep-2026) bans AI services (selling access to AI tools/chatbots/content-generation services fulfilled outside Gumroad), billing services (including accepting payment for services rendered or billing future services), money service businesses, money transmission and cryptocurrency/NFT products. A static original downloadable workbook/template may be different, but the Recruitment Agency Revenue Assurance Desk must not be listed there until Gumroad confirms in writing that administrative receivable/commission tracking software is not a prohibited billing service. Do not use Gumroad for AI SaaS access or crypto products.",
+      "note": "HOLD_FOR_EVIDENCE. Only consider original static downloadable goods after product-specific policy review; do not use for hosted AI service access, billing/payment services or crypto/NFT products.",
+      "last_revalidated": "2026-11-13"
     },
     {
       "id": "ADOBE-STOCK-ORIGINAL-ASSETS",
