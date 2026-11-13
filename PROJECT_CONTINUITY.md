@@ -1560,3 +1560,11 @@ Getvik remains the only P1 first-cash pilot. Cashfree Direct is a P2 domestic fa
 - Cashfree domestic 0% offer remains GST-bearing and eligibility is not assumed until written confirmation; T+1/T+2 public-page conflict remains conservatively modelled as T+2.
 - GitHub Actions worker run **#152 SUCCESS** on exact commit `f6c90d86d0bcef3624bda43d962e267675bab23a`: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43358060363
 - All control-plane, AI safety, product smoke, Recruitment Revenue Assurance, queue heartbeat, fail-closed bounded-worker and artifact-preservation steps passed. No KYC, legal acceptance, publication, spend or money movement.
+
+
+### Final RBI rail audit validation — 2026-11-13
+- Exact control-state commit: `a30e0c2c19d630229deb197e4257847063feeb5d`
+- GitHub Actions worker run **#153 SUCCESS** on that exact commit: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43358126184
+- Passed: control-plane validation, AI worker safety tests, product smoke tests, Recruitment Revenue Assurance tests, deterministic queue heartbeat, fail-closed bounded AI step and machine-readable artifact preservation.
+- Current rail decision: Cashfree is the strongest evidenced India domestic + cross-border collection gateway; PayPal is an existing RBI PA-CB entity able to operate; Payoneer India is not treated as an independently verified PA-CB merchant-collection rail; Paddle UPI buyer collection is confirmed but product-category approval is pending; crypto remains inactive.
+- The final continuity-only update does not change registries, runtime code, queue, product artifacts or mission state and is outside the worker path filter.
