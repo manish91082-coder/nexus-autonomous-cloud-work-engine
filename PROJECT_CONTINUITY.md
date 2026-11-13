@@ -44,6 +44,8 @@ A first HubSpot candidate, Calendar-to-Contact Automation for external Google Ca
 
 This rejects one product hypothesis, not the entire HubSpot platform. Do not build it or onboard/publish.
 
+A second evidence batch also rejects generic WordPress/WooCommerce audit logs: Simple History (300K+ active installs), Activity Log (200K+), Stream (70K+), WooCommerce's €45/year Product and Order Change Log, and Order Edit Logger's REST/Cron tracking already serve the category. Generic Sheets automation is a clone risk (Sheet Flow shows 13K+ installs and paid tiers); Apps Script already exposes execution history and quota monitoring. Do not build a generic audit logger, Sheets workflow clone or quota dashboard.
+
 Phase 53 report: `research/PHASE_53_B2B_APP_MARKETPLACE_REQUALIFICATION_2026-11-13.md`.
 
 ## Exact next action
