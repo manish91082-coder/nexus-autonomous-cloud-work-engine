@@ -11,7 +11,7 @@
 
 1. **Getvik** — अभी भी सबसे तेज़ संभावित first-sale path और एकमात्र P1 first-cash pilot। Marketplace discovery मौजूद है, लेकिन हमारे Recruitment Agency Revenue Assurance Desk की demand सिद्ध नहीं है।
 2. **Cashfree Direct INR Checkout** — P2 fallback: eligible new merchants के लिए 31-Mar-2027 तक ₹20 lakh sales cap पर advertised 0% promotional platform fee; default settlement T+2। यह checkout देता है, buyers नहीं।
-3. **Paddle Billing** — P2 high-upside global SaaS/MoR route। India unsupported-country list में नहीं है; $100 minimum monthly payout, 5% + $0.50 checkout fee। Official methods list में **UPI Autopay** है, लेकिन ordinary one-time UPI payment की उपलब्धता current docs से सिद्ध नहीं होती।
+3. **Paddle Billing** — P2 high-upside global SaaS/MoR route, लेकिन **HOLD_FOR_EVIDENCE**। India unsupported list में नहीं है; Indian buyers UPI से one-time और subscription purchases INR में कर सकते हैं; seller payout wire/Payoneer, $100 monthly threshold; 5% + $0.50। Recruitment-agency receivable/commission SaaS को AUP category approval चाहिए।
 4. **Lemon Squeezy** — P2 backup/hold। India bank payouts listed हैं, पर May 2024 से नए Indian Stripe accounts invite-only हैं; बिना pre-approval PayPal route, 13-day hold, $50 payout minimum और अतिरिक्त international/PayPal/payout fees।
 5. **PayPal और Payoneer** — payout endpoints हैं, customer-acquisition models नहीं। इन्हें तभी activate करना है जब वास्तविक international payer या चुना हुआ platform payout route हो।
 6. **Crypto/VDA** — अभी qualifying revenue rail नहीं। FIU-IND का activity-based PMLA framework, CDD, Travel Rule, monitoring, sanctions, records और transaction-specific legal classification इसे one-time setup से चलने वाला low-risk route नहीं बनाते। No-go/hold जारी।
@@ -35,7 +35,7 @@
 | Model family | Post-setup automation | First-sale risk | Settlement reality | Risk-adjusted verdict |
 |---|---|---|---|---|
 | Original digital downloads, spreadsheets, calculators, templates, reports | High: auto checkout + auto delivery | Marketplace traffic होने पर comparatively faster; product-specific demand अभी unproven | Getvik: ₹100 threshold, request के बाद सामान्यतः 2–3 business days; platform/gateway deductions अलग | **P1 first-cash** |
-| Self-serve B2B SaaS / micro-SaaS | High: recurring billing + webhook-based access | Product approval और own distribution के कारण uncertain; no defensible day estimate | Paddle: $100 monthly threshold, payout by 15th, arrival up to 3 working days | **P2 high-upside** |
+| Self-serve B2B SaaS / micro-SaaS | High: recurring billing + webhook-based access | Product approval और own distribution के कारण uncertain; no defensible day estimate | Buyer UPI one-time/subscription in INR; seller payout $100 monthly by 15th, arrival up to 3 working days | **P2 HOLD: written AUP category approval** |
 | Direct INR checkout / payment links | High if delivery webhook is built | Own traffic required; gateway does not create demand | Cashfree default T+2; optional instant settlement is paid | **P2 fallback** |
 | API/data subscriptions | High after data pipeline, access control and monitoring | Demand, data rights and update reliability unproven | Cashfree/Paddle/other gateway terms apply | P2 conditional; current data-product niche not cleared |
 | Software licenses, plugins and developer tools | High after approval and license delivery | Marketplace acceptance/install thresholds can delay sales | Platform-specific thresholds and payout cycles | P2/P3; GitHub Marketplace is not a first-cash route |
@@ -97,7 +97,8 @@ Official evidence:
 
 - India current unsupported-country list में नहीं है; यह seller approval की guarantee नहीं है: https://www.paddle.com/help/start/intro-to-paddle/which-countries-are-supported-by-paddle
 - Payment methods list में cards, PayPal और **UPI Autopay** है: https://www.paddle.com/help/start/intro-to-paddle/which-payment-methods-do-you-support
-- UPI Autopay को ordinary one-time UPI समझना गलत होगा; current public method list ordinary one-time UPI को स्पष्ट रूप से confirm नहीं करती।
+- अलग Developer Docs स्पष्ट रूप से Indian buyers के लिए UPI one-time purchases और subscriptions INR में confirm करते हैं; seller को local Indian bank/UPI merchant account की आवश्यकता नहीं: https://developer.paddle.com/concepts/payment-methods/upi/
+- Buyer UPI seller payout नहीं है: seller funds wire या Payoneer से $100 monthly threshold और monthly payout schedule के अधीन मिलते हैं।
 - Paddle Checkout fee: 5% + USD 0.50: https://www.paddle.com/legal/terms
 - Minimum payout: USD 100 (GBP/EUR balance पर equivalent threshold); monthly, balance 1st को assess, payment 15th तक send, arrival up to 3 working days: https://www.paddle.com/help/manage/get-paid/when-and-how-do-i-get-paid
 - Currency mismatch पर USD/EUR/GBP 15 SWIFT fee और bank charges लागू हो सकते हैं: https://www.paddle.com/help/manage/get-paid/is-there-a-fee-taken-for-payouts
@@ -199,7 +200,7 @@ Income-tax Department के Income-tax Act, 2025 materials में Section 19
 | 3 | Topmate | Existing audience helps; marketplace commission high | First 7-day wait + up to 7-day processing | Medium | Backup |
 | 4 | Payhip + Razorpay | Own traffic needed | Merchant account T+2 settings | Medium | Secondary |
 | 5 | Cashfree Direct | Own traffic needed; hosted checkout reduces friction | Default T+2; 0% eligible promotion through 31-Mar-2027 | High if recurring direct sales | P2 after first-sale proof |
-| 6 | Paddle SaaS | Product approval + own acquisition | $100 monthly threshold; sent by 15th | **High** recurring/global upside | P2 high-upside |
+| 6 | Paddle SaaS | Product approval + own acquisition | Buyer UPI one-time/subscription; seller $100 monthly threshold, sent by 15th | **High** recurring/global upside | P2 HOLD pending written category approval |
 | 7 | Lemon Squeezy | Own-store sales needed before marketplace listing | $50 threshold, 13-day hold, twice monthly | High but net payout friction higher | Backup/hold |
 | 8 | GitHub Sponsors / BMAC / Patreon | Adoption/audience-dependent | Platform-specific; already in registry | Medium recurring, long ramp | Long-horizon |
 | 9 | Adobe Stock / KDP / assets | Catalog and review required | Threshold/royalty cycles | Medium, long-horizon | Long-horizon |
