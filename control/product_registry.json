@@ -125,6 +125,32 @@
       "differentiation": "Deterministic puzzle game with campaign progression and daily challenge; user demand not yet measured",
       "next_action": "Human playtest first; no more feature work",
       "owner_gate": "public_release"
+    },
+    {
+      "id": "AI-AUTOMATION-REVIEWER",
+      "name": "AI Business Automation Reviewer (generic cross-platform hypothesis)",
+      "path": "research/PHASE_46_AUTOMATION_REVIEWER_MARKET_AUDIT_2026-11-13.md",
+      "version": "0.0-research",
+      "status": "NO_GO_GENERIC_HYPOTHESIS",
+      "build_status": "NOT_BUILT",
+      "distribution": "None; no platform/account or public listing activated",
+      "pricing_status": "Not priced; no willingness-to-pay evidence",
+      "differentiation": "Insufficient. n8n, Microsoft Power Platform, Make and Atlassian native capabilities plus Datvero, Pulse, FlowOversee and free static reviewers cover major proposed features.",
+      "next_action": "Do not build the generic reviewer. Continue with the narrower Shopify Flow Action Reliability Gateway qualification only as a research hypothesis.",
+      "owner_gate": "public_release"
+    },
+    {
+      "id": "SHOPIFY-FLOW-ACTION-RELIABILITY-GATEWAY",
+      "name": "Shopify Flow Action Reliability Gateway",
+      "path": "research/PHASE_47_SHOPIFY_FLOW_ACTION_GATEWAY_QUALIFICATION_2026-11-13.md",
+      "version": "0.0-research",
+      "status": "RESEARCH_ONLY",
+      "build_status": "NOT_STARTED",
+      "distribution": "Potential Shopify App Store; no partner registration or listing",
+      "pricing_status": "Not priced; no product-specific willingness-to-pay evidence",
+      "differentiation": "Potentially Shopify-specific durable queue, action_run_id idempotency, 202/429 response handling, safe replay and outcome receipts for custom Flow action developers. Must be compared against existing queue libraries and direct marketplace competitors before build.",
+      "next_action": "P47-001: complete competitor, buyer, technical, security and zero-cost economics audit. Issue GO/NO-GO before implementation.",
+      "owner_gate": "public_release"
     }
   ],
   "max_active_builds": 2,
