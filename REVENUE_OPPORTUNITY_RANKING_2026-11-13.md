@@ -146,3 +146,40 @@ Phase 50 will recheck current direct competitors, Getvik category discovery, sel
 Plan: [PHASE_50_GETVIK_EXISTING_PRODUCT_REQUALIFICATION_PLAN_2026-11-13.md](research/PHASE_50_GETVIK_EXISTING_PRODUCT_REQUALIFICATION_PLAN_2026-11-13.md).
 
 **Next task:** P50-001. GO / REPOSITION / NO-GO before any build changes, account action or public listing.
+
+
+## Phase 50 final decision: Getvik Recruitment Revenue Assurance Desk — NO-GO for ₹10 Cr scale
+
+The private Recruitment Agency Revenue Assurance Desk v0.3.0 remains technically built, but direct competitors (MoneyGence, IT Ways, WePlacement, HireXL and CollectedHQ) cover much of placement invoicing, receipts, receivables, cash-based commissions and guarantees, with free/low-price entry tiers. Getvik's visible Business & Finance category mostly contains general guides and low-ticket templates; no specialist agency-finance audience was visible in the captured pages. Getvik itself states that a storefront does not create demand by itself.
+
+At Free-plan fees, net before gateway is ₹440.12 at ₹499, ₹704.72 at ₹799 and ₹881.12 at ₹999. To reach ₹10 Cr PCNE before gateway, refunds and affiliate deductions would require approximately 227,212, 141,901 and 113,493 independent orders respectively. No platform discovery or audience evidence supports those volumes.
+
+**Decision:** no Getvik listing. Keep v0.3.0 private and frozen. Report: [PHASE_50_GETVIK_RECRUITMENT_PRODUCT_FINAL_NO_GO_2026-11-13.md](research/PHASE_50_GETVIK_RECRUITMENT_PRODUCT_FINAL_NO_GO_2026-11-13.md).
+
+## Phase 51 final decision: Orbit Relay / CrazyGames — NO-GO as-is
+
+CrazyGames lists direct rotate-to-connect puzzle competitors:
+- Plumber Pipe Out: 8.8 rating, 4.2K likes / 557 dislikes, 250 levels, hints and undo.
+- Pipe Puzzle: 9.3 rating, 5.1K likes / 631 dislikes, 100 levels and hints.
+
+Their core mechanic is materially similar to Orbit Relay's grid rotation and source-to-destination connection. A circuit theme, generated levels and daily seed are not enough to establish the platform's required originality/distinguishability for Full Launch. Basic Launch offers a non-monetised 7–21-day test with 500-play requirement; Full Launch requires the SDK and editorial/performance selection. CrazyGames publishes indicators such as 10+ minute average playtime, 10–15% Day 1 retention and 80%+ one-minute conversion for top-performing titles. Orbit Relay has no human playtest, retention or real-player evidence.
+
+The last successful CI run #12 tested `fd80cd20...`; the subsequent game code, entry screen and browser viewport tests changed. No exact-head CI pass for the newer source was found.
+
+**Decision:** do not submit or monetise the current build. Preserve the private prototype and freeze features. Report: [PHASE_51_ORBIT_RELAY_CRAZYGAMES_FINAL_NO_GO_2026-11-13.md](research/PHASE_51_ORBIT_RELAY_CRAZYGAMES_FINAL_NO_GO_2026-11-13.md).
+
+CrazyGames remains a possible platform for a future genuinely original game, not this prototype as-is.
+
+## Phase 52 — remaining creator / IP distribution lanes (current research)
+
+The current remaining group to qualify is:
+1. GitHub Sponsors / developer ecosystem and existing open-source assets.
+2. Amazon KDP / original digital publishing.
+3. Stock/design asset licensing marketplaces.
+4. Creator audience and affiliate models only where a real existing audience or platform-native discovery path is evidenced.
+
+No platform is selected yet. P52-001 must compare current official terms, direct competitors, buyer spending evidence, distribution, royalties, payout rules, rights, zero-spend feasibility and order/licence volumes for ₹1Cr/₹10Cr PCNE. Inspect and reuse only existing assets in this canonical repository. No new product/catalogue, new repository, public release, KYC or paid service before a documented GO.
+
+Plan: [PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md](research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md).
+
+Next task: P52-001. If no asset/channel passes the evidence gates, record NO-GO and broaden the revenue-opportunity search instead of forcing a weak asset into market.
