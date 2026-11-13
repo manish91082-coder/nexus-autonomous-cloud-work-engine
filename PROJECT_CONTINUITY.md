@@ -1551,3 +1551,12 @@ Getvik remains the only P1 first-cash pilot. Cashfree Direct is a P2 domestic fa
 - Passed: mission guard/control-plane validation, AI worker safety tests, product smoke tests, Recruitment Revenue Assurance tests, deterministic queue heartbeat, bounded fail-closed AI step and artifact preservation.
 - No provider-backed AI inference was performed; no KYC, terms acceptance, publication, spend or fund movement occurred.
 - This continuity-only commit does not modify control state, runtime code, queue, registries or product artifacts and is outside the worker path filter.
+
+
+### RBI cross-border evidence and exact-HEAD validation — 2026-11-13
+- Commit: `f6c90d86d0bcef3624bda43d962e267675bab23a` — https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/commit/f6c90d86d0bcef3624bda43d962e267675bab23a
+- Added RBI's 01-Nov-2026 PA status and 11-Nov-2026 Master Direction. Cashfree PA-CB E&I and PayPal existing PA-CB are listed as able to operate; Payoneer India appears as a new PA-CB in-principle applicant and cannot operate as a PA-CB until final authorisation.
+- Cashfree International Gateway now recorded as the strongest evidence-backed cross-border route in the registry: cards, Apple Pay, PayPal, multi-currency local bank transfers, 140+ currencies, INR T+2 and FIRS per international payment. Exact merchant category, corridor, pricing and FIRS applicability remain owner-verification gates.
+- Cashfree domestic 0% offer remains GST-bearing and eligibility is not assumed until written confirmation; T+1/T+2 public-page conflict remains conservatively modelled as T+2.
+- GitHub Actions worker run **#152 SUCCESS** on exact commit `f6c90d86d0bcef3624bda43d962e267675bab23a`: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43358060363
+- All control-plane, AI safety, product smoke, Recruitment Revenue Assurance, queue heartbeat, fail-closed bounded-worker and artifact-preservation steps passed. No KYC, legal acceptance, publication, spend or money movement.
