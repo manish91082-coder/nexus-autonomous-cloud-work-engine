@@ -118,8 +118,9 @@ No product build, account registration, payment setup, KYC, contractual acceptan
 - Withdrawable platform balance evidenced: ₹0.
 - Independent paid customer / public listing evidenced in this mission: none.
 - New spend authorised: ₹0.
-- GitHub Actions Worker run #176 succeeded on commit `910b4db6940a32d3ee3e51de36bdceba146fc81b`, not the current observed HEAD.
-- Current observed HEAD before this checkpoint: `16794e0a469b043d66b1f74660cfd88ec4c33f3e`; checked GitHub status and commit-workflow endpoints reported no checks/runs for that HEAD. Do not call it CI-verified.
+- GitHub Actions Worker run #176 succeeded on commit `910b4db6940a32d3ee3e51de36bdceba146fc81b`; this is the last specifically verified worker run currently evidenced in the control plane.
+- Latest observed master HEAD during the continuity audit: `6f8262a1dadcf69f1492ce3c7d05f559d630b99f`. GitHub combined commit-status returned no status contexts for this SHA.
+- The available commit-workflow lookup returns PR-triggered runs only. An empty result does not prove there were no push/manual Actions runs. Exact-HEAD CI for the latest control commits remains **NOT VERIFIED**. Do not attribute Worker run #176 to a later SHA.
 
 ## 7. Continuity protocol
 
