@@ -1,3 +1,74 @@
+# CURRENT CONTINUITY CHECKPOINT — 13 November 2026 (V4)
+
+**Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Branch:** `master`  
+**Current constitution:** [MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md](MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md)  
+**Current phase:** `PHASE_46_REVENUE_PRIORITY_AND_PRODUCT_GAP_QUALIFICATION`
+
+## One mission, one repository
+
+The AI Business Automation workstream and the ₹10 Cr revenue mission are governed by this one canonical repository. Product work is a workstream under the revenue mission, not a separate revenue strategy or separate control plane. No second repository is authorised by this checkpoint.
+
+## Goal and revenue definition
+
+**Primary target:** ₹10,00,00,000 in verified net earnings credited to the owner's seller/creator/platform balances. Bank-settled receipts are tracked separately.
+
+Count only independent paid transactions whose net seller earnings are recorded as earned/credited in the owner's controlled platform account. Exclude pending authorisations, promotional credits, free allowances, self-purchases, disputed/restricted/forfeitable balances, refunds and reversals. Track gross sales, platform-credit earnings, restricted/held balances, withdrawable balance and bank-settled receipts separately. Never count a withdrawal twice.
+
+Tax and payout-method optimisation are deferred. Mandatory seller eligibility, platform terms, KYC gates, data rights and public-release approval remain binding and cannot be bypassed.
+
+## Descending revenue priority
+
+1. Atlassian Marketplace / Forge apps
+2. Shopify App Store
+3. Microsoft Marketplace / AI Apps & Agents
+4. Apify Store / paid Actors
+5. Getvik digital products
+6. CrazyGames / HTML5
+7. GitHub Sponsors, publishing, stock assets, audience and affiliate
+
+Evidence and sources: [REVENUE_OPPORTUNITY_RANKING_2026-11-13.md](REVENUE_OPPORTUNITY_RANKING_2026-11-13.md).
+
+**Important product decision:** Do not clone a Jira Automation JSON cost analyser. Several recently listed direct competitors exist, including a paid Marketplace app and free/local analysers. The AI Business Automation Reviewer remains a hypothesis pending evidence of a distinct recurring paid problem.
+
+## Repository state
+
+- Mission status: ACTIVE.
+- Platform-credited net earnings: ₹0 verified.
+- Bank-settled net receipts: ₹0 verified.
+- New spend authorised: ₹0.
+- Product build concurrency: 1.
+- Recruitment Agency Revenue Assurance Desk v0.3.0: keep private and lower priority; no product-specific paid demand established.
+- MSME Ops Desk Lite, CSV to Action, Message-to-Action Reliability, Revenue Ops Control, Job-to-Cash Control Kit, Travel Revenue Demo and Orbit Relay retain their documented private/hold/archive states.
+- Legacy cloud-work-engine/gig scanners and older physical-sector research are preserved for audit history, not active product execution.
+- AI inference provider remains unconfigured. The five-minute GitHub Actions worker is bounded and fail-closed; it is not a 24/7 autonomous AI product worker.
+
+## Current queue
+
+- `P46-001`: V4 goal, wallet-credit KPI and opportunity order — COMPLETED.
+- `P46-002`: qualify AI Business Automation Reviewer against actual buyer/competitor evidence — READY; next task.
+- `P46-003`: build/test one selected product — BLOCKED until P46-002 passes.
+- `P46-004`: publish selected product — owner/platform gate.
+- `P46-005`: verify first independent buyer earnings and platform-credit evidence.
+
+One active product build at a time. If the leading product has no defendable paid gap, record NO_GO and move to the next ranked platform; do not force a clone.
+
+## Current engineering verification boundary
+
+The last repository HEAD inspected before the V4 documentation commit sequence was `5267a9e4fa00db6012c9af5f1dd01ed8f1a7cde4`. No exact-HEAD workflow run or combined commit status existed for that SHA at the time of inspection. The latest observed worker workflow was run #157 on `49297bff63c1f2b6be93fc48901298ea30b83c8a`, which is not exact-head proof for the later commits. Re-check the live HEAD and CI on each continuation.
+
+## Next action
+
+Continue P46-002: inspect existing automation-related assets in this repository; compare official n8n, Power Automate, Jira and marketplace capabilities; map free and paid competitors; identify one recurring paid value not already commoditised; produce a GO/NO_GO product dossier before building.
+
+---
+
+## Historical continuity archive
+
+The sections below this checkpoint preserve previous project and phase history. Where an older heading, phase, revenue metric or launch order conflicts with V4, use this checkpoint and V4. Do not rewrite history or treat legacy instructions as current.
+ 
+---
+
 # PROJECT CONTINUITY — Nexus Autonomous Cloud Work Engine
 **Canonical working copy:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
 **Original source (read-only, do not modify):** `manish91082-coder/ai-content-system`  
