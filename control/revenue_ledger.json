@@ -1,14 +1,20 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "currency": "INR",
   "verified_realized_net_receipts_inr": 0,
   "entries": [],
   "rules": [
-    "Pending balances are not receipts",
-    "Fiat counts only after settlement",
-    "Unconverted crypto is separately reported until controlled and independently valued",
-    "Never count receipt and conversion twice",
-    "Subtract fees refunds reversals and attributable costs"
+    "Primary goal is verified net earnings credited/earned in the owner's controlled seller/creator/platform balance, after platform commission and attributable runtime/payment costs.",
+    "Pending authorisations, unsettled customer payments, free credits, promo credits, self-purchases, disputed, restricted or forfeitable balances are not counted in primary earnings.",
+    "Record platform_credited, restricted_or_held, withdrawable and bank_settled as separate states.",
+    "A withdrawal from a platform balance to bank is a transfer, not new revenue; never count the same sale twice.",
+    "Subtract refunds, reversals, chargebacks, platform commission, payment processing and attributable runtime/storage/proxy costs.",
+    "For non-INR earnings, retain source currency, amount, FX rate, source and timestamp when expressing INR.",
+    "Tax optimisation and payout-method optimisation are deferred, but mandatory platform eligibility, identity and contractual conditions must not be bypassed."
   ],
-  "updated_at": "2026-11-12"
+  "updated_at": "2026-11-13",
+  "verified_platform_credited_net_earnings_inr": 0,
+  "restricted_or_held_platform_earnings_inr": 0,
+  "withdrawable_platform_balance_inr": 0,
+  "verified_bank_settled_net_receipts_inr": 0
 }
