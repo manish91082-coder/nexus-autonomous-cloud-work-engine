@@ -1,126 +1,70 @@
-# ₹10 Cr Autonomous Revenue Ecosystem
+# ₹10 Cr Autonomous Revenue Ecosystem — Nexus
 
-**Canonical execution and evidence repository for the ₹10 crore autonomous revenue mission.**
-
-## Start here (authority order)
-
-1. [Master Constitution v3.0](MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V3.md) — authoritative scope, payment rails, opportunity scoring, automation and continuity.
-2. [Machine mission state](control/mission_state.json) — current machine-readable phase and execution state.
-3. [Persistent execution queue](control/automation_queue.json) — exact next tasks and dependencies.
-4. [Opportunity registry](control/opportunity_registry.json) — candidate scoring and evidence schema.
-5. [Payout registry](control/payout_registry.json) — bank, wallet, platform and crypto payout evidence.
-6. [Revenue ledger](control/revenue_ledger.json) — verified receipts only.
-7. [Project continuity](PROJECT_CONTINUITY.md) — human-readable cross-thread checkpoint.
-8. [Repository scope audit](REPOSITORY_SCOPE_AUDIT_2026-11-12.md) — legacy/active classification.
+**Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Branch:** `master`  
+**Current authority:** [Master Constitution V4](MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md)
 
 ## Mission
 
-Build multiple independent, Internet-only revenue systems that can be configured once and then operated with maximum practical automation. Human involvement may be required for one-time KYC, account ownership, legal acceptance, payout setup, wallet signing and final publication approval. Recurring manual labour is not the intended business model.
+Build lawful, self-serve, Internet-native products and software that generate repeatable revenue with maximum practical automation.
 
-Target: ₹10,00,00,000 in verified realized net receipts. ₹0 upfront spend by default. The target is ambitious and not guaranteed.
+**Primary target:** ₹10,00,00,000 in verified net earnings credited to the owner's eligible platform seller/creator balances. Bank settlement is tracked separately. Pending, held, promotional, disputed or forfeitable amounts do not count.
 
-## Payment policy
+**Default spend:** ₹0.  
+**Execution model:** One active product build at a time, in descending risk-adjusted revenue opportunity order.  
+**No drift:** no employment, gigs, freelance bidding, cold outreach, spam, fake traffic, unauthorized scraping, recurring manual fulfilment or unsupported revenue claims.
 
-Rail-neutral: accept and evaluate lawful bank, UPI, international transfer, PayPal/Payoneer/Skrill, platform balances, e-wallet and crypto-wallet receipts where country eligibility, compliance, fees, control and real usability are verified. Crypto is separately reconciled and is not automatically counted as bank cash.
+## Start here: authority order
 
-## Execution visibility
+1. [Master Constitution V4](MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md)
+2. [Current mission state](control/mission_state.json)
+3. [Execution queue](control/automation_queue.json)
+4. [Revenue platform ranking and source audit](REVENUE_OPPORTUNITY_RANKING_2026-11-13.md)
+5. [Platform-credited revenue ledger](control/revenue_ledger.json)
+6. [Product registry](control/product_registry.json)
+7. [Opportunity registry](control/opportunity_registry.json)
+8. [Payout registry](control/payout_registry.json)
+9. [Cross-chat continuity](PROJECT_CONTINUITY.md)
+10. [Repository scope and cleanup audit](REPOSITORY_SCOPE_AND_CLEANUP_2026-11-13.md)
 
-- [Execution Status Protocol](EXECUTION_STATUS_PROTOCOL.md) — explains scheduled runs, hourly notifications, status states and the difference between scheduled automation and continuous execution.
-- [Zero-cost continuous worker architecture](research/PHASE_29_ZERO_COST_CONTINUOUS_WORKER_ARCHITECTURE_2026-11-12.md) — selected five-minute bounded cloud execution design, free AI inference constraints, safety gates and acceptance tests.
+Older V1/V2/V3 plans and phase reports remain preserved as historical evidence. V4 is the current operating constitution.
 
-## Automation layers
+## Current checkpoint — 13 November 2026
 
-- ChatGPT scheduled agent runs: strategic research, ranking and supervision.
-- GitHub Actions: five-minute bounded worker is configured. The first integrated push run (43149321969) passed mission validation and 2/2 AI-worker safety tests. The AI step correctly failed closed because owner secrets are absent; no inference request was made.
-- Bounded AI adapter: committed and integrated, but deliberately disabled because no owner-configured zero-billing provider credentials are present.
-- Persistent JSON registries + continuity file: durable memory and recovery across chat-thread limits.
-- Owner gates: KYC, legal, financial, wallet signing, provider secrets, public release and spending remain explicit.
+- Mission phase: **PHASE 46 — Revenue Priority and Product Gap Qualification**.
+- Revenue priority: **Atlassian Marketplace / Forge** is the first platform-level research lane; Shopify, Microsoft Marketplace and Apify follow in the ranked order.
+- The exact Jira Automation cost-analysis niche is **not approved for a clone** because several direct marketplace competitors have appeared.
+- **AI Business Automation Reviewer** is a product hypothesis under research, not a completed or live product.
+- Recruitment Agency Revenue Assurance Desk v0.3.0 remains a private, lower-priority asset; no buyer demand or willingness-to-pay is verified.
+- Verified platform-credited net earnings: **₹0**.
+- Verified bank-settled net receipts: **₹0**.
+- Authorised new spend: **₹0**.
+- No product is publicly live in this mission based on the current evidence.
+- AI inference provider credentials remain unconfigured. The scheduled GitHub Actions worker is a bounded queue/validation mechanism, not a continuously running autonomous reasoning agent.
 
-## Current state
+## Revenue recognition
 
-Phase 36 — product demand validation and release gate. Opportunity registry: 27 candidates across 16 categories. Payout registry: 11 platform payout routes documented, with account-level verification still pending for several. First product MVP, [MSME Ops Desk Lite](products/msme-ops-desk-lite/README.md), has been built as an offline-first HTML tool with Hindi user guide and private listing draft. It is not published and product-market fit is unproven. Realized net receipts remain ₹0; authorized spend remains ₹0.
+The primary metric is platform-credited net earnings after platform commission and attributable runtime/payment costs. Track pending/restricted balances, withdrawable balances and bank-settled cash separately. A withdrawal from a platform balance is not a second sale.
 
-Latest research: [Phase 31 revenue-first pivot](research/PHASE_31_REVENUE_FIRST_PIVOT_AND_MSME_PRODUCT_2026-11-12.md), [Phase 32 product-market fit audit](research/PHASE_32_PRODUCT_MARKET_FIT_AUDIT_2026-11-12.md), and [Phase 33 payout rail revalidation](research/PHASE_33_PAYOUT_RAIL_REVALIDATION_2026-11-12.md).
+## Product sequence
 
-## Scope discipline
+`RESEARCH → BUYER/COMPETITOR GAP → SPEC → MVP → TEST/SECURITY → PRIVATE PACKAGE → OWNER GATES → PUBLISH → PLATFORM-CREDITED EARNINGS → OPTIMISE OR KILL`
 
-No employment, manual gigs, freelance bids, cold outreach, recurring client services, physical/field operations, fake traffic, spam, IP infringement or regulatory evasion. Historical experiments remain archived for auditability.
+A platform ranking does not imply a product is selected. If no defensible paid gap exists, record NO_GO and move to the next ranked lane.
 
+## Existing product dispositions
 
-## Phase 30 autonomous worker
+| Product | Status |
+|---|---|
+| Recruitment Agency Revenue Assurance Desk v0.3.0 | Private, lower-tier validation asset |
+| MSME Ops Desk Lite | Free-sample-only hold |
+| CSV to Action | Private prototype; public release owner-gated |
+| Message-to-Action Reliability | Synthetic technical demo; no live connectors |
+| Revenue Ops Control / Job-to-Cash Control Kit | Duplicate/legacy experiments; frozen |
+| Travel Revenue Demo | Archived |
+| Orbit Relay | Private game experiment; human playtest required |
+| Old bounty/gig/task tooling | Historical/out of active scope |
 
-- [Worker setup and owner secret instructions](AI_WORKER_SETUP.md)
-- [Phase 30 deployment and verification report](research/PHASE_30_BOUNDED_AUTONOMOUS_AI_WORKER_2026-11-12.md)
-- Worker code: `scripts/ai_task_executor.py`; safety tests: `tests/test_ai_task_executor.py`.
-- First integrated CI run: [43149321969](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43149321969), SUCCESS; mission guard PASS; AI worker safety tests 2/2 PASS; heartbeat PASS; artifact uploaded.
-- The run confirmed all five provider secrets were empty. Worker status was `WAITING_FOR_OWNER_CONFIGURATION`; zero inference calls were made. This is correct fail-closed behavior, not productive AI execution.
-- Five-minute schedule is configured; scheduled cron-triggered execution and a 24-hour soak test are still pending verification.
+## Repository safety
 
-
-## First revenue product
-
-- [MSME Ops Desk Lite app](products/msme-ops-desk-lite/index.html)
-- [Hindi user guide](products/msme-ops-desk-lite/USER_GUIDE_HI.md)
-- [Private storefront listing draft](products/msme-ops-desk-lite/LISTING_DRAFT.md)
-- Product CI: [run 43150403509](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43150403509) passed initial product smoke tests; current status remains a free-sample candidate, not a priced/published product.
-
-
-## Phase 32 — Product differentiation
-
-- [Product-market fit audit](research/PHASE_32_PRODUCT_MARKET_FIT_AUDIT_2026-11-12.md)
-- [Product registry](control/product_registry.json)
-- [Recruitment Agency Revenue Assurance Desk](products/recruitment-agency-revenue-assurance/README.md) — private MVP, no candidate PII, not published.
-- [MSME Ops Desk Lite](products/msme-ops-desk-lite/README.md) — keep as a free-sample candidate; generic functionality is crowded by free/low-priced competitors.
-- Integrated CI [43151200515](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43151200515) passed: mission guard 17/17 checks, AI worker 2/2 tests, MSME product 3/3 tests, recruitment product 3/3 tests.
-- AI provider execution remains disabled by design because provider credentials are not configured. No inference request was made. Revenue remains ₹0.
-
-
-## Phase 33 — Revenue channel qualification and product validation
-
-- [Recruitment Agency Revenue Assurance Desk v0.2.0](products/recruitment-agency-revenue-assurance/README.md) adds installment receipts, recruiter commission payable/paid reconciliation, guarantee event history, receivable ageing and client concentration.
-- Product formula/date, privacy/offline and JavaScript checks passed in [GitHub Actions run 43157319205](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43157319205). Browser/device accessibility QA and real buyer demand are still open.
-- [Payout rail revalidation report](research/PHASE_33_PAYOUT_RAIL_REVALIDATION_2026-11-12.md) corrects Topmate's current INR withdrawal timeline/minimum and compares Topmate, Gumroad and Payhip+Razorpay.
-- Topmate is not instant payout: first withdrawal unlocks after 7 days from first paid booking; INR request processing is within 7 days; ₹500 minimum, with ₹20 fee below that threshold.
-- No product is published, no platform account/terms/KYC activated, no spend authorized. Realized receipts ₹0.
-- Mission phase: `PHASE_33_REVENUE_CHANNEL_QUALIFICATION_AND_PRODUCT_VALIDATION`.
-
-
-## Phase 34 — Marketplace selection and private product package
-
-- [Marketplace selection report](research/PHASE_34_MARKETPLACE_SELECTION_AND_PRIVATE_PRODUCT_PACKAGE_2026-11-12.md): Getvik Free selected as the first validation storefront; ownstreet is secondary after a first paid sale.
-- Opportunity registry now contains 29 candidates across 17 categories; payout registry contains 14 documented routes. Several account-level and payout unknowns remain explicit.
-- Recruitment Agency Revenue Assurance Desk v0.2.0 has a private ZIP package. [Packaging workflow](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159154725) passed and uploaded artifact `recruitment-agency-revenue-assurance-v0.2.0-private` (ID 13916748314, SHA-256 `8922555b32ab88ffabccff39ac33dfae9797b7528e6b445867ca17cc55b70b34`). It expires 12 Dec 2026.
-- [Getvik owner launch packet](products/recruitment-agency-revenue-assurance/GETVIK_LAUNCH_PACKET.md) documents fees, payout terms, KYC/legal gates and a no-spend demand test. [License draft](products/recruitment-agency-revenue-assurance/LICENSE_DRAFT.md) is not approved for publication.
-- Cross-browser Playwright QA for Chromium and Firefox is configured in [workflow](.github/workflows/recruitment-browser-qa.yml); latest run [43159499045](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159499045) must be checked before claiming pass.
-- Getvik is only a validation candidate. No account, KYC, terms acceptance, public listing or paid plan has been activated. Realized net receipts remain ₹0; authorized spend ₹0.
-
-
-## Phase 35 — Product-market fit and differentiation gate
-
-- [Demand and competitive risk audit](research/PHASE_35_RECRUITMENT_CASHFLOW_DEMAND_RISK_AUDIT_2026-11-12.md) found anecdotal late-payment/guarantee pain but material feature overlap with agency software already offering invoice/commission/guarantee controls.
-- Decision: keep Recruitment Agency Revenue Assurance Desk v0.2.0 private; do not publish until the due-date/payment-linked guarantee differentiator is implemented and buyer demand is tested.
-- Next build P35-001: invoice date/due date, due-date-based receivable ageing, late-payment detection and a user-configured guarantee-payment clause flag. It will show operational warnings only, not legal interpretations.
-- Getvik Free remains first validation channel but public launch is blocked on owner-only KYC, legal acceptance, payout declaration and explicit publication approval.
-- Latest FAQ-enabled private package: [run 43159877452](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159877452), artifact ID 13917108363, SHA-256 `7d8e802de63c31ba68ccd64b668c8b6143b0ea5057178754f404898772dc1cba`.
-- Browser QA [run 43159499045](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43159499045) passed Chromium and Firefox.
-- No product published, no KYC/legal acceptance, no paid plan or spend. Realized net receipts remain ₹0.
-
-
-## Phase 35 — Payment-linked guarantee risk v0.3.0
-
-- Added invoice reference/date/due date, due-date-based receivable ageing, late-payment detection and a user-configured guarantee-payment clause flag.
-- Legal boundary: the product shows operational warnings only; it never interprets a contract or declares a guarantee void/valid.
-- Formula/mission CI [43160680889](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160680889) passed.
-- Chromium + Firefox browser QA [43160901456](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901456) passed.
-- Private v0.3.0 package [43160901484](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43160901484) passed. Artifact ID 13917713420, SHA-256 `e3ece9f15c3738e1ecea86cccd6b39799b5a60cf41140dfb0a61f67548421195`.
-- Product remains private. Getvik KYC, payout declaration, legal acceptance and explicit public-release approval are owner-only gates.
-- Realized receipts ₹0; authorized spend ₹0.
-
-
-## Phase 36 — Candidate scan and revenue channel ranking
-
-- [29-candidate scorecard](research/PHASE_36_29_CANDIDATE_SCORECARD_2026-11-12.md) completed: 29 candidates, 17 categories, 28 scored, one hard-gate rejected. No candidate scores 80+.
-- Top bounded validation channels: Getvik 78, ownstreet 74, Topmate 72, Payhip+Razorpay 70. Scores are preliminary; product-specific demand is not proven.
-- P29-004 candidate scan, P29-005 pilot selection and P29-006 owner setup packet are complete.
-- Product v0.3.0 is built, browser-tested and privately packaged. It remains unpublished pending owner-only Getvik KYC, payout declaration, legal acceptance and explicit public-release approval.
-- No account or terms activated, no spend. Verified realized receipts ₹0.
+Keep one canonical repository. Preserve historical files; archive rather than delete. Do not mass-delete, rewrite history, create a duplicate repository, or modify any other repository. All owner-only steps and public/financial actions remain approval-gated.
