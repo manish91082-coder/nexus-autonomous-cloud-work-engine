@@ -80,3 +80,41 @@ Source dossier: [PHASE_47_SHOPIFY_FLOW_ACTION_GATEWAY_QUALIFICATION_2026-11-13.m
 - Shopify Flow Retry-After developer discussion: https://community.shopify.dev/t/retry-after-is-ignored-in-flow-action-response/19808
 
 No revenue forecast or willingness-to-pay amount is assigned. Actual verified platform-credited earnings remain ₹0.
+
+
+## 5. Phase 47 final product decision: Shopify Flow Action Reliability Gateway
+
+**Decision: NO-GO. Do not build or publish.**
+
+The custom partner-app Flow task surface is limited to Shopify Plus stores. Grow, Advanced and Plus stores have the standard Send HTTP Request action, which already includes configurable retry/fail/ignore behaviour. Shopify also supports manual retry of workflow runs.
+
+Existing substitutes include Trigger.dev's Shopify webhook pipeline (HMAC verification, deduplication, delivery storage and replay), open-source Inngest with free execution/event quotas, Cloudflare Queues with a free daily operation allowance, Temporal, and developers' own queue implementations. Only two notable Flow custom-action 202/429/Retry-After problem threads were found; they establish engineering friction, not paid intent. The addressable developer segment is unquantified and no exact product-specific willingness-to-pay evidence exists.
+
+Full decision record: [PHASE_47_SHOPIFY_FLOW_GATEWAY_FINAL_NO_GO_2026-11-13.md](research/PHASE_47_SHOPIFY_FLOW_GATEWAY_FINAL_NO_GO_2026-11-13.md).
+
+Shopify remains platform rank #2 for a different product with a proven paid gap. The Flow gateway concept is closed.
+
+## 6. Current next platform: Microsoft Marketplace / AI Apps & Agents
+
+Microsoft Marketplace is platform rank #3 and is now the active qualification lane. Current public Marketplace pages show 4,000+ AI apps and agents, 11,000+ models and a 2× increase in AI-solution purchases. This is platform-level evidence, not evidence for a specific new product.
+
+Important requirements for a self-serve transactable SaaS offer:
+- Microsoft Entra ID / MSA authentication and SSO.
+- A live onboarding/landing page.
+- SaaS Fulfillment API integration for subscription provisioning, activation, changes and cancellation.
+- A connection webhook that must be available 24/7.
+- Microsoft reports a 3% store service fee for applicable transactions and a USD $50 payment threshold; credit-card earnings mature after a 30-day hold.
+
+A Contact Me listing has fewer technical requirements but is lead-generation, not the self-serve transactable revenue model required here. Microsoft Marketplace enrollment and publisher verification are owner-gated; no enrollment or spend is authorised.
+
+Sources:
+- https://www.microsoft.com/en-us/marketplace/business/ai-apps-agents
+- https://learn.microsoft.com/en-us/partner-center/marketplace-offers/plan-saas-offer
+- https://learn.microsoft.com/en-us/partner-center/marketplace-offers/pc-saas-fulfillment-apis
+- https://learn.microsoft.com/en-us/partner-center/marketplace-offers/pc-saas-fulfillment-webhook
+- https://learn.microsoft.com/en-us/partner-center/marketplace-offers/payout-faq
+
+Qualification plan: [PHASE_48_MICROSOFT_MARKETPLACE_PRODUCT_QUALIFICATION_PLAN_2026-11-13.md](research/PHASE_48_MICROSOFT_MARKETPLACE_PRODUCT_QUALIFICATION_PLAN_2026-11-13.md).
+
+Next task: P48-001. Identify one narrow, recurring, high-value buyer problem that Microsoft-native Copilot, Teams, Power Platform and incumbent vendors do not already solve. Audit competitors, verify buyer demand, cost/hosting, security and transactable requirements. GO/NO-GO before build. If no gap passes, move to Apify Store (rank #4).
+
