@@ -118,3 +118,31 @@ Qualification plan: [PHASE_48_MICROSOFT_MARKETPLACE_PRODUCT_QUALIFICATION_PLAN_2
 
 Next task: P48-001. Identify one narrow, recurring, high-value buyer problem that Microsoft-native Copilot, Teams, Power Platform and incumbent vendors do not already solve. Audit competitors, verify buyer demand, cost/hosting, security and transactable requirements. GO/NO-GO before build. If no gap passes, move to Apify Store (rank #4).
 
+
+
+## Phase 49 final decision: Apify Store niche qualification — NO-GO
+
+**Decision:** Do not build or publish a generic raw-data / extraction Actor from the niches audited.
+
+A total of 27 live Apify Store listings were reviewed across web/RAG, PDF/OCR, ClinicalTrials.gov, SEC/EDGAR, Federal Register, USAspending/SAM.gov, domain RDAP and ATS job-board data.
+
+- Apify's own RAG Web Browser showed 212K total users, 30K MAU and 4.7/35 reviews; its Website Content Crawler showed 177K total users, 12K MAU and 4.6/235 reviews. These are strong incumbents for generic web extraction.
+- Eight direct PDF extractors compete at about $1–$5 per 1,000 records; most showed 1–2 total users and zero reviews.
+- ClinicalTrials, SEC/EDGAR, Federal Register and government-contract data each have multiple near-identical Actors using public APIs, mostly priced $0.50–$12 per 1,000 records, with very low public adoption.
+- One Federal Register industry-signal Actor is priced at $70/1,000, but its listing showed 1 total user, 1 MAU and 0 ratings. Price is not demand evidence.
+- Apify PPE creator revenue is 80% of eligible paid event revenue minus platform usage costs. Free-plan user events do not create creator PPE earnings. Therefore public MAU does not prove paid buyers.
+- The $1M Challenge is over (31-Jan-2026); not a current prize route. The $500 article program is editorially selected manual content work, not a self-serve revenue product.
+
+Full competitor/terms/economics dossier: [PHASE_49_APIFY_STORE_NICHE_QUALIFICATION_NO_GO_2026-11-13.md](research/PHASE_49_APIFY_STORE_NICHE_QUALIFICATION_NO_GO_2026-11-13.md).
+
+No Actor was built, run, paid for or published. No Apify account/KYC or usage credits were activated.
+
+## Current next lane: Getvik digital products — requalify existing asset
+
+The next rank is Getvik. The existing Recruitment Agency Revenue Assurance Desk v0.3.0 remains private. Its implementation and prior browser QA are not evidence of customer demand. Prior competitor work found feature overlap with agency CRM/ATS suites and free spreadsheets; prices ₹499/₹799/₹999 remain hypotheses.
+
+Phase 50 will recheck current direct competitors, Getvik category discovery, seller terms/fees and the realistic order volume required for meaningful net earnings. The product will not be published solely because it is already built. Manual outreach, calls, demos and bespoke consulting are not acceptable as the acquisition model.
+
+Plan: [PHASE_50_GETVIK_EXISTING_PRODUCT_REQUALIFICATION_PLAN_2026-11-13.md](research/PHASE_50_GETVIK_EXISTING_PRODUCT_REQUALIFICATION_PLAN_2026-11-13.md).
+
+**Next task:** P50-001. GO / REPOSITION / NO-GO before any build changes, account action or public listing.
