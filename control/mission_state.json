@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_44_REVENUE_FIRST_EXECUTION",
+  "phase": "PHASE_45_MULTI_RAIL_REVENUE_MODEL_AUDIT",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V3.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 2,
   "execution_mode": "FIVE_MINUTE_GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED; CHATGPT_SUPERVISOR_AND_REPOSITORY_EXECUTION; REVENUE_FIRST_PRODUCT_BUILD",
   "last_verified_head": "c945ec955efc4d375e5a332e9363f8559d02fed7",
-  "current_focus": "Phase 44 Revenue First Execution. Exact current master source revision c945ec955efc4d375e5a332e9363f8559d02fed7 independently verified on 2026-11-13: Browser QA #38 run 43336080037 SUCCESS on exact HEAD; Chromium and Firefox passed interaction, persistence, backup/restore, accessibility labels, keyboard navigation, mobile overflow and offline checks. Package #44 run 43336079863 SUCCESS on exact HEAD; artifact ID 13995934806, wrapper SHA-256 8b901c3c13dda12139ba912950baaada2c46378e1eb676593bbeeced1fb62382. Worker #142 run 43336079914 SUCCESS on exact HEAD; control-plane validation passed, AI safety tests 2/2, MSME smoke tests 3/3, recruitment tests 7/7 incl HTML escaping; queue poll POLL_OK, eligible_task_count 0, selected_task null; MISSION_AI_ENABLED unset and no inference request. Product remains private/unpublished; Getvik onboarding, terms acceptance, PAN/KYC, own-name bank/UPI, payout declaration and explicit publication approval are owner-only gates. No new product build or broad research authorized; first-sale experiment starts only after owner gates. Secondary CSV to Action release remains owner-gated; Orbit Relay held. GitHub worker remains bounded deterministic scheduled poller, not continuous autonomous reasoning. Verified realized net receipts INR 0; authorized spend INR 0; paid customers evidenced 0. This state update records the verified source revision; the metadata commit created by this update and its triggered CI must be evaluated independently.",
+  "current_focus": "Phase 45 multi-rail model audit and owner-action packets completed. Getvik remains the only first-cash pilot and P44-004 remains owner-gated. New evidence adds Cashfree direct INR checkout (P2), Paddle software MoR (P2, $100 monthly payout threshold, UPI Autopay listed but ordinary one-time UPI not verified) and Lemon Squeezy (P2 hold due India Stripe invite-only and higher PayPal fees). PayPal and Payoneer are payout endpoints, not demand channels. Crypto remains NOT ACTIVATED: FIU-IND activity-based registration, AML/CDD/Travel Rule, unhosted-wallet risk and tax classification require written legal/CA/AD-bank review. No parallel launch, new product build, paid plan, KYC, legal acceptance or publication. Latest source before this update was 41a241cb6cb0dede49e00903db3bf2ee39d4b6e0; latest worker #143 SUCCESS was on 4be1c5823bfb36c1623f81f2ede886462026ae83, not exact current HEAD. ₹0 verified realized net receipts; ₹0 authorized spend; no evidenced paying customer.",
   "owner_gates": [
     "KYC",
     "tax_declarations",
@@ -22,5 +22,15 @@
     "spend",
     "AI_provider_account_and_secret_setup"
   ],
-  "updated_at": "2026-11-13"
+  "updated_at": "2026-11-13",
+  "current_source_head_before_update": "41a241cb6cb0dede49e00903db3bf2ee39d4b6e0",
+  "latest_workflow_before_update": {
+    "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
+    "run_number": 143,
+    "run_id": 43338302672,
+    "conclusion": "success",
+    "head_sha": "4be1c5823bfb36c1623f81f2ede886462026ae83",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43338302672",
+    "note": "Successful run is not on current source HEAD 41a241c; the current docs-only Getvik marketplace-fit commit had no workflow run. The P45 control-plane commit will trigger the worker for exact-commit validation."
+  }
 }

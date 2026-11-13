@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "policy": "Rail-neutral; India eligibility and lawful usability must be verified per platform/account.",
+  "policy": "Rail-neutral; India eligibility and lawful usability must be verified per platform/account. FIU-IND registration is an AML reporting status, not a general financial-services licence or government endorsement. No crypto rail may be activated without transaction-specific legal, provider and bank review.",
   "rails": [
     "BANK_INR",
     "UPI",
@@ -324,6 +324,145 @@
       "official_source_url": "https://help.ko-fi.com/hc/en-us/articles/115003980093-How-do-I-get-paid",
       "captured_at": "2026-11-12",
       "verification_status": "OFFICIAL_PROVIDER_CONSTRAINTS_CAPTURED_ACCOUNT_LEVEL_STRIPE_PENDING"
+    },
+    {
+      "provider": "Cashfree Payments",
+      "platform": "Direct India merchant checkout, Payment Gateway and UPI",
+      "country_eligibility": "Indian merchant onboarding subject to KYC and approval; new-merchant promotional pricing advertised through 31-Mar-2027 for eligible domestic sales up to ₹20 lakh",
+      "account_type": "Merchant",
+      "kyc_requirements": "Owner/business KYC, bank verification and business-category approval; owner-only",
+      "rail": "BANK_INR",
+      "currency": "INR",
+      "minimum": "No universal public payout minimum confirmed; account-specific",
+      "fees": "Eligible new merchants: 0% promotional platform fee up to ₹20 lakh sales through 31-Mar-2027; published standard rate 1.95% when offer is not applicable. Confirm GST and mode-specific exclusions in written offer.",
+      "hold_period": "Risk review, chargeback and merchant-category holds may apply; account-specific",
+      "settlement_schedule": "Default T+2 per Cashfree UPI gateway documentation; optional instant settlement within 15 minutes at additional cost",
+      "fx_or_conversion": "International collection in 140+ currencies advertised; India export and settlement terms require account-level written confirmation",
+      "reversibility_and_chargebacks": "Refunds, chargebacks, fraud reviews and settlement reserves may reverse or delay funds",
+      "official_source_url": "https://www.cashfree.com/payment-gateway-charges/",
+      "official_sources": [
+        "https://www.cashfree.com/payment-gateway-charges/",
+        "https://www.cashfree.com/upi-payment-gateway/"
+      ],
+      "captured_at": "2026-11-13",
+      "verification_status": "OFFICIAL_PRICING_UPI_AND_SETTLEMENT_CAPTURED_ACCOUNT_LEVEL_PENDING"
+    },
+    {
+      "provider": "Paddle Billing",
+      "platform": "Merchant of Record / reseller billing for SaaS and software",
+      "country_eligibility": "India is absent from the current unsupported-country list; supplier onboarding and risk approval remain mandatory",
+      "account_type": "Software supplier",
+      "kyc_requirements": "Supplier account verification, product/domain approval, payout settings and owner acceptance of current Master Services Agreement; owner-only",
+      "rail": "INTERNATIONAL_BANK_WIRE",
+      "currency": "USD/EUR/GBP/AUD/CAD balance currencies; exact India bank payout currency to confirm",
+      "minimum": "USD 100 (or GBP 100 / EUR 100 according to balance currency)",
+      "fees": "5% + USD 0.50 per Paddle Checkout; USD/EUR/GBP 15 SWIFT fee may apply when payout currency differs from bank-country local currency; bank/Payoneer fees may apply",
+      "hold_period": "No on-demand withdrawal; fixed per-sale hold duration not disclosed in reviewed payout page; risk/compliance review may delay release",
+      "settlement_schedule": "Monthly; balance threshold checked on 1st, sent by 15th, up to 3 working days to arrive",
+      "fx_or_conversion": "SWIFT and bank FX charges may apply; Payoneer account fees apply if that route is selected",
+      "reversibility_and_chargebacks": "Paddle handles buyer order support and applicable sales-tax administration under its agreement; supplier remains responsible for product delivery, product legality, IP warranties and other supplier obligations",
+      "official_source_url": "https://www.paddle.com/help/manage/get-paid/when-and-how-do-i-get-paid",
+      "official_sources": [
+        "https://www.paddle.com/help/start/intro-to-paddle/which-countries-are-supported-by-paddle",
+        "https://www.paddle.com/help/start/intro-to-paddle/which-payment-methods-do-you-support",
+        "https://www.paddle.com/help/start/intro-to-paddle/what-am-i-not-allowed-to-sell-on-paddle",
+        "https://www.paddle.com/legal/terms",
+        "https://www.paddle.com/help/manage/get-paid/is-there-a-fee-taken-for-payouts"
+      ],
+      "captured_at": "2026-11-13",
+      "verification_status": "OFFICIAL_COUNTRY_AUP_METHODS_FEES_AND_PAYOUT_CAPTURED_ACCOUNT_LEVEL_PENDING"
+    },
+    {
+      "provider": "Lemon Squeezy",
+      "platform": "Merchant of Record / digital goods and SaaS",
+      "country_eligibility": "India listed for bank payouts; Stripe new-account onboarding from India is invite-only since May 2024; without pre-approved Stripe, PayPal payout is required",
+      "account_type": "Merchant",
+      "kyc_requirements": "Identity and payout verification; owner-only",
+      "rail": "PAYPAL",
+      "currency": "USD to PayPal; local bank currency if Stripe bank payout is approved",
+      "minimum": "USD 50",
+      "fees": "5% + USD 0.50; +1.5% international; +1.5% PayPal; +0.5% subscriptions; PayPal payout outside US 3% capped at USD 30",
+      "hold_period": "13 days",
+      "settlement_schedule": "Twice monthly (1st/15th); funds available 14th/28th; bank arrival 1–5 days",
+      "fx_or_conversion": "PayPal payout always USD; PayPal/bank FX may apply. Stripe bank payout outside US is 1% per payout if account is pre-approved.",
+      "reversibility_and_chargebacks": "Refunds, chargebacks, account review and product-policy enforcement apply",
+      "official_source_url": "https://docs.lemonsqueezy.com/help/getting-started/getting-paid",
+      "official_sources": [
+        "https://docs.lemonsqueezy.com/help/getting-started/supported-countries",
+        "https://docs.lemonsqueezy.com/help/getting-started/fees",
+        "https://docs.lemonsqueezy.com/help/marketplace/guidelines"
+      ],
+      "captured_at": "2026-11-13",
+      "verification_status": "OFFICIAL_INDIA_PAYOUT_FEES_AND_HOLD_CAPTURED_STRIPE_ACCESS_PENDING"
+    },
+    {
+      "provider": "PayPal India",
+      "platform": "International commercial payment wallet and automatic bank withdrawal",
+      "country_eligibility": "India accounts support international payments only; domestic India-to-India commercial receipt is not supported",
+      "account_type": "Business/merchant",
+      "kyc_requirements": "PAN, verified bank account and business/purpose information as required by PayPal; owner-only",
+      "rail": "PAYPAL",
+      "currency": "Multiple received currencies; automatic bank withdrawal and conversion may apply",
+      "minimum": "No public minimum confirmed in reviewed India withdrawal documentation",
+      "fees": "International commercial receipt 4.40% + fixed fee (USD 0.30 / INR ₹3, depending on currency received); currency conversion includes a spread set by PayPal",
+      "hold_period": "No universal fixed hold stated; transfers are subject to review and can be delayed or stopped",
+      "settlement_schedule": "Balance automatically transfers daily to preferred Indian bank; allow up to 5 business days for bank credit",
+      "fx_or_conversion": "PayPal sets transaction exchange rate with a conversion spread; bank conversion/returns may add cost",
+      "reversibility_and_chargebacks": "Disputes, chargebacks, compliance reviews and returned-withdrawal fees may apply",
+      "official_source_url": "https://www.paypal.com/in/cshelp/article/how-do-i-transfer-funds-to-my-bank-account-help394",
+      "official_sources": [
+        "https://securepayments.paypal.com/in/business/paypal-business-fees",
+        "https://www.paypal.com/in/cshelp/article/how-do-i-transfer-funds-to-my-bank-account-help394",
+        "https://www.paypal.com/in/cshelp/article/where-can-i-find-paypals-currency-calculator-and-exchange-rates-help109"
+      ],
+      "captured_at": "2026-11-13",
+      "verification_status": "OFFICIAL_INDIA_INTERNATIONAL_FEES_AND_AUTO_WITHDRAWAL_CAPTURED_ACCOUNT_LEVEL_PENDING"
+    },
+    {
+      "provider": "Payoneer India",
+      "platform": "Cross-border receiving accounts and marketplace payout wallet",
+      "country_eligibility": "India local bank withdrawal documented; products and corridors depend on account eligibility",
+      "account_type": "Business/individual account subject to Payoneer terms",
+      "kyc_requirements": "Identity, business and bank verification; owner-only",
+      "rail": "PAYONEER",
+      "currency": "USD/EUR/GBP and other supported balances; India bank withdrawal in INR",
+      "minimum": "No universal public India withdrawal minimum confirmed; account-level",
+      "fees": "India local-bank withdrawal from a different-currency balance: 1%–4% of amount; annual account fee USD 29.95 if receipts are below USD 6,000 in any 12 consecutive months. Receiving non-local currency into a receiving account may carry 1% (minimum USD 1).",
+      "hold_period": "Platform origin may impose holds; Payoneer compliance reviews may delay access",
+      "settlement_schedule": "For India customers, received funds are automatically withdrawn to local Indian bank within 48 hours per India pricing page",
+      "fx_or_conversion": "Currency corridor and account-specific conversion fees apply",
+      "reversibility_and_chargebacks": "Platform reversals, compliance holds and bank return charges may apply",
+      "official_source_url": "https://www.payoneer.com/en-in/about/pricing/",
+      "official_sources": [
+        "https://www.payoneer.com/en-in/about/pricing/",
+        "https://www.payoneer.com/pricing/"
+      ],
+      "captured_at": "2026-11-13",
+      "verification_status": "OFFICIAL_INDIA_WITHDRAWAL_AND_FEES_CAPTURED_ACCOUNT_LEVEL_PENDING"
+    },
+    {
+      "provider": "Direct VDA / stablecoin wallet (no provider selected)",
+      "platform": "Potential crypto receipt rail; not activated",
+      "country_eligibility": "Transaction-specific legal classification unresolved; notified VDA service-provider activities require FIU-IND reporting-entity registration and PMLA controls",
+      "account_type": "Not selected",
+      "kyc_requirements": "No account or wallet setup authorized; legal counsel, CA and AD-bank review required before provider selection",
+      "rail": "CRYPTO_WALLET",
+      "currency": "VDA / stablecoin; no fiat conversion route verified",
+      "minimum": "Not applicable",
+      "fees": "Network, spread, exchange, custody, compliance, withdrawal and tax costs unknown",
+      "hold_period": "No verified settlement or release policy",
+      "settlement_schedule": "On-chain confirmation is not bank-settled INR; no verified end-to-end payout path",
+      "fx_or_conversion": "No compliant conversion and bank-reconciliation route verified",
+      "reversibility_and_chargebacks": "On-chain transfers may be irreversible; refunds, source-of-funds and wallet screening create additional risk",
+      "official_source_url": "https://fiuindia.gov.in/pdfs/downloads/VDA08012026.pdf",
+      "official_sources": [
+        "https://fiuindia.gov.in/pdfs/downloads/VDA08012026.pdf",
+        "https://sansad.in/getFile/loksabhaquestions/annex/187/AU5805_lMTYNK.pdf?source=pqals",
+        "https://wm.incometaxindia.gov.in/w/section-194-78",
+        "https://www.incometaxindia.gov.in/hi/w/tds-rates"
+      ],
+      "captured_at": "2026-11-13",
+      "verification_status": "LEGAL_CLASSIFICATION_UNRESOLVED_NOT_ACTIVATED"
     }
   ],
   "required_fields": [
@@ -356,5 +495,5 @@
     "conversion_evidence",
     "compliance_review"
   ],
-  "updated_at": "2026-11-12"
+  "updated_at": "2026-11-13"
 }

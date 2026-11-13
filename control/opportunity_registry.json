@@ -203,20 +203,33 @@
       "tier": "P3",
       "status": "HOLD_FOR_EVIDENCE",
       "score": 32,
-      "score_confidence": "Low: no marketplace discovery, India tax/compliance and conversion complexity; only consider after legal review and real buyer demand.",
+      "score_confidence": "Low: FIU-IND's current activity-based VDA framework and the Finance Ministry's 30-Mar-2026 answer materially increase compliance uncertainty; classification of a merchant's own-product receipt remains a legal question.",
       "payout_evidence": {
-        "rail": "crypto wallet",
-        "source": "https://www.incometaxindia.gov.in/documents/20117/42998/Taxation-of-Virtual-Digital-Asset-VDA_2026-01-06_06-43-57_cfe04a_en.pdf/153706c8-7b5c-77d4-fc56-624c50ece1b0?t=1774007412959&version=1.0"
+        "india_eligibility": "No direct merchant crypto rail is verified. FIU-IND says registration is mandatory for VDA service providers engaged in notified activities, with obligations activity-based and applicable irrespective of physical presence. FIU registration is not a financial-sector licence or government endorsement.",
+        "payout_methods": "No provider or wallet selected. Hosted exchange, payment processor and self-custody wallet routes each require separate legal/provider verification.",
+        "minimum": "Not applicable until a lawful provider and settlement path are confirmed.",
+        "settlement": "On-chain confirmation is not the same as controlled, reconciled INR bank settlement. Fiat conversion, withdrawal, source-of-funds checks and bank acceptance remain unverified.",
+        "fees": "Network fees, exchange spread, custody, conversion, withdrawal, compliance, tax and banking costs are unknown.",
+        "demand_signal": "No product-specific demand or buyer-acquisition evidence. Crypto is a settlement method, not a customer-acquisition model.",
+        "source": "https://fiuindia.gov.in/pdfs/downloads/VDA08012026.pdf",
+        "sources": [
+          "https://fiuindia.gov.in/pdfs/downloads/VDA08012026.pdf",
+          "https://sansad.in/getFile/loksabhaquestions/annex/187/AU5805_lMTYNK.pdf?source=pqals",
+          "https://wm.incometaxindia.gov.in/w/section-194-78",
+          "https://www.incometaxindia.gov.in/hi/w/tds-rates"
+        ]
       },
-      "automation_fit": "potentially high",
+      "automation_fit": "Low-to-medium for an unattended revenue system: notified VDA service-provider activities require KYC/CDD, ongoing monitoring, sanctions screening, Travel Rule data, suspicious-transaction reporting, recordkeeping and risk controls; these are not one-time setup tasks.",
       "unknowns": [
-        "Indian legal/tax classification",
-        "FIU/provider compliance",
-        "demand",
-        "custody/conversion",
-        "network fees"
+        "Written Indian legal opinion on whether the exact merchant acceptance, custody, transfer and conversion model falls within notified VDA SP activities",
+        "Specific provider's current FIU-IND registration status and whether it is operational/conditionally onboarded",
+        "Whether the chosen bank/AD bank will accept and reconcile the exact inward/outward flow",
+        "CA review of Income-tax Act 2025 VDA provisions and transaction-specific TDS scope",
+        "Wallet custody, counterparty screening, Travel Rule, refunds and source-of-funds controls"
       ],
-      "note": "No token speculation, airdrop farming or compliance evasion."
+      "note": "HOLD / NOT ACTIVATED. No self-custody address, P2P, stablecoin or smart-contract collection is approved. FIU-IND states that smart contracts do not relieve controlling parties of VDA service-provider obligations, unhosted-wallet transfers pose significant risk, and ICO/ITO-related activities are strongly discouraged. Obtain written legal, CA and AD-bank advice before any future evaluation.",
+      "india_eligibility": "Unresolved for direct acceptance of a merchant's own-product payment. Any activity that falls within notified VDA service-provider operations is subject to FIU-IND registration and PMLA obligations. Do not infer that registration of an exchange makes a direct wallet route compliant.",
+      "last_revalidated": "2026-11-13"
     },
     {
       "id": "ITCH-IO-COLLECTED-PAYOUTS",
@@ -813,6 +826,178 @@
       ],
       "note": "Possible international-only fallback if PayPal/Stripe account is approved; not a primary India rail.",
       "last_revalidated": "2026-11-12"
+    },
+    {
+      "id": "CASHFREE-DIRECT-INR-CHECKOUT",
+      "category": "digital_goods_software",
+      "platform": "Cashfree Direct Checkout / Payment Links",
+      "tier": "P2",
+      "status": "VALIDATION",
+      "score": 68,
+      "score_confidence": "Medium: official pricing, UPI and settlement documentation captured; new-merchant offer eligibility and merchant-account approval remain account-specific.",
+      "score_components": {
+        "demand": 10,
+        "payout_certainty_and_speed": 17,
+        "automation": 18,
+        "net_economics_and_zero_cost": 14,
+        "distribution_and_differentiation": 3,
+        "risk_and_compliance": 6
+      },
+      "official_terms_url": "https://www.cashfree.com/payment-gateway-charges/",
+      "captured_at": "2026-11-13",
+      "india_eligibility": "India merchant onboarding is supported subject to business/merchant KYC and approval. Cashfree's current pricing page advertises a new-merchant promotional 0% platform fee for eligible domestic sales up to ₹20 lakh through 31 March 2027.",
+      "payout_methods": [
+        "UPI_COLLECTION",
+        "BANK_INR_SETTLEMENT"
+      ],
+      "minimum_threshold": "No universal public payout minimum confirmed in the reviewed pages; merchant-account terms apply.",
+      "hold_and_settlement": "Cashfree's UPI gateway page states default T+2 settlement. Instant Settlement can make funds accessible within 15 minutes, but is an additional-cost option and is not included in the ₹0-spend baseline.",
+      "fees_and_fx": "Promotional 0% platform fee for eligible new merchants up to ₹20 lakh in sales through 31 March 2027; standard published platform fee 1.95% after/when offer is not applicable. Confirm GST, mode-specific exclusions and written offer terms before relying on the promotion.",
+      "demand_evidence": "NPCI reported 25,466.70 million UPI transactions worth ₹31,52,929.46 crore in October 2026 across 758 live banks. This proves rail scale, not demand for our product. Direct checkout has no marketplace discovery; own traffic is required.",
+      "time_to_first_sale": "Unknown and traffic-dependent. Payment Links can shorten checkout setup but do not create buyers.",
+      "automation_percent": null,
+      "recurring_human_work": "Low after checkout and delivery automation, but ongoing support, refunds, chargebacks, merchant compliance and software maintenance remain.",
+      "unit_economics": "Eligible promotional platform fee can be 0% within the cap and dates; otherwise the published standard rate is 1.95% before any applicable taxes/other fees. No ad spend or paid instant-settlement option is included.",
+      "ip_and_policy_status": "Merchant must sell lawful original products and meet the gateway's prohibited-business and KYC rules. Product ownership and customer terms remain the merchant's responsibility.",
+      "decision": "VALIDATION",
+      "payout_evidence": {
+        "india_eligibility": "Indian merchant onboarding; KYC and account approval required. New-merchant promotional eligibility must be confirmed.",
+        "payout_methods": "UPI collection; settlement to merchant bank account.",
+        "minimum": "Not stated in reviewed public docs; account terms apply.",
+        "settlement": "Default T+2; instant settlement within 15 minutes is optional and paid.",
+        "fees": "0% promotional platform fee for eligible new merchants up to ₹20 lakh through 31-Mar-2027; standard 1.95% published rate otherwise.",
+        "demand_signal": "NPCI UPI volume is macro payment-rail evidence only; no built-in discovery and no product-specific demand.",
+        "source": "https://www.cashfree.com/payment-gateway-charges/",
+        "sources": [
+          "https://www.cashfree.com/payment-gateway-charges/",
+          "https://www.cashfree.com/upi-payment-gateway/",
+          "https://www.npci.org.in/product/upi/product-statistics?financialYear=2026-27"
+        ]
+      },
+      "automation_fit": "High for payment collection plus webhook-based automatic delivery; unlike marketplaces, Cashfree does not supply buyer discovery.",
+      "unknowns": [
+        "Whether the exact business and merchant category qualify for the promotional 0% offer",
+        "Offer exclusions, GST treatment and mode-specific fees in the merchant agreement",
+        "Account-specific T+2/hold/reserve settings",
+        "No independent acquisition funnel or product-specific demand proof"
+      ],
+      "note": "Potential independent INR/UPI fallback after the Getvik experiment. Do not launch a second checkout in parallel before first-sale evidence."
+    },
+    {
+      "id": "PADDLE-SOFTWARE-SUBSCRIPTIONS",
+      "category": "developer_tools_subscription",
+      "platform": "Paddle Billing / Merchant of Record",
+      "tier": "P2",
+      "status": "VALIDATION",
+      "score": 66,
+      "score_confidence": "Medium: official country, AUP, payment-method, fee and payout terms captured; seller approval, India account payout route and product-specific demand remain unverified.",
+      "score_components": {
+        "demand": 10,
+        "payout_certainty_and_speed": 14,
+        "automation": 18,
+        "net_economics_and_zero_cost": 12,
+        "distribution_and_differentiation": 5,
+        "risk_and_compliance": 7
+      },
+      "official_terms_url": "https://www.paddle.com/legal/terms",
+      "captured_at": "2026-11-13",
+      "india_eligibility": "India is not on Paddle's current unsupported-country list. This is not account approval; Paddle may request further information or delay/restrict payment for risk and compliance. India seller onboarding remains owner-only.",
+      "payout_methods": [
+        "INTERNATIONAL_BANK_WIRE",
+        "PAYONEER"
+      ],
+      "minimum_threshold": "USD 100 minimum (or GBP 100 / EUR 100 when the balance currency is GBP/EUR); threshold is configurable upward, not downward.",
+      "hold_and_settlement": "No on-demand withdrawal. Balance is assessed on the 1st of each month; if threshold is met, Paddle sends by the 15th; bank/Payoneer arrival may take up to 3 working days. No fixed per-transaction hold duration is published in the reviewed payout page.",
+      "fees_and_fx": "Paddle Checkout fee is 5% of the suggested retail price plus USD 0.50. If payout currency differs from the bank country's local currency, a USD/EUR/GBP 15 SWIFT fee may apply, plus receiving-bank charges. Payoneer fees apply if selected.",
+      "demand_evidence": "Paddle is a billing/reseller rail, not a guaranteed customer-acquisition channel. The official supported-method list includes UPI Autopay; it does not establish ordinary one-time UPI availability for Indian buyers. No product-specific buyer demand has been demonstrated.",
+      "time_to_first_sale": "Not estimable from public platform evidence. Requires supplier approval, product approval, integration and independent acquisition; no marketplace discovery is assumed.",
+      "automation_percent": null,
+      "recurring_human_work": "Low but non-zero after setup: software maintenance, security updates, customer support, refund/chargeback evidence and policy reviews.",
+      "unit_economics": "At a USD 20 checkout, 5% + USD 0.50 = USD 1.50 (7.5%) before payout/FX/bank costs. At USD 5, the same fee is USD 0.75 (15%); Paddle directs sellers with products below USD 10 to request custom pricing.",
+      "ip_and_policy_status": "Paddle's AUP is software-first and excludes human services, digital marketplaces, donations/sponsorships and certain content-generation or automated people-decision products. It specifically restricts automated decision-making or categorization of people. Current Recruitment Agency Revenue Assurance Desk scope must remain financial/commission administration only, with no candidate scoring, ranking or hiring recommendation. Seller must warrant IP rights and review the 6 Oct 2026 Master Services Agreement before acceptance.",
+      "decision": "VALIDATION",
+      "payout_evidence": {
+        "india_eligibility": "India absent from unsupported-country list; seller approval and account-level verification pending.",
+        "payout_methods": "Wire transfer or Payoneer; not on-demand.",
+        "minimum": "USD 100 (or GBP/EUR 100 according to balance currency).",
+        "settlement": "Monthly: threshold on day 1, sent by day 15, up to 3 working days after sent.",
+        "fees": "5% + USD 0.50 checkout; possible USD/EUR/GBP 15 SWIFT fee when payout currency differs from bank-country currency; bank and Payoneer fees may apply.",
+        "demand_signal": "No platform-discovery assumption; UPI Autopay is listed, but standard one-time UPI is not verified by the current official methods page.",
+        "source": "https://www.paddle.com/help/manage/get-paid/when-and-how-do-i-get-paid",
+        "sources": [
+          "https://www.paddle.com/help/start/intro-to-paddle/which-countries-are-supported-by-paddle",
+          "https://www.paddle.com/help/start/intro-to-paddle/which-payment-methods-do-you-support",
+          "https://www.paddle.com/help/start/intro-to-paddle/what-am-i-not-allowed-to-sell-on-paddle",
+          "https://www.paddle.com/legal/terms",
+          "https://www.paddle.com/pricing",
+          "https://www.paddle.com/help/manage/get-paid/is-there-a-fee-taken-for-payouts"
+        ]
+      },
+      "automation_fit": "High after a stable SaaS product, hosted checkout, subscription lifecycle and webhook-driven access control exist; it does not automate product-market fit or customer acquisition.",
+      "unknowns": [
+        "India seller account approval and exact legal-entity/individual eligibility",
+        "Exact INR bank conversion, receiving-bank fees and SWIFT treatment for the chosen payout route",
+        "Any account-specific reserve, review or payout delay",
+        "Paddle AUP approval for the exact recruitment-finance product and its user/data model",
+        "No product-specific buyer demand or willingness-to-pay evidence"
+      ],
+      "note": "High-upside global SaaS lane for a later stage, not the first-cash channel. Do not open an account, accept terms or build an integration before the Getvik first-sale gate and owner review."
+    },
+    {
+      "id": "LEMON-SQUEEZY-MERCHANT-OF-RECORD",
+      "category": "digital_goods_software",
+      "platform": "Lemon Squeezy",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 60,
+      "score_confidence": "Medium-low: official India payout, fee, hold and marketplace eligibility documents captured; Stripe invite access, product approval and demand remain unverified.",
+      "score_components": {
+        "demand": 9,
+        "payout_certainty_and_speed": 10,
+        "automation": 18,
+        "net_economics_and_zero_cost": 9,
+        "distribution_and_differentiation": 6,
+        "risk_and_compliance": 8
+      },
+      "official_terms_url": "https://docs.lemonsqueezy.com/help/getting-started/supported-countries",
+      "captured_at": "2026-11-13",
+      "india_eligibility": "India appears in the bank-payout country list, but the official page states that from May 2024 Stripe only accepts new Indian accounts on an invite-only basis. Without a pre-approved Stripe account, Indian merchants must use PayPal payouts.",
+      "payout_methods": [
+        "BANK_INR_IF_STRIPE_PREAPPROVED",
+        "PAYPAL_USD"
+      ],
+      "minimum_threshold": "USD 50 minimum payout.",
+      "hold_and_settlement": "Net sales are held for 13 days; payouts are created twice monthly on the 1st and 15th, made available on the 14th and 28th, and can take 1–5 days to appear in the bank.",
+      "fees_and_fx": "Base platform fee 5% + USD 0.50 on total order value; +1.5% international, +1.5% PayPal and +0.5% subscriptions. Payout outside the US: 1% via Stripe bank transfer or 3% capped at USD 30 via PayPal. PayPal payout is always USD.",
+      "demand_evidence": "Marketplace discovery is not immediate: listing requires at least 3 sales in the seller's own store or USD 50 in own-store sales. No product-specific demand evidence.",
+      "time_to_first_sale": "Unknown; own store and external acquisition are required before marketplace listing eligibility.",
+      "automation_percent": null,
+      "recurring_human_work": "Low but non-zero after setup: product maintenance, customer support, refund/chargeback handling and ongoing policy checks.",
+      "unit_economics": "Higher friction than Paddle for an India seller using PayPal: base 5% + USD 0.50, plus 1.5% international and 1.5% PayPal transaction fee, plus 3% PayPal payout fee outside the US; subscription and FX effects may add more.",
+      "ip_and_policy_status": "Full current prohibited-product and supplier terms require owner review before any acceptance. Do not assume AI-generated services or third-party content are allowed without written policy confirmation.",
+      "decision": "HOLD_FOR_EVIDENCE",
+      "payout_evidence": {
+        "india_eligibility": "India listed for bank payouts; new Stripe accounts from India are invite-only since May 2024; PayPal fallback required absent pre-approval.",
+        "payout_methods": "Bank transfer if Stripe pre-approved; otherwise verified PayPal account, USD.",
+        "minimum": "USD 50.",
+        "settlement": "13-day hold; twice-monthly payout cycles; 1–5 days to bank after payout.",
+        "fees": "5% + USD 0.50; +1.5% international; +1.5% PayPal; +0.5% subscription; payout fee 1% Stripe bank outside US or 3% PayPal outside US.",
+        "demand_signal": "Marketplace listing requires 3 own-store sales or USD 50 own-store sales; no instant marketplace demand.",
+        "source": "https://docs.lemonsqueezy.com/help/getting-started/getting-paid",
+        "sources": [
+          "https://docs.lemonsqueezy.com/help/getting-started/supported-countries",
+          "https://docs.lemonsqueezy.com/help/getting-started/fees",
+          "https://docs.lemonsqueezy.com/help/marketplace/guidelines"
+        ]
+      },
+      "automation_fit": "High for digital delivery and subscription webhooks once the store and product are approved; discovery and buyer acquisition remain external.",
+      "unknowns": [
+        "Whether the owner already has a Stripe India account pre-approved by Stripe",
+        "Account-specific PayPal and bank payout verification",
+        "Product acceptance and exact applicable fees shown in the seller dashboard",
+        "No product-specific demand evidence"
+      ],
+      "note": "Backup Merchant of Record only. Do not create a store or integrate it in parallel with the Getvik first-sale experiment."
     }
   ],
   "required_evidence": [
@@ -840,5 +1025,5 @@
     "REJECTED",
     "ARCHIVED"
   ],
-  "updated_at": "2026-11-12"
+  "updated_at": "2026-11-13"
 }

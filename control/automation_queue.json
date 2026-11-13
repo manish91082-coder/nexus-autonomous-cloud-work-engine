@@ -1232,8 +1232,73 @@
         "No paid plan, ad spend or unapproved transaction"
       ],
       "blocker": "Private account/KYC/banking/legal actions and public publication require explicit owner action and approval."
+    },
+    {
+      "id": "P45-001",
+      "title": "Requalify the full one-time-setup revenue-model universe across India, international wallet and crypto settlement rails",
+      "priority": "P0",
+      "status": "COMPLETED",
+      "depends_on": [
+        "P44-003"
+      ],
+      "idempotency_key": "phase45-multi-rail-revenue-model-audit-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-13",
+      "completed_at": "2026-11-13",
+      "acceptance": [
+        "Review all existing opportunity-registry candidates and add only new models supported by current official evidence",
+        "Separate customer acquisition from settlement and record time-to-first-sale as unknown where evidence does not support a forecast",
+        "Verify India eligibility, fees, payout thresholds, holds, settlement and platform rules for domestic and international rails",
+        "Audit AI/IP rules and India VDA/FIU compliance",
+        "Preserve ₹0 authorized spend and do not perform owner-only actions"
+      ],
+      "evidence": {
+        "report": "research/PHASE_45_MULTI_RAIL_REVENUE_MODEL_AUDIT_2026-11-13.md",
+        "candidates_reviewed_before": "34",
+        "new_candidates": [
+          "CASHFREE-DIRECT-INR-CHECKOUT",
+          "PADDLE-SOFTWARE-SUBSCRIPTIONS",
+          "LEMON-SQUEEZY-MERCHANT-OF-RECORD"
+        ],
+        "existing_candidate_revalidated": "DIRECT-CRYPTO-WALLET-LICENSING",
+        "decision": "Getvik remains first-cash P1; Cashfree direct and Paddle are P2 validation lanes; Lemon Squeezy is backup/hold; no crypto rail is currently qualified for activation.",
+        "sources": [
+          "https://www.cashfree.com/payment-gateway-charges/",
+          "https://www.paddle.com/help/manage/get-paid/when-and-how-do-i-get-paid",
+          "https://docs.lemonsqueezy.com/help/getting-started/getting-paid",
+          "https://www.paypal.com/in/cshelp/article/how-do-i-transfer-funds-to-my-bank-account-help394",
+          "https://www.payoneer.com/en-in/about/pricing/",
+          "https://fiuindia.gov.in/pdfs/downloads/VDA08012026.pdf",
+          "https://sansad.in/getFile/loksabhaquestions/annex/187/AU5805_lMTYNK.pdf?source=pqals"
+        ]
+      }
+    },
+    {
+      "id": "P45-002",
+      "title": "Prepare exact owner-action packets and risk-adjusted activation sequence for domestic, international and VDA rails",
+      "priority": "P0",
+      "status": "COMPLETED",
+      "depends_on": [
+        "P45-001"
+      ],
+      "idempotency_key": "phase45-owner-action-packets-and-rail-sequence-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-13",
+      "completed_at": "2026-11-13",
+      "acceptance": [
+        "Prepare Getvik first-sale owner packet without performing KYC, terms acceptance or publication",
+        "Prepare conditional Cashfree and Paddle owner checks without creating accounts or integrating",
+        "Document PayPal and Payoneer as payout endpoints, not customer-acquisition models",
+        "Prepare a no-go crypto compliance gate without opening wallets, selecting providers or moving funds",
+        "Name the next highest-priority owner gate and keep the ledger at settled net receipts only"
+      ],
+      "evidence": {
+        "packet": "strategy/PHASE_45_REVENUE_RAIL_DECISION_AND_OWNER_ACTION_PACKET_2026-11-13.md",
+        "next_task": "P44-004",
+        "status": "All packets prepared privately; no account, KYC, terms, public release, spend or money movement performed."
+      }
     }
   ],
   "dead_letter": [],
-  "updated_at": "2026-11-12"
+  "updated_at": "2026-11-13"
 }
