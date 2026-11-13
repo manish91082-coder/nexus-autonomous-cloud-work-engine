@@ -27,44 +27,49 @@ Build lawful, self-serve, Internet-native products and software that generate re
 9. [Cross-chat continuity](PROJECT_CONTINUITY.md)
 10. [Repository scope and cleanup audit](REPOSITORY_SCOPE_AND_CLEANUP_2026-11-13.md)
 
-Older V1/V2/V3 plans and old phase reports remain preserved as history. V4 is authoritative.
+Older V1/V2/V3 plans and phase reports are preserved as history. V4 is authoritative.
 
 ## Current checkpoint — 13 November 2026
 
-- Mission phase: **PHASE 47 — Shopify Flow Action Gateway Qualification**.
-- Platform order: Shopify App Store is platform rank #2 after Atlassian Marketplace / Forge. The ranking is based on platform-scale evidence, not guaranteed product sales.
-- **Phase 46 decision:** Generic AI Business Automation Reviewer is **NO-GO**. n8n, Microsoft Power Platform, Make, Atlassian, Datvero, Pulse, FlowOversee and free static-review tools already cover the generic proposed features.
-- **Phase 47 candidate:** Shopify Flow Action Reliability Gateway. Research only; no build approved. It may solve a specific developer-side problem around custom Flow action endpoints, HMAC, action_run_id idempotency, retries and durable job state. Paid demand and defensible differentiation remain unproven.
+- Mission phase: **PHASE 48 — Microsoft Marketplace Product Qualification**.
+- Platform order: Atlassian Marketplace / Forge (rank #1), Shopify App Store (rank #2), Microsoft Marketplace AI Apps & Agents (rank #3), Apify Store (rank #4).
+- Phase 46: Generic AI Business Automation Reviewer is **NO-GO**. Native n8n, Power Platform and Make features plus Datvero, Pulse, FlowOversee and free static review tools cover the generic proposal.
+- Phase 47: Shopify Flow Action Reliability Gateway is **NO-GO**. Custom partner Flow tasks are Plus-only, native retry/HTTP actions and durable-execution substitutes exist, and no paid buyer evidence was established.
+- Phase 48 candidate: Microsoft Marketplace AI app/agent. Research only; no product selected and no build approved.
 - Recruitment Agency Revenue Assurance Desk v0.3.0 remains a private lower-priority asset.
 - Verified platform-credited net earnings: **₹0**.
 - Verified bank-settled net receipts: **₹0**.
 - Authorised new spend: **₹0**.
-- No product is publicly live in this mission based on current evidence.
-- Shopify public App Store registration has a one-time USD $19 fee under current terms. It has not been paid or authorised.
-- AI inference provider credentials remain unconfigured. The scheduled GitHub Actions worker is bounded validation/queue infrastructure, not an always-on autonomous reasoning agent.
+- No public product listing is verified in this mission.
+- Microsoft transactable SaaS requires a live onboarding page, Entra SSO, SaaS Fulfillment APIs and a 24/7 connection webhook; do not claim this is a zero-cost hosted service without measuring it.
+- AI inference provider credentials remain unconfigured. The GitHub Actions worker is bounded validation/queue infrastructure, not an always-on autonomous reasoning agent.
 
 ## Revenue recognition
 
 The primary KPI is verified platform-credited net earnings after platform share and attributable usage/payment costs. Pending, promotional, restricted, disputed or forfeitable balances do not count. Track restricted/held, withdrawable and bank-settled funds separately. A withdrawal is not a second sale.
 
-Tax and payout-method optimisation remain deferred; mandatory platform eligibility, terms, identity, data rights and owner approvals are not bypassed.
+Tax and payout-method optimisation remain deferred; mandatory seller eligibility, terms, identity, rights and approvals are not bypassed.
 
 ## Current execution sequence
 
 `RESEARCH → BUYER/COMPETITOR GAP → TECHNICAL/ECONOMIC FEASIBILITY → PRIVATE MVP → SECURITY/QA → OWNER/PLATFORM GATES → PUBLISH → PLATFORM-CREDITED EARNINGS → OPTIMISE OR KILL`
 
-- P46-002 completed with NO-GO for the generic reviewer.
-- P47-001 is the only READY task: qualify the Shopify Flow Action Reliability Gateway.
-- P47-002 is blocked until P47-001 returns GO.
-- P47-004 publication is owner-gated.
-- P47-005 measures independent paid transactions and platform-credited net earnings.
+- P46-002: Generic automation reviewer — COMPLETED, NO-GO.
+- P47-001: Shopify Flow gateway — COMPLETED, NO-GO. P47-002 through P47-005 cancelled.
+- P48-001: Microsoft Marketplace product qualification — READY; only current task.
+- P48-002: Private MVP — BLOCKED until P48-001 passes.
+- P48-004: Public listing — owner-gated.
+- P48-005: First independent transaction and PCNE verification.
+
+If Microsoft Marketplace has no defensible paid gap or has unacceptable hosting/SSO/fulfillment cost, record NO-GO and move to Apify Store. Do not build for the sake of activity.
 
 ## Existing product dispositions
 
 | Product | Status |
 |---|---|
 | AI Business Automation Reviewer (generic) | NO-GO; not built |
-| Shopify Flow Action Reliability Gateway | Research only; not built |
+| Shopify Flow Action Reliability Gateway | NO-GO; not built |
+| Microsoft Marketplace AI app/agent | Research only; no product selected |
 | Recruitment Agency Revenue Assurance Desk v0.3.0 | Private lower-tier validation asset |
 | MSME Ops Desk Lite | Free-sample-only hold |
 | CSV to Action | Private prototype; public release owner-gated |
