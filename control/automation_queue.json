@@ -1289,6 +1289,21 @@
           "source": "https://developer.paddle.com/concepts/payment-methods/upi/",
           "findings": "Paddle officially supports UPI for one-time purchases and subscriptions in India, processed in INR; seller does not need a local Indian bank account or UPI merchant account. This is buyer checkout, not seller payout.",
           "decision": "Indian buyer UPI one-time and subscription checkout is confirmed. Seller payout remains wire/Payoneer with USD 100 minimum monthly threshold. Paddle candidate remains HOLD_FOR_EVIDENCE due AUP financial-services/payment-services category gate."
+        },
+        "rbi_cross_border_status": {
+          "source": "https://www.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=4236",
+          "date": "2026-11-01",
+          "findings": "RBI status table: Cashfree is listed as existing PA-CB able to operate (also in RBI authorised list as PA-CB E&I); PayPal Payments Private Limited is listed as existing PA-CB able to operate; Payoneer India Private Limited appears among new PA-CB applications with in-principle authorisation, which cannot operate as PA-CB until final authorisation.",
+          "decision": "Cashfree is the strongest evidenced India cross-border collection rail in this audit; PayPal is a verified existing PA-CB; Payoneer remains a wallet/platform-payout route only pending exact-entity verification."
+        },
+        "cashfree_international_gateway": {
+          "source": "https://www.cashfree.com/international-payment-gateway/",
+          "findings": "140+ currencies; international cards, Apple Pay, PayPal, multi-currency local bank transfers; INR settlement typically T+2; FIRS per international payment; 2.69% anniversary offer or 2.99% standard card rate. RBI authorised PA-CB E&I independently appears in RBI list.",
+          "sources": [
+            "https://www.cashfree.com/international-payment-gateway/",
+            "https://www.rbi.org.in/Scripts/PublicationsView.aspx?id=12043",
+            "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12896"
+          ]
         }
       }
     },

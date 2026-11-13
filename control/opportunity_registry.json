@@ -845,15 +845,20 @@
       },
       "official_terms_url": "https://www.cashfree.com/payment-gateway-charges/",
       "captured_at": "2026-11-13",
-      "india_eligibility": "India merchant onboarding is supported subject to business/merchant KYC and approval. Cashfree's current pricing page advertises a new-merchant promotional 0% platform fee for eligible domestic sales up to ₹20 lakh through 31 March 2027.",
+      "india_eligibility": "RBI's current authorised-entity list identifies Cashfree Payments India Private Limited as an authorised PA-CB for export and import (E&I). RBI's Master Direction on Payment Aggregators was updated 11-Nov-2026. Merchant onboarding, KYC, product approval and permitted FEMA current-account transaction scope still apply.",
       "payout_methods": [
         "UPI_COLLECTION",
-        "BANK_INR_SETTLEMENT"
+        "DOMESTIC_CARDS",
+        "BANK_INR_SETTLEMENT",
+        "INTERNATIONAL_CARDS",
+        "APPLE_PAY",
+        "PAYPAL_CHECKOUT",
+        "MULTI_CURRENCY_LOCAL_BANK_TRANSFERS"
       ],
       "minimum_threshold": "No universal public payout minimum confirmed in the reviewed pages; merchant-account terms apply.",
-      "hold_and_settlement": "Published pages differ: the UPI gateway page states default T+2, while Cashfree's new-merchant offer page advertises T+1 for eligible merchants. Treat settlement as account/offer-specific and budget conservatively at T+2 until the owner receives written confirmation. Instant settlement is optional and paid.",
-      "fees_and_fx": "Eligible new merchants: 0% platform fee on first ₹20 lakh cumulative eligible domestic GMV through 31-Mar-2027; this does not mean zero transaction cost. Cashfree's official offer explainer says GST on the standard 1.95% platform fee may still be charged even while the platform fee is waived (illustrative ₹351 GST per ₹1 lakh eligible GMV). Standard rate after/when ineligible: 1.95% + applicable GST. International cards are excluded from the domestic offer; published international rate is 2.99% + GST. Instant settlement starts at 0.30% + GST and is excluded from the ₹0 spend plan.",
-      "demand_evidence": "NPCI reported 25,466.70 million UPI transactions worth ₹31,52,929.46 crore in October 2026 across 758 live banks. This proves rail scale, not demand for our product. Direct checkout has no marketplace discovery; own traffic is required.",
+      "hold_and_settlement": "Domestic: current pricing page advertises next-day/T+1 for eligible festive-offer merchants; general UPI documentation states T+2. Use T+2 as conservative planning assumption until the merchant agreement confirms the configured cycle. International payments settle in INR typically T+2 and FIRS is issued per payment. Instant Settlements are optional, start at 0.30% + GST and depend on account risk/limits.",
+      "fees_and_fx": "Domestic: current Cashfree pricing page advertises 0% platform fee for eligible new merchants on first ₹20 lakh cumulative domestic GMV through 31-Mar-2027; GST on standard 1.95% fee is still charged (official example ₹351 per ₹1 lakh). Standard domestic rate 1.95% + applicable GST. International cards: 2.69% anniversary promotional rate (if eligible) or 2.99% standard; PayPal through Cashfree checkout uses standard PayPal pricing with no additional Cashfree integration fee; multi-currency local bank transfer and custom routes require written quote. Offer eligibility has conflicting official signup-window descriptions, so assume standard pricing until owner receives written confirmation.",
+      "demand_evidence": "NPCI UPI scale is large, and Cashfree International Gateway offers cards, Apple Pay, PayPal and multi-currency bank transfer collection across 140+ currencies. This reduces payment friction but provides no product discovery; our product-specific demand remains unproven.",
       "time_to_first_sale": "Unknown and traffic-dependent. Payment Links can shorten checkout setup but do not create buyers.",
       "automation_percent": null,
       "recurring_human_work": "Low after checkout and delivery automation, but ongoing support, refunds, chargebacks, merchant compliance and software maintenance remain.",
@@ -861,19 +866,23 @@
       "ip_and_policy_status": "Merchant must sell lawful original products and meet the gateway's prohibited-business and KYC rules. Product ownership and customer terms remain the merchant's responsibility.",
       "decision": "VALIDATION",
       "payout_evidence": {
-        "india_eligibility": "Indian merchant onboarding; KYC and account approval required. New-merchant promotional eligibility must be confirmed.",
-        "payout_methods": "UPI collection; settlement to merchant bank account.",
+        "india_eligibility": "RBI's authorised-entity list identifies Cashfree Payments India Private Limited as PA-CB E&I (export and import). RBI Master Direction on PA was updated 11-Nov-2026. Merchant KYC, category approval and FEMA-permitted current-account transaction scope still apply.",
+        "payout_methods": "Domestic UPI/cards to INR bank settlement; international cards, Apple Pay and PayPal checkout; multi-currency local bank transfers in 30+ currencies. Cashfree says international acceptance spans 140+ currencies and settles INR.",
         "minimum": "Not stated in reviewed public docs; account terms apply.",
-        "settlement": "Published pages conflict: general UPI gateway page says T+2; current new-merchant offer page advertises T+1 for eligible merchants. Use T+2 as conservative planning assumption until written account-specific terms confirm T+1.",
-        "fees": "0% platform fee on first ₹20 lakh cumulative eligible domestic GMV for eligible new merchants through 31-Mar-2027; GST on standard 1.95% platform fee may still be charged (Cashfree official example: ₹351 per ₹1 lakh GMV). Standard 1.95% + GST otherwise. International cards: 2.99% + GST; optional instant settlement starts at 0.30% + GST.",
-        "demand_signal": "NPCI UPI volume is macro payment-rail evidence only; no built-in discovery and no product-specific demand.",
+        "settlement": "Domestic offer page advertises T+1/next-day for eligible new merchants; general UPI page states T+2, so plan T+2 pending written account terms. International payments settle INR typically T+2; FIRS issued per international payment.",
+        "fees": "Domestic promotional 0% platform fee on first ₹20 lakh cumulative eligible domestic GMV through 31-Mar-2027, but GST on standard 1.95% fee remains (official example ₹351 per ₹1 lakh). Standard domestic 1.95% + applicable GST. International cards: 2.69% promotional anniversary rate or 2.99% standard; PayPal checkout uses standard PayPal pricing and no extra Cashfree integration fee; Instant Settlements from 0.30% + GST. Written quote required for local bank transfer and exact FX.",
+        "demand_signal": "UPI October-2026 rail scale plus Cashfree international collection across 140+ currencies, cards, Apple Pay, PayPal and local bank transfers. These are payment capabilities, not product demand or marketplace discovery.",
         "source": "https://www.cashfree.com/payment-gateway-charges/",
         "sources": [
           "https://www.cashfree.com/payment-gateway-charges/",
           "https://www.cashfree.com/upi-payment-gateway/",
           "https://www.npci.org.in/product/upi/product-statistics?financialYear=2026-27",
           "https://www.cashfree.com/blog/payment-gateway-offers/",
-          "https://www.cashfree.com/instant-settlements/"
+          "https://www.cashfree.com/instant-settlements/",
+          "https://www.cashfree.com/international-payment-gateway/",
+          "https://www.rbi.org.in/Scripts/PublicationsView.aspx?id=12043",
+          "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12896",
+          "https://www.cashfree.com/blog/cheapest-payment-gateway-in-india/"
         ]
       },
       "automation_fit": "High for payment collection plus webhook-based automatic delivery; unlike marketplaces, Cashfree does not supply buyer discovery.",
@@ -882,7 +891,9 @@
         "Offer exclusions, GST treatment and mode-specific fees in the merchant agreement",
         "Account-specific T+2/hold/reserve settings",
         "No independent acquisition funnel or product-specific demand proof",
-        "Cashfree public UPI page says T+2 while the new-merchant offer page advertises T+1; obtain written account-specific settlement confirmation."
+        "Cashfree public UPI page says T+2 while the new-merchant offer page advertises T+1; obtain written account-specific settlement confirmation.",
+        "Cashfree's public offer pages differ on new-merchant signup cutoff; verify exact eligibility and first ₹20 lakh cumulative cap in writing.",
+        "International PayPal, Apple Pay, multi-currency bank-transfer pricing, GST, FX and FIRS must be confirmed for the exact merchant category and corridor."
       ],
       "note": "Potential independent INR/UPI fallback after the Getvik experiment. Do not launch a second checkout in parallel before first-sale evidence.",
       "last_revalidated": "2026-11-13"

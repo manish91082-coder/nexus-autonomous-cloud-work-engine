@@ -80,3 +80,11 @@ Only the last item counts toward realized net receipts.
 - Paddle developer documentation confirms UPI for one-time purchases and subscriptions in INR for Indian buyers; seller does not need an Indian bank/UPI merchant account: https://developer.paddle.com/concepts/payment-methods/upi/
 - Seller payout remains wire or Payoneer, minimum USD 100, monthly by the 15th. UPI buyer collection is not INR seller payout.
 - Candidate remains HOLD_FOR_EVIDENCE because the AUP prohibits regulated financial services/advice and payment services; written product-category approval for the recruitment-agency receivable/commission SaaS is still required.
+
+
+### RBI PA-CB status and Cashfree international route — 13-Nov-2026
+- RBI's 01-Nov-2026 PA status table lists Cashfree and PayPal as existing PA-CB entities able to operate; Payoneer India appears as a new PA-CB in-principle applicant that cannot operate as PA-CB until final authorisation.
+- Cashfree is listed by RBI as PA-CB E&I. Its International Gateway supports international cards, Apple Pay, PayPal, 140+ currencies, INR T+2 and FIRS per payment; international card fee 2.69% promotional or 2.99% standard.
+- Domestic Cashfree 0% offer still has GST on standard 1.95% fee basis; offer signup eligibility conflicts across official pages and must be confirmed in writing. T+1 offer vs T+2 general UPI page: budget T+2.
+- Payoneer remains a possible platform payout wallet only after exact entity/service verification, not a verified independent India merchant-collection PA-CB.
+- Sources: https://www.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=4236 ; https://www.rbi.org.in/Scripts/PublicationsView.aspx?id=12043 ; https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12896 ; https://www.cashfree.com/international-payment-gateway/

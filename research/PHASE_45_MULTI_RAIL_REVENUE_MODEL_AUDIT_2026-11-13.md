@@ -86,6 +86,10 @@ Official pages:
 | Cashfree Direct | Eligible new merchants के लिए promotional 0% platform fee up to ₹20 lakh sales, offer till 31-Mar-2027; published standard platform rate 1.95% when offer not applicable | UPI gateway default T+2; instant settlement within 15 minutes is optional/paid; public universal minimum not confirmed | Payment Links/checkout; **no marketplace discovery** | **P2 fallback** |
 
 Cashfree official sources:
+- RBI authorised PA-CB E&I list: https://www.rbi.org.in/Scripts/PublicationsView.aspx?id=12043
+- RBI PA Master Direction updated 11-Nov-2026: https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12896
+- RBI PA-CB status table as of 01-Nov-2026: https://www.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=4236
+- International Gateway: https://www.cashfree.com/international-payment-gateway/
 - Pricing: https://www.cashfree.com/payment-gateway-charges/
 - UPI gateway and settlement: https://www.cashfree.com/upi-payment-gateway/
 
@@ -336,3 +340,50 @@ This supersedes the earlier uncertainty based only on the broader payment-method
 - **Approval:** Paddle's AUP financial-services/payment-services gate still applies. The exact recruitment-agency receivable/commission SaaS remains HOLD_FOR_EVIDENCE until written product-category approval.
 
 The commercial candidate remains score 63 / P2 / HOLD_FOR_EVIDENCE. No account or integration is authorized.
+
+
+## 15. RBI cross-border status audit — 13-Nov-2026
+
+### Current regulatory source
+
+RBI's **Master Direction on Regulation of Payment Aggregators**, updated **11-Nov-2026**, defines PA-CB activity as aggregation of cross-border payments for current-account transactions not prohibited under FEMA, for onboarded merchants through e-commerce mode. A payment aggregator is not interchangeable with a mere payment gateway: a PA handles/settles collected funds, while a PG routes processing without handling funds.
+- https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12896
+
+RBI's official status table **as on 01-Nov-2026** identifies:
+- **Cashfree Payments India Private Limited:** existing PA-CB entity able to operate; the RBI authorised-entity list separately identifies Cashfree as PA-CB Export & Import (E&I).
+- **PayPal Payments Private Limited:** existing PA-CB entity able to operate.
+- **Payoneer India Private Limited:** listed under new PA-CB applications with in-principle authorisation; the table explicitly says new PAs cannot operate until final authorisation.
+
+Sources:
+- RBI PA status as of 01-Nov-2026: https://www.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=4236
+- RBI authorised PA list: https://www.rbi.org.in/Scripts/PublicationsView.aspx?id=12043
+
+**Interpretation guard:** Payoneer's RBI PA-CB status does not automatically invalidate every marketplace payout or global wallet service. It does mean we must not treat Payoneer India as a verified independent India merchant-acquiring/cross-border collection rail. The exact contracting entity and platform-payout service must be checked. Prefer a bank-wire payout or a provider with a clearly verified India PA-CB route until the owner confirms the exact Payoneer route.
+
+### Cashfree is now the strongest evidence-backed cross-border gateway candidate
+
+Cashfree's International Payment Gateway official page states:
+- acceptance from 170+ countries in 140+ currencies;
+- international cards, Apple Pay and PayPal checkout;
+- multi-currency local bank transfers in 30+ currencies;
+- settlement in INR typically T+2;
+- FIRS/Foreign Inward Remittance Statement issued for every international payment;
+- 2.69% anniversary promotional rate or 2.99% standard international-card rate.
+
+Source: https://www.cashfree.com/international-payment-gateway/
+
+RBI's authorised-entity list confirms Cashfree PA-CB E&I. The provider's product page is the source for its specific payment methods, pricing and FIRS claims; the RBI list is the source for authorisation status.
+
+### Domestic Cashfree promotion: exact caution
+
+The current pricing page advertises a festive 0% platform-fee offer for new merchants through 31-Mar-2027 and next-day/T+1 settlement. The latest Cashfree offer explainer says eligible new merchants receive 0% platform fee on the first ₹20 lakh cumulative eligible domestic GMV, but 18% GST on the standard 1.95% fee basis remains; Cashfree's example is ₹351 GST per ₹1 lakh eligible GMV. International transactions are excluded from the domestic offer. Instant Settlements start at 0.30% plus GST.
+
+However, Cashfree's official public pages are not perfectly aligned on the offer signup window: the current pricing page says new merchants during the offer period, while another Cashfree blog lists a historical signup cutoff of 31-Jul-2026. As of 13-Nov-2026, **do not assume a new account qualifies**. Obtain written confirmation of eligibility, cumulative cap, GST, excluded methods and settlement cycle before any owner action.
+
+Sources:
+- https://www.cashfree.com/payment-gateway-charges/
+- https://www.cashfree.com/blog/payment-gateway-offers/
+- https://www.cashfree.com/blog/cheapest-payment-gateway-in-india/
+- https://www.cashfree.com/instant-settlements/
+
+**Updated rail decision:** Cashfree is the best-supported domestic + international bank-settlement gateway candidate in this audit, but it still requires owner KYC, merchant-category approval, own distribution and written terms. It is P2 and remains deferred until the Getvik first-sale gate.

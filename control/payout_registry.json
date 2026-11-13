@@ -327,27 +327,31 @@
     },
     {
       "provider": "Cashfree Payments",
-      "platform": "Direct India merchant checkout, Payment Gateway and UPI",
-      "country_eligibility": "Indian merchant onboarding subject to KYC and approval; new-merchant promotional pricing advertised through 31-Mar-2027 for eligible domestic sales up to ₹20 lakh",
+      "platform": "Domestic India UPI/card gateway plus cross-border collection for international cards, Apple Pay, PayPal and multi-currency local bank transfers",
+      "country_eligibility": "RBI's current authorised-entity list identifies Cashfree Payments India Private Limited as PA-CB E&I (export and import); RBI Master Direction on PA updated 11-Nov-2026. Merchant KYC, category approval and FEMA-permitted current-account transaction scope still apply.",
       "account_type": "Merchant",
       "kyc_requirements": "Owner/business KYC, bank verification and business-category approval; owner-only",
       "rail": "BANK_INR",
-      "currency": "INR",
+      "currency": "INR domestic and international bank settlement; international acceptance across 140+ currencies",
       "minimum": "No universal public payout minimum confirmed; account-specific",
-      "fees": "Eligible new merchants: 0% platform fee on first ₹20 lakh cumulative eligible domestic GMV through 31-Mar-2027, but GST on the standard 1.95% platform fee may still be charged (official example ₹351 per ₹1 lakh GMV). Standard 1.95% + GST otherwise. International cards: 2.99% + GST. Optional instant settlement starts at 0.30% + GST.",
+      "fees": "Domestic eligible festive offer: 0% platform fee on first ₹20 lakh cumulative eligible domestic GMV through 31-Mar-2027, but GST on standard 1.95% fee remains (official example ₹351 per ₹1 lakh). Standard domestic 1.95% + applicable GST. International cards: 2.69% anniversary promotional rate or 2.99% standard. PayPal via Cashfree checkout uses standard PayPal pricing, no extra Cashfree integration fee. Instant Settlements from 0.30% + GST. Confirm offer signup window and exact FX/tax terms in writing.",
       "hold_period": "Risk review, chargeback and merchant-category holds may apply; account-specific",
-      "settlement_schedule": "Public pages conflict: general UPI gateway page says default T+2; new-merchant offer page advertises T+1 for eligible merchants. Plan T+2 until written account-specific confirmation. Instant settlement within 15 minutes is paid (starts at 0.30% + GST).",
-      "fx_or_conversion": "Cashfree says its RBI-authorised PA-CB (E&I) route accepts international payments in 140+ currencies and settles INR at T+2, with FIRA reporting. Published international card pricing is 2.99% + GST; merchant approval and exact corridor/method terms apply.",
+      "settlement_schedule": "Domestic: current pricing page advertises next-day/T+1 for eligible new merchants; general UPI documentation says T+2. Plan T+2 until written account terms confirm. International: INR settlement typically T+2 with FIRS per payment. Instant Settlement is optional, account-risk dependent and paid.",
+      "fx_or_conversion": "International Gateway supports 140+ currencies, cards, Apple Pay and PayPal; multi-currency local bank transfers in 30+ currencies; INR settlement and FIRS reporting. Cashfree states transparent FX; confirm exact quote and any tax/markup for the merchant corridor.",
       "reversibility_and_chargebacks": "Refunds, chargebacks, fraud reviews and settlement reserves may reverse or delay funds",
       "official_source_url": "https://www.cashfree.com/payment-gateway-charges/",
       "official_sources": [
         "https://www.cashfree.com/payment-gateway-charges/",
         "https://www.cashfree.com/upi-payment-gateway/",
         "https://www.cashfree.com/blog/payment-gateway-offers/",
-        "https://www.cashfree.com/instant-settlements/"
+        "https://www.cashfree.com/instant-settlements/",
+        "https://www.cashfree.com/international-payment-gateway/",
+        "https://www.rbi.org.in/Scripts/PublicationsView.aspx?id=12043",
+        "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12896",
+        "https://www.cashfree.com/blog/cheapest-payment-gateway-in-india/"
       ],
       "captured_at": "2026-11-13",
-      "verification_status": "OFFICIAL_PRICING_UPI_AND_SETTLEMENT_CAPTURED_ACCOUNT_LEVEL_PENDING"
+      "verification_status": "RBI_PA_CB_EI_CONFIRMED_OFFICIAL_PRICING_AND_CROSS_BORDER_CAPABILITIES_CAPTURED_ACCOUNT_LEVEL_PENDING"
     },
     {
       "provider": "Paddle Billing",
@@ -401,7 +405,7 @@
     {
       "provider": "PayPal India",
       "platform": "International commercial payment wallet and automatic bank withdrawal",
-      "country_eligibility": "India accounts support international payments only; domestic India-to-India commercial receipt is not supported",
+      "country_eligibility": "India PayPal accounts support international commercial payments only. RBI's 01-Nov-2026 PA status table lists PayPal Payments Private Limited under existing PA-CB entities that can operate.",
       "account_type": "Business/merchant",
       "kyc_requirements": "PAN, verified bank account and business/purpose information as required by PayPal; owner-only",
       "rail": "PAYPAL",
@@ -416,15 +420,16 @@
       "official_sources": [
         "https://securepayments.paypal.com/in/business/paypal-business-fees",
         "https://www.paypal.com/in/cshelp/article/how-do-i-transfer-funds-to-my-bank-account-help394",
-        "https://www.paypal.com/in/cshelp/article/where-can-i-find-paypals-currency-calculator-and-exchange-rates-help109"
+        "https://www.paypal.com/in/cshelp/article/where-can-i-find-paypals-currency-calculator-and-exchange-rates-help109",
+        "https://www.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=4236"
       ],
       "captured_at": "2026-11-13",
-      "verification_status": "OFFICIAL_INDIA_INTERNATIONAL_FEES_AND_AUTO_WITHDRAWAL_CAPTURED_ACCOUNT_LEVEL_PENDING"
+      "verification_status": "RBI_EXISTING_PA_CB_CAN_OPERATE_AND_PAYPAL_INDIA_FEES_CAPTURED_ACCOUNT_LEVEL_PENDING"
     },
     {
       "provider": "Payoneer India",
       "platform": "Cross-border receiving accounts and marketplace payout wallet",
-      "country_eligibility": "India local bank withdrawal documented; products and corridors depend on account eligibility",
+      "country_eligibility": "Payoneer India pricing page describes local bank withdrawals and marketplace payout services. However, RBI's 01-Nov-2026 PA status table lists Payoneer India Private Limited under new PA-CB applications with in-principle authorisation, which cannot operate as a new PA-CB until final authorisation. Do not treat Payoneer as an independently verified India merchant-acquiring/cross-border collection route; confirm the exact legal entity and platform-payout service before use.",
       "account_type": "Business/individual account subject to Payoneer terms",
       "kyc_requirements": "Identity, business and bank verification; owner-only",
       "rail": "PAYONEER",
@@ -438,10 +443,12 @@
       "official_source_url": "https://www.payoneer.com/en-in/about/pricing/",
       "official_sources": [
         "https://www.payoneer.com/en-in/about/pricing/",
-        "https://www.payoneer.com/pricing/"
+        "https://www.payoneer.com/pricing/",
+        "https://www.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=4236"
       ],
       "captured_at": "2026-11-13",
-      "verification_status": "OFFICIAL_INDIA_WITHDRAWAL_AND_FEES_CAPTURED_ACCOUNT_LEVEL_PENDING"
+      "verification_status": "OFFICIAL_FEES_CAPTURED_RBI_PA_CB_IN_PRINCIPLE_CANNOT_OPERATE_AS_NEW_PA_CB_ACCOUNT_LEVEL_REVIEW_REQUIRED",
+      "payout_methods": "Potential marketplace/platform payout wallet and local bank withdrawal only after account-specific entity/service verification; not a verified standalone India PA-CB merchant collection rail."
     },
     {
       "provider": "Direct VDA / stablecoin wallet (no provider selected)",
