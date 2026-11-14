@@ -1250,6 +1250,38 @@
       "note": "Reject for India-based seller under current published programme. Reopen only on official country expansion.",
       "last_revalidated": "2026-11-14",
       "score_scope": "PLATFORM_LEVEL_PRELIMINARY_NOT_PRODUCT_APPROVAL"
+    },
+    {
+      "id": "MONDAY-SUBITEM-PARENT-AUTO-LINK",
+      "category": "workflow_automation",
+      "platform": "monday.com Marketplace",
+      "tier": "P3",
+      "status": "REJECTED",
+      "score": 18,
+      "score_confidence": "High; the exact user request is evidenced, but the requested feature is already confirmed in production by Master Automations and the adjacent category has at least 17 direct/adjacent competitors.",
+      "payout_evidence": {
+        "india_eligibility": "monday.com native marketplace monetization uses monthly USD Payoneer payout, but India vendor eligibility remains unverified in the platform-level payout record.",
+        "payout_method": "Payoneer USD",
+        "minimum": "No public minimum found",
+        "settlement": "Up to 60 days after invoice submission and finance approval",
+        "sources": [
+          "https://developer.monday.com/apps/docs/subscriptions-payments-and-billing",
+          "https://community.monday.com/feature-requests/post/automation-action-auto-link-subitem-to-its-parent-item-via-a-connect-lxRwDp7s9miHdtp",
+          "https://apps-for-monday.com/apps/10001204/"
+        ]
+      },
+      "automation_fit": "High technical feasibility using create_subitem webhooks and parentItemId; low differentiation because Master Automations already provides the exact parent-to-Connect-Boards action.",
+      "unknowns": [
+        "No second independent demand signal for a separate parent-link repair product",
+        "No willingness-to-pay evidence for a standalone repair/audit utility",
+        "India Payoneer vendor eligibility remains unverified",
+        "No defensible product moat against 17+ direct and adjacent competitors"
+      ],
+      "ip_and_policy_status": "Use monday API scopes only with user authorisation, least privilege, webhook challenge validation and customer data minimisation. No customer-data model training.",
+      "reason_for_rejection": "The exact parent auto-link feature is already served by Master Automations; broader cross-board and subitem automation is crowded. No standalone product build justified.",
+      "note": "NO-GO for this product idea only. monday.com Marketplace remains a platform-level candidate pending a different validated recurring buyer problem and India payout confirmation.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "PRODUCT_SPECIFIC_COMPETITOR_AUDIT"
     }
   ],
   "required_evidence": [
