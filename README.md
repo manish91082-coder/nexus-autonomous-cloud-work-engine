@@ -29,19 +29,18 @@ Build lawful, self-serve, Internet-native products and software that generate re
 
 Older V1/V2/V3 plans and old phase reports remain preserved as history. V4 is authoritative.
 
-## Current checkpoint — 14 November 2026 (Phase 58, exact-master validated)
+## Current checkpoint — 14 November 2026 (Phase 58.2, exact-master verified)
 
 - **Final goal:** ₹10,00,00,000 verified PCNE under V4; new spend ₹0 by default; one active product build maximum.
-- **Master HEAD before this state update:** `6d9887cca49bd0750f32047e7ea09b471dc62e6f`; PR #1 contains the Phase 56–58 merge.
-- **Current phase/task:** Phase 58 / P58-001; only active queue task; Apify research only, no product selected.
-- **Latest exact-master worker:** #268 / run 43603327714 — SUCCESS, 14 steps passed; queue POLL_OK, 102 tasks, one eligible task, P58-001 selected.
-- **Latest exact-master continuity guard:** #10 / run 43603327703 — SUCCESS; 108 checks PASS, 0 errors.
-- AI executor WAITING_FOR_OWNER_CONFIGURATION; no inference request, calls 0. Push checks pass; scheduled cadence STALE/UNVERIFIED.
+- **Master HEAD before this state-recording commit:** `69d8e10cb8c4e66c6e48254c03662cec0ed01773`.
+- **Current phase/task:** Phase 58 / P58-001; only active task. Apify research only; no product selected.
+- **Latest exact-master worker:** #269 / run 43604550043 — SUCCESS, all 14 steps passed. Queue POLL_OK; 102 tasks; one eligible task; P58-001 selected.
+- **Latest exact-master continuity guard:** #11 / run 43604550087 — SUCCESS; 108 checks PASS, 0 errors.
+- AI executor WAITING_FOR_OWNER_CONFIGURATION; no inference request, daily calls 0. Push-trigger checks pass; scheduled cadence remains STALE/UNVERIFIED.
 - P55 owner-gated HOLD; P56 generic Shopify recovery NO-GO; P57 generic Microsoft assurance NO-GO.
-- P58 generic families screened: ecommerce, reviews, website/status, changelogs/API, recalls, Chrome extension permissions, WCAG audits and building permits. Generic scopes NO-GO.
-- Generic Actor Trust scanner NO-GO. Narrow Apify-specific static preflight HOLD_FOR_EVIDENCE; buyer signals/WTP absent.
-- Apify incident unresolved as of 14-Nov; API and Actors Partial Outage. No new account, Actor run, source/data upload or paid use until post-mortem review and components operational.
-- Build limits: mission=1, queue=1, product registry=1. PCNE ₹0; bank-settled ₹0; authorized spend ₹0.
+- P58: eight generic Apify families screened. Generic Actor Trust scanner NO-GO; narrow Apify-specific static preflight HOLD_FOR_EVIDENCE; two buyer signals/WTP absent.
+- Apify incident unresolved as of 14-Nov; API and Actors Partial Outage. No new account, Actor run, source/data upload or paid use until post-mortem review and operational status.
+- Product build limits: mission=1, queue=1, product registry=1. PCNE ₹0; bank receipts ₹0; authorized spend ₹0.
 
 ## Historical checkpoint — Phase 58 branch merge (14 November 2026)
 
