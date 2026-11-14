@@ -58,7 +58,7 @@ Competitor audit revised to 22 named references: 13 Zoho-native/Marketplace item
 
 Zoho Marketplace economics: free Developer Console/no listing fee; public extensions can use one-time or monthly pricing; official commission report says total customer transaction value equals commission due for extension developers; monthly statement above USD 100; wire around 15 working days after approval. This is gross commission, not guaranteed net cash. India seller eligibility, FX, transfer fees and tax treatment remain unverified. The separate Zoho Reseller Store ₹50,000 India threshold does not apply to Marketplace extension payouts.
 
-Wix App Market clarification: USD 200 payout threshold; March app revenue reaches the bank at the beginning of May; reporting/payout in USD. India App Market developer bank eligibility remains unconfirmed by the public docs.
+Wix App Market clarification: USD 200 threshold is per individual app; earnings across apps do not combine. Paid listing requires account-level Tipalti payout setup. March app revenue arrives at the beginning of May; reporting/payout in USD; current share 100% for first 12 months then 80% after 2.5% transaction fee/tax. India developer payout eligibility remains unconfirmed; Wix Payments merchant availability is not equivalent.
 
 Zoho Marketplace lists 900+ CRM extensions and 2,000+ total extensions. The 22 named native/direct-adjacent references are a targeted audit, not an exhaustive catalogue scan. Recurring economics remain unproven because field retirement may be an occasional job; monthly subscription needs repeated dependency scans or schema-governance cadence evidence.
 
