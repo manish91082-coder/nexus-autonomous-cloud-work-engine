@@ -276,3 +276,21 @@ The current Developer Space Insights documentation is a material native substitu
 Official source: https://developer.atlassian.com/platform/forge/developer-space/developer-space-insights/
 
 **Product-gap implication:** do not build a generic multi-app resource/cost dashboard. Native Developer Space Insights already covers that category. P55's only plausible residual gap is owner-defined arbitrary USD budgets, configurable escalation/recipient policy, external monitoring of invoice/payment/dunning state, or a cost-to-Marketplace-revenue margin workflow. Each remains subject to separate demand proof and supported API access. The native dashboard's top-three and time-window limits alone are not sufficient differentiation: a complete 10–15 substitute audit and willingness-to-pay evidence are still required.
+
+
+## 8. Request-volume and residual-gap boundary — 14-Nov-2026
+
+The Resource Usage API requires one `appId` and one `usageKey` per request; pagination/context grouping may add calls. At five requests/minute, the minimum request-capacity estimate is:
+
+`minutes = (owned apps × usage keys per app × pages per query) / 5`
+
+Illustrative only: 10 apps × 8 keys × 1 page = 80 calls / 16 minimum minutes; 100 apps × 8 keys = 800 calls / 160 minimum minutes. The actual number of currently billable usage keys, pagination and data completeness must be measured. Since responses are daily resolution, this is not real-time protection.
+
+The native Developer Space Insights dashboard (https://developer.atlassian.com/platform/forge/developer-space/developer-space-insights/) already aggregates all Forge apps and includes cost/resource visibility; its Top Apps by Resource Usage chart displays the top three over the last 30 days, while other charts default to 24 hours. Generic portfolio dashboards are therefore not a product gap.
+
+Only potential residual outcomes remain for research:
+1. Arbitrary user-defined monthly USD budget thresholds and escalation recipients beyond fixed native usage-allowance alerts;
+2. supported external read-only alerts on billing account invoices, payment method, pre-dunning/dunning and service-wide enforcement status;
+3. per-app overage vs Marketplace licensing revenue/margin analysis, if data access and buyer willingness-to-pay are demonstrated.
+
+None is approved for build. If the relevant API data cannot be obtained through supported owner-authorized access, or if native tools already solve the exact outcome, P55-001 must be NO-GO.
