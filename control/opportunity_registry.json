@@ -1432,7 +1432,8 @@
         "PricePilot and Flowsplus bundle tools already cover portions of quantity tiers, category targeting and fixed/discount pricing.",
         "No current recurring buyer cadence or willingness-to-pay evidence.",
         "No completed 10–15 direct/adjacent competitor audit.",
-        "India Technology Partner and payout eligibility are not confirmed."
+        "India Technology Partner and payout eligibility are not confirmed.",
+        "The exact ability to aggregate quantities across selected categories while applying a separate fixed SKU price has not been tested against every substitute."
       ],
       "ip_and_policy_status": "Any price engine must preserve platform promotion priority, customer group/price-list rules, tax and currency semantics. No customer price write action before explicit owner approval.",
       "reason_for_rejection": "",
@@ -1443,6 +1444,16 @@
         "https://support.bigcommerce.com/s/article/Automatic-Promotions",
         "https://www.bigcommerce.com/apps/pricepilot/",
         "https://www.bigcommerce.com/apps/bundle-builder-by-flowsplus/"
+      ],
+      "bounded_competitor_screen": [
+        "BigCommerce automatic category promotions",
+        "BigCommerce product-level bulk price rules",
+        "BigCommerce Price Lists",
+        "PricePilot",
+        "Flowsplus Bundle Builder",
+        "Pricewave",
+        "Sale/Discount Scheduler & Bulk Price Editor",
+        "other B2B price-list and quantity discount apps"
       ]
     },
     {
@@ -1470,11 +1481,11 @@
         "Separate recent customer post asks why variant price updates inherit parent product default price after Modern CSV import: https://support.bigcommerce.com/s/question/0D5UG000012l9hk0AA/why-are-my-variant-prices-being-overridden-by-the-product-default-price"
       ],
       "unknowns": [
-        "Complete 10–15 direct/adjacent competitor audit outstanding.",
         "Need sample corpus of anonymised CSV failure patterns to validate deterministic detection precision/recall.",
         "Need evidence of recurring weekly/monthly supplier/catalog updates and willingness to pay.",
         "Native importer preview covers first product and error summary; differential value against native workflows must be quantified.",
-        "India Technology Partner and payout eligibility, minimum and reserve policy unresolved."
+        "India Technology Partner and payout eligibility, minimum and reserve policy unresolved.",
+        "A 12-reference bounded landscape screen is complete; full 10–15 direct/adjacent product audit with exact current feature/pricing/review verification remains outstanding."
       ],
       "ip_and_policy_status": "Initial validation should be offline/read-only. Do not request product-write or catalog-update scopes. Protect customer/supplier pricing and SKU data; no data uploaded to external LLMs.",
       "reason_for_rejection": "",
@@ -1486,7 +1497,59 @@
         "https://support.bigcommerce.com/s/question/0D5UG000012l9hk0AA/why-are-my-variant-prices-being-overridden-by-the-product-default-price",
         "https://support.bigcommerce.com/s/article/Modern-Import-Export-Overview?language=en_US",
         "https://support.bigcommerce.com/s/article/Importing-Complex-Attributes?language=en_US"
-      ]
+      ],
+      "bounded_competitor_screen": [
+        {
+          "name": "BigCommerce Modern Product Import/Export",
+          "overlap": "native first-product preview, import error summary, variant row pricing"
+        },
+        {
+          "name": "BigCommerce Legacy Import/Export",
+          "overlap": "CSV import/export and known variant-level limitations"
+        },
+        {
+          "name": "Firebear Import & Export Tool",
+          "overlap": "CSV/XML/XLSX/Sheets, mapping, scheduled import/export"
+        },
+        {
+          "name": "Alterify Inventory Sync",
+          "overlap": "CSV/URL/FTP feeds, SKU/barcode matching, scheduled price and inventory sync"
+        },
+        {
+          "name": "Bulk Product Editor",
+          "overlap": "bulk product, inventory and price edits"
+        },
+        {
+          "name": "PricePilot",
+          "overlap": "bulk pricing CSV, snapshots, undo"
+        },
+        {
+          "name": "Custom Field Populator",
+          "overlap": "custom-field CSV import/export, rules and scheduled changes"
+        },
+        {
+          "name": "Inline Metafields",
+          "overlap": "custom-field/variant-field import/export with domain-specific dry-run"
+        },
+        {
+          "name": "Inskeep Inventory Intelligence",
+          "overlap": "catalog/variant ingestion, controlled price and inventory sync"
+        },
+        {
+          "name": "BigCommerce Data Migration",
+          "overlap": "platform-to-platform catalog/product/customer/order import"
+        },
+        {
+          "name": "BigCommerce Catalog API",
+          "overlap": "custom deterministic variant price reads/writes"
+        },
+        {
+          "name": "Native product export/backup",
+          "overlap": "pre-change catalog backup and CSV restore path"
+        }
+      ],
+      "evidence_strength": "Two independent customer reports show distinct variant-price import failures (13-Aug-2026 and recent 14-Nov-2026 capture). These are problem signals, not willingness-to-pay proof.",
+      "next_exact_work": "Complete 10–15 direct/adjacent app audit, validate repeat update cadence, demonstrate offline-only validator detection with representative CSVs, and verify India Technology Partner/payout eligibility before any MVP decision."
     }
   ],
   "required_evidence": [
