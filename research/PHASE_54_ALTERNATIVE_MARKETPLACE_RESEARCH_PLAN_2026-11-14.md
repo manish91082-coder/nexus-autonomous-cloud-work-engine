@@ -99,6 +99,21 @@ Official sources:
 
 Decision: **RESEARCH SECOND, NOT GO.** Revenue share and subscription rails are promising, but India seller/payout eligibility and specific product demand remain unverified.
 
+Wix App Market clarification from the current developer FAQ and July-2026 payout-account changes:
+- Every individual app must independently reach the USD 200 payout threshold; earnings across multiple apps do not combine toward one app's threshold.
+- Payout account setup is required at account level before publishing a paid app. A one-time Tipalti setup is used; payout and materialized invoice APIs show USD amounts and statuses.
+- The payment schedule is monthly, but the FAQ example says March earnings arrive at the beginning of May. This is later than simply "net 30 EOM".
+- After first 12 months, developer share is 80% after the 2.5% transaction fee and applicable sales tax; first-year share is 100% under current terms.
+- Public App Market documentation still does not explicitly confirm India-based developer payout eligibility through Tipalti. Wix Payments merchant gateway availability in India is a different product and cannot be used as proof.
+- An individual app that cannot reach $200 may keep accruing but will not be paid; sibling apps do not top up the threshold.
+
+Official sources:
+https://dev.wix.com/docs/build-apps/launch-your-app/pricing-and-billing/payments-and-billing-faqs
+https://support.wix.com/en/article/developer-request-calculating-payout-threshold-per-partner
+https://dev.wix.com/changelog?featureType=Build+Apps
+https://dev.wix.com/docs/api-reference/account-level/studio-workspace/earnings/introduction
+
+
 ### C. monday.com Marketplace — third
 
 Verified signals:
