@@ -1,3 +1,24 @@
+# PHASE 59.3 UPDATE — 14 NOVEMBER 2026 (AGENTMARGIN CANDIDATE SCREEN)
+
+**Authority:** V5 Master Constitution  
+**Current task:** P59-001 — IN_PROGRESS  
+**Report:** [Phase 59.3 AgentMargin candidate and substitute screen](research/PHASE_59_3_AGENTMARGIN_WORKBENCH_SUBSTITUTE_AND_DEMAND_SCREEN_2026-11-14.md)  
+**Decision:** NO-GO for current generic one-time calculator; preserve asset. Parent AI/B2B software source family remains OPEN.  
+**Product selected:** NONE; **build authorization:** NO.  
+**Financial state:** PCNE ₹0; bank receipts ₹0; authorized spend ₹0.
+
+## Findings
+- Twenty direct/adjacent substitutes identified, including free agency calculators and established observability/gateway products with paid tiers.
+- Digiday agency interviews and n8n community discussions establish problem salience around per-client AI usage, cost allocation and pass-through. They do not prove this product's WTP.
+- The current Workbench is a manual-input, one-time browser calculator; it does not ship recurring live usage ingestion, billing reconciliation or customer-level margin ledger. Subscription retention is unproven.
+- An independent public repository owned by rzkarsyad uses the identical AgentMargin name for adjacent AI margin analytics. No affiliation is assumed. Rename/rights clearance is required before commercial use.
+- The candidate-specific NO-GO does not close the AI/B2B software source family.
+
+## Next exact work
+Continue P59-001: research a recurring, high-value vertical buyer problem; keep Tech Cloud ERP source/ownership/module evidence open; compare an ERP-derived vertical candidate against greenfield. P59-002 remains BLOCKED. No build, listing, KYC, terms acceptance or spend.
+
+---
+
 # PHASE 59.2 UPDATE — 14 NOVEMBER 2026 (EXISTING SOFTWARE/IP ASSET AUDIT)
 
 **Authority:** `MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md`  
