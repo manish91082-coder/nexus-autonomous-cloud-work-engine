@@ -46,6 +46,16 @@ Research order:
 
 Full Phase 54 plan: `research/PHASE_54_ALTERNATIVE_MARKETPLACE_RESEARCH_PLAN_2026-11-14.md`.
 
+## Zoho candidate — HOLD, no build
+
+Specific hypothesis: read-only Zoho CRM Field Retirement Impact Preflight, showing references found in supported workflows, blueprints, webhooks, field updates, layouts and custom-function source before a field is retired/renamed.
+
+Report: `research/PHASE_54_ZOHO_CRM_CONFIGURATION_DEPENDENCY_AUDIT_2026-11-14.md`. Problem signals exist (Zoho community request and independent CRM/Zoho discussions), and read APIs provide partial technical coverage. Native Admin Tools (Enterprise+), Configuration Logs Tracker, Configs for Zoho CRM and Audit Tool are substitutes. Full Client Script, Flow, Analytics, PDF-template and external integration coverage is not proven; static code scans may miss dynamic references. Paid willingness-to-pay and India extension-developer payout are unverified. Status: **HOLD**.
+
+Zoho Marketplace economics: free Developer Console/no listing fee; public extensions can use one-time or monthly pricing; official commission report says total customer transaction value equals commission due for extension developers; monthly statement above USD 100; wire around 15 working days after approval. This is gross commission, not guaranteed net cash. India seller eligibility, FX, transfer fees and tax treatment remain unverified. The separate Zoho Reseller Store ₹50,000 India threshold does not apply to Marketplace extension payouts.
+
+Wix App Market clarification: USD 200 payout threshold; March app revenue reaches the bank at the beginning of May; reporting/payout in USD. India App Market developer bank eligibility remains unconfirmed by the public docs.
+
 ## Exact next action
 
 Continue `P54-001` by verifying:
