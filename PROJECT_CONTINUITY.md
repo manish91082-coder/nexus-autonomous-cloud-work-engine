@@ -3196,3 +3196,9 @@ Getvik remains the only P1 first-cash pilot. Cashfree Direct is a P2 domestic fa
 - Runtime risks: UTC quota date uses `date.today()`; no task leases/idempotency/retry/dead-letter/evidence schema; prompt fields are public-repo data; provider exception detail may be emitted to public artifact; AI response is not schema validated.
 - `local_coder.py`, `draft_executor.py`, and `model_gateway.py` belong to external bounty/gig lane and must not be connected to the mission swarm.
 - No swarm deployment or provider activation. PCNE ₹0; authorized spend ₹0; P59-002 remains blocked.
+
+## Latest verification and Phase B handoff — 14 November 2026
+- Queue deadlock fix and runtime findings are recorded in Phase 59.8A report. Worker #299-equivalent run on `bc50b5e8...` succeeded; Guard on same commit succeeded. Worker and Guard on `9ed2d74a...` succeeded. Latest Guard #? run `43615645668` succeeded on exact HEAD `66daac0f677bec32abf0923036a0feb8c15cdf6b`.
+- Mission state now records the exact verified HEAD, last worker/guard evidence and next phase `PHASE_B_DETERMINISTIC_SWARM_DISPATCHER_AND_TYPED_SCHEMAS`.
+- Important limitation: worker success proves deterministic queue tick only; AI inference remains disabled and swarm is not deployed.
+- Next: implement and test deterministic swarm dispatcher and typed task/evidence/run schemas; retain no paid fallback, one active product build, owner gates, ₹0 spend, and P59-002 BLOCKED.
