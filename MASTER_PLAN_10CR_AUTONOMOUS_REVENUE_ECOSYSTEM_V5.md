@@ -83,7 +83,7 @@ Required dimensions:
 
 An attractive platform is not yet a product. A market-size statistic is not product demand. A successful CI run is not buyer demand. A listing is not a sale. A NO-GO decision applies to the exact product hypothesis and its evidenced scope, not automatically to the entire revenue-source family, platform, customer segment or alternative monetization model. Reopen the wider source only with a materially different buyer outcome or distribution/economic thesis, not by renaming the rejected clone.
 
-The dated ranking and source adjudication lives in `REVENUE_OPPORTUNITY_RANKING_2026-11-13.md`. The ranking is rechecked after each meaningful evidence batch.
+The portfolio-wide ranking and source adjudication lives in `PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md`; the dated platform ranking is retained as historical platform evidence. The ranking is rechecked after each meaningful evidence batch.
 
 ## 5. Dynamic portfolio revenue-source ranking
 
@@ -95,7 +95,7 @@ The current platform list below is an initial research order, not an exclusive l
 4. **Apify Store / paid Actors and agents** — credible self-serve usage monetisation and shorter prototype-to-listing path; use lawful source material, user-supplied data, open data or documented APIs only. Never assume a popular scraper is lawful to reproduce.
 5. **Getvik / India digital products** — retain the existing Recruitment Revenue Assurance Desk as a private lower-tier validation asset. Getvik itself states that a storefront does not create demand. Do not treat the prior preliminary channel score as evidence of product demand.
 6. **CrazyGames / game distribution** — retain Orbit Relay as a frozen experiment until real human engagement and publisher acceptance are demonstrated.
-7. **Sponsorship, books, stock assets, audience and affiliate** — long-horizon lanes; no parallel production until higher-ranked lanes are selected or explicitly rejected.
+7. **Sponsorship, books, stock assets, audience and affiliate** — eligible portfolio lanes to research and rank in parallel; production is sequenced by the portfolio ranking.
 
 ## 6. Product selection, portfolio contribution and release gates
 
@@ -119,11 +119,13 @@ A product is not marked LIVE until the public listing is verified. A product is 
 
 ## 7. Portfolio execution policy: parallel research, sequential builds, combined earnings
 
-- One active revenue product build at a time.
-- Broad market research is allowed, but implementation is sequenced in descending opportunity order.
-- Do not begin the next product build until the current product reaches one of: `LIVE_AND_MEASURED`, `NO_GO_WITH_EVIDENCE`, or `BLOCKED_BY_OWNER_GATE`.
-- If the leading platform has no defensible product gap, reject that product idea and move to the next qualified candidate. Do not force a clone merely to obey ranking order.
-- Existing products stay private/archived until requalified.
+- **Parallel research is allowed and required:** maintain a portfolio map of multiple independent revenue-source families and candidates. Do not investigate only one platform at a time if this prevents identifying the largest source.
+- **One active revenue product build at a time** remains the default engineering constraint. After the first product/source reaches a functioning, verified monetization loop and has evidence of repeatable acquisition/delivery and positive net unit economics, move to the next highest-ranked source while the earlier source continues earning. Do not wait for the first source to reach ₹10 Cr before activating the next.
+- The first source is considered operationally established when it has a verified independent paid transaction, correct PCNE ledger treatment, working self-serve delivery, and a measured repeatability/retention or repeat-purchase path with positive fully-loaded contribution economics. This is a milestone, not a claim of scale.
+- A product-specific NO-GO closes only that candidate. Record whether the parent revenue source remains OPEN, HOLD, or CLOSED, and identify materially different alternatives before closing the parent source.
+- Owner/platform gates pause only the affected source/action. They must not freeze unrelated compliant research or already operating revenue streams.
+- Build and capital allocation priority always follows the current portfolio ranking, refreshed after meaningful evidence. Do not force clones, but do not abandon a broad revenue source merely because one narrow product hypothesis fails.
+- Existing products stay private/archived until requalified; an existing asset can be activated if it wins the same evidence and economics comparison.
 
 ## 8. Existing asset dispositions
 
@@ -143,10 +145,10 @@ Authority order:
 1. This V5 master constitution.
 2. `control/mission_state.json`.
 3. `control/automation_queue.json`.
-4. `REVENUE_OPPORTUNITY_RANKING_2026-11-13.md` and the latest dated product/market evidence.
-5. `control/product_registry.json`, `control/opportunity_registry.json`, `control/payout_registry.json`, `control/revenue_ledger.json`.
+4. `PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md`, the platform-level historical ranking, and the latest dated product/market evidence.
+5. `control/product_registry.json`, `control/opportunity_registry.json`, `control/payout_registry.json`, `control/revenue_source_ledger.json`, `control/revenue_ledger.json`.
 6. `PROJECT_CONTINUITY.md`.
-7. Older V1/V2/V3 plans and older phase reports are historical unless explicitly referenced by V4.
+7. V4/V3 and older phase reports remain preserved as historical evidence unless explicitly referenced by V5.
 
 After every meaningful response/session:
 - Verify actual GitHub HEAD.
@@ -165,13 +167,15 @@ Repository organisation and classifications are recorded in `REPOSITORY_SCOPE_AN
 ## 11. Current truth at V5 adoption
 
 - Mission status: ACTIVE.
+- Portfolio target: ₹10,00,00,000 cumulative verified PCNE across combined eligible revenue streams; no single source must generate the full amount.
 - Platform-credited net earnings: ₹0 verified.
 - Bank-settled net receipts: ₹0 verified.
 - Product sales and paid customers: no verified independent transactions in the repository baseline.
 - New spend authorised: ₹0.
-- Leading platform lane: Atlassian Marketplace / Forge product-gap qualification.
-- The Jira Automation step-cost niche has direct new competition and is not approved as a clone.
-- The next task is to choose one evidence-backed product gap, not to expand infrastructure or start another unrelated product.
+- Current execution: P59-001 portfolio-wide revenue-source universe and largest credible source ranking.
+- P58 Apify research is paused for portfolio reprioritisation and its unresolved incident gate; this is not a platform-wide NO-GO.
+- Research multiple source families in parallel; one new product build at a time; add the next source after the first repeatable monetization loop while prior sources continue earning.
+- Product-specific NO-GO does not close its parent revenue-source family.
 
 **The ₹10 Cr target is one cumulative portfolio objective. Multiple verified revenue streams contribute to it; evidence decides which source is built and scaled first.**
 
