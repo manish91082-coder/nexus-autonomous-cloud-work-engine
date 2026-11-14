@@ -107,6 +107,7 @@ def eligible_tasks(tasks, now=None):
                 raise ContractError(f"unknown dependency: {dep}")
     return sorted(
         [t for t in tasks if t["status"] == "READY" and not t.get("owner_gate")
+         and (not t.get("available_at_utc") or datetime.fromisoformat(t["available_at_utc"].replace("Z", "+00:00")) <= now)
          and all(by_id[d]["status"] == "COMPLETED" for d in t["depends_on"])],
         key=lambda t: ({"P0": 0, "P1": 1, "P2": 2, "P3": 3}.get(t.get("priority"), 9), t["id"]),
     )
@@ -158,6 +159,8 @@ def recover_stale_leases(state, now=None):
             task.pop("lease_owner", None)
             task.pop("lease_expires_at_utc", None)
             task["status"] = "READY" if task.get("attempts", 0) < task.get("max_attempts", 3) else "DEAD_LETTER"
+            if task["status"] == "READY":
+                task["available_at_utc"] = iso(now + timedelta(seconds=retry_delay_seconds(task.get("attempts", 0))))
             recovered.append(task["id"])
             if task["status"] == "DEAD_LETTER":
                 state["dead_letters"].append({"task_id": task["id"], "reason": "STALE_LEASE_RETRY_EXHAUSTED", "at_utc": iso(now)})
