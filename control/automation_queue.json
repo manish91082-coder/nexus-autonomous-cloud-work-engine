@@ -3068,7 +3068,7 @@
           "Amazon KDP 2026 royalty terms"
         ],
         "critical_distinction": "Revenue engine vs distribution rail; same SaaS product across two marketplaces is not two separate product streams.",
-        "next": "Test narrow agri-input distributor batch-to-claim / credit-and-return reconciliation workflow against 10-15 substitutes and independent buyer evidence; keep Tech Cloud ERP source/ownership/module inventory audit open; no build.",
+        "next": "Return to V5 portfolio-wide B2B vertical source screen. Select a different recurring buyer problem; do not clone agri input ERP or retailer return/claim workflows. Keep Tech Cloud ERP source/ownership/module inventory audit open. No build.",
         "asset_audit_report": "research/PHASE_59_2_EXISTING_SOFTWARE_IP_ASSET_AUDIT_2026-11-14.md",
         "asset_audit_status": "COMPLETED_INITIAL_REPOSITORY_AUDIT; NO_EXISTING_ASSET_PASSES_FIRST_PRODUCT_GATE",
         "canonical_assets_audited": 8,
@@ -3090,7 +3090,12 @@
           "solar": "HOLD; crowded with free and India-specific end-to-end tools; portal/field integration burden",
           "agri_input": "NEXT_RESEARCH_PRIORITY_NOT_PRODUCT_GO; 2022 Government multi-state field study records manual stock books and PoS/physical mismatch; 9+ current specialist substitutes; narrow distributor reconciliation gap only",
           "logistics": "HOLD; fragmented market but low-WTP/support/onboarding risks and established TMS alternatives"
-        }
+        },
+        "agri_input_hypothesis_report": "research/PHASE_59_5_AGRI_INPUT_RECONCILIATION_COMPETITOR_GATE_2026-11-14.md",
+        "agri_input_candidate_disposition": "NO_GO_CURRENT_GENERIC_BATCH_EXPIRY_RETURN_CLAIM_CREDIT_RECONCILIATION_HYPOTHESIS; DIRECT_COMPETITORS_SHELF LIFEPRO_AND_OTHERS_COVER_CORE_WORKFLOW",
+        "agri_input_substitute_count": 15,
+        "agri_input_direct_overlap": "ShelfLifePro publishes per-supplier/per-batch return windows, ₹ at risk, GST debit notes, pending/credited states, batch trace, offline POS and multi-location stock transfers; TradeX/Tathven/Saathi360/Kroply/OperLete cover distributor or ERP workflows.",
+        "government_system_boundary": "iFMS/e-Urvarak is official national fertilizer supply-chain and DBT platform; PIB 30-Aug-2026 reports >14 crore Aadhaar-linked buyers, >2.5 lakh retailers and ~7 crore MT annual sales transactions. No API/data access assumed."
       }
     },
     {
