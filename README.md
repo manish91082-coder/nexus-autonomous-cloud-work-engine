@@ -2,45 +2,47 @@
 
 **Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
 **Branch:** `master`  
-**Current authority:** [Master Constitution V4](MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md)
+**Current authority:** [Master Constitution V5](MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md)
 
 ## Mission
 
-Build lawful, self-serve, Internet-native products and software that generate repeatable, scalable revenue with maximum practical automation.
+Build a combined portfolio of lawful, self-serve, Internet-native revenue engines. Multiple independent streams aggregate toward the same ₹10 Cr cumulative verified net-earnings target.
 
-**Primary target:** ₹10,00,00,000 in verified net earnings credited to the owner's eligible platform seller/creator balances. Bank settlement is tracked separately.
+**Primary target:** ₹10,00,00,000 cumulative verified net earnings across multiple eligible revenue streams (PCNE). No single product or platform must generate the full target. Bank settlement is tracked separately.
 
 **Default new spend:** ₹0.  
-**Execution:** one active product build at a time, descending risk-adjusted revenue opportunity order.  
+**Execution:** research multiple source families in parallel; execute the largest credible risk-adjusted net-revenue source first; one new product build at a time; stack the next source after the first repeatable monetization loop while earlier sources keep earning.  
 **No drift:** no employment, gigs, freelance bidding, cold outreach, spam, fake traffic, unauthorized scraping, recurring manual fulfilment or unsupported revenue claims.
 
 ## Authority order
 
-1. [Master Constitution V4](MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md)
-2. [Current mission state](control/mission_state.json)
-3. [Execution queue](control/automation_queue.json)
-4. [Revenue platform ranking and evidence](REVENUE_OPPORTUNITY_RANKING_2026-11-13.md)
-5. [Platform-credited earnings ledger](control/revenue_ledger.json)
-6. [Product registry](control/product_registry.json)
-7. [Opportunity registry](control/opportunity_registry.json)
-8. [Payout registry](control/payout_registry.json)
-9. [Cross-chat continuity](PROJECT_CONTINUITY.md)
-10. [Repository scope and cleanup audit](REPOSITORY_SCOPE_AND_CLEANUP_2026-11-13.md)
+1. [Master Constitution V5](MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md)
+2. [Portfolio Revenue Source Ranking V5](PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md)
+3. [Current mission state](control/mission_state.json)
+4. [Execution queue](control/automation_queue.json)
+5. [Revenue platform ranking and evidence](REVENUE_OPPORTUNITY_RANKING_2026-11-13.md)
+6. [Platform-credited earnings ledger](control/revenue_ledger.json)
+7. [Product registry](control/product_registry.json)
+8. [Opportunity registry](control/opportunity_registry.json)
+9. [Payout registry](control/payout_registry.json)
+10. [Cross-chat continuity](PROJECT_CONTINUITY.md)
+11. [Repository scope and cleanup audit](REPOSITORY_SCOPE_AND_CLEANUP_2026-11-13.md)
 
-Older V1/V2/V3 plans and old phase reports remain preserved as history. V4 is authoritative.
+V5 is authoritative. V4/V3 and older phase reports remain preserved as historical evidence.
 
-## Current checkpoint — 14 November 2026 (Phase 58.3, exact-master validated)
+## Current checkpoint — 14 November 2026 (V5 portfolio strategy adopted)
 
-- **Final goal:** ₹10,00,00,000 verified PCNE under V4; new spend ₹0; one active product build maximum.
+- **Final goal:** ₹10,00,00,000 cumulative PCNE aggregated across multiple revenue streams; no single source must deliver the full target; new spend ₹0; one active product build maximum.
 - **Master HEAD before this state-recording commit:** `6fa3e8fd550c13e089130dd255bab93654e4ed12`.
-- **Current phase/task:** Phase 58 / P58-001; sole active queue task; public research only; no product selected.
+- **Current phase/task:** Phase 59 / P59-001; portfolio-wide revenue-source ranking is the sole active task. P58-001 is paused, not platform-wide NO-GO.
 - **Latest exact-master worker:** #275 / run 43607783836 — SUCCESS, all 14 bounded-worker steps passed; P58-001 remains IN_PROGRESS.
 - **Latest exact-master continuity guard:** #18 / run 43607783784 — SUCCESS on the same exact HEAD.
 - AI executor WAITING_FOR_OWNER_CONFIGURATION; no inference, daily calls 0. Bounded worker and guard both observed successful on exact master HEAD.
 - P55 owner-gated HOLD; P56 generic Shopify recovery NO-GO; P57 generic Microsoft assurance NO-GO.
 - P58: generic Apify niches, generic Actor Trust scanner and generic MCP drift monitor NO-GO. Apify-specific static trust/MCP adapters remain unselected research leads; WTP unproven.
 - Apify incident unresolved as of 14-Nov; API/Actors Partial Outage. No new account, Actor run, data upload or paid use until post-mortem review and operational status.
-- Product build limits all 1. PCNE ₹0; bank receipts ₹0; authorized spend ₹0.
+- Research multiple source families in parallel; build one new product at a time; add the next source after the first repeatable monetization loop. Product-specific NO-GO does not close the parent source.
+- PCNE ₹0; bank receipts ₹0; authorized spend ₹0.
 
 ## Historical checkpoint — Phase 58 branch merge (14 November 2026)
 
