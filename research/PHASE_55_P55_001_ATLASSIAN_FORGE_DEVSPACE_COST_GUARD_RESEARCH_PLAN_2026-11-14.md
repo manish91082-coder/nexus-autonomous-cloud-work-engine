@@ -261,3 +261,18 @@ The candidate needs two ledgers, not one: (1) per-app/per-meter usage and free-a
 4. Quantify the actual warning lead time using daily usage data, daily dashboard refresh and monthly invoice timing. Do not call it a real-time alert or hard stop.
 
 The earlier "threshold aggregation" ambiguity is resolved for free allowances: use independent per-app allowances, then consolidate overage charges to the Developer Space invoice. The external invoice/payment-status API access remains **UNVERIFIED**.
+
+
+## 7. Native portfolio-dashboard substitute — 14-Nov-2026
+
+The current Developer Space Insights documentation is a material native substitute:
+- aggregated across all apps in a Developer Space;
+- shows log volume, errors, open alerts, invocation errors, latency, invocations and cost/resource usage;
+- Top apps by resource usage is a top-three chart using last 30 days;
+- other charts default to last 24 hours;
+- includes production, development and staging environments;
+- viewer roles include Admin, Developer and Viewer; the page is read-only.
+
+Official source: https://developer.atlassian.com/platform/forge/developer-space/developer-space-insights/
+
+**Product-gap implication:** do not build a generic multi-app resource/cost dashboard. Native Developer Space Insights already covers that category. P55's only plausible residual gap is owner-defined arbitrary USD budgets, configurable escalation/recipient policy, external monitoring of invoice/payment/dunning state, or a cost-to-Marketplace-revenue margin workflow. Each remains subject to separate demand proof and supported API access. The native dashboard's top-three and time-window limits alone are not sufficient differentiation: a complete 10–15 substitute audit and willingness-to-pay evidence are still required.
