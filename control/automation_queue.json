@@ -2416,8 +2416,56 @@
           "report": "research/PHASE_54_ALTERNATIVE_MARKETPLACE_RESEARCH_PLAN_2026-11-14.md"
         },
         "next_exact_work": "Keep Zoho and Wix seller payout country gates classified as unresolved; do not create accounts, submit KYC or accept terms. Continue P54-001 by verifying programme-specific India payout remittance from official public evidence and validating a recurring buyer problem only after seller rail. No product build.",
-        "payout_api_gate_report": "research/PHASE_54_ALTERNATIVE_MARKETPLACE_RESEARCH_PLAN_2026-11-14.md#follow-up-gate-seller-remittance-and-api-credits-14-nov-2026"
-      }
+        "payout_api_gate_report": "research/PHASE_54_ALTERNATIVE_MARKETPLACE_RESEARCH_PLAN_2026-11-14.md#follow-up-gate-seller-remittance-and-api-credits-14-nov-2026",
+        "marketplace_payout_comparison": {
+          "report": "research/PHASE_54_P54_001_MARKETPLACE_PAYOUT_COMPARISON_2026-11-14.md",
+          "captured_at": "2026-11-14",
+          "pre_change_head": "58ac9b3236d7eb2cdddae25af0d4f78ecfd10db6",
+          "platforms": {
+            "atlassian_forge": {
+              "status": "HOLD_FOR_EVIDENCE",
+              "india_payout": "No public India country list; valid bank in partner name required; written confirmation needed",
+              "economics": "100% eligible Forge gross up to USD 1m lifetime; 83% partner share thereafter; USD 500 threshold; 30-60 days"
+            },
+            "zoho_marketplace": {
+              "status": "HOLD_FOR_EVIDENCE",
+              "india_payout": "Extension-specific eligibility unverified",
+              "economics": "One-time/monthly; gross commission equals customer transaction value; model >USD100; wire ~15 working days after owner approval; PayPal by request"
+            },
+            "wix_app_market": {
+              "status": "HOLD_FOR_EVIDENCE",
+              "india_payout": "Tipalti India payee methods exist but payments unavailable from India-based payer entities; Wix payer entity unknown",
+              "economics": "2.5% transaction fee + tax; first 12 months 100% share after deductions; then 80%; USD200 per app; March paid beginning May"
+            },
+            "monday_com": {
+              "status": "HOLD_FOR_EVIDENCE",
+              "india_payout": "Payoneer USD monthly documented; India vendor eligibility and pre-threshold share unverified",
+              "economics": "After USD200k lifetime app revenue, 85% developer / 15% monday; up to 60 days after approved invoice"
+            },
+            "bigcommerce": {
+              "status": "HOLD_FOR_EVIDENCE",
+              "india_payout": "Country field and PayPal ID requested; India eligibility unconfirmed",
+              "economics": "15% share + 3% processing; USD20 wire or international PayPal 2% capped at USD20; reserve possible; minimum and payout date unknown"
+            },
+            "xero": {
+              "status": "HOLD_FOR_EVIDENCE",
+              "india_payout": "Native subscription regions AU/NZ/UK; India seller payout not established",
+              "economics": "Starter free for 5 connections; Core AUD35, Plus AUD245, Advanced AUD1445; weekly payout 7 days after receipt only in supported regions; outside regions 15% ARPU referral charge"
+            },
+            "intuit_quickbooks": {
+              "status": "REJECTED",
+              "india_payout": "Current official App Partner Program list is US, UK, Australia, Canada excluding Quebec; India absent",
+              "economics": "Builder tier uncharged but geographically limited"
+            }
+          },
+          "product_decision": "NO_PRODUCT_SELECTED; platform economics are not product demand evidence",
+          "demand_gate": "No two independent strong buyer-demand signals and no 10-15 competitor audit for a selected product; all product ideas remain research-only.",
+          "rail_reconciliation": "Existing 22 provider records retained; 5 new marketplace payout records added. Bank/UPI/wallet rails remain account-level pending where noted. Direct VDA remains not activated and legally unresolved.",
+          "safety": "No account creation, KYC, terms acceptance, publication, funds movement, private-key access, tax declaration or spend.",
+          "next_exact_work": "Continue P54-001 with demand-first research on one recurring buyer problem for monday.com or BigCommerce only after obtaining two independent strong demand signals; then audit 10-15 direct competitors and platform-native substitutes. Prepare but do not send owner support questions for Zoho/Wix/Atlassian/monday/BigCommerce India payout eligibility. No build until all V4 hard gates pass."
+        }
+      },
+      "next_exact_work": "Continue P54-001 with demand-first research on one recurring buyer problem for monday.com or BigCommerce only after obtaining two independent strong demand signals; then audit 10-15 direct competitors and platform-native substitutes. Prepare but do not send owner support questions for Zoho/Wix/Atlassian/monday/BigCommerce India payout eligibility. No build until all V4 hard gates pass."
     },
     {
       "id": "P54-002",
@@ -2469,5 +2517,5 @@
     }
   ],
   "dead_letter": [],
-  "updated_at": "2026-11-13"
+  "updated_at": "2026-11-14"
 }
