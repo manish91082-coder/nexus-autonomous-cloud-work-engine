@@ -1642,6 +1642,48 @@
         "https://community.developer.atlassian.com/t/forge-app-pricing-vs-actual-platform-costs/100000",
         "https://community.developer.atlassian.com/t/forge-usage-costs-for-development-staging-environments/99000"
       ]
+    },
+    {
+      "id": "ATLASSIAN-JIRA-PERMISSION-ACCESS-REVIEW",
+      "category": "security_compliance_audit",
+      "platform": "Atlassian Marketplace / Jira Cloud",
+      "tier": "P3",
+      "status": "REJECTED",
+      "score": 25,
+      "score_confidence": "High for generic scope; multiple recent direct commercial apps already provide effective-permission matrices, scheduled snapshots, risk findings, access-review sign-off and audit evidence.",
+      "payout_evidence": {
+        "india_eligibility": "Atlassian Marketplace Agreement requires own-name bank account and EFT; no India-specific public eligibility list was found. Written confirmation required.",
+        "payout_method": "USD EFT to valid bank account in partner's name.",
+        "minimum": "USD 500 net of applicable withholding.",
+        "settlement": "Approximately 30 days after month-end, subject to threshold and agreement terms.",
+        "economics": "Qualifying Forge apps receive 100% of gross revenue up to USD 1m in lifetime Forge revenue; thereafter standard Forge share is 83% effective 1-Oct-2026.",
+        "sources": [
+          "https://www.atlassian.com/licensing/marketplace/partneragreement",
+          "https://developer.atlassian.com/platform/marketplace/pricing-payment-and-billing/"
+        ]
+      },
+      "automation_fit": "High technical automation, but the generic permission-audit/access-review workflow is already covered by direct Marketplace competitors.",
+      "demand_evidence": [
+        "Clearance for Jira documents weekly scheduled scans, permission matrix, access-by-group views, history/diffs and CSV evidence: https://marketplace.atlassian.com/apps/2391606881/clearance-for-jira-permission-audit-access-review",
+        "Access Auditor for Jira released 7-Oct-2026 with 12 risk rules, effective-access views, scheduled snapshots and CSV evidence: https://marketplace.atlassian.com/apps/2492663306/access-auditor-for-jira-permissions-user-access-audit",
+        "AccessRadar offers access-review campaigns, Keep/Revoke/Exception decisions, snapshots and audit evidence: https://marketplace.atlassian.com/apps/3691498947/accessradar-access-review-permission-audit-for-jira",
+        "AccessLens offers permission audit, snapshots/diffs and sign-off records: https://marketplace.atlassian.com/apps/4182244448/accesslens-permission-audit-access-review-for-jira"
+      ],
+      "unknowns": [
+        "No distinct unmet outcome outside current permission/access-review feature sets.",
+        "India Marketplace seller/EFT eligibility remains unverified."
+      ],
+      "ip_and_policy_status": "Read-only least-privilege data access and careful treatment of user/group and audit information required.",
+      "reason_for_rejection": "Generic Jira permission/access-review clone is already served by Clearance for Jira, Access Auditor, AccessRadar and AccessLens. No non-overlapping buyer outcome was identified in this initial screen.",
+      "note": "Product-specific NO-GO. Atlassian remains the highest-ranked platform for a different verified buyer problem.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "PRODUCT_SPECIFIC_COMPETITOR_NO_GO",
+      "sources": [
+        "https://marketplace.atlassian.com/apps/2391606881/clearance-for-jira-permission-audit-access-review",
+        "https://marketplace.atlassian.com/apps/2492663306/access-auditor-for-jira-permissions-user-access-audit",
+        "https://marketplace.atlassian.com/apps/3691498947/accessradar-access-review-permission-audit-for-jira",
+        "https://marketplace.atlassian.com/apps/4182244448/accesslens-permission-audit-access-review-for-jira"
+      ]
     }
   ],
   "required_evidence": [
