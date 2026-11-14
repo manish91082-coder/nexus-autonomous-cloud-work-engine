@@ -64,7 +64,7 @@ Zoho Marketplace lists 900+ CRM extensions and 2,000+ total extensions. The 22 n
 
 ## Seller payout and API-credit gate — 14 November
 
-Detailed follow-up: `research/PHASE_54_PAYOUT_AND_API_CREDIT_GATE_2026-11-14.md`.
+Detailed seller-payout and API-credit findings are recorded in the Phase 54 plan's section `Follow-up gate — seller remittance and API credits (14-Nov-2026)` and the Zoho CRM dependency audit.
 
 - Zoho Marketplace extension developers receive reported gross commission equal to customer transaction value; threshold wording differs at exactly USD 100 (FAQ says at least USD 100; payment page says outstanding **more than** USD 100). Wire is about 15 working days after owner approval; PayPal by request.
 - India payout remains **UNVERIFIED** for this exact Marketplace extension programme. Broader Zoho Partner Store materials mention India entity/INR invoices and PAN, but the programme linkage is not explicit. Do not confuse reseller ₹50,000 with extension commission.
