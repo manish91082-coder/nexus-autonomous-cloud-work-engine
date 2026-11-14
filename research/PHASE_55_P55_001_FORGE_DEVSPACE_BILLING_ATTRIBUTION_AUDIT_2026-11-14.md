@@ -29,7 +29,7 @@ Official source: https://www.atlassian.com/blog/how-we-build/engineering-the-for
 1. **Usage attribution:** per app, resource meter, date, installation/site context and environment.
 2. **Financial settlement:** one transaction/billing account and monthly invoice for the Developer Space, with app-level overage line items.
 
-Do not treat the Developer Space invoice as one undifferentiated app bill, and do not sum app costs without reconciliation to the Developer Space invoice. The free threshold wording also needs careful treatment: pricing material and engineering explanation describe per-app allowance evaluation, while the Developer Space billing page describes total usage of all apps in the space remaining within a free threshold. The exact allowance aggregation and any Developer Space-level caps/discounts must be reconciled from the authoritative pricing schedule before calculation.
+Do not treat the Developer Space invoice as one undifferentiated app bill, and do not sum app costs without reconciliation to the Developer Space invoice. The per-app vs Developer Space accounting distinction is now resolved by the current Forge pricing FAQ: **each app receives its own free usage allowance per month; allowances are not shared across apps**. Charges above each app's own allowance are calculated per app, while all app charges are consolidated into one monthly invoice for the Developer Space. Therefore, compute each app's overage independently, then sum the resulting charges and reconcile them against the Developer Space invoice. The Developer Space billing page's phrase 'combined usage ... within the free threshold' is consistent with the total bill remaining zero when all app-specific allowances are respected; it does not establish one pooled allowance shared between apps. Sources: https://developer.atlassian.com/platform/forge/forge-platform-pricing/ and https://www.atlassian.com/blog/how-we-build/engineering-the-forge-billing-platform-for-reliability-and-scale.
 
 ## 2. Usage API grain and rate limits
 
@@ -106,3 +106,17 @@ Continue P55-001:
 6. Verify India partner enrollment/EFT eligibility and allowed distribution path.
 
 **Resume token:** `PHASE_55 / P55-001 / FORGE DEVSPACE COST GUARD = HOLD_FOR_EVIDENCE`.
+
+
+## 8. Additional enforcement exposure — all apps share Developer Space billing state
+
+The Developer Space Billing and Payments page (last updated 25-Aug-2026) adds an operational risk that a single-app cost dashboard would miss:
+- The transaction account is linked to the Developer Space, and all apps contribute to the same monthly bill.
+- If usage exceeds the free allowance and there is no valid payment method, invoice generation/payment can fail and a **14-day pre-dunning period** begins, with notifications and up to five retry attempts.
+- If unresolved after pre-dunning, enforcement applies to **all apps in that Developer Space**, not merely the app that generated the charges, because the apps share one invoice (co-invoicing).
+- If a payment method exists but payment fails, a separate **21-day dunning period** applies, with up to five retries.
+- Billing admins can inspect subscriptions, usage, invoices and payment status in the Billing Console. The public API path for an external tool to read these records remains unverified.
+
+Official source: https://developer.atlassian.com/platform/forge/developer-space/billing-for-developer-spaces/
+
+**Product implication:** the potential value is not only developer cost forecasting. There may be a broader Developer Space billing-continuity risk: an unresolved billing issue can affect every app inside the space. However, the candidate must not claim it can prevent Atlassian enforcement or suspend only one app. It can only send a timely warning if the required billing-state data is exposed through a supported authorized interface. That interface is not yet verified.
