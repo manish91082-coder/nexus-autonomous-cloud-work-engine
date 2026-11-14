@@ -3177,3 +3177,15 @@ Getvik remains the only P1 first-cash pilot. Cashfree Direct is a P2 domestic fa
 - AI executor is still `WAITING_FOR_OWNER_CONFIGURATION`; workflow success is bounded deterministic automation, not a fully autonomous AI agent swarm.
 - Mission governance discrepancy recorded in `MISSION/THREAD_REPOSITORY_CONTINUITY_AUDIT_2026-11-14.md`: V4 omits the prior 30-day deadline and excludes funded/manual assignment revenue routes. Preserve the original decision as unresolved; do not silently change V4 or claim both are aligned.
 - PCNE ₹0; bank-settled ₹0; authorized spend ₹0.
+
+## Phase 59.8A — Existing Automation Forensic Inventory (14 November 2026)
+- Report: `research/PHASE_59_8A_EXISTING_AUTOMATION_FORENSIC_INVENTORY_2026-11-14.md`.
+- Audited recursive tree at `cca8dff7965b4ced26f792bcbfa5bf9827ad650f`: 295 entries / 262 files; 13 Actions workflows; 33 test files; 65 product paths.
+- First-pass audit found existing mission worker + continuity guard, manual marketplace discovery workflows, and six product build workflows plus recruitment packaging/browser QA.
+- Critical queue defect fixed at `cca8dff7965b4ced26f792bcbfa5bf9827ad650f`: P59-001 paused (acceptance preserved), P59-003 sole active task, P59-002 remains blocked.
+- Worker #298 on that exact HEAD passed deterministic state validation, tests and queue poll; AI executor remained `WAITING_FOR_OWNER_CONFIGURATION`, inference calls 0. This is not a deployed AI swarm.
+- Guard #57 on `cca8dff...` was pending at last observation; do not claim exact-HEAD guard success until verified.
+- `nexus-jobbi-gigs.yml` is a manually dispatched Jobbi gig discovery workflow and conflicts with the no-gigs/no-job-offers policy; do not treat it as an approved revenue path.
+- Floating action version tags, broad `contents: write` on mission worker, missing dependency/lock manifests, and full runtime/security review remain open.
+- Current status: `WORKFLOW_TREE_INVENTORY_COMPLETE; FIRST_PASS_CONTROL_PLANE_AUDIT_COMPLETE; FULL_RUNTIME_AND_SECURITY_REVIEW_IN_PROGRESS`.
+- Mission invariants unchanged: ₹10 Cr cumulative verified PCNE; PCNE ₹0; authorized spend ₹0; AI provider not configured; swarm not deployed; no product build authorized.
