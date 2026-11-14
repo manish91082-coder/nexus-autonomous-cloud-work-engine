@@ -476,6 +476,121 @@
       ],
       "captured_at": "2026-11-13",
       "verification_status": "LEGAL_CLASSIFICATION_UNRESOLVED_NOT_ACTIVATED"
+    },
+    {
+      "provider": "Atlassian Marketplace / Forge",
+      "platform": "Paid-via-Atlassian Marketplace app licensing and recurring subscriptions",
+      "country_eligibility": "India-specific partner payout country list not found in public documentation reviewed. Partner agreement requires a valid bank account in the partner's name; India payout must be confirmed with Marketplace support before activation.",
+      "account_type": "Marketplace partner / individual or legal entity subject to partner onboarding",
+      "kyc_requirements": "Partner onboarding and applicable bank/tax verification; exact India documentation must be confirmed by owner. No KYC or agreement action performed.",
+      "rail": "INTERNATIONAL_BANK_WIRE",
+      "currency": "USD-denominated revenue share; conversion may apply under Marketplace documentation and partner communications",
+      "minimum": "USD 500 profit, net of applicable withholding",
+      "fees": "Qualifying Forge apps receive 100% gross revenue share up to USD 1 million lifetime Forge revenue; standard Forge partner share is 83% after the incentive from 1-Oct-2026. Partner bears bank wire fees. Forge usage over free monthly allowances is billable; LLM and container capabilities have no free allowance.",
+      "hold_period": "30-day customer refund window; later refunds/chargebacks may be offset; on termination Atlassian may withhold revenue share for 60 days.",
+      "settlement_schedule": "EFT to partner bank account approximately 30 days after month-end once USD 500 threshold is reached; roughly 30–60 days from sale.",
+      "fx_or_conversion": "USD-denominated share may fluctuate; currency conversion follows Atlassian Marketplace documentation. Bank/intermediary fees are partner responsibility.",
+      "reversibility_and_chargebacks": "30-day refunds; later refunds and chargebacks can be offset against future remittance or reclaimed; 60-day termination hold may apply.",
+      "official_source_url": "https://developer.atlassian.com/platform/marketplace/pricing-payment-and-billing/",
+      "official_sources": [
+        "https://developer.atlassian.com/platform/marketplace/pricing-payment-and-billing/",
+        "https://www.atlassian.com/legal/archives/partneragreement/partneragreement-20251130",
+        "https://developer.atlassian.com/platform/forge/forge-platform-pricing/"
+      ],
+      "captured_at": "2026-11-14",
+      "verification_status": "OFFICIAL_FEES_AND_EFT_THRESHOLD_CAPTURED_INDIA_PAYOUT_ELIGIBILITY_UNVERIFIED"
+    },
+    {
+      "provider": "Zoho Marketplace Extensions",
+      "platform": "Paid Zoho Marketplace extensions; one-time or monthly recurring pricing",
+      "country_eligibility": "Public Marketplace extension payout documentation does not explicitly confirm India extension-developer eligibility, payout currency or India-specific fees. General Zoho Partner Store India references are not treated as proof for Marketplace extension commissions.",
+      "account_type": "Marketplace extension developer",
+      "kyc_requirements": "Zoho developer/store account and bank details; owner-only account verification and any applicable identity/tax requirements. No account or KYC action performed.",
+      "rail": "INTERNATIONAL_BANK_WIRE",
+      "currency": "Not specified for India extension developers in the public payout page; wire transfer or PayPal by request.",
+      "minimum": "Model > USD 100 conservatively. Detailed payments page says outstanding commission must be more than USD 100; FAQ says >= USD 100.",
+      "fees": "No separate platform commission deduction identified for extension developers; Zoho's commission report says total customer transaction value equals gross commission. Bank, FX and PayPal fees are not quantified in the reviewed page.",
+      "hold_period": "Monthly statement and owner approval gate; no fixed pre-approval risk hold stated.",
+      "settlement_schedule": "Wire transfer about 15 working days after developer explicitly approves commission processing. PayPal can be requested by email.",
+      "fx_or_conversion": "India currency and conversion treatment not specified; obtain written confirmation.",
+      "reversibility_and_chargebacks": "Marketplace refunds, account review and payment corrections remain subject to current Zoho terms; public page does not quantify reserves.",
+      "official_source_url": "https://www.zoho.com/developer/help/marketplace/payments.html",
+      "official_sources": [
+        "https://www.zoho.com/developer/help/marketplace/payments.html",
+        "https://www.zoho.com/developer/help/marketplace/pricing.html",
+        "https://www.zoho.com/developer/help/marketplace/faqs.html"
+      ],
+      "captured_at": "2026-11-14",
+      "verification_status": "OFFICIAL_THRESHOLD_AND_WIRE_TIMING_CAPTURED_INDIA_EXTENSION_PAYOUT_UNVERIFIED"
+    },
+    {
+      "provider": "Wix App Market / Tipalti",
+      "platform": "Wix App Market paid app revenue share",
+      "country_eligibility": "Tipalti's USD-funded coverage table lists India INR local bank, INR wire, USD wire, check and PayPal payee methods. The same official table states payments to India are not available for India-based payer entities. Wix's actual payer entity is not identified in the reviewed developer docs, so India eligibility remains conditional.",
+      "account_type": "Wix App Market partner / app developer payee through Tipalti",
+      "kyc_requirements": "Wix Partner and Tipalti payee onboarding, identity/business and bank verification; owner-only. No account or KYC action performed.",
+      "rail": "INTERNATIONAL_BANK_WIRE",
+      "currency": "INR local bank or USD wire/PayPal methods are listed by Tipalti for India payees, subject to payer-entity restriction and Wix's actual configuration.",
+      "minimum": "USD 200 accumulated revenue per individual app; below-threshold balance rolls forward.",
+      "fees": "Wix transaction fee 2.5% plus applicable sales tax. First 12 months: 100% developer share after those deductions. After first year: 80% developer / 20% Wix after those deductions. Tipalti/bank/FX costs depend on selected method and payer configuration.",
+      "hold_period": "Monthly accumulation to per-app USD 200 threshold; no separate fixed risk hold specified in the reviewed Wix FAQ.",
+      "settlement_schedule": "Monthly. Wix example: March revenue arrives at the beginning of May; payout status is posted around the middle of the following month.",
+      "fx_or_conversion": "Tipalti method/currency selection and bank FX can affect net; exact Wix-to-India currency route not confirmed.",
+      "reversibility_and_chargebacks": "Refunds, payment disputes, account review and platform deductions can reduce app revenue and delay payout.",
+      "official_source_url": "https://dev.wix.com/docs/build-apps/launch-your-app/pricing-and-billing/payments-and-billing-faqs",
+      "official_sources": [
+        "https://dev.wix.com/docs/build-apps/launch-your-app/pricing-and-billing/payments-and-billing-faqs",
+        "https://help.tipalti.com/hc/en-us/articles/31314361313815-Payment-methods-coverage-US-ROW"
+      ],
+      "captured_at": "2026-11-14",
+      "verification_status": "OFFICIAL_WIX_ECONOMICS_AND_TIPALTI_INDIA_METHODS_CAPTURED_PAYER_ENTITY_GATE_UNRESOLVED"
+    },
+    {
+      "provider": "monday.com Marketplace",
+      "platform": "Native marketplace subscriptions for monday apps",
+      "country_eligibility": "Monthly USD payout through Payoneer is documented; monday's public developer payout docs do not publish a country allowlist. India vendor/Payoneer setup must be confirmed at account level.",
+      "account_type": "Marketplace app developer / vendor registered through monday's vendor process",
+      "kyc_requirements": "Marketplace app approval, vendor registration through Zip and Payoneer account setup; owner-only identity/business verification. No account or KYC action performed.",
+      "rail": "PAYONEER",
+      "currency": "USD",
+      "minimum": "No public minimum payout threshold identified in the reviewed monday documentation.",
+      "fees": "After lifetime app revenue reaches USD 200,000, documented share for subsequent revenue is 85% developer / 15% monday. Exact pre-threshold share must be confirmed in the signed partner agreement. Payoneer account and FX/withdrawal fees are separate.",
+      "hold_period": "Invoice must be submitted and approved by monday finance; no separate fixed risk hold stated.",
+      "settlement_schedule": "Monthly payout through Payoneer; after invoice submission and finance approval, payment may take up to 60 days. No fixed calendar payout date.",
+      "fx_or_conversion": "USD Payoneer payout; India bank withdrawal conversion and account fees follow current Payoneer India terms and account settings.",
+      "reversibility_and_chargebacks": "Subscription cancellation, refunds, failed payments and invoice corrections can reduce or defer payment; developer remains responsible for entitlement enforcement and support.",
+      "official_source_url": "https://developer.monday.com/apps/docs/subscriptions-payments-and-billing",
+      "official_sources": [
+        "https://developer.monday.com/apps/docs/monetization",
+        "https://developer.monday.com/apps/docs/subscriptions-payments-and-billing",
+        "https://developer.monday.com/apps/docs/partner-program",
+        "https://developer.monday.com/apps/docs/implementing-monetization"
+      ],
+      "captured_at": "2026-11-14",
+      "verification_status": "OFFICIAL_PAYONEER_AND_MONTHLY_SETTLEMENT_CAPTURED_INDIA_VENDOR_ELIGIBILITY_AND_PRETHRESHOLD_SHARE_UNVERIFIED"
+    },
+    {
+      "provider": "BigCommerce App Marketplace / Automated Billing",
+      "platform": "Technology Partner app subscriptions through BigCommerce Automated Billing",
+      "country_eligibility": "Partner application includes a country field and PayPal Account ID; public documentation reviewed does not confirm India Technology Partner approval or India payout eligibility.",
+      "account_type": "Approved Technology Partner with Billing/Financial role for Marketplace submission",
+      "kyc_requirements": "Technology Partner application, company/app details, approved partner status and required remittance information; agreement acceptance is owner-only. No application or terms action performed.",
+      "rail": "INTERNATIONAL_BANK_WIRE",
+      "currency": "USD remittance; non-USD customer collections converted using average monthly exchange rate published by a recognised source or BigCommerce bank.",
+      "minimum": "No public remittance minimum identified in the reviewed Automated Billing Appendix.",
+      "fees": "15% revenue share of Net Revenue plus 3% processing fee; USD 20 wire fee; international PayPal 2% capped at USD 20; ACH and domestic PayPal have no disbursement fee. Applicable taxes are additional.",
+      "hold_period": "BigCommerce may retain a monthly reserve for chargebacks, reversals and other liabilities; reserve percentage and release timing are not public in the reviewed appendix.",
+      "settlement_schedule": "Monthly reporting via Impartner; fixed remittance date and payout SLA not specified in the reviewed appendix.",
+      "fx_or_conversion": "Non-USD collections use average monthly exchange rate from a nationally recognised source or BigCommerce bank; intermediary/bank FX charges may apply.",
+      "reversibility_and_chargebacks": "Reserve, refunds, cancellations and chargebacks may reduce or defer proceeds; BigCommerce may retain revenue share and processing/disbursement fees on refunded transactions.",
+      "official_source_url": "https://partners.bigcommerce.com/English/register_tech.aspx",
+      "official_sources": [
+        "https://docs.bigcommerce.com/developer/docs/integrations/becoming-a-partner",
+        "https://partners.bigcommerce.com/English/register_tech.aspx",
+        "https://docs.bigcommerce.com/developer/docs/integrations/apps/unified-billing/overview"
+      ],
+      "captured_at": "2026-11-14",
+      "verification_status": "OFFICIAL_FEE_AND_PAYOUT_METHOD_CAPTURED_INDIA_ELIGIBILITY_MINIMUM_AND_REMITTANCE_SLA_UNVERIFIED"
     }
   ],
   "required_fields": [
@@ -508,5 +623,5 @@
     "conversion_evidence",
     "compliance_review"
   ],
-  "updated_at": "2026-11-13"
+  "updated_at": "2026-11-14"
 }
