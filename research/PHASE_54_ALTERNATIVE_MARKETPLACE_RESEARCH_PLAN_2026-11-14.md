@@ -62,6 +62,8 @@ Why this is not a generic CRM-cleanup clone:
 
 Detailed report: `research/PHASE_54_ZOHO_CRM_CONFIGURATION_DEPENDENCY_AUDIT_2026-11-14.md`.
 
+Competitor audit expanded (14-Nov): 17 named native/direct/adjacent references: 8 Zoho-native/Marketplace features and 9 Salesforce cross-CRM analogues. The Salesforce analogues demonstrate category maturity and commercial alternatives, not Zoho buyer demand. Elements.cloud lists $6,800/year at 100 Salesforce users; Jetstream Professional $25/month; SchemaForce Pro $149/month and Business $399/month; FieldRat is free. A Zoho CRM governance tag search found only one free extension but is not exhaustive. Zoho Functions full access: Enterprise/CRM Plus/Ultimate/Zoho One; Standard/Professional only through Extensions. Function READ scopes exist but source is sensitive. API concurrency 5–25 by edition is not daily quota.
+
 **Disposition: HOLD — no MVP or account setup.** Problem evidence exists, but paid purchase volume, recurring budget, verified India seller payout and complete technical coverage remain unproven. The next P54-001 work is a targeted 10–15 direct/substitute audit and stricter payout/permission verification.
 
 ### B. Wix App Market — second research priority
