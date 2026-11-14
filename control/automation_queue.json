@@ -10,10 +10,11 @@
     ],
     "retry_policy": "bounded_exponential_backoff",
     "owner_gates_pause_only_affected_task": true,
-    "sequence_mode": "ONE_PRODUCT_AT_A_TIME; P55 BLOCKED_BY_OWNER_GATE (candidate HOLD, not GO); P56 Shopify general recovery NO-GO; P57 Microsoft generic assurance NO-GO; P58 Apify distinct-niche research active; no build until all V4 gates pass.",
+    "sequence_mode": "V5 PORTFOLIO AGGREGATION; PARALLEL SOURCE RESEARCH; ONE NEW PRODUCT BUILD AT A TIME; FIRST REPEATABLE MONETIZATION LOOP FIRST; THEN STACK NEXT HIGHEST-RANKED SOURCE; PRODUCT NO-GO DOES NOT CLOSE PARENT SOURCE.",
     "revenue_priority_order_file": "REVENUE_OPPORTUNITY_RANKING_2026-11-13.md",
-    "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md",
-    "current_task": "P58-001"
+    "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
+    "current_task": "P59-001",
+    "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md"
   },
   "tasks": [
     {
@@ -2885,7 +2886,7 @@
       "id": "P58-001",
       "title": "Find one evidence-backed Apify Store niche outside previously rejected categories",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "BLOCKED",
       "depends_on": [
         "P57-001"
       ],
@@ -2972,7 +2973,9 @@
         },
         "mcp_contract_report": "research/PHASE_58_3_MCP_CONTRACT_DRIFT_AND_APIFY_MCP_FIT_SCREEN_2026-11-14.md",
         "product_selected": false
-      }
+      },
+      "blocker_code": "PORTFOLIO_REPRIORITIZATION_AND_APIFY_INCIDENT_GATE",
+      "blocker": "Paused as a source-specific research lane while V5 portfolio-wide source ranking identifies the largest credible revenue source. Apify incident/post-mortem gate also remains uncleared. This pause does not mark Apify Store as platform-wide NO-GO; may resume if it ranks highest or the gate clears and evidence justifies priority."
     },
     {
       "id": "P58-002",
@@ -3025,6 +3028,43 @@
       "owner_gate": false,
       "last_updated": "2026-11-14",
       "blocker": "No product selected/published; no independent paid transaction."
+    },
+    {
+      "id": "P59-001",
+      "title": "Map and rank the complete eligible revenue-source portfolio; select the largest credible risk-adjusted net-revenue source for first execution",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P58-001"
+      ],
+      "idempotency_key": "phase59-portfolio-source-ranking-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-14",
+      "acceptance": [
+        "Compare all source families in PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md, not just the current marketplace platform queue.",
+        "Include recurring B2B SaaS/vertical software, marketplace apps, AI agents/APIs, digital products, software/IP licensing, creator IP/royalties/books/courses, stock assets, games, sponsorship/open-source support, compliant affiliate/advertising and any additional eligible source discovered.",
+        "For each serious source quantify evidence-backed reachable buyers, pricing, conservative/base/upside net revenue scenarios, contribution margin, time to first PCNE, recurrence, distribution, automation, capital, rights, platform and India payout gates.",
+        "Rank the largest credible risk-adjusted cumulative net-revenue source first; do not equate TAM, listing price, user counts or theoretical upside with obtainable revenue.",
+        "Research multiple source families in parallel; retain one active new product build maximum.",
+        "NO-GO decisions remain candidate-specific unless independent source-level evidence supports closing the parent revenue source.",
+        "Define first-source completion as verified independent paid transaction, correct PCNE ledger entry, self-serve delivery, positive fully-loaded unit economics and a measured repeatability path; do not wait for ₹10 Cr from one source.",
+        "Recommend the next revenue stream to add while earlier validated streams continue earning.",
+        "Respect V5: ₹0 new spend by default, owner gates, legal/platform terms, rights, no employment/manual gig bidding/cold outreach/spam/unauthorized data/recurring manual fulfilment.",
+        "Produce a decision report, update portfolio ranking, mission state, queue and continuity. No build until the winning product dossier passes release gates."
+      ]
+    },
+    {
+      "id": "P59-002",
+      "title": "Build and validate the first product/source selected by the V5 portfolio ranking",
+      "priority": "P1",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P59-001"
+      ],
+      "idempotency_key": "phase59-first-source-mvp-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-14",
+      "blocker": "Await P59-001 evidence-backed selection and all V5 product, rights, economics and owner/platform gates."
     }
   ],
   "dead_letter": [],
