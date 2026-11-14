@@ -2305,7 +2305,7 @@
             "no paid buyer/subscription evidence",
             "India extension-developer payout eligibility/currency/fees/tax unconfirmed"
           ],
-          "next_exact_work": "Complete edition-specific API coverage matrix for Standard/Professional/Enterprise/Zoho One/Ultimate; verify read-scope/Function source entitlement and India extension seller remittance. Candidate remains HOLD; do not build.",
+          "next_exact_work": "Verify India extension-developer seller/payout eligibility through official documentation or owner-authorized support query; test which edition tiers can install public extensions and which APIs work through Marketplace extension context. In parallel, seek current buyer cadence/budget signals. Keep HOLD; no build.",
           "marketplace_substitute_audit": {
             "direct_tag_search": "Zoho Marketplace CRM governance tag returned one free result: Configuration Logs Tracker for Zoho CRM (0 visible ratings); bounded tag search, not exhaustive",
             "adjacent_extensions": [
@@ -2364,7 +2364,9 @@
             "concurrency_is_not_daily_quota": true,
             "function_source_policy": "Opt-in, read-only, local scan where possible; no external LLM upload by default",
             "coverage_policy": "Missing API/permission/edition/DC surface must be NOT_SCANNED, never NO_DEPENDENCY"
-          }
+          },
+          "marketplace_size_claim": "Zoho Marketplace FAQ reports 900+ CRM extensions and 2,000+ total extensions; vendor-reported catalogue count, not buyer count or sales.",
+          "recurring_economics_status": "UNPROVEN: field retirement may be occasional. Monthly subscription would need repeated schema-change/dependency-drift scans or governance cadence; no cadence or willingness-to-pay evidence yet."
         },
         "zoho_payout_clarification": {
           "developer_console_and_listing_fee": "Official FAQ says free",
