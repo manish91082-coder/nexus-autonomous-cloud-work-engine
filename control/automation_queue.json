@@ -2646,12 +2646,22 @@
             "https://www.atlassian.com/blog/how-we-build/engineering-the-forge-billing-platform-for-reliability-and-scale"
           ]
         },
-        "next_exact_work": "Narrow product hypothesis beyond native Developer Space Insights and existing fixed usage alerts. Verify whether a supported external read-only API exposes full all-app Insights data, custom USD budget policies, invoices, payment status and pre-dunning/dunning. Build no generic dashboard. Complete 10–15 substitute audit, buyer WTP evidence, India Marketplace seller/EFT and permitted distribution/payment route. No build/token/account/spend.",
+        "next_exact_work": "Do not build P55-002. Obtain two independently verifiable buyer-demand signals and one genuine budget/WTP signal; obtain official clarification for owner-operated external local-client access to invoice/payment/dunning data, and India-specific Marketplace eligibility/EFT plus the permitted third-party listing/payment model. Existing Atlassian support packet remains NOT SENT and any submission requires explicit owner approval. Re-run V4 gates; if unmet, NO-GO P55-001 and move to next ranked platform.",
         "native_insights_substitute": {
           "report": "research/PHASE_55_P55_001_FORGE_DEVSPACE_BILLING_ATTRIBUTION_AUDIT_2026-11-14.md",
           "source": "https://developer.atlassian.com/platform/forge/developer-space/developer-space-insights/",
           "confirmed": "Developer Space Insights provides aggregated visibility across all Forge apps (logs/errors/alerts/performance/cost). Top Apps by resource usage is top three over 30 days; other charts default to 24h; production/dev/staging included; read-only.",
           "disposition": "Generic multi-app cost dashboard is not a product gap. Candidate must narrow to custom USD budgets, custom recipients/escalations, invoice/payment/dunning alerts or margin/usage reconciliation, only if supported data access and paid demand are proven."
+        },
+        "substitute_audit": {
+          "report": "research/PHASE_55_P55_001_SUBSTITUTE_AND_FEASIBILITY_AUDIT_2026-11-14.md",
+          "substitute_count": 15,
+          "generic_dashboard": "NO_GO_NATIVE_INSIGHTS_ALREADY_COVERS_CROSS_APP_COST_VISIBILITY",
+          "verified_problem_signal": "ONE_CURRENT_PUBLIC_THREAD_WITH_MULTIPLE_DEVELOPER_REQUESTS_AND_EXPLICIT_ATLASSIAN_STAFF_CONFIRMATION",
+          "wtp": "NOT_ESTABLISHED",
+          "external_invoice_access": "UNVERIFIED; DOCUMENTED_INVOICE_LIST_ENDPOINT_EXCLUDES_FORGE_AND_OAUTH2_APPS",
+          "india_distribution_payout": "UNVERIFIED",
+          "status": "HOLD_FOR_EVIDENCE"
         }
       }
     },
