@@ -3276,3 +3276,8 @@ The first retry-backoff hardening CI attempts failed at the new swarm test step.
 ## Phase 59.8B1 retry eligibility correction — 14 November 2026
 
 After fixing escaped-newline source corruption, CI isolated a second logical defect: the retry timestamp was written but `eligible_tasks` did not yet enforce `available_at_utc`. Added the missing timestamp filter in commit `f5a3cf92fb9b45c2cd97b1c1f3fea71afeb0cb98`. Exact-HEAD worker CI run `43616548880` is IN_PROGRESS. Earlier test failures are retained as evidence; no claims of backoff correctness until this run passes. Production worker remains untouched.
+
+
+## Phase 59.8B1 retry timestamp persistence fix — 14 November 2026
+
+The prior run showed that `eligible_tasks` had the availability filter but `finish_task` did not persist `available_at_utc` after a retryable failure. Added the missing write in `finish_task`, commit `2d7f5e06bc7be1a81415373fb9270d31bca5f14c`. Exact-HEAD CI run `43616623657` is IN_PROGRESS at checkpoint. Backoff remains unverified until this run succeeds. Prior failures and root causes remain preserved above.
