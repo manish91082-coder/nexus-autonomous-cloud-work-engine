@@ -1258,7 +1258,7 @@
       "tier": "P3",
       "status": "REJECTED",
       "score": 18,
-      "score_confidence": "High; the exact user request is evidenced, but the requested feature is already confirmed in production by Master Automations and the adjacent category has at least 17 direct/adjacent competitors.",
+      "score_confidence": "High; the exact user request is evidenced, but the requested feature is already confirmed in production by Sync Updates to Connected Boards (Fortimus, listing 10001204; 30-automation bundle) and the adjacent category has at least 17 direct/adjacent competitors.",
       "payout_evidence": {
         "india_eligibility": "monday.com native marketplace monetization uses monthly USD Payoneer payout, but India vendor eligibility remains unverified in the platform-level payout record.",
         "payout_method": "Payoneer USD",
@@ -1267,7 +1267,8 @@
         "sources": [
           "https://developer.monday.com/apps/docs/subscriptions-payments-and-billing",
           "https://community.monday.com/feature-requests/post/automation-action-auto-link-subitem-to-its-parent-item-via-a-connect-lxRwDp7s9miHdtp",
-          "https://apps-for-monday.com/apps/10001204/"
+          "https://apps-for-monday.com/apps/10001204/",
+          "https://monday.com/marketplace/listing/10001204/sync-updates-to-connected-boards"
         ]
       },
       "automation_fit": "High technical feasibility using create_subitem webhooks and parentItemId; low differentiation because Master Automations already provides the exact parent-to-Connect-Boards action.",
@@ -1278,7 +1279,7 @@
         "No defensible product moat against 17+ direct and adjacent competitors"
       ],
       "ip_and_policy_status": "Use monday API scopes only with user authorisation, least privilege, webhook challenge validation and customer data minimisation. No customer-data model training.",
-      "reason_for_rejection": "The exact parent auto-link feature is already served by Master Automations; broader cross-board and subitem automation is crowded. No standalone product build justified.",
+      "reason_for_rejection": "The exact parent auto-link feature is already served by Sync Updates to Connected Boards (Fortimus, listing 10001204; 30-automation bundle); a marketplace review dated 27-Oct-2026 confirms use. The adjacent cross-board/subitem category is crowded. No standalone moat or willingness-to-pay proof for a repair utility.",
       "note": "NO-GO for this product idea only. monday.com Marketplace remains a platform-level candidate pending a different validated recurring buyer problem and India payout confirmation.",
       "last_revalidated": "2026-11-14",
       "score_scope": "PRODUCT_SPECIFIC_COMPETITOR_AUDIT"
