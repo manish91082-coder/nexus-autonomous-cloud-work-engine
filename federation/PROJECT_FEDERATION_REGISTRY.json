@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.0",
+  "federation_id": "MANISH-AI-PROJECT-FEDERATION-2026",
+  "updated_at": "2026-11-14",
+  "purpose": "Cross-project coordination only; never merge missions, budgets, data, revenue ledgers or safety boundaries.",
+  "authority": {
+    "federation_controller": "manish91082-coder/nexus-autonomous-cloud-work-engine",
+    "controller_role": "Registry, shared resource arbitration, cross-repository health and duplicate-run prevention; not a universal mission override.",
+    "project_local_authority": "Each repository's own constitution, state, queue and acceptance criteria remain authoritative.",
+    "owner_identity_email": "manish91082@gmail.com",
+    "identity_note": "Email is an identity attribute, not a credential or OAuth permission."
+  },
+  "global_invariants": [
+    "No laptop/local runtime dependency for P10CR swarm.",
+    "₹0 new spend by default; no paid fallback, hidden billing, credit purchase or auto-upgrade.",
+    "One canonical writer per repository control-plane state at a time.",
+    "Every task claim uses lease, expiry and monotonically increasing fencing token.",
+    "Cross-project execution is isolated; no project imports another project's tasks or changes its mission.",
+    "Agent outputs are untrusted until project-specific evidence and acceptance gates pass.",
+    "Never request password, OTP, recovery code, session cookie or private key in chat or commit secrets.",
+    "KYC, OAuth consent, legal acceptance, billing activation, payment, publication and irreversible account actions require explicit owner approval.",
+    "Respect provider blocks; no account rotation or access-control bypass."
+  ],
+  "projects": [
+    {
+      "project_id": "P10CR",
+      "repository": "manish91082-coder/nexus-autonomous-cloud-work-engine",
+      "branch": "master",
+      "authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
+      "state": "control/mission_state.json",
+      "queue": "control/automation_queue.json",
+      "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
+      "role": "FEDERATION_CONTROLLER_AND_PROJECT",
+      "status": "P59-003 IN_PROGRESS; Worker #341 and Guard #100 passed; live AI/cloud deployment unproven"
+    },
+    {
+      "project_id": "FLASHLOAN-RESEARCH",
+      "repository": "manish91082-coder/flashloan-research-agentic-swarm",
+      "branch": "main",
+      "authority": "PROJECT_CONSTITUTION.md + research/FLASHLOAN_REPOSITORY_RESEARCH_MISSION.md",
+      "state": "PROJECT_STATE.json",
+      "queue": "SQLite mission/task DAG",
+      "scope": "Public GitHub research only; no wallet, signing, trading, deployment or candidate code execution",
+      "role": "INDEPENDENT_PROJECT",
+      "status": "7,901 candidates; 38 queries; 28 complete, 10 incomplete; Actions run #52 in progress at audit"
+    },
+    {
+      "project_id": "ZCIRA",
+      "repository": "manish91082-coder/zero-cost-internet-revenue-automation",
+      "branch": "main",
+      "authority": "PROJECT_CONTINUITY.md",
+      "state": "Project-local",
+      "queue": "Project-local",
+      "scope": "Independent zero-cost revenue research; five commercial gates and settlement-based recognition",
+      "role": "INDEPENDENT_PROJECT",
+      "status": "Latest observed commit 3daca36 on 2026-11-14; no Actions runs in first-page audit"
+    },
+    {
+      "project_id": "DAILY1000",
+      "repository": "manish91082-coder/daily1000-autonomous-revenue-engine",
+      "branch": "main",
+      "authority": "README.md + project docs",
+      "state": "Project-local",
+      "queue": "Project-local",
+      "scope": "Separate ₹1,000/day experiment; AgentMargin hypothesis; ₹0 verified revenue",
+      "role": "INDEPENDENT_PROJECT",
+      "status": "CI run #17 success; archive import, browser QA, hosting and demand unverified"
+    },
+    {
+      "project_id": "AI-CONTENT",
+      "repository": "manish91082-coder/ai-content-system",
+      "branch": "master",
+      "authority": "Repository-local README/docs; full audit pending",
+      "state": "Project-local",
+      "queue": "Project-local",
+      "scope": "AI content pipeline; relationship to P10CR not assumed",
+      "role": "DISCOVERED_REQUIRES_AUDIT",
+      "status": "Repository exists; full runtime audit pending"
+    },
+    {
+      "project_id": "GHOST-HUNTER-FAMILY",
+      "repositories": [
+        "manish91082-coder/ghost-hunter-new",
+        "manish91082-coder/ghost-hunter-ai-smart",
+        "manish91082-coder/full-ai-ghost-hunter-universe",
+        "manish91082-coder/ghost-hunter-research-all-block-chains",
+        "manish91082-coder/ghost-hunter-clean-mvp-v3.4"
+      ],
+      "authority": "Each repo's local mission and safety docs",
+      "state": "Repository-local",
+      "queue": "Repository-local",
+      "scope": "Separate crypto engineering/research",
+      "role": "INDEPENDENT_PROJECT_FAMILY",
+      "status": "Repository access confirmed; detailed cross-repo state reconciliation pending"
+    }
+  ],
+  "shared_resources": {
+    "github_actions": "Shared account-level capacity must be budgeted; per-repository concurrency is not a global lock.",
+    "github_api": "Concurrent projects share API/rate-limit constraints; reserve per-project budgets and stagger scans.",
+    "free_model_quotas": "Provider/model quotas require shared accounting; project queues remain separate.",
+    "secrets": "No secrets in registry; use dedicated least-privilege GitHub App after owner approval."
+  },
+  "coordination_policy": {
+    "lock_service": "federation/locks/registry.json (contract placeholder; runtime lock is B4 deliverable)",
+    "task_key": "project_id/repository/task_id/idempotency_key",
+    "lease_seconds": 900,
+    "heartbeat_seconds": 60,
+    "fencing": "Monotonic fencing token per lock scope; stale workers cannot write canonical state.",
+    "state_writer": "One authorized publisher per repository control-plane path; other workers submit isolated branches/PRs.",
+    "conflict_resolution": "Never last-write-wins for mission state, queues, constitutions, revenue ledgers or evidence registers.",
+    "run_deduplication": "Idempotency key + workflow run ID + project/task identity.",
+    "quota_arbitration": "Global provider budget ledger with per-project reservations and backpressure; no paid fallback.",
+    "thread_identity": "Record chat_thread_ref or automation_id where available; missing identity remains unknown."
+  },
+  "owner_approval_policy": {
+    "owner_approves": "GitHub App installation, OAuth scopes, Google consent, account setup, KYC, terms, billing changes, public releases and irreversible actions.",
+    "automation_may_do_after_grant": "Read authorized repos, inspect workflows, create isolated branches, run tests, prepare PRs, dispatch permitted workflows, maintain queues and recover idempotent work.",
+    "never_request_in_chat": "Google/GitHub password, OTP, backup code, session cookie, private key or unrestricted PAT.",
+    "authentication": "Provider-hosted OAuth consent and short-lived scoped tokens; revoke through official provider flows."
+  },
+  "audit_limits": [
+    "15 repositories were visible through connected GitHub integration.",
+    "Two ChatGPT tab titles were visible, but browser security policy blocked reading chatgpt.com page content; thread instructions and current execution states are not fully audited.",
+    "ChatGPT threads do not share a live transactional lock automatically; registry and workflow integration are required.",
+    "This registry is a coordination contract, not proof other repos currently enforce locks."
+  ],
+  "next_actions": [
+    "Implement B4 durable event journal and lease/fencing runtime in Nexus.",
+    "Implement federation registry reader, atomic claim/heartbeat/release and stale-lease recovery.",
+    "Add project-local federation clients without changing local missions.",
+    "Create least-privilege GitHub App; owner installs/approves through official UI.",
+    "Implement provider-specific OAuth consent broker with minimum scopes.",
+    "Inventory workflows across selected repos and classify triggers; change duplicate schedules only after evidence and owner approval.",
+    "Add shared quota reservations and run concurrency drills."
+  ]
+}
