@@ -3050,8 +3050,26 @@
         "Define first-source completion as verified independent paid transaction, correct PCNE ledger entry, self-serve delivery, positive fully-loaded unit economics and a measured repeatability path; do not wait for ₹10 Cr from one source.",
         "Recommend the next revenue stream to add while earlier validated streams continue earning.",
         "Respect V5: ₹0 new spend by default, owner gates, legal/platform terms, rights, no employment/manual gig bidding/cold outreach/spam/unauthorized data/recurring manual fulfilment.",
-        "Produce a decision report, update portfolio ranking, mission state, queue and continuity. No build until the winning product dossier passes release gates."
-      ]
+        "Produce a decision report, update portfolio ranking, mission state, queue and continuity. No build until the winning product dossier passes release gates.",
+        "Inventory existing owned/licensable software and IP assets before greenfield work; verify ownership, completeness, maintenance burden and reuse rights rather than assuming ownership."
+      ],
+      "evidence": {
+        "report": "research/PHASE_59_1_PORTFOLIO_SOURCE_EVIDENCE_BATCH_01_2026-11-14.md",
+        "provisional_source_family_leader": "PRODUCTIZED_B2B_SOFTWARE_VERTICAL_SAAS_MARKETPLACE_DISTRIBUTION",
+        "concrete_product_selected": false,
+        "build_authorized": false,
+        "sources": [
+          "RBI 2025-26 software export survey",
+          "Atlassian Marketplace $7B lifetime paid sales",
+          "Shopify $1.3B developer payouts in 2025",
+          "ISB/SRITNE × Hashfame India Creator Economy study 2026",
+          "Microsoft Marketplace payout fee/profile docs",
+          "Apify Actor monetization docs",
+          "Amazon KDP 2026 royalty terms"
+        ],
+        "critical_distinction": "Revenue engine vs distribution rail; same SaaS product across two marketplaces is not two separate product streams.",
+        "next": "Compare existing owned/licensable software assets vs greenfield; select one narrow high-value recurring buyer problem with 10-15 substitutes and full net economics."
+      }
     },
     {
       "id": "P59-002",
