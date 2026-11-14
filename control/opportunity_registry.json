@@ -1283,6 +1283,210 @@
       "note": "NO-GO for this product idea only. monday.com Marketplace remains a platform-level candidate pending a different validated recurring buyer problem and India payout confirmation.",
       "last_revalidated": "2026-11-14",
       "score_scope": "PRODUCT_SPECIFIC_COMPETITOR_AUDIT"
+    },
+    {
+      "id": "MONDAY-AUTOMATION-FAILURE-MONITOR",
+      "category": "workflow_automation",
+      "platform": "monday.com Marketplace",
+      "tier": "P3",
+      "status": "REJECTED",
+      "score": 22,
+      "score_confidence": "Low; user pain is supported by feature requests and native troubleshooting material, but the key run/automation data is not available through a stable public Marketplace API.",
+      "payout_evidence": {
+        "india_eligibility": "monday.com Payoneer payout is documented, but India vendor eligibility remains unverified.",
+        "payout_method": "Monthly USD payout via Payoneer after vendor registration.",
+        "minimum": "No public minimum found.",
+        "settlement": "Up to 60 days after invoice submission and finance approval.",
+        "economics": "85% developer / 15% monday applies to subsequent app revenue after USD 200,000 lifetime app revenue; pre-trigger split remains unverified.",
+        "sources": [
+          "https://developer.monday.com/apps/docs/subscriptions-payments-and-billing",
+          "https://developer.monday.com/apps/docs/monetization"
+        ]
+      },
+      "automation_fit": "High theoretical recurring value if account-wide failed-run events were accessible; current stable API limitation prevents a supported, complete monitor.",
+      "demand_evidence": [
+        "monday.com feature request for failure alerts to board owners or monitored inbox rather than only the automation owner's notification bell: https://community.monday.com/feature-requests/post/expanded-notifications-for-automation-failures-wyoub7zBMECRRH2",
+        "Separate user report of automations silently stopping after a disconnected integration: https://community.monday.com/ask-the-com/post/automations-are-not-working-after-disconnected-integration",
+        "Official monday Run History describes successful/failed run status but retains only 10 days and is documented as a UI workflow: https://support.monday.com/hc/en-us/articles/360017254600-Automation-Run-history"
+      ],
+      "unknowns": [
+        "No stable public API to list all board automations or query run-level history.",
+        "Preview/Platform MCP surfaces are not a stable production contract for a Marketplace product.",
+        "Legacy automations may be missing from preview surfaces.",
+        "India Payoneer vendor eligibility and pre-threshold app revenue share remain unverified.",
+        "No reliable technical route to continuously monitor all boards without UI scraping or unsupported endpoints."
+      ],
+      "ip_and_policy_status": "Do not scrape the monday UI, use private endpoints or upload board/customer data to an LLM. A future re-open requires official stable API permissions and user authorisation.",
+      "reason_for_rejection": "The official stable API coverage page explicitly says board automation create/delete/update/list is unavailable and UI-only. Run History is UI-based and limited to 10 days. The monitoring promise cannot be met reliably with supported stable Marketplace APIs.",
+      "note": "Product-specific NO-GO. monday.com Marketplace remains a platform candidate for a different product with a verified buyer gap.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "PRODUCT_SPECIFIC_TECHNICAL_HARD_GATE",
+      "sources": [
+        "https://developer.monday.com/api-reference/docs/coverage-gaps",
+        "https://support.monday.com/hc/en-us/articles/360017254600-Automation-Run-history",
+        "https://developer.monday.com/apps/docs/error-handling",
+        "https://support.monday.com/hc/en-us/articles/5320998647954-Troubleshooting-reporting-issues"
+      ]
+    },
+    {
+      "id": "BIGCOMMERCE-WEBHOOK-DELIVERY-FAILURE-MONITOR",
+      "category": "developer_tools_subscription",
+      "platform": "BigCommerce App Marketplace",
+      "tier": "P3",
+      "status": "REJECTED",
+      "score": 20,
+      "score_confidence": "Low; the general problem is plausible, but native webhook retry, delivery-exception events and post-deactivation email cover the generic job.",
+      "payout_evidence": {
+        "india_eligibility": "India Technology Partner/payout eligibility remains unconfirmed.",
+        "payout_method": "ACH, bank wire or PayPal; international PayPal 2% capped at USD 20, wire USD 20.",
+        "minimum": "No public minimum identified.",
+        "settlement": "Monthly reporting; fixed remittance date not found; reserve may be retained.",
+        "economics": "15% revenue share + 3% processing fee, then payout-method charge and applicable tax.",
+        "sources": [
+          "https://docs.bigcommerce.com/developer/docs/integrations/becoming-a-partner",
+          "https://docs.bigcommerce.com/developer/docs/integrations/apps/unified-billing/overview"
+        ]
+      },
+      "automation_fit": "Potential recurring monitoring, but generic delivery-exception event and native retries reduce incremental value.",
+      "unknowns": [
+        "No distinct unmet outcome beyond native webhook retries and deliveryException event.",
+        "India partner/payout eligibility unresolved.",
+        "No product-specific paid demand evidence."
+      ],
+      "ip_and_policy_status": "Only use customer-authorised webhook metadata; least-privilege and data retention constraints would apply.",
+      "reason_for_rejection": "BigCommerce already retries failed deliveries for roughly 48 hours, emits store/hook/deliveryException events and sends registered notification email after exhausted delivery/deactivation. Generic monitoring duplicates native operations.",
+      "note": "NO-GO for generic webhook failure monitoring. A future cross-provider incident/correlation product would need independent demand evidence and a different measurable outcome.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "PRODUCT_SPECIFIC_NATIVE_SUBSTITUTE",
+      "sources": [
+        "https://docs.bigcommerce.com/developer/docs/integrations/webhooks",
+        "https://docs.bigcommerce.com/developer/docs/integrations/webhooks/events",
+        "https://docs.bigcommerce.com/developer/docs/integrations/webhooks/overview"
+      ]
+    },
+    {
+      "id": "BIGCOMMERCE-CUSTOMER-SPEND-TIER-AUTOASSIGN",
+      "category": "b2b_ecommerce_automation",
+      "platform": "BigCommerce App Marketplace",
+      "tier": "P3",
+      "status": "REJECTED",
+      "score": 26,
+      "score_confidence": "High; Atom8 vendor documentation shows the exact spending-threshold-to-customer-group workflow and current Marketplace listing is paid with visible reviews.",
+      "payout_evidence": {
+        "india_eligibility": "India Technology Partner/payout eligibility remains unconfirmed.",
+        "payout_method": "ACH, bank wire or PayPal; international PayPal 2% capped at USD 20, wire USD 20.",
+        "minimum": "No public minimum identified.",
+        "settlement": "Monthly reporting; fixed remittance date not found; reserve may be retained.",
+        "economics": "15% revenue share + 3% processing fee, before payout-method charges.",
+        "sources": [
+          "https://docs.bigcommerce.com/developer/docs/integrations/becoming-a-partner",
+          "https://docs.bigcommerce.com/developer/docs/integrations/apps/unified-billing/overview"
+        ]
+      },
+      "automation_fit": "High in theory; existing Atom8 implementation supports order trigger, customer total-spend threshold and group assignment.",
+      "demand_evidence": [
+        "Merchant example of automated YTD spending tiers and group assignment: https://cdn11.bigcommerce.com/s-m56ojccku0/content/bigcommerce-b2b-pricing-setup.html",
+        "Atom8 documented workflow: when an order is placed, if customer total spending >= USD 1,000, assign customer to Gold: https://gritglobal.io/blog/customer-group-in-bigcommerce/"
+      ],
+      "unknowns": [
+        "No differentiated unmet outcome compared with Atom8.",
+        "India partner payout eligibility is unverified.",
+        "No evidence supports a distinct margin/refund/net-spend tiering gap."
+      ],
+      "ip_and_policy_status": "Do not copy Atom8 workflows or code; any new customer segmentation product would require original implementation and customer-authorised order data.",
+      "reason_for_rejection": "Atom8's published workflow exactly matches the core requirement: evaluate total customer spend after an order and assign the customer to a group. The incumbent listing is a paid Marketplace product. A clone is not defensible.",
+      "note": "Product-specific NO-GO; BigCommerce remains a platform candidate only for a different recurring problem.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "PRODUCT_SPECIFIC_EXACT_INCUMBENT",
+      "sources": [
+        "https://www.bigcommerce.com/apps/atom8-automation/",
+        "https://gritglobal.io/blog/customer-group-in-bigcommerce/"
+      ]
+    },
+    {
+      "id": "BIGCOMMERCE-POOLED-CATEGORY-QUANTITY-SKU-PRICE-TIERS",
+      "category": "b2b_ecommerce_pricing",
+      "platform": "BigCommerce App Marketplace",
+      "tier": "P3",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 52,
+      "score_confidence": "Low; two problem reports exist, but they are separated by years and category promotions, PricePilot and bundle apps cover adjacent mechanics. Exact unmet outcome and India payout remain unresolved.",
+      "payout_evidence": {
+        "india_eligibility": "India Technology Partner/payout eligibility remains unconfirmed.",
+        "payout_method": "ACH, bank wire or PayPal; international PayPal 2% capped at USD 20, wire USD 20.",
+        "minimum": "No public minimum identified.",
+        "settlement": "Monthly reporting; exact remittance date unknown; reserves may apply.",
+        "economics": "15% revenue share + 3% processing fee, before payout charges and taxes.",
+        "sources": [
+          "https://docs.bigcommerce.com/developer/docs/integrations/becoming-a-partner",
+          "https://docs.bigcommerce.com/developer/docs/integrations/apps/unified-billing/overview"
+        ]
+      },
+      "automation_fit": "High if a repeatable category-level pooled-quantity pricing engine can be supported; current product gap not proven.",
+      "demand_evidence": [
+        "March 2026 merchant request for category-wide quantity threshold with different SKU fixed prices: https://www.reddit.com/r/bigcommerce/comments/1rkhfr2/bigcommerce_category_wide_quantity_tier_pricing/",
+        "Older developer request for quantities aggregated across multiple products/variants: https://stackoverflow.com/questions/71038714/bigcommerce-bulk-pricing-for-products-across-categories"
+      ],
+      "unknowns": [
+        "Exact overlap between native category promotions and per-SKU fixed price schedules needs tested proof.",
+        "PricePilot and Flowsplus bundle tools already cover portions of quantity tiers, category targeting and fixed/discount pricing.",
+        "No current recurring buyer cadence or willingness-to-pay evidence.",
+        "No completed 10–15 direct/adjacent competitor audit.",
+        "India Technology Partner and payout eligibility are not confirmed."
+      ],
+      "ip_and_policy_status": "Any price engine must preserve platform promotion priority, customer group/price-list rules, tax and currency semantics. No customer price write action before explicit owner approval.",
+      "reason_for_rejection": "",
+      "note": "Not shortlisted. Continue only if newer independent merchant demand and a concrete native/app gap are found.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "EARLY_PROBLEM_SCREEN_NOT_PRODUCT_APPROVAL",
+      "sources": [
+        "https://support.bigcommerce.com/s/article/Automatic-Promotions",
+        "https://www.bigcommerce.com/apps/pricepilot/",
+        "https://www.bigcommerce.com/apps/bundle-builder-by-flowsplus/"
+      ]
+    },
+    {
+      "id": "BIGCOMMERCE-VARIANT-PRICE-IMPORT-PREFLIGHT",
+      "category": "catalog_data_quality_subscription",
+      "platform": "BigCommerce App Marketplace",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 56,
+      "score_confidence": "Low; two distinct merchant reports describe variant price import failures. Native preview and multiple catalog/pricing apps cover adjacent workflows, and India seller eligibility remains unknown.",
+      "payout_evidence": {
+        "india_eligibility": "India Technology Partner/payout eligibility remains unconfirmed; no account or partner application checked.",
+        "payout_method": "ACH, bank wire or PayPal; international PayPal 2% capped at USD 20, wire USD 20.",
+        "minimum": "No public minimum identified.",
+        "settlement": "Monthly reporting; exact payout date not stated; reserves may apply.",
+        "economics": "15% revenue share + 3% processing fee, plus payout-method fee and applicable taxes.",
+        "sources": [
+          "https://docs.bigcommerce.com/developer/docs/integrations/becoming-a-partner",
+          "https://docs.bigcommerce.com/developer/docs/integrations/apps/unified-billing/overview"
+        ]
+      },
+      "automation_fit": "Potentially high after one-time OAuth/CSV validation; offline deterministic preflight could avoid ongoing paid inference/runtime, but recurring cadence must be proven.",
+      "demand_evidence": [
+        "Customer post dated 13-Aug-2026 reports variant sale prices not importing correctly for distinct size/colour SKUs: https://support.bigcommerce.com/s/question/0D5UG000010EQGl0AO/product-csv-file-not-uploading-sale-prices-against-products-with-different-skus-why-is-this-happening",
+        "Separate recent customer post asks why variant price updates inherit parent product default price after Modern CSV import: https://support.bigcommerce.com/s/question/0D5UG000012l9hk0AA/why-are-my-variant-prices-being-overridden-by-the-product-default-price"
+      ],
+      "unknowns": [
+        "Complete 10–15 direct/adjacent competitor audit outstanding.",
+        "Need sample corpus of anonymised CSV failure patterns to validate deterministic detection precision/recall.",
+        "Need evidence of recurring weekly/monthly supplier/catalog updates and willingness to pay.",
+        "Native importer preview covers first product and error summary; differential value against native workflows must be quantified.",
+        "India Technology Partner and payout eligibility, minimum and reserve policy unresolved."
+      ],
+      "ip_and_policy_status": "Initial validation should be offline/read-only. Do not request product-write or catalog-update scopes. Protect customer/supplier pricing and SKU data; no data uploaded to external LLMs.",
+      "reason_for_rejection": "",
+      "note": "Validation candidate only, not shortlisted and not approved for MVP. If demand frequency, competitor gap or India payout fails, reject without building.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "EARLY_PROBLEM_SCREEN_NOT_PRODUCT_APPROVAL",
+      "sources": [
+        "https://support.bigcommerce.com/s/question/0D5UG000010EQGl0AO/product-csv-file-not-uploading-sale-prices-against-products-with-different-skus-why-is-this-happening",
+        "https://support.bigcommerce.com/s/question/0D5UG000012l9hk0AA/why-are-my-variant-prices-being-overridden-by-the-product-default-price",
+        "https://support.bigcommerce.com/s/article/Modern-Import-Export-Overview?language=en_US",
+        "https://support.bigcommerce.com/s/article/Importing-Complex-Attributes?language=en_US"
+      ]
     }
   ],
   "required_evidence": [
