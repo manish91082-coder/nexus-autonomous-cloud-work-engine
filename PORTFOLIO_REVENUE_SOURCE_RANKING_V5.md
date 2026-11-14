@@ -154,3 +154,18 @@ See [Phase 59.7 report](research/PHASE_59_7_NON_ERP_REVENUE_FAMILY_AND_PAYOUT_SC
 - White-label/OEM remains conditional on verified ownership, deployable source, documentation and buyer evidence. Tech Cloud ERP remains unverified.
 - **Disposition:** Gumroad digital-product distribution = NEXT RESEARCH only; KDP, stock assets, licensing, API and Sponsors = HOLD/stackable; Etsy = NO-GO under current zero-spend gate. No concrete product GO, no build.
 - Next: find an original reusable technical asset with a differentiated outcome; two independent demand signals, 10–15 substitutes, price-bearing WTP, organic self-serve acquisition, rights and positive fully-loaded economics required. Keep P59-002 BLOCKED.
+
+
+## 14. Phase 59.8 — autonomous research/execution swarm architecture (14-Nov-2026)
+
+See [Phase 59.8 zero-cost swarm feasibility report](research/PHASE_59_8_ZERO_COST_AUTONOMOUS_MULTI_AGENT_SWARM_FEASIBILITY_2026-11-14.md).
+
+**Architecture decision:** GO for staged zero-cost-first hybrid swarm. The swarm is an execution multiplier for the same V5 ₹10 Cr mission, not a new revenue source or parallel goal.
+
+- Public GitHub Actions standard runners are free/unlimited on public repositories; 4 CPU/16 GB Linux standard runner; Free plan concurrency 20. Cron is not guaranteed real-time and can be delayed/dropped.
+- Cloudflare Workers Free is optional for lightweight control plane (100k requests/day, 10ms CPU/invocation, 5 Cron triggers); not the heavy inference/runtime.
+- Gemini Free tier is optional, quota-limited and carries a data-use caveat; no provider configured. No paid fallback. Local Ollama is optional pending hardware benchmark.
+- Use deterministic orchestration, typed specialist workers, provenance/evidence store, independent red-team/economics validation, V5 hard gates, checkpoint/resume, idempotency and owner approvals. Start 3–5 concurrent workers; roles are logical task roles, not 15 always-running model instances.
+- Full source-level audit of existing workflows/runtime is not yet complete; Phase A audit is mandatory before modifying existing automation.
+- No swarm deployed; no AI inference provider configured; no spend; PCNE ₹0.
+- P59-003 IN_PROGRESS for forensic audit and staged swarm foundation. P59-001 remains IN_PROGRESS; P59-002 BLOCKED pending product qualification.
