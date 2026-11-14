@@ -134,7 +134,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase B foundation committed: stdlib-only deterministic task/evidence/run contracts, lease and heartbeat state transitions, dependency eligibility, idempotency, bounded retry/dead-letter primitives, owner-gated action guard, PCNE no-regression guard and CI failure-injection tests. Await exact-HEAD CI result; then harden backoff, crash recovery, prompt-injection boundaries and integrate dispatcher only after tests. Do not activate AI provider or authorize product build.",
+  "next_focus": "Phase B1: add deterministic exponential retry scheduling, corruption/failure-injection and hostile-payload boundary tests; reconcile legacy Phase A state fields; inspect exact-HEAD continuity guard; only then integrate dispatcher behind disabled-by-default feature flag.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -741,7 +741,7 @@
     "latest_worker_scope": "deterministic state validation and queue tick; AI inference still disabled; not swarm execution"
   },
   "phase59_8b": {
-    "status": "IMPLEMENTATION_COMMITTED_CI_PENDING",
+    "status": "CI_TESTS_PASS; PRODUCTION_INTEGRATION_NOT_STARTED",
     "runtime": "scripts/swarm_runtime.py",
     "tests": "tests/test_swarm_runtime.py",
     "contracts": "schemas/swarm-contracts-v1.schema.json",
@@ -751,11 +751,15 @@
     "schema_commit": "f7123a9b41e955f83e3446f24db759f6b319aeb8",
     "workflow_commit": "e9e15105850d7f83e82085fc9ff3d12fc88159b1",
     "ci_run_id": 43616218518,
-    "ci_status": "IN_PROGRESS",
+    "ci_status": "SUCCESS",
     "provider_configured": false,
     "swarm_deployed": false,
     "pcne_inr": 0,
     "authorized_spend_inr": 0,
-    "integration_status": "NOT_WIRED_TO_PRODUCTION_WORKER"
+    "integration_status": "NOT_WIRED_TO_PRODUCTION_WORKER",
+    "ci_verified_sha": "e9e15105850d7f83e82085fc9ff3d12fc88159b1",
+    "ci_completed_at": "2026-11-14T16:33:??Z",
+    "ci_run_url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43616218518",
+    "ci_steps": "control-plane guard; swarm runtime tests; AI worker safety tests; product smoke tests; recruitment product tests; deterministic queue poll; AI executor fail-closed"
   }
 }
