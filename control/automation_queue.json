@@ -2646,7 +2646,7 @@
             "https://www.atlassian.com/blog/how-we-build/engineering-the-forge-billing-platform-for-reliability-and-scale"
           ]
         },
-        "next_exact_work": "Do not build P55-002. Obtain two independently verifiable buyer-demand signals and one genuine budget/WTP signal; obtain official clarification for external local-client invoice/payment/dunning data access and India-specific paid-app verification/own-name EFT plus permitted listing/payment model for the proposed CLI utility. Individual partner profile creation is generically permitted, but that is not India payout approval. Existing support packet remains NOT SENT; any submission requires explicit owner approval. Re-run V4 gates; if unmet, NO-GO P55-001 and move to next ranked platform.",
+        "next_exact_work": "Two independent public demand signals are now met. Do not build P55-002. Obtain one genuine price-bearing buyer budget/WTP signal; resolve the non-Forge/non-OAuth local CLI Commerce access to the owner's Forge Developer Space invoice/line items; obtain product-specific Marketplace software/PVA classification and India individual partner verification/own-name EFT. No support packet submission or buyer outreach without explicit owner approval. Re-run V4 gates; if any essential gate fails or WTP remains absent, NO-GO P55-001 and move to next ranked platform.",
         "native_insights_substitute": {
           "report": "research/PHASE_55_P55_001_FORGE_DEVSPACE_BILLING_ATTRIBUTION_AUDIT_2026-11-14.md",
           "source": "https://developer.atlassian.com/platform/forge/developer-space/developer-space-insights/",
@@ -2670,6 +2670,28 @@
           "cli_classification": "Local/CLI third-party integration not proven to qualify for Forge revenue share or paid-via-Atlassian model.",
           "source": "https://developer.atlassian.com/platform/marketplace/become-a-partner/; https://developer.atlassian.com/platform/marketplace/pricing-payment-and-billing/; https://community.developer.atlassian.com/t/can-an-individual-in-india-no-company-become-a-paid-app-marketplace-partner/103332",
           "status": "PARTIALLY_CLARIFIED_COUNTRY_AND_PRODUCT_CLASSIFICATION_OPEN"
+        },
+        "public_demand_update": {
+          "status": "TWO_INDEPENDENT_PUBLIC_DEMAND_SIGNALS_VERIFIED",
+          "signal_a": "2026-08-19/21 developer community discussion: direct requests for budget USD alerts and hard caps; Atlassian staff confirms configurable alerts/budget notifications absent at that time.",
+          "signal_a_url": "https://community.developer.atlassian.com/t/forge-platform-usage-costs-alerts-limits/102240",
+          "signal_b": "ECO-1831 created 2026-10-05; Gathering Interest; unresolved; 11 votes; Forge Usage Based Pricing component.",
+          "signal_b_url": "https://jira.atlassian.com/browse/ECO-1831",
+          "signal_c": "2026-01-15 developer question about dev/staging charges; Atlassian staff confirms all environment usage counted at app level; supporting context only.",
+          "signal_c_url": "https://community.developer.atlassian.com/t/do-forge-app-development-and-testing-environments-require-payment-or-have-different-pricing/98428",
+          "wtp": "NOT_ESTABLISHED"
+        },
+        "api_contract_reassessment": {
+          "usage_api": "Official owner-account-authenticated external export documentation; 5 requests/min, single usageKey/request, pagination and environment grouping; live test not performed.",
+          "commerce_api": "Partner Portal bearer token and billing-role authorization documented. Invoice resources explicitly prohibit Forge and OAuth2 app clients.",
+          "external_cli": "Possible non-Forge/non-OAuth local client, but specific right to read owner's Forge Developer Space invoice and per-app lines is not expressly established.",
+          "status": "PARTIAL_DOCUMENTATION_ONLY_NO_OWNER_CREDENTIAL_TEST"
+        },
+        "india_payout": {
+          "individual_profile": "Officially allowed under individual own name.",
+          "due_diligence": "Partner verification includes individual identity plus business/entity verification.",
+          "india_specific": "India individual paid-app payout question remains unanswered; PAN/W-8/EFT acceptance unverified.",
+          "status": "UNVERIFIED"
         }
       }
     },

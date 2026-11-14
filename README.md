@@ -121,3 +121,15 @@ Keep one canonical repository. Preserve history; archive rather than delete. No 
 - AI executor remains `WAITING_FOR_OWNER_CONFIGURATION`; no inference request was made. No autonomous research execution is claimed.
 - Current checkpoint: P55-001 `IN_PROGRESS / HOLD_FOR_EVIDENCE`; P55-002 `BLOCKED`.
 - Full current handoff is in `PROJECT_CONTINUITY.md`; complete Phase 55 audit is in `research/PHASE_55_P55_001_SUBSTITUTE_AND_FEASIBILITY_AUDIT_2026-11-14.md`.
+
+
+## Phase 55 demand and API contract revalidation — 14-Nov-2026
+
+- The two-independent-demand-signal gate is now met: (1) 19–21 Aug 2026 Forge cost alert/hard-cap Community discussion with multiple developers and explicit Atlassian staff acknowledgment; (2) separate Atlassian Jira suggestion ECO-1831, created 5-Oct-2026, status Gathering Interest/unresolved, 11 votes. Supporting Jan 15 environment-cost question confirms development/staging usage contributes to app-level cost.
+- This is public problem-demand, not buyer WTP. No named price commitment, paid pilot, preorder or paid customer evidence found. WTP remains **NOT ESTABLISHED**.
+- Official App Resource Usage API docs permit export to external tools under the same Atlassian account that owns the app. Basic auth owner token + X-ExperimentalAPI, one usageKey/request, grouping/pagination and 5 requests/min. No owner token or live test performed.
+- Commerce docs specify Partner Portal bearer tokens and billing-role authorization; invoice endpoints require X-transaction-account and explicitly prohibit Forge/OAuth2 app clients. A separate non-Forge/non-OAuth local CLI route to the owner's Forge Developer Space invoices remains possible but unverified.
+- Marketplace third-party non-installable listing exists; product-specific software category and Paid-via-Atlassian payment classification remain unconfirmed.
+- Atlassian allows an individual developer without parent company to create a Partner Profile under their own name. Due diligence still includes individual identity and business-entity verification; India paid-app seller approval, PAN/W-8 handling and own-name USD EFT remain unverified.
+- Decision remains **HOLD_FOR_EVIDENCE**. No P55-002 build, account, token, support submission, buyer outreach, terms acceptance or spend.
+- Full updated audit: `research/PHASE_55_P55_001_SUBSTITUTE_AND_FEASIBILITY_AUDIT_2026-11-14.md`.

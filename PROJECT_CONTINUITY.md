@@ -2727,3 +2727,17 @@ Getvik remains the only P1 first-cash pilot. Cashfree Direct is a P2 domestic fa
 - PCNE: ₹0; bank-settled receipts: ₹0; authorised spend: ₹0.
 
 **Resume from this exact checkpoint:** continue P55-001 only. The next evidence gates are two separately verifiable buyer-demand signals, one genuine buyer budget/WTP signal, external owner-operated invoice/payment/dunning API access, and India-specific paid-app verification/EFT plus the permitted listing/payment model for the proposed local/CLI integration. Individual Partner Profile creation is generally allowed by Atlassian, but this does not resolve India paid-app payout eligibility. Do not start P55-002 until every V4 hard gate passes; otherwise record NO-GO and move to the next ranked platform.
+
+
+## Phase 55 demand and API revalidation checkpoint — 2026-11-14
+
+- Branch HEAD at start of this update: `83385c21e19cad3f118951862b1d5edb33d5ba74`; no concurrent changes were detected.
+- P55-001 remains the sole active task. Queue size 95. P55-002 and P55-003 remain blocked.
+- New independently verified public demand evidence: the 19–21-Aug-2026 Forge cost alert/hard-cap Community thread and separate Jira product suggestion ECO-1831 (created 5-Oct-2026, 11 votes, Gathering Interest, unresolved). The two-source demand gate is met. The Jan-2026 development/staging usage question is supporting context.
+- WTP is still **NOT ESTABLISHED**: no named price acceptance, customer budget commitment, purchase, preorder or paid pilot found. Do not convert votes into customers.
+- Usage API is officially documented for external export, using the same Atlassian account that owns the Forge app, Basic API token + `X-ExperimentalAPI`, one usageKey/request, pagination/environment grouping and 5 req/min. No owner token was created and no live call was performed.
+- Commerce uses a Partner Portal bearer token and billing-role authorization. Invoice resources require `X-transaction-account` and explicitly prohibit Forge/OAuth2 application clients. A distinct non-Forge/non-OAuth local CLI may be a route, but the docs do not expressly confirm access to the owner's Forge Developer Space invoice/per-app lines.
+- Marketplace supports third-party non-installable integrations. The specific software category/payment model still needs confirmation. Atlassian permits individual partner profiles, but due diligence requires identity and business verification; India-specific paid-app payout remains unverified.
+- Report: `research/PHASE_55_P55_001_SUBSTITUTE_AND_FEASIBILITY_AUDIT_2026-11-14.md`.
+- Resume next: WTP proof, supported non-Forge/non-OAuth Commerce invoice access, specific Marketplace classification/payment model and India own-name EFT eligibility. Support packet remains NOT SENT. No outreach, account, token, build, KYC, spend or funds movement.
+- Mission revenue remains PCNE ₹0; bank-settled ₹0; authorized spend ₹0.

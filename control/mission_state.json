@@ -10,8 +10,8 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
-  "last_verified_head": "7159c0c4311d4ba32b32952b755018fc76577fce",
-  "current_focus": "Phase 55 P55-001 remains HOLD_FOR_EVIDENCE (preliminary score 65/100, not approval). New 15-substitute audit: Developer Space Insights, Usage and Costs, Cost Estimator and fixed alerts cover generic dashboard/alert use cases; no generic dashboard build. Atlassian staff's 20-Aug-2026 reply says configurable percentage alerts and budget-based notifications were unsupported at that time; Nov-6 limits docs say most hard quotas replaced by consumption charges. Resource Usage API remains experimental, owner-account scoped, one usageKey/request, 5 req/min and daily data; Commerce invoice-list explicitly excludes Forge/OAuth2 apps. External local-client invoice/payment/dunning access remains unverified. One directly reviewed current demand thread confirms pain, but two independent signal/WTP gate not passed. Individual partner profiles are generally permitted by Atlassian's official documentation, but India-resident paid-app verification, PAN/W-8 handling, India own-name EFT and product-specific distribution/payment classification remain unverified. No account/token/support request/build/spend. PCNE ₹0; bank receipts ₹0; authorised spend ₹0.",
+  "last_verified_head": "d237174a092cfc4bcdbaed7d25998e3abc745f1a",
+  "current_focus": "Phase 55 P55-001 remains HOLD_FOR_EVIDENCE (preliminary score 65/100). Two independent demand records are now verified: Aug 19-21 Community budget-alert discussion and separate Atlassian Jira suggestion ECO-1831 (11 votes, Gathering Interest, unresolved). WTP remains unproven. Resource Usage API export is officially documented for external tools under the owning Atlassian account, but no live owner-token test was performed. Commerce uses Partner Portal bearer tokens and billing-role authorization; invoice APIs explicitly block Forge and OAuth2 app clients. A non-Forge/non-OAuth local CLI route is plausible but not documented as authorized for the owner's Forge Developer Space invoice data. Third-party non-installable listing exists; paid classification is unresolved. Individual Partner Profile can be under an individual's own name; India paid-app verification, tax treatment and own-name USD EFT remain unverified. No account/token/support request/outreach/build/spend. PCNE ₹0; bank receipts ₹0; authorized spend ₹0.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -26,12 +26,12 @@
   "updated_at": "2026-11-14",
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
-    "run_number": 251,
-    "run_id": 43566059782,
+    "run_number": 252,
+    "run_id": 43566183433,
     "conclusion": "success",
-    "head_sha": "7159c0c4311d4ba32b32952b755018fc76577fce",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43566059782",
-    "completed_at": "2026-11-14T06:23:12Z",
+    "head_sha": "d237174a092cfc4bcdbaed7d25998e3abc745f1a",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43566183433",
+    "completed_at": "2026-11-14T06:24:40Z",
     "checks": [
       "mission/control-plane validation",
       "AI-worker safety tests",
@@ -61,7 +61,7 @@
     "CRAZYGAMES_HTML5",
     "CREATOR_IP_DISTRIBUTION"
   ],
-  "last_exact_head_ci_status": "Mission Worker #251 (run 43566059782) succeeded on exact control/audit commit 7159c0c4311d4ba32b32952b755018fc76577fce; bounded-worker job passed all 14 steps. Heartbeat POLL_OK selected P55-001; no errors. AI executor returned WAITING_FOR_OWNER_CONFIGURATION because MISSION_AI_ENABLED was not true; no inference or substantive autonomous research occurred. Artifact ID 14102705906, SHA-256 4c0186a6cd44da7a974e9f94bb8eda9093bbfcf65ef95ed3571e6831afefc4e8. Run verifies control-plane/tests only, not commercial gates.",
+  "last_exact_head_ci_status": "Mission Worker #252 succeeded on exact control-state commit d237174a092cfc4bcdbaed7d25998e3abc745f1a with all 14 steps successful. Queue heartbeat POLL_OK selected P55-001; AI executor WAITING_FOR_OWNER_CONFIGURATION; no inference request. Artifact 14102646410, SHA-256 acb680ff239f6bb52b5899edd5ff4cd4f2955503031bed7ba979237bd7784215. Subsequent commit 83385c21e19cad3f118951862b1d5edb33d5ba74 changed only README/PROJECT_CONTINUITY and did not change control state or runtime.",
   "phase46_control_commits": [
     "72230902a478552d007d94d330e216238c9b2982",
     "ae552163e2b1e65590fc98454d8f7817bc73fa92",
@@ -135,7 +135,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "P55-001: obtain two independently verifiable buyer-demand signals plus one buyer budget/WTP signal; resolve external local-client Commerce invoice/payment/dunning access and India-specific individual partner verification, own-name EFT, and classification/payment route for a non-installable CLI integration. Use current Forge economics only after app-type eligibility is confirmed. Existing support packet remains NOT SENT and requires explicit owner approval. No P55-002 build until all V4 gates pass; if they fail, record NO-GO and move to next ranked platform.",
+  "next_focus": "P55-001: buyer WTP is the next primary commercial gate; additionally confirm the non-Forge/non-OAuth local CLI Commerce invoice route under a billing role, product-specific Marketplace software/PVA classification and India individual verification/own-name EFT. Demand evidence requirement now met by Community thread + ECO-1831, but neither proves WTP. Existing support packet remains NOT SENT; no outreach or support submission without explicit owner approval. No P55-002 build until all V4 gates pass; otherwise NO-GO and move to next ranked platform.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -302,14 +302,18 @@
     "configurable_alert_disposition": "UNSUPPORTED_AS_OF_LATEST_EXPLICIT_PUBLIC_STAFF_REPLY_LOCATED_2026_08_20; APRIL_BLOG_WORDING_CONFLICT_RETAINED",
     "direct_demand_signal_count_verified": 1,
     "direct_demand_signal_note": "One current thread with multiple independent participants; not two separate verified sources.",
-    "buyer_wtp": "NOT_ESTABLISHED",
-    "usage_api_status": "EXPERIMENTAL; OWNER_ACCOUNT_ONLY; ONE_USAGE_KEY_PER_REQUEST; 5_REQUESTS_PER_MINUTE; DAILY_DATA",
-    "invoice_api_status": "FORGE_AND_OAUTH2_APPS_EXCLUDED_FROM_DOCUMENTED_INVOICE_LIST_ENDPOINT; EXTERNAL_LOCAL_CLIENT_ROUTE_UNVERIFIED",
-    "distribution_route": "THIRD_PARTY_INTEGRATION_LISTING_DOCUMENTED; SPECIFIC_PRODUCT_CLASSIFICATION_UNCONFIRMED",
-    "india_partner_eligibility": "INDIVIDUAL_PROFILE_GENERICALLY_ALLOWED; INDIA_RESIDENT_PAID_APP_VERIFICATION_AND_EFT_UNVERIFIED",
+    "buyer_wtp": "NOT_ESTABLISHED; NO_PRICE_COMMITMENT_NO_PAID_PILOT_NO_PURCHASE_INTENT",
+    "usage_api_status": "OFFICIAL_EXTERNAL_EXPORT_CONTRACT_DOCUMENTED; SAME_OWNER_ACCOUNT; BASIC_AUTH_API_TOKEN_AND_X_EXPERIMENTALAPI; ONE_USAGEKEY_PER_REQUEST; 5_REQ_PER_MIN; ENVIRONMENT_GROUPING_PAGINATION; NO_LIVE_TEST",
+    "invoice_api_status": "INVOICE_LIST_DETAIL_AND_PDF_ENDPOINTS_BLOCK_FORGE_AND_OAUTH2_APPS; NON_FORGE_NON_OAUTH_CLI_ROUTE_TO_OWN_FORGE_TXA_NOT_EXPLICITLY_CONFIRMED",
+    "distribution_route": "THIRD_PARTY_NON_INSTALLABLE_LISTING_SUPPORTED; SPECIFIC_SOFTWARE_CATEGORY_AND_PVA_MODEL_UNCONFIRMED",
+    "india_partner_eligibility": "INDIVIDUAL_PROFILE_ALLOWED; INDIA_PAID_APP_VERIFICATION_AND_OWN_NAME_EFT_UNVERIFIED; INDIA_SPECIFIC_COMMUNITY_QUESTION_NO_REPLY",
     "build_authorized": false,
     "marketplace_revenue_share": "100_PERCENT_UP_TO_USD_1M_LIFETIME_ONLY_FOR_QUALIFYING_PURE_FORGE_APPS; 83_PERCENT_STANDARD_RATE_FROM_2026_10_01_AFTER_THRESHOLD; CLI_THIRD_PARTY_CLASSIFICATION_UNVERIFIED",
-    "payout_threshold_timing": "USD_500_PROFIT; REMITTANCE_WITHIN_30_DAYS_AFTER_QUALIFYING_MONTH_END; PAGE_SAYS_MIN_30_MAX_60_DAYS_FROM_SALE"
+    "payout_threshold_timing": "USD_500_PROFIT; REMITTANCE_WITHIN_30_DAYS_AFTER_QUALIFYING_MONTH_END; PAGE_SAYS_MIN_30_MAX_60_DAYS_FROM_SALE",
+    "independent_public_demand_signals": 2,
+    "independent_demand_gate": "MET_COMMUNITY_THREAD_PLUS_ECO_1831_11_VOTES_GATHERING_INTEREST_UNRESOLVED",
+    "supporting_environment_cost_signal": "VERIFIED_JAN_15_2026_DEVELOPER_QUESTION_AND_ATLASSIAN_REPLY_ALL_ENVIRONMENTS_COUNT_TOWARD_APP_COST",
+    "commerce_token_status": "PARTNER_PORTAL_BEARER_TOKEN_AND_BILLING_ROLE_AUTHORIZATION_DOCUMENTED"
   },
   "phase55_supporting_reports": [
     "research/PHASE_55_P55_001_ATLASSIAN_FORGE_DEVSPACE_COST_GUARD_RESEARCH_PLAN_2026-11-14.md",
@@ -357,5 +361,43 @@
     "payout_threshold": "USD_500_PROFIT",
     "payout_timing": "WITHIN_30_DAYS_AFTER_MONTH_END_WHEN_THRESHOLD_REACHED; PAGE_DESCRIBES_MIN_30_MAX_60_DAYS_FROM_SALE",
     "india_own_name_eft": "UNVERIFIED"
+  },
+  "phase55_demand_update": {
+    "report": "research/PHASE_55_P55_001_SUBSTITUTE_AND_FEASIBILITY_AUDIT_2026-11-14.md",
+    "captured_at": "2026-11-14",
+    "independent_public_signal_count": 2,
+    "signal_a": {
+      "type": "ATLASSIAN_DEVELOPER_COMMUNITY",
+      "date": "2026-08-19_to_2026-08-21",
+      "source": "https://community.developer.atlassian.com/t/forge-platform-usage-costs-alerts-limits/102240",
+      "result": "Multiple independent developer comments request budget-based USD alerts/hard caps; Atlassian staff confirms configurable thresholds and budget-based notifications unsupported at that time."
+    },
+    "signal_b": {
+      "type": "ATLASSIAN_JIRA_PRODUCT_SUGGESTION",
+      "issue": "ECO-1831",
+      "created": "2026-10-05",
+      "status": "GATHERING_INTEREST",
+      "resolution": "UNRESOLVED",
+      "votes": 11,
+      "source": "https://jira.atlassian.com/browse/ECO-1831"
+    },
+    "supporting_signal_c": {
+      "type": "DEVELOPER_COMMUNITY_ENVIRONMENT_COST_QUESTION",
+      "date": "2026-01-15",
+      "source": "https://community.developer.atlassian.com/t/do-forge-app-development-and-testing-environments-require-payment-or-have-different-pricing/98428",
+      "result": "Atlassian staff confirms usage across dev/staging/production contributes to app-level cost; context only, not counted in two direct budget signals."
+    },
+    "demand_gate": "MET_TWO_INDEPENDENT_PUBLIC_SIGNALS",
+    "buyer_wtp": "NOT_ESTABLISHED",
+    "paid_transaction_or_pilot": "NONE_VERIFIED"
+  },
+  "phase55_commerce_api_reassessment": {
+    "report": "research/PHASE_55_P55_001_SUBSTITUTE_AND_FEASIBILITY_AUDIT_2026-11-14.md",
+    "usage_api": "DOCUMENTED_EXTERNAL_EXPORT; SAME_ATLASSIAN_ACCOUNT_MUST_OWN_FORGE_APP; BASIC_AUTH_API_TOKEN_PLUS_X_EXPERIMENTALAPI; ONE_USAGEKEY_PER_REQUEST; ENVIRONMENT_GROUPING_AND_PAGINATION; 5_REQ_PER_MIN; LIVE_OWNER_TOKEN_TEST_NOT_PERFORMED",
+    "commerce_auth": "PARTNER_PORTAL_GENERATED_BEARER_TOKEN; AUTHORIZATION_CHECKS_USER_OR_SERVICE_BILLING_ROLES",
+    "invoice_api": "GET_V2_INVOICES_REQUIRES_X_TRANSACTION_ACCOUNT; DOCUMENTED_INVOICE_LIST_DETAIL_AND_PDF_ENDPOINTS_BLOCK_FORGE_AND_OAUTH2_APPS",
+    "non_forge_non_oauth_cli": "POSSIBLE_BUT_UNVERIFIED_FOR_OWNERS_FORGE_DEVSPACE_INVOICES_AND_PER_APP_LINE_ITEMS",
+    "invoice_and_dunning_alerts": "NOT_PROVEN",
+    "hard_stop": "NOT_AVAILABLE_OR_NOT_PROVEN; DO_NOT_CLAIM"
   }
 }

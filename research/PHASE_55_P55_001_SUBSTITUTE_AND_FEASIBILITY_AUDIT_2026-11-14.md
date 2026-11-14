@@ -220,3 +220,135 @@ The Marketplace pricing/payment documentation states:
 ### Effect on P55 gate
 
 This update improves confidence that an individual profile can exist without a company, but it does not close the India payout gate. The candidate remains **HOLD_FOR_EVIDENCE** because WTP, external invoice/payment-state access, product-specific paid distribution classification and India-specific settlement eligibility are still missing.
+
+
+## 12. Independent demand-signal and external API contract revalidation — 14 November 2026
+
+### 12.1 Demand evidence: two independent records are now verified
+
+**Signal A — Developer Community discussion, 19–21 August 2026**
+
+The thread “Forge Platform Usage Costs: Alerts & Limits” is a direct developer-side discussion of absent budget-based notifications and hard spend caps. It includes separate comments asking for configurable USD budgets, app/account/install/environment thresholds, email alerts, and options to shut down non-production environments when a limit is exceeded. On 20-Aug-2026, Atlassian staff explicitly confirmed configurable percentage thresholds were not present in the Developer Console and budget notifications were unsupported by the dependent platform at that time. On 21-Aug-2026, the original poster stated that budget alerts in USD were the minimum viable need and hard limits were a further requirement.
+
+Source: https://community.developer.atlassian.com/t/forge-platform-usage-costs-alerts-limits/102240
+
+**Signal B — Separate Atlassian Jira product suggestion ECO-1831, created 05-Oct-2026**
+
+Title: “Allow app developers to set a spend limit/budget cap for Forge usage”. The public Jira record identifies the Forge Usage Based Pricing component, status “Gathering Interest”, unresolved resolution, 11 votes and 11 watchers at the audit capture. This is a distinct Atlassian product-feedback record, not a comment inside Signal A.
+
+Source: https://jira.atlassian.com/browse/ECO-1831
+
+**Supporting contextual signal C — Development/staging costs, 15–16 January 2026**
+
+A separate developer asked whether development and staging environments incur Forge pricing. Atlassian staff replied that pricing is app-level and all environment usage contributes to the app cost. This supports the importance of cost attribution across environments, but it is not counted as a direct budget-alert demand signal.
+
+Source: https://community.developer.atlassian.com/t/do-forge-app-development-and-testing-environments-require-payment-or-have-different-pricing/98428
+
+**Demand-gate result:** The two-independent-public-signal requirement is now **MET** (Signal A + Signal B). Signal C is contextual support only. Votes and feature requests demonstrate demand for the problem; they do not demonstrate purchase intent, budget approval or willingness-to-pay.
+
+### 12.2 WTP and pricing: still not established
+
+No public evidence located in this pass establishes:
+- a Forge app vendor stating an approved budget or willingness to pay a named monthly amount for a third-party Forge cost-governance product;
+- a paid competitor whose specific product controls the vendor's own Forge Developer Space hosting bill;
+- a preorder, paid pilot, independent customer transaction or signed purchase commitment for this precise problem.
+
+**Do not convert 11 Jira votes, community comments, adjacent cloud FinOps pricing, or unrelated Jira project-budget app purchases into Forge-specific WTP.** The V4 commercial demand gate remains open. No price point is selected.
+
+### 12.3 App Resource Usage API: external export contract documented, live access not tested
+
+Atlassian's official documentation explicitly permits exporting Forge app usage metrics to an observability tool of the developer's choice. It documents:
+- Atlassian GraphQL Gateway authentication;
+- the requesting Atlassian account must be the same account that owns the Forge app;
+- Basic authentication with the owner's email/API token plus `X-ExperimentalAPI`;
+- the API remains experimental and subject to change;
+- one `usageKey` per request, `ENVIRONMENT_ID` grouping and pagination;
+- five requests per minute;
+- no support for Government Cloud or Isolated Cloud.
+
+Sources:
+- https://developer.atlassian.com/platform/forge/developer-space/export-app-resource-usage/
+- https://developer.atlassian.com/platform/forge/monitor-usage-metrics/
+
+**Interpretation:** an owner-operated local/CLI exporter is consistent with the published usage-export pattern. This is a documented API contract, not a successful live credential test. No owner account, API token or live query was created or used. Daily refresh/data resolution remains unsuitable for a real-time hard-stop promise.
+
+### 12.4 Commerce invoice access: narrowed from “unknown” to “conditional external-client hypothesis”
+
+The official Commerce REST documentation establishes:
+- Commerce API calls require a generated bearer access token;
+- Partners generate tokens for their apps in the Partner Portal;
+- Commerce authorization checks user/service access against billing roles, including Billing Admin and Billing User;
+- the invoice-list request uses the `X-transaction-account` header;
+- the documented invoice-list, invoice-detail and invoice-PDF resources state that **Forge and OAuth2 apps cannot access them**.
+
+Sources:
+- https://developer.atlassian.com/platform/commerce/rest/
+- https://developer.atlassian.com/platform/commerce/platform-concepts/security/
+- https://developer.atlassian.com/platform/commerce/rest/api-group-invoices/
+
+**Interpretation:** the documented restriction is explicit for Forge and OAuth2 app clients. The docs also describe a partner-token model and authorization by billing role. A separate non-Forge, non-OAuth2 local integration may be a possible route, but no official source located here explicitly confirms that such a client can read the owner's Forge Developer Space transaction account invoices or per-app line items. This is therefore **POSSIBLE_BUT_UNVERIFIED**, not “supported” and not “impossible”.
+
+A live test would require an owner-controlled Atlassian account, an eligible Partner Portal token, the appropriate transaction-account billing role and owner approval. None was created or tested. The support clarification packet remains NOT SENT.
+
+### 12.5 Marketplace distribution and classification
+
+Atlassian documents a third-party integration listing path for software that integrates with Atlassian without an artifact being installed in the customer instance. The Marketplace submission form supports “My app isn't directly installable”, a binary URL or information URL, and a test instance for review.
+
+Source: https://developer.atlassian.com/platform/marketplace/knowledge-base/listing-a-third-party-integration-on-the-atlassian-marketplace/
+
+This establishes a listing mechanism, not acceptance or the payment model for this product. The proposed local/CLI utility still needs a written classification as a Software App / third-party integration and confirmation of Paid-via-Atlassian licensing/payment eligibility. Do not infer that a non-installable integration is automatically a qualifying pure Forge app or that it automatically receives a specific revenue share.
+
+### 12.6 India partner verification and EFT: profile creation ≠ seller approval
+
+Three distinct layers are now documented:
+
+1. **Partner-profile creation:** Atlassian's “Become a partner” page says an individual developer without a parent company may create a Partner Profile using their own name. A registered company is not a universal prerequisite for profile creation.
+   Source: https://developer.atlassian.com/platform/marketplace/become-a-partner/
+
+2. **Due diligence:** Marketplace Partners who want to upload apps must complete a Partner Verification process. Atlassian's current due-diligence guide describes both individual identity verification and business verification, requesting business-entity information and identity documents. A rejected verification prevents uploading apps.
+   Source: https://developer.atlassian.com/platform/marketplace/partner-due-diligence/
+
+3. **Paid-app payout:** the Partner Agreement requires a valid bank account in the partner's own name, EFT, and a USD 500 net remittance threshold; generic agreement terms do not establish India-specific bank/country eligibility or the required Indian tax documents.
+   Source: https://www.atlassian.com/licensing/marketplace/partneragreement
+
+The India-specific Community question dated 18-Oct-2026 asks whether an India-resident individual with no company can become a paid-app Partner, and what tax/payout documents are required. The page currently displays only the original question and no reply. This is evidence of an unresolved public question, not evidence that India is unsupported.
+Source: https://community.developer.atlassian.com/t/can-an-individual-in-india-no-company-become-a-paid-app-marketplace-partner/103332
+
+**Classification:** generic individual profile creation = documented; India-resident paid-app verification, exact PAN/W-8 treatment, India own-name USD EFT acceptance, withholding and payout-country restrictions = **UNVERIFIED**.
+
+### 12.7 V4 gate status after this pass
+
+| Gate | Current state | Evidence status |
+|---|---|---|
+| 10–15 direct/adjacent substitute audit | PASS | 15-item audit already recorded |
+| Alert documentation discrepancy | PARTIALLY RESOLVED | May docs + 20-Aug staff reply establish the current public feature boundary; April article discrepancy retained |
+| Two independent demand signals | **PASS** | Aug community discussion + separate ECO-1831 with 11 votes |
+| Paid WTP / budget authority | **OPEN / NOT PASSED** | No price-bearing commitment found |
+| Owner-authenticated usage API contract | DOCUMENTED, NOT LIVE-TESTED | Official external export instructions; no owner token used |
+| External invoice/payment/dunning access | **OPEN / CONDITIONAL** | Partner bearer token + billing roles documented; Forge/OAuth2 invoice clients blocked; non-Forge/non-OAuth CLI route not confirmed |
+| Product-specific Marketplace listing/payment classification | OPEN | Non-installable integration listing path exists; specific paid software/payment classification unconfirmed |
+| India paid-app eligibility and EFT | OPEN | Individual profile permitted; India-specific due diligence/payout unanswered |
+| Zero-spend feasibility | PLAUSIBLE, NOT TESTED | Local CLI/desktop concept only; no code build |
+| GO decision | **NOT PASSED** | WTP + billing access + distribution/India gates remain open |
+
+### 12.8 Engineering decision and next exact step
+
+**P55-001 remains IN_PROGRESS / HOLD_FOR_EVIDENCE. P55-002 remains BLOCKED.** The preliminary score remains 65/100; it is not upgraded merely because the public demand gate is now met.
+
+The only plausible technical direction worth retaining for further qualification is a local/self-hosted, owner-operated **Forge Budget Sentinel** with:
+- daily per-app and per-usage-key usage ingestion through the documented owner-authenticated export API;
+- explicit freshness and completeness status;
+- transparent published-price estimates, never represented as a final invoice;
+- owner-configured local USD budgets and email/webhook warnings;
+- optional invoice import/reconciliation only after a supported external Commerce access route is proven.
+
+Hard stops, automatic app shutdown, real-time protection and guaranteed invoice/payment/dunning alerts remain excluded.
+
+**Next work in P55-001:**
+1. Establish at least one genuine buyer budget/WTP signal from an actual Forge app vendor. Public comments alone do not pass this gate.
+2. Resolve whether a non-Forge, non-OAuth2 external local application can use a Partner Portal Commerce bearer token, under the owner's billing role, to read the owner's Forge Developer Space invoice and per-app line items.
+3. Establish the exact Marketplace software/third-party-integration classification, permitted Paid-via-Atlassian payment model and resulting revenue share for this local/CLI product.
+4. Get India-specific written confirmation of individual paid-app verification, acceptable tax documents and own-name EFT.
+5. Re-run every V4 hard gate. If any essential route is not available or WTP remains absent, record NO-GO and continue to the next ranked lane rather than forcing a Forge product.
+
+No account, token, KYC, support request, buyer outreach, legal acceptance, build, publication, paid service, spend or money movement was performed.
