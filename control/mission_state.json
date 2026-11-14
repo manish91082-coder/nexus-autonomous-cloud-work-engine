@@ -10,8 +10,8 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
-  "last_verified_head": "6f698a83f4a63692ed05b9b985ed8f0f30eef5c8",
-  "current_focus": "Phase 55 P55-001 remains HOLD_FOR_EVIDENCE (preliminary score 65/100). Two independent demand records are now verified: Aug 19-21 Community budget-alert discussion and separate Atlassian Jira suggestion ECO-1831 (11 votes, Gathering Interest, unresolved). WTP remains unproven. Resource Usage API export is officially documented for external tools under the owning Atlassian account, but no live owner-token test was performed. Commerce uses Partner Portal bearer tokens and billing-role authorization; invoice APIs explicitly block Forge and OAuth2 app clients. A non-Forge/non-OAuth local CLI route is plausible but not documented as authorized for the owner's Forge Developer Space invoice data. Third-party non-installable listing exists; paid classification is unresolved. Individual Partner Profile can be under an individual's own name; India paid-app verification, tax treatment and own-name USD EFT remain unverified. No account/token/support request/outreach/build/spend. PCNE ₹0; bank receipts ₹0; authorized spend ₹0.",
+  "last_verified_head": "11fdc99e128abb31ffcc9552a2d858ad7b623f72",
+  "current_focus": "Phase 55 P55-001 HOLD_FOR_EVIDENCE; preliminary score 65/100 unchanged. Two independent public demand signals met (Aug Community + ECO-1831); live ECO now 12 votes/12 watchers (earlier snapshot 11). WTP remains NOT ESTABLISHED. Critical new security gate: Resource Usage API docs require owner email/PAT + X-ExperimentalAPI, but Marketplace Security Enforcement Policy prohibits new Marketplace apps from collecting/transmitting/storing user PATs; no automatic new-app exception. Native export-file import may avoid PAT but exact schema/completeness/LLM/Container coverage unverified. Commerce invoices expose status/payment/dunning fields, but Forge/OAuth2 clients blocked; local non-Forge/non-OAuth Partner bearer client remains unverified. Partner Portal needs an approved published PvA app and private-domain email, narrowing buyer segment. Third-party integration software category/PVA/PVV and India paid-app verification/EFT unresolved. No token/account/support submission/outreach/build/spend. PCNE ₹0; bank receipts ₹0; authorized spend ₹0.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -26,12 +26,12 @@
   "updated_at": "2026-11-14",
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
-    "run_number": 254,
-    "run_id": 43567313575,
+    "run_number": 255,
+    "run_id": 43567454419,
     "conclusion": "success",
-    "head_sha": "6f698a83f4a63692ed05b9b985ed8f0f30eef5c8",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43567313575",
-    "completed_at": "2026-11-14T06:38:30Z",
+    "head_sha": "11fdc99e128abb31ffcc9552a2d858ad7b623f72",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43567454419",
+    "completed_at": "2026-11-14T06:40:13Z",
     "checks": [
       "mission/control-plane validation",
       "AI-worker safety tests",
@@ -61,7 +61,7 @@
     "CRAZYGAMES_HTML5",
     "CREATOR_IP_DISTRIBUTION"
   ],
-  "last_exact_head_ci_status": "Mission Worker #254 (run 43567313575) succeeded on exact state checkpoint commit 6f698a83f4a63692ed05b9b985ed8f0f30eef5c8; all 14 job steps passed. Queue heartbeat POLL_OK selected P55-001; no worker errors. AI executor returned WAITING_FOR_OWNER_CONFIGURATION; no model inference or substantive autonomous research occurred. Artifact ID 14103166902, SHA-256 4532cb00ea92d9fae689573dd0dee32cd0038332181915808c38c9c664222741. This validates control state and deterministic tests only; WTP, API credentials, India payout and revenue remain open.",
+  "last_exact_head_ci_status": "Mission Worker #255 succeeded on exact state checkpoint 11fdc99e128abb31ffcc9552a2d858ad7b623f72; all 14 steps passed, queue heartbeat POLL_OK selected P55-001 and no errors. AI executor returned WAITING_FOR_OWNER_CONFIGURATION; no inference. Artifact 14102887637, SHA-256 9be4231c2e8cf540fc021facd796758369e40e035e2ed7ee16a9be9f615a0e95. Subsequent docs-only commit 3d3a1947fd42beba586b6288b25529bf1d673765 added the WTP protocol. Current security review identifies Marketplace PAT policy conflict requiring resolution before product design.",
   "phase46_control_commits": [
     "72230902a478552d007d94d330e216238c9b2982",
     "ae552163e2b1e65590fc98454d8f7817bc73fa92",
@@ -135,7 +135,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "P55-001: buyer WTP is the next primary commercial gate; additionally confirm the non-Forge/non-OAuth local CLI Commerce invoice route under a billing role, product-specific Marketplace software/PVA classification and India individual verification/own-name EFT. Demand evidence requirement now met by Community thread + ECO-1831, but neither proves WTP. Existing support packet remains NOT SENT; no outreach or support submission without explicit owner approval. No P55-002 build until all V4 gates pass; otherwise NO-GO and move to next ranked platform.",
+  "next_focus": "P55-001 exact next: obtain written Atlassian answer on PAT policy vs Usage API for new Marketplace third-party integrations, OAuth/app-auth alternative and whether tokenless Developer Console export provides complete daily usage incl LLM/Containers; confirm local non-Forge/non-OAuth Commerce bearer token access, Partner Portal prerequisite, software-vs-cloud listing and PVA/PVV classification; obtain India paid-app verification/EFT confirmation; secure one price-bearing WTP signal through owner-approved opt-in. Existing support packet updated with question sets G/H but remains NOT SENT. No P55-002 until all V4 gates pass; if policy-compliant data route or WTP unavailable, NO-GO and move to next lane.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -302,7 +302,7 @@
     "configurable_alert_disposition": "UNSUPPORTED_AS_OF_LATEST_EXPLICIT_PUBLIC_STAFF_REPLY_LOCATED_2026_08_20; APRIL_BLOG_WORDING_CONFLICT_RETAINED",
     "direct_demand_signal_count_verified": 1,
     "direct_demand_signal_note": "One current thread with multiple independent participants; not two separate verified sources.",
-    "buyer_wtp": "NOT_ESTABLISHED; NO_PRICE_COMMITMENT_NO_PAID_PILOT_NO_PURCHASE_INTENT",
+    "buyer_wtp": "NOT_ESTABLISHED",
     "usage_api_status": "OFFICIAL_EXTERNAL_EXPORT_CONTRACT_DOCUMENTED; SAME_OWNER_ACCOUNT; BASIC_AUTH_API_TOKEN_AND_X_EXPERIMENTALAPI; ONE_USAGEKEY_PER_REQUEST; 5_REQ_PER_MIN; ENVIRONMENT_GROUPING_PAGINATION; NO_LIVE_TEST",
     "invoice_api_status": "INVOICE_LIST_DETAIL_AND_PDF_ENDPOINTS_BLOCK_FORGE_AND_OAUTH2_APPS; NON_FORGE_NON_OAUTH_CLI_ROUTE_TO_OWN_FORGE_TXA_NOT_EXPLICITLY_CONFIRMED",
     "distribution_route": "THIRD_PARTY_NON_INSTALLABLE_LISTING_SUPPORTED; SPECIFIC_SOFTWARE_CATEGORY_AND_PVA_MODEL_UNCONFIRMED",
@@ -313,7 +313,16 @@
     "independent_public_demand_signals": 2,
     "independent_demand_gate": "MET_COMMUNITY_THREAD_PLUS_ECO_1831_11_VOTES_GATHERING_INTEREST_UNRESOLVED",
     "supporting_environment_cost_signal": "VERIFIED_JAN_15_2026_DEVELOPER_QUESTION_AND_ATLASSIAN_REPLY_ALL_ENVIRONMENTS_COUNT_TOWARD_APP_COST",
-    "commerce_token_status": "PARTNER_PORTAL_BEARER_TOKEN_AND_BILLING_ROLE_AUTHORIZATION_DOCUMENTED"
+    "commerce_token_status": "PARTNER_PORTAL_BEARER_TOKEN_AND_BILLING_ROLE_AUTHORIZATION_DOCUMENTED",
+    "live_eco1831_votes": 12,
+    "live_eco1831_watchers": 12,
+    "marketplace_pat_policy": "NEW_MARKETPLACE_APPS_MUST_NOT_COLLECT_TRANSMIT_OR_STORE_USER_PAT; RESOURCE_USAGE_API_DOCS_CURRENTLY_REQUIRE_BASIC_PAT; WRITTEN_CLARIFICATION_OR_COMPLIANT_ALTERNATIVE_REQUIRED",
+    "usage_api_oauth_alternative": "NOT_DOCUMENTED",
+    "tokenless_export": "USAGE_EXPORT_BUTTON_MENTIONED_BY_ATLASSIAN_STAFF; FORMAT_COMPLETENESS_AND_LLM_CONTAINER_COVERAGE_UNVERIFIED",
+    "zero_threshold_meter_gap": "PLATFORM_ALERTS_NOT_SUPPORTED_FOR_LLM_AND_CONTAINERS_DUE_ZERO_THRESHOLD_PER_ATLASSIAN_STAFF_2026_08_19; USAGE_API_COVERAGE_UNVERIFIED",
+    "commerce_invoice_fields": "INVOICE_STATUS_PAYMENTSTATUS_DUNNINGSTATUS_DUNNINGHISTORY_PAYMENTMETHODOBJ_AND_PER_APP_LINE_ITEMS_DOCUMENTED",
+    "partner_portal_prerequisite": "ONE_APPROVED_PUBLISHED_PAID_VIA_ATLASSIAN_APP_AND_PRIVATE_DOMAIN_BUSINESS_EMAIL",
+    "third_party_integration_classification": "SOFTWARE_VS_CLOUD_AND_PVA/PVV_MODEL_UNVERIFIED"
   },
   "phase55_supporting_reports": [
     "research/PHASE_55_P55_001_ATLASSIAN_FORGE_DEVSPACE_COST_GUARD_RESEARCH_PLAN_2026-11-14.md",
@@ -378,8 +387,10 @@
       "created": "2026-10-05",
       "status": "GATHERING_INTEREST",
       "resolution": "UNRESOLVED",
-      "votes": 11,
-      "source": "https://jira.atlassian.com/browse/ECO-1831"
+      "votes": 12,
+      "source": "https://jira.atlassian.com/browse/ECO-1831",
+      "watchers": 12,
+      "live_capture": "2026-11-14"
     },
     "supporting_signal_c": {
       "type": "DEVELOPER_COMMUNITY_ENVIRONMENT_COST_QUESTION",
@@ -399,5 +410,22 @@
     "non_forge_non_oauth_cli": "POSSIBLE_BUT_UNVERIFIED_FOR_OWNERS_FORGE_DEVSPACE_INVOICES_AND_PER_APP_LINE_ITEMS",
     "invoice_and_dunning_alerts": "NOT_PROVEN",
     "hard_stop": "NOT_AVAILABLE_OR_NOT_PROVEN; DO_NOT_CLAIM"
+  },
+  "phase55_partner_security_gate": {
+    "report": "research/PHASE_55_P55_001_PAT_POLICY_AND_PARTNER_PORTAL_GATE_2026-11-14.md",
+    "policy_last_updated": "2026-08-24",
+    "marketplace_pat_policy": "MARKETPLACE_APPS_MUST_NOT_COLLECT_TRANSMIT_OR_STORE_USER_ACCOUNT_PAT; NEW_MARKETPLACE_APPS_USING_PAT_WILL_NOT_BE_APPROVED",
+    "existing_app_exception": "EXISTING_APPS_WITH_PAT_ONLY_REQUIRED_API_MAY_CONTACT_ECOHELP_FOR_MIGRATION_EXTENSION",
+    "resource_usage_api": "OWNER_ACCOUNT_EMAIL_PLUS_API_TOKEN_BASIC_AUTH_AND_X_EXPERIMENTALAPI; NO_DOCUMENTED_OAUTH_OR_APP_AUTH_ALTERNATIVE",
+    "new_marketplace_app_decision": "DO_NOT_BUILD_PAT_HANDLING; WRITTEN_ATLASSIAN_CLARIFICATION_REQUIRED",
+    "tokenless_export": "EXPORT_USAGE_BUTTON_MENTIONED_BY_STAFF; FILE_FORMAT_AND_COVERAGE_UNVERIFIED",
+    "llm_container_alert_gap": "PLATFORM_ALERTS_UNSUPPORTED_AT_ZERO_THRESHOLD_PER_AUG_19_STAFF_REPLY; API_DATA_COVERAGE_UNVERIFIED",
+    "commerce_invoice": "INVOICE_SCHEMA_DOCUMENTS_PAYMENTSTATUS_DUNNINGSTATUS_DUNNINGHISTORY_PAYMENTMETHODOBJ_AND_PER_APP_LINE_ITEMS; FORGE_AND_OAUTH2_CLIENTS_BLOCKED",
+    "local_commerce_cli": "POSSIBLE_BUT_UNVERIFIED",
+    "partner_portal_prerequisite": "AT_LEAST_ONE_APPROVED_PUBLISHED_PVA_APP_AND_PRIVATE_DOMAIN_EMAIL",
+    "third_party_category_payment": "SOFTWARE_VS_CLOUD_AND_PVA/PVV_CLASSIFICATION_UNRESOLVED",
+    "status": "HARD_GATE_OPEN",
+    "build_authorized": false,
+    "spend_inr": 0
   }
 }

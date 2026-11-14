@@ -405,3 +405,26 @@ At minimum, one independently verifiable Forge app budget owner must state a con
 - Evidence artifact ID `14102887637`; SHA-256 `9be4231c2e8cf540fc021facd796758369e40e035e2ed7ee16a9be9f615a0e95`.
 
 **Disposition remains HOLD_FOR_EVIDENCE.** P55-002 remains BLOCKED. No account, token, KYC, outreach, support submission, build, publication, spend or money movement was performed.
+
+
+## 14. Dynamic ECO-1831 vote refresh — 14-Nov-2026
+
+The live Atlassian Jira record for ECO-1831 now shows **12 votes and 12 watchers**, up from the earlier audit snapshot of 11/11. Status remains Gathering Interest and resolution Unresolved. This is an attention signal only, not WTP.
+
+Source: https://jira.atlassian.com/browse/ECO-1831
+
+## 15. Marketplace PAT policy and Partner Portal access gate — 14-Nov-2026
+
+Full current finding: `research/PHASE_55_P55_001_PAT_POLICY_AND_PARTNER_PORTAL_GATE_2026-11-14.md`.
+
+The Marketplace Security Enforcement Policy (last updated 24-Aug-2026) says Marketplace apps may not collect, transmit or store Atlassian user PATs; new Marketplace apps using PATs will not be approved. Yet Forge App Resource Usage API authentication instructions require Basic auth with the owner account's email and API token plus `X-ExperimentalAPI`. This is a material compliance conflict for a new Marketplace-listed monitoring product. Do not build PAT handling. Written Atlassian clarification or a compliant alternative is required.
+
+A tokenless fallback may be possible: staff described an “Export usage” button in Usage and Charges. The format, completeness and LLM/Container coverage remain unknown. Separately, staff said usage alerts are unsupported for LLM/Container meters because their thresholds are zero; pricing docs show no free allowance for these resources. This is a potential differentiated sub-gap, but data coverage is not established.
+
+Commerce invoice responses document invoice/payment/dunning and per-app line-item fields. However, Forge/OAuth2 clients are excluded from invoice APIs. Partner bearer tokens and billing roles are required, while Partner Portal access requires one approved/published Paid-via-Atlassian app and a private-domain email. A non-Forge/non-OAuth local CLI route is possible but unverified.
+
+The third-party integration listing guide does not determine whether a local CLI is a Software App or Cloud App, nor whether PVA or PVV applies. Product-specific classification must be confirmed in writing.
+
+ECO-1831 live snapshot now shows **12 votes/12 watchers** (prior snapshot 11/11), Gathering Interest and unresolved. Votes remain attention only, not WTP.
+
+**Disposition:** P55-001 HOLD_FOR_EVIDENCE; P55-002 BLOCKED. WTP NOT ESTABLISHED. No PAT, account, support submission, outreach, build, spend or funds movement.

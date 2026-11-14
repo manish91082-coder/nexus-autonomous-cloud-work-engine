@@ -2778,3 +2778,16 @@ Getvik remains the only P1 first-cash pilot. Cashfree Direct is a P2 domestic fa
 - No account, API token, support request, buyer outreach, legal acceptance, build, publication, spend or money movement. PCNE ₹0; bank-settled ₹0; authorized spend ₹0.
 
 **Resume next:** obtain one price-bearing budget/WTP signal through an owner-approved opt-in route. Keep P55-002 blocked. If WTP or a supported Commerce/distribution route cannot be established, record NO-GO and move to the next ranked platform lane.
+
+
+## Phase 55 security/policy gate revalidation — 2026-11-14
+
+- New security-policy gate addendum: `research/PHASE_55_P55_001_PAT_POLICY_AND_PARTNER_PORTAL_GATE_2026-11-14.md`.
+- Marketplace Security Enforcement Policy last updated 24-Aug-2026 prohibits Marketplace apps from collecting, transmitting or storing user account PATs; new Marketplace apps using PATs will not be approved. Existing-app migration exceptions for PAT-only APIs are not automatically available to new apps.
+- Forge Resource Usage API documentation still requires owner email + API token Basic auth + `X-ExperimentalAPI`. No OAuth/app-auth alternative is documented. Therefore a new Marketplace app must not be built around PAT handling pending written Atlassian clarification or compliant alternative.
+- A native “Export usage” button may permit owner-operated file export and tokenless local-file import, but exact format, completeness, history, LLM and Container coverage are unverified.
+- New narrower sub-gap: Atlassian staff said platform alerts are not supported for LLM and Container resources because their thresholds are zero. Pricing docs show zero free allowance for those meters. Usage export coverage for these meters is unverified.
+- Commerce invoice schema exposes invoice/payment/dunning and per-app line-item fields. Forge and OAuth2 clients are blocked from invoice endpoints. Partner Portal access requires at least one approved/published PvA app and private-domain email. A separate local non-Forge/non-OAuth client with Partner bearer token remains possible but unconfirmed.
+- Product's third-party listing type and PVA/PVV model unresolved; do not assume a local CLI is a Software App or qualifies for Forge revenue share.
+- ECO-1831 live votes/watchers updated from earlier snapshot 11/11 to **12/12**; status Gathering Interest, unresolved. Votes remain problem-attention only, not WTP.
+- P55-001 remains IN_PROGRESS / HOLD_FOR_EVIDENCE; P55-002 BLOCKED; WTP not established; PCNE ₹0; authorized spend ₹0. Support packet question sets G/H added but still NOT SENT. No account/token/outreach/build/spend.

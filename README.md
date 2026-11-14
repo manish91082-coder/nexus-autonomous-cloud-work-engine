@@ -158,3 +158,14 @@ Keep one canonical repository. Preserve history; archive rather than delete. No 
 - Fresh public WTP scan located no concrete buyer price, budget, paid pilot or purchase commitment for Forge Developer Cost Guard. WTP remains **NOT ESTABLISHED**.
 - Buyer validation protocol and unsent invitation draft: `research/PHASE_55_P55_001_BUYER_WTP_VALIDATION_PROTOCOL_2026-11-14.md`. It is not approved or sent.
 - P55-001 remains HOLD_FOR_EVIDENCE; P55-002 remains BLOCKED. Worker #255 SUCCESS on exact state checkpoint `11fdc99e128abb31ffcc9552a2d858ad7b623f72`: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43567454419.
+
+
+## Phase 55 PAT policy and Partner Portal access gate — 14-Nov-2026
+
+- New Marketplace Security Enforcement Policy (last updated 24-Aug-2026): Marketplace apps must not collect, transmit or store Atlassian user PATs; new Marketplace apps using PATs will not be approved. Forge Usage API documentation currently requires owner email/API token Basic auth + `X-ExperimentalAPI`. Do not build a new Marketplace app around PAT handling pending written Atlassian clarification or compliant alternative.
+- A native “Export usage” button may permit owner-operated file export and tokenless local-file import, but format, data completeness and LLM/Container coverage are unverified.
+- Atlassian staff says platform alerts are not supported for LLM/Container resources because their thresholds are zero. Potential residual niche only if usage data can be exported and buyers state WTP.
+- Partner Portal bearer tokens use billing roles, but Partner Portal eligibility requires one approved/published Paid-via-Atlassian app plus private-domain business email. Commerce invoice API exposes payment/dunning fields but blocks Forge/OAuth2 clients; a separate local non-Forge/non-OAuth client remains unverified.
+- ECO-1831 live record now shows 12 votes/12 watchers, Gathering Interest/unresolved; still not WTP.
+- P55-001 remains HOLD; P55-002 BLOCKED; support packet G/H updated but NOT SENT.
+- Detailed addendum: `research/PHASE_55_P55_001_PAT_POLICY_AND_PARTNER_PORTAL_GATE_2026-11-14.md`.

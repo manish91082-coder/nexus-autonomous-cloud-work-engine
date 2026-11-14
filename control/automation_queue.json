@@ -2614,7 +2614,11 @@
         "Capture at least two independent current buyer signals and at least one buyer budget/willingness-to-pay signal beyond feature requests.",
         "Verify India Marketplace Partner/EFT eligibility and legal distribution/payment route for an external developer-side tool vs a Forge Marketplace app.",
         "Design a zero-spend local/self-hosted tool; no hard-stop or real-time cost-protection claim unless independently demonstrated.",
-        "Select GO/NO-GO under V4 gates. No product build, account creation, KYC, legal acceptance, Marketplace listing, paid API, external hosting or new spend."
+        "Select GO/NO-GO under V4 gates. No product build, account creation, KYC, legal acceptance, Marketplace listing, paid API, external hosting or new spend.",
+        "Resolve the Marketplace PAT prohibition vs. PAT-required experimental Usage API for a new Marketplace third-party integration; verify approved OAuth/app-auth alternative or tokenless native export file path. No PAT collection/transmission/storage in the proposed new Marketplace product.",
+        "Verify whether Usage API/native export exposes complete LLM and Container daily usage; Atlassian staff states native threshold alerts are not supported for these zero-threshold meters.",
+        "Verify Partner Portal bearer-token prerequisite (published Paid-via-Atlassian app + private-domain email) and whether an authorized non-Forge/non-OAuth local CLI can access the owner's Forge invoice/payment/dunning line items.",
+        "Obtain formal third-party integration listing type and PVA/PVV payment-model classification for a local CLI; do not assume Software App or revenue-share eligibility."
       ],
       "evidence": {
         "plan": "research/PHASE_55_P55_001_ATLASSIAN_FORGE_DEVSPACE_COST_GUARD_RESEARCH_PLAN_2026-11-14.md",
@@ -2646,7 +2650,7 @@
             "https://www.atlassian.com/blog/how-we-build/engineering-the-forge-billing-platform-for-reliability-and-scale"
           ]
         },
-        "next_exact_work": "Two independent public demand signals are now met. Do not build P55-002. Obtain one genuine price-bearing buyer budget/WTP signal; resolve the non-Forge/non-OAuth local CLI Commerce access to the owner's Forge Developer Space invoice/line items; obtain product-specific Marketplace software/PVA classification and India individual partner verification/own-name EFT. No support packet submission or buyer outreach without explicit owner approval. Re-run V4 gates; if any essential gate fails or WTP remains absent, NO-GO P55-001 and move to next ranked platform.",
+        "next_exact_work": "Keep P55-002 blocked. Obtain written Atlassian clarification on new Marketplace PAT restriction vs Usage API, OAuth/app-auth alternative or tokenless export format and LLM/Container coverage; confirm local non-Forge/non-OAuth Commerce partner-token access, Partner Portal prerequisites and third-party integration Software/Cloud plus PVA/PVV classification; seek one real price-bearing WTP signal via owner-approved opt-in. No token, account, support submission, outreach, build or spend.",
         "native_insights_substitute": {
           "report": "research/PHASE_55_P55_001_FORGE_DEVSPACE_BILLING_ATTRIBUTION_AUDIT_2026-11-14.md",
           "source": "https://developer.atlassian.com/platform/forge/developer-space/developer-space-insights/",
@@ -2692,6 +2696,33 @@
           "due_diligence": "Partner verification includes individual identity plus business/entity verification.",
           "india_specific": "India individual paid-app payout question remains unanswered; PAN/W-8/EFT acceptance unverified.",
           "status": "UNVERIFIED"
+        },
+        "security_gate": {
+          "report": "research/PHASE_55_P55_001_PAT_POLICY_AND_PARTNER_PORTAL_GATE_2026-11-14.md",
+          "policy": "Marketplace Security Enforcement Policy last updated 2026-08-24 prohibits Marketplace apps from collecting/transmitting/storing Atlassian account PATs; new Marketplace apps using PATs will not be approved.",
+          "conflict": "App Resource Usage API docs currently require same owner account email/API token Basic auth + X-ExperimentalAPI; no OAuth/app-auth alternative documented.",
+          "decision": "NO_PAT_IMPLEMENTATION; written Atlassian clarification or tokenless data-export route required.",
+          "tokenless_export": "Export Usage button mentioned by Atlassian staff; file schema, completeness and LLM/Container coverage unverified."
+        },
+        "zero_threshold_meter_gap": {
+          "official_context": "Atlassian staff on 2026-08-19 says platform alerts unsupported for LLM and Containers because zero threshold; Forge pricing lists zero free allowance for these meters.",
+          "api_coverage": "UNVERIFIED",
+          "status": "POTENTIAL_RESIDUAL_BUYER_PROBLEM_NOT_BUILDABLE_YET"
+        },
+        "commerce_partner_portal_gate": {
+          "invoice_fields": "Invoice status, line item, paymentStatus, dunningStatus, dunningHistory, paymentMethodObj documented.",
+          "access": "Forge and OAuth2 app clients excluded from invoice list/detail/PDF endpoints; partner bearer token and billing-role authorization documented.",
+          "portal_access": "One approved/published PvA app and private-domain business email required.",
+          "local_cli": "Possible but not expressly confirmed."
+        },
+        "live_demand_refresh": {
+          "issue": "ECO-1831",
+          "source": "https://jira.atlassian.com/browse/ECO-1831",
+          "votes": 12,
+          "watchers": 12,
+          "status": "GATHERING_INTEREST",
+          "resolution": "UNRESOLVED",
+          "meaning": "Problem attention signal, not WTP."
         }
       }
     },
