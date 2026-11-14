@@ -2623,7 +2623,21 @@
         "candidate": "ATLASSIAN-FORGE-DEVSPACE-COST-GUARD",
         "preliminary_score": 65,
         "preliminary_status": "HOLD_FOR_EVIDENCE",
-        "product_build_authorized": false
+        "product_build_authorized": false,
+        "billing_attribution_audit": {
+          "report": "research/PHASE_55_P55_001_FORGE_DEVSPACE_BILLING_ATTRIBUTION_AUDIT_2026-11-14.md",
+          "status": "NEW_HARD_GATE_IDENTIFIED",
+          "findings": [
+            "All apps in a Developer Space contribute to one Developer Space usage bill and linked transaction account.",
+            "Invoices generated on first day of month for previous month's usage; autopay attempted the same day when valid payment method exists.",
+            "Resource Usage API is per app and single usageKey/request, grouped by environment/context, 5 requests/minute, daily resolution.",
+            "Official engineering article says free allowances/overages evaluated per app and invoice line items reflect per-app overages; Developer Space billing page describes space-level free threshold, requiring precise accounting reconciliation.",
+            "Commerce invoice-list endpoint explicitly excludes Forge and OAuth2 apps; external owner-operated local tool access to finalized invoices remains unverified."
+          ],
+          "product_implication": "Cost Guard needs per-app attribution plus Developer Space invoice roll-up, versioned allowance/pricing, and clear observed-vs-estimated-vs-invoiced states. It cannot claim invoice reconciliation without proven Commerce access.",
+          "spend_inr": 0
+        },
+        "next_exact_work": "Resolve Developer Space billing aggregation vs per-app allowance wording; verify owner-operated external local tool access to Commerce invoice/line items despite Forge/OAuth2 endpoint restriction; model request counts across app × usageKey × contexts; clarify custom USD budget alerts; verify India partner/EFT and permitted distribution route; gather paid WTP evidence. No token, account, build or spend."
       }
     },
     {
