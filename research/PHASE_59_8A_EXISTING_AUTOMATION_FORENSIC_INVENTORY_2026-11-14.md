@@ -71,3 +71,20 @@ Correction committed at `cca8dff7965b4ced26f792bcbfa5bf9827ad650f`:
 - AI provider configured: false.
 - Swarm deployed: false.
 - P59-002 remains blocked; no product selected or build authorized.
+
+## Phase A runtime review — additional deadlock found
+- The deterministic queue poller and AI executor both require every dependency to be `COMPLETED` before selecting a task.
+- P59-003 had been configured with dependency `P59-001`, while P59-001 was deliberately `PAUSED` until P59-003 hands off. This created a self-blocking dependency deadlock: the only active task could never become eligible.
+- Corrected at commit `bc50b5e8d66c333589d56a1f8627ce0666251601`: P59-003 now has no dependency because the forensic audit is a prerequisite to resuming P59-001. P59-001 remains PAUSED; P59-002 remains BLOCKED.
+- Verified live queue after correction: exactly one active task (P59-003), with empty dependencies. Worker and Guard runs triggered on this exact commit were queued at last observation.
+
+## Additional runtime risks requiring remediation before AI inference
+- `ai_task_executor.py` catches broad provider exceptions and writes exception type/message into a public workflow artifact; sanitize provider error output to avoid accidental response/header/endpoint leakage.
+- `date.today()` is used to label a UTC quota counter while `datetime.now(timezone.utc)` is used for timestamps. Replace with `now.date().isoformat()` so UTC day-boundary behavior is explicit and testable.
+- The executor chooses only READY/IN_PROGRESS tasks whose dependencies are COMPLETED. It does not currently validate typed task schema, task idempotency, leases, retry budget, evidence schema, or task-level completion transitions.
+- Prompt content includes queue task title and acceptance criteria from a public repository. Treat these fields as untrusted data and delimit/escape them; current system prompt is helpful but does not provide a robust structured evidence pipeline.
+- Existing AI executor stores raw model output as an unverified draft and does not parse/validate the requested JSON structure. No worker can autonomously mark task completion based on that output, which is safe but insufficient for the swarm goal.
+- `mission_guard.py` checks at most four active tasks, then separately enforces exactly one active task; it validates basic required fields but not the full V5 typed task/evidence/run contract.
+- `worker_tick.py` is selection/heartbeat only; it does not claim a task lease, persist an idempotency record, or transition work state.
+- `cloud-work-engine/local_coder.py` is for already-hired external tasks, explicitly not the mission swarm. It can fetch public GitHub issues and clone repositories, but its path validation and untrusted-source handling require separate adversarial review. It must remain excluded from ₹10 Cr mission queue dispatch.
+- `cloud-work-engine/draft_executor.py` and `model_gateway.py` belong to the separate bounty/gig lane. They must not be wired into the mission swarm or treated as compliant revenue streams.
