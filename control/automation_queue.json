@@ -3144,7 +3144,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Phase B4: durable run persistence, atomic checkpoint/resume, process-isolated specialists with hard timeout/termination, idempotent crash recovery and failure-window tests. Keep production queue integration and LLM provider disabled.",
+        "next": "Implement B4 event journal, atomic lease/fencing lock service and worker identity, then federation client read-only integrations; only after race tests, request GitHub App installation and migrate one project at a time.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -3187,7 +3187,14 @@
         "phase59_10_repo_audit": "Existing Cloudflare-only bounded AI executor and separate OpenRouter free gateway exist but are not unified; B3 coordinator uses deterministic mock workers; no live AI agents, cloud deployment or failover proof. GitHub Actions Worker #337 and Guard #96 succeeded at HEAD 3e194441ef6e8f4bb2b9d7aefbaaaf5bff639fba.",
         "phase59_10_cloud_dashboard": "GitHub Actions dashboard inspected. Oracle, Google Cloud and Cloudflare account dashboards not connected; account eligibility, resource allocation, billing and quotas UNVERIFIED.",
         "phase59_10_next": "B4 portable durable execution: process-isolated workers, hard termination, event-sourced run journal, atomic checkpoints, idempotent replay, provider registry and failover tests. Then LangGraph mock graph, zero-cost provider gateway, cloud deployment and failover drills.",
-        "phase59_10_constraints": "No laptop dependency; no paid fallback; no paid account/service activation; no external account/KYC/terms/payment/publication without owner gate; PCNE ₹0; spend ₹0; exclude job/gig/bounty workflows from mission queue."
+        "phase59_10_constraints": "No laptop dependency; no paid fallback; no paid account/service activation; no external account/KYC/terms/payment/publication without owner gate; PCNE ₹0; spend ₹0; exclude job/gig/bounty workflows from mission queue.",
+        "cross_project_federation": "REGISTRY_AND_PROTOCOL_COMMITTED; RUNTIME_LOCK_NOT_IMPLEMENTED",
+        "cross_project_registry": "federation/PROJECT_FEDERATION_REGISTRY.json",
+        "cross_project_protocol": "federation/CROSS_PROJECT_AGENT_SWARM_FEDERATION_PROTOCOL.md",
+        "cross_project_lock_contract": "federation/locks/registry.json",
+        "cross_project_audit": "15 owner repositories visible. Identified independent P10CR, FLASHLOAN-RESEARCH, ZCIRA, DAILY1000, AI-CONTENT and GHOST-HUNTER family. Flashloan run #52 in progress at audit; ZCIRA latest commit 3daca36; Daily1000 CI #17 success. Two ChatGPT browser tab titles visible but browser security policy blocked chatgpt.com page content, so thread content not inspected.",
+        "cross_project_decision": "Do not merge missions or queues. Central federation controller arbitrates leases, single-writer publishing, idempotency, shared quota and cross-thread conflict detection. Projects retain independent constitutions, state, ledgers and safety rules.",
+        "authentication_decision": "Provided Gmail address is identity only, not universal auth. Existing GitHub connector already has repo admin/push access. For future cross-repo workflow dispatch, use dedicated least-privilege GitHub App with owner installation approval and short-lived tokens. Provider-specific OAuth only when a real service needs it; no passwords/OTPs/cookies in chat. Current Browser tools cannot approve Google prompts or read blocked ChatGPT tabs."
       },
       "blocker": "No blocker to read-only forensic audit. Existing workflow tree and runtime source inventory must be completed before changing or replacing any current automation.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task."
