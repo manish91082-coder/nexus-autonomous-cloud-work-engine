@@ -3261,3 +3261,8 @@ Getvik remains the only P1 first-cash pilot. Cashfree Direct is a P2 domestic fa
 The Phase B implementation test run completed successfully: [Mission Autonomous AI Worker run 43616218518](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43616218518), exact implementation SHA `e9e15105850d7f83e82085fc9ff3d12fc88159b1`. Job-level steps confirmed SUCCESS for mission guard, deterministic swarm runtime contract/failure-injection tests, AI worker safety tests, product smoke tests, recruitment tests, deterministic queue poll, and fail-closed AI executor. This validates the committed primitive test suite only. It does not prove production integration, multi-agent parallel execution, model inference, always-on operation or revenue generation. Provider remains unconfigured; swarm remains not deployed; PCNE ₹0; authorized spend ₹0.
 
 Next: inspect latest exact-HEAD continuity guard; add exponential retry scheduling and malformed-state/untrusted-payload tests; reconcile legacy Phase A fields; integrate only after compatibility and security gates pass.
+
+
+## Phase 59.8B1 hardening checkpoint — 14 November 2026
+
+Follow-on hardening commits added explicit Task schema version enforcement and deterministic capped exponential retry backoff (60s, 120s, 240s ... capped at 3600s), with a test proving early retry is rejected. Commits: runtime `e92816bca90ca503d2dcf57351c1b6ef7d9335ba`; tests `3c9da006912d3bc621fd7c64793814130c02a880`. Latest exact-HEAD CI run `43616373476` is PENDING at this checkpoint; earlier Phase B test run `43616218518` passed. No production integration, model inference or swarm deployment. P59-003 remains sole active task; P59-001 PAUSED; P59-002 BLOCKED; PCNE ₹0; spend ₹0.
