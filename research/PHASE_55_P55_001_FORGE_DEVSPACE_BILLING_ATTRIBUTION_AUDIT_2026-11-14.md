@@ -120,3 +120,20 @@ The Developer Space Billing and Payments page (last updated 25-Aug-2026) adds an
 Official source: https://developer.atlassian.com/platform/forge/developer-space/billing-for-developer-spaces/
 
 **Product implication:** the potential value is not only developer cost forecasting. There may be a broader Developer Space billing-continuity risk: an unresolved billing issue can affect every app inside the space. However, the candidate must not claim it can prevent Atlassian enforcement or suspend only one app. It can only send a timely warning if the required billing-state data is exposed through a supported authorized interface. That interface is not yet verified.
+
+
+## 9. Native Developer Space Insights — material substitute, gap narrowed
+
+Atlassian's Developer Space Insights dashboard (last updated 4-Jun-2026) is a direct native substitute for a generic portfolio dashboard:
+- It gives aggregated visibility across all Forge apps in a Developer Space for logs, errors, alerts, performance and cost/resource data.
+- Admins, Developers and Viewers can view it; the documented page has no write actions.
+- It includes “Top apps by resource usage” based on the last 30 days, plus charts for errors, alerts, latency and invocation count.
+- The cost/resource ranking displays only the top three apps for readability and drills down to each app's Cost & Usage view.
+- Other dashboard charts default to last 24 hours; resource-use chart uses last 30 days.
+- Production, development and staging environments are included.
+
+Official source: https://developer.atlassian.com/platform/forge/developer-space/developer-space-insights/
+
+A generic cross-app usage/cost dashboard is therefore **not a defensible product gap**. The candidate must not recreate Developer Space Insights, per-app Cost & Usage, or the native Usage Alerts inbox. Any possible value must be narrower and independently evidenced: owner-defined arbitrary USD budgets, custom escalation/recipient policy, explicit invoice/payment/pre-dunning status monitoring, or a provable cost-to-license-margin decision workflow, provided supported data access exists.
+
+The native dashboard does not itself document arbitrary custom USD budget alerts or a programmable external API for all billing states. But absence from this one page is not proof those features do not exist elsewhere; resolve through current official feature/API documentation and Atlassian support before treating this as an unmet gap.
