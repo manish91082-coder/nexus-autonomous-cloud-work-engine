@@ -2381,11 +2381,16 @@
         },
         "wix_payout_clarification": {
           "threshold_usd": 200,
-          "schedule": "March app revenue arrives at the beginning of May",
-          "payout_currency": "USD",
-          "india_app_developer_eligibility": "Not explicitly confirmed by public App Market developer guidance"
+          "threshold_per_app": true,
+          "earnings_across_apps_combine": false,
+          "schedule": "Monthly; March revenue paid at beginning of May",
+          "revenue_share": "100% first 12 months; then 80% after 2.5% transaction fee and applicable sales tax",
+          "payout_account": "One-time account-level Tipalti payout setup required before paid app publication",
+          "currency": "USD",
+          "india_app_developer_eligibility": "Not explicitly confirmed by public App Market developer docs",
+          "india_wix_payments_not_equivalent": true
         },
-        "next_exact_work": "Complete exact Marketplace eligibility and India payout confirmation via official published material, and refine technical proof boundaries. 22 native/direct-adjacent reference audit done (13 Zoho/9 Salesforce analogues). Candidate remains HOLD; no build."
+        "next_exact_work": "P54-001: Zoho first—confirm India extension developer wire eligibility, FX and tax via official public documentation/support route without creating account; then Wix Tipalti country eligibility. Candidate Zoho Field Retirement Impact Preflight remains HOLD; no build."
       }
     },
     {
