@@ -1,0 +1,177 @@
+# Phase 54 — Alternative App Marketplace Research Plan
+**Date:** 14 November 2026  
+**Authority:** `MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md`  
+**Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Current task:** `P54-001` — compare alternative app marketplaces with zero-upfront entry and native recurring monetization.  
+**Status:** IN PROGRESS — platform screening only; no product selected  
+**Spend:** ₹0 authorised
+
+## 1. Why Phase 54 exists
+
+Phase 53 completed with NO-GO for its current WordPress, Google Workspace, HubSpot, Slack, Salesforce and Chrome product hypotheses. The conclusion was not that every platform is permanently unusable; it was that no specific candidate cleared V4's independent-demand, differentiation, recurring-value, rights, zero-cost and net-economics gates.
+
+Phase 54 broadens distribution research to app marketplaces not yet exhausted in the mission:
+1. Zoho Marketplace
+2. Wix App Market
+3. monday.com Marketplace
+4. BigCommerce App Marketplace
+5. Xero App Store
+6. Intuit QuickBooks app ecosystem (India availability gate first)
+
+This is a research order based on apparent entry friction and platform-managed monetisation. It is not a product GO or revenue forecast.
+
+## 2. Initial platform screen
+
+### A. Zoho Marketplace — first research priority
+
+Positive verified signals:
+- Zoho says it does not charge a development fee for extension development.
+- Zoho Marketplace supports public extensions purchased through Zoho's payment gateway, private extensions where the developer collects payment independently, and free extensions.
+- Official Marketplace payment guidance says the developer receives a monthly statement when the outstanding balance is over USD 100; after the developer approves processing, a wire transfer can take about 15 working days.
+- Zoho's public marketplace pages claim 60M users in the ecosystem. This is a vendor-reported reach figure, not a guarantee of discovery, active marketplace buyers or sales.
+
+Hard unknowns:
+- Exact commission/revenue share for the specific extension type.
+- Account-level India seller eligibility, tax forms, payout fees and wire transfer route.
+- Buyer discovery and search-ranking mechanics for the exact app category.
+- Product-specific buyer pain, incumbents and paid demand.
+- Required development console, company profile and listing review scope.
+
+Official sources:
+- https://www.zoho.com/marketplace/faq.html
+- https://www.zoho.com/developer/help/marketplace/payments.html
+- https://www.zoho.com/developer/help/marketplace/faq.html
+- https://www.zoho.com/developer/help/marketplace/listing-marketplace.html
+- https://www.zoho.com/developer/help/marketplace/
+
+Decision: **RESEARCH FIRST, NOT GO.** Best apparent fit for zero-fee entry and platform-handled payment, but unknown commission and India payout must be verified before product economics.
+
+### B. Wix App Market — second research priority
+
+Positive verified signals:
+- Supports recurring subscription pricing, usage-based pricing or a combination.
+- Wix handles checkout and marketplace payments.
+- New apps receive 100% of revenue share for the first 12 months; afterward the developer receives 80%, calculated after a 2.5% transaction fee and applicable sales tax.
+- Payout is monthly, net 30 at end of month, subject to a USD 200 accumulated payout threshold.
+
+Hard unknowns:
+- India-specific app developer/payment onboarding and payout eligibility.
+- Exact app acceptance and product review requirements for the target category.
+- Competitor concentration and real buyer purchase signals in the chosen niche.
+- Actual refund, tax, currency and payout treatment for an India-based publisher.
+
+Official sources:
+- https://dev.wix.com/docs/build-apps/launch-your-app/pricing-and-billing/about-monetizing-your-app
+- https://dev.wix.com/docs/build-apps/launch-your-app/pricing-and-billing/payments-and-billing-faqs
+
+Decision: **RESEARCH SECOND, NOT GO.** Revenue share and subscription rails are promising, but India seller/payout eligibility and specific product demand remain unverified.
+
+### C. monday.com Marketplace — third
+
+Verified signals:
+- Apps must go through a product, engineering, security, privacy, legal, support and listing review.
+- New marketplace apps must be monetised through monday.com's native app monetisation process.
+- monday's revenue-sharing program activates after USD 200,000 in lifetime accumulated revenue; thereafter the documented split is 85% developer / 15% monday.com.
+- Apps must contain real code in the Developer Center. Primarily no-code or AI-generated “vibe code” apps are not eligible for marketplace approval.
+- monday specifically warns that multi-tool automation apps, Microsoft integrations and Google integrations are saturated as of Q1 2026.
+
+Official sources:
+- https://developer.monday.com/apps/docs/submit-your-app
+- https://developer.monday.com/apps/docs/subscriptions-payments-and-billing
+- https://developer.monday.com/apps/docs/documentation-and-support
+- https://developer.monday.com/apps/docs/product
+
+Unknowns: pre-$200K commercial treatment for a specific plan, India payout eligibility, competitor purchase evidence and product-specific buyer demand.
+
+Decision: **RESEARCH THIRD, NOT GO.**
+
+### D. BigCommerce App Marketplace — fourth
+
+Verified entry requirements:
+- Active Technology Partner account and Partner ID.
+- Accepted Technology Partner Agreement.
+- Billing/Financial role on the partner account.
+- Marketplace team approval against technical, security, support and listing standards.
+
+Official sources:
+- https://docs.bigcommerce.com/developer/docs/integrations/apps/guide/approval-requirements
+- https://docs.bigcommerce.com/developer/docs/integrations/apps/guide/publishing-apps
+
+Unknowns:
+- India eligibility and partner account cost.
+- App billing/settlement mechanism and commission.
+- Market size for the exact buyer niche and competing paid apps.
+- Two independent demand signals.
+
+Decision: **HOLD FOR TERMS AND DEMAND.** Do not assume the partner route is free or that marketplace approval creates customers.
+
+### E. Xero App Store — fifth
+
+Verified entry constraints:
+- Xero's current partner model uses tier-based developer pricing, replacing the prior revenue-share/commercial-billing model.
+- Xero's current developer platform says an app partner needs ten customers for certification.
+- An App Store listing is required for Xero Enterprise tier; optional/recommended for Plus and Advanced, and not available for Starter/Core tiers.
+- Premium Journals, Xero Practice Manager and Bulk Connections require an initial and annual security assessment and use-case approval.
+- Xero advertises access to 4M+ small business customers and 200K+ accountants/bookkeepers; this is platform reach, not proof of product-specific demand.
+
+Official sources:
+- https://developer.xero.com/pricing
+- https://developer.xero.com/faq
+- https://developer.xero.com/documentation/xero-app-store/app-partner-guides/building-and-growing-your-app/
+- https://developer.xero.com/
+
+Decision: **DEFER.** Ten real customers are required before certification and tier/usage costs need detailed modelling. A pre-existing customer acquisition path is not yet evidenced.
+
+### F. Intuit QuickBooks App Partner Program — sixth / eligibility gate
+
+Verified facts:
+- Intuit's App Partner Program FAQ was updated 29 October 2026.
+- The program launched in the United States in July 2025 and expanded to the United Kingdom, Australia and Canada (excluding Quebec) in November 2025.
+- Intuit says geographic availability varies and partner tiers can involve platform service fees.
+
+Official source:
+- https://static.developer.intuit.com/output_html/qbo/docs/get-started/partner-faq.html
+
+Decision: **HOLD — INDIA ELIGIBILITY UNVERIFIED.** Do not create accounts or design an app against an unconfirmed seller/API path.
+
+## 3. Preliminary platform ranking
+
+| Priority | Marketplace | Why it ranks here | Key blocker |
+|---|---|---|---|
+| 1 | Zoho Marketplace | No development fee stated; native checkout; monthly payout documented | Commission and India seller/payout details |
+| 2 | Wix App Market | Recurring/usage pricing, platform checkout, 100% first-year then 80% revenue share | India payout eligibility and product demand |
+| 3 | monday.com | Native monetisation and broad customer ecosystem | Code/review/support requirements; verify seller economics |
+| 4 | BigCommerce | Mature commerce app distribution | Partner costs, seller economics and demand unknown |
+| 5 | Xero | Large accounting customer base and certified app ecosystem | Ten-customer certification; tier pricing/security |
+| 6 | Intuit QuickBooks | Large accounting ecosystem | India program availability not evidenced |
+
+This ranking is about research priority and entry feasibility, not total addressable revenue or expected earnings.
+
+## 4. Required P54-001 execution
+
+1. Verify official India-based developer eligibility, account requirements, payout rails, thresholds, commission, taxes/FX/holds and all compulsory fees for Zoho and Wix first.
+2. Select concrete marketplace categories only after reading current listings and buyer discussions.
+3. Audit at least 10–15 direct competitors for every shortlisted problem; record price, rating/reviews, installs where visible, update cadence, feature coverage and limitations.
+4. Collect at least two independent strong demand signals from different sources. Paid competitor activity is a substitute signal, not proof that our proposed gap will sell.
+5. Identify the precise buyer, job-to-be-done and measurable result; check whether native platform features and free incumbents already solve it.
+6. Calculate net unit economics from the actual commission and payout terms. Distinguish vendor-reported customer counts from addressable buyers.
+7. Select one candidate only if all V4 gates pass. Otherwise record NO-GO and continue to the next platform.
+
+## 5. Queue and gates
+
+- P54-001: marketplace and candidate research — IN PROGRESS.
+- P54-002: one private product MVP — BLOCKED until P54-001 GO.
+- P54-003: deterministic QA, rights, privacy, security and net-economics — BLOCKED.
+- P54-004: owner-approved seller onboarding and public release — OWNER GATE.
+- P54-005: verify independent paid transactions and platform/provider-credited net earnings — BLOCKED.
+
+One active build at a time; no build is open in Phase 54.
+
+## 6. Mission and financial truth
+
+- Mission goal: ₹10,00,00,000 verified net earnings.
+- Platform/provider-credited net earnings: ₹0.
+- Bank-settled net receipts: ₹0.
+- Revenue ledger entries: 0.
+- Authorised new spend: ₹0.
+- No platform account created, no KYC submitted, no terms accepted, no public release, no paid subscription and no new marketplace build authorised by this plan.
