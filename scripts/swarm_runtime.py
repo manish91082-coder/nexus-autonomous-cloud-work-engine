@@ -180,6 +180,8 @@ def finish_task(state, task_id, worker_id, success, result=None, error_code=None
     else:
         exhausted = task.get("attempts", 0) >= task.get("max_attempts", 3)
         task["status"] = "DEAD_LETTER" if exhausted else "READY"
+        if not exhausted:
+            task["available_at_utc"] = iso(now + timedelta(seconds=retry_delay_seconds(task.get("attempts", 0))))
         task["last_error_code"] = (error_code or "UNSPECIFIED")[:80]
         if exhausted:
             state["dead_letters"].append({"task_id": task_id, "reason": task["last_error_code"], "at_utc": iso(now)})
