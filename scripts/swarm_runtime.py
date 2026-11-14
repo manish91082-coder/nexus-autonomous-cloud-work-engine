@@ -171,6 +171,7 @@ def new_state():
 
 
 def claim_task(state, task_id, worker_id, now=None, lease_seconds=900, max_concurrency=5):
+    validate_state(state)
     now = utc_now(now)
     if lease_seconds < 30 or lease_seconds > 3600:
         raise ContractError("lease_seconds must be 30..3600")
@@ -191,6 +192,7 @@ def claim_task(state, task_id, worker_id, now=None, lease_seconds=900, max_concu
 
 
 def heartbeat(state, task_id, worker_id, now=None, lease_seconds=900):
+    validate_state(state)
     now = utc_now(now)
     task = next((t for t in state["tasks"] if t["id"] == task_id), None)
     if not task or task.get("lease_owner") != worker_id or task["status"] not in {"LEASED", "IN_PROGRESS"}:
@@ -202,6 +204,7 @@ def heartbeat(state, task_id, worker_id, now=None, lease_seconds=900):
 
 
 def recover_stale_leases(state, now=None):
+    validate_state(state)
     now = utc_now(now)
     recovered = []
     for task in state["tasks"]:
@@ -221,6 +224,7 @@ def recover_stale_leases(state, now=None):
 
 
 def finish_task(state, task_id, worker_id, success, result=None, error_code=None, now=None):
+    validate_state(state)
     now = utc_now(now)
     task = next((t for t in state["tasks"] if t["id"] == task_id), None)
     if not task or task.get("lease_owner") != worker_id or task["status"] not in {"LEASED", "IN_PROGRESS"}:
