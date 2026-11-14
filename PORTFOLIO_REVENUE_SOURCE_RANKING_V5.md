@@ -2,7 +2,7 @@
 **Date adopted:** 14 November 2026  
 **Mission:** ₹10,00,00,000 cumulative verified PCNE across combined revenue streams  
 **Authority:** `MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md`  
-**Status:** Portfolio-wide evidence audit required; no new top source is declared before comparative research.
+**Status:** First comparative evidence batch completed; B2B productized software / vertical SaaS is PROVISIONAL FIRST, pending deeper buyer/problem and asset-level qualification. No concrete product GO.
 
 ## 1. Decision rule
 Do not optimize for the fastest small sale alone, nor for the largest theoretical TAM. Identify the largest **credible risk-adjusted cumulative net-revenue source** that can be reached under the user's constraints, then execute it first. Add additional sources after the first source has a verified repeatable monetization loop; continue aggregating their PCNE while earlier sources remain active.
@@ -57,3 +57,15 @@ First complete the highest-ranked source's first repeatable monetization engine:
 - Current task: **P59-001 — portfolio-wide source universe and largest-source ranking**.
 - Product selected under V5: **NONE**.
 - PCNE: ₹0; bank receipts: ₹0; authorized spend: ₹0.
+
+
+## 7. Evidence batch 01 — provisional leader (14-Nov-2026)
+The first public evidence batch is recorded in [Phase 59.1 report](research/PHASE_59_1_PORTFOLIO_SOURCE_EVIDENCE_BATCH_01_2026-11-14.md).
+
+**Provisional FIRST source family:** productized B2B software / vertical SaaS / marketplace-distributed apps. RBI's 2025-26 survey reports US$221.4B total Indian software-services exports, but only US$6.4B is classified as software product development; the total services figure is not the addressable self-serve SaaS market. Atlassian reports US$7B lifetime Marketplace paid sales, and Shopify reports US$1.3B paid to developers in 2025. These demonstrate real paid software ecosystems, not likely revenue for a new entrant.
+
+**Secondary stackable sources:** AI/API monetization as a software layer or distinct API product; software/IP licensing; digital products and technical publishing; books/royalties; stock assets; sponsorship; compliant affiliate/advertising where an owned audience exists; games. Creator sponsorship is not elevated to first engine because the ISB/SRITNE × Hashfame 2026 study finds non-metro creator monetization depth remains low relative to the creator base.
+
+**Critical accounting distinction:** a subscription SaaS product distributed through Atlassian and Microsoft is one revenue engine with multiple distribution rails, not two separate products. Every paid transaction is counted once.
+
+**Next:** compare owned/licensable software assets with greenfield B2B software; identify a narrow recurring high-value buyer problem; audit 10–15 substitutes; quantify reachable buyer count, pricing, acquisition, repeatability and net economics; verify rights, India seller/payout and owner gates. Product selection remains NONE and build authorization remains NO.
