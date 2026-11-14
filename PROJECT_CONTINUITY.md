@@ -2,6 +2,24 @@
 
 The prior continuity audit's statement that V3 contained an original 30-day deadline and a funded/manual assignment route was inaccurate. Direct comparison of V3 and V4 shows: neither master constitution sets a 30-day deadline; V3 already excludes manual assignment labour; V4 preserves the exclusion. See [TNCR charter reconciliation correction](governance/TNCR_MISSION_CHARTER_RECONCILIATION_CORRECTION_2026-11-14.md). This supersedes that finding only; it does not claim all ten historical chat threads were reread.
 
+# PHASE 58.4 UPDATE — 14 NOVEMBER 2026 (APIFY PLATFORM GATE RECHECK)
+
+**Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Branch:** `master`  
+**Authority:** `MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md`  
+**Task:** `P58-001` — IN_PROGRESS; public research only  
+**Mission charter:** V3/V4 comparison correction recorded in `governance/TNCR_MISSION_CHARTER_RECONCILIATION_CORRECTION_2026-11-14.md`; no 30-day deadline or funded/manual assignment route is evidenced in V3, and V3 already excludes manual assignment labour.  
+**Apify gate:** official status still shows Security incident open/investigating; API and Actors Partial Outage. No post-mortem review/operational clearance evidenced. No account, Actor run, data upload, private GitHub connection, paid use, build or publication.  
+**Financial state:** PCNE ₹0; bank-settled ₹0; authorized spend ₹0.  
+**CI boundary:** prior Worker #275 / Guard #18 success applies to HEAD `6fa3e8fd550c13e089130dd255bab93654e4ed12`, not later documentation commits. No CI status check was returned for charter-correction commit `49af1b24ee0df59dbddaa1af4caa4bef68fe011b`.
+
+Report: [Phase 58.4 Apify platform gate recheck](research/PHASE_58_4_APIFY_PLATFORM_GATE_RECHECK_2026-11-14.md).
+
+## Exact next work
+Continue P58-001 public-source research only. Generic Apify product families already rejected remain closed. Require two independent buyer signals, 10–15 direct/adjacent substitutes, qualified budget-owner WTP, lawful source rights, deterministic supported access and positive net economics. Recheck official status and post-mortem before any account/Actor action.
+
+---
+
 # LATEST EXECUTION UPDATE — 14 NOVEMBER 2026 (PHASE 58.3 / MCP CONTRACT-DRIFT SCREEN)
 
 **Canonical repository:** `https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine`  
