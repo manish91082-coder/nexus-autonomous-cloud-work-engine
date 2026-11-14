@@ -2335,6 +2335,28 @@
             },
             "decision": "Broader field-impact category is commercially validated in Salesforce but that does not validate Zoho demand. No direct paid Zoho dependency graph found in bounded search; keep HOLD.",
             "api_gate": "Functions full access Enterprise/CRM Plus/Ultimate/Zoho One; Standard/Professional through Extensions only. READ scopes exist; source is sensitive/opt-in. API concurrency 5–25 by edition is not daily API quota."
+          },
+          "edition_api_matrix": {
+            "free": "Workflows limited actions; no Blueprint; full Function entitlement undocumented",
+            "standard": "Workflows; no Blueprint; Functions through Extensions only",
+            "professional": "Workflows and Blueprint; Functions through Extensions only",
+            "enterprise": "Workflows, Blueprint and full Functions access documented",
+            "ultimate": "Workflows, Blueprint and full Functions access documented",
+            "zoho_one_crm_plus": "Full Functions access documented; check actual CRM tenant entitlement",
+            "runtime_checks": [
+              "/__features for org feature/limits",
+              "/__apis for endpoint/OAuth scope support"
+            ],
+            "concurrency_limits": {
+              "free": 5,
+              "standard": 10,
+              "professional": 15,
+              "enterprise_zoho_one": 20,
+              "ultimate_crm_plus": 25
+            },
+            "concurrency_is_not_daily_quota": true,
+            "function_source_policy": "Opt-in, read-only, local scan where possible; no external LLM upload by default",
+            "coverage_policy": "Missing API/permission/edition/DC surface must be NOT_SCANNED, never NO_DEPENDENCY"
           }
         },
         "zoho_payout_clarification": {
@@ -2351,7 +2373,8 @@
           "schedule": "March app revenue arrives at the beginning of May",
           "payout_currency": "USD",
           "india_app_developer_eligibility": "Not explicitly confirmed by public App Market developer guidance"
-        }
+        },
+        "next_exact_work": "Complete technical coverage and seller/payout proof checklist; validate API feature entitlement by Zoho edition using official __features/__apis design, not a live customer account. Candidate remains HOLD. No build."
       }
     },
     {
