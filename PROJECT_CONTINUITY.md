@@ -1,3 +1,41 @@
+# PHASE 59.10 UPDATE — CLOUD-ONLY ZERO-COST MULTI-CLOUD FAILOVER FINAL DESIGN
+Date: 2026-11-14
+**Owner clarification:** No laptop, Windows, WSL, local Ollama, local CPU/GPU/RAM or home internet dependency. Entire swarm must be cloud-hosted, open-source-first, zero-cost, 24x7 best-effort, and fail over to independent free resources when providers are unavailable or quotas are exhausted.
+**Final architecture report:** [Phase 59.10 Cloud-only Zero-Cost Multi-Cloud Failover Final Design](research/PHASE_59_10_CLOUD_ONLY_ZERO_COST_MULTI_CLOUD_FAILOVER_FINAL_DESIGN_2026-11-14.md)
+
+## Final decision
+Phase 59.10 supersedes Phase 59.9 where it described laptop-optional inference or a single-provider cloud wake-up path. Final baseline is cloud-only, multi-provider, event-driven, active/standby, open-source-first, with no paid fallback.
+
+- GitHub Actions public standard runners: free ephemeral burst workers and CI; not a persistent daemon or guaranteed real-time scheduler.
+- Oracle Always Free VM: conditional compute candidate only; capacity and account eligibility unverified; idle compute may be reclaimed after 7 days under published low CPU/network (and A1 memory) thresholds. Never create artificial load to avoid reclamation.
+- Google e2-micro: conditional low-capacity standby in eligible US regions; exact account/billing/region eligibility unverified.
+- Cloudflare Workers: lightweight event intake, watchdog and dispatch; not heavy compute. Queues are transport only; 24-hour free retention means not the task database. D1 quota exhaustion stops queries; R2 and D1 share the Cloudflare failure domain.
+- OCI Object Storage, GitHub snapshots and Cloudflare R2/D1 are separately classified by provider failure domain. Use append-only event journal, idempotent IDs and reconciliation; do not claim distributed exactly-once semantics.
+- Model pool: Cloudflare Workers AI (10,000 neurons/day free allocation), OpenRouter free route (20 RPM/50 RPD on free variants), Gemini Free (selected models and data-use restrictions), Groq (account/model quota verification). Only verified zero-price eligible models. No paid fallback, no credits purchase, no account rotation to evade provider blocks.
+- LiteLLM may be evaluated as open-source router, but fallback allowlist must contain only verified free models. Existing custom gateway may be safer/smaller.
+- LangGraph remains the specialist graph runtime after B4; it is not the durable mission control plane.
+- n8n is not the core scheduler. Temporal deferred.
+
+## Repository audit
+Existing files: deterministic swarm runtime/coordinator, Cloudflare-only bounded AI executor, separate OpenRouter free-model gateway, worker tick and V5 contracts. Existing adapters are not unified; no real LLM specialists, cloud deployment or failover is proven. B3 workers are mocks.
+Main GitHub Actions worker #337 and Continuity Guard #96 passed on exact HEAD `3e194441ef6e8f4bb2b9d7aefbaaaf5bff639fba`.
+GitHub Actions dashboard was inspected. Oracle, Google Cloud and Cloudflare account dashboards are not connected; account allocation, billing state, quota and deployments remain UNVERIFIED.
+Legacy bounty/job/gig workflows exist as separate manual-dispatch workflows; do not connect them to the V5 mission queue.
+
+## Green-light status
+- GREEN: final architecture and staged research decision.
+- NOT GREEN: live cloud deployment, model inference, compute/database failover or 24x7 soak test.
+Free tiers cannot promise contractual 100% uptime. If all eligible free resources fail, keep acknowledged work durably queued and resume later. No hidden billing or paid fallback.
+
+## Exact next execution
+1. B4 portable durable execution: process-isolated workers, hard termination, event-sourced run journal, atomic checkpoints, idempotent replay, lease/fencing, duplicate delivery and crash-window tests.
+2. Provider registry and cost-zero model gateway; failover tests for 429, 5xx, timeout, 401/403, unknown price and provider outage.
+3. LangGraph mock-specialist graph mapped to mission run IDs/checkpoints.
+4. Deploy cloud components only after account eligibility and zero-billing checks; no laptop dependency.
+5. Build sanitized operational dashboard and execute cloud/model/database fault-injection drills.
+6. 7-day and 30-day soak tests; report measured uptime/recovery, not a promised SLA.
+7. Resume P59-001 only after safe swarm handoff; retain V5 product qualification and PCNE gates.
+
 # PHASE 59.9 UPDATE — ZERO-COST-FIRST 24x7 AUTONOMOUS AGENTIC SWARM ARCHITECTURE
 Date: 2026-11-14
 **Owner request:** Build the maximum practical automation for the ₹10 Cr mission using a zero-cost-first infrastructure and autonomous multi-agent workforce. Project lead owns architecture, research, implementation sequence and continuity.
