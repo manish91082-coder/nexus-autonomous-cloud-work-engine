@@ -231,3 +231,33 @@ Continue `P55-001` with:
 No product build or owner action is authorised.
 
 **Resume instruction:** fetch actual `master` HEAD at every continuation. Continue `PHASE_55 / P55-001 / ATLASSIAN-FORGE-DEVSPACE-COST-GUARD = HOLD_FOR_EVIDENCE`.
+
+
+## 6. Billing model correction and cross-app enforcement risk — 14-Nov-2026
+
+The latest official Forge platform pricing FAQ resolves the per-app allowance question: **each Forge app receives its own monthly free allowance for each billable capability; the allowance is not shared between apps**. Overages are calculated per app, then charges from all apps in the same Developer Space are consolidated into a single monthly invoice. The Developer Space Billing and Payments page specifies that invoices are generated on the first day of each month for prior-month usage, with autopay attempted that day if a valid payment method is present.
+
+Sources:
+- https://developer.atlassian.com/platform/forge/forge-platform-pricing/ (FAQ: free allowance is per app and not shared)
+- https://developer.atlassian.com/platform/forge/developer-space/billing-for-developer-spaces/ (one transaction account per Developer Space; all apps co-invoiced)
+- https://www.atlassian.com/blog/how-we-build/engineering-the-forge-billing-platform-for-reliability-and-scale (per-app overages and app-level line items on the Developer Space invoice)
+
+### Billing distress and service-wide enforcement
+The Developer Space billing documentation also states:
+- If no valid payment method exists after billable usage, invoice generation/payment may fail and a 14-day pre-dunning period begins, with notifications and up to five retries.
+- If unresolved after pre-dunning, enforcement applies to **all apps in the Developer Space**, not only the app that generated the overage, because of co-invoicing.
+- If a payment method is present but payment fails, a 21-day dunning period with up to five retries applies.
+- Billing admins can inspect subscriptions, usage, invoices and payment status through the Billing Console.
+
+Source: https://developer.atlassian.com/platform/forge/developer-space/billing-for-developer-spaces/
+
+### Corrected product implication
+The candidate needs two ledgers, not one: (1) per-app/per-meter usage and free-allowance calculations; (2) Developer Space transaction-account and invoice state. A third operational state may be necessary for billing continuity: payment method/billing status, invoice paid/unpaid, pre-dunning/dunning and service-wide enforcement exposure. The cost guard cannot claim it will stop charges or prevent Atlassian enforcement. It could only warn or provide an owner runbook if a supported external read-only interface exposes the relevant data.
+
+### Revised hard questions
+1. Confirm the exact per-app allowance and Developer Space invoice aggregation rules for every current billable meter, including container/LLM separate models.
+2. Confirm whether an authorized external local tool may read the Developer Space's invoices, line items, payment status and pre-dunning/dunning state when the invoice-list REST endpoint excludes Forge and OAuth2 apps.
+3. Confirm whether billing-account status or enforcement-state APIs exist for owner-operated external tools; do not infer this from the UI Billing Console.
+4. Quantify the actual warning lead time using daily usage data, daily dashboard refresh and monthly invoice timing. Do not call it a real-time alert or hard stop.
+
+The earlier "threshold aggregation" ambiguity is resolved for free allowances: use independent per-app allowances, then consolidate overage charges to the Developer Space invoice. The external invoice/payment-status API access remains **UNVERIFIED**.
