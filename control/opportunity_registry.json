@@ -1020,6 +1020,236 @@
         "No product-specific demand evidence"
       ],
       "note": "Backup Merchant of Record only. Do not create a store or integrate it in parallel with the Getvik first-sale experiment."
+    },
+    {
+      "id": "ATLASSIAN-FORGE-MARKETPLACE",
+      "category": "developer_tools_subscription",
+      "platform": "Atlassian Marketplace / Forge",
+      "tier": "P1",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 76,
+      "score_confidence": "Medium-low; platform-level economics and marketplace demand are strong, but India payout-country eligibility and a product-specific paid gap are not verified. This is not a product GO.",
+      "payout_evidence": {
+        "india_eligibility": "No public India payout-country list found. Partner agreement requires a valid bank account in the partner's name; India support must be confirmed in writing.",
+        "payout_method": "Electronic Funds Transfer to partner bank account; bank wire fees are partner responsibility.",
+        "minimum": "USD 500 profit, net of applicable withholding.",
+        "settlement": "Approximately 30 days after month-end once threshold is reached; 30–60 days from sale. 30-day refund window and post-payment offsets may apply.",
+        "economics": "Qualifying Forge apps receive 100% gross revenue share up to USD 1 million lifetime Forge revenue; standard partner share is 83% after the incentive, effective 1-Oct-2026.",
+        "usage_cost": "Forge has per-app monthly free allowances; overage is billed. Forge LLM input/output and container services have no free allowance.",
+        "sources": [
+          "https://developer.atlassian.com/platform/marketplace/pricing-payment-and-billing/",
+          "https://www.atlassian.com/legal/archives/partneragreement/partneragreement-20251130",
+          "https://developer.atlassian.com/platform/forge/forge-platform-pricing/"
+        ]
+      },
+      "automation_fit": "high after one-time partner onboarding; self-serve subscription and licensing possible, but product support/security obligations remain",
+      "unknowns": [
+        "India partner and EFT payout eligibility",
+        "specific unmet buyer problem",
+        "two independent strong demand signals",
+        "10–15 direct competitor audit for selected problem",
+        "app-specific Forge usage and overage envelope",
+        "current IP/privacy/security obligations for selected product"
+      ],
+      "ip_and_policy_status": "Use original code and least-privilege scopes. No customer-data model training or external LLM upload by default. Paid Forge LLM/container usage is incompatible with zero-spend default.",
+      "note": "Highest scalable platform-level upside in V4 ranking; product selection and India payout remain HOLD.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "PLATFORM_LEVEL_PRELIMINARY_NOT_PRODUCT_APPROVAL"
+    },
+    {
+      "id": "MONDAY-COM-APP-MARKETPLACE",
+      "category": "developer_tools_subscription",
+      "platform": "monday.com Marketplace",
+      "tier": "P1",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 67,
+      "score_confidence": "Low-medium; native recurring monetization and Payoneer payout are documented, but India vendor eligibility, exact pre-threshold share and a product-specific demand gap are not.",
+      "payout_evidence": {
+        "india_eligibility": "Payoneer USD payout is documented; monday does not publish an India country allowlist in the reviewed developer payout documentation. India vendor onboarding must be confirmed.",
+        "payout_method": "Monthly USD payout via Payoneer after Zip vendor registration.",
+        "minimum": "No public minimum payout threshold found.",
+        "settlement": "Up to 60 days after invoice submission and monday finance approval; no fixed payout date.",
+        "economics": "Once lifetime app revenue reaches USD 200,000, documented split for subsequent revenue is 85% developer / 15% monday. Exact pre-trigger split must be confirmed in signed agreement.",
+        "sources": [
+          "https://developer.monday.com/apps/docs/monetization",
+          "https://developer.monday.com/apps/docs/subscriptions-payments-and-billing",
+          "https://developer.monday.com/apps/docs/partner-program",
+          "https://developer.monday.com/apps/docs/implementing-monetization"
+        ]
+      },
+      "automation_fit": "high; native subscription state, SDK entitlement checks and webhooks support self-serve recurring billing",
+      "unknowns": [
+        "India Payoneer vendor setup eligibility",
+        "pre-USD-200000 revenue share",
+        "payout minimum and account-level fees",
+        "specific buyer problem and willingness to pay",
+        "10–15 direct competitor audit",
+        "security questionnaire and support SLA effort"
+      ],
+      "ip_and_policy_status": "Use original app code and customer-authorised data only; review current marketplace and partner agreement before release. No model training on customer data by default.",
+      "note": "Promising recurring channel; finance approval and India payout gates prevent near-term cash certainty.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "PLATFORM_LEVEL_PRELIMINARY_NOT_PRODUCT_APPROVAL"
+    },
+    {
+      "id": "ZOHO-MARKETPLACE-EXTENSIONS",
+      "category": "developer_tools_subscription",
+      "platform": "Zoho Marketplace Extensions",
+      "tier": "P1",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 62,
+      "score_confidence": "Low-medium; extension pricing and payout mechanics are documented, but India extension-specific eligibility and recurring paid demand remain unproven.",
+      "payout_evidence": {
+        "india_eligibility": "Public extension payout documents do not explicitly confirm India developer eligibility, currency or India-specific payout fees.",
+        "payout_method": "Wire transfer; PayPal by request to Zoho Marketplace support.",
+        "minimum": "Model > USD 100 conservatively; FAQ wording is >= USD 100 while detailed payments page says > USD 100.",
+        "settlement": "Monthly statement; approximately 15 working days after the developer explicitly approves processing.",
+        "economics": "One-time and monthly recurring extension pricing are supported. Zoho commission report states total customer transaction value equals gross commission for extension developers.",
+        "sources": [
+          "https://www.zoho.com/developer/help/marketplace/payments.html",
+          "https://www.zoho.com/developer/help/marketplace/pricing.html",
+          "https://www.zoho.com/developer/help/marketplace/faqs.html"
+        ]
+      },
+      "automation_fit": "high after approval for a well-scoped extension; recurring value depends on an actual repeated admin workflow",
+      "unknowns": [
+        "India extension-specific payout eligibility",
+        "exact threshold interpretation and fees",
+        "paid buyer demand and recurring cadence",
+        "complete API and edition coverage",
+        "10–15 direct competitor audit for any selected problem"
+      ],
+      "ip_and_policy_status": "Use original extension code and least-privilege scopes. Do not assume rights to reuse customer CRM data for model training.",
+      "note": "Potentially faster settlement after threshold than several alternatives, but India payout and recurring buyer need remain unresolved.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "PLATFORM_LEVEL_PRELIMINARY_NOT_PRODUCT_APPROVAL"
+    },
+    {
+      "id": "WIX-APP-MARKET",
+      "category": "developer_tools_subscription",
+      "platform": "Wix App Market",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 60,
+      "score_confidence": "Low-medium; first-year economics are favourable, but the Tipalti payer-entity restriction makes India payout conditional and the initial buyer screen found crowded generic categories.",
+      "payout_evidence": {
+        "india_eligibility": "Tipalti lists India INR local bank, USD wire and PayPal payee methods, but states payments to India are unavailable for India-based payer entities. Wix's actual payer entity is not identified in reviewed developer docs.",
+        "payout_method": "Tipalti-managed payout to supported bank/wallet method; exact Wix-to-India route unconfirmed.",
+        "minimum": "USD 200 accumulated revenue per individual app.",
+        "settlement": "Monthly. Wix example: March revenue arrives at the beginning of May. Below-threshold earnings roll forward.",
+        "economics": "First 12 months: 100% developer share after 2.5% transaction fee and applicable tax. After first year: 80% developer / 20% Wix after those deductions.",
+        "sources": [
+          "https://dev.wix.com/docs/build-apps/launch-your-app/pricing-and-billing/payments-and-billing-faqs",
+          "https://help.tipalti.com/hc/en-us/articles/31314361313815-Payment-methods-coverage-US-ROW"
+        ]
+      },
+      "automation_fit": "high for a subscription app after marketplace approval; platform handles billing and app payouts",
+      "unknowns": [
+        "actual Tipalti payer entity",
+        "India payout route and FX fees for Wix payer",
+        "specific buyer problem and two demand signals",
+        "10–15 direct competitor audit",
+        "ongoing support and refund obligations"
+      ],
+      "ip_and_policy_status": "Review Wix Partner Agreement, listing and privacy terms for the selected app. Use original IP and no customer-data model training by default.",
+      "note": "Do not use generic SEO or generic accessibility as a product gap; prior screen found dense competition and native Wix substitutes.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "PLATFORM_LEVEL_PRELIMINARY_NOT_PRODUCT_APPROVAL"
+    },
+    {
+      "id": "BIGCOMMERCE-APP-MARKETPLACE",
+      "category": "developer_tools_subscription",
+      "platform": "BigCommerce App Marketplace",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 57,
+      "score_confidence": "Low; automated billing fee stack is public, but India eligibility, minimum payout, remittance timing, reserve percentage and product-specific demand are not.",
+      "payout_evidence": {
+        "india_eligibility": "Partner application includes country and PayPal account fields; public docs reviewed do not confirm India Technology Partner or payout eligibility.",
+        "payout_method": "ACH, wire transfer or PayPal. International PayPal disbursement fee is 2% capped at USD 20; wire fee USD 20; ACH and domestic PayPal have no disbursement fee.",
+        "minimum": "No public minimum found in reviewed Automated Billing Appendix.",
+        "settlement": "Monthly reporting; fixed payout date and remittance SLA not stated in reviewed appendix. BigCommerce may retain a reserve for chargebacks, reversals and other liabilities.",
+        "economics": "Automated Billing share is 15% of Net Revenue plus 3% processing fee, before payout fee and applicable taxes.",
+        "sources": [
+          "https://docs.bigcommerce.com/developer/docs/integrations/becoming-a-partner",
+          "https://partners.bigcommerce.com/English/register_tech.aspx",
+          "https://docs.bigcommerce.com/developer/docs/integrations/apps/unified-billing/overview"
+        ]
+      },
+      "automation_fit": "high for recurring app billing after partner approval and integration; customer support and dispute handling remain ongoing",
+      "unknowns": [
+        "India partner approval and India payout method",
+        "minimum remittance and actual payout timing",
+        "reserve percentage and release policy",
+        "specific recurring buyer problem and demand signals",
+        "10–15 direct competitor audit"
+      ],
+      "ip_and_policy_status": "Partner terms require app fulfilment, customer support, clear subscription disclosures and legal compliance. Review complete Technology Partner Agreement before acceptance.",
+      "note": "Fee stack and reserve risk reduce risk-adjusted net; no product selected.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "PLATFORM_LEVEL_PRELIMINARY_NOT_PRODUCT_APPROVAL"
+    },
+    {
+      "id": "XERO-APP-STORE",
+      "category": "developer_tools_subscription",
+      "platform": "Xero App Store",
+      "tier": "P2",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 45,
+      "score_confidence": "Low; native subscription sales regions are AU/NZ/UK, free tier is capped at five connections and Xero prohibits API-data AI/ML training.",
+      "payout_evidence": {
+        "india_eligibility": "Native App Store subscriptions are documented for AU, NZ and UK regions. India-based seller eligibility for the Stripe subscription payout flow is not established.",
+        "payout_method": "Stripe-managed bank payout in supported subscription regions; outside those regions the partner may self-bill commercial referrals and owes a 15% ARPU referral fee for qualifying referrals.",
+        "minimum": "No public minimum identified for supported App Store subscription payouts.",
+        "settlement": "Weekly bank payout seven days after payment receipt in supported regions; referral billing is invoiced to the partner monthly on the 11th for qualifying referrals.",
+        "economics": "Starter tier is free for five connections; Core AUD 35, Plus AUD 245, Advanced AUD 1,445 monthly. Commercial referral fee is 15% of ARPU for qualifying users connected at least 65 days after a 30-day trial.",
+        "sources": [
+          "https://developer.xero.com/faq/pricing-and-policy-updates",
+          "https://developer.xero.com/documentation/xero-app-store/app-partner-guides/xero-app-store-subscriptions/",
+          "https://developer.xero.com/documentation/xero-app-store/app-partner-guides/xero-app-store-referrals-and-billing/"
+        ]
+      },
+      "automation_fit": "high after integration and billing setup, but only five free customer connections on Starter",
+      "unknowns": [
+        "India native subscription seller eligibility",
+        "Stripe country/account eligibility",
+        "cost after five connections",
+        "buyer gap and direct competitors",
+        "commercial referral economics for intended customer segment"
+      ],
+      "ip_and_policy_status": "Xero explicitly prohibits use of API data to train or contribute to AI/ML models and prohibits bots/extensions that undermine security controls or simulate user actions.",
+      "note": "India-first native marketplace payout not cleared. Consider only an own-checkout integration after modelling referral fees and connection costs.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "PLATFORM_LEVEL_PRELIMINARY_NOT_PRODUCT_APPROVAL"
+    },
+    {
+      "id": "INTUIT-APP-PARTNER-PROGRAM",
+      "category": "developer_tools_subscription",
+      "platform": "Intuit / QuickBooks App Partner Program",
+      "tier": "P3",
+      "status": "REJECTED",
+      "score": 30,
+      "score_confidence": "High for current geographic exclusion: Intuit's official FAQ lists US, UK, Australia and Canada excluding Quebec; India is absent.",
+      "payout_evidence": {
+        "india_eligibility": "Not included in the current published App Partner Program country list.",
+        "payout_method": "Not established for India.",
+        "minimum": "Not applicable to India under current programme geography.",
+        "settlement": "Not applicable to India under current programme geography.",
+        "economics": "Builder tier is uncharged but has capped CorePlus API calls; partner programme tiers and features are geographically conditional.",
+        "sources": [
+          "https://static.developer.intuit.com/output_html/qbo/docs/get-started/partner-faq.html",
+          "https://developer.intuit.com/app/developer/qbo/docs/"
+        ]
+      },
+      "automation_fit": "potentially high for a qualified partner in a supported country; not an India-first seller route",
+      "unknowns": [
+        "official India programme expansion or written exception",
+        "India payout eligibility"
+      ],
+      "ip_and_policy_status": "Do not build against programme assumptions for India; review current Intuit developer terms if geographic eligibility changes.",
+      "note": "Reject for India-based seller under current published programme. Reopen only on official country expansion.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "PLATFORM_LEVEL_PRELIMINARY_NOT_PRODUCT_APPROVAL"
     }
   ],
   "required_evidence": [
@@ -1047,5 +1277,5 @@
     "REJECTED",
     "ARCHIVED"
   ],
-  "updated_at": "2026-11-13"
+  "updated_at": "2026-11-14"
 }
