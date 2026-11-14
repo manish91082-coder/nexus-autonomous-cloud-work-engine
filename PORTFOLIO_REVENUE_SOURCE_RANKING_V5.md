@@ -84,3 +84,17 @@ The initial repository asset audit is recorded in [Phase 59.2 report](research/P
 - Therefore B2B productized software / vertical SaaS remains the provisional FIRST source family, but concrete product selection remains NONE and build authorization remains NO.
 
 **Next:** research a narrow recurring vertical buyer problem without presuming ERP is the answer; prepare the ERP evidence checklist; qualify AgentMargin against 10–15 substitutes, price-bearing WTP, recurrence and net economics; compare both against a greenfield candidate.
+
+## 9. Evidence batch 03 — AgentMargin Workbench candidate screen (14-Nov-2026)
+
+See [Phase 59.3 report](research/PHASE_59_3_AGENTMARGIN_WORKBENCH_SUBSTITUTE_AND_DEMAND_SCREEN_2026-11-14.md).
+
+**Candidate disposition:** NO-GO for the current generic one-time AgentMargin Workbench calculator as the first paid ₹10 Cr engine. Preserve existing code; no additional feature build, payment integration, publication or spend. This is candidate-specific, not a closure of the AI/B2B software source family.
+
+- Twenty direct/adjacent substitutes were screened, including free calculators (AI Agency Calculator, AICostKit, Fiscallion, AI Cost Lab, LLMcosts.dev, SubscriptionPlaybook, Spendline), customer-level margin/usage projects (Margined and AgentMargin), and observability/gateway products (Langfuse, LangSmith, Helicone, Portkey, Braintrust, Arize, Weave, LiteLLM, AgentOps, Flexprice, CloudZero).
+- Paid adjacent tools publish prices: Langfuse Core $29/mo; LangSmith Plus $39/seat/mo; Portkey Production $49/mo; Arize AX Pro $50/mo; Helicone Pro $79/mo; Braintrust Pro $249/mo. These prove paid observability/telemetry categories, not WTP for a one-time quote calculator.
+- Digiday agency interviews and two n8n community discussions support real buyer problem salience around per-client AI usage cost, retries and cost pass-through. They do not establish demand or paid WTP for this product.
+- The current user asset is a browser-only calculator with manual assumptions and one-time outputs; no live usage ingestion, invoice reconciliation, per-customer usage ledger or recurring data workflow is shipped. Repeat subscription value is therefore unproven.
+- **Name collision:** an independent public project owned by `rzkarsyad` at `github.com/rzkarsyad/agentmargin` uses the identical AgentMargin name for adjacent customer-level AI margin analytics. Do not assume affiliation or ownership. Rename and clear rights before commercial use.
+
+**Next:** continue P59-001 with recurring vertical SaaS buyer-problem research; keep Tech Cloud ERP ownership/source/module evidence audit open; compare one ERP-derived vertical candidate with one greenfield candidate. AI/B2B software source family remains OPEN. No product selected; P59-002 remains BLOCKED.
