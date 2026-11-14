@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "currency": "INR",
+  "purpose": "Source-level ledger of independent revenue engines; aggregate eligible net credited amounts into control/revenue_ledger.json without double counting.",
+  "updated_at": "2026-11-14",
+  "sources": [],
+  "source_states": [
+    "RESEARCH",
+    "QUALIFIED",
+    "ACTIVE",
+    "SCALE",
+    "HOLD",
+    "NO_GO"
+  ],
+  "rules": [
+    "One source record per independent revenue engine or clearly defined source family; link product/platform and evidence.",
+    "Only actual independent-customer/provider transactions can contribute to PCNE.",
+    "Record gross receipts, platform/payment fees, refunds/reversals, direct runtime/delivery/support costs, restrictions/holds and net credited amount.",
+    "Aggregate eligible source-level net credited amounts into control/revenue_ledger.json exactly once.",
+    "A platform-to-bank withdrawal is a transfer, not new revenue.",
+    "A product-specific NO_GO does not set the parent source family to NO_GO without separate source-level evidence.",
+    "Do not add forecasts, GMV, downloads, free credits, grants or self-purchases to realized PCNE."
+  ]
+}
