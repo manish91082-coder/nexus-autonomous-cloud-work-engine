@@ -227,7 +227,7 @@ One active build at a time; no build is open in Phase 54.
 
 ## 7. Follow-up gate — seller remittance and API credits (14-Nov-2026)
 
-Detailed addendum: `research/PHASE_54_PAYOUT_AND_API_CREDIT_GATE_2026-11-14.md`.
+This section is the durable seller-payout and API-credit addendum; detailed technical/API entitlement context remains in `research/PHASE_54_ZOHO_CRM_CONFIGURATION_DEPENDENCY_AUDIT_2026-11-14.md`.
 
 ### Zoho Marketplace extension sellers
 - The extension-specific commission report says total value paid by customers equals gross commission due to the extension developer. The detailed payment page sends a monthly statement only when outstanding commission is **more than USD 100**; FAQ says payment occurs once accrued sales reach **at least USD 100**. Use >USD 100 conservatively due to the boundary discrepancy.
