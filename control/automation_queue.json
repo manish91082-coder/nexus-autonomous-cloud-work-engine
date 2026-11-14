@@ -2272,7 +2272,56 @@
           "XERO_APP_STORE",
           "INTUIT_QUICKBOOKS_HOLD_INDIA_ELIGIBILITY"
         ],
-        "no_product_selected": true
+        "no_product_selected": true,
+        "zoho_candidate": {
+          "id": "ZOHO-CRM-FIELD-RETIREMENT-IMPACT-PREFLIGHT",
+          "status": "HOLD_TECHNICAL_AND_PAID_DEMAND_UNPROVEN",
+          "report": "research/PHASE_54_ZOHO_CRM_CONFIGURATION_DEPENDENCY_AUDIT_2026-11-14.md",
+          "problem_signals": [
+            "Zoho CRM community dependency-graph feature request 21-Oct-2026",
+            "r/CRM safe retirement discussion 27-Aug-2026",
+            "r/CRM hidden dependency during cleanup 18-Sep-2026",
+            "r/CRMSoftware Zoho user reports unused fields and forgotten workflows 7-Oct-2026"
+          ],
+          "substitutes": [
+            "Zoho CRM Admin Tools (Enterprise+)",
+            "Configuration Logs Tracker for Zoho CRM (free)",
+            "Configs for Zoho CRM (free)",
+            "Audit Tool for Zoho CRM (free)"
+          ],
+          "api_surface": [
+            "module/field/layout metadata READ",
+            "workflow rules with conditions/actions READ",
+            "blueprints READ",
+            "mapped field dependencies READ",
+            "webhooks READ",
+            "functions and function source READ",
+            "custom views READ",
+            "field update association metadata"
+          ],
+          "known_limitations": [
+            "Client Script / Zoho Flow / CRM Analytics / PDF-template / external integration coverage unverified",
+            "static code scan may miss dynamically constructed references",
+            "no paid buyer/subscription evidence",
+            "India extension-developer payout eligibility/currency/fees/tax unconfirmed"
+          ],
+          "next_exact_work": "Audit 10–15 direct/adjacent competitor and substitute products; verify India Marketplace extension payout and OAuth/edition compatibility. Do not build."
+        },
+        "zoho_payout_clarification": {
+          "developer_console_and_listing_fee": "Official FAQ says free",
+          "extension_pricing": "One-time or monthly recurring",
+          "commission_report": "For extension developers, total customer transaction value equals gross commission due",
+          "statement_threshold": "USD 100 outstanding",
+          "wire_timing": "About 15 working days after developer approves processing",
+          "india_eligibility": "Not explicitly confirmed by public extension payout guidance",
+          "reseller_inr_50000_threshold": "Separate reseller programme; not the Marketplace extension threshold"
+        },
+        "wix_payout_clarification": {
+          "threshold_usd": 200,
+          "schedule": "March app revenue arrives at the beginning of May",
+          "payout_currency": "USD",
+          "india_app_developer_eligibility": "Not explicitly confirmed by public App Market developer guidance"
+        }
       }
     },
     {
