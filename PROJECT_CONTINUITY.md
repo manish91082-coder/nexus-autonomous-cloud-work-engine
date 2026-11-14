@@ -1,3 +1,52 @@
+# PHASE 59.11 — CROSS-PROJECT / CROSS-THREAD SWARM FEDERATION
+Date: 2026-11-14
+Owner identity attribute supplied: manish91082@gmail.com (not a credential)
+**Registry:** [federation/PROJECT_FEDERATION_REGISTRY.json](federation/PROJECT_FEDERATION_REGISTRY.json)
+**Protocol:** [federation/CROSS_PROJECT_AGENT_SWARM_FEDERATION_PROTOCOL.md](federation/CROSS_PROJECT_AGENT_SWARM_FEDERATION_PROTOCOL.md)
+**Lock contract:** [federation/locks/registry.json](federation/locks/registry.json)
+
+## Owner requirement
+Operate the full agent swarm with near-zero routine owner involvement. Use existing provider connections where available; request only exact OAuth/GitHub App scopes or account approvals when required. Prevent other GitHub repositories and ChatGPT threads from duplicating, overwriting or competing for the same work.
+
+## Repository audit findings
+The connected GitHub account exposed 15 repositories. Relevant independent projects:
+- P10CR: nexus-autonomous-cloud-work-engine (this controller and its own ₹10 Cr V5 mission).
+- FLASHLOAN-RESEARCH: flashloan-research-agentic-swarm; 7,901 candidates, 38 queries, 28 complete / 10 incomplete; Actions run #52 was in progress during audit.
+- ZCIRA: zero-cost-internet-revenue-automation; independent mission with separate zero-spend and five commercial gates; latest observed commit 3daca36.
+- DAILY1000: daily1000-autonomous-revenue-engine; independent ₹1,000/day experiment, AgentMargin hypothesis unvalidated; CI #17 passed.
+- AI-CONTENT: ai-content-system; repository exists, full runtime audit pending.
+- GHOST-HUNTER family: ghost-hunter-new, ghost-hunter-ai-smart, full-ai-ghost-hunter-universe, ghost-hunter-research-all-block-chains, ghost-hunter-clean-mvp-v3.4; separate crypto engineering projects.
+
+**No project missions or queues are merged.** ZCIRA and Daily1000 are not silently absorbed into P10CR. Flashloan remains public-source research only. Crypto projects remain separate.
+
+## ChatGPT threads and browser audit
+Two open ChatGPT tab titles were visible: "smart money revenue automation 3" and "Continue Swarm Deployment". The connected Browser tool was blocked by browser security policy when attempting to read chatgpt.com page content. Their full contents and exact current execution states therefore remain UNVERIFIED. Do not attempt browser-security workarounds. Other threads do not automatically share a live lock with this thread.
+
+## Critical architecture decision
+Create a federation control plane with:
+- independent Project Cells and local constitutions/state/queues;
+- cross-repo lock service using task IDs, idempotency keys, leases, heartbeats and monotonic fencing tokens;
+- one canonical writer/publisher per repository control-plane state;
+- worker branches and PRs for all other writers;
+- shared quota arbitration for GitHub API, Actions concurrency, free AI quotas and cloud compute;
+- fair project reservations, staggered schedules, duplicate-run detection and stale-lease recovery;
+- provider-specific OAuth and short-lived scoped GitHub App tokens.
+
+GitHub Actions concurrency groups are repository-scoped, not a global lock. Shared account quotas can still collide. A central registry by itself does not enforce locks; runtime clients must be deployed into participating repositories.
+
+## Authentication boundary
+The supplied Gmail address is an identity attribute, not a universal credential. Existing GitHub connector access already permits repository operations. Do not ask the owner to reauthenticate to GitHub unnecessarily. Future cross-repo dispatch should use a dedicated GitHub App installed only on selected repos, with minimal Metadata/Contents/Actions permissions and short-lived installation tokens. Google OAuth is separate and only required if a Google service is actually needed. The currently available Browser tools can list tabs but cannot approve Google prompts or control blocked ChatGPT pages. Never ask for password, OTP, backup codes, session cookies, private keys or unrestricted PATs in chat.
+
+## Automation and approval split
+Autonomous after approved scoped grants: inspect repos, research, code, tests, branches, PRs, dispatch approved workflows, update queues, checkpoint, recover, quota-aware switch and dashboard.
+Owner-only: install GitHub App/approve OAuth scopes, KYC, legal terms, billing activation, public release, financial transactions, bank changes, signatures and irreversible account actions.
+
+## Status
+- GREEN: project inventory, mission separation, federation registry and protocol committed.
+- NOT GREEN: atomic runtime lock, cross-repo clients, GitHub App installation, Google OAuth broker, global quota arbiter, cross-thread enforcement and soak test.
+- Registry contract is not a live lock service.
+- Current P59-003 remains the sole active P10CR engineering task. Next: B4 durable event journal + lease/fencing implementation and race tests, then read-only federation clients; do not change project missions.
+
 # PHASE 59.10 UPDATE — CLOUD-ONLY ZERO-COST MULTI-CLOUD FAILOVER FINAL DESIGN
 Date: 2026-11-14
 **Owner clarification:** No laptop, Windows, WSL, local Ollama, local CPU/GPU/RAM or home internet dependency. Entire swarm must be cloud-hosted, open-source-first, zero-cost, 24x7 best-effort, and fail over to independent free resources when providers are unavailable or quotas are exhausted.
