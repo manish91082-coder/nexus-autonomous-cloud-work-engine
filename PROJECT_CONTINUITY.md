@@ -1,32 +1,38 @@
-# LATEST EXECUTION UPDATE — 14 NOVEMBER 2026 (PHASE 58 / MASTER MERGE VERIFIED)
+# LATEST EXECUTION UPDATE — 14 NOVEMBER 2026 (PHASE 58 / APIFY DISTINCT-NICHE RESEARCH)
 
 **Canonical repository:** `https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine`  
 **Branch:** `master`  
-**Master HEAD verified before this state-recording commit:** `4a64931368b709458d9d7577a1842c8ba4e1b856`  
-**Merged PR:** #1 — `https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/1`  
+**Verified base HEAD:** `6d9887cca49bd0750f32047e7ea09b471dc62e6f`  
 **Authority:** `MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md`  
-**Current task:** `P58-001` — distinct Apify niche research  
-**Financial state:** PCNE ₹0; bank-settled ₹0; authorised spend ₹0
+**Current task:** `P58-001`  
+**Financial state:** PCNE ₹0; bank-settled ₹0; authorized spend ₹0
 
 ## Exact-master CI evidence
-- Worker #267 — SUCCESS on exact master HEAD `4a64931368b709458d9d7577a1842c8ba4e1b856`. All 14 workflow steps passed; deterministic queue poll selected P58-001 as the only eligible task. AI executor returned `WAITING_FOR_OWNER_CONFIGURATION`; no inference request was made.
-- Mission Continuity Guard #8 — SUCCESS on exact master HEAD. Mission guard reported **108 checks PASS, 0 errors**.
-- Worker run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43603223265
-- Guard run: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43603223237
-- Worker #267 reports POLL_OK, queue_size 102, eligible_task_count 1 and P58-001 selected. AI executor returned WAITING_FOR_OWNER_CONFIGURATION; no inference request; daily calls 0. Guard #9 reported 108 checks PASS, errors []. Push-trigger validation is proven; scheduled cadence remains STALE/UNVERIFIED. These are bounded CI/queue validations, not proof of demand, paid use, earnings or always-on AI execution.
+- Worker #268 SUCCESS on exact HEAD `6d9887cca49bd0750f32047e7ea09b471dc62e6f`; 14 steps passed. Queue POLL_OK; 102 tasks; one eligible; P58-001 selected. AI executor WAITING_FOR_OWNER_CONFIGURATION, no inference, calls 0.
+- Mission Continuity Guard #10 SUCCESS on same HEAD; 108 checks PASS, errors [].
+- Worker: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43603327714
+- Guard: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43603327703
+- Push-trigger validation is proven; scheduled cadence remains STALE/UNVERIFIED.
 
-## Current mission and queue
-- Goal unchanged: ₹10,00,00,000 verified Platform-Credited Net Earnings under V4.
-- P55-001: BLOCKED_BY_OWNER_GATE; Forge Cost Guard remains HOLD_FOR_EVIDENCE, not GO.
-- P56-001: Shopify generic automatic payment-recovery app closed NO-GO.
-- P57-001: Microsoft generic Power Platform post-deployment assurance closed NO-GO.
-- P58-001: IN_PROGRESS; Apify distinct-niche research, no product selected.
-- P58-002 through P58-005 remain BLOCKED pending all V4 product/release gates.
-- One product build max is enforced in mission state, queue, product registry and mission guard.
-- Revenue ledger unchanged; PCNE ₹0; bank receipts ₹0; authorized spend ₹0.
+## Phase 58 fresh screens
+- Chrome extension permission drift: NO-GO generic.
+- WCAG accessibility audit: NO-GO generic; multiple direct Actors.
+- Building permits/contractor leads: NO-GO generic; multiple direct Actors.
+- Generic Actor Trust/supply-chain scanner: NO-GO generic due native Apify controls and generic SAST/SCA/SBOM alternatives.
+- Narrow Apify-specific static Actor source/permission preflight: HOLD_FOR_EVIDENCE; two buyer signals and WTP absent.
+
+## Apify platform security gate
+Official status records access to parts of Apify internal systems via compromised credential on 9–10 November, detected 11 November. The 13-Nov update described ongoing investigation and planned post-mortem; on 14-Nov API and Actors were Partial Outage. The official update does not establish Community Actor source-code or run compromise. Until post-mortem review and API/Actors operational status, no new account, Actor run, source/customer-data upload, private GitHub link or paid use. Public-source research only.
+
+## Mission invariants
+- V4 target ₹10,00,00,000 verified PCNE.
+- One active product build max enforced in mission state, queue, registry and guard.
+- P55 owner-gated HOLD; P56 and P57 generic candidates NO-GO.
+- P58-001 sole active task; no product selected.
+- PCNE ₹0; bank receipts ₹0; authorized spend ₹0.
 
 ## Exact next work
-Continue P58-001 only: find a distinct recurring Apify buyer workflow outside Phase49's eight raw-data categories and Phase58's five generic families. Require two independent signals, 10–15 substitute audit, qualified buyer price/WTP, lawful source rights, self-serve repeat use and positive net economics after commission and usage costs. No account, KYC, paid Actor run, proxy, paid API, build, outreach or publication. If no candidate passes, proceed to the next V4-ranked lane instead of forcing a clone.
+Continue P58-001. For a narrow Apify-specific static Actor preflight, establish two independent buyer signals and qualified buyer price/buying-condition; audit 10–15 substitutes; verify lawful source access and availability; define observable limits and false-negative risk. No Actor execution, account access, credentials, upload, build, outreach, publication or spend. Reassess incident post-mortem/status before any platform interaction. If no candidate passes, proceed to next V4-ranked lane, not a clone.
 
 ---
 

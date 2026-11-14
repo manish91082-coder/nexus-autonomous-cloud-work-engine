@@ -2900,20 +2900,53 @@
         "Verify source rights, API/website terms, privacy and safe access.",
         "Model 80% eligible PPE share less compute/proxy/storage/support/refund/failure costs.",
         "No paid Actor run, account/KYC, Creator Plan, proxy, paid API, build or publication under ₹0 spend default.",
-        "Select only after all V4 gates pass; otherwise NO-GO and proceed to next V4 lane."
+        "Select only after all V4 gates pass; otherwise NO-GO and proceed to next V4 lane.",
+        "Treat unresolved Apify incident as a hard gate: no new account, Actor run, source/customer data upload, private GitHub link or spend until post-mortem review and API/Actors operational."
       ],
       "evidence": {
         "report": "research/PHASE_58_APIFY_NEW_NICHE_SCREEN_2026-11-14.md",
         "candidate_selected": false,
         "screened_families": [
-          "ecommerce price/catalogue",
-          "app reviews",
-          "website/service status",
-          "changelog/API changes",
-          "product recalls/catalog matching"
+          "ECOMMERCE_PRICE_CATALOGUE_MONITORING",
+          "APP_STORE_GOOGLE_PLAY_REVIEW_MONITORING",
+          "WEBSITE_AND_SERVICE_STATUS_MONITORING",
+          "VENDOR_CHANGELOG_DOCUMENTATION_API_CHANGE_MONITORING",
+          "PRODUCT_RECALL_CATALOG_EXPOSURE_MATCHING",
+          "CHROME_EXTENSION_PERMISSION_DRIFT_MONITORING",
+          "WCAG_WEBSITE_ACCESSIBILITY_AUDIT",
+          "US_BUILDING_PERMIT_CONTRACTOR_LEAD_SCRAPING"
         ],
         "build_authorized": false,
-        "spend_inr": 0
+        "spend_inr": 0,
+        "followup_report": "research/PHASE_58_2_APIFY_TRUST_RISK_AND_NEW_NICHE_SCREEN_2026-11-14.md",
+        "actor_trust_candidate": {
+          "status": "HOLD_FOR_EVIDENCE_NOT_SELECTED",
+          "generic_trust_scanner": "NO_GO_NATIVE_APIFY_CONTROLS_AND_GENERIC_SCANNERS",
+          "narrow_static_preflight": "HOLD_FOR_EVIDENCE",
+          "documented_problem": "Apify Community Actor terms/shared responsibility place due diligence on users; Creator may access inputs/outputs according to permission; Community Actors are not line-by-line vetted.",
+          "native_controls": [
+            "Limited vs Full permission badges",
+            "Full-permission explicit Console approval",
+            "Actor Quality Score includes Trustworthiness",
+            "Trust Center SOC 2 Type II and penetration-test attestation"
+          ],
+          "independent_buyer_signals": "NOT_ESTABLISHED_TWO_SIGNALS",
+          "price_bearing_wtp": "NOT_ESTABLISHED",
+          "source_availability_and_rights": "NOT_ESTABLISHED_ACROSS_COMMUNITY_ACTORS",
+          "product_selected": false,
+          "build_authorized": false,
+          "spend_inr": 0
+        },
+        "apify_security_gate": {
+          "incident": "UNRESOLVED_AS_OF_2026-11-14",
+          "official_status": "API_AND_ACTORS_PARTIAL_OUTAGE",
+          "latest_official_update": "2026-11-13T17:36CET",
+          "postmortem": "PROMISED_WITHIN_ONE_WEEK; NOT_VERIFIED_PUBLISHED_AT_AUDIT",
+          "actor_source_or_run_compromise": "NOT_ESTABLISHED_BY_OFFICIAL_STATUS_UPDATE",
+          "mission_action": "NO_NEW_APIFY_ACCOUNT_CREATION_OR_ACTOR_RUNS_OR_SOURCE_DATA_UPLOAD_OR_PRIVATE_GITHUB_LINK_OR_PAID_USE_UNTIL_POSTMORTEM_REVIEWED_AND_API_ACTORS_OPERATIONAL",
+          "evidence_url": "https://status.apify.com/"
+        },
+        "next_exact_work": "Public research only. For Apify-specific static Actor preflight, establish two independent buyer signals and qualified price-bearing buyer; audit 10–15 substitutes; verify source rights and availability. No Apify account/run/source upload/private GitHub link/paid use until post-mortem review and API/Actors operational."
       }
     },
     {
