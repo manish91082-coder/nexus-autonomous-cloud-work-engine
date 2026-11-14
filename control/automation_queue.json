@@ -2366,7 +2366,32 @@
             "coverage_policy": "Missing API/permission/edition/DC surface must be NOT_SCANNED, never NO_DEPENDENCY"
           },
           "marketplace_size_claim": "Zoho Marketplace FAQ reports 900+ CRM extensions and 2,000+ total extensions; vendor-reported catalogue count, not buyer count or sales.",
-          "recurring_economics_status": "UNPROVEN: field retirement may be occasional. Monthly subscription would need repeated schema-change/dependency-drift scans or governance cadence; no cadence or willingness-to-pay evidence yet."
+          "recurring_economics_status": "UNPROVEN: field retirement may be occasional. Monthly subscription would need repeated schema-change/dependency-drift scans or governance cadence; no cadence or willingness-to-pay evidence yet.",
+          "payout_api_followup": {
+            "india_extension_seller_status": "UNVERIFIED_BY_EXTENSION_SPECIFIC_PUBLIC_DOCS",
+            "supporting_general_partner_evidence": "Zoho Partner Store documentation lists Zoho India billing entity/INR and PAN for India-based partners, but does not explicitly map this to Marketplace CRM extension developer payouts.",
+            "extension_payout": "gross commission equals total customer transaction value; monthly statement if outstanding >USD100 (FAQ says >=USD100); wire about 15 working days after approval; PayPal by request",
+            "reseller_inr50000": "not applicable to Marketplace extensions",
+            "crm_v8_api_credits": {
+              "free": "5000 per rolling 24h",
+              "standard_starter": "50000 + 250 per user licence; max 100000",
+              "professional": "50000 + 500 per user licence; max 3000000",
+              "enterprise_zoho_one": "50000 + 1000 per user licence; max 5000000",
+              "ultimate_crm_plus": "50000 + 2000 per user licence; no fixed maximum",
+              "api_concurrency": {
+                "free": 5,
+                "standard": 10,
+                "professional": 15,
+                "enterprise_zoho_one": 20,
+                "ultimate_crm_plus": 25
+              },
+              "apis_discovery_credit_cost": 1,
+              "features_scope": "ZohoCRM.features.READ",
+              "apis_scope": "ZohoCRM.apis.READ",
+              "add_on_credits": "pay-as-you-go monthly; must not be purchased/consumed automatically"
+            },
+            "decision": "HOLD; no build"
+          }
         },
         "zoho_payout_clarification": {
           "developer_console_and_listing_fee": "Official FAQ says free",
@@ -2381,16 +2406,16 @@
         },
         "wix_payout_clarification": {
           "threshold_usd": 200,
-          "threshold_per_app": true,
-          "earnings_across_apps_combine": false,
-          "schedule": "Monthly; March revenue paid at beginning of May",
-          "revenue_share": "100% first 12 months; then 80% after 2.5% transaction fee and applicable sales tax",
-          "payout_account": "One-time account-level Tipalti payout setup required before paid app publication",
-          "currency": "USD",
-          "india_app_developer_eligibility": "Not explicitly confirmed by public App Market developer docs",
-          "india_wix_payments_not_equivalent": true
+          "threshold_scope": "per individual app; earnings across apps do not aggregate",
+          "schedule": "March app revenue arrives at the beginning of May",
+          "revenue_share": "first 12 months 100% after 2.5% transaction fee and applicable sales tax; then 80% after those deductions",
+          "payout_provider": "Tipalti; account setup required before paid-app publication",
+          "india_tipalti": "India payee routes include INR local bank and USD wire/PayPal; Tipalti footnote says payments to India are unavailable for India-based payer entities",
+          "wix_payer_entity": "not identified in public Wix App Market developer documentation; exact India payee path remains conditional/unverified",
+          "report": "research/PHASE_54_PAYOUT_AND_API_CREDIT_GATE_2026-11-14.md"
         },
-        "next_exact_work": "P54-001: Zoho first—confirm India extension developer wire eligibility, FX and tax via official public documentation/support route without creating account; then Wix Tipalti country eligibility. Candidate Zoho Field Retirement Impact Preflight remains HOLD; no build."
+        "next_exact_work": "No seller or customer-account action. Keep Zoho candidate HOLD; public extension docs do not prove India publisher payout. Wix uses Tipalti with India routes but payer entity caveat remains. Continue marketplace research only after documenting these unresolved payout gates; seek written platform confirmation through an owner-authorised support route before any account/KYC/terms. Maintain no build.",
+        "payout_api_gate_report": "research/PHASE_54_PAYOUT_AND_API_CREDIT_GATE_2026-11-14.md"
       }
     },
     {
