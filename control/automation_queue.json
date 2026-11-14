@@ -2646,7 +2646,13 @@
             "https://www.atlassian.com/blog/how-we-build/engineering-the-forge-billing-platform-for-reliability-and-scale"
           ]
         },
-        "next_exact_work": "Verify external owner-authorized read-only access to Developer Space invoices/per-app line items/payment/dunning state despite Forge/OAuth2 invoice-list restriction; model app × usageKey × context/environment request volume at 5 requests/minute and daily refresh; resolve configurable USD budget discrepancy; complete 10–15 substitutes audit and WTP/India payout/distribution gates. No account/token/build/spend."
+        "next_exact_work": "Narrow product hypothesis beyond native Developer Space Insights and existing fixed usage alerts. Verify whether a supported external read-only API exposes full all-app Insights data, custom USD budget policies, invoices, payment status and pre-dunning/dunning. Build no generic dashboard. Complete 10–15 substitute audit, buyer WTP evidence, India Marketplace seller/EFT and permitted distribution/payment route. No build/token/account/spend.",
+        "native_insights_substitute": {
+          "report": "research/PHASE_55_P55_001_FORGE_DEVSPACE_BILLING_ATTRIBUTION_AUDIT_2026-11-14.md",
+          "source": "https://developer.atlassian.com/platform/forge/developer-space/developer-space-insights/",
+          "confirmed": "Developer Space Insights provides aggregated visibility across all Forge apps (logs/errors/alerts/performance/cost). Top Apps by resource usage is top three over 30 days; other charts default to 24h; production/dev/staging included; read-only.",
+          "disposition": "Generic multi-app cost dashboard is not a product gap. Candidate must narrow to custom USD budgets, custom recipients/escalations, invoice/payment/dunning alerts or margin/usage reconciliation, only if supported data access and paid demand are proven."
+        }
       }
     },
     {
