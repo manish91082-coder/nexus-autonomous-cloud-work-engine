@@ -13,6 +13,7 @@ FILES = {
     "opportunities": ROOT / "control/opportunity_registry.json",
     "payouts": ROOT / "control/payout_registry.json",
     "ledger": ROOT / "control/revenue_ledger.json",
+    "products": ROOT / "control/product_registry.json",
 }
 errors: list[str] = []
 loaded = {}
@@ -23,7 +24,7 @@ for key, path in FILES.items():
         errors.append(f"{path.relative_to(ROOT)}: invalid/unreadable JSON: {exc}")
 
 if not errors:
-    state, queue, opps, payouts, ledger = (loaded[k] for k in ("state","queue","opportunities","payouts","ledger"))
+    state, queue, opps, payouts, ledger, products = (loaded[k] for k in ("state","queue","opportunities","payouts","ledger","products"))
     if state.get("mission") != "INR_10_CR_AUTONOMOUS_REVENUE":
         errors.append("mission_state: unexpected mission identifier")
     if state.get("verified_realized_net_receipts_inr") != ledger.get("verified_realized_net_receipts_inr"):
@@ -45,6 +46,19 @@ if not errors:
         errors.append("opportunity_registry: scoring weights changed without schema update")
     if not isinstance(payouts.get("providers"), list) or not isinstance(ledger.get("entries"), list):
         errors.append("payout_registry/providers and revenue_ledger/entries must be arrays")
+    if state.get("active_build_limit") != 1:
+        errors.append("mission_state: active_build_limit must be 1 under V4")
+    if queue.get("queue_policy", {}).get("max_active_builds") != 1:
+        errors.append("automation_queue: max_active_builds must be 1 under V4")
+    if products.get("max_active_builds") != 1:
+        errors.append("product_registry: max_active_builds must be 1 under V4")
+    active_tasks = [t for t in tasks if t.get("status") in ("IN_PROGRESS", "ACTIVE")]
+    if len(active_tasks) != 1:
+        errors.append(f"automation_queue: expected exactly one active task; found {len(active_tasks)}")
+    current_task_id = queue.get("queue_policy", {}).get("current_task")
+    if len(active_tasks) == 1 and active_tasks[0].get("id") != current_task_id:
+        errors.append("automation_queue: queue_policy.current_task does not match sole active task")
+
 
 now = datetime.now(timezone.utc).isoformat()
 report = {

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-11-13",
+  "updated_at": "2026-11-14",
   "policy": "Private drafts only. No product is published or treated as revenue until owner approval and settlement evidence.",
   "products": [
     {
@@ -191,6 +191,6 @@
       "next_action": "P52-001: compare current platform terms, competition, existing canonical assets, royalties, platform fees, rights and order volumes required for ₹10 Cr PCNE. Select one candidate only if evidence passes."
     }
   ],
-  "max_active_builds": 2,
+  "max_active_builds": 1,
   "verified_product_revenue_inr": 0
 }

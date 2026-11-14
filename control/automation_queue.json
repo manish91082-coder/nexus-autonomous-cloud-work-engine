@@ -10,10 +10,10 @@
     ],
     "retry_policy": "bounded_exponential_backoff",
     "owner_gates_pause_only_affected_task": true,
-    "sequence_mode": "ONE_PRODUCT_AT_A_TIME; P54 CLOSED NO-GO; P55-001 RESEARCH ONLY; NO BUILD UNTIL V4 BUYER DEMAND, DIFFERENTIATION, INDIA PAYOUT, RIGHTS, SECURITY AND NET-ECONOMICS GATES PASS",
+    "sequence_mode": "ONE_PRODUCT_AT_A_TIME; P55 BLOCKED_BY_OWNER_GATE (candidate HOLD, not GO); P56 Shopify general recovery NO-GO; P57 Microsoft generic assurance NO-GO; P58 Apify distinct-niche research active; no build until all V4 gates pass.",
     "revenue_priority_order_file": "REVENUE_OPPORTUNITY_RANKING_2026-11-13.md",
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md",
-    "current_task": "P55-001"
+    "current_task": "P58-001"
   },
   "tasks": [
     {
@@ -2599,12 +2599,12 @@
       "id": "P55-001",
       "title": "Qualify Atlassian Forge Developer Cost Guard buyer problem, API feasibility, competitor gap and India distribution/payout",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "BLOCKED",
       "depends_on": [
         "P54-001"
       ],
       "idempotency_key": "phase55-forge-devspace-cost-guard-v1",
-      "owner_gate": false,
+      "owner_gate": true,
       "last_updated": "2026-11-14",
       "acceptance": [
         "Audit 10–15 direct and adjacent substitutes, distinguishing Atlassian native dashboards/APIs from general observability and cloud budget products.",
@@ -2655,7 +2655,7 @@
             "https://www.atlassian.com/blog/how-we-build/engineering-the-forge-billing-platform-for-reliability-and-scale"
           ]
         },
-        "next_exact_work": "Stay on the ₹10 Cr PCNE mission, not Forge for its own sake. Finish only the remaining P55 decision-changing evidence: native export schema and LLM/Container completeness; PAT policy vs approved OAuth/tokenless path; Commerce local CLI and Partner Portal prerequisites; PVA/PVV + India seller/EFT; one qualified price-bearing WTP signal. If next action requires owner-only export/support submission, mark P55-001 BLOCKED_BY_OWNER_GATE and proceed to Shopify rank #2 new product-gap research (old Shopify Flow gateway remains NO-GO); no USD 19 fee without approval.",
+        "next_exact_work": "Resume only when owner provides/authorizes required export or written clarification and approves a price-bearing WTP validation route.",
         "native_insights_substitute": {
           "report": "research/PHASE_55_P55_001_FORGE_DEVSPACE_BILLING_ATTRIBUTION_AUDIT_2026-11-14.md",
           "source": "https://developer.atlassian.com/platform/forge/developer-space/developer-space-insights/",
@@ -2761,7 +2761,9 @@
           "head_sha": "9186893a98e878f1e3eb07b9c25e96697445c820",
           "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43569827226"
         }
-      }
+      },
+      "blocker_code": "BLOCKED_BY_OWNER_GATE",
+      "blocker": "Owner-controlled native Usage export or written Atlassian clarification and explicit approval of any qualified WTP validation route remain outstanding. Support packet NOT SENT. No token/account/support request/outreach/build/spend. Candidate stays HOLD_FOR_EVIDENCE, not GO or final NO-GO."
     },
     {
       "id": "P55-002",
@@ -2814,6 +2816,157 @@
       "owner_gate": false,
       "last_updated": "2026-11-14",
       "blocker": "No product selected or published; no independent paid transaction."
+    },
+    {
+      "id": "P56-001",
+      "title": "Complete Shopify missing-order recovery product qualification",
+      "priority": "P0",
+      "status": "COMPLETED",
+      "depends_on": [],
+      "idempotency_key": "phase56-shopify-payment-recovery-final-v2",
+      "owner_gate": false,
+      "last_updated": "2026-11-14",
+      "acceptance": [
+        "Verify independent merchant problem evidence and Shopify official guidance.",
+        "Distinguish unmatched-payment detection, settlement reconciliation and automatic recovery substitutes.",
+        "Verify AbandonedCheckout schema and Payments Apps API restriction.",
+        "Verify Razorpay Magic Checkout scope and whether retry/idempotency is documented.",
+        "Record decision; no build or owner action."
+      ],
+      "evidence": {
+        "report": "research/PHASE_56_SHOPIFY_PAYMENT_RECOVERY_FINAL_NO_GO_2026-11-14.md",
+        "decision": "NO_GO_GENERAL_AUTOMATIC_RECOVERY_APP",
+        "predecessor": "P55-001 remains owner-gated HOLD. V4 permits moving to Shopify rank #2 without marking P55 as passed.",
+        "problem_signals": "2021 Shopify Community; 2024 Shopify Community; 2026 ShopifyDev Reddit; Shopify official guidance.",
+        "substitute_scope": "Fincile unmatched payments (Stripe/PayPal live; other gateway CSV); Rokda Razorpay settlement CSV; A2X/Synder adjacent accounting.",
+        "magic_checkout": "CUSTOM_HEADLESS_ONLY; integration-team store/MID link required; replay/idempotency guarantee not documented.",
+        "price_bearing_wtp": "NOT_ESTABLISHED",
+        "build_authorized": false,
+        "spend_inr": 0
+      }
+    },
+    {
+      "id": "P57-001",
+      "title": "Qualify Microsoft Power Platform post-deployment assurance product gap",
+      "priority": "P0",
+      "status": "COMPLETED",
+      "depends_on": [
+        "P56-001"
+      ],
+      "idempotency_key": "phase57-power-platform-post-deploy-assurance-v2",
+      "owner_gate": false,
+      "last_updated": "2026-11-14",
+      "acceptance": [
+        "Verify real problem class and independent signals.",
+        "Audit Microsoft native deployment, connection mapping, monitoring and testing.",
+        "Review open-source and commercial substitutes; distinguish direct from adjacent.",
+        "Establish differentiated self-serve outcome and qualified price-bearing WTP.",
+        "Separate product decision from seller eligibility."
+      ],
+      "evidence": {
+        "report": "research/PHASE_57_MICROSOFT_POST_DEPLOYMENT_ASSURANCE_NO_GO_2026-11-14.md",
+        "decision": "NO_GO_GENERIC_POST_DEPLOYMENT_MONITOR_OR_TEST_RUNNER",
+        "native_substitutes": [
+          "Power Platform pipelines",
+          "deployment settings JSON",
+          "Automation Center",
+          "Dataverse FlowRun",
+          "Power Platform Playwright"
+        ],
+        "commercial_adjacent": "Leapwork",
+        "willingness_to_pay": "NOT_ESTABLISHED",
+        "seller_entity": "NOT_VERIFIED_MAICPP_AND_ELIGIBLE_PARTNER_LOCATION_ID",
+        "india_payout_account_level": "NOT_VERIFIED",
+        "build_authorized": false,
+        "spend_inr": 0
+      }
+    },
+    {
+      "id": "P58-001",
+      "title": "Find one evidence-backed Apify Store niche outside previously rejected categories",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P57-001"
+      ],
+      "idempotency_key": "phase58-apify-distinct-niche-discovery-v2",
+      "owner_gate": false,
+      "last_updated": "2026-11-14",
+      "acceptance": [
+        "Do not reopen Phase49 eight rejected raw-data categories or Phase58 five generic families.",
+        "Require two independent current signals for the same narrow recurring buyer outcome.",
+        "Review 10–15 direct/adjacent substitutes for each serious hypothesis.",
+        "Require qualified budget-owner price/buying-condition; installs/runs/list prices are not WTP.",
+        "Verify source rights, API/website terms, privacy and safe access.",
+        "Model 80% eligible PPE share less compute/proxy/storage/support/refund/failure costs.",
+        "No paid Actor run, account/KYC, Creator Plan, proxy, paid API, build or publication under ₹0 spend default.",
+        "Select only after all V4 gates pass; otherwise NO-GO and proceed to next V4 lane."
+      ],
+      "evidence": {
+        "report": "research/PHASE_58_APIFY_NEW_NICHE_SCREEN_2026-11-14.md",
+        "candidate_selected": false,
+        "screened_families": [
+          "ecommerce price/catalogue",
+          "app reviews",
+          "website/service status",
+          "changelog/API changes",
+          "product recalls/catalog matching"
+        ],
+        "build_authorized": false,
+        "spend_inr": 0
+      }
+    },
+    {
+      "id": "P58-002",
+      "title": "Build one private Apify Actor only after P58-001 passes every V4 gate",
+      "priority": "P1",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P58-001"
+      ],
+      "idempotency_key": "phase58-apify-private-mvp-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-14",
+      "blocker": "No product selected; differentiation, WTP, source rights and positive net economics unproven."
+    },
+    {
+      "id": "P58-003",
+      "title": "Run deterministic Actor QA, rights, security, privacy and net-economics review",
+      "priority": "P1",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P58-002"
+      ],
+      "idempotency_key": "phase58-apify-qa-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-14",
+      "blocker": "Wait for a P58-approved private Actor."
+    },
+    {
+      "id": "P58-004",
+      "title": "Owner-approved Apify publisher onboarding and public Actor release",
+      "priority": "P1",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P58-003"
+      ],
+      "idempotency_key": "phase58-apify-release-v1",
+      "owner_gate": true,
+      "last_updated": "2026-11-14",
+      "blocker": "Account, KYC/billing, terms, publication and paid use remain owner-gated."
+    },
+    {
+      "id": "P58-005",
+      "title": "Verify independent paid Actor use and platform/provider-credited PCNE",
+      "priority": "P1",
+      "status": "BLOCKED",
+      "depends_on": [
+        "P58-004"
+      ],
+      "idempotency_key": "phase58-apify-earnings-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-14",
+      "blocker": "No product selected/published; no independent paid transaction."
     }
   ],
   "dead_letter": [],
