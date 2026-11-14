@@ -1630,7 +1630,8 @@
         "Final invoice-list endpoint explicitly excludes Forge/OAuth2 apps. External owner-operated local-tool authorization and invoice access remain unverified.",
         "External local/self-hosted tool's supported owner-authorized access to Developer Space invoices, per-app line items, payment method validity and dunning/pre-dunning status remains unverified; invoice-list REST endpoint excludes Forge/OAuth2 apps.",
         "Enforcement state is Developer Space-wide after unresolved 14-day pre-dunning; no supported external billing-state API or webhook has been verified.",
-        "Request volume and completeness for app × usageKey × context/environment, including pagination and all current billable meters, must be modelled."
+        "Request volume and completeness for app × usageKey × context/environment, including pagination and all current billable meters, must be modelled.",
+        "Native Developer Space Insights already provides aggregated all-app resource/cost visibility; any differentiation must be beyond a generic portfolio dashboard."
       ],
       "ip_and_policy_status": "Local/self-hosted design only. Owner API token stays on owner's device; never request or store credentials in ChatGPT/GitHub. Minimum-privilege account; no user issue content, customer PII or external LLM use. Must label delayed estimates and never promise a hard billing stop.",
       "note": "P55-001 research-only candidate. Preliminary score 65/100 does not clear hard gates. No build, account, token setup, KYC, terms, Marketplace listing or spend.",
@@ -1649,14 +1650,58 @@
         "https://developer.atlassian.com/platform/forge/developer-space/billing-for-developer-spaces/",
         "https://www.atlassian.com/blog/how-we-build/engineering-the-forge-billing-platform-for-reliability-and-scale"
       ],
-      "next_exact_work": "Verify owner-authorized external read-only access to Developer Space billing account invoices, line items, payment method state, dunning/pre-dunning and enforcement exposure; calculate app × usageKey × context/environment request volume and daily freshness; resolve budget alert discrepancy; complete competitor/WTP and India payout/distribution gates. Keep HOLD; no API token, build or spend.",
+      "next_exact_work": "Do not propose a generic Developer Space multi-app cost dashboard; native Insights already covers this. Validate only a narrower residual gap: arbitrary USD budgets/custom alert recipients, invoice/payment/pre-dunning status alerts, or cost-to-license margin decision workflow. Prove supported API access and two current buyer WTP signals; complete 10–15 direct/adjacent substitute audit; verify India payout and allowed distribution.",
       "billing_attribution": {
         "free_allowance": "RESOLVED: Official pricing FAQ says each app receives its own monthly free allowance, not shared with other apps. Per-app overages are consolidated into a single monthly invoice for all apps in the Developer Space.",
         "usage_grain": "Per app, billable meter/usageKey, daily period, context/site and environment. Resource Usage API requires appId, single usageKey per request, page/context filters; 5 requests/minute.",
         "billing_grain": "All app overages in the same Developer Space are consolidated into one monthly invoice and one linked transaction account. Invoice is generated on the first day for prior-month usage; autopay attempted that day.",
         "enforcement_risk": "If invoice/payment fails, 14-day pre-dunning applies; if unresolved, enforcement affects all apps in the Developer Space. If a valid payment method exists but charge fails, separate 21-day dunning applies.",
         "invoice_access": "Billing Console UI exposes subscriptions, invoices and payment status. Public invoice-list API explicitly excludes Forge and OAuth2 apps; external owner-tool authorized access remains unverified.",
-        "cost_freshness": "Usage API sample is daily resolution; Developer Console Usage/Costs dashboard refreshes daily at 12:00 UTC. No real-time hard stop."
+        "cost_freshness": "Usage API sample is daily resolution; Developer Console Usage/Costs dashboard refreshes daily at 12:00 UTC. No real-time hard stop.",
+        "dashboard_substitute": "Developer Space Insights aggregates all Forge apps and exposes Top 3 apps by resource usage over 30 days; other charts default 24h; read-only; includes production/dev/staging. Generic dashboard duplication is NO-GO."
+      },
+      "native_substitute_audit": {
+        "developer_space_insights": {
+          "status": "DIRECT_NATIVE_SUBSTITUTE",
+          "coverage": "Aggregated visibility across all apps in Developer Space for log volume, errors, open alerts, performance, invocation metrics and cost/resource data.",
+          "top_app_cost_chart": "Top 3 apps by resource usage, last 30 days",
+          "other_chart_default_window": "Last 24 hours",
+          "environments": [
+            "production",
+            "development",
+            "staging"
+          ],
+          "roles": [
+            "Admin",
+            "Developer",
+            "Viewer"
+          ],
+          "write_actions": false,
+          "source": "https://developer.atlassian.com/platform/forge/developer-space/developer-space-insights/"
+        },
+        "usage_alerts": {
+          "status": "DIRECT_NATIVE_SUBSTITUTE",
+          "thresholds": [
+            "50%",
+            "75%",
+            "90%",
+            "100%"
+          ],
+          "meaning": "Fixed resource-allowance thresholds; no configured arbitrary USD budget established in current docs.",
+          "recipients": "App contributors and Developer Space billing admins",
+          "source": "https://developer.atlassian.com/platform/forge/usage-alerts/"
+        },
+        "resource_usage_export": {
+          "status": "NATIVE_DATA_EXPORT",
+          "source": "https://developer.atlassian.com/platform/forge/developer-space/export-app-resource-usage/",
+          "limitations": [
+            "owner of Forge app account must authenticate",
+            "experimental API token/header",
+            "5 requests/minute",
+            "one usageKey per request",
+            "daily resolution"
+          ]
+        }
       }
     },
     {
