@@ -1625,7 +1625,11 @@
         "Full 10–15 direct/adjacent competitor audit remains outstanding; native usage dashboard/insights/cost estimator/alerts and observability/DIY tools are substitutes.",
         "Atlassian India Marketplace seller/EFT eligibility not confirmed.",
         "Product may need to be external local/CLI software rather than a Forge Marketplace app; Paid-via-Vendor rules and direct seller payment route need review.",
-        "No paid buyer procurement, WTP or retention evidence yet."
+        "No paid buyer procurement, WTP or retention evidence yet.",
+        "All Forge apps in a Developer Space contribute to one Developer Space bill; usage API is per app and one usageKey per request. Full roll-up and invoice line-item reconciliation is not yet proven.",
+        "Developer Space billing documentation describes monthly invoices on day one and autopay; pricing/engineering material describes per-app free allowance. Exact total-space vs per-app threshold accounting must be reconciled to avoid double-counting.",
+        "Usage API response is daily, with 5 requests/minute and paginated requests; multi-app/meter/context request volume and completeness need modelling.",
+        "Final invoice-list endpoint explicitly excludes Forge/OAuth2 apps. External owner-operated local-tool authorization and invoice access remain unverified."
       ],
       "ip_and_policy_status": "Local/self-hosted design only. Owner API token stays on owner's device; never request or store credentials in ChatGPT/GitHub. Minimum-privilege account; no user issue content, customer PII or external LLM use. Must label delayed estimates and never promise a hard billing stop.",
       "note": "P55-001 research-only candidate. Preliminary score 65/100 does not clear hard gates. No build, account, token setup, KYC, terms, Marketplace listing or spend.",
@@ -1640,8 +1644,21 @@
         "https://developer.atlassian.com/platform/commerce/rest/api-group-invoices/",
         "https://community.developer.atlassian.com/t/forge-platform-usage-costs-alerts-limits/102240",
         "https://community.developer.atlassian.com/t/forge-app-pricing-vs-actual-platform-costs/100000",
-        "https://community.developer.atlassian.com/t/forge-usage-costs-for-development-staging-environments/99000"
-      ]
+        "https://community.developer.atlassian.com/t/forge-usage-costs-for-development-staging-environments/99000",
+        "https://developer.atlassian.com/platform/forge/developer-space/billing-for-developer-spaces/",
+        "https://developer.atlassian.com/platform/forge/developer-space/export-app-resource-usage/",
+        "https://developer.atlassian.com/platform/forge/monitor-usage-metrics/",
+        "https://developer.atlassian.com/platform/commerce/rest/api-group-invoices/",
+        "https://www.atlassian.com/blog/how-we-build/engineering-the-forge-billing-platform-for-reliability-and-scale"
+      ],
+      "next_exact_work": "Resolve Developer Space billing aggregation vs per-app usage API grain. Verify that owner-operated external local tool can query Commerce invoices/line items despite invoice-list restriction for Forge/OAuth2 apps. Calculate request volume/latency across app × usageKey × contexts. Reconcile per-app free thresholds with Developer Space invoice roll-up. No API token, account, build or spend.",
+      "billing_attribution": {
+        "usage_grain": "Per app, resource/meter, date and context/environment. Resource Usage API takes appId and one usageKey per request; contextAris and groupBy supported; 5 requests/minute; daily response resolution.",
+        "billing_grain": "Developer Space level. All apps in space contribute to same billing/transaction account; monthly invoice generated on first day for prior-month usage; autopay attempted on first of month.",
+        "reconciliation": "Forge engineering article says free allowance is evaluated per app and invoice line items reflect per-app overages, but the Developer Space billing page describes space total usage against the free threshold. Precise threshold aggregation and invoice line-item access require authoritative reconciliation.",
+        "commerce_gate": "Resource Usage guide points to Commerce public APIs for cost; Commerce invoice-list API says Forge and OAuth2 apps cannot access. External owner-tool auth model not proven.",
+        "freshness": "Daily dashboard refresh 12:00 UTC; no real-time/hard stop."
+      }
     },
     {
       "id": "ATLASSIAN-JIRA-PERMISSION-ACCESS-REVIEW",
