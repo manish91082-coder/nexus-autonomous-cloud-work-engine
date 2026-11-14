@@ -110,3 +110,17 @@ Three verticals were screened; none is yet a product GO:
 - **Small-fleet logistics — HOLD.** Structural fragmentation exists, but low buyer WTP, high onboarding/support and established TMS competition are material risks.
 
 **Next exact research question:** can a self-serve, offline-capable batch-to-claim / credit-and-return reconciliation layer create measurable value for multi-branch agri-input distributors without replacing or interfering with mandated PoS, accounting or ERP systems? Compare 10–15 substitutes and seek independent buyer evidence. Keep Tech Cloud ERP source/ownership/module inventory audit open; its actual code may change build-vs-greenfield ranking. P59-002 remains BLOCKED; no build or spend.
+
+
+## 11. Evidence batch 05 — agri-input hypothesis competitor gate (14-Nov-2026)
+
+See [Phase 59.5 report](research/PHASE_59_5_AGRI_INPUT_RECONCILIATION_COMPETITOR_GATE_2026-11-14.md).
+
+**Decision: NO-GO for the current generic agri-input batch/expiry/return/claim/credit reconciliation product hypothesis.** This is candidate-specific; it does not close agri software or B2B vertical SaaS as source families.
+
+- ShelfLifePro directly markets supplier- and batch-specific return windows, rupee value at risk, GST debit notes, pending-vs-credited claim status, batch trace, offline POS, farmer credit, multi-location and stock transfer. Public plans ₹1,999–₹10,999/month.
+- TradeX/Quantbit, Tathven, Saathi360, Kroply, OperLete, Pinakexa, OP Software, AgriPeople, AgroKhata, xMatix and AgroLynk cover overlapping parts of agri retailer/distributor workflows. Fifteen alternatives including Tally/Marg/BUSY configurations were screened.
+- Government PIB (30-Aug-2026) reports iFMS connects >14 crore Aadhaar-linked buyers, >2.5 lakh retailers and ~7 crore MT annual fertilizer sales transactions; official system covers movement, stock, retail sale, DBT and dashboards. Do not assume access to iFMS APIs or data.
+- No independent evidence of a distinct uncovered distributor gap, candidate-specific WTP, buyer conversion, retention or acquisition economics was found.
+
+**Next:** return to portfolio-wide vertical SaaS source screening; select a different recurring buyer problem with two independent signals, 10–15 substitutes, price-bearing WTP and a self-serve delivery path. Keep Tech Cloud ERP source/ownership/module audit open. No build.
