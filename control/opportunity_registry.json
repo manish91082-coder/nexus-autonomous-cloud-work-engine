@@ -1626,8 +1626,6 @@
         "Atlassian India Marketplace seller/EFT eligibility not confirmed.",
         "Product may need to be external local/CLI software rather than a Forge Marketplace app; Paid-via-Vendor rules and direct seller payment route need review.",
         "No paid buyer procurement, WTP or retention evidence yet.",
-        "All Forge apps in a Developer Space contribute to one Developer Space bill; usage API is per app and one usageKey per request. Full roll-up and invoice line-item reconciliation is not yet proven.",
-        "Developer Space billing documentation describes monthly invoices on day one and autopay; pricing/engineering material describes per-app free allowance. Exact total-space vs per-app threshold accounting must be reconciled to avoid double-counting.",
         "Usage API response is daily, with 5 requests/minute and paginated requests; multi-app/meter/context request volume and completeness need modelling.",
         "Final invoice-list endpoint explicitly excludes Forge/OAuth2 apps. External owner-operated local-tool authorization and invoice access remain unverified.",
         "External local/self-hosted tool's supported owner-authorized access to Developer Space invoices, per-app line items, payment method validity and dunning/pre-dunning status remains unverified; invoice-list REST endpoint excludes Forge/OAuth2 apps.",
@@ -1653,10 +1651,10 @@
       ],
       "next_exact_work": "Verify owner-authorized external read-only access to Developer Space billing account invoices, line items, payment method state, dunning/pre-dunning and enforcement exposure; calculate app × usageKey × context/environment request volume and daily freshness; resolve budget alert discrepancy; complete competitor/WTP and India payout/distribution gates. Keep HOLD; no API token, build or spend.",
       "billing_attribution": {
-        "free_allowance": "Official Forge pricing FAQ confirms each app gets its own monthly free allowance; allowances are not shared across apps.",
+        "free_allowance": "RESOLVED: Official pricing FAQ says each app receives its own monthly free allowance, not shared with other apps. Per-app overages are consolidated into a single monthly invoice for all apps in the Developer Space.",
         "usage_grain": "Per app, billable meter/usageKey, daily period, context/site and environment. Resource Usage API requires appId, single usageKey per request, page/context filters; 5 requests/minute.",
         "billing_grain": "All app overages in the same Developer Space are consolidated into one monthly invoice and one linked transaction account. Invoice is generated on the first day for prior-month usage; autopay attempted that day.",
-        "enforcement_risk": "Developer Space billing docs: if billing/payment failure remains unresolved after a 14-day pre-dunning window, enforcement applies to all apps in that Developer Space; if a valid payment method exists but payment fails, a 21-day dunning period applies.",
+        "enforcement_risk": "If invoice/payment fails, 14-day pre-dunning applies; if unresolved, enforcement affects all apps in the Developer Space. If a valid payment method exists but charge fails, separate 21-day dunning applies.",
         "invoice_access": "Billing Console UI exposes subscriptions, invoices and payment status. Public invoice-list API explicitly excludes Forge and OAuth2 apps; external owner-tool authorized access remains unverified.",
         "cost_freshness": "Usage API sample is daily resolution; Developer Console Usage/Costs dashboard refreshes daily at 12:00 UTC. No real-time hard stop."
       }
