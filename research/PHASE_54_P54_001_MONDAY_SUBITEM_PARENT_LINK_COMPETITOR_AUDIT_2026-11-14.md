@@ -61,7 +61,7 @@ Install/review counts below are discovery observations from a third-party market
 
 | # | Competitor / substitute | Observed evidence | Coverage and competitive implication |
 |---:|---|---|---|
-| 1 | **Master Automations** — listing 10001204 | 40 installs; 8/month; one review explicitly says it links subitems to their parent through Connect Boards automation | **Exact incumbent.** Inherits parent values, connects linked items across boards, mirror triggers, rollups and subitem hierarchy. Standalone parent-link clone is redundant. |
+| 1 | **Sync Updates to Connected Boards (Fortimus; 30-automation bundle)** — listing 10001204 | 45 installs; 6/month; updated 29-Oct-2026; one review dated 27-Oct-2026 explicitly says it links subitems to their parent through Connect Boards automation | **Exact incumbent.** The bundle also provides parent-value inheritance, mirror triggers, rollups, linked-item creation and multi-level subitem actions. Standalone parent-link clone is redundant. |
 | 2 | **Connect + Sync Automations** — listing 10000950 | 149 installs; 6 reviews; 12/month | Auto-connects items/subitems on creation or column change; bidirectional sync and matching rules. Direct adjacent competitor. |
 | 3 | **VLOOKUP Auto-Link** — listing 99 | 15,831 installs; 173 reviews; 4.8/5; updated 11-Nov-2026 in mirror | Large established cross-board auto-link/sync product for items and subitems. Strong distribution and trust barrier. |
 | 4 | **AutoBoost Automations** — listing 10000112 | 13,321 installs; 66 reviews; 4.5/5; best-seller badge in mirror | Mirror triggers, formula-to-subitem actions, parent/subitem sync and cross-board operations. Broad incumbent. |
@@ -111,7 +111,7 @@ Install/review counts below are discovery observations from a third-party market
 - General item/subitem cross-board auto-link: Connect + Sync and VLOOKUP cover it.
 - Mirror/formula-to-native-column automation: AutoBoost, Formula Pro, Subitems Pro, Smart Mirror Column and Column Clone & Sync cover it.
 - Full item/subitem multi-board synchronisation: Same Item Multiple Boards and Mirror Item Multiple Boards cover it.
-- Parent/subitem value inheritance, rollup and multi-level automation: Subitem Automations, AutoBoost, Master Automations and other dedicated apps cover it.
+- Parent/subitem value inheritance, rollup and multi-level automation: Subitem Automations, AutoBoost, Sync Updates to Connected Boards and other dedicated apps cover it.
 
 ### Remaining possible gap — not validated
 
@@ -125,7 +125,7 @@ Do not build it. Keep as a future discovery question only.
 
 ### Final decision
 
-**REJECT the standalone “auto-link subitem to parent” app.** This is not a rejection of monday.com as a marketplace. It is a product-specific NO-GO because the exact requested feature is already served by Master Automations and the broader category has at least 17 adjacent or direct competitors.
+**REJECT the standalone “auto-link subitem to parent” app.** This is not a rejection of monday.com as a marketplace. It is a product-specific NO-GO because the exact requested feature is already served by Sync Updates to Connected Boards (Fortimus, listing 10001204; 30-automation bundle) and the broader category has at least 17 adjacent or direct competitors.
 
 No app has been created, installed, tested in a customer workspace, published or submitted. No account, KYC, agreement or paid plan was activated.
 
