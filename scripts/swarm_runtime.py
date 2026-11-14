@@ -60,8 +60,15 @@ def validate_task(task):
         raise ContractError("invalid task status")
     if not isinstance(task["payload"], dict) or not isinstance(task["depends_on"], list):
         raise ContractError("payload must be object and depends_on must be array")
-    if task.get("max_attempts", 3) < 1 or task.get("max_attempts", 3) > 10:
-        raise ContractError("max_attempts must be 1..10")
+    attempts = task.get("max_attempts", 3)
+    if not isinstance(attempts, int) or isinstance(attempts, bool) or attempts < 1 or attempts > 10:
+        raise ContractError("max_attempts must be an integer in 1..10")
+    if not isinstance(task["id"], str) or not task["id"] or not isinstance(task["task_type"], str) or not task["task_type"] or not isinstance(task["version"], str) or not task["version"]:
+        raise ContractError("task id, type and version must be non-empty strings")
+    if not isinstance(task["depends_on"], list) or any(not isinstance(dep, str) or not dep for dep in task["depends_on"]):
+        raise ContractError("dependencies must be non-empty string identifiers")
+    if len(set(task["depends_on"])) != len(task["depends_on"]):
+        raise ContractError("duplicate dependency identifier")
     return True
 
 
