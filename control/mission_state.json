@@ -10,7 +10,7 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
-  "last_verified_head": "238cea8aa42d572cb4a561f7a195ad994ec44ac9",
+  "last_verified_head": "623cf0786bff2264557bebd7ba67c67f0b90e278",
   "current_focus": "Phase 55 P55-001 remains HOLD_FOR_EVIDENCE (preliminary 65/100 unchanged). Two independent public demand signals met (Community discussion + ECO-1831, live 12 votes/12 watchers); WTP NOT ESTABLISHED. New hard constraint: Marketplace Security Enforcement Policy prohibits new Marketplace apps from collecting/transmitting/storing PAT, while Resource Usage API docs only show owner Basic PAT + X-ExperimentalAPI. Manual native Export usage is mentioned by staff, but file schema/completeness and LLM/Container coverage are undocumented. API sample shows FUNCTION_COMPUTE and daily tokensConsumed/tokenUnit only; no LLM/container coverage proved. Commerce invoice schema contains payment/dunning and per-app line fields, but Forge/OAuth2 clients are blocked and Partner Portal requires a previously published PvA app plus private-domain email. Local tokenless file-import utility is only a hypothesis, not a product approval. Product-specific Software/Cloud classification and PVA/PVV model, India seller eligibility, WTP all open. No account/token/support/outreach/build/spend. PCNE ₹0; bank receipts ₹0; authorized spend ₹0.",
   "owner_gates": [
     "account_creation_if_required",
@@ -26,12 +26,12 @@
   "updated_at": "2026-11-14",
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
-    "run_number": 258,
-    "run_id": 43569548974,
+    "run_number": 259,
+    "run_id": 43569646085,
     "conclusion": "success",
-    "head_sha": "238cea8aa42d572cb4a561f7a195ad994ec44ac9",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43569548974",
-    "completed_at": "2026-11-14T07:07:11Z",
+    "head_sha": "623cf0786bff2264557bebd7ba67c67f0b90e278",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43569646085",
+    "completed_at": "2026-11-14T07:08:24Z",
     "checks": [
       "mission/control-plane validation",
       "AI-worker safety tests",
@@ -61,7 +61,7 @@
     "CRAZYGAMES_HTML5",
     "CREATOR_IP_DISTRIBUTION"
   ],
-  "last_exact_head_ci_status": "Mission Worker #258 succeeded on exact control-state checkpoint 238cea8aa42d572cb4a561f7a195ad994ec44ac9; all 14 steps passed. Queue heartbeat POLL_OK selected P55-001; no errors. AI executor WAITING_FOR_OWNER_CONFIGURATION; no inference request. Artifact ID 14104425597; SHA-256 457e5e71c5955d3b2052567c4b8d6335d91d31f40ed9b4aaaf57ca8827a88d63. This validates control-plane/test steps only, not product usage export, API access, buyer WTP or revenue.",
+  "last_exact_head_ci_status": "Mission Worker #259 succeeded on exact HEAD 623cf0786bff2264557bebd7ba67c67f0b90e278; all 14 steps passed. Queue heartbeat POLL_OK selected P55-001; no errors. AI executor WAITING_FOR_OWNER_CONFIGURATION; no inference request. Artifact ID 14103442874, SHA-256 eb7e97508df60c192b4a77c41cb548801e38d83d3ea804c9158266184a3f5122. This is control-plane/test evidence only, not proof of product API access, WTP or revenue.",
   "phase46_control_commits": [
     "72230902a478552d007d94d330e216238c9b2982",
     "ae552163e2b1e65590fc98454d8f7817bc73fa92",
