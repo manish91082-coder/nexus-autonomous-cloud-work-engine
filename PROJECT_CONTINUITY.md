@@ -1,3 +1,25 @@
+# PHASE 59.6 UPDATE — 14 NOVEMBER 2026 (MANUFACTURING JOB-WORK SCREEN)
+
+**Authority:** V5 Master Constitution  
+**Current task:** P59-001 — IN_PROGRESS  
+**Report:** [Phase 59.6 manufacturing job-work reconciliation screen](research/PHASE_59_6_MANUFACTURING_JOBWORK_RECONCILIATION_SCREEN_2026-11-14.md)  
+**Decision:** NO-GO for generic job-work challan/material reconciliation/ITC-04 product hypothesis. Parent manufacturing software and B2B software source families remain OPEN.  
+**Concrete product:** NONE; **build authorization:** NO.  
+**Financial state:** PCNE ₹0; bank receipts ₹0; authorized spend ₹0.
+
+## Findings
+- Fifteen alternatives screened: Pentoggle, Pothera, managemate, ERPDrive, KreupAI/OptiForge, MyRecords, ERPNext, Odoo, TallyPrime, BUSY, Zoho ERP, SAP Business One, Dynamics 365, NetSuite and Katana.
+- Pentoggle, Pothera and managemate directly cover material challans, partial returns, multi-stage subcontracting, scrap/reconciliation, time limits and ITC-04 in differing combinations.
+- CGST Act s143 / CBIC Rule45 establish compliance workflow, but broad MSME survey data and vendor-authored pain claims do not prove job-work-specific prevalence or WTP.
+- Generic implementation carries configuration, opening-WIP migration, job-worker onboarding and compliance support; self-serve economics unproven.
+- Agri-input generic reconciliation remains NO-GO too; ShelfLifePro and adjacent suites cover central workflow.
+- Tech Cloud ERP source, ownership and module inventory remain unverified.
+
+## Next exact work
+Stop serial generic vertical ERP cloning. Return to V5 portfolio-wide source map and compare remaining recurring source families for a higher-value buyer problem with two independent signals, 10–15 substitutes, price-bearing WTP and self-serve delivery. Keep P59-002 BLOCKED. No build, listing, KYC, terms acceptance or spend.
+
+---
+
 # PHASE 59.5 UPDATE — 14 NOVEMBER 2026 (AGRI-INPUT HYPOTHESIS COMPETITOR GATE)
 
 **Authority:** V5 Master Constitution  
