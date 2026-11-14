@@ -2618,7 +2618,12 @@
         "Resolve the Marketplace PAT prohibition vs. PAT-required experimental Usage API for a new Marketplace third-party integration; verify approved OAuth/app-auth alternative or tokenless native export file path. No PAT collection/transmission/storage in the proposed new Marketplace product.",
         "Verify whether Usage API/native export exposes complete LLM and Container daily usage; Atlassian staff states native threshold alerts are not supported for these zero-threshold meters.",
         "Verify Partner Portal bearer-token prerequisite (published Paid-via-Atlassian app + private-domain email) and whether an authorized non-Forge/non-OAuth local CLI can access the owner's Forge invoice/payment/dunning line items.",
-        "Obtain formal third-party integration listing type and PVA/PVV payment-model classification for a local CLI; do not assume Software App or revenue-share eligibility."
+        "Obtain formal third-party integration listing type and PVA/PVV payment-model classification for a local CLI; do not assume Software App or revenue-share eligibility.",
+        "Resolve whether the native Usage and Charges Export usage file is available to local third-party tools, its actual file type/schema/date coverage and completeness across app/site/environment/resource keys.",
+        "Prove LLM input/output and Container compute/memory data coverage in native export or supported Usage API; no missing meter may be treated as zero.",
+        "Resolve PAT policy conflict: no PAT collection/transmission/storage in new Marketplace app; establish documented OAuth/app-auth route or tokenless owner-export file route and written compliance acceptance.",
+        "Verify Partner Portal bootstrap prerequisite (published PvA app and private-domain email), transaction account and billing role before treating Commerce invoice token route as available.",
+        "Define manual-import product as batch estimate only; no real-time, hard-stop, automatic shutdown or guaranteed final-invoice claims."
       ],
       "evidence": {
         "plan": "research/PHASE_55_P55_001_ATLASSIAN_FORGE_DEVSPACE_COST_GUARD_RESEARCH_PLAN_2026-11-14.md",
@@ -2650,7 +2655,7 @@
             "https://www.atlassian.com/blog/how-we-build/engineering-the-forge-billing-platform-for-reliability-and-scale"
           ]
         },
-        "next_exact_work": "Keep P55-002 blocked. Obtain written Atlassian clarification on new Marketplace PAT restriction vs Usage API, OAuth/app-auth alternative or tokenless export format and LLM/Container coverage; confirm local non-Forge/non-OAuth Commerce partner-token access, Partner Portal prerequisites and third-party integration Software/Cloud plus PVA/PVV classification; seek one real price-bearing WTP signal via owner-approved opt-in. No token, account, support submission, outreach, build or spend.",
+        "next_exact_work": "Keep P55-002 BLOCKED. Obtain written confirmation of native Export usage file format/schema/date coverage and LLM/Container coverage; Marketplace permission to process owner-exported files; Usage API OAuth alternative vs PAT prohibition; Commerce Partner token access for local non-Forge/non-OAuth CLI and Partner Portal prerequisites; Software/Cloud category and PVA/PVV model; India paid-app verification/EFT. Separately obtain one genuine price-bearing buyer WTP signal via owner-approved opt-in. Do not collect PATs or send the Atlassian packet; it remains NOT SENT.",
         "native_insights_substitute": {
           "report": "research/PHASE_55_P55_001_FORGE_DEVSPACE_BILLING_ATTRIBUTION_AUDIT_2026-11-14.md",
           "source": "https://developer.atlassian.com/platform/forge/developer-space/developer-space-insights/",
@@ -2723,6 +2728,18 @@
           "status": "GATHERING_INTEREST",
           "resolution": "UNRESOLVED",
           "meaning": "Problem attention signal, not WTP."
+        },
+        "auth_data_import_design": {
+          "report": "research/PHASE_55_P55_001_AUTH_AND_DATA_IMPORT_DESIGN_GATE_2026-11-14.md",
+          "marketplace_pat": "NO_GO_FOR_NEW_MARKETPLACE_APP",
+          "usage_api_oauth": "NOT_DOCUMENTED",
+          "export_usage_file": "STAFF_CONFIRMED_BUTTON; FORMAT_SCHEMA_COVERAGE_UNDOCUMENTED",
+          "llm_container_coverage": "NOT_ESTABLISHED",
+          "manual_import": "POSSIBLE_TOKENLESS_BATCH_FALLBACK; NO_REALTIME_OR_HARD_STOP_CLAIM",
+          "commerce_client": "FORGE_AND_OAUTH2_BLOCKED; PARTNER_TOKEN_AND_BILLING_ROLE_REQUIRED; LOCAL_NON_OAUTH_CLI_UNVERIFIED",
+          "partner_portal_prerequisite": "APPROVED_PUBLISHED_PVA_APP_AND_PRIVATE_DOMAIN_EMAIL",
+          "WTP": "NOT_ESTABLISHED",
+          "status": "HOLD_FOR_EVIDENCE"
         }
       }
     },

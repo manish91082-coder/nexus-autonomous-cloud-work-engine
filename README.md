@@ -169,3 +169,14 @@ Keep one canonical repository. Preserve history; archive rather than delete. No 
 - ECO-1831 live record now shows 12 votes/12 watchers, Gathering Interest/unresolved; still not WTP.
 - P55-001 remains HOLD; P55-002 BLOCKED; support packet G/H updated but NOT SENT.
 - Detailed addendum: `research/PHASE_55_P55_001_PAT_POLICY_AND_PARTNER_PORTAL_GATE_2026-11-14.md`.
+
+
+## Phase 55 authentication/data-import gate — 14-Nov-2026
+
+- Worker #256 SUCCESS on exact prior head `c812b9bd0303ca8f4eab3c0d07fa9b4d7408c6b6`: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43568812514.
+- Official Usage API sample demonstrates only one sample resource (FUNCTION_COMPUTE) with daily resolution and tokensConsumed/tokenUnit; complete LLM/Container coverage is not established.
+- Marketplace Security Enforcement Policy prohibits new Marketplace apps from collecting, transmitting or storing user PATs; the Usage API documentation still shows owner Basic PAT authentication. No OAuth/app-auth route is documented for this Usage API.
+- Atlassian staff confirms a native Export usage button, but file format/schema/coverage are not documented. Tokenless local import is possible only as a hypothesis and would be batch, not real-time.
+- Commerce invoice API exposes payment/dunning and line-item fields but bars Forge/OAuth2 app clients. Partner Portal access requires an existing approved/published PvA app plus private-domain email.
+- Support packet questions I/J added, still NOT SENT.
+- Detailed design gate: `research/PHASE_55_P55_001_AUTH_AND_DATA_IMPORT_DESIGN_GATE_2026-11-14.md`. P55-001 HOLD; P55-002 BLOCKED; WTP NOT ESTABLISHED.

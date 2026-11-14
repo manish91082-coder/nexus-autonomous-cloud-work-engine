@@ -428,3 +428,24 @@ The third-party integration listing guide does not determine whether a local CLI
 ECO-1831 live snapshot now shows **12 votes/12 watchers** (prior snapshot 11/11), Gathering Interest and unresolved. Votes remain attention only, not WTP.
 
 **Disposition:** P55-001 HOLD_FOR_EVIDENCE; P55-002 BLOCKED. WTP NOT ESTABLISHED. No PAT, account, support submission, outreach, build, spend or funds movement.
+
+
+## 17. Authentication and tokenless data-import design gate — 14 November 2026
+
+Full design gate: `research/PHASE_55_P55_001_AUTH_AND_DATA_IMPORT_DESIGN_GATE_2026-11-14.md`.
+
+New primary-source review confirms the Usage API documentation is limited in what it proves:
+- Basic-auth PAT with the same account that owns the Forge app; X-ExperimentalAPI header;
+- single usageKey/request; Environment grouping and pagination; 5 requests/minute;
+- sample request uses `FUNCTION_COMPUTE`;
+- sample output contains `period`, `resolution: ONE_DAY`, `tokensConsumed`, `tokenUnit`, pagination and errors.
+
+No complete public LLM/Container usage-key inventory or export schema is documented in the reviewed API page. It is not correct to assume these meters are covered merely because Atlassian staff confirms a usage API and an Export usage button exist.
+
+The Marketplace policy says new Marketplace apps cannot collect/transmit/store PATs. Its alternative recommendation is OAuth 2.0/3LO where supported; the Usage API page does not document an OAuth flow. Existing-app ECOHELP migration language is not a new-app exemption.
+
+A tokenless local importer of the UI-exported usage file is only a candidate fallback. The file type, schema, coverage, date range, resource-key completeness, and LLM/Container representation are unknown. If usable, it would be a manual batch-estimator, not real-time monitoring or spend protection.
+
+The Commerce invoice response schema contains invoice status/dates, item lines, totals, paymentMethodObj, paymentStatus, dunningHistory and dunningStatus. Yet Forge and OAuth2 clients are excluded from invoice list/detail/PDF. Commerce authentication requires a partner bearer token and billing-role authorization. Partner Central access is conditional on an already approved and published PvA app plus private-domain business email. This is a significant bootstrap requirement for a new seller.
+
+**Architecture disposition:** do not build a new Marketplace app that handles PATs; do not assume a local CLI is exempt; do not assume CSV/JSON file export; do not claim LLM/Container coverage; do not build a live Commerce invoice connector without written client-type/partner-access confirmation.

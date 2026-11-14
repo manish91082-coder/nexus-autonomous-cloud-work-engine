@@ -96,3 +96,22 @@ Official source: https://developer.atlassian.com/platform/forge/developer-space/
 
 ## Current owner/action boundary
 This packet remains a research draft. Questions G/H have **NOT BEEN SENT**. Do not submit through ECOHELP or contact Atlassian without explicit owner approval of the recipient/channel and final text.
+
+
+## Question set I — native usage export format, coverage and permitted tokenless processing
+1. The 19-Aug-2026 Atlassian staff reply says an “Export usage” button exists at the top of the Usage and Charges page. What exact file format and schema does this UI action generate (CSV, JSON, XLSX, other), and is the schema public and versioned?
+2. What start/end date coverage, retention window, data resolution and pagination/completeness semantics does this export provide? Does it include all Forge apps in the Developer Space or only one selected app?
+3. Does the file contain app ID, site/context, environment, resource/usageKey, period, resolution, quantity and unit fields sufficient for reliable cost estimates? How are missing, corrected or late-arriving usage entries represented?
+4. Does the export include Forge LLM input and output by model/credit unit and Container compute vCPU-hours plus memory GiB-hours? If not, what is the supported export route for these zero-free-allowance meters?
+5. Can a Marketplace-listed non-installable third-party integration/local Software App process a usage file manually exported by the user from the native Developer Console, without receiving, collecting, transmitting or storing an Atlassian PAT? Is there a documented security/compliance interpretation for this use case?
+6. Can the export be created automatically or only by an interactive owner action? Is scheduled export, webhook, email report, or another tokenless delivery method supported?
+
+## Question set J — exact partner bootstrapping and Commerce API access model
+1. Partner Central documentation says access requires at least one approved and published Paid-via-Atlassian app and a private-domain business email. Is this prerequisite also required before an individual or new partner can generate the Commerce bearer token for a local developer tool?
+2. Can a local non-Forge/non-OAuth desktop/CLI be registered as a Partner Portal app for Commerce bearer-token issuance? What is the permitted client type and token scope?
+3. Can such a token read the same partner's own Forge Developer Space invoice list/details and per-app overage lines under a Billing Admin/Billing User role? If yes, what documented endpoint and transaction-account mapping should be used?
+4. Do invoice API exclusions for “Forge and OAuth2 apps” refer only to requests made from those app runtimes/client types, or do they also block an external local client whose separate Partner Portal bearer token is used?
+5. If the vendor is an India-resident individual without a registered company, can the partner verification and Commerce token issuance steps be completed, and what exact tax/KYC documents and own-name EFT requirements apply?
+
+## Current status
+Questions G/H/I/J are internal draft questions. **NONE HAVE BEEN SENT.** No ECOHELP ticket or support request is created. Explicit owner approval is required before any external submission.

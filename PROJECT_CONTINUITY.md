@@ -2791,3 +2791,16 @@ Getvik remains the only P1 first-cash pilot. Cashfree Direct is a P2 domestic fa
 - Product's third-party listing type and PVA/PVV model unresolved; do not assume a local CLI is a Software App or qualifies for Forge revenue share.
 - ECO-1831 live votes/watchers updated from earlier snapshot 11/11 to **12/12**; status Gathering Interest, unresolved. Votes remain problem-attention only, not WTP.
 - P55-001 remains IN_PROGRESS / HOLD_FOR_EVIDENCE; P55-002 BLOCKED; WTP not established; PCNE ₹0; authorized spend ₹0. Support packet question sets G/H added but still NOT SENT. No account/token/outreach/build/spend.
+
+
+## Phase 55 Worker #256 + auth/data-import design gate — 2026-11-14
+
+- Verified canonical head before this update: `c812b9bd0303ca8f4eab3c0d07fa9b4d7408c6b6`.
+- Mission Worker #256 SUCCESS on exact SHA: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43568812514
+- All 14 steps passed; heartbeat `POLL_OK`, P55-001 selected, no errors. AI executor returned `WAITING_FOR_OWNER_CONFIGURATION`; no model inference was made. Artifact ID 14104010058; SHA-256 `f77476a58ee416d46e9b420bc504a9f2ea2c790e82f096f22bfeb2afd155aa44`.
+- New technical design gate: `research/PHASE_55_P55_001_AUTH_AND_DATA_IMPORT_DESIGN_GATE_2026-11-14.md`.
+- Resource Usage API sample proves daily unit-labelled metrics for a sample resource (FUNCTION_COMPUTE); it does not prove LLM/Container usage coverage. PAT auth remains the documented path; new Marketplace apps cannot collect/transmit/store PATs.
+- Owner-operated “Export usage” button is mentioned by Atlassian staff, but file format, schema, period coverage and LLM/Container completeness remain undocumented. Tokenless manual import may only be a batch estimator, not real-time protection.
+- Commerce invoice schema has payment/dunning and per-app line-item fields, but Forge/OAuth2 app clients are barred. Partner Portal access requires an approved/published PvA app and private-domain email; local CLI token access remains unverified.
+- Support questions I/J added to internal packet; all G/H/I/J remain NOT SENT.
+- P55-001 stays IN_PROGRESS / HOLD_FOR_EVIDENCE; P55-002 BLOCKED; WTP NOT ESTABLISHED; PCNE ₹0; authorized spend ₹0. No account, token, KYC, outreach, build, spend or money movement.
