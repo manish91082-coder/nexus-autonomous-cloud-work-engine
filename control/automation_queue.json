@@ -3174,7 +3174,13 @@
           "coordinator": 7,
           "total": 24
         },
-        "phase59_8b3_limitation": "Thread-based timeout classifies and isolates coordinator result but cannot forcibly terminate a running Python thread; hard process isolation is required in B4."
+        "phase59_8b3_limitation": "Thread-based timeout classifies and isolates coordinator result but cannot forcibly terminate a running Python thread; hard process isolation is required in B4.",
+        "phase59_9_architecture": "RESEARCH_COMPLETE_DECISION_RECORDED",
+        "phase59_9_report": "research/PHASE_59_9_ZERO_COST_24X7_AUTONOMOUS_AGENTIC_SWARM_ARCHITECTURE_2026-11-14.md",
+        "phase59_9_handoff": "governance/PHASE_59_8B3_CHAT_HANDOFF_AND_59_9_OWNER_REQUEST_2026-11-14.md",
+        "phase59_9_decision": "Preserve deterministic Python control plane; LangGraph candidate after B4; GitHub Actions free burst workers; Cloudflare Workers/Queues/Workflows lightweight wake-up plane subject to quotas and step/storage billing; n8n optional internal integration only; Temporal deferred.",
+        "phase59_9_next": "B4 durable run persistence, atomic checkpoint/resume, hard process isolation/termination, idempotent crash recovery and failure-window tests; then LangGraph mock-agent graph integration without LLM provider.",
+        "phase59_9_constraints": "No paid fallback; no provider activation; no product build; PCNE ₹0; spend ₹0; owner gates remain mandatory."
       },
       "blocker": "No blocker to read-only forensic audit. Existing workflow tree and runtime source inventory must be completed before changing or replacing any current automation.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task."
