@@ -3114,6 +3114,40 @@
       "owner_gate": false,
       "last_updated": "2026-11-14",
       "blocker": "Await P59-001 evidence-backed selection and all V5 product, rights, economics and owner/platform gates."
+    },
+    {
+      "id": "P59-003",
+      "title": "Audit and implement zero-cost-first autonomous multi-agent research and execution swarm",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "P59-001"
+      ],
+      "idempotency_key": "phase59-autonomous-swarm-foundation-v1",
+      "owner_gate": false,
+      "last_updated": "2026-11-14",
+      "acceptance": [
+        "Complete source-level inventory of every .github/workflows file, mission runtime script, dependencies, triggers, permissions, secrets references and state writes before editing existing automation.",
+        "Map existing deterministic worker, continuity guard, queue poller, AI executor stub and all current workflow run outcomes; verify exact HEAD and no-regression boundary.",
+        "Implement deterministic dispatcher, typed task/evidence/run schemas, idempotency, leases/heartbeat, bounded retries, dead-letter queue, checkpoint/resume and max concurrency before relying on LLM inference.",
+        "Create specialist roles as bounded typed workers; research multiple source families in parallel and produce one consolidated evidence dossier per batch.",
+        "Add evidence provenance, independent red-team, reproducible V5 scoring, rights/payout/economics gates and PCNE no-regression validation.",
+        "Add optional free/local model adapter with provider allowlist, quota-aware pause, token/request caps and no paid fallback; do not send confidential data to free-tier inference.",
+        "Enforce public-repository security: minimal GITHUB_TOKEN permissions, no secrets or private data in logs/artifacts/commits, SHA-pinned third-party actions, no untrusted PR code in privileged workflows.",
+        "Keep P59-002 blocked until a product passes all V5 hard gates; preserve owner approval for account/KYC/terms/spend/publication.",
+        "Run failure injection, duplicate delivery, prompt-injection, quota exhaustion, schedule delay, state corruption and unauthorized action tests.",
+        "Update continuity, mission_state, queue and report; fetch-back verify every modified file and exact commit."
+      ],
+      "evidence": {
+        "report": "research/PHASE_59_8_ZERO_COST_AUTONOMOUS_MULTI_AGENT_SWARM_FEASIBILITY_2026-11-14.md",
+        "decision": "GO_STAGED_ZERO_COST_FIRST_HYBRID_SWARM_ARCHITECTURE",
+        "architecture": "DETERMINISTIC_ORCHESTRATOR_PLUS_SPECIALIST_LLM_WORKERS_PLUS_EVIDENCE_CRITIC_PLUS_HUMAN_GATES",
+        "provider_configured": false,
+        "swarm_deployed": false,
+        "spend_inr": 0,
+        "next": "PHASE_A_FORENSIC_AUDIT_OF_EXISTING_WORKFLOWS_AND_RUNTIME"
+      },
+      "blocker": "No blocker to read-only forensic audit. Existing workflow tree and runtime source inventory must be completed before changing or replacing any current automation."
     }
   ],
   "dead_letter": [],
