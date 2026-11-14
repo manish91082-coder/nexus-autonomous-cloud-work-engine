@@ -154,7 +154,7 @@
   ],
   "phase53_research_checkpoint": "14-Nov completed: WP webhook / Action Scheduler / COD fraud generic hypotheses NO-GO; Workspace attachment archival / invoice extraction / approvals / notification clones NO-GO. Formula Integrity technical matrix completed; HOLD due event/identity/API/quotas plus no proven recurring demand. Continue P53-001 Google Workspace problem-first research beyond these categories.",
   "last_observed_at": "2026-11-14T01:25:54Z",
-  "resume_checkpoint": "PHASE_54 / P54-001. Zoho candidate remains HOLD; India extension developer payout not established by Marketplace-specific public docs. Broader Zoho Partner Store docs are supportive but not conclusive. CRM V8 daily API credits now documented separately from concurrency; use __apis (1 credit) and __features with narrow read scopes; no write scopes or paid add-on credits. Wix paid apps require Partner+Tipalti payout setup; $200 threshold applies per app; India Tipalti route depends on payer entity and Wix payer entity is not identified. Continue platform payout/demand validation; no build/account/KYC/terms/spend.",
+  "resume_checkpoint": "PHASE_54 / P54-001. Zoho CRM Field Retirement Impact Preflight stays HOLD: recurring buyer cadence and product willingness-to-pay unproven; India seller payout not confirmed for Marketplace extension developers. Zoho CRM V8 has rolling 24h API-credit budgets separate from concurrency; use __apis (1 credit) to discover scopes/costs, no write scopes or paid add-on credits. Wix App Market requires Partner+Tipalti; USD200 per-app threshold; India payee route conditional on payer entity not disclosed by Wix. Continue P54-001 platform economics and buyer problem validation; no build/account/KYC/terms/spend.",
   "last_observed_head_semantics": "Live master HEAD fetched immediately before this mission-state correction; this update creates the next master commit. At every continuation, fetch the live master head again.",
   "phase53_latest_report": "research/PHASE_53_FORMULA_INTEGRITY_TECHNICAL_FEASIBILITY_2026-11-14.md",
   "phase53_supporting_reports": [
@@ -169,11 +169,16 @@
     "XERO_APP_STORE",
     "INTUIT_QUICKBOOKS_HOLD_INDIA_ELIGIBILITY"
   ],
-  "phase54_latest_report": "research/PHASE_54_PAYOUT_AND_API_CREDIT_GATE_2026-11-14.md",
+  "phase54_latest_report": "research/PHASE_54_ALTERNATIVE_MARKETPLACE_RESEARCH_PLAN_2026-11-14.md",
   "phase53_final_report": "research/PHASE_53_FINAL_DISPOSITION_2026-11-14.md",
   "phase54_candidate_status": "ZOHO_CRM_FIELD_RETIREMENT_IMPACT_PREFLIGHT_HOLD",
   "phase54_research_checkpoint": "Zoho first: 22-reference candidate remains HOLD, India Marketplace payout unknown. Wix second: $200 payout threshold per app (not aggregate), Tipalti account setup required before paid app publication, USD settlement and March→May example, India App Market payout not explicitly confirmed. No product selected/build.",
   "phase54_zoho_candidate_status": "HOLD_TECHNICAL_AND_RECURRING_DEMAND_UNPROVEN",
   "phase54_india_payout_status": "ZOHO_UNVERIFIED_EXTENSION_SPECIFIC; WIX_CONDITIONAL_TIPALTI_PAYER_ENTITY_UNVERIFIED",
-  "phase54_api_credit_gate": "CRM_V8_DAILY_API_CREDIT_LIMITS_DOCUMENTED; concurrency separate; use __apis to inspect endpoint costs; do not consume paid add-on credits."
+  "phase54_api_credit_gate": "CRM_V8_DAILY_API_CREDIT_LIMITS_DOCUMENTED; concurrency separate; use __apis to inspect endpoint costs; do not consume paid add-on credits.",
+  "phase54_payout_api_gate_report": "research/PHASE_54_ALTERNATIVE_MARKETPLACE_RESEARCH_PLAN_2026-11-14.md#follow-up-gate-seller-remittance-and-api-credits-14-nov-2026",
+  "phase54_supporting_reports": [
+    "research/PHASE_54_ZOHO_CRM_CONFIGURATION_DEPENDENCY_AUDIT_2026-11-14.md",
+    "research/PHASE_54_ALTERNATIVE_MARKETPLACE_RESEARCH_PLAN_2026-11-14.md"
+  ]
 }
