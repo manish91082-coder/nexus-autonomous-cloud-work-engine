@@ -3035,7 +3035,7 @@
       "priority": "P0",
       "status": "IN_PROGRESS",
       "depends_on": [
-        "P58-001"
+        "P57-001"
       ],
       "idempotency_key": "phase59-portfolio-source-ranking-v1",
       "owner_gate": false,
