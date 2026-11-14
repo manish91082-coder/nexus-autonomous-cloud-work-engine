@@ -1,6 +1,19 @@
 name: Mission Continuity Guard
 
 on:
+  push:
+    paths:
+      - 'control/mission_state.json'
+      - 'control/automation_queue.json'
+      - 'control/product_registry.json'
+      - 'control/opportunity_registry.json'
+      - 'control/payout_registry.json'
+      - 'control/revenue_ledger.json'
+      - 'scripts/mission_guard.py'
+      - 'README.md'
+      - 'PROJECT_CONTINUITY.md'
+      - 'EXECUTION_STATUS_PROTOCOL.md'
+      - '.github/workflows/mission-continuity-guard.yml'
   workflow_dispatch:
   schedule:
     # 08:11 Asia/Kolkata (02:41 UTC), deliberately off the top of the hour.
