@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
   "last_verified_head": "79061b4d0d0d1a8efb2ae5c88993d683491c1629",
-  "current_focus": "Phase 54 completed NO-GO with no product selected. Generic BigCommerce Variant Price Import Preflight is rejected because Hypa Shift directly supports existing variant updates by Product ID/Variant ID, Price/Sale Price, pre-import validation/correction and scheduled/URL-fed price feeds; BigCommerce Modern Importer also exposes variant prices and preview/error summary. Generic monday automation failure monitor, BigCommerce webhook failure monitor and Atom8 customer-spend group automation remain NO-GO; generic pooled category pricing remains HOLD/not shortlisted. Phase 55 now researches Atlassian Forge Developer Cost Guard only. Developer demand signals exist for configurable USD budgets and app-level cost visibility, but native features/API are ambiguous: May Usage Alerts docs show fixed 50/75/90/100% resource allowance thresholds; April engineering blog also says 'configured budget'; August Atlassian staff says budget notifications unsupported. Resource Usage API is experimental, owner-account authenticated, 5 requests/minute, unavailable for Government/Isolated Cloud; dashboard refresh daily at 12:00 UTC. Commerce API token/access must be tested; invoice-list endpoint says Forge/OAuth2 apps cannot access it. India seller/EFT eligibility and permitted distribution/payment route unverified. Candidate score 65/100 preliminary HOLD; no build, token setup, account, KYC, terms or spend. PCNE ₹0; bank receipts ₹0; authorised spend ₹0.",
+  "current_focus": "Phase 54 remains COMPLETED NO-GO/no product selected; BigCommerce Variant Price Import Preflight was rejected due Hypa Shift direct incumbent and native importer overlap. Phase 55 P55-001 remains research-only HOLD for Forge Developer Cost Guard (preliminary 65/100). New official billing audit resolves free allowances: each app receives its own monthly free allowance, not shared; all app overages are consolidated into one Developer Space invoice. Usage API is appId + one usageKey/request, context/environment grouping and pagination, rate 5/minute, daily-resolution; dashboard refresh 12:00 UTC. Developer Space billing doc says monthly invoice/autopay on first of month, 14-day pre-dunning if invoice/payment fails without valid payment method, and unresolved pre-dunning enforces all apps in that Developer Space; valid method but payment failure has 21-day dunning. Critical unresolved gate: external owner-authorized access to billing account invoices, per-app line items, payment method state, dunning/pre-dunning and enforcement status; Commerce invoice-list endpoint says Forge/OAuth2 apps cannot access. Also custom USD budget alert docs conflict (April blog vs May docs vs Aug staff), India seller/EFT, allowed distribution/payment model, direct substitutes audit, and paid WTP remain unverified. No real-time hard-stop/automatic enforcement claim; no API token/account/KYC/terms/build/spend. PCNE ₹0; bank receipts ₹0; spend ₹0.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -61,7 +61,7 @@
     "CRAZYGAMES_HTML5",
     "CREATOR_IP_DISTRIBUTION"
   ],
-  "last_exact_head_ci_status": "Mission Worker run #240 succeeded on exact HEAD 79061b4d0d0d1a8efb2ae5c88993d683491c1629 (push event). The bounded-worker job passed all 14 steps with no failed steps; control-plane validation, AI safety, product smoke, Recruitment Revenue Assurance, queue heartbeat, fail-closed bounded executor and artifact preservation all succeeded. A documentation-only Atlassian support-question draft was added afterwards in commit a12899ad4ccde31a3649e0d33dab7e527e3455a1 and was not sent. This state refresh records #240; the new state commit triggers the next bounded validation run.",
+  "last_exact_head_ci_status": "Mission Worker #240 succeeded on exact HEAD 79061b4d0d0d1a8efb2ae5c88993d683491c1629 (14/14 steps). Subsequent documentation, registry and queue updates now include a clarified P55 billing attribution report; new mission-state update will trigger a fresh bounded worker run. No product code changed and no owner-only action occurred.",
   "phase46_control_commits": [
     "72230902a478552d007d94d330e216238c9b2982",
     "ae552163e2b1e65590fc98454d8f7817bc73fa92",
@@ -155,7 +155,7 @@
   ],
   "phase53_research_checkpoint": "14-Nov completed: WP webhook / Action Scheduler / COD fraud generic hypotheses NO-GO; Workspace attachment archival / invoice extraction / approvals / notification clones NO-GO. Formula Integrity technical matrix completed; HOLD due event/identity/API/quotas plus no proven recurring demand. Continue P53-001 Google Workspace problem-first research beyond these categories.",
   "last_observed_at": "2026-11-14T05:32:01Z",
-  "resume_checkpoint": "PHASE_55 / P55-001 / ATLASSIAN-FORGE-DEVSPACE-COST-GUARD = HOLD_FOR_EVIDENCE. Re-fetch actual master HEAD every continuation. Phase 54 closed NO-GO/no product selected; final report research/PHASE_54_P54_001_BIGCOMMERCE_VARIANT_PRICE_PREFLIGHT_FINAL_NO_GO_2026-11-14.md. Hypa Shift directly covers the generic BigCommerce variant-price import/update/validation workflow. P55 plan: research/PHASE_55_P55_001_ATLASSIAN_FORGE_DEVSPACE_COST_GUARD_RESEARCH_PLAN_2026-11-14.md. Next: resolve Atlassian custom USD budget alert discrepancy using current official written evidence; verify owner-authenticated Resource Usage API + Commerce access and actual invoice restriction; complete 10–15 direct/adjacent substitute audit; verify India Marketplace seller/EFT eligibility and lawful distribution/payment model; obtain buyer-side WTP evidence. No real-time/hard billing-stop claims. No account, KYC, API-token sharing, terms, listing, build or spend.",
+  "resume_checkpoint": "PHASE_55 / P55-001 / ATLASSIAN-FORGE-DEVSPACE-COST-GUARD = HOLD_FOR_EVIDENCE. Phase54 closed NO-GO; BigCommerce variant preflight final report research/PHASE_54_P54_001_BIGCOMMERCE_VARIANT_PRICE_PREFLIGHT_FINAL_NO_GO_2026-11-14.md. P55 plan research/PHASE_55_P55_001_ATLASSIAN_FORGE_DEVSPACE_COST_GUARD_RESEARCH_PLAN_2026-11-14.md; billing attribution supplement research/PHASE_55_P55_001_FORGE_DEVSPACE_BILLING_ATTRIBUTION_AUDIT_2026-11-14.md; support questions draft research/PHASE_55_P55_001_ATLASSIAN_SUPPORT_QUESTION_PACKET_2026-11-14.md (NOT SENT). Per-app free allowance is confirmed, Developer Space invoices are co-invoiced, and 14-day pre-dunning can enforce all apps. Next: verify if external owner tool can read Developer Space invoices/line items/payment/dunning status despite Forge/OAuth2 endpoint restriction; quantify app×usageKey×context API request count and freshness; resolve budget-alert discrepancy; complete substitute and paid WTP evidence; verify India Partner/EFT and distribution route. No build, no account, no token, no KYC, no terms, no spend.",
   "last_observed_head_semantics": "Live master HEAD observed immediately before this mission-state update; this update creates the next master commit. Always fetch live master again at next continuation.",
   "phase53_latest_report": "research/PHASE_53_FORMULA_INTEGRITY_TECHNICAL_FEASIBILITY_2026-11-14.md",
   "phase53_supporting_reports": [
@@ -266,7 +266,7 @@
   ],
   "phase55_current_task": "P55-001",
   "phase55_candidate_status": "FORGE_DEVSPACE_COST_GUARD_HOLD_FOR_EVIDENCE",
-  "phase55_latest_report": "research/PHASE_55_P55_001_ATLASSIAN_FORGE_DEVSPACE_COST_GUARD_RESEARCH_PLAN_2026-11-14.md",
+  "phase55_latest_report": "research/PHASE_55_P55_001_FORGE_DEVSPACE_BILLING_ATTRIBUTION_AUDIT_2026-11-14.md",
   "phase55_screens": {
     "jira_permission_access_review": "REJECTED_GENERIC_CLONE_CLEARANCE_ACCESS_AUDITOR_ACCESSRADAR_ACCESSLENS",
     "jira_inactive_seat_optimizer": "REJECTED_NATIVE_LAST_ACTIVE_MQB_AND_MARKETPLACE_INCUMBENTS",
@@ -291,6 +291,21 @@
     "spend_inr": 0
   },
   "phase55_supporting_reports": [
-    "research/PHASE_55_P55_001_ATLASSIAN_FORGE_DEVSPACE_COST_GUARD_RESEARCH_PLAN_2026-11-14.md"
-  ]
+    "research/PHASE_55_P55_001_ATLASSIAN_FORGE_DEVSPACE_COST_GUARD_RESEARCH_PLAN_2026-11-14.md",
+    "research/PHASE_55_P55_001_FORGE_DEVSPACE_BILLING_ATTRIBUTION_AUDIT_2026-11-14.md"
+  ],
+  "phase55_billing_attribution_audit": {
+    "report": "research/PHASE_55_P55_001_FORGE_DEVSPACE_BILLING_ATTRIBUTION_AUDIT_2026-11-14.md",
+    "captured_at": "2026-11-14",
+    "free_allowance": "RESOLVED_PER_APP_PER_MONTH_NOT_SHARED_BETWEEN_APPS",
+    "billing": "DEVELOPER_SPACE_MONTHLY_CO_INVOICE_ALL_APP_OVERAGES_CONSOLIDATED",
+    "invoice_cycle": "FIRST_DAY_OF_MONTH_FOR_PRIOR_MONTH_USAGE; AUTOPAY_ATTEMPTED_IF_VALID_METHOD",
+    "pre_dunning": "14 DAYS; IF UNRESOLVED_ALL_APPS_IN_DEVELOPER_SPACE_FACE_ENFORCEMENT",
+    "dunning": "21 DAYS_IF_VALID_PAYMENT_METHOD_EXISTS_BUT_PAYMENT_FAILS",
+    "usage_api": "APP_ID_PLUS_ONE_USAGE_KEY_PER_REQUEST; CONTEXT_AND_ENVIRONMENT_GROUPING; PAGINATION; 5_REQUESTS_PER_MINUTE; DAILY_PERIOD",
+    "dashboard_refresh": "DAILY_12_00_UTC",
+    "external_billing_state_api": "UNVERIFIED; COMMERCE_INVOICE_LIST_RESTRICTS_FORGE_AND_OAUTH2_APPS",
+    "hard_stop": "NOT_ESTABLISHED",
+    "status": "HOLD_FOR_EVIDENCE"
+  }
 }
