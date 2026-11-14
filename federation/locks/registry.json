@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "status": "CONTRACT_ONLY_RUNTIME_NOT_IMPLEMENTED",
+  "lock_policy": {
+    "lease_seconds": 900,
+    "heartbeat_seconds": 60,
+    "monotonic_fencing_tokens": true,
+    "one_canonical_writer_per_control_path": true,
+    "stale_writer_rejected": true,
+    "duplicate_dispatch": "IDEMPOTENT_ATTACH_OR_EXIT"
+  },
+  "locks": [],
+  "note": "Schema/contract placeholder only. B4 must implement atomic claims and race tests before cross-project writes are allowed."
+}
