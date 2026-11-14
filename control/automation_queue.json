@@ -2946,7 +2946,32 @@
           "mission_action": "NO_NEW_APIFY_ACCOUNT_CREATION_OR_ACTOR_RUNS_OR_SOURCE_DATA_UPLOAD_OR_PRIVATE_GITHUB_LINK_OR_PAID_USE_UNTIL_POSTMORTEM_REVIEWED_AND_API_ACTORS_OPERATIONAL",
           "evidence_url": "https://status.apify.com/"
         },
-        "next_exact_work": "Public research only. For Apify-specific static Actor preflight, establish two independent buyer signals and qualified price-bearing buyer; audit 10–15 substitutes; verify source rights and availability. No Apify account/run/source upload/private GitHub link/paid use until post-mortem review and API/Actors operational."
+        "next_exact_work": "Continue public Apify niche research only. Generic MCP contract drift is NO-GO; Apify-specific adapter is unselected until Actor schema propagation, lawful access, two independent buyer signals, price-bearing WTP and 10–15 substitutes are established. Respect platform incident gate.",
+        "mcp_contract_drift_screen": {
+          "generic_product_decision": "NO_GO",
+          "apify_specific_adapter": "UNSELECTED_RESEARCH_LEAD_ONLY",
+          "problem_evidence": "mcpindex and Flanj publish MCP contract-drift measurements; OWASP documents schema/configuration drift risk.",
+          "substitutes": [
+            "mcpindex gate and Drift Report",
+            "mcp-diff",
+            "mcp-probe",
+            "Flanj",
+            "Snyk Agent Scan",
+            "Cisco MCP Scanner",
+            "Akto",
+            "Enkrypt AI",
+            "Lasso Security"
+          ],
+          "apify_endpoint": "DOCUMENTED_ACTORS_AS_TOOLS_WITH_QUERY_PARAMETER_SELECTION",
+          "actor_schema_propagation": "NOT_PROVEN",
+          "independent_apify_buyer_signals": "NOT_ESTABLISHED",
+          "price_bearing_wtp": "NOT_ESTABLISHED",
+          "build_authorized": false,
+          "spend_inr": 0,
+          "report": "research/PHASE_58_3_MCP_CONTRACT_DRIFT_AND_APIFY_MCP_FIT_SCREEN_2026-11-14.md"
+        },
+        "mcp_contract_report": "research/PHASE_58_3_MCP_CONTRACT_DRIFT_AND_APIFY_MCP_FIT_SCREEN_2026-11-14.md",
+        "product_selected": false
       }
     },
     {

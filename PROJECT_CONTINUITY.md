@@ -1,32 +1,31 @@
-# LATEST EXECUTION UPDATE — 14 NOVEMBER 2026 (PHASE 58.2 / MASTER EXACT-HEAD VALIDATION)
+# LATEST EXECUTION UPDATE — 14 NOVEMBER 2026 (PHASE 58.3 / MCP CONTRACT-DRIFT SCREEN)
 
 **Canonical repository:** `https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine`  
 **Branch:** `master`  
-**Last verified HEAD before this state-recording commit:** `69d8e10cb8c4e66c6e48254c03662cec0ed01773`  
+**Last verified HEAD before this state update:** `01ca0c50c783f98bcadf9e5d5bca17812c5cb894`  
 **Authority:** `MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md`  
 **Current task:** `P58-001`  
 **Financial state:** PCNE ₹0; bank-settled ₹0; authorized spend ₹0
 
-## Exact-master CI evidence
-- Worker #269 SUCCESS on exact HEAD `69d8e10cb8c4e66c6e48254c03662cec0ed01773`; all 14 steps passed. Queue POLL_OK; 102 tasks; one eligible task; P58-001 selected. AI executor WAITING_FOR_OWNER_CONFIGURATION, no inference, daily calls 0.
-- Mission Continuity Guard #11 SUCCESS on same exact HEAD; 108 checks PASS, `errors: []`.
-- Worker: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43604550043
-- Guard: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43604550087
-- Push-trigger checks are proven; scheduled cadence remains STALE/UNVERIFIED.
+## Exact-master CI
+- Worker #270 SUCCESS on exact HEAD `01ca0c50c783f98bcadf9e5d5bca17812c5cb894`; all 14 steps passed. Queue POLL_OK; 102 tasks; one eligible task; P58-001 selected. AI executor WAITING_FOR_OWNER_CONFIGURATION, no inference, calls 0.
+- Mission Continuity Guard #12 SUCCESS on same exact HEAD; 108 checks PASS, errors [].
+- Worker: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43604714148
+- Guard: https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43604714174
+- Push-trigger validation proven; scheduled cadence remains STALE/UNVERIFIED.
 
-## Current decisions
+## Phase 58.3 — MCP contract drift
+Generic MCP contract-drift monitoring is **NO-GO**. mcpindex, Flanj, mcp-diff and mcp-probe already cover public drift history, in-path pin/diff, schema-aware CI gates and diagnostics. Apify MCP exposes Actors as tools and supports selected-Actor configurations, but underlying Actor input-schema propagation into a stable client-visible MCP contract has not been proven. No independent Apify-specific buyer signals or price-bearing WTP exist. Report: `research/PHASE_58_3_MCP_CONTRACT_DRIFT_AND_APIFY_MCP_FIT_SCREEN_2026-11-14.md`.
+
+## Existing decisions and mission gates
 - P55 owner-gated HOLD; P56 generic Shopify recovery NO-GO; P57 generic Microsoft assurance NO-GO.
-- P58-001 is sole active task. Generic Apify product families screened so far are NO-GO. Generic Actor Trust scanner NO-GO; narrow Apify-specific static preflight HOLD_FOR_EVIDENCE, with no two independent buyer signals or price-bearing WTP.
-- Apify platform incident unresolved; API/Actors Partial Outage on 14-Nov. Public research only; no account/run/data upload/private GitHub link/paid use until post-mortem review and operational status.
-
-## Mission invariants
-- V4 target ₹10,00,00,000 verified PCNE.
-- One active product build maximum; state, queue, registry and guard aligned.
-- PCNE ₹0; bank receipts ₹0; authorized spend ₹0.
-- Push-trigger validation is not proof of a reliable scheduled cadence or always-on AI inference.
+- P58-001 remains the sole active task.
+- Generic Actor Trust scanner NO-GO; narrow static trust preflight remains an unselected research lead.
+- Apify platform incident unresolved; API/Actors Partial Outage on 14-Nov. Public research only; no account, Actor run, data upload, private GitHub link or paid use until post-mortem review and operational status.
+- V4 target ₹10,00,00,000 PCNE; current PCNE ₹0; bank receipts ₹0; authorized spend ₹0.
 
 ## Exact next work
-Continue P58-001 public research only; narrow Apify static Actor preflight remains HOLD_FOR_EVIDENCE. Establish two independent buyer signals, qualified price-bearing WTP, substitutes and lawful source availability before any product decision. No Actor run/account/data upload/build/publication/spend until the Apify incident post-mortem is reviewed and API/Actors are operational.
+Continue P58-001 with distinct, rights-cleared buyer workflows. Require two independent buyer signals, 10–15 substitutes, qualified buyer price/WTP, deterministic supported data access and positive net economics. Do not jump to Getvik rank #5 until Apify is explicitly platform-level NO-GO under V4 gates.
 
 ---
 
