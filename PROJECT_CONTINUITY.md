@@ -1,3 +1,7 @@
+# GOVERNANCE CORRECTION — 14 NOVEMBER 2026
+
+The prior continuity audit's statement that V3 contained an original 30-day deadline and a funded/manual assignment route was inaccurate. Direct comparison of V3 and V4 shows: neither master constitution sets a 30-day deadline; V3 already excludes manual assignment labour; V4 preserves the exclusion. See [TNCR charter reconciliation correction](governance/TNCR_MISSION_CHARTER_RECONCILIATION_CORRECTION_2026-11-14.md). This supersedes that finding only; it does not claim all ten historical chat threads were reread.
+
 # LATEST EXECUTION UPDATE — 14 NOVEMBER 2026 (PHASE 58.3 / MCP CONTRACT-DRIFT SCREEN)
 
 **Canonical repository:** `https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine`  
