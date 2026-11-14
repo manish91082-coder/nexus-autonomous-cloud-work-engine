@@ -60,6 +60,8 @@ Zoho Marketplace economics: free Developer Console/no listing fee; public extens
 
 Wix App Market clarification: USD 200 payout threshold; March app revenue reaches the bank at the beginning of May; reporting/payout in USD. India App Market developer bank eligibility remains unconfirmed by the public docs.
 
+Zoho Marketplace lists 900+ CRM extensions and 2,000+ total extensions. The 22 named native/direct-adjacent references are a targeted audit, not an exhaustive catalogue scan. Recurring economics remain unproven because field retirement may be an occasional job; monthly subscription needs repeated dependency scans or schema-governance cadence evidence.
+
 ## Exact next action
 
 Continue `P54-001` by verifying:
