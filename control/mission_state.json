@@ -10,7 +10,7 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
-  "last_verified_head": "e9e15105850d7f83e82085fc9ff3d12fc88159b1",
+  "last_verified_head": "3c9da006912d3bc621fd7c64793814130c02a880",
   "current_focus": "₹10 Cr combined Portfolio Cumulative Net Earnings mission. Continue V5 portfolio-wide source research after the swarm control-plane foundation reaches safe handoff. No concrete product selected; no build authorized. P59-001 PAUSED until P59-003 safe handoff; P59-002 BLOCKED. PCNE ₹0; authorized spend ₹0.",
   "owner_gates": [
     "account_creation_if_required",
@@ -134,7 +134,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase B1: add deterministic exponential retry scheduling, corruption/failure-injection and hostile-payload boundary tests; reconcile legacy Phase A state fields; inspect exact-HEAD continuity guard; only then integrate dispatcher behind disabled-by-default feature flag.",
+  "next_focus": "Await Phase B1 hardening CI run 43616373476 on exact HEAD. If green, add corrupt-state, hostile payload isolation, idempotent duplicate completion and stale-lease exhaustion tests; then design feature-flagged dispatcher integration without changing the production worker until compatibility tests pass.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -760,6 +760,17 @@
     "ci_verified_sha": "e9e15105850d7f83e82085fc9ff3d12fc88159b1",
     "ci_completed_at": "2026-11-14T16:33:??Z",
     "ci_run_url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43616218518",
-    "ci_steps": "control-plane guard; swarm runtime tests; AI worker safety tests; product smoke tests; recruitment product tests; deterministic queue poll; AI executor fail-closed"
+    "ci_steps": "control-plane guard; swarm runtime tests; AI worker safety tests; product smoke tests; recruitment product tests; deterministic queue poll; AI executor fail-closed",
+    "hardening_commits": [
+      "e92816bca90ca503d2dcf57351c1b6ef7d9335ba",
+      "3c9da006912d3bc621fd7c64793814130c02a880"
+    ],
+    "hardening_changes": [
+      "Enforce task schema_version 1.0",
+      "Add deterministic capped exponential retry backoff",
+      "Add early-retry rejection test"
+    ],
+    "latest_ci_run_id": 43616373476,
+    "latest_ci_status": "PENDING"
   }
 }
