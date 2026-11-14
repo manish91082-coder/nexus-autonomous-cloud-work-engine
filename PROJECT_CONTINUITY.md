@@ -3202,3 +3202,55 @@ Getvik remains the only P1 first-cash pilot. Cashfree Direct is a P2 domestic fa
 - Mission state now records the exact verified HEAD, last worker/guard evidence and next phase `PHASE_B_DETERMINISTIC_SWARM_DISPATCHER_AND_TYPED_SCHEMAS`.
 - Important limitation: worker success proves deterministic queue tick only; AI inference remains disabled and swarm is not deployed.
 - Next: implement and test deterministic swarm dispatcher and typed task/evidence/run schemas; retain no paid fallback, one active product build, owner gates, ₹0 spend, and P59-002 BLOCKED.
+
+
+# Phase 59.8B — Deterministic Swarm Runtime Foundation
+
+**Date:** 14 November 2026  
+**Authority:** Master Constitution V5  
+**Canonical repository:** manish91082-coder/nexus-autonomous-cloud-work-engine  
+**Branch:** master  
+**Implementation HEAD:** e9e15105850d7f83e82085fc9ff3d12fc88159b1
+
+## Scope delivered
+- Added stdlib-only deterministic runtime primitives in `scripts/swarm_runtime.py`.
+- Added versioned Task, Evidence, Run and Result JSON Schema contracts in `schemas/swarm-contracts-v1.schema.json`.
+- Added failure-injection/unit tests in `tests/test_swarm_runtime.py`.
+- Updated the existing bounded mission worker workflow to execute the new tests on relevant changes.
+- No existing mission worker, AI executor or queue state transition has been replaced or connected to the new runtime.
+
+## Controls represented
+- Deterministic dependency eligibility and stable SHA-256 idempotency key.
+- Lease claim, ownership-checked heartbeat, stale lease recovery and concurrency cap.
+- Bounded attempts and dead-letter transition after retry exhaustion.
+- Evidence provenance/hash contract and typed run/result contracts.
+- Fail-closed owner approval for account creation, KYC, terms, spend, public release, payment setup, secrets, wallet and money movement.
+- PCNE no-regression invariant.
+
+## Exact commits
+- Runtime: `616bafb8a74996d2d0ee7ad6ad25710b3938cca4`
+- Tests: `b25b429c2c366df2a81fc6714d036a1905981247`
+- Schemas: `f7123a9b41e955f83e3446f24db759f6b319aeb8`
+- CI workflow: `e9e15105850d7f83e82085fc9ff3d12fc88159b1`
+
+## Verification status
+- Previous continuity guard run `43615693463`: SUCCESS on prior HEAD `69861f4...`.
+- New exact-HEAD mission worker run `43616218518`: IN_PROGRESS at report creation.
+- Tests are committed and wired into CI, but must not be reported as passed until that run completes successfully.
+- Runtime is not wired into production worker; no live multi-agent execution is claimed.
+
+## Mission invariants preserved
+- P59-003 remains sole active task.
+- P59-001 remains PAUSED with V5 portfolio acceptance criteria intact.
+- P59-002 remains BLOCKED; no product build selected or authorized.
+- Provider not configured; AI inference disabled.
+- PCNE ₹0; authorized spend ₹0.
+- No account creation, KYC, legal acceptance, publication, spend or money movement.
+
+## Known next hardening work
+1. Verify exact-HEAD CI and inspect job-level logs.
+2. Reconcile stale legacy Phase A fields in mission_state against the current queue and checkpoint.
+3. Add explicit exponential retry schedule and deterministic backoff tests.
+4. Expand malformed/corrupt state and prompt-injection isolation tests.
+5. Prove lease/idempotency behavior under duplicate concurrent delivery before production integration.
+6. Integrate only after all compatibility tests pass; maintain read-only AI/provider boundary.
