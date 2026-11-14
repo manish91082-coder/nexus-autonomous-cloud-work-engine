@@ -3121,9 +3121,7 @@
       "title": "Audit and implement zero-cost-first autonomous multi-agent research and execution swarm",
       "priority": "P0",
       "status": "IN_PROGRESS",
-      "depends_on": [
-        "P59-001"
-      ],
+      "depends_on": [],
       "idempotency_key": "phase59-autonomous-swarm-foundation-v1",
       "owner_gate": false,
       "last_updated": "2026-11-14",
@@ -3148,7 +3146,8 @@
         "spend_inr": 0,
         "next": "PHASE_A_FORENSIC_AUDIT_OF_EXISTING_WORKFLOWS_AND_RUNTIME"
       },
-      "blocker": "No blocker to read-only forensic audit. Existing workflow tree and runtime source inventory must be completed before changing or replacing any current automation."
+      "blocker": "No blocker to read-only forensic audit. Existing workflow tree and runtime source inventory must be completed before changing or replacing any current automation.",
+      "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task."
     }
   ],
   "dead_letter": [],
