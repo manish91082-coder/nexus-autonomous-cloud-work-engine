@@ -20,9 +20,9 @@ Source: https://community.monday.com/feature-requests/post/automation-action-aut
 
 ### Signal B — exact solution already used by a customer
 
-A marketplace review for Master Automations dated 27-Aug-2026 says the app was “very helpful in connecting the subitems to their parent item via by automating the connects boards column.” This is unusually strong evidence because it matches the requested outcome and confirms actual app use rather than only a hypothetical request.
+A marketplace review for Sync Updates to Connected Boards (Fortimus, listing 10001204; the listing includes a 30-automation bundle) dated 27-Oct-2026 says the app was “very helpful in connecting the subitems to their parent item via by automating the connects boards column.” This is unusually strong evidence because it matches the requested outcome and confirms actual app use rather than only a hypothetical request.
 
-Source: https://apps-for-monday.com/apps/10001204/
+Sources: https://apps-for-monday.com/apps/10001204/ and https://monday.com/marketplace/listing/10001204/sync-updates-to-connected-boards
 
 ### Signal C — adjacent paid demand
 
@@ -84,7 +84,7 @@ Install/review counts below are discovery observations from a third-party market
 
 ### Competitor source register
 
-- Master Automations: https://apps-for-monday.com/apps/10001204/
+- Sync Updates to Connected Boards / Fortimus 30-automation bundle: https://monday.com/marketplace/listing/10001204/sync-updates-to-connected-boards and https://apps-for-monday.com/apps/10001204/
 - Connect + Sync Automations: https://apmdsoft.com/apps/connect-and-sync
 - VLOOKUP Auto-Link: https://apps-for-monday.com/apps/99/
 - AutoBoost: https://apps-for-monday.com/apps/10000112/
@@ -107,7 +107,7 @@ Install/review counts below are discovery observations from a third-party market
 ## 5. Gap analysis and decision
 
 ### What is already solved
-- Exact parent auto-link into a Connect Boards column: Master Automations has an explicit customer review confirming it.
+- Exact parent auto-link into a Connect Boards column: Sync Updates to Connected Boards (Fortimus, listing 10001204; 30-automation bundle) has an explicit customer review confirming it.
 - General item/subitem cross-board auto-link: Connect + Sync and VLOOKUP cover it.
 - Mirror/formula-to-native-column automation: AutoBoost, Formula Pro, Subitems Pro, Smart Mirror Column and Column Clone & Sync cover it.
 - Full item/subitem multi-board synchronisation: Same Item Multiple Boards and Mirror Item Multiple Boards cover it.
