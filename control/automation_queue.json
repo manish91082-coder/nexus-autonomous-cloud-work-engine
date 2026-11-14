@@ -3144,7 +3144,12 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "PHASE_A_FORENSIC_AUDIT_OF_EXISTING_WORKFLOWS_AND_RUNTIME"
+        "next": "Wait for exact-HEAD CI; harden state corruption, retry backoff and untrusted payload handling; reconcile mission_state; do not wire into production until tests pass.",
+        "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
+        "runtime": "scripts/swarm_runtime.py",
+        "tests": "tests/test_swarm_runtime.py",
+        "contracts": "schemas/swarm-contracts-v1.schema.json",
+        "ci_run_id": 43616218518
       },
       "blocker": "No blocker to read-only forensic audit. Existing workflow tree and runtime source inventory must be completed before changing or replacing any current automation.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task."
