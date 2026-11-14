@@ -3068,13 +3068,18 @@
           "Amazon KDP 2026 royalty terms"
         ],
         "critical_distinction": "Revenue engine vs distribution rail; same SaaS product across two marketplaces is not two separate product streams.",
-        "next": "Continue demand-led vertical buyer problem research; prepare Tech Cloud ERP source/ownership/module evidence checklist; qualify AgentMargin with 10-15 substitutes, paid WTP, recurring usage, acquisition and net economics; compare with greenfield candidate.",
+        "next": "Continue portfolio-wide B2B vertical buyer-problem research. Keep Tech Cloud ERP source/ownership/module evidence audit open. Compare one ERP-derived vertical and one greenfield candidate. P59-002 remains blocked.",
         "asset_audit_report": "research/PHASE_59_2_EXISTING_SOFTWARE_IP_ASSET_AUDIT_2026-11-14.md",
         "asset_audit_status": "COMPLETED_INITIAL_REPOSITORY_AUDIT; NO_EXISTING_ASSET_PASSES_FIRST_PRODUCT_GATE",
         "canonical_assets_audited": 8,
         "cross_project_candidate": "AgentMargin Workbench v0.1.2; source import pending; browser QA and market demand unverified; separate project remains separate",
         "tech_cloud_erp": "USER_REPORTED_35_MODULE_ASSET; NO_MATCHING_REPOSITORY_OR_SOURCE_TREE_SURFACED_IN_CONNECTED_GITHUB_ACCOUNT_SEARCH; OWNERSHIP_AND_ALL_TECHNICAL_FACTS_UNVERIFIED",
-        "decision": "B2B_VERTICAL_SAAS_REMAINS_PROVISIONAL_SOURCE_FAMILY_FIRST; CONCRETE_PRODUCT_NONE; BUILD_NOT_AUTHORIZED"
+        "decision": "B2B_VERTICAL_SAAS_REMAINS_PROVISIONAL_SOURCE_FAMILY_FIRST; CONCRETE_PRODUCT_NONE; BUILD_NOT_AUTHORIZED",
+        "agentmargin_candidate_report": "research/PHASE_59_3_AGENTMARGIN_WORKBENCH_SUBSTITUTE_AND_DEMAND_SCREEN_2026-11-14.md",
+        "agentmargin_candidate_disposition": "NO_GO_AS_CURRENT_GENERIC_ONE_TIME_CALCULATOR; PRESERVE_ASSET; PARENT_AI_SOFTWARE_SOURCE_FAMILY_REMAINS_OPEN",
+        "agentmargin_substitute_count": 20,
+        "agentmargin_buyer_evidence": "Problem salience supported by Digiday agency interviews and two n8n community threads; no candidate-specific paid WTP, repeat use, sales or revenue proven.",
+        "agentmargin_name_collision": "Separate project github.com/rzkarsyad/agentmargin; different owner; same name and adjacent customer-level margin analytics; do not represent as user asset; rename candidate before any commercial release and review rights."
       }
     },
     {
