@@ -124,3 +124,18 @@ See [Phase 59.5 report](research/PHASE_59_5_AGRI_INPUT_RECONCILIATION_COMPETITOR
 - No independent evidence of a distinct uncovered distributor gap, candidate-specific WTP, buyer conversion, retention or acquisition economics was found.
 
 **Next:** return to portfolio-wide vertical SaaS source screening; select a different recurring buyer problem with two independent signals, 10–15 substitutes, price-bearing WTP and a self-serve delivery path. Keep Tech Cloud ERP source/ownership/module audit open. No build.
+
+
+## 12. Evidence batch 06 — manufacturing job-work / subcontracting screen (14-Nov-2026)
+
+See [Phase 59.6 report](research/PHASE_59_6_MANUFACTURING_JOBWORK_RECONCILIATION_SCREEN_2026-11-14.md).
+
+**Decision: NO-GO for the generic job-work challan/material reconciliation/ITC-04 SaaS hypothesis.**
+
+- CGST Act Section 143 and CBIC Rule 45 establish the recurring control workflow: challans, principal responsibility for accounts, one-year inputs / three-year capital-goods return or supply windows (subject to statutory exceptions), and ITC-04 reporting. Current notifications and taxpayer-specific rules must be checked.
+- Fifteen alternatives were screened: Pentoggle, Pothera, managemate, ERPDrive, KreupAI/OptiForge, MyRecords, ERPNext, Odoo, TallyPrime, BUSY, Zoho ERP, SAP Business One, Dynamics 365 Business Central, Oracle NetSuite and Katana.
+- Pentoggle directly describes multi-stage WIP, partial returns, scrap/loss/rejection, challan ageing, customer portal and ITC-04; Pothera describes outsource/insource, tolerance reconciliation, scrap/finished returns and ITC-04; managemate describes partial receipts, unused material returns, job charges, time limits and ITC-04.
+- Government CRIER 2025 and ASUSE 2025 data establish broad MSME/digitalisation context, not job-work-specific unmet demand or paid WTP. Vendor-authored problem articles are not independent prevalence studies.
+- Implementation needs configuration, opening WIP reconciliation, job-worker onboarding and GST validation; self-serve/zero-support economics remain unproven.
+
+This NO-GO is product-specific; manufacturing software remains an open source family. Do not serially clone generic ERP modules. Return to the portfolio-wide V5 source map and select the next research lane based on risk-adjusted recurring net revenue, buyer evidence and distribution.
