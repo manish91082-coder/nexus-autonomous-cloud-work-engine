@@ -10,7 +10,7 @@ from scripts.swarm_runtime import (
 T0 = datetime(2026, 11, 14, 12, 0, tzinfo=timezone.utc)
 
 def task(task_id="A", status="READY", deps=None, **kw):
-    return {"id": task_id, "task_type": "RESEARCH", "version": "1",
+    return {"schema_version":"1.0", "id": task_id, "task_type": "RESEARCH", "version": "1",
             "status": status, "payload": {"query": "public sources"},
             "depends_on": deps or [], "priority": "P0", "max_attempts": 2, **kw}
 
@@ -55,12 +55,12 @@ class SwarmRuntimeTests(unittest.TestCase):
         s = self.state(task())
         claim_task(s, "A", "w1", T0)
         finish_task(s, "A", "w1", False, error_code="TRANSIENT", now=T0)
-        claim_task(s, "A", "w2", T0 + timedelta(seconds=1))
+        claim_task(s, "A", "w2", T0 + timedelta(seconds=61))
         result = finish_task(s, "A", "w2", False, error_code="FAILED", now=T0)
         self.assertEqual(result["status"], "DEAD_LETTER")
         self.assertEqual(len(s["dead_letters"]), 1)
 
-    def test_evidence_provenance_contract(self):
+    def test_exponential_backoff_blocks_early_retry(self):\n        s = self.state(task())\n        claim_task(s, "A", "w1", T0)\n        finish_task(s, "A", "w1", False, error_code="TEMP", now=T0)\n        with self.assertRaises(ContractError):\n            claim_task(s, "A", "w2", T0 + timedelta(seconds=30))\n        claim_task(s, "A", "w2", T0 + timedelta(seconds=61))\n\n    def test_evidence_provenance_contract(self):
         good = {"evidence_id":"E1","claim":"claim","source_type":"OFFICIAL",
                 "source_uri":"https://example.org","retrieved_at_utc":"2026-11-14T00:00:00Z",
                 "sha256":"a"*64,"status":"VERIFIED"}
