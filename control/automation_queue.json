@@ -2483,6 +2483,52 @@
           "spend": 0,
           "next_exact_work": "Continue P54-001 with a different monday.com recurring buyer problem. Do not revisit parent/subitem auto-link, generic cross-board sync, mirror triggers or rollups unless new evidence materially changes the competitive picture. Require two independent strong demand signals for the same narrow outcome, then audit 10-15 competitors and verify India payout eligibility before any build.",
           "exact_incumbent": "Sync Updates to Connected Boards (Fortimus; listing 10001204; 30-automation bundle)"
+        },
+        "buyer_problem_screen": {
+          "report": "research/PHASE_54_P54_001_MONDAY_BIGCOMMERCE_PROBLEM_SCREEN_2026-11-14.md",
+          "captured_at": "2026-11-14",
+          "no_product_selected": true,
+          "product_build_authorized": false,
+          "candidates": {
+            "monday_automation_failure_monitor": {
+              "status": "REJECTED",
+              "reason": "Stable public API does not expose board automation listing; Run History is a UI surface limited to 10 days; preview/Platform MCP is not stable product contract.",
+              "demand_signals": 2
+            },
+            "bigcommerce_webhook_failure_monitor": {
+              "status": "REJECTED",
+              "reason": "Native retry/backoff, store/hook/deliveryException events and exhausted-delivery email cover the generic use case."
+            },
+            "bigcommerce_customer_spend_tier_autoassign": {
+              "status": "REJECTED",
+              "incumbent": "Atom8 Automation by GritGlobal",
+              "reason": "Vendor docs show exact total-spend threshold to customer-group assignment workflow."
+            },
+            "bigcommerce_pooled_category_quantity_sku_price_tiers": {
+              "status": "HOLD_FOR_EVIDENCE",
+              "demand_signals": 2,
+              "competitor_status": "Native category promotions, PricePilot and Flowsplus overlap parts of the job; no full direct audit."
+            },
+            "bigcommerce_variant_price_import_preflight": {
+              "status": "HOLD_FOR_EVIDENCE",
+              "demand_signals": 2,
+              "bounded_landscape_references": 12,
+              "full_10_15_direct_competitor_audit": false,
+              "native_capabilities": "Modern CSV importer supports variant-level fields, first-product preview and import error summary.",
+              "app_substitutes": [
+                "Firebear Import & Export",
+                "Alterify Inventory Sync",
+                "Bulk Product Editor",
+                "PricePilot",
+                "Custom Field Populator",
+                "Inline Metafields",
+                "Inskeep Inventory Intelligence",
+                "BigCommerce Data Migration"
+              ]
+            }
+          },
+          "next_exact_work": "Keep the BigCommerce variant-price import preflight as validation-only. Complete a 10–15 direct/adjacent audit with verified current features/prices/reviews; test repeat catalog-update cadence and deterministic offline validation; verify India Technology Partner/payout terms. Retain monday failure monitor, BigCommerce webhook monitor and Atom8 spend-tier clone as NO-GO. Zoho/Wix remittance gates remain unresolved. No MVP until V4 hard gates pass.",
+          "spend_inr": 0
         }
       },
       "next_exact_work": "Continue P54-001 with a different monday.com recurring buyer problem. Do not revisit parent/subitem auto-link, generic cross-board sync, mirror triggers or rollups unless new evidence materially changes the competitive picture. Require two independent strong demand signals for the same narrow outcome, then audit 10-15 competitors and verify India payout eligibility before any build."
