@@ -285,9 +285,20 @@ Sources:
 - Zoho exposes an API discovery endpoint; a proof should use it to verify actual endpoint/scope availability and minimum permissions before spec.  
   https://www.zoho.com/crm/developer/docs/api/v8/list-available-rest-apis.html
 
+### Marketplace size and recurring-value gate
+
+Zoho's Marketplace FAQ currently says the catalogue contains **2,000+ ready-to-use extensions overall and 900+ CRM extensions**. This is a vendor-reported category catalogue size, not active installs, buyer count or sales volume. The 22 named references in this report are a targeted native/direct-adjacent audit, not an exhaustive census of those 900+ CRM listings.
+Source: https://www.zoho.com/marketplace/faq.html
+
+A further commercial question remains: a one-time field-retirement preflight may be used only occasionally. A recurring monthly plan requires proof that the same buyer regularly performs schema changes, governance reviews, integration changes or drift scans. Two possible recurring use patterns are hypotheses only:
+1. scheduled dependency-drift scans and a change report between scans;
+2. pre-change approval packets each time an admin renames/retires fields or changes automation.
+
+No current source demonstrates the frequency of these events, user count per account, or willingness to pay for recurring scans. A one-time purchase might fit an occasional audit but does not satisfy a recurring revenue thesis by itself. Do not assign an arbitrary price or monthly forecast.
+
 ### Updated decision after competitor audit
 
-**Still HOLD — no build.** Category has mature analogues in Salesforce. A Zoho-specific gap is plausible but not proven to have paid demand. No direct paid Zoho dependency graph found in a bounded search, not proof of whitespace. Function-source availability is edition-dependent, source is sensitive, and India extension payout is still unverified. Next is an edition-specific API coverage and payout gate, not coding.
+**Still HOLD — no build.** The Zoho Marketplace category contains 900+ CRM extensions, so the 22 references audited are not an exhaustive listing census. Recurring usage frequency for field retirement / drift scans is unproven; subscription economics remain hypothetical. Category has mature analogues in Salesforce. A Zoho-specific gap is plausible but not proven to have paid demand. No direct paid Zoho dependency graph found in a bounded search, not proof of whitespace. Function-source availability is edition-dependent, source is sensitive, and India extension payout is still unverified. Next is an edition-specific API coverage and payout gate, not coding.
 
 ## 10. Edition-specific API and feature coverage matrix
 
