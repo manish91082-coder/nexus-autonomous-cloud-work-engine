@@ -3068,7 +3068,7 @@
           "Amazon KDP 2026 royalty terms"
         ],
         "critical_distinction": "Revenue engine vs distribution rail; same SaaS product across two marketplaces is not two separate product streams.",
-        "next": "Continue portfolio-wide B2B vertical buyer-problem research. Keep Tech Cloud ERP source/ownership/module evidence audit open. Compare one ERP-derived vertical and one greenfield candidate. P59-002 remains blocked.",
+        "next": "Test narrow agri-input distributor batch-to-claim / credit-and-return reconciliation workflow against 10-15 substitutes and independent buyer evidence; keep Tech Cloud ERP source/ownership/module inventory audit open; no build.",
         "asset_audit_report": "research/PHASE_59_2_EXISTING_SOFTWARE_IP_ASSET_AUDIT_2026-11-14.md",
         "asset_audit_status": "COMPLETED_INITIAL_REPOSITORY_AUDIT; NO_EXISTING_ASSET_PASSES_FIRST_PRODUCT_GATE",
         "canonical_assets_audited": 8,
@@ -3079,7 +3079,18 @@
         "agentmargin_candidate_disposition": "NO_GO_AS_CURRENT_GENERIC_ONE_TIME_CALCULATOR; PRESERVE_ASSET; PARENT_AI_SOFTWARE_SOURCE_FAMILY_REMAINS_OPEN",
         "agentmargin_substitute_count": 20,
         "agentmargin_buyer_evidence": "Problem salience supported by Digiday agency interviews and two n8n community threads; no candidate-specific paid WTP, repeat use, sales or revenue proven.",
-        "agentmargin_name_collision": "Separate project github.com/rzkarsyad/agentmargin; different owner; same name and adjacent customer-level margin analytics; do not represent as user asset; rename candidate before any commercial release and review rights."
+        "agentmargin_name_collision": "Separate project github.com/rzkarsyad/agentmargin; different owner; same name and adjacent customer-level margin analytics; do not represent as user asset; rename candidate before any commercial release and review rights.",
+        "vertical_screen_report": "research/PHASE_59_4_INDIA_VERTICAL_SAAS_SOLAR_AGRI_LOGISTICS_SCREEN_2026-11-14.md",
+        "verticals_screened": [
+          "SOLAR_EPC_OPERATIONS",
+          "AGRI_INPUT_DISTRIBUTION",
+          "SMALL_FLEET_LOGISTICS"
+        ],
+        "vertical_disposition": {
+          "solar": "HOLD; crowded with free and India-specific end-to-end tools; portal/field integration burden",
+          "agri_input": "NEXT_RESEARCH_PRIORITY_NOT_PRODUCT_GO; 2022 Government multi-state field study records manual stock books and PoS/physical mismatch; 9+ current specialist substitutes; narrow distributor reconciliation gap only",
+          "logistics": "HOLD; fragmented market but low-WTP/support/onboarding risks and established TMS alternatives"
+        }
       }
     },
     {
