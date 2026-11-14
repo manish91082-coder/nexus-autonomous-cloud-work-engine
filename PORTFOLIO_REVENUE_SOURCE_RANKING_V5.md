@@ -139,3 +139,18 @@ See [Phase 59.6 report](research/PHASE_59_6_MANUFACTURING_JOBWORK_RECONCILIATION
 - Implementation needs configuration, opening WIP reconciliation, job-worker onboarding and GST validation; self-serve/zero-support economics remain unproven.
 
 This NO-GO is product-specific; manufacturing software remains an open source family. Do not serially clone generic ERP modules. Return to the portfolio-wide V5 source map and select the next research lane based on risk-adjusted recurring net revenue, buyer evidence and distribution.
+
+
+## 13. Evidence batch 07 — non-ERP revenue family and India payout screen (14-Nov-2026)
+
+See [Phase 59.7 report](research/PHASE_59_7_NON_ERP_REVENUE_FAMILY_AND_PAYOUT_SCREEN_2026-11-14.md).
+
+- Gumroad officially lists India local-bank payouts in INR. This is the strongest immediate distribution-rail candidate among the reviewed self-serve digital-product options, but it is not evidence of product demand, WTP, conversion or earnings.
+- KDP supports Hindi eBooks; India 70% royalty is constrained to the ₹99–₹599 band and eligibility conditions. No sales or audience evidence.
+- Etsy India requires GSTIN + Payoneer and a US$10 setup fee; new Indian shops are international-only and digital buyers in India are excluded. NO-GO under current zero-spend and domestic reach constraints.
+- Adobe Stock lists 33% photo/vector/illustration and 35% video standard royalties, with US$25 minimum and 45-day first-sale wait. Catalogue acceptance and download economics unproven.
+- RapidAPI charges a 20% marketplace fee; India provider payout and a scarce, owned API asset remain unqualified.
+- GitHub Sponsors supports India but requires an adopted project/community; no project-specific sponsor demand exists.
+- White-label/OEM remains conditional on verified ownership, deployable source, documentation and buyer evidence. Tech Cloud ERP remains unverified.
+- **Disposition:** Gumroad digital-product distribution = NEXT RESEARCH only; KDP, stock assets, licensing, API and Sponsors = HOLD/stackable; Etsy = NO-GO under current zero-spend gate. No concrete product GO, no build.
+- Next: find an original reusable technical asset with a differentiated outcome; two independent demand signals, 10–15 substitutes, price-bearing WTP, organic self-serve acquisition, rights and positive fully-loaded economics required. Keep P59-002 BLOCKED.
