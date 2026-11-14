@@ -223,3 +223,34 @@ One active build at a time; no build is open in Phase 54.
 - Revenue ledger entries: 0.
 - Authorised new spend: ₹0.
 - No platform account created, no KYC submitted, no terms accepted, no public release, no paid subscription and no new marketplace build authorised by this plan.
+
+
+## 7. Follow-up gate — seller remittance and API credits (14-Nov-2026)
+
+Detailed addendum: `research/PHASE_54_PAYOUT_AND_API_CREDIT_GATE_2026-11-14.md`.
+
+### Zoho Marketplace extension sellers
+- The extension-specific commission report says total value paid by customers equals gross commission due to the extension developer. The detailed payment page sends a monthly statement only when outstanding commission is **more than USD 100**; FAQ says payment occurs once accrued sales reach **at least USD 100**. Use >USD 100 conservatively due to the boundary discrepancy.
+- Developer must approve processing. Wire transfer takes about 15 working days after approval; PayPal can be requested.
+- Public extension payout docs do not list supported developer countries or India remittance details. Separate Partner Store material identifies a Zoho India billing entity/INR invoices and PAN for India-based partners, but it does not explicitly say those details apply to CRM Marketplace extension developers. The separate reseller ₹50,000 threshold is not the extension threshold.
+- **India extension seller status remains UNVERIFIED.** No account/KYC/terms action.
+
+### Zoho CRM V8 API budget correction
+The API documentation now explicitly lists 24-hour rolling credit limits, distinct from edition concurrency:
+- Free: 5,000.
+- Standard/Starter: 50,000 + 250 per user licence, capped at 100,000.
+- Professional: 50,000 + 500 per user licence, capped at 3,000,000.
+- Enterprise/Zoho One: 50,000 + 1,000 per user licence, capped at 5,000,000.
+- Ultimate/CRM Plus: 50,000 + 2,000 per user licence, no fixed maximum in the table.
+- Concurrency remains 5/10/15/20/25 by edition, plus sub-concurrency controls.
+- `/__apis` costs 1 credit and returns endpoint method, OAuth scope and min/max credit cost. `/__features` uses `ZohoCRM.features.READ`; its request credit cost is not explicitly published in the docs reviewed.
+- Add-on credits are paid monthly; a zero-spend scan must never trigger these automatically. Any limit risk must stop the scan.
+
+### Wix App Market paid-app payouts
+- Paid app publication requires Wix Partner onboarding plus a Tipalti account; account setup is required before paid-app publication.
+- $200 threshold applies **per individual app**, with no aggregation across apps. March revenue is paid at the beginning of May.
+- Year one: 100% of app revenue after 2.5% transaction fee and applicable tax. Thereafter: 80% of the amount after those deductions.
+- Tipalti's country table shows India local INR bank-transfer coverage and USD wire/PayPal options, but footnote says payments to India are not available for India-based payer entities. Wix's public developer docs do not identify the payer entity used for an India-based App Market developer.
+- **India Wix payout remains conditional/unverified** until the actual Wix payer entity and India payee onboarding are confirmed.
+
+No product selected; Zoho candidate remains HOLD. Platform payout ability does not establish buyer demand or recurring economics.
