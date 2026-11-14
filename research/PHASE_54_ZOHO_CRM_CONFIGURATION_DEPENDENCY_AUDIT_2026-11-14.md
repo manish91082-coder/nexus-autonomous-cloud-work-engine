@@ -289,6 +289,42 @@ Sources:
 
 **Still HOLD — no build.** Category has mature analogues in Salesforce. A Zoho-specific gap is plausible but not proven to have paid demand. No direct paid Zoho dependency graph found in a bounded search, not proof of whitespace. Function-source availability is edition-dependent, source is sensitive, and India extension payout is still unverified. Next is an edition-specific API coverage and payout gate, not coding.
 
+## 10. Edition-specific API and feature coverage matrix
+
+This is a **documented feature screen**, not a claim that all API endpoints have been tested against real tenant accounts. A production candidate would need to call Zoho's `/__features` endpoint and `/__apis` discovery endpoint for the connected organisation, then test each minimum READ scope with a real least-privilege user.
+
+| Zoho CRM plan / edition | Workflows | Blueprint | Functions / function source | Candidate implication |
+|---|---|---|---|---|
+| Free | Available with limited actions | Not listed as available | Full Functions entitlement not documented | Narrow field/layout inventory may be possible; workflow coverage is limited; code coverage is not promised |
+| Standard | Available | Not available | Functions available only through Extensions | Can investigate workflow metadata; function-source entitlement must be tested via extension-specific access |
+| Professional | Available | Available | Functions available only through Extensions | Better process coverage; same function API caveat |
+| Enterprise | Available | Available | Full Functions access documented | First edition where full Function API scan is documented |
+| Ultimate | Available | Available | Full Functions access documented | Fullest documented candidate scope; API limits still apply |
+| Zoho One / CRM Plus | Bundle/plan-specific | Verify organisation's CRM entitlement | Full Functions access documented | Must inspect actual CRM org feature/edition metadata rather than infer from bundle name |
+
+Evidence:
+- Zoho Edition & Role Guide: workflow actions limited in Free, Blueprints start at Professional, custom functions/advanced developer tools at Enterprise and Ultimate.  
+  https://help.zoho.com/portal/en/kb/crm/getting-started/articles/choose-your-path-edition-and-role-guide
+- Functions availability: full access on Enterprise, CRM Plus, Ultimate and Zoho One; Standard/Professional only through Extensions.  
+  https://www.zoho.com/crm/developer/docs/functions/limits-quotas.html
+- Functions List API errors include FEATURE_NOT_SUPPORTED where a license does not support Functions.  
+  https://www.zoho.com/crm/developer/docs/api/v8/functions-list.html
+- `/__features` returns current org feature availability and limits.  
+  https://www.zoho.com/crm/developer/docs/api/v8/get-features.html
+- `/__apis` discovers supported APIs by version, module or OAuth scope.  
+  https://www.zoho.com/crm/developer/docs/api/v8/list-available-rest-apis.html
+
+### Concurrency and source-data safety
+- Zoho CRM API concurrent-request limits are edition-based: Free 5, Standard/Starter 10, Professional 15, Enterprise/Zoho One 20, Ultimate/CRM Plus 25. These are **concurrency limits, not daily API-call allowances**. Daily API credits/endpoint-specific limits need separate verification.
+  https://www.zoho.com/crm/developer/docs/api/v8/api-limits.html
+- Function source code can include proprietary business logic, secrets in poorly designed scripts, and internal data models. Any download/scan must be explicit opt-in, read-only, locally processed where possible, and never sent to an external LLM by default.
+- Webhook and workflow metadata should be read with narrow READ scopes. The app must not create, edit or delete any configuration.
+- If any component cannot be read because of edition, permission, API limit or DC availability, show `NOT SCANNED`, not `NO DEPENDENCY`.
+- A complete scan must produce a coverage manifest: API endpoint, scope, edition, object/module, scan timestamp, result count, failures and excluded surfaces.
+
+### Updated technical gate
+The smallest credible first proof would cover module/field/layout metadata, mapped field dependencies, workflow conditions/actions, blueprints where licensed, webhooks, and functions only when the org entitlement permits. It must verify each edition separately. Do not market the candidate as universal or safe-to-delete.
+
 ## 11. Financial truth
 
 - Platform/provider-credited net earnings: ₹0.
