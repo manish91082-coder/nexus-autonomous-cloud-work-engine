@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
   "last_verified_head": "ce198f6751ebd6dd261eb8170ecd02e2de5ca573",
-  "current_focus": "Phase 54 completed NO-GO with no product selected. Generic BigCommerce Variant Price Import Preflight is rejected because Hypa Shift already supports existing variant updates by Product ID/Variant ID, Price/Sale Price, pre-import validation/correction and scheduled/URL-fed price feeds; BigCommerce native importer also provides variant price fields and initial preview/error summary. monday.com failure monitor, BigCommerce webhook failure monitor and Atom8 spend-tier clone remain rejected; pooled category pricing remains HOLD/not shortlisted. Phase 55 now researches Atlassian Forge Developer Cost Guard only. Strong developer pain signals exist for configurable USD budgets and cost-to-serve visibility, but native capabilities and API access are ambiguous: usage alerts docs list fixed resource allowance thresholds, April engineering blog says configured budgets, and August Atlassian staff said budget-based notifications unsupported. Resource-usage export API is experimental, owner-account authenticated, 5 requests/minute, non-Gov/Isolated; daily Usage/Costs dashboard refresh is 12:00 UTC. Commerce API token and invoice access boundaries remain unproven; invoice endpoint says Forge/OAuth2 apps cannot access. Atlassian India seller/EFT eligibility and distribution/payment route unverified. Candidate score 65/100 preliminary HOLD; no build, token setup, account, KYC, terms or spend. PCNE ₹0; bank settled ₹0; authorised spend ₹0.",
+  "current_focus": "Phase 54 completed NO-GO with no product selected. Generic BigCommerce Variant Price Import Preflight is rejected because Hypa Shift directly supports existing variant updates by Product ID/Variant ID, Price/Sale Price, pre-import validation/correction and scheduled/URL-fed price feeds; BigCommerce Modern Importer also exposes variant prices and preview/error summary. Generic monday automation failure monitor, BigCommerce webhook failure monitor and Atom8 customer-spend group automation remain NO-GO; generic pooled category pricing remains HOLD/not shortlisted. Phase 55 now researches Atlassian Forge Developer Cost Guard only. Developer demand signals exist for configurable USD budgets and app-level cost visibility, but native features/API are ambiguous: May Usage Alerts docs show fixed 50/75/90/100% resource allowance thresholds; April engineering blog also says 'configured budget'; August Atlassian staff says budget notifications unsupported. Resource Usage API is experimental, owner-account authenticated, 5 requests/minute, unavailable for Government/Isolated Cloud; dashboard refresh daily at 12:00 UTC. Commerce API token/access must be tested; invoice-list endpoint says Forge/OAuth2 apps cannot access it. India seller/EFT eligibility and permitted distribution/payment route unverified. Candidate score 65/100 preliminary HOLD; no build, token setup, account, KYC, terms or spend. PCNE ₹0; bank receipts ₹0; authorised spend ₹0.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -61,7 +61,7 @@
     "CRAZYGAMES_HTML5",
     "CREATOR_IP_DISTRIBUTION"
   ],
-  "last_exact_head_ci_status": "Latest exact verified worker remains #235 on ce198f6751ebd6dd261eb8170ecd02e2de5ca573 (all 14 steps passed). Subsequent Phase 54/55 research-report, registry and queue writes have not yet been verified on their exact latest HEAD. This state update will trigger Mission Worker; reconcile the exact resulting run before final handoff.",
+  "last_exact_head_ci_status": "Latest verified Mission Worker remains #235 on exact HEAD ce198f6751ebd6dd261eb8170ecd02e2de5ca573 (all 14 steps passed). Phase 54/55 report, registry, queue, mission-state and README commits through 8c6703cee0359eb113ab7dec8263102465d3c91d have not yet been exact-HEAD validated. This state transition will trigger the bounded Mission Worker; re-fetch and verify the exact run before final handoff.",
   "phase46_control_commits": [
     "72230902a478552d007d94d330e216238c9b2982",
     "ae552163e2b1e65590fc98454d8f7817bc73fa92",
@@ -145,7 +145,7 @@
     "082dc6c11bce97f5c2d715ea5d9bd3ae15889e3c",
     "81fecc16ee919cc509e7d7bc304c553583a5de5d"
   ],
-  "last_observed_head": "f8feecea9cd3964bc4f448a4a3341e2b28c09cb8",
+  "last_observed_head": "8c6703cee0359eb113ab7dec8263102465d3c91d",
   "phase53_research_order": [
     "WORDPRESS_PLUGIN_ECOSYSTEM",
     "GOOGLE_WORKSPACE_MARKETPLACE",
@@ -154,8 +154,8 @@
     "CHROME_WEB_STORE"
   ],
   "phase53_research_checkpoint": "14-Nov completed: WP webhook / Action Scheduler / COD fraud generic hypotheses NO-GO; Workspace attachment archival / invoice extraction / approvals / notification clones NO-GO. Formula Integrity technical matrix completed; HOLD due event/identity/API/quotas plus no proven recurring demand. Continue P53-001 Google Workspace problem-first research beyond these categories.",
-  "last_observed_at": "2026-11-14T05:00:00Z",
-  "resume_checkpoint": "PHASE_55 / P55-001 / ATLASSIAN-FORGE-DEVSPACE-COST-GUARD = HOLD_FOR_EVIDENCE. Re-fetch actual master HEAD every continuation. Phase 54 is closed NO-GO with no product selected; final report research/PHASE_54_P54_001_BIGCOMMERCE_VARIANT_PRICE_PREFLIGHT_FINAL_NO_GO_2026-11-14.md. Hypa Shift is the direct incumbent for generic BigCommerce variant price import preflight. P55 plan: research/PHASE_55_P55_001_ATLASSIAN_FORGE_DEVSPACE_COST_GUARD_RESEARCH_PLAN_2026-11-14.md. Next: resolve current Atlassian custom USD budget alert capability against conflicting official docs and Aug staff statement; verify owner-authenticated resource usage + Commerce token/invoice access; complete 10–15 competitor/substitute audit; confirm India Marketplace seller/EFT eligibility and permitted direct/Marketplace distribution route; obtain buyer-side WTP evidence. No real-time/hard billing stop claims. No account, KYC, API-token sharing, terms, listing, build or spend.",
+  "last_observed_at": "2026-11-14T05:29:41.599Z",
+  "resume_checkpoint": "PHASE_55 / P55-001 / ATLASSIAN-FORGE-DEVSPACE-COST-GUARD = HOLD_FOR_EVIDENCE. Re-fetch actual master HEAD every continuation. Phase 54 closed NO-GO/no product selected; final report research/PHASE_54_P54_001_BIGCOMMERCE_VARIANT_PRICE_PREFLIGHT_FINAL_NO_GO_2026-11-14.md. Hypa Shift directly covers the generic BigCommerce variant-price import/update/validation workflow. P55 plan: research/PHASE_55_P55_001_ATLASSIAN_FORGE_DEVSPACE_COST_GUARD_RESEARCH_PLAN_2026-11-14.md. Next: resolve Atlassian custom USD budget alert discrepancy using current official written evidence; verify owner-authenticated Resource Usage API + Commerce access and actual invoice restriction; complete 10–15 direct/adjacent substitute audit; verify India Marketplace seller/EFT eligibility and lawful distribution/payment model; obtain buyer-side WTP evidence. No real-time/hard billing-stop claims. No account, KYC, API-token sharing, terms, listing, build or spend.",
   "last_observed_head_semantics": "Live master HEAD observed immediately before this mission-state update; this update creates the next master commit. Always fetch live master again at next continuation.",
   "phase53_latest_report": "research/PHASE_53_FORMULA_INTEGRITY_TECHNICAL_FEASIBILITY_2026-11-14.md",
   "phase53_supporting_reports": [
@@ -252,9 +252,9 @@
     "captured_at": "2026-11-14",
     "task": "P54-001",
     "decision": "NO_GO_NO_PRODUCT_SELECTED",
-    "reason": "Hypa Shift already supports existing variant price updates by Product/Variant ID, Price/Sale Price fields, pre-import validation/correction and scheduled feeds; native BigCommerce importer provides variant pricing and preview/error summary.",
+    "reason": "Hypa Shift already supports existing variant price updates by Product/Variant ID, Price/Sale Price fields, pre-import validation/correction and scheduled/URL-fed price imports; BigCommerce native importer also supports variant price rows and preview/error summaries.",
     "report": "research/PHASE_54_P54_001_BIGCOMMERCE_VARIANT_PRICE_PREFLIGHT_FINAL_NO_GO_2026-11-14.md",
-    "opportunity_registry_count": 53,
+    "opportunity_registry_candidates": 53,
     "p54_002_to_005": "CANCELLED",
     "build_authorized": false,
     "spend_inr": 0
@@ -274,18 +274,18 @@
   },
   "phase55_cost_guard_evidence": {
     "demand_threads": 3,
-    "primary_sources": [
+    "sources": [
       "https://community.developer.atlassian.com/t/forge-platform-usage-costs-alerts-limits/102240",
       "https://community.developer.atlassian.com/t/forge-app-pricing-vs-actual-platform-costs/100000",
       "https://community.developer.atlassian.com/t/forge-usage-costs-for-development-staging-environments/99000"
     ],
-    "api_gate": "Owner-owned Atlassian account API token + X-ExperimentalAPI; experimental resource usage export; 5 requests/minute; usage grouped by app/site/environment; Government and Isolated Cloud unsupported.",
-    "freshness": "Usage/Costs dashboard daily refresh at 12:00 UTC; no real-time hard stop.",
-    "documentation_conflict": "April engineering blog says 50/75/90/100% of allowance or configured budget; May usage-alert docs describe fixed allowance thresholds; Atlassian staff in Aug 2026 says custom percentages/budget notifications unsupported. Written clarification required.",
-    "commerce_gate": "Commerce API requires generated access token; invoice list explicitly blocks Forge/OAuth2 apps; external vendor tool access and actual-cost reconciliation unproven.",
-    "india_payout": "Marketplace partner agreement requires own-name EFT and USD500 threshold, but India-specific eligibility not confirmed.",
-    "distribution_gate": "A Forge app is subject to Paid-via-Atlassian and may not use Paid-via-Vendor unless exception/permission; external local/CLI distribution route remains unresolved.",
-    "score": 65,
+    "resource_usage_api": "Experimental Atlassian GraphQL Gateway API; same account must own Forge app; API token + X-ExperimentalAPI; 5 requests/minute; supports groupBy ENVIRONMENT_ID/CONTEXT_ARI; unavailable in Government/Isolated Cloud.",
+    "dashboard_freshness": "Usage and Costs dashboard refreshes daily at 12:00 UTC; do not claim real-time cost monitoring or hard billing stop.",
+    "budget_alert_discrepancy": "April 2026 engineering blog says alerts at allowance or configured budget; May 2026 Usage Alerts docs list fixed allowance thresholds; Atlassian staff in August 2026 states configurable percentages and budget-based alerts not supported. Written current confirmation is required.",
+    "commerce_access": "Commerce REST requires generated access token; invoice list explicitly says Forge/OAuth2 apps cannot access. External owner-operated tool access and finalized invoice reconciliation remain unproven.",
+    "india_payout": "Partner Agreement requires valid own-name bank account and EFT, USD500 threshold; public India eligibility not confirmed.",
+    "distribution_gate": "Forge/Cloud Marketplace apps are generally Paid-via-Atlassian; Paid-via-Vendor has restrictions for Forge/Cloud apps. External local/CLI software distribution/payment route remains unresolved.",
+    "preliminary_score": 65,
     "status": "HOLD_FOR_EVIDENCE",
     "product_build_authorized": false,
     "spend_inr": 0
