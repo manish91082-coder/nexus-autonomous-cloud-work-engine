@@ -3266,3 +3266,8 @@ Next: inspect latest exact-HEAD continuity guard; add exponential retry scheduli
 ## Phase 59.8B1 hardening checkpoint — 14 November 2026
 
 Follow-on hardening commits added explicit Task schema version enforcement and deterministic capped exponential retry backoff (60s, 120s, 240s ... capped at 3600s), with a test proving early retry is rejected. Commits: runtime `e92816bca90ca503d2dcf57351c1b6ef7d9335ba`; tests `3c9da006912d3bc621fd7c64793814130c02a880`. Latest exact-HEAD CI run `43616373476` is PENDING at this checkpoint; earlier Phase B test run `43616218518` passed. No production integration, model inference or swarm deployment. P59-003 remains sole active task; P59-001 PAUSED; P59-002 BLOCKED; PCNE ₹0; spend ₹0.
+
+
+## Phase 59.8B1 CI failure and repair record — 14 November 2026
+
+The first retry-backoff hardening CI attempts failed at the new swarm test step. Source inspection identified the cause: a scripted edit had inserted literal escaped newline sequences into Python files. This was a source-generation defect, not a runtime design failure. Both files were corrected and fetched back: `scripts/swarm_runtime.py` repair commit `ea9f1e23466144dd6a0788abc42fe83471ac6bd2`; `tests/test_swarm_runtime.py` repair commit `186facc50a7192563a325047e48f96f271b470aa`. Exact repaired-HEAD CI run `43616472542` is pending. Do not count retry-backoff tests as passed until it succeeds. Production worker remains unchanged and disconnected from the new runtime.
