@@ -1629,7 +1629,10 @@
         "All Forge apps in a Developer Space contribute to one Developer Space bill; usage API is per app and one usageKey per request. Full roll-up and invoice line-item reconciliation is not yet proven.",
         "Developer Space billing documentation describes monthly invoices on day one and autopay; pricing/engineering material describes per-app free allowance. Exact total-space vs per-app threshold accounting must be reconciled to avoid double-counting.",
         "Usage API response is daily, with 5 requests/minute and paginated requests; multi-app/meter/context request volume and completeness need modelling.",
-        "Final invoice-list endpoint explicitly excludes Forge/OAuth2 apps. External owner-operated local-tool authorization and invoice access remain unverified."
+        "Final invoice-list endpoint explicitly excludes Forge/OAuth2 apps. External owner-operated local-tool authorization and invoice access remain unverified.",
+        "External local/self-hosted tool's supported owner-authorized access to Developer Space invoices, per-app line items, payment method validity and dunning/pre-dunning status remains unverified; invoice-list REST endpoint excludes Forge/OAuth2 apps.",
+        "Enforcement state is Developer Space-wide after unresolved 14-day pre-dunning; no supported external billing-state API or webhook has been verified.",
+        "Request volume and completeness for app × usageKey × context/environment, including pagination and all current billable meters, must be modelled."
       ],
       "ip_and_policy_status": "Local/self-hosted design only. Owner API token stays on owner's device; never request or store credentials in ChatGPT/GitHub. Minimum-privilege account; no user issue content, customer PII or external LLM use. Must label delayed estimates and never promise a hard billing stop.",
       "note": "P55-001 research-only candidate. Preliminary score 65/100 does not clear hard gates. No build, account, token setup, KYC, terms, Marketplace listing or spend.",
@@ -1646,18 +1649,16 @@
         "https://community.developer.atlassian.com/t/forge-app-pricing-vs-actual-platform-costs/100000",
         "https://community.developer.atlassian.com/t/forge-usage-costs-for-development-staging-environments/99000",
         "https://developer.atlassian.com/platform/forge/developer-space/billing-for-developer-spaces/",
-        "https://developer.atlassian.com/platform/forge/developer-space/export-app-resource-usage/",
-        "https://developer.atlassian.com/platform/forge/monitor-usage-metrics/",
-        "https://developer.atlassian.com/platform/commerce/rest/api-group-invoices/",
         "https://www.atlassian.com/blog/how-we-build/engineering-the-forge-billing-platform-for-reliability-and-scale"
       ],
-      "next_exact_work": "Resolve Developer Space billing aggregation vs per-app usage API grain. Verify that owner-operated external local tool can query Commerce invoices/line items despite invoice-list restriction for Forge/OAuth2 apps. Calculate request volume/latency across app × usageKey × contexts. Reconcile per-app free thresholds with Developer Space invoice roll-up. No API token, account, build or spend.",
+      "next_exact_work": "Verify owner-authorized external read-only access to Developer Space billing account invoices, line items, payment method state, dunning/pre-dunning and enforcement exposure; calculate app × usageKey × context/environment request volume and daily freshness; resolve budget alert discrepancy; complete competitor/WTP and India payout/distribution gates. Keep HOLD; no API token, build or spend.",
       "billing_attribution": {
-        "usage_grain": "Per app, resource/meter, date and context/environment. Resource Usage API takes appId and one usageKey per request; contextAris and groupBy supported; 5 requests/minute; daily response resolution.",
-        "billing_grain": "Developer Space level. All apps in space contribute to same billing/transaction account; monthly invoice generated on first day for prior-month usage; autopay attempted on first of month.",
-        "reconciliation": "Forge engineering article says free allowance is evaluated per app and invoice line items reflect per-app overages, but the Developer Space billing page describes space total usage against the free threshold. Precise threshold aggregation and invoice line-item access require authoritative reconciliation.",
-        "commerce_gate": "Resource Usage guide points to Commerce public APIs for cost; Commerce invoice-list API says Forge and OAuth2 apps cannot access. External owner-tool auth model not proven.",
-        "freshness": "Daily dashboard refresh 12:00 UTC; no real-time/hard stop."
+        "free_allowance": "Official Forge pricing FAQ confirms each app gets its own monthly free allowance; allowances are not shared across apps.",
+        "usage_grain": "Per app, billable meter/usageKey, daily period, context/site and environment. Resource Usage API requires appId, single usageKey per request, page/context filters; 5 requests/minute.",
+        "billing_grain": "All app overages in the same Developer Space are consolidated into one monthly invoice and one linked transaction account. Invoice is generated on the first day for prior-month usage; autopay attempted that day.",
+        "enforcement_risk": "Developer Space billing docs: if billing/payment failure remains unresolved after a 14-day pre-dunning window, enforcement applies to all apps in that Developer Space; if a valid payment method exists but payment fails, a 21-day dunning period applies.",
+        "invoice_access": "Billing Console UI exposes subscriptions, invoices and payment status. Public invoice-list API explicitly excludes Forge and OAuth2 apps; external owner-tool authorized access remains unverified.",
+        "cost_freshness": "Usage API sample is daily resolution; Developer Console Usage/Costs dashboard refreshes daily at 12:00 UTC. No real-time hard stop."
       }
     },
     {
