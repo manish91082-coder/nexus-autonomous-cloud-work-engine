@@ -32,7 +32,7 @@ Older V1/V2/V3 plans and old phase reports remain preserved as history. V4 is au
 ## Current checkpoint — 13 November 2026
 
 - Mission phase: **PHASE 54 — Alternative App Marketplace Research**.
-- Zoho CRM Field Retirement Impact Preflight is a **HOLD** research candidate only: partial read-only API coverage exists, but full cross-app dependencies, paid demand and India extension payout are unverified. No build or account setup.
+- Zoho CRM Field Retirement Impact Preflight is a **HOLD** research candidate only: partial read-only API coverage exists, but full cross-app dependencies, paid demand and India extension payout are unverified. No build or account setup. Zoho CRM V8 daily API credits are now documented separately from concurrency; use the canonical Phase 54 plan's seller-remittance/API-credit gate. Wix paid apps require Partner + Tipalti; $200 threshold is per app, while India eligibility depends on the unidentified payer entity. No account, KYC, terms or spending.
 - Platform-level order already researched: Atlassian Marketplace / Forge (#1), Shopify App Store (#2), Microsoft Marketplace (#3), Apify Store (#4), Getvik (#5), CrazyGames (#6), then creator/IP distribution lanes.
 - Phase 46: generic AI Business Automation Reviewer — **NO-GO**.
 - Phase 47: Shopify Flow Action Reliability Gateway — **NO-GO**.
