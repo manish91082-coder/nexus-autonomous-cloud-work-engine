@@ -2323,8 +2323,8 @@
             "decision": "No direct paid field-dependency graph found in this bounded search; whitespace and willingness-to-pay remain unproven."
           },
           "competitor_audit": {
-            "named_references": 17,
-            "zoho_native_or_marketplace": 8,
+            "named_references": 22,
+            "zoho_native_or_marketplace": 13,
             "salesforce_cross_crm_analogues": 9,
             "cross_crm_not_direct_for_zoho": true,
             "published_prices": {
@@ -2334,7 +2334,14 @@
               "fieldrat": "Free"
             },
             "decision": "Broader field-impact category is commercially validated in Salesforce but that does not validate Zoho demand. No direct paid Zoho dependency graph found in bounded search; keep HOLD.",
-            "api_gate": "Functions full access Enterprise/CRM Plus/Ultimate/Zoho One; Standard/Professional through Extensions only. READ scopes exist; source is sensitive/opt-in. API concurrency 5–25 by edition is not daily API quota."
+            "api_gate": "Functions full access Enterprise/CRM Plus/Ultimate/Zoho One; Standard/Professional through Extensions only. READ scopes exist; source is sensitive/opt-in. API concurrency 5–25 by edition is not daily API quota.",
+            "additional_zoho_marketplace_adjacent": [
+              "Workflow Studio for Zoho CRM (cross-module field updates)",
+              "Logs for Zoho CRM (free, runtime logging)",
+              "Multi-Blueprint for Zoho CRM (free)",
+              "Module and Field Clone for Zoho CRM (free, 300+ installs)",
+              "Google Sheets Magic Lookup for Zoho CRM (200+ installs; field mapping/update)"
+            ]
           },
           "edition_api_matrix": {
             "free": "Workflows limited actions; no Blueprint; full Function entitlement undocumented",
@@ -2365,8 +2372,10 @@
           "commission_report": "For extension developers, total customer transaction value equals gross commission due",
           "statement_threshold": "USD 100 outstanding",
           "wire_timing": "About 15 working days after developer approves processing",
-          "india_eligibility": "Not explicitly confirmed by public extension payout guidance",
-          "reseller_inr_50000_threshold": "Separate reseller programme; not the Marketplace extension threshold"
+          "india_eligibility": "Still not explicitly confirmed by public payout docs.",
+          "reseller_inr_50000_threshold": "Separate reseller programme; not the Marketplace extension threshold",
+          "crm_extension_faq": "Monthly developer payment when generated amount is >=USD100; free/one-time/monthly extension pricing; private installation URL restricted to Enterprise+.",
+          "general_marketplace_review": "2–3 week multi-stage approval stated in general partner FAQ; CRM Extension FAQ states 48h; plan with 2–3 weeks until exact review route reconfirmed."
         },
         "wix_payout_clarification": {
           "threshold_usd": 200,
@@ -2374,7 +2383,7 @@
           "payout_currency": "USD",
           "india_app_developer_eligibility": "Not explicitly confirmed by public App Market developer guidance"
         },
-        "next_exact_work": "Complete technical coverage and seller/payout proof checklist; validate API feature entitlement by Zoho edition using official __features/__apis design, not a live customer account. Candidate remains HOLD. No build."
+        "next_exact_work": "Complete exact Marketplace eligibility and India payout confirmation via official published material, and refine technical proof boundaries. 22 native/direct-adjacent reference audit done (13 Zoho/9 Salesforce analogues). Candidate remains HOLD; no build."
       }
     },
     {
