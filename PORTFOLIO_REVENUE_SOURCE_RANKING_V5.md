@@ -69,3 +69,18 @@ The first public evidence batch is recorded in [Phase 59.1 report](research/PHAS
 **Critical accounting distinction:** a subscription SaaS product distributed through Atlassian and Microsoft is one revenue engine with multiple distribution rails, not two separate products. Every paid transaction is counted once.
 
 **Next:** compare owned/licensable software assets with greenfield B2B software; identify a narrow recurring high-value buyer problem; audit 10–15 substitutes; quantify reachable buyer count, pricing, acquisition, repeatability and net economics; verify rights, India seller/payout and owner gates. Product selection remains NONE and build authorization remains NO.
+
+
+## 8. Evidence batch 02 — existing asset audit (14-Nov-2026)
+
+The initial repository asset audit is recorded in [Phase 59.2 report](research/PHASE_59_2_EXISTING_SOFTWARE_IP_ASSET_AUDIT_2026-11-14.md).
+
+- Eight canonical product entries were reviewed. No existing asset currently passes the V5 first-product gate.
+- Recruitment Agency Revenue Assurance Desk v0.3.0 is technically the most complete canonical commercial utility, with documented formula/mission CI and Chromium/Firefox QA, but the product registry explicitly freezes it due to insufficient differentiation and scalable distribution evidence. It is not the first-source winner.
+- MSME Ops Desk Lite remains FREE_SAMPLE_ONLY_HOLD; generic features overlap free calculators and trackers.
+- Job-to-Cash, CSV-to-Action, Message-to-Action, Revenue Ops and Travel demos remain unpriced/no-demand, incomplete or duplicative. Orbit Relay is NO-GO as-is.
+- AgentMargin Workbench in the separate ₹1,000/day repository is a candidate asset, not selected: source import remains pending, browser QA incomplete, no live hosting, demand, sales or payout evidence.
+- Tech Cloud ERP is a user-reported 35-module asset family, but no matching repository/source tree surfaced in the connected GitHub account search. Ownership, access, module inventory, deployment, tests, support burden and reuse rights are unverified. Absence from this search is not proof the source does not exist.
+- Therefore B2B productized software / vertical SaaS remains the provisional FIRST source family, but concrete product selection remains NONE and build authorization remains NO.
+
+**Next:** research a narrow recurring vertical buyer problem without presuming ERP is the answer; prepare the ERP evidence checklist; qualify AgentMargin against 10–15 substitutes, price-bearing WTP, recurrence and net economics; compare both against a greenfield candidate.
