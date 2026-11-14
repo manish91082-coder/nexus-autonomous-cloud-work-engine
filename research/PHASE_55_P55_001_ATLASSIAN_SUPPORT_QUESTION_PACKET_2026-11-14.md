@@ -66,3 +66,14 @@ Sources:
 - https://www.atlassian.com/blog/how-we-build/engineering-the-forge-billing-platform-for-reliability-and-scale
 
 These facts do not mean our proposed product can read billing status or avert enforcement. External billing-state access is still unverified. This packet remains **NOT SENT**.
+
+
+## Additional question set F — Developer Space Insights and existing native coverage
+1. Does Atlassian expose a supported API for the same aggregated data shown in Developer Space Insights, including the Top Apps by Resource Usage chart, all app rows (not only the top three displayed), and the 30-day cost/resource window?
+2. Is the Developer Space Insights dashboard expected to remain the primary supported way to compare app costs and resource use across a Developer Space, or is a separate export/API supported for that aggregate view?
+3. Can a Developer Space owner configure arbitrary USD budget alerts or custom escalation recipients in addition to the standard 50/75/90/100% usage-allowance emails? Is there an API for writing those policies?
+4. What information is intentionally hidden from Developer Space Insights and the App Resource Usage API that would require the Billing Console, including invoice status, payment status, transaction-account identifiers, and pre-dunning/dunning/enforcement state?
+
+The Developer Space Insights page (last updated 4-Jun-2026) already aggregates all Forge apps for logs, errors, alerts, performance and cost/resource visibility. Its Top Apps by Resource Usage chart shows the top three apps over 30 days; other dashboard charts default to 24 hours; production/development/staging are included; it is read-only. A generic multi-app dashboard must therefore not be proposed as a differentiator. The remaining possible gap is only custom USD-budget policy or billing-state alerts, subject to confirmation.
+
+Official source: https://developer.atlassian.com/platform/forge/developer-space/developer-space-insights/
