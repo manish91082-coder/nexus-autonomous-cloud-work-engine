@@ -62,7 +62,7 @@ Why this is not a generic CRM-cleanup clone:
 
 Detailed report: `research/PHASE_54_ZOHO_CRM_CONFIGURATION_DEPENDENCY_AUDIT_2026-11-14.md`.
 
-Competitor audit expanded (14-Nov): 17 named native/direct/adjacent references: 8 Zoho-native/Marketplace features and 9 Salesforce cross-CRM analogues. The Salesforce analogues demonstrate category maturity and commercial alternatives, not Zoho buyer demand. Elements.cloud lists $6,800/year at 100 Salesforce users; Jetstream Professional $25/month; SchemaForce Pro $149/month and Business $399/month; FieldRat is free. A Zoho CRM governance tag search found only one free extension but is not exhaustive. Zoho Functions full access: Enterprise/CRM Plus/Ultimate/Zoho One; Standard/Professional only through Extensions. Function READ scopes exist but source is sensitive. API concurrency 5–25 by edition is not daily quota.
+Competitor audit expanded (14-Nov): 22 named native/direct/adjacent references: 13 Zoho-native/Marketplace features and 9 Salesforce cross-CRM analogues. The Salesforce analogues demonstrate category maturity and commercial alternatives, not Zoho buyer demand. Elements.cloud lists $6,800/year at 100 Salesforce users; Jetstream Professional $25/month; SchemaForce Pro $149/month and Business $399/month; FieldRat is free. A Zoho CRM governance tag search found only one free extension but is not exhaustive. Zoho Functions full access: Enterprise/CRM Plus/Ultimate/Zoho One; Standard/Professional only through Extensions. Function READ scopes exist but source is sensitive. API concurrency 5–25 by edition is not daily quota.
 
 Edition-specific technical screen:
 - Free: Workflows are available with limited actions; Blueprint is not listed; full Functions entitlement is not documented.
@@ -71,6 +71,8 @@ Edition-specific technical screen:
 - Enterprise/Ultimate: Workflows, Blueprint and full Functions access.
 - Zoho One/CRM Plus: full Functions access is documented, but verify the actual CRM org entitlements.
 Use `/__features` and `/__apis` for each tenant. API concurrency (5,10,15,20,25 by edition) is not a daily request quota. Every missing component must be labelled NOT SCANNED, never “no dependency.” Source code must be opt-in and not sent to external LLMs by default. See the full edition matrix in `research/PHASE_54_ZOHO_CRM_CONFIGURATION_DEPENDENCY_AUDIT_2026-11-14.md`.
+
+Additional Zoho Marketplace adjacent tools: Workflow Studio (cross-module field updates), Logs for Zoho CRM (free runtime logs), Multi-Blueprint (free), Module and Field Clone (free, 300+ installs), and Google Sheets Magic Lookup (200+ installs). None is a documented full field-dependency graph. Zoho CRM Extension FAQ says payment monthly if ≥USD100 generated; private install URLs are Enterprise+ only; overall Marketplace approval FAQ says 2–3 weeks while older extension FAQ says 48h, so budget longer. Public payout docs still do not confirm India seller bank eligibility, FX or tax treatment.
 
 **Disposition: HOLD — no MVP or account setup.** Problem evidence exists, but paid purchase volume, recurring budget, verified India seller payout and complete technical coverage remain unproven. The next P54-001 work is a targeted 10–15 direct/substitute audit and stricter payout/permission verification.
 
