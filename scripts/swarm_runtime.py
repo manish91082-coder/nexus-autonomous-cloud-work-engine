@@ -1,0 +1,191 @@
+"""Deterministic, provider-neutral swarm control primitives (stdlib only).
+
+This module is deliberately not wired into the production worker yet. It provides
+pure state transitions for review and failure-injection tests. Model output and
+task payloads are untrusted data; this module never executes task content.
+"""
+from __future__ import annotations
+
+from copy import deepcopy
+from datetime import datetime, timedelta, timezone
+import hashlib
+import json
+import re
+
+SCHEMA_VERSION = "1.0"
+TASK_STATES = {"READY", "LEASED", "IN_PROGRESS", "COMPLETED", "FAILED", "DEAD_LETTER", "PAUSED", "BLOCKED"}
+OWNER_GATED_ACTIONS = {
+    "ACCOUNT_CREATE", "KYC", "ACCEPT_TERMS", "SPEND", "PUBLIC_RELEASE",
+    "PAYMENT_SETUP", "IRREVERSIBLE_EXTERNAL_ACTION", "SECRET_ACCESS",
+    "WALLET_ACCESS", "MONEY_MOVEMENT",
+}
+
+
+class ContractError(ValueError):
+    pass
+
+
+def utc_now(value=None):
+    if value is None:
+        value = datetime.now(timezone.utc)
+    if value.tzinfo is None:
+        raise ContractError("timestamps must be timezone-aware")
+    return value.astimezone(timezone.utc)
+
+
+def iso(value=None):
+    return utc_now(value).isoformat().replace("+00:00", "Z")
+
+
+def stable_idempotency_key(task):
+    required = ("id", "task_type", "version")
+    if any(not task.get(k) for k in required):
+        raise ContractError("task requires id, task_type and version")
+    raw = json.dumps(
+        {k: task[k] for k in required} | {"payload": task.get("payload", {})},
+        sort_keys=True, separators=(",", ":"), ensure_ascii=False,
+    )
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+
+def validate_task(task):
+    if not isinstance(task, dict):
+        raise ContractError("task must be an object")
+    for key in ("id", "task_type", "version", "status", "payload", "depends_on"):
+        if key not in task:
+            raise ContractError(f"missing task field: {key}")
+    if task["status"] not in TASK_STATES:
+        raise ContractError("invalid task status")
+    if not isinstance(task["payload"], dict) or not isinstance(task["depends_on"], list):
+        raise ContractError("payload must be object and depends_on must be array")
+    if task.get("max_attempts", 3) < 1 or task.get("max_attempts", 3) > 10:
+        raise ContractError("max_attempts must be 1..10")
+    return True
+
+
+def validate_evidence(item):
+    required = ("evidence_id", "claim", "source_type", "source_uri", "retrieved_at_utc", "sha256", "status")
+    if not isinstance(item, dict) or any(not item.get(k) for k in required):
+        raise ContractError("evidence requires id, claim, provenance, timestamp, hash and status")
+    if item["source_type"] not in {"OFFICIAL", "PRIMARY", "SECONDARY", "INTERNAL_TEST", "MODEL_DRAFT"}:
+        raise ContractError("unknown evidence source_type")
+    if item["status"] not in {"VERIFIED", "UNVERIFIED", "CONTRADICTED", "REJECTED"}:
+        raise ContractError("unknown evidence status")
+    if not re.fullmatch(r"[a-f0-9]{64}", item["sha256"]):
+        raise ContractError("evidence sha256 must be lowercase hex")
+    return True
+
+
+def validate_run(run):
+    required = ("run_id", "schema_version", "task_id", "worker_id", "started_at_utc", "status")
+    if not isinstance(run, dict) or any(not run.get(k) for k in required):
+        raise ContractError("run contract incomplete")
+    if run["schema_version"] != SCHEMA_VERSION:
+        raise ContractError("unsupported run schema")
+    if run["status"] not in {"RUNNING", "SUCCEEDED", "FAILED", "ABORTED"}:
+        raise ContractError("invalid run status")
+    return True
+
+
+def eligible_tasks(tasks):
+    by_id = {t.get("id"): t for t in tasks}
+    if len(by_id) != len(tasks) or None in by_id:
+        raise ContractError("task ids must be unique and non-empty")
+    for task in tasks:
+        validate_task(task)
+        for dep in task["depends_on"]:
+            if dep not in by_id:
+                raise ContractError(f"unknown dependency: {dep}")
+    return sorted(
+        [t for t in tasks if t["status"] == "READY" and not t.get("owner_gate")
+         and all(by_id[d]["status"] == "COMPLETED" for d in t["depends_on"])],
+        key=lambda t: ({"P0": 0, "P1": 1, "P2": 2, "P3": 3}.get(t.get("priority"), 9), t["id"]),
+    )
+
+
+def new_state():
+    return {"schema_version": SCHEMA_VERSION, "tasks": [], "runs": [], "dead_letters": [], "events": []}
+
+
+def claim_task(state, task_id, worker_id, now=None, lease_seconds=900, max_concurrency=5):
+    now = utc_now(now)
+    if lease_seconds < 30 or lease_seconds > 3600:
+        raise ContractError("lease_seconds must be 30..3600")
+    active = [t for t in state["tasks"] if t["status"] in {"LEASED", "IN_PROGRESS"}]
+    if len(active) >= max_concurrency:
+        raise ContractError("concurrency limit reached")
+    task = next((t for t in state["tasks"] if t["id"] == task_id), None)
+    if task is None or task not in eligible_tasks(state["tasks"]):
+        raise ContractError("task is not eligible")
+    key = stable_idempotency_key(task)
+    task.update({
+        "status": "LEASED", "idempotency_key": key, "lease_owner": worker_id,
+        "lease_expires_at_utc": iso(now + timedelta(seconds=lease_seconds)),
+        "heartbeat_at_utc": iso(now), "attempts": int(task.get("attempts", 0)) + 1,
+    })
+    state["events"].append({"type": "TASK_CLAIMED", "task_id": task_id, "worker_id": worker_id, "at_utc": iso(now)})
+    return deepcopy(task)
+
+
+def heartbeat(state, task_id, worker_id, now=None, lease_seconds=900):
+    now = utc_now(now)
+    task = next((t for t in state["tasks"] if t["id"] == task_id), None)
+    if not task or task.get("lease_owner") != worker_id or task["status"] not in {"LEASED", "IN_PROGRESS"}:
+        raise ContractError("worker does not own an active lease")
+    task["status"] = "IN_PROGRESS"
+    task["heartbeat_at_utc"] = iso(now)
+    task["lease_expires_at_utc"] = iso(now + timedelta(seconds=lease_seconds))
+    return deepcopy(task)
+
+
+def recover_stale_leases(state, now=None):
+    now = utc_now(now)
+    recovered = []
+    for task in state["tasks"]:
+        if task["status"] not in {"LEASED", "IN_PROGRESS"}:
+            continue
+        expiry = datetime.fromisoformat(task["lease_expires_at_utc"].replace("Z", "+00:00"))
+        if expiry <= now:
+            task.pop("lease_owner", None)
+            task.pop("lease_expires_at_utc", None)
+            task["status"] = "READY" if task.get("attempts", 0) < task.get("max_attempts", 3) else "DEAD_LETTER"
+            recovered.append(task["id"])
+            if task["status"] == "DEAD_LETTER":
+                state["dead_letters"].append({"task_id": task["id"], "reason": "STALE_LEASE_RETRY_EXHAUSTED", "at_utc": iso(now)})
+    return recovered
+
+
+def finish_task(state, task_id, worker_id, success, result=None, error_code=None, now=None):
+    now = utc_now(now)
+    task = next((t for t in state["tasks"] if t["id"] == task_id), None)
+    if not task or task.get("lease_owner") != worker_id or task["status"] not in {"LEASED", "IN_PROGRESS"}:
+        raise ContractError("completion requires the current lease owner")
+    task.pop("lease_owner", None)
+    task.pop("lease_expires_at_utc", None)
+    if success:
+        task["status"] = "COMPLETED"
+        task["result"] = result if isinstance(result, dict) else {}
+    else:
+        exhausted = task.get("attempts", 0) >= task.get("max_attempts", 3)
+        task["status"] = "DEAD_LETTER" if exhausted else "READY"
+        task["last_error_code"] = (error_code or "UNSPECIFIED")[:80]
+        if exhausted:
+            state["dead_letters"].append({"task_id": task_id, "reason": task["last_error_code"], "at_utc": iso(now)})
+    state["events"].append({"type": "TASK_FINISHED", "task_id": task_id, "status": task["status"], "at_utc": iso(now)})
+    return deepcopy(task)
+
+
+def authorize_action(action, owner_approved=False):
+    if action in OWNER_GATED_ACTIONS and owner_approved is not True:
+        raise ContractError(f"owner approval required: {action}")
+    if action not in OWNER_GATED_ACTIONS and not re.fullmatch(r"[A-Z][A-Z0-9_]{1,63}", action or ""):
+        raise ContractError("invalid action identifier")
+    return True
+
+
+def assert_pcne_non_regression(previous_inr, proposed_inr):
+    if not isinstance(previous_inr, (int, float)) or not isinstance(proposed_inr, (int, float)):
+        raise ContractError("PCNE values must be numeric")
+    if proposed_inr < previous_inr:
+        raise ContractError("PCNE ledger cannot regress")
+    return True
