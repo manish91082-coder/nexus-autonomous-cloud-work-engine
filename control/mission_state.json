@@ -10,7 +10,7 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
-  "last_verified_head": "f5a3cf92fb9b45c2cd97b1c1f3fea71afeb0cb98",
+  "last_verified_head": "2d7f5e06bc7be1a81415373fb9270d31bca5f14c",
   "current_focus": "₹10 Cr combined Portfolio Cumulative Net Earnings mission. Continue V5 portfolio-wide source research after the swarm control-plane foundation reaches safe handoff. No concrete product selected; no build authorized. P59-001 PAUSED until P59-003 safe handoff; P59-002 BLOCKED. PCNE ₹0; authorized spend ₹0.",
   "owner_gates": [
     "account_creation_if_required",
@@ -134,7 +134,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Verify CI run 43616548880 on exact HEAD. If green, add state-corruption and hostile-payload isolation tests. Do not integrate into production worker yet.",
+  "next_focus": "Verify run 43616623657 on exact runtime commit; then add corruption and hostile-payload isolation tests. Production integration remains blocked.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -770,18 +770,19 @@
       "Add deterministic capped exponential retry backoff",
       "Add early-retry rejection test"
     ],
-    "latest_ci_run_id": 43616548880,
-    "latest_ci_status": "IN_PROGRESS_AFTER_BACKOFF_FIX",
+    "latest_ci_run_id": 43616623657,
+    "latest_ci_status": "IN_PROGRESS_AFTER_RETRY_TIMESTAMP_PERSISTENCE_FIX",
     "failed_runs": [
       43616366774,
       43616373476,
       43616410133
     ],
-    "failure_diagnosis": "First repaired run exposed missing available_at_utc filter in eligible_tasks; the retry delay timestamp was recorded but not enforced. Added timestamp eligibility check; exact-HEAD rerun is in progress.",
+    "failure_diagnosis": "CI showed eligibility filter was present but finish_task did not persist available_at_utc. Corrected finish_task to persist capped exponential retry timestamp; exact-head CI pending.",
     "repair_commits": [
       "ea9f1e23466144dd6a0788abc42fe83471ac6bd2",
       "186facc50a7192563a325047e48f96f271b470aa"
     ],
-    "retry_backoff_fix_commit": "f5a3cf92fb9b45c2cd97b1c1f3fea71afeb0cb98"
+    "retry_backoff_fix_commit": "f5a3cf92fb9b45c2cd97b1c1f3fea71afeb0cb98",
+    "retry_timestamp_persistence_fix": "2d7f5e06bc7be1a81415373fb9270d31bca5f14c"
   }
 }
