@@ -2305,7 +2305,23 @@
             "no paid buyer/subscription evidence",
             "India extension-developer payout eligibility/currency/fees/tax unconfirmed"
           ],
-          "next_exact_work": "Audit 10–15 direct/adjacent competitor and substitute products; verify India Marketplace extension payout and OAuth/edition compatibility. Do not build."
+          "next_exact_work": "Audit 10–15 direct/adjacent CRM admin/dependency tooling products, verify minimal read-only API edition permissions, and confirm India extension seller payout. Keep candidate HOLD; do not build.",
+          "marketplace_substitute_audit": {
+            "direct_tag_search": "Zoho Marketplace CRM governance tag returned one free result: Configuration Logs Tracker for Zoho CRM (0 visible ratings); bounded tag search, not exhaustive",
+            "adjacent_extensions": [
+              "Configs for Zoho CRM (free standard-layout schema CSV)",
+              "Audit Tool for Zoho CRM (free, 100+ installs; record completeness)",
+              "Data Guardian for Zoho CRM (data-health scoring/validation/scheduled reports)"
+            ],
+            "native_substitutes": [
+              "Admin Tools Enterprise+",
+              "Audit Log",
+              "Unused Fields",
+              "Mapped Dependency Fields API",
+              "Workflow Usage report"
+            ],
+            "decision": "No direct paid field-dependency graph found in this bounded search; whitespace and willingness-to-pay remain unproven."
+          }
         },
         "zoho_payout_clarification": {
           "developer_console_and_listing_fee": "Official FAQ says free",
