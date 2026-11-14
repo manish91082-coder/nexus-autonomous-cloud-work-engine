@@ -80,6 +80,17 @@ class SwarmRuntimeTests(unittest.TestCase):
         with self.assertRaises(ContractError):
             validate_state(broken)
 
+
+    def test_malformed_task_types_fail_closed(self):
+        bad = task()
+        bad["max_attempts"] = "many"
+        with self.assertRaises(ContractError):
+            validate_state(self.state(bad))
+        bad = task()
+        bad["depends_on"] = ["A", "A"]
+        with self.assertRaises(ContractError):
+            validate_state(self.state(bad))
+
     def test_active_task_requires_valid_lease(self):
         broken = self.state(task(status="IN_PROGRESS"))
         with self.assertRaises(ContractError):
