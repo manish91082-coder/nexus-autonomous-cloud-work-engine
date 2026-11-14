@@ -217,7 +217,79 @@ The problem is credible and the read-only API surface is promising enough for co
 
 P54-001 remains IN PROGRESS. Zoho stays the first marketplace research lane; this candidate remains a single HOLD hypothesis. Wix stays second, subject to explicit India app-payout validation. No owner gate has been exercised.
 
-## 9. Financial truth
+## 10. Expanded competitor audit — 17 native/direct-adjacent references
+
+The candidate has now been compared against **17 named native, direct or adjacent tools/features**. These do not all compete directly for a Zoho CRM install; Salesforce products are cross-CRM analogues that prove the broader field-impact category is an established product area.
+
+### Zoho-native / Zoho Marketplace (8 references)
+
+| # | Tool / feature | Function | Relation to candidate |
+|---|---|---|---|
+| 1 | Zoho CRM Admin Tools (Enterprise+) | Last-used/modified/executed filters and cleanup/deletion for selected configuration types | Strong native cleanup substitute; no documented dependency graph across all components |
+| 2 | Zoho CRM Audit Log | Historical admin/user changes; records field-dependency mapping changes | Strong audit-history substitute; not prospective field impact |
+| 3 | Zoho Workflow Usage Report / API | Workflow execution counts and usage patterns | Usage signal only; not a dependency map; some trigger types are not counted |
+| 4 | Zoho Unused Fields + Map Dependency | Retains fields removed from layouts; exposes parent-child picklist mappings | Native field lifecycle and relationship substitute, but not workflow/function/code reference graph |
+| 5 | Configuration Logs Tracker for Zoho CRM (free; 0 visible ratings) | Setup-change history for workflows, functions, buttons, schedules, layouts | Direct-adjacent configuration governance |
+| 6 | Configs for Zoho CRM (free) | Standard-layout field schema CSV export | Field inventory/documentation substitute; not references |
+| 7 | Audit Tool for Zoho CRM (free; 100+ installs) | Incomplete-record/data completeness audit | Adjacent data quality, not configuration dependency |
+| 8 | Data Guardian for Zoho CRM | Health scoring, record validation, tasks and scheduled data-health reports | Adjacent data quality/governance |
+
+### Salesforce cross-CRM analogues (9 references)
+
+| # | Tool / feature | Published capability / commercial signal | Why it matters |
+|---|---|---|---|
+| 9 | Salesforce native “Where is this used?” | Custom field references across formulas, layouts, Apex, Flows, reports and more; official limits include 2,000-entry cap, managed-package gaps and omitted joined reports | Strong first-party analogue; demonstrates customer/platform recognition of pre-change field impact |
+| 10 | SFDXLabs Salesforce Toolkit | VS Code extension with Where Used, Dependency Viewer, field usage and overview; warns dynamic/unresolved references may be absent | Developer workflow analogue; local source + Tooling API |
+| 11 | Elements.cloud Impact Analysis / Insights | Field dependency tree/grid across metadata; published Core list price $6,800/year for 100 Salesforce users | Enterprise paid willingness-to-pay proxy, not Zoho conversion evidence |
+| 12 | Metaforce Find Dependencies | Tooling API dependency graph for fields, objects, Apex, Flows, Lightning components | Direct technical analogue for Salesforce |
+| 13 | Salesforce Inspector Reloaded | Field population/use analysis inside Salesforce; uses API calls and warns about API-limit consumption | Free/low-friction adjacent field utilization |
+| 14 | sfdx-hardis `fieldusage` | Open-source CLI uses Tooling API/MetadataComponentDependency to list fields and referencing components; CSV/JSON/report output | Free/open-source technical substitute |
+| 15 | Jetstream Data Analysis / Field Usage | Paid field-usage and Where Used analysis; public Professional plan $25/month | Paid recurring field cleanup analogue |
+| 16 | SchemaForce Impact Analysis | Free data dictionary/impact analysis; public pricing lists Pro $149/month and Business $399/month per workspace | Paid/free metadata governance analogue |
+| 17 | FieldRat | Free AppExchange tool with Quick Scan 11 metadata types and Deep Scan 23 metadata types, risk score and cleanup evidence | Free feature-rich direct analogue in Salesforce |
+
+### What this audit proves — and does not prove
+
+- There are credible direct/adjacent products in the broader CRM field-impact and metadata-governance category. Calling the idea globally novel would be false.
+- Salesforce already has a native Where-is-this-used function and multiple third-party solutions. This narrows any gap to a **Zoho-specific** use case, if one exists.
+- The Zoho Marketplace `Zoho CRM governance` tag search returned one extension (Configuration Logs Tracker); it is not an exhaustive catalog census. No direct paid Zoho field dependency graph was found in this bounded search. This is not proof none exists.
+- Elements.cloud, Jetstream and SchemaForce pricing proves monetization in Salesforce analogues, not Zoho buyer budgets, pricing or recurring conversion.
+- Zoho's nearest substitutes are free/native. A paid Zoho-specific product must prove why cross-component preflight is worth a recurring fee over these and over implementation partners' manual audits.
+
+Sources:
+- Salesforce native field usage: https://help.salesforce.com/s/articleView?id=sf.fields_references.htm&language=en_US&type=5
+- SFDXLabs Toolkit: https://marketplace.visualstudio.com/items?itemName=SFDXLabs.sfdxlabs-tool-kit
+- Elements.cloud field dependencies: https://support.elements.cloud/en/articles/1730649-where-is-a-field-used-field-dependencies-in-the-insights-tab
+- Elements.cloud pricing: https://elements.cloud/pricing-plans/
+- Metaforce: https://metaforce.ltd/docs/pages/coreFeatures/findDependencies
+- Salesforce Inspector Reloaded: https://tprouvot.github.io/Salesforce-Inspector-reloaded/how-to/
+- sfdx-hardis: https://sfdx-hardis.cloudity.com/hardis/doc/fieldusage/
+- Jetstream field usage: https://docs.getjetstream.app/data-analysis
+- Jetstream pricing: https://getjetstream.app/pricing/
+- SchemaForce impact: https://www.schemaforce.com/docs/features/impact-analysis
+- SchemaForce pricing: https://www.schemaforce.com/pricing
+- FieldRat: https://fieldrat.app/
+
+### Edition, scope and rate-limit gate
+
+- Zoho Functions are available with full access on Enterprise, CRM Plus, Ultimate and Zoho One; Standard and Professional expose Functions only through Extensions. The API can return `FEATURE_NOT_SUPPORTED` where the license lacks the feature. Do not promise function-source scanning for all editions until a Marketplace-extension entitlement test is proven.  
+  https://www.zoho.com/crm/developer/docs/functions/limits-quotas.html  
+  https://www.zoho.com/crm/developer/docs/api/v8/functions-list.html
+- Functions list and Download Function Code support READ scopes, but source is sensitive customer configuration/IP. It must be opt-in and handled without external LLM upload by default.  
+  https://www.zoho.com/crm/developer/docs/api/v8/functions-list.html  
+  https://www.zoho.com/crm/developer/docs/api/v8/download-function-code.html
+- Workflow Rules API supports inner conditions/actions and last-executed metadata under READ scope.  
+  https://www.zoho.com/crm/developer/docs/api/v8/get-all-workflows.html
+- API concurrency ranges from 5 (Free) to 25 (Ultimate/CRM Plus) by edition. This is concurrency, not daily API-call allowance.  
+  https://www.zoho.com/crm/developer/docs/api/v8/api-limits.html
+- Zoho exposes an API discovery endpoint; a proof should use it to verify actual endpoint/scope availability and minimum permissions before spec.  
+  https://www.zoho.com/crm/developer/docs/api/v8/list-available-rest-apis.html
+
+### Updated decision after competitor audit
+
+**Still HOLD — no build.** Category has mature analogues in Salesforce. A Zoho-specific gap is plausible but not proven to have paid demand. No direct paid Zoho dependency graph found in a bounded search, not proof of whitespace. Function-source availability is edition-dependent, source is sensitive, and India extension payout is still unverified. Next is an edition-specific API coverage and payout gate, not coding.
+
+## 11. Financial truth
 
 - Platform/provider-credited net earnings: ₹0.
 - Bank-settled net receipts: ₹0.
