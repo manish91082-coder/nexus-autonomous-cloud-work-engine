@@ -342,3 +342,33 @@ The smallest credible first proof would cover module/field/layout metadata, mapp
 - Bank-settled net receipts: ₹0.
 - New spend authorised: ₹0.
 - No developer account created, no KYC submitted, no Marketplace terms accepted, no public extension listed, and no code developed for this candidate.
+
+
+## 12. Addendum — CRM V8 API credits and India Marketplace remittance (14-Nov-2026)
+
+The earlier statement that daily API-credit limits needed verification is superseded by the current CRM V8 API Limits documentation. V8 has a 24-hour rolling credit model **in addition to** concurrency:
+- Free: 5,000 credits.
+- Standard/Starter: 50,000 + 250 per user licence, cap 100,000.
+- Professional: 50,000 + 500 per user licence, cap 3,000,000.
+- Enterprise/Zoho One: 50,000 + 1,000 per user licence, cap 5,000,000.
+- Ultimate/CRM Plus: 50,000 + 2,000 per user licence; no fixed maximum shown.
+- Concurrency remains 5/10/15/20/25 by edition; certain endpoint groups have sub-concurrency 10.
+- `/__apis` uses `ZohoCRM.apis.READ`, consumes 1 credit and reports supported API operations, OAuth scopes and min/max credits. `/__features` uses `ZohoCRM.features.READ`; a specific credit cost was not stated in the source reviewed.
+- API add-on credits are paid monthly. The candidate must stop before any automatic paid-credit overage; use a preflight budget and never request write scopes.
+
+Source: https://www.zoho.com/crm/developer/docs/api/v8/api-limits.html
+
+India extension payout clarification:
+- Extension-specific Marketplace payment docs confirm USD~100 statement/transfer mechanics, but do not publish a developer-country eligibility list or India bank/FX/tax detail.
+- Broader Zoho Partner Store audit guidance lists the Zoho India billing entity, INR invoices for India customers and PAN for India-based partners. This is supportive evidence that the broader partner system handles India, but the page does not explicitly map those rules to Marketplace CRM extension developer commissions.
+- Therefore India-based Marketplace extension payout remains **UNVERIFIED** pending a written programme-specific confirmation. Do not infer from the distinct Zoho Reseller Store ₹50,000 threshold.
+
+Sources:
+- https://www.zoho.com/developer/help/marketplace/payments.html
+- https://www.zoho.com/developer/help/marketplace/faqs.html
+- https://www.zoho.com/store/partner/help/auditing-practices.html
+- https://www.zoho.com/crm/developer/docs/api/v8/api-limits.html
+- https://www.zoho.com/crm/developer/docs/api/v8/list-available-rest-apis.html
+- https://www.zoho.com/crm/developer/docs/api/v8/get-features.html
+
+**Decision unchanged: HOLD — no build, no account, no KYC, no terms, no spend.**
