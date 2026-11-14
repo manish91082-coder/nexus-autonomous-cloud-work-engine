@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_59_8B_DETERMINISTIC_SWARM_RUNTIME_FOUNDATION",
+  "phase": "PHASE_59_8B2_STATE_AND_PAYLOAD_SAFETY_HARDENING",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -134,7 +134,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Verify run 43616623657 on exact runtime commit; then add corruption and hostile-payload isolation tests. Production integration remains blocked.",
+  "next_focus": "Verify exact-head CI for state validation, hostile payload envelope, malformed state and duplicate completion tests. Next build a durable coordinator/parallel specialist worker prototype with no model provider until the control plane passes.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -694,7 +694,7 @@
     "decision": "GO_STAGED_ZERO_COST_FIRST_HYBRID_SWARM_ARCHITECTURE",
     "provider_configured": false,
     "swarm_deployed": false,
-    "repository_source_audit": "WORKFLOW_TREE_INVENTORY_COMPLETE; FIRST_PASS_MISSION_RUNTIME_AUDIT_COMPLETE; PHASE_B_RUNTIME_PRIMITIVES_COMMITTED; EXACT_HEAD_CI_PENDING; PRODUCTION_INTEGRATION_NOT_AUTHORIZED",
+    "repository_source_audit": "WORKFLOW_TREE_INVENTORY_COMPLETE; FIRST_PASS_MISSION_RUNTIME_AUDIT_COMPLETE; PHASE_B_RUNTIME_PRIMITIVES_AND_STATE_PAYLOAD_HARDENING_COMMITTED; EXACT_HEAD_CI_PENDING; PRODUCTION_INTEGRATION_NOT_AUTHORIZED",
     "architecture": "DETERMINISTIC_ORCHESTRATOR_SPECIALIST_WORKERS_EVIDENCE_CRITIC_V5_GATES_OWNER_APPROVAL",
     "initial_concurrency": 5,
     "free_compute": "GITHUB_ACTIONS_PUBLIC_RUNNERS; OPTIONAL_CLOUDFLARE_LIGHT_CONTROL_PLANE",
@@ -741,7 +741,7 @@
     "latest_worker_scope": "deterministic state validation and queue tick; AI inference still disabled; not swarm execution"
   },
   "phase59_8b": {
-    "status": "CI_TESTS_PASS; PRODUCTION_INTEGRATION_NOT_STARTED",
+    "status": "STATE_AND_PAYLOAD_SAFETY_HARDENING_CI_PENDING",
     "runtime": "scripts/swarm_runtime.py",
     "tests": "tests/test_swarm_runtime.py",
     "contracts": "schemas/swarm-contracts-v1.schema.json",
@@ -770,8 +770,8 @@
       "Add deterministic capped exponential retry backoff",
       "Add early-retry rejection test"
     ],
-    "latest_ci_run_id": 43616623657,
-    "latest_ci_status": "IN_PROGRESS_AFTER_RETRY_TIMESTAMP_PERSISTENCE_FIX",
+    "latest_ci_run_id": 43617269330,
+    "latest_ci_status": "QUEUED",
     "failed_runs": [
       43616366774,
       43616373476,
@@ -783,6 +783,13 @@
       "186facc50a7192563a325047e48f96f271b470aa"
     ],
     "retry_backoff_fix_commit": "f5a3cf92fb9b45c2cd97b1c1f3fea71afeb0cb98",
-    "retry_timestamp_persistence_fix": "2d7f5e06bc7be1a81415373fb9270d31bca5f14c"
+    "retry_timestamp_persistence_fix": "2d7f5e06bc7be1a81415373fb9270d31bca5f14c",
+    "state_validation_commit": "85020ac31f7207054028a7ef4b7a8d2efd1353e6",
+    "payload_envelope_commit": "4a357337a42430aa83aa720f4b3e9c234d178a67",
+    "corruption_tests_commit": "ed95094ff94461a93c410415ba215c1b6c471d08",
+    "malformed_contract_hardening_commits": [
+      "799c74bccab1dec6c1941c4596b1f9ac49955cd6",
+      "e938ed97901c60f65eb18885c6ab02c6d86ffcbb"
+    ]
   }
 }
