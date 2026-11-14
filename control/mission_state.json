@@ -10,7 +10,7 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
-  "last_verified_head": "fa4c5364c7b9d9790a5eb4977808f36933e3a4fb",
+  "last_verified_head": "6f698a83f4a63692ed05b9b985ed8f0f30eef5c8",
   "current_focus": "Phase 55 P55-001 remains HOLD_FOR_EVIDENCE (preliminary score 65/100). Two independent demand records are now verified: Aug 19-21 Community budget-alert discussion and separate Atlassian Jira suggestion ECO-1831 (11 votes, Gathering Interest, unresolved). WTP remains unproven. Resource Usage API export is officially documented for external tools under the owning Atlassian account, but no live owner-token test was performed. Commerce uses Partner Portal bearer tokens and billing-role authorization; invoice APIs explicitly block Forge and OAuth2 app clients. A non-Forge/non-OAuth local CLI route is plausible but not documented as authorized for the owner's Forge Developer Space invoice data. Third-party non-installable listing exists; paid classification is unresolved. Individual Partner Profile can be under an individual's own name; India paid-app verification, tax treatment and own-name USD EFT remain unverified. No account/token/support request/outreach/build/spend. PCNE ₹0; bank receipts ₹0; authorized spend ₹0.",
   "owner_gates": [
     "account_creation_if_required",
@@ -26,12 +26,12 @@
   "updated_at": "2026-11-14",
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
-    "run_number": 253,
-    "run_id": 43567187449,
+    "run_number": 254,
+    "run_id": 43567313575,
     "conclusion": "success",
-    "head_sha": "fa4c5364c7b9d9790a5eb4977808f36933e3a4fb",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43567187449",
-    "completed_at": "2026-11-14T06:36:59Z",
+    "head_sha": "6f698a83f4a63692ed05b9b985ed8f0f30eef5c8",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43567313575",
+    "completed_at": "2026-11-14T06:38:30Z",
     "checks": [
       "mission/control-plane validation",
       "AI-worker safety tests",
@@ -61,7 +61,7 @@
     "CRAZYGAMES_HTML5",
     "CREATOR_IP_DISTRIBUTION"
   ],
-  "last_exact_head_ci_status": "Mission Worker #253 (run 43567187449) succeeded on exact demand/API evidence control-state commit fa4c5364c7b9d9790a5eb4977808f36933e3a4fb; bounded-worker job passed all 14 steps. Queue heartbeat returned POLL_OK and selected P55-001, no errors. AI executor returned WAITING_FOR_OWNER_CONFIGURATION because MISSION_AI_ENABLED was not true; no model inference or substantive autonomous research was performed. Evidence artifact ID 14102857310, SHA-256 b8fbfa4a84d5ef679a8d3e75a0c3056d375d2dadc3bc3bf81753c54f4c202552. This is control-plane/test evidence only, not buyer WTP, live API access or revenue.",
+  "last_exact_head_ci_status": "Mission Worker #254 (run 43567313575) succeeded on exact state checkpoint commit 6f698a83f4a63692ed05b9b985ed8f0f30eef5c8; all 14 job steps passed. Queue heartbeat POLL_OK selected P55-001; no worker errors. AI executor returned WAITING_FOR_OWNER_CONFIGURATION; no model inference or substantive autonomous research occurred. Artifact ID 14103166902, SHA-256 4532cb00ea92d9fae689573dd0dee32cd0038332181915808c38c9c664222741. This validates control state and deterministic tests only; WTP, API credentials, India payout and revenue remain open.",
   "phase46_control_commits": [
     "72230902a478552d007d94d330e216238c9b2982",
     "ae552163e2b1e65590fc98454d8f7817bc73fa92",
