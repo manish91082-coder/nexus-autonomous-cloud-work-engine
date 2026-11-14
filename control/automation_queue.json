@@ -2470,7 +2470,7 @@
           "problem": "Automatically populate a subitem's Connect Boards relation with its native parent item when the subitem is created.",
           "demand_signals": {
             "exact_user_request": "Jay Kaiser feature request reports 105 active projects and about 700 subitems, with manual parent linking; https://community.monday.com/feature-requests/post/automation-action-auto-link-subitem-to-its-parent-item-via-a-connect-lxRwDp7s9miHdtp",
-            "exact_incumbent_proof": "Master Automations review dated 2026-08-27 says it connects subitems to their parent through Connect Boards automation; https://apps-for-monday.com/apps/10001204/",
+            "exact_incumbent_proof": "A marketplace review dated 27-Oct-2026 for Sync Updates to Connected Boards (Fortimus, listing 10001204; 30-automation bundle) confirms parent linking through a Connect Boards column; https://apps-for-monday.com/apps/10001204/",
             "adjacent_paid_demand": "Spyros Maroudas confirms using Subitems Pro Automations and requests an additional mirror-subitem trigger; https://community.monday.com/ask-the-com/post/automation-recipe-for-copying-mirror-numbers-subitem-column-to-regular-ivubCVrRrraGga0",
             "adjacent_cross_board_demand": "Client-board and multi-board sync user thread; https://community.monday.com/ask-the-com/post/how-to-add-the-same-item-to-multiple-boards-G19vrt1VFh9h3sm"
           },
@@ -2478,10 +2478,11 @@
           "exact_competitor": "Master Automations (listing 10001204)",
           "technical_feasibility": "monday Subitems API exposes parent_item; create_subitem requires parent_item_id; create_subitem webhook payload includes parentItemId and parentItemBoardId. Deterministic implementation is feasible with least-privilege scopes and idempotent writes.",
           "decision": "REJECTED",
-          "reason": "Exact requested feature is already confirmed in production by Master Automations; adjacent market contains at least 17 direct/adjacent apps and native API substitutes. No standalone moat or willingness-to-pay proof for a repair utility.",
+          "reason": "Exact feature already served; broader category is crowded; no standalone moat or willingness-to-pay proof for a repair utility.",
           "product_build_authorized": false,
           "spend": 0,
-          "next_exact_work": "Continue P54-001 with a different monday.com recurring buyer problem. Do not revisit parent/subitem auto-link, generic cross-board sync, mirror triggers or rollups unless new evidence materially changes the competitive picture. Require two independent strong demand signals for the same narrow outcome, then audit 10-15 competitors and verify India payout eligibility before any build."
+          "next_exact_work": "Continue P54-001 with a different monday.com recurring buyer problem. Do not revisit parent/subitem auto-link, generic cross-board sync, mirror triggers or rollups unless new evidence materially changes the competitive picture. Require two independent strong demand signals for the same narrow outcome, then audit 10-15 competitors and verify India payout eligibility before any build.",
+          "exact_incumbent": "Sync Updates to Connected Boards (Fortimus; listing 10001204; 30-automation bundle)"
         }
       },
       "next_exact_work": "Continue P54-001 with a different monday.com recurring buyer problem. Do not revisit parent/subitem auto-link, generic cross-board sync, mirror triggers or rollups unless new evidence materially changes the competitive picture. Require two independent strong demand signals for the same narrow outcome, then audit 10-15 competitors and verify India payout eligibility before any build."
