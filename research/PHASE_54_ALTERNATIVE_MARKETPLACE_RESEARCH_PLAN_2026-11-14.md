@@ -25,17 +25,18 @@ This is a research order based on apparent entry friction and platform-managed m
 ### A. Zoho Marketplace — first research priority
 
 Positive verified signals:
-- Zoho says it does not charge a development fee for extension development.
-- Zoho Marketplace supports public extensions purchased through Zoho's payment gateway, private extensions where the developer collects payment independently, and free extensions.
-- Official Marketplace payment guidance says the developer receives a monthly statement when the outstanding balance is over USD 100; after the developer approves processing, a wire transfer can take about 15 working days.
-- Zoho's public marketplace pages claim 60M users in the ecosystem. This is a vendor-reported reach figure, not a guarantee of discovery, active marketplace buyers or sales.
+- Zoho says Marketplace extensions can be listed at no cost, and the Developer Console is free for building and selling extensions.
+- Public extensions can use Zoho checkout; developer-set prices may be one-time or monthly recurring. Private distribution and free extensions are also supported.
+- Zoho's Marketplace commission report explicitly says that, for extension developers, the **total value paid by customers equals the commission reported for extension developers**. This is gross commission evidence, not net cash after remittance fees, FX, taxes, refunds or reversals.
+- A monthly commission statement is sent when the outstanding amount exceeds USD 100. The developer must approve processing; a wire transfer may take about 15 working days after approval. PayPal can be requested by email.
+- Official FAQ says review normally takes two business days; publishing guidance says 24–48 hours.
+- Zoho advertises 60M ecosystem users. This is vendor-reported reach, not verified Marketplace buyer traffic, category installs or sales.
 
 Hard unknowns:
-- Exact commission/revenue share for the specific extension type.
-- Account-level India seller eligibility, tax forms, payout fees and wire transfer route.
-- Buyer discovery and search-ranking mechanics for the exact app category.
-- Product-specific buyer pain, incumbents and paid demand.
-- Required development console, company profile and listing review scope.
+- **India-based extension developer payout eligibility is not explicitly confirmed** by public extension payout guidance. The bank-details/wire-transfer process does not specify eligible countries, INR conversion, intermediary bank fees, FX spread, tax withholding or India documentation.
+- Do not confuse the separate Zoho Reseller Store India commission threshold of INR 50,000 with Marketplace extension developer payouts. The INR 50,000 rule is for the reseller programme; Marketplace extension docs state the USD 100 threshold.
+- Buyer discovery/search ranking for the exact category and product-specific paid demand remain unproven.
+- Exact app edition compatibility and full review requirements must be checked for any eventual product.
 
 Official sources:
 - https://www.zoho.com/marketplace/faq.html
@@ -46,19 +47,36 @@ Official sources:
 
 Decision: **RESEARCH FIRST, NOT GO.** Best apparent fit for zero-fee entry and platform-handled payment, but unknown commission and India payout must be verified before product economics.
 
+### Specific Zoho CRM candidate under evaluation — HOLD
+
+**Hypothesis:** a read-only *Field Retirement Impact Preflight* that maps a custom field to references found in workflows, blueprints, field-update actions, webhooks, layouts and supported custom-function source code before an administrator renames or retires it.
+
+Why this is not a generic CRM-cleanup clone:
+- Zoho Admin Tools already filters and deletes selected stale configurations. The proposed gap is a reference/dependency map, not another last-used dashboard or delete screen.
+- Zoho's free Configuration Logs Tracker records setup changes; it does not document a field-reference graph.
+- The free Configs for Zoho CRM extension exports standard-layout field configuration to CSV; it excludes other layouts and unused fields and does not map dependencies.
+- A Zoho community request dated 21-Oct-2026 explicitly proposes a field usage tab and dependency graph because renaming/deleting fields can break functions, workflows, blueprints, client scripts, Flow, Analytics and PDF templates. Independent CRM discussions describe similar hidden-dependency risk. These are problem signals, not evidence that customers will pay.
+- Documented read-only APIs expose modules/fields/layouts, workflows and their conditions/actions, blueprints, mapped field dependencies, webhooks, functions/function source, custom views and field-update associations. This makes a **bounded** scanner plausible, but not universal.
+- The scanner must mark unsupported/unscanned surfaces (for example any Client Script, Flow, Analytics report, external integration or template reference not proven accessible). Static code scans may miss dynamic field-name construction. No "all dependencies found" or "safe to delete" guarantee.
+
+Detailed report: `research/PHASE_54_ZOHO_CRM_CONFIGURATION_DEPENDENCY_AUDIT_2026-11-14.md`.
+
+**Disposition: HOLD — no MVP or account setup.** Problem evidence exists, but paid purchase volume, recurring budget, verified India seller payout and complete technical coverage remain unproven. The next P54-001 work is a targeted 10–15 direct/substitute audit and stricter payout/permission verification.
+
 ### B. Wix App Market — second research priority
 
 Positive verified signals:
 - Supports recurring subscription pricing, usage-based pricing or a combination.
 - Wix handles checkout and marketplace payments.
 - New apps receive 100% of revenue share for the first 12 months; afterward the developer receives 80%, calculated after a 2.5% transaction fee and applicable sales tax.
-- Payout is monthly, net 30 at end of month, subject to a USD 200 accumulated payout threshold.
+- Payout threshold is USD 200. Wix says March app revenue is paid at the beginning of May, so effective payout is later than simply "net 30 from month-end".
+- Primary app prices are set in USD and payout reporting is shown in USD; regional pricing can vary.
 
 Hard unknowns:
-- India-specific app developer/payment onboarding and payout eligibility.
-- Exact app acceptance and product review requirements for the target category.
+- India-specific App Market developer onboarding and bank payout eligibility are not explicitly confirmed in the public App Market developer docs. Do not treat Wix Payments merchant availability for Indian website owners, or a separate Wix Studio Partner country-exclusion note, as definitive proof of India App Market developer payout eligibility.
+- Exact app acceptance/product review requirements for the target category.
 - Competitor concentration and real buyer purchase signals in the chosen niche.
-- Actual refund, tax, currency and payout treatment for an India-based publisher.
+- Actual tax, FX, bank fees and payout treatment for an India-based app publisher.
 
 Official sources:
 - https://dev.wix.com/docs/build-apps/launch-your-app/pricing-and-billing/about-monetizing-your-app
