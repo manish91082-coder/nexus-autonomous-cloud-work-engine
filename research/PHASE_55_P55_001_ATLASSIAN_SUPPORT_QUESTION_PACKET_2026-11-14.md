@@ -48,3 +48,21 @@ Obtain authoritative written answers before any product design, account setup, p
 
 ## Owner gate
 This packet is only a prepared draft. It must not be sent, submitted through a support portal, or attached to an account until the owner explicitly approves the actual recipient/channel and final text.
+
+
+## Question set E — Developer Space invoices, payment state and service-wide enforcement
+1. The Forge pricing FAQ says every app has its own free monthly allowance (not shared with other apps), while charges are consolidated into one monthly invoice for all apps in a Developer Space. Please confirm this is the current rule for every billable meter and explain how separate per-app overage line items map to the Developer Space transaction account invoice.
+2. Can an authorized external local/CLI/self-hosted tool read, under the Developer Space owner's authority, the billing account's invoices, invoice line items, payment status, payment method validity and current pre-dunning/dunning state? Which documented read-only API endpoints and token type support this?
+3. The Billing and Payments documentation says unpaid billing can lead to pre-dunning and enforcement on all apps in the Developer Space. Is there a supported API or webhook to read a billing account's pre-dunning/dunning or enforcement state before all apps are impacted?
+4. Is there an approved alerting integration or billing-account notification webhook for invoice-generation failure, failed autopay, upcoming enforcement or overdue status? If not, please confirm the only supported signals are email and the Billing Console.
+5. Can app-level resource usage be exported and reconciled to per-app invoice line items for all applications in a Developer Space from an external vendor tool, without using private endpoints or UI scraping?
+
+## Additional current documentation clarification
+The Forge platform pricing FAQ explicitly says each app has its own free usage allowance per month and allowances are not shared across apps. Billing is consolidated into one monthly invoice for all apps managed by an individual/partner/customer. The Billing and Payments page describes the Developer Space invoice lifecycle: first day of the month for previous-month usage, autopay attempt, a 14-day pre-dunning window if invoice/payment fails without a payment method, and all-app enforcement if the issue remains unresolved after pre-dunning. A 21-day dunning period applies to payment failures where a payment method exists.
+
+Sources:
+- https://developer.atlassian.com/platform/forge/forge-platform-pricing/
+- https://developer.atlassian.com/platform/forge/developer-space/billing-for-developer-spaces/
+- https://www.atlassian.com/blog/how-we-build/engineering-the-forge-billing-platform-for-reliability-and-scale
+
+These facts do not mean our proposed product can read billing status or avert enforcement. External billing-state access is still unverified. This packet remains **NOT SENT**.
