@@ -54,7 +54,9 @@ def validate_task(task):
     for key in ("schema_version", "id", "task_type", "version", "status", "payload", "depends_on"):
         if key not in task:
             raise ContractError(f"missing task field: {key}")
-    if task["schema_version"] != SCHEMA_VERSION:\n        raise ContractError("unsupported task schema")\n    if task["status"] not in TASK_STATES:
+    if task["schema_version"] != SCHEMA_VERSION:
+        raise ContractError("unsupported task schema")
+    if task["status"] not in TASK_STATES:
         raise ContractError("invalid task status")
     if not isinstance(task["payload"], dict) or not isinstance(task["depends_on"], list):
         raise ContractError("payload must be object and depends_on must be array")
@@ -87,7 +89,14 @@ def validate_run(run):
     return True
 
 
-def retry_delay_seconds(attempts):\n    if attempts < 1:\n        return 0\n    return min(60 * (2 ** (attempts - 1)), 3600)\n\n\ndef eligible_tasks(tasks, now=None):\n    now = utc_now(now)
+def retry_delay_seconds(attempts):
+    if attempts < 1:
+        return 0
+    return min(60 * (2 ** (attempts - 1)), 3600)
+
+
+def eligible_tasks(tasks, now=None):
+    now = utc_now(now)
     by_id = {t.get("id"): t for t in tasks}
     if len(by_id) != len(tasks) or None in by_id:
         raise ContractError("task ids must be unique and non-empty")
