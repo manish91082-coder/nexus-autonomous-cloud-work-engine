@@ -2305,7 +2305,7 @@
             "no paid buyer/subscription evidence",
             "India extension-developer payout eligibility/currency/fees/tax unconfirmed"
           ],
-          "next_exact_work": "Audit 10–15 direct/adjacent CRM admin/dependency tooling products, verify minimal read-only API edition permissions, and confirm India extension seller payout. Keep candidate HOLD; do not build.",
+          "next_exact_work": "Complete edition-specific API coverage matrix for Standard/Professional/Enterprise/Zoho One/Ultimate; verify read-scope/Function source entitlement and India extension seller remittance. Candidate remains HOLD; do not build.",
           "marketplace_substitute_audit": {
             "direct_tag_search": "Zoho Marketplace CRM governance tag returned one free result: Configuration Logs Tracker for Zoho CRM (0 visible ratings); bounded tag search, not exhaustive",
             "adjacent_extensions": [
@@ -2321,6 +2321,20 @@
               "Workflow Usage report"
             ],
             "decision": "No direct paid field-dependency graph found in this bounded search; whitespace and willingness-to-pay remain unproven."
+          },
+          "competitor_audit": {
+            "named_references": 17,
+            "zoho_native_or_marketplace": 8,
+            "salesforce_cross_crm_analogues": 9,
+            "cross_crm_not_direct_for_zoho": true,
+            "published_prices": {
+              "elements_cloud": "$6,800/year at 100 Salesforce users",
+              "jetstream": "$25/month Professional",
+              "schemaforce": "$149/month Pro; $399/month Business",
+              "fieldrat": "Free"
+            },
+            "decision": "Broader field-impact category is commercially validated in Salesforce but that does not validate Zoho demand. No direct paid Zoho dependency graph found in bounded search; keep HOLD.",
+            "api_gate": "Functions full access Enterprise/CRM Plus/Ultimate/Zoho One; Standard/Professional through Extensions only. READ scopes exist; source is sensitive/opt-in. API concurrency 5–25 by edition is not daily API quota."
           }
         },
         "zoho_payout_clarification": {
