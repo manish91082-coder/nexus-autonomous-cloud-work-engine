@@ -21,12 +21,13 @@ Build a combined portfolio of lawful, self-serve, Internet-native revenue engine
 3. [Current mission state](control/mission_state.json)
 4. [Execution queue](control/automation_queue.json)
 5. [Revenue platform ranking and evidence](REVENUE_OPPORTUNITY_RANKING_2026-11-13.md)
-6. [Platform-credited earnings ledger](control/revenue_ledger.json)
-7. [Product registry](control/product_registry.json)
-8. [Opportunity registry](control/opportunity_registry.json)
-9. [Payout registry](control/payout_registry.json)
-10. [Cross-chat continuity](PROJECT_CONTINUITY.md)
-11. [Repository scope and cleanup audit](REPOSITORY_SCOPE_AND_CLEANUP_2026-11-13.md)
+6. [Source-level revenue ledger](control/revenue_source_ledger.json)
+7. [Portfolio-credited earnings ledger](control/revenue_ledger.json)
+8. [Product registry](control/product_registry.json)
+9. [Opportunity registry](control/opportunity_registry.json)
+10. [Payout registry](control/payout_registry.json)
+11. [Cross-chat continuity](PROJECT_CONTINUITY.md)
+12. [Repository scope and cleanup audit](REPOSITORY_SCOPE_AND_CLEANUP_2026-11-13.md)
 
 V5 is authoritative. V4/V3 and older phase reports remain preserved as historical evidence.
 
