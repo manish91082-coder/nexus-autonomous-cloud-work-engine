@@ -73,6 +73,29 @@ Source: https://marketplace.zoho.com/app/crm/configs-for-zoho-crm
 Shows incomplete records per module and ranks missing-data issues. Marketplace listing showed 100+ installs. This is data completeness/quality, not configuration dependency analysis.  
 Source: https://marketplace.zoho.com/app/crm/audit-tool-for-zoho-crm
 
+### Additional Marketplace and adjacent substitute scan (14-Nov-2026)
+
+A targeted Zoho Marketplace search for the `Zoho CRM governance` tag returned one result: **Configuration Logs Tracker for Zoho CRM**, a free official Zoho extension with 0 visible ratings. This is a bounded tag search, not a complete Marketplace census and not proof that no direct competitor exists.  
+Source: https://marketplace.zoho.com/search?tagId=51766f4b-dd05-4eab-91ef-99290f298b15
+
+Other adjacent extensions:
+- **Data Guardian for Zoho CRM:** automated data-health scoring, record validation, task management and scheduled reports; announced in Zoho's August 2026 Marketplace update. It addresses data quality, not documented field dependency graphs.  
+  https://help.zoho.com/portal/en/kb/zoho-marketplace/new-on-marketplace/articles/what-s-new-on-zoho-marketplace-in-august-2026
+- **Audit Tool for Zoho CRM:** free extension, listing showed 100+ installs; identifies incomplete records and ranks missing-data issues. It is a record-completeness audit rather than configuration dependency analysis.  
+  https://marketplace.zoho.com/app/crm/audit-tool-for-zoho-crm
+- **Configs for Zoho CRM:** free export of standard-layout field labels, API names, data types and picklist values; not a cross-component reference graph.  
+  https://marketplace.zoho.com/app/crm/configs-for-zoho-crm
+- **Configuration Logs Tracker:** free, 0 visible ratings; captures changes to workflows, functions, buttons, schedules, layouts and other setup items, but logs modifications rather than what depends on a field.  
+  https://marketplace.zoho.com/app/crm/configuration-logs-tracker-for-zoho-crm
+
+Native substitutes include Admin Tools, Audit Log, field Unused Fields handling, mapped dependency fields and Workflow Usage reports. Zoho's native Audit Log can track changes to field-dependency mappings, but does not document a prospective field-to-component impact graph.  
+Sources:
+- https://help.zoho.com/portal/en/kb/crm/security-control/audit-log/articles/monitor-audit-log
+- https://help.zoho.com/portal/en/kb/crm/crm-reference/product-architecture-and-reliability/articles/how-zoho-crm-administration-and-configuration-works-for-sales-operations
+- https://www.zoho.com/crm/developer/docs/api/v8/get-map-dependency.html
+
+**Competition conclusion:** no direct paid dependency-graph extension was found in this bounded search. The nearest visible extension competitors are free and solve adjacent configuration logging, schema export or record completeness. This is a possible differentiation gap, not proof of market whitespace or willingness to pay. A 10–15 product direct/adjacent audit is still required before the hypothesis can be promoted beyond HOLD.
+
 ### E. Native audit trail / change history
 Zoho's native Audit Log tracks changes to templates, workflow rules and field dependency mappings. This helps establish what changed and who changed it, but is not a forward dependency map showing what will break if a field is removed.  
 Source: https://help.zoho.com/portal/en/kb/crm/crm-reference/product-architecture-and-reliability/articles/how-zoho-crm-administration-and-configuration-works-for-sales-operations
