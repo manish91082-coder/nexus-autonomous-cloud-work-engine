@@ -2,16 +2,16 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_58_APIFY_DISTINCT_PROBLEM_GAP_RESEARCH",
+  "phase": "PHASE_59_PORTFOLIO_REVENUE_SOURCE_PRIORITIZATION",
   "canonical_branch": "master",
-  "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V4.md",
+  "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
   "verified_realized_net_receipts_inr": 0,
   "authorized_spend_inr": 0,
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
   "last_verified_head": "6fa3e8fd550c13e089130dd255bab93654e4ed12",
-  "current_focus": "Final target ₹10,00,00,000 verified PCNE under V4. P58-001 remains sole active task. Apify official Security incident remains open/investigating; API and Actors Partial Outage as of 14-Nov. Public-source research only; no account, Actor run, data upload, private GitHub connection, paid use, build or publication. Generic Apify families/trust/MCP drift hypotheses remain NO-GO; no product selected. Charter correction: V3 and V4 both have no 30-day deadline and exclude manual assignment labour. PCNE ₹0; bank receipts ₹0; authorized spend ₹0; AI provider unconfigured.",
+  "current_focus": "V5 mission: achieve ₹10,00,00,000 cumulative verified PCNE by combining multiple independent lawful, self-serve and highly automated revenue streams. No single product/platform must generate the full target. Research source families in parallel; rank by credible risk-adjusted cumulative net revenue; execute the largest credible source first. Complete its first repeatable monetization loop, not the full ₹10 Cr, then add the next highest source while prior streams keep earning. Product-specific NO-GO does not close its parent source. P59-001 portfolio-wide source ranking is active. PCNE ₹0; bank receipts ₹0; authorized spend ₹0.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -51,13 +51,14 @@
   ],
   "revenue_recognition_policy": "Count only independent-customer earnings credited/earned in the owner's platform seller/creator account after platform share and attributable usage/processing costs, excluding pending authorisations, promo credits, self-purchases, refunds, disputed, restricted or forfeitable balances. Track restricted, withdrawable and bank-settled values separately. Never double-count platform balance when withdrawn.",
   "current_revenue_priority": [
-    "ATLASSIAN_MARKETPLACE_FORGE",
-    "SHOPIFY_APP_STORE",
-    "MICROSOFT_MARKETPLACE_AI_APPS_AGENTS",
-    "APIFY_STORE_ACTORS",
-    "GETVIK_DIGITAL_PRODUCTS",
-    "CRAZYGAMES_HTML5",
-    "CREATOR_IP_DISTRIBUTION"
+    "PORTFOLIO_WIDE_REVENUE_SOURCE_DISCOVERY",
+    "RISK_ADJUSTED_LARGEST_NET_REVENUE_SOURCE",
+    "RECURRING_B2B_SAAS_AND_VERTICAL_SOFTWARE",
+    "MARKETPLACE_APPS_AND_EXTENSIONS",
+    "AI_AGENTS_APIS_USAGE_BASED_SOFTWARE",
+    "DIGITAL_PRODUCTS_AND_LICENSING",
+    "CREATOR_IP_ROYALTIES_STOCK_ASSETS",
+    "GAMES_SPONSORSHIP_AFFILIATE_ADVERTISING"
   ],
   "last_exact_head_ci_status": "Worker #275 SUCCESS and Mission Continuity Guard #18 SUCCESS on exact master HEAD 6fa3e8fd550c13e089130dd255bab93654e4ed12. P58-001 remains IN_PROGRESS. AI executor WAITING_FOR_OWNER_CONFIGURATION; no inference. Bounded deterministic automation only; no fully autonomous AI swarm claim.",
   "phase46_control_commits": [
@@ -79,7 +80,7 @@
       "No credible product-specific willingness-to-pay evidence"
     ]
   },
-  "current_task": "P58-001",
+  "current_task": "P59-001",
   "next_platform": "APIFY_STORE",
   "fallback_platform": "GETVIK_DIGITAL_PRODUCTS",
   "phase48_control_commits": [
@@ -133,7 +134,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Continue P58-001 public-source discovery only. Screen distinct, rights-cleared buyer workflows outside rejected families. For any Apify-specific idea require two independent buyer signals, 10–15 substitute audit, qualified budget-owner price/WTP, deterministic supported data access, source rights and positive net economics. No Apify account/run/private GitHub link/data upload/paid use until post-mortem reviewed and API/Actors operational. If no candidate passes, explicitly record platform-level NO-GO before moving to Getvik rank #5.",
+  "next_focus": "Portfolio-wide research of all eligible revenue-source families; identify and complete the largest credible risk-adjusted net-revenue source first, then stack additional streams. Multiple streams contribute to the same ₹10 Cr cumulative PCNE target.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -153,7 +154,7 @@
   ],
   "phase53_research_checkpoint": "14-Nov completed: WP webhook / Action Scheduler / COD fraud generic hypotheses NO-GO; Workspace attachment archival / invoice extraction / approvals / notification clones NO-GO. Formula Integrity technical matrix completed; HOLD due event/identity/API/quotas plus no proven recurring demand. Continue P53-001 Google Workspace problem-first research beyond these categories.",
   "last_observed_at": "2026-11-14T20:30:00+05:30",
-  "resume_checkpoint": "14-Nov-2026: read V4, mission_state, automation_queue, latest report and live master HEAD. P58-001 sole active task. Continue public Apify niche research only; incident/post-mortem gate blocks all account, Actor, upload, private GitHub and spend actions. No product selected. PCNE ₹0; bank receipts ₹0; spend ₹0. Charter correction report supersedes prior inaccurate discrepancy finding.",
+  "resume_checkpoint": "V5 adopted 14-Nov-2026. Current task P59-001: map and compare all eligible revenue-source families, identify the largest credible risk-adjusted cumulative net-revenue source, and produce evidence-backed FIRST/NEXT/HOLD/NO-GO ranking. Research may run across multiple sources in parallel; one new product build at a time. After first source has verified paid use, PCNE reconciliation, self-serve delivery, positive fully-loaded unit economics and repeatability path, add the next source; do not wait for ₹10 Cr from one source. NO-GO is candidate-specific unless source-level evidence closes the parent source. PCNE ₹0; bank receipts ₹0; spend ₹0.",
   "last_observed_head_semantics": "Live master HEAD observed immediately before this mission-state update; this update creates the next master commit. Always fetch live master again at next continuation.",
   "phase53_latest_report": "research/PHASE_53_FORMULA_INTEGRITY_TECHNICAL_FEASIBILITY_2026-11-14.md",
   "phase53_supporting_reports": [
@@ -607,5 +608,16 @@
     "report": "research/PHASE_58_3_MCP_CONTRACT_DRIFT_AND_APIFY_MCP_FIT_SCREEN_2026-11-14.md"
   },
   "phase58_mcp_report": "research/PHASE_58_3_MCP_CONTRACT_DRIFT_AND_APIFY_MCP_FIT_SCREEN_2026-11-14.md",
-  "phase58_4_report": "research/PHASE_58_4_APIFY_PLATFORM_GATE_RECHECK_2026-11-14.md"
+  "phase58_4_report": "research/PHASE_58_4_APIFY_PLATFORM_GATE_RECHECK_2026-11-14.md",
+  "portfolio_strategy": {
+    "target_inr": 100000000,
+    "target_mode": "CUMULATIVE_AGGREGATED_PCNE_ACROSS_MULTIPLE_INDEPENDENT_REVENUE_STREAMS",
+    "single_source_required": false,
+    "source_research": "PARALLEL",
+    "new_product_builds_at_once": 1,
+    "first_source_completion": "FIRST_INDEPENDENT_PAID_TRANSACTION + PCNE_RECONCILIATION + SELF_SERVE_DELIVERY + POSITIVE_FULLY_LOADED_UNIT_ECONOMICS + MEASURED_REPEATABILITY_PATH; NOT ₹10_CR_FROM_ONE_SOURCE",
+    "stacking_rule": "ADD_NEXT_HIGHEST_RANKED_SOURCE_AFTER_FIRST_REPEATABLE_MONETIZATION_LOOP; EARLIER SOURCES CONTINUE EARNING",
+    "no_go_scope": "CANDIDATE_SPECIFIC_BY_DEFAULT; PARENT_SOURCE_CLOSED_ONLY_WITH_SEPARATE_SOURCE_LEVEL_EVIDENCE",
+    "constraints": "V5 OWNER_GATES, ZERO_SPEND_DEFAULT, RIGHTS, PLATFORM TERMS, NO MANUAL GIGS/EMPLOYMENT/COLD OUTREACH/SPAM/UNAUTHORIZED DATA/RECURRING MANUAL FULFILMENT"
+  }
 }
