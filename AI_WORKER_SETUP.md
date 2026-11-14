@@ -1,3 +1,10 @@
+> **SUPERSEDED BY PHASE 59.10 (14-Nov-2026): CLOUD-ONLY MULTI-PROVIDER DESIGN**
+>
+> Do not treat the single-provider Cloudflare secret setup below as the final deployment plan. Do not ask the owner to enable this legacy adapter in isolation. The final design requires a provider-neutral zero-cost gateway, independent compute failover, strict provider allowlisting, quota accounting, and fault-injection proof. No provider is currently enabled. The Phase 59.10 report is authoritative:
+> `research/PHASE_59_10_CLOUD_ONLY_ZERO_COST_MULTI_CLOUD_FAILOVER_FINAL_DESIGN_2026-11-14.md`
+>
+> No laptop/local inference is part of the final architecture. Owner-only account/KYC/terms actions remain gated, but engineering and deployment preparation should be performed by the project automation where supported.
+
 # AI Worker Setup and Safety Contract
 
 ## Current deployment state
