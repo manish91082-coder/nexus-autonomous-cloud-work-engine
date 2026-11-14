@@ -1,3 +1,33 @@
+# V5 PORTFOLIO STRATEGY UPDATE — 14 NOVEMBER 2026
+
+**Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine` / `master`  
+**Authority:** `MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md`  
+**Portfolio ranking:** `PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md`  
+**Current task:** `P59-001` — portfolio-wide revenue-source universe and largest credible source ranking  
+**Financial state:** PCNE ₹0; bank-settled ₹0; authorized spend ₹0
+
+## Owner's explicit strategic instruction
+The ₹10 Cr target must be achieved by combining multiple eligible revenue sources if needed. No single product, marketplace or method is required to generate ₹10 Cr. Prioritize and complete the first monetization engine from the largest credible risk-adjusted net-revenue source, then add the next source while earlier streams continue earning.
+
+## Binding V5 operating rules
+- Research multiple revenue-source families in parallel; do not rotate blindly through one marketplace at a time.
+- Rank the largest credible risk-adjusted cumulative net-revenue source first, not simply the easiest quick win or largest theoretical TAM.
+- One new product build at a time remains the default.
+- "Complete first source" means verified independent paid use, correct PCNE reconciliation, self-serve delivery, positive fully-loaded unit economics and a measured repeatability path. It does **not** mean waiting for that one source to generate ₹10 Cr.
+- Add the next highest-ranked source after that repeatable monetization loop; earlier sources remain active and continue contributing.
+- A NO-GO applies to the exact candidate hypothesis by default. Do not close an entire platform/source family without separate source-level evidence.
+- Existing V4 legal, rights, owner-approval, zero-spend, seller eligibility, no-spam/no-cold-outreach/no-manual-gig and revenue-recognition constraints remain in force.
+
+## Queue transition
+- P58-001 Apify niche research: BLOCKED/PAUSED for portfolio reprioritization and unresolved Apify incident gate; not a platform-wide NO-GO.
+- P59-001 portfolio-wide source mapping and ranking: IN_PROGRESS.
+- P59-002 first selected product build: BLOCKED pending P59-001 and all V5 gates.
+
+## Exact next work
+Complete P59-001: compare recurring B2B SaaS/vertical software, marketplace apps, AI agents/APIs, digital products, licensing, creator IP/royalties, stock assets, games, sponsorship, compliant affiliate/advertising and additional eligible models. Quantify reachable buyers, prices, conservative/base/upside PCNE, contribution margin, repeatability, distribution, automation, time to first PCNE, capital, legal/rights and India payout gates. Recommend FIRST/NEXT/HOLD/NO-GO with evidence. Do not start a build until the highest-ranked concrete product dossier passes V5 release gates.
+
+---
+
 # GOVERNANCE CORRECTION — 14 NOVEMBER 2026
 
 The prior continuity audit's statement that V3 contained an original 30-day deadline and a funded/manual assignment route was inaccurate. Direct comparison of V3 and V4 shows: neither master constitution sets a 30-day deadline; V3 already excludes manual assignment labour; V4 preserves the exclusion. See [TNCR charter reconciliation correction](governance/TNCR_MISSION_CHARTER_RECONCILIATION_CORRECTION_2026-11-14.md). This supersedes that finding only; it does not claim all ten historical chat threads were reread.
