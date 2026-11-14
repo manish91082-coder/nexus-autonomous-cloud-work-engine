@@ -62,12 +62,18 @@ Wix App Market clarification: USD 200 threshold is per individual app; earnings 
 
 Zoho Marketplace lists 900+ CRM extensions and 2,000+ total extensions. The 22 named native/direct-adjacent references are a targeted audit, not an exhaustive catalogue scan. Recurring economics remain unproven because field retirement may be an occasional job; monthly subscription needs repeated dependency scans or schema-governance cadence evidence.
 
+## Seller payout and API-credit gate — 14 November
+
+Detailed follow-up: `research/PHASE_54_PAYOUT_AND_API_CREDIT_GATE_2026-11-14.md`.
+
+- Zoho Marketplace extension developers receive reported gross commission equal to customer transaction value; threshold wording differs at exactly USD 100 (FAQ says at least USD 100; payment page says outstanding **more than** USD 100). Wire is about 15 working days after owner approval; PayPal by request.
+- India payout remains **UNVERIFIED** for this exact Marketplace extension programme. Broader Zoho Partner Store materials mention India entity/INR invoices and PAN, but the programme linkage is not explicit. Do not confuse reseller ₹50,000 with extension commission.
+- CRM V8 API credits are now documented separately from concurrency: Free 5,000; Standard 50,000+250/user (max100,000); Professional 50,000+500/user (max3,000,000); Enterprise/Zoho One 50,000+1,000/user (max5,000,000); Ultimate/CRM Plus 50,000+2,000/user (no fixed maximum shown). `/__apis` costs 1 credit and discovers endpoint-specific scopes/costs. Paid add-on credits must never be purchased/consumed automatically.
+- Wix paid apps require Partner onboarding and Tipalti setup; USD 200 threshold applies per individual app; March revenue is paid at the beginning of May. Tipalti lists India local INR bank and USD wire/PayPal routes but has a restriction for India-based payer entities; Wix's payer entity is not explicit, so India payout remains **conditional/unverified**.
+
 ## Exact next action
 
-Continue `P54-001` by verifying:
-1. Zoho's exact extension commission for the app type, India seller eligibility, required company/tax documents, payout wire fees, statement threshold and review/terms requirements.
-2. Wix's India developer onboarding, supported payout method/currency, account requirements, payout threshold and applicable transaction/tax deductions.
-3. Then compare monday.com, BigCommerce, Xero and Intuit only to the extent India eligibility and zero-spend access can be evidenced.
+Continue `P54-001` by resolving the remaining owner-independent public evidence, then prepare exact support-confirmation questions for the owner-approved route: (1) Zoho Marketplace extension developer India remittance entity, payout currency, PAN/GST/invoice docs, wire fees/FX and threshold boundary; (2) Wix App Market's Tipalti payer entity and India-based payee eligibility, method, currency, fees and tax requirements. Continue problem-first market scan only after these rails are classified. Then compare monday.com, BigCommerce, Xero and Intuit where India eligibility and zero-spend access can be evidenced.
 
 After platform rails are verified, shortlist concrete user problems and audit direct competitors. Require two independent strong buyer-demand signals, native distribution or a credible organic acquisition path, technical differentiation, rights and positive recurring net economics. If none passes, record NO-GO and broaden the V4 opportunity search. Do not build merely to create activity.
 
