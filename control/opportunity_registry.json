@@ -1461,9 +1461,9 @@
       "category": "catalog_data_quality_subscription",
       "platform": "BigCommerce App Marketplace",
       "tier": "P2",
-      "status": "HOLD_FOR_EVIDENCE",
-      "score": 56,
-      "score_confidence": "Low; two distinct merchant reports describe variant price import failures. Native preview and multiple catalog/pricing apps cover adjacent workflows, and India seller eligibility remains unknown.",
+      "status": "REJECTED",
+      "score": 39,
+      "score_confidence": "Medium; two merchant reports establish the problem, but Hypa Shift directly supports existing variant price update by Product ID/Variant ID, pre-import validation/correction and scheduled price feeds. Native importer also has variant fields and preview; India seller eligibility remains unverified.",
       "payout_evidence": {
         "india_eligibility": "India Technology Partner/payout eligibility remains unconfirmed; no account or partner application checked.",
         "payout_method": "ACH, bank wire or PayPal; international PayPal 2% capped at USD 20, wire USD 20.",
@@ -1481,22 +1481,23 @@
         "Separate recent customer post asks why variant price updates inherit parent product default price after Modern CSV import: https://support.bigcommerce.com/s/question/0D5UG000012l9hk0AA/why-are-my-variant-prices-being-overridden-by-the-product-default-price"
       ],
       "unknowns": [
-        "Need sample corpus of anonymised CSV failure patterns to validate deterministic detection precision/recall.",
-        "Need evidence of recurring weekly/monthly supplier/catalog updates and willingness to pay.",
-        "Native importer preview covers first product and error summary; differential value against native workflows must be quantified.",
-        "India Technology Partner and payout eligibility, minimum and reserve policy unresolved.",
-        "A 12-reference bounded landscape screen is complete; full 10–15 direct/adjacent product audit with exact current feature/pricing/review verification remains outstanding."
+        "No independent paid demand/willingness-to-pay evidence for a separate validator.",
+        "Hypa Shift has exact incumbent overlap on variant ID mapping, existing-variant Price/Sale Price updates, pre-import validation and scheduled supplier feeds.",
+        "India Technology Partner/payout eligibility remains unverified."
       ],
       "ip_and_policy_status": "Initial validation should be offline/read-only. Do not request product-write or catalog-update scopes. Protect customer/supplier pricing and SKU data; no data uploaded to external LLMs.",
-      "reason_for_rejection": "",
-      "note": "Validation candidate only, not shortlisted and not approved for MVP. If demand frequency, competitor gap or India payout fails, reject without building.",
+      "reason_for_rejection": "Generic variant-price import preflight is not sufficiently differentiated. Hypa Shift already imports/updates existing BigCommerce variants by Product ID and Variant ID, exposes Price/Sale Price, validates and lets the user correct import errors before proceeding, and supports recurring scheduled/URL-fed price imports. Native Modern CSV importer also supports variant prices and an initial preview/error summary. The two merchant support incidents are problem signals, not willingness-to-pay evidence. A separate post-import reconciliation tool has no distinct demand proof and is not approved.",
+      "note": "Closed NO-GO on 14-Nov-2026 after direct Hypa Shift evidence. Do not build or recycle as a generic preflight. New distinct post-import reconciliation ideas require fresh demand proof and 10–15 competitor review.",
       "last_revalidated": "2026-11-14",
-      "score_scope": "EARLY_PROBLEM_SCREEN_NOT_PRODUCT_APPROVAL",
+      "score_scope": "PRODUCT_SPECIFIC_DIRECT_INCUMBENT_NO_GO",
       "sources": [
         "https://support.bigcommerce.com/s/question/0D5UG000010EQGl0AO/product-csv-file-not-uploading-sale-prices-against-products-with-different-skus-why-is-this-happening",
         "https://support.bigcommerce.com/s/question/0D5UG000012l9hk0AA/why-are-my-variant-prices-being-overridden-by-the-product-default-price",
         "https://support.bigcommerce.com/s/article/Modern-Import-Export-Overview?language=en_US",
-        "https://support.bigcommerce.com/s/article/Importing-Complex-Attributes?language=en_US"
+        "https://support.bigcommerce.com/s/article/Importing-Complex-Attributes?language=en_US",
+        "https://www.hypaapps.com/bigcommerce-apps/shift/",
+        "https://docs.shift.hypaapps.com/docs/getting-started/imports/",
+        "https://docs.shift.hypaapps.com/docs/guides/variants/template/"
       ],
       "bounded_competitor_screen": [
         {
@@ -1550,6 +1551,97 @@
       ],
       "evidence_strength": "Two independent customer reports show distinct variant-price import failures (13-Aug-2026 and recent 14-Nov-2026 capture). These are problem signals, not willingness-to-pay proof.",
       "next_exact_work": "Complete 10–15 direct/adjacent app audit, validate repeat update cadence, demonstrate offline-only validator detection with representative CSVs, and verify India Technology Partner/payout eligibility before any MVP decision."
+    },
+    {
+      "id": "ATLASSIAN-JIRA-INACTIVE-SEAT-OPTIMIZER",
+      "category": "license_cost_optimization",
+      "platform": "Atlassian Marketplace / Jira Cloud",
+      "tier": "P3",
+      "status": "REJECTED",
+      "score": 21,
+      "score_confidence": "High for generic scope; Atlassian native licensing exposes Last Active/MQB and multiple marketplace apps identify and reclaim unused seats with cost estimates and undo.",
+      "payout_evidence": {
+        "india_eligibility": "Atlassian Marketplace Agreement requires own-name bank account and EFT; no India-specific public eligibility list was found. Written confirmation required.",
+        "payout_method": "USD EFT to valid bank account in partner's name.",
+        "minimum": "USD 500 net of applicable withholding.",
+        "settlement": "Approximately 30 days after month-end, subject to minimum and agreement terms.",
+        "economics": "100% gross Forge revenue share up to USD 1m qualifying lifetime Forge revenue; thereafter 83% Forge share effective 1-Oct-2026.",
+        "sources": [
+          "https://www.atlassian.com/licensing/marketplace/partneragreement",
+          "https://developer.atlassian.com/platform/marketplace/pricing-payment-and-billing/"
+        ]
+      },
+      "automation_fit": "High, but native Last Active/Maximum Quantity Billing and existing apps cover generic inactive-seat analysis and reclaim.",
+      "demand_evidence": [
+        "Atlassian native licensing guidance exposes Last Active date and explains Maximum Quantity Billing.",
+        "Marketplace apps Seat Reclaim, License Audit and Seats Reclaim already calculate unused seats/cost and/or support reclaim with history/undo."
+      ],
+      "unknowns": [
+        "No distinct unmet seat-management outcome beyond native and marketplace incumbents.",
+        "India Marketplace partner EFT eligibility remains unverified."
+      ],
+      "ip_and_policy_status": "User lifecycle and license write actions require strong owner approval, protected-user lists, undo and least privilege.",
+      "reason_for_rejection": "Native Atlassian licensing exposes Last Active and maximum billed quantity, while Seat Reclaim, License Audit and Seats Reclaim already identify inactive seats and show associated costs/reclaim controls. Generic clone has no moat.",
+      "note": "Product-specific NO-GO; do not reopen without a materially different enterprise billing-control problem.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "PRODUCT_SPECIFIC_COMPETITOR_NO_GO",
+      "sources": [
+        "https://www.atlassian.com/licensing/cloud",
+        "https://marketplace.atlassian.com/apps/1825851557/seat-reclaim-remove-inactive-users-free-licenses-for-jira",
+        "https://marketplace.atlassian.com/apps/3306033176/license-audit-inactive-users-unused-seats-for-jira",
+        "https://marketplace.atlassian.com/apps/3008187187/seats-reclaim-for-jira-inactive-users-unused-licenses"
+      ]
+    },
+    {
+      "id": "ATLASSIAN-FORGE-DEVSPACE-COST-GUARD",
+      "category": "developer_tools_subscription",
+      "platform": "Atlassian Marketplace / Forge Developer Ecosystem",
+      "tier": "P1",
+      "status": "HOLD_FOR_EVIDENCE",
+      "score": 65,
+      "score_confidence": "Low-medium; multiple Forge app developers explicitly request configurable dollar budgets/alerts and report margin exposure, but native and API capabilities have documentation ambiguity, Commerce API access is restricted for Forge/OAuth clients, India seller eligibility is unverified and direct product distribution/payment path is not established.",
+      "payout_evidence": {
+        "india_eligibility": "Current Partner Agreement does not list India or a country allowlist; India seller/EFT eligibility is unverified.",
+        "payout_method": "USD EFT to a valid bank account in partner's name under Paid-via-Atlassian agreement.",
+        "minimum": "USD 500 net of applicable withholding.",
+        "settlement": "Approximately 30 days after month-end once threshold reached; bank fees borne by partner.",
+        "economics": "Qualifying Forge apps receive 100% gross revenue share up to USD 1m lifetime Forge revenue, then 83% from 1-Oct-2026. If the proposed tool is external/non-Forge software, Marketplace revenue share terms/distribution fit cannot be assumed.",
+        "sources": [
+          "https://www.atlassian.com/licensing/marketplace/partneragreement",
+          "https://developer.atlassian.com/platform/marketplace/pricing-payment-and-billing/"
+        ]
+      },
+      "automation_fit": "Potentially high as local/self-hosted daily usage pull and alerting tool after one-time owner API-token setup; no hard platform spend cap or real-time alerting is established.",
+      "demand_evidence": [
+        "19–21 Aug 2026 Forge vendor thread: multiple app developers ask for a custom monthly USD budget, per-app/developer-space/site/environment alerts, and possible non-production enforcement; Atlassian staff says configurable percentage and budget notifications were unsupported at that time: https://community.developer.atlassian.com/t/forge-platform-usage-costs-alerts-limits/102240",
+        "3 Feb 2026 vendor discussion describes revenue of about USD100 for a 20-user app against potential Forge usage cost of USD120: https://community.developer.atlassian.com/t/forge-app-pricing-vs-actual-platform-costs/100000",
+        "15 Jan 2026 vendor asks whether development/staging usage contributes to cost: https://community.developer.atlassian.com/t/forge-usage-costs-for-development-staging-environments/99000"
+      ],
+      "unknowns": [
+        "Atlassian April 2026 Engineering blog refers to allowance or configured-budget 50/75/90/100% alerts, but May 2026 Usage Alerts docs show fixed allowance thresholds and Aug 2026 Atlassian staff says budget-based notifications unsupported; written current clarification needed.",
+        "Resource Usage API is experimental, owner account must own the Forge app, requires API token and X-ExperimentalAPI, rate limit 5 requests/minute, and is unavailable in Government/Isolated Cloud.",
+        "Usage-and-cost dashboard refresh is daily at 12:00 UTC; no real-time cost or hard-spend cap.",
+        "Commerce public REST APIs need a generated access token. The invoice-list endpoint explicitly blocks Forge and OAuth2 apps; external tool's permitted owner-token and invoice access is unproven.",
+        "Full 10–15 direct/adjacent competitor audit remains outstanding; native usage dashboard/insights/cost estimator/alerts and observability/DIY tools are substitutes.",
+        "Atlassian India Marketplace seller/EFT eligibility not confirmed.",
+        "Product may need to be external local/CLI software rather than a Forge Marketplace app; Paid-via-Vendor rules and direct seller payment route need review.",
+        "No paid buyer procurement, WTP or retention evidence yet."
+      ],
+      "ip_and_policy_status": "Local/self-hosted design only. Owner API token stays on owner's device; never request or store credentials in ChatGPT/GitHub. Minimum-privilege account; no user issue content, customer PII or external LLM use. Must label delayed estimates and never promise a hard billing stop.",
+      "note": "P55-001 research-only candidate. Preliminary score 65/100 does not clear hard gates. No build, account, token setup, KYC, terms, Marketplace listing or spend.",
+      "last_revalidated": "2026-11-14",
+      "score_scope": "PRELIMINARY_PRODUCT_HYPOTHESIS_NOT_GO",
+      "sources": [
+        "https://developer.atlassian.com/platform/forge/developer-space/export-app-resource-usage/",
+        "https://developer.atlassian.com/platform/forge/usage-alerts/",
+        "https://developer.atlassian.com/platform/forge/forge-platform-pricing/",
+        "https://developer.atlassian.com/platform/forge/monitor-usage-metrics/",
+        "https://developer.atlassian.com/platform/commerce/rest/",
+        "https://developer.atlassian.com/platform/commerce/rest/api-group-invoices/",
+        "https://community.developer.atlassian.com/t/forge-platform-usage-costs-alerts-limits/102240",
+        "https://community.developer.atlassian.com/t/forge-app-pricing-vs-actual-platform-costs/100000",
+        "https://community.developer.atlassian.com/t/forge-usage-costs-for-development-staging-environments/99000"
+      ]
     }
   ],
   "required_evidence": [
