@@ -6,6 +6,9 @@ on:
       - 'scripts/worker_tick.py'
       - 'scripts/ai_task_executor.py'
       - 'scripts/mission_guard.py'
+      - 'scripts/swarm_runtime.py'
+      - 'tests/test_swarm_runtime.py'
+      - 'schemas/swarm-contracts-v1.schema.json'
       - 'tests/test_ai_task_executor.py'
       - 'tests/test_msme_ops_desk.py'
       - 'tests/test_recruitment_revenue_assurance.py'
@@ -42,6 +45,8 @@ jobs:
           python-version: '3.12'
       - name: Validate control-plane state
         run: python3 scripts/mission_guard.py
+      - name: Run deterministic swarm runtime contract and failure-injection tests
+        run: python3 -m unittest discover -s tests -p 'test_swarm_runtime.py' -v
       - name: Run AI worker safety tests
         run: python3 -m unittest discover -s tests -p 'test_ai_task_executor.py' -v
       - name: Run product smoke tests
