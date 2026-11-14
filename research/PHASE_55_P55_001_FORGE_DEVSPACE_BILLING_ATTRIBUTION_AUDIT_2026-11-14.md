@@ -137,3 +137,24 @@ Official source: https://developer.atlassian.com/platform/forge/developer-space/
 A generic cross-app usage/cost dashboard is therefore **not a defensible product gap**. The candidate must not recreate Developer Space Insights, per-app Cost & Usage, or the native Usage Alerts inbox. Any possible value must be narrower and independently evidenced: owner-defined arbitrary USD budgets, custom escalation/recipient policy, explicit invoice/payment/pre-dunning status monitoring, or a provable cost-to-license-margin decision workflow, provided supported data access exists.
 
 The native dashboard does not itself document arbitrary custom USD budget alerts or a programmable external API for all billing states. But absence from this one page is not proof those features do not exist elsewhere; resolve through current official feature/API documentation and Atlassian support before treating this as an unmet gap.
+
+
+## 10. Request-volume model and product boundary
+
+The App Resource Usage API requires one `appId` and one `usageKey` per request, with pagination and optional context/environment grouping. At the documented five requests per minute, the lower-bound refresh time for a full inventory is:
+
+`minimum minutes = (owned apps × usage keys per app × pages per query) ÷ 5`
+
+Illustrative arithmetic only (not an assumption about the current number of supported usage keys):
+- 10 apps × 8 usage keys × 1 page = 80 requests, at least 16 minutes of request capacity.
+- 100 apps × 8 usage keys × 1 page = 800 requests, at least 160 minutes of request capacity.
+
+Actual time may be longer because of pagination, retries, context filters, token issues and rate-limit handling. The daily data resolution and daily dashboard refresh remain the dominant freshness constraints, not just API throughput.
+
+### Current residual gap boundary
+Developer Space Insights already aggregates resource/cost visibility across all apps. The candidate must not duplicate it. The residual hypothesis is now limited to:
+1. user-defined monthly USD budget thresholds and custom recipient/escalation policies if Atlassian confirms these are not natively configurable;
+2. externally readable billing-account/invoice/payment/pre-dunning state alerts if a supported external read-only API exists;
+3. a decision-ready comparison of per-app overage and Marketplace licensing revenue/margin, only if the required data is authorized and the owner buyer demonstrates willingness to pay.
+
+Any one of these is still a hypothesis, not a selected product. If no supported data path exists, or native features already cover the specific job, the candidate must be rejected.
