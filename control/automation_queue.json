@@ -3068,7 +3068,7 @@
           "Amazon KDP 2026 royalty terms"
         ],
         "critical_distinction": "Revenue engine vs distribution rail; same SaaS product across two marketplaces is not two separate product streams.",
-        "next": "Return to V5 portfolio-wide B2B vertical source screen. Select a different recurring buyer problem; do not clone agri input ERP or retailer return/claim workflows. Keep Tech Cloud ERP source/ownership/module inventory audit open. No build.",
+        "next": "Return to V5 portfolio-wide source map. Compare remaining recurring software and non-software source families; do not serially clone adjacent vertical ERP. Require two independent buyer signals, 10-15 substitutes, price-bearing WTP and self-serve economics. Tech Cloud ERP source/ownership/module audit remains open.",
         "asset_audit_report": "research/PHASE_59_2_EXISTING_SOFTWARE_IP_ASSET_AUDIT_2026-11-14.md",
         "asset_audit_status": "COMPLETED_INITIAL_REPOSITORY_AUDIT; NO_EXISTING_ASSET_PASSES_FIRST_PRODUCT_GATE",
         "canonical_assets_audited": 8,
@@ -3095,7 +3095,11 @@
         "agri_input_candidate_disposition": "NO_GO_CURRENT_GENERIC_BATCH_EXPIRY_RETURN_CLAIM_CREDIT_RECONCILIATION_HYPOTHESIS; DIRECT_COMPETITORS_SHELF LIFEPRO_AND_OTHERS_COVER_CORE_WORKFLOW",
         "agri_input_substitute_count": 15,
         "agri_input_direct_overlap": "ShelfLifePro publishes per-supplier/per-batch return windows, ₹ at risk, GST debit notes, pending/credited states, batch trace, offline POS and multi-location stock transfers; TradeX/Tathven/Saathi360/Kroply/OperLete cover distributor or ERP workflows.",
-        "government_system_boundary": "iFMS/e-Urvarak is official national fertilizer supply-chain and DBT platform; PIB 30-Aug-2026 reports >14 crore Aadhaar-linked buyers, >2.5 lakh retailers and ~7 crore MT annual sales transactions. No API/data access assumed."
+        "government_system_boundary": "iFMS/e-Urvarak is official national fertilizer supply-chain and DBT platform; PIB 30-Aug-2026 reports >14 crore Aadhaar-linked buyers, >2.5 lakh retailers and ~7 crore MT annual sales transactions. No API/data access assumed.",
+        "manufacturing_jobwork_report": "research/PHASE_59_6_MANUFACTURING_JOBWORK_RECONCILIATION_SCREEN_2026-11-14.md",
+        "manufacturing_jobwork_disposition": "NO_GO_GENERIC_JOBWORK_CHALLAN_MATERIAL_RECONCILIATION_ITC04_PRODUCT_HYPOTHESIS; PENTOGGLE/POTHERA/MANAGEMATE_AND_ERP_SUITE_ALTERNATIVES_COVER_CORE",
+        "manufacturing_jobwork_substitute_count": 15,
+        "manufacturing_jobwork_evidence": "CGST Act s143 and CBIC Rule45 establish compliance workflow; CRIER 2025 MSME digitalization report and ASUSE 2025 broad sector data do not prove job-work-specific prevalence or WTP; vendor pages describe problem but are not independent prevalence studies."
       }
     },
     {
