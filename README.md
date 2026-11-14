@@ -103,3 +103,12 @@ Keep one canonical repository. Preserve history; archive rather than delete. No 
 - Decision: **HOLD**, not GO. No P55-002 build, account, token, support submission, public listing or spend. Support clarification packet remains NOT SENT and requires explicit owner approval.
 - Full audit: `research/PHASE_55_P55_001_SUBSTITUTE_AND_FEASIBILITY_AUDIT_2026-11-14.md`.
 - Worker #248 success applies to control-state SHA `1cec0f83a87e5ba5cbfd9b5492c7e7cf580bd102`; logs show `SAFE_BOOTSTRAP_ONLY` and `WAITING_FOR_OWNER_CONFIGURATION`, so it is not evidence of AI inference or autonomous research execution.
+
+
+## Phase 55 partner eligibility and Marketplace economics clarification — 14-Nov-2026
+
+- Atlassian's official partner guide permits an individual developer without a parent company to create a Partner Profile under their own name. This does **not** confirm India-specific paid-app verification or India own-name USD EFT.
+- A specific India-resident individual paid-app question dated 18-Oct-2026 remains unanswered in the public community snapshot. Keep India verification/payout **UNVERIFIED**, not NO and not GO.
+- Current Atlassian Marketplace pricing docs: qualifying pure Forge apps get 100% of gross Forge revenue up to USD 1M aggregate lifetime Forge revenue, then the standard Forge share of 83% from 1-Oct-2026. Qualification requires no Connect modules, OAuth authentication and Forge UI. A local/CLI third-party integration is not yet proven to qualify for this special rate.
+- Current Paid-via-Atlassian remittance threshold is USD 500 profit; pricing documentation says payout within 30 days after the month in which the threshold is reached and describes 30–60 days from sale due to refund/chargeback timing.
+- Candidate remains HOLD; no P55-002 build, account, token, outreach, terms acceptance or spend.

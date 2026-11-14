@@ -2646,7 +2646,7 @@
             "https://www.atlassian.com/blog/how-we-build/engineering-the-forge-billing-platform-for-reliability-and-scale"
           ]
         },
-        "next_exact_work": "Do not build P55-002. Obtain two independently verifiable buyer-demand signals and one genuine budget/WTP signal; obtain official clarification for owner-operated external local-client access to invoice/payment/dunning data, and India-specific Marketplace eligibility/EFT plus the permitted third-party listing/payment model. Existing Atlassian support packet remains NOT SENT and any submission requires explicit owner approval. Re-run V4 gates; if unmet, NO-GO P55-001 and move to next ranked platform.",
+        "next_exact_work": "Do not build P55-002. Obtain two independently verifiable buyer-demand signals and one genuine budget/WTP signal; obtain official clarification for external local-client invoice/payment/dunning data access and India-specific paid-app verification/own-name EFT plus permitted listing/payment model for the proposed CLI utility. Individual partner profile creation is generically permitted, but that is not India payout approval. Existing support packet remains NOT SENT; any submission requires explicit owner approval. Re-run V4 gates; if unmet, NO-GO P55-001 and move to next ranked platform.",
         "native_insights_substitute": {
           "report": "research/PHASE_55_P55_001_FORGE_DEVSPACE_BILLING_ATTRIBUTION_AUDIT_2026-11-14.md",
           "source": "https://developer.atlassian.com/platform/forge/developer-space/developer-space-insights/",
@@ -2662,6 +2662,14 @@
           "external_invoice_access": "UNVERIFIED; DOCUMENTED_INVOICE_LIST_ENDPOINT_EXCLUDES_FORGE_AND_OAUTH2_APPS",
           "india_distribution_payout": "UNVERIFIED",
           "status": "HOLD_FOR_EVIDENCE"
+        },
+        "partner_economics_supplement": {
+          "individual_profile": "Official Atlassian documentation permits an individual without parent company to create a partner profile using own name.",
+          "india_paid_app": "India-specific individual paid-app question is present in community dated 2026-10-18 but has no public reply; PAN/W-8 and India own-name EFT unverified.",
+          "forge_revenue_share": "100% gross until USD 1m aggregate lifetime Forge revenue, then 83% standard rate effective 2026-10-01, only if app meets pure Forge criteria (no Connect, OAuth auth, Forge UI).",
+          "cli_classification": "Local/CLI third-party integration not proven to qualify for Forge revenue share or paid-via-Atlassian model.",
+          "source": "https://developer.atlassian.com/platform/marketplace/become-a-partner/; https://developer.atlassian.com/platform/marketplace/pricing-payment-and-billing/; https://community.developer.atlassian.com/t/can-an-individual-in-india-no-company-become-a-paid-app-marketplace-partner/103332",
+          "status": "PARTIALLY_CLARIFIED_COUNTRY_AND_PRODUCT_CLASSIFICATION_OPEN"
         }
       }
     },

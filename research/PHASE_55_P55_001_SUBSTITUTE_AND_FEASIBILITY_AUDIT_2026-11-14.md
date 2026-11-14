@@ -192,3 +192,31 @@ Explicitly excluded claims:
 - Cost Tracker: https://marketplace.atlassian.com/apps/2743016176/cost-tracker-financial-budget-rates-and-profit-for-jira
 
 **Audit limitation:** public material reviewed here does not substitute for a live owner-account API test, written Atlassian support decision, buyer interview or completed payout onboarding. No external account, owner token, paid service, legal agreement, outreach, listing or funds movement was performed.
+
+
+## 11. Supplementary partner eligibility and revenue-share check — 14 November 2026
+
+A further check of current Marketplace partner documents sharpens, but does not remove, the India gate:
+
+### Individual profile vs. India-specific paid-app approval
+
+- Atlassian's “Become a partner” documentation, last updated 24-Aug-2026, expressly says that an individual developer without a parent company can create a partner profile using their own name. A registered company is therefore **not a universal prerequisite for creating a partner profile**.
+- The separate “Register as a Marketplace Partner” onboarding guide describes verified organization information, Partner Agreement, due diligence and two-step verification as part of partner enrollment. This must not be conflated with a guarantee of successful paid-app verification.
+- An India-specific community question posted 18-Oct-2026 asks whether an India-resident individual with no registered company can sell paid Forge apps, and what tax/payout documents are required. The indexed page shows no answer/reply at the time checked. It is evidence that the India-specific question remains open publicly, not proof of rejection.
+- A separate August/September 2026 community report by a Portugal-based sole trader describes an individual sole-trader Paid-via-Atlassian approval. This is an anecdotal example from another country and cannot establish India eligibility or Indian bank payout.
+
+**Revised classification:** generic individual partner profile is documented as allowed; India-resident individual paid-app partner verification, PAN/W-8 documentation treatment, USD EFT into an India own-name bank account and country-specific restrictions remain **UNVERIFIED**. Do not tell the owner that incorporation is definitely required or that India payouts definitely work.
+
+### Current Paid-via-Atlassian economics
+
+The Marketplace pricing/payment documentation states:
+- qualifying pure Forge apps receive 100% of gross Forge revenue until the partner's aggregate lifetime Forge revenue reaches USD 1 million;
+- after that threshold, the standard Forge revenue-share rate applies; the page states the Forge rate changed to 83% from 1-Oct-2026;
+- qualification requires no Connect modules, OAuth authentication and Forge UI (UI Kit or Custom UI);
+- remittance starts after USD 500 profit is accrued and is paid within 30 days after the end of the qualifying month (the page describes a minimum 30 and maximum 60 days from sale due to refund/chargeback timing).
+
+**Important classification caveat:** the proposed Forge Developer Cost Guard is still being considered as a local/CLI/non-installable third-party integration. It has not been established that such a product qualifies as a “Forge app” for the 100% lifetime USD 1 million incentive. Do not use the 100% rate in an economic model until the app type and listing/payment model are confirmed in writing. For a non-qualifying listing, use only the confirmed applicable contract rate after formal classification.
+
+### Effect on P55 gate
+
+This update improves confidence that an individual profile can exist without a company, but it does not close the India payout gate. The candidate remains **HOLD_FOR_EVIDENCE** because WTP, external invoice/payment-state access, product-specific paid distribution classification and India-specific settlement eligibility are still missing.
