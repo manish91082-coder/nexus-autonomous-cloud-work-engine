@@ -60,7 +60,15 @@ class SwarmRuntimeTests(unittest.TestCase):
         self.assertEqual(result["status"], "DEAD_LETTER")
         self.assertEqual(len(s["dead_letters"]), 1)
 
-    def test_exponential_backoff_blocks_early_retry(self):\n        s = self.state(task())\n        claim_task(s, "A", "w1", T0)\n        finish_task(s, "A", "w1", False, error_code="TEMP", now=T0)\n        with self.assertRaises(ContractError):\n            claim_task(s, "A", "w2", T0 + timedelta(seconds=30))\n        claim_task(s, "A", "w2", T0 + timedelta(seconds=61))\n\n    def test_evidence_provenance_contract(self):
+    def test_exponential_backoff_blocks_early_retry(self):
+        s = self.state(task())
+        claim_task(s, "A", "w1", T0)
+        finish_task(s, "A", "w1", False, error_code="TEMP", now=T0)
+        with self.assertRaises(ContractError):
+            claim_task(s, "A", "w2", T0 + timedelta(seconds=30))
+        claim_task(s, "A", "w2", T0 + timedelta(seconds=61))
+
+    def test_evidence_provenance_contract(self):
         good = {"evidence_id":"E1","claim":"claim","source_type":"OFFICIAL",
                 "source_uri":"https://example.org","retrieved_at_utc":"2026-11-14T00:00:00Z",
                 "sha256":"a"*64,"status":"VERIFIED"}
