@@ -98,3 +98,15 @@ See [Phase 59.3 report](research/PHASE_59_3_AGENTMARGIN_WORKBENCH_SUBSTITUTE_AND
 - **Name collision:** an independent public project owned by `rzkarsyad` at `github.com/rzkarsyad/agentmargin` uses the identical AgentMargin name for adjacent customer-level AI margin analytics. Do not assume affiliation or ownership. Rename and clear rights before commercial use.
 
 **Next:** continue P59-001 with recurring vertical SaaS buyer-problem research; keep Tech Cloud ERP ownership/source/module evidence audit open; compare one ERP-derived vertical candidate with one greenfield candidate. AI/B2B software source family remains OPEN. No product selected; P59-002 remains BLOCKED.
+
+
+## 10. Evidence batch 04 — India vertical SaaS screen (14-Nov-2026)
+
+See [Phase 59.4 report](research/PHASE_59_4_INDIA_VERTICAL_SAAS_SOLAR_AGRI_LOGISTICS_SCREEN_2026-11-14.md).
+
+Three verticals were screened; none is yet a product GO:
+- **Solar EPC operations — HOLD.** Official PM-Surya Ghar guidelines and IEEFA analysis establish a complex approval/subsidy workflow and portal friction, but current market has free OpenSolar and multiple India-specific all-in-one platforms (SolarERP, RAYVO, Falak OS, Solset AI, SuryaHub, Solar Ladder, Arka 360, Enigma and others). Generic CRM/ERP is not a defensible gap.
+- **Agri-input distribution — NEXT RESEARCH PRIORITY, NOT PRODUCT GO.** Government of India *Agricultural Situation in India* (July 2022) includes a 13-state field study (780 retailers, 1,300 top buyers, 650 frequent buyers and 1,300 random-walk buyers); reported 57% manual-book stock records and 42% disagreement between PoS and physical stock. This is historical 2022 baseline evidence, not a 2026 adoption estimate. At least nine current specialist alternatives were found, including OP Software (₹3,000/year), AgroKhata, AgriPeople, Pinakexa, TradeX, Tathven, xMatix, ZunderFlow and AgroLynk. A generic agri dealer ERP is not selected.
+- **Small-fleet logistics — HOLD.** Structural fragmentation exists, but low buyer WTP, high onboarding/support and established TMS competition are material risks.
+
+**Next exact research question:** can a self-serve, offline-capable batch-to-claim / credit-and-return reconciliation layer create measurable value for multi-branch agri-input distributors without replacing or interfering with mandated PoS, accounting or ERP systems? Compare 10–15 substitutes and seek independent buyer evidence. Keep Tech Cloud ERP source/ownership/module inventory audit open; its actual code may change build-vs-greenfield ranking. P59-002 remains BLOCKED; no build or spend.
