@@ -1,0 +1,254 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/blob/master/schemas/swarm-contracts-v1.schema.json",
+  "title": "Zero-cost swarm contracts v1",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/task"
+    },
+    {
+      "$ref": "#/$defs/evidence"
+    },
+    {
+      "$ref": "#/$defs/run"
+    },
+    {
+      "$ref": "#/$defs/result"
+    }
+  ],
+  "$defs": {
+    "task": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "id",
+        "task_type",
+        "version",
+        "status",
+        "payload",
+        "depends_on",
+        "max_attempts"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "READY",
+            "LEASED",
+            "IN_PROGRESS",
+            "COMPLETED",
+            "FAILED",
+            "DEAD_LETTER",
+            "PAUSED",
+            "BLOCKED"
+          ]
+        },
+        "payload": {
+          "type": "object",
+          "description": "Untrusted data only; never executable instructions"
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "max_attempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "owner_gate": {
+          "type": "boolean"
+        },
+        "idempotency_key": {
+          "type": "string"
+        },
+        "lease_owner": {
+          "type": "string"
+        },
+        "lease_expires_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": true
+    },
+    "evidence": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "evidence_id",
+        "claim",
+        "source_type",
+        "source_uri",
+        "retrieved_at_utc",
+        "sha256",
+        "status"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "evidence_id": {
+          "type": "string"
+        },
+        "claim": {
+          "type": "string"
+        },
+        "source_type": {
+          "enum": [
+            "OFFICIAL",
+            "PRIMARY",
+            "SECONDARY",
+            "INTERNAL_TEST",
+            "MODEL_DRAFT"
+          ]
+        },
+        "source_uri": {
+          "type": "string"
+        },
+        "retrieved_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "status": {
+          "enum": [
+            "VERIFIED",
+            "UNVERIFIED",
+            "CONTRADICTED",
+            "REJECTED"
+          ]
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "run": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "run_id",
+        "task_id",
+        "worker_id",
+        "started_at_utc",
+        "status"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "run_id": {
+          "type": "string"
+        },
+        "task_id": {
+          "type": "string"
+        },
+        "worker_id": {
+          "type": "string"
+        },
+        "started_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "finished_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "enum": [
+            "RUNNING",
+            "SUCCEEDED",
+            "FAILED",
+            "ABORTED"
+          ]
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "output_ref": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "result": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "task_id",
+        "status",
+        "completed_at_utc",
+        "evidence_ids"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "task_id": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "COMPLETED",
+            "FAILED",
+            "REJECTED",
+            "NEEDS_REVIEW"
+          ]
+        },
+        "completed_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "critic_verdict": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "HOLD",
+            "NOT_RUN"
+          ]
+        },
+        "v5_gate_status": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "HOLD",
+            "NOT_RUN"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
