@@ -2390,7 +2390,8 @@
               "apis_scope": "ZohoCRM.apis.READ",
               "add_on_credits": "pay-as-you-go monthly; must not be purchased/consumed automatically"
             },
-            "decision": "HOLD; no build"
+            "decision": "HOLD; no build",
+            "report": "research/PHASE_54_ALTERNATIVE_MARKETPLACE_RESEARCH_PLAN_2026-11-14.md"
           }
         },
         "zoho_payout_clarification": {
@@ -2412,10 +2413,10 @@
           "payout_provider": "Tipalti; account setup required before paid-app publication",
           "india_tipalti": "India payee routes include INR local bank and USD wire/PayPal; Tipalti footnote says payments to India are unavailable for India-based payer entities",
           "wix_payer_entity": "not identified in public Wix App Market developer documentation; exact India payee path remains conditional/unverified",
-          "report": "research/PHASE_54_PAYOUT_AND_API_CREDIT_GATE_2026-11-14.md"
+          "report": "research/PHASE_54_ALTERNATIVE_MARKETPLACE_RESEARCH_PLAN_2026-11-14.md"
         },
-        "next_exact_work": "No seller or customer-account action. Keep Zoho candidate HOLD; public extension docs do not prove India publisher payout. Wix uses Tipalti with India routes but payer entity caveat remains. Continue marketplace research only after documenting these unresolved payout gates; seek written platform confirmation through an owner-authorised support route before any account/KYC/terms. Maintain no build.",
-        "payout_api_gate_report": "research/PHASE_54_PAYOUT_AND_API_CREDIT_GATE_2026-11-14.md"
+        "next_exact_work": "Keep Zoho and Wix seller payout country gates classified as unresolved; do not create accounts, submit KYC or accept terms. Continue P54-001 by verifying programme-specific India payout remittance from official public evidence and validating a recurring buyer problem only after seller rail. No product build.",
+        "payout_api_gate_report": "research/PHASE_54_ALTERNATIVE_MARKETPLACE_RESEARCH_PLAN_2026-11-14.md#follow-up-gate-seller-remittance-and-api-credits-14-nov-2026"
       }
     },
     {
