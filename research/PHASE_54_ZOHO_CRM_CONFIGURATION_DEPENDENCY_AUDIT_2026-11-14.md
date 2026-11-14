@@ -219,7 +219,7 @@ P54-001 remains IN PROGRESS. Zoho stays the first marketplace research lane; thi
 
 ## 10. Expanded competitor audit — 17 native/direct-adjacent references
 
-The candidate has now been compared against **17 named native, direct or adjacent tools/features**. These do not all compete directly for a Zoho CRM install; Salesforce products are cross-CRM analogues that prove the broader field-impact category is an established product area.
+The candidate has now been compared against **22 named native, direct or adjacent tools/features**. These do not all compete directly for a Zoho CRM install; Salesforce products are cross-CRM analogues that prove the broader field-impact category is an established product area.
 
 ### Zoho-native / Zoho Marketplace (8 references)
 
