@@ -74,6 +74,8 @@ Use `/__features` and `/__apis` for each tenant. API concurrency (5,10,15,20,25 
 
 Additional Zoho Marketplace adjacent tools: Workflow Studio (cross-module field updates), Logs for Zoho CRM (free runtime logs), Multi-Blueprint (free), Module and Field Clone (free, 300+ installs), and Google Sheets Magic Lookup (200+ installs). None is a documented full field-dependency graph. Zoho CRM Extension FAQ says payment monthly if ≥USD100 generated; private install URLs are Enterprise+ only; overall Marketplace approval FAQ says 2–3 weeks while older extension FAQ says 48h, so budget longer. Public payout docs still do not confirm India seller bank eligibility, FX or tax treatment.
 
+Zoho says Marketplace has 900+ CRM extensions and 2,000+ total extensions. The 22 named references are a targeted substitute scan, not an exhaustive catalogue census. Field retirement may be infrequent; a subscription requires evidence of repeat scans/schema changes or recurring governance work. No cadence or willingness-to-pay is established.
+
 **Disposition: HOLD — no MVP or account setup.** Problem evidence exists, but paid purchase volume, recurring budget, verified India seller payout and complete technical coverage remain unproven. The next P54-001 work is a targeted 10–15 direct/substitute audit and stricter payout/permission verification.
 
 ### B. Wix App Market — second research priority
