@@ -3189,3 +3189,10 @@ Getvik remains the only P1 first-cash pilot. Cashfree Direct is a P2 domestic fa
 - Floating action version tags, broad `contents: write` on mission worker, missing dependency/lock manifests, and full runtime/security review remain open.
 - Current status: `WORKFLOW_TREE_INVENTORY_COMPLETE; FIRST_PASS_CONTROL_PLANE_AUDIT_COMPLETE; FULL_RUNTIME_AND_SECURITY_REVIEW_IN_PROGRESS`.
 - Mission invariants unchanged: ₹10 Cr cumulative verified PCNE; PCNE ₹0; authorized spend ₹0; AI provider not configured; swarm not deployed; no product build authorized.
+
+## Phase 59.8A runtime review extension — 14 November 2026
+- Full first-pass runtime inspection of `scripts/ai_task_executor.py`, `scripts/mission_guard.py`, `scripts/worker_tick.py`, their workflow definitions, setup contract, and selected adjacent model/gig adapters is recorded in `research/PHASE_59_8A_EXISTING_AUTOMATION_FORENSIC_INVENTORY_2026-11-14.md`.
+- Critical queue deadlock discovered: P59-003 depended on P59-001, but P59-001 is paused pending P59-003 handoff. Since dispatcher eligibility requires dependencies COMPLETED, P59-003 could never be selected. Fixed at `bc50b5e8d66c333589d56a1f8627ce0666251601` by removing P59-003's dependency; verified it is the sole active task with no dependencies.
+- Runtime risks: UTC quota date uses `date.today()`; no task leases/idempotency/retry/dead-letter/evidence schema; prompt fields are public-repo data; provider exception detail may be emitted to public artifact; AI response is not schema validated.
+- `local_coder.py`, `draft_executor.py`, and `model_gateway.py` belong to external bounty/gig lane and must not be connected to the mission swarm.
+- No swarm deployment or provider activation. PCNE ₹0; authorized spend ₹0; P59-002 remains blocked.
