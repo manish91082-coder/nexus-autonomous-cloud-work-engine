@@ -1,12 +1,15 @@
 # Phase 59.41 — GitHub Quota Client Lifecycle and Reservation Recovery
 
 **Mission:** P10CR / P59-003 AI Agentic Swarm Foundation  
-**Status:** PR #20 open; exact-head Workers/workerd runtime CI PASS  
+**Status:** PR #20 merged to master at `c1dccb36dba3b0b65a6d7655cbc41e55dcb3815f`; all 13 PR checks PASS  
 **Branch:** `phase59-41-quota-client-lifecycle`  
-**PR:** https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/20  
+**PR:** [#20](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/20) — merged
+**Merge commit:** `c1dccb36dba3b0b65a6d7655cbc41e55dcb3815f`
+**PR-head check SHA:** `94bf665eaceb48d8f34fd0dac7e6f5ae711fd9dc`  
 **Latest test head:** `07c2b8c62e7f09501f05b436c5026706e841dfff`  
 **Runtime tests:** 46/46 PASS
-**Latest Workers runtime CI:** [43713060718](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43713060718) — SUCCESS, 46/46 tests  
+**Latest Workers runtime CI:** [43713060718](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43713060718) — SUCCESS, 46/46 tests
+**PR regression matrix:** 13/13 checks PASS on PR head `94bf665eaceb48d8f34fd0dac7e6f5ae711fd9dc`  
 **Spend:** ₹0; **live GitHub API calls:** 0; **live inference:** disabled; **production feature flag:** OFF
 
 ## 1. Production-safe client lifecycle
