@@ -24,9 +24,11 @@ def main():
     products = registry.get("products")
     if not isinstance(products, list):
         raise RuntimeError("product registry products must be an array")
-    by_id = {item.get("id"): item for item in products if isinstance(item, dict)}
-    if len(by_id) != len(products) or set(by_id) != set(EXPECTED):
-        raise RuntimeError("canonical product registry ID set changed; require explicit scope review")
+    asset_items = [item for item in products if isinstance(item, dict) and str(item.get("path", "")).startswith("products/")]
+    research_candidates = [item for item in products if isinstance(item, dict) and not str(item.get("path", "")).startswith("products/")]
+    by_id = {item.get("id"): item for item in asset_items}
+    if len(by_id) != len(asset_items) or set(by_id) != set(EXPECTED):
+        raise RuntimeError("canonical built-product asset ID set changed; require explicit scope review")
 
     rows = []
     for product_id, (relative_path, expected_status) in EXPECTED.items():
@@ -71,6 +73,11 @@ def main():
         "canonical_repository": "manish91082-coder/nexus-autonomous-cloud-work-engine",
         "asset_count": len(rows),
         "assets": rows,
+        "research_candidate_count": len(research_candidates),
+        "research_candidates_not_built": [
+            {"id": x.get("id"), "name": x.get("name"), "path": x.get("path"), "status": x.get("status"), "build_status": x.get("build_status"), "next_action": x.get("next_action")}
+            for x in research_candidates
+        ],
         "portfolio_decision": "NO_EXISTING_ASSET_IS_RELEASE_READY_ON_CURRENT_REPOSITORY_EVIDENCE",
         "rights_chain_of_title": "NOT_ESTABLISHED_FOR_PUBLIC_RELEASE",
         "buyer_demand": "NOT_VERIFIED_FOR_ANY_OF_THE_EIGHT_ASSETS",
@@ -85,6 +92,7 @@ def main():
     print(json.dumps({
         "result": report["result"],
         "asset_count": report["asset_count"],
+        "research_candidate_count": report["research_candidate_count"],
         "release_ready": 0,
         "demand_verified": 0,
         "rights_chain_of_title": report["rights_chain_of_title"],
