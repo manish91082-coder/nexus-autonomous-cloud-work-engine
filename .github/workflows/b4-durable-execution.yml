@@ -1,0 +1,33 @@
+name: B4 Durable Execution Contract
+
+on:
+  push:
+    paths:
+      - 'scripts/durable_execution.py'
+      - 'tests/test_durable_execution.py'
+      - 'schemas/durable-execution-v1.schema.json'
+      - '.github/workflows/b4-durable-execution.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: b4-durable-execution-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout public source at triggering SHA
+        run: |
+          git init .
+          git remote add origin "https://github.com/${GITHUB_REPOSITORY}.git"
+          git fetch --depth=1 origin "${GITHUB_SHA}"
+          git checkout --detach FETCH_HEAD
+      - name: Validate schema JSON
+        run: python3 -m json.tool schemas/durable-execution-v1.schema.json > /dev/null
+      - name: Run B4 durable execution failure-injection tests
+        run: python3 -m unittest discover -s tests -p 'test_durable_execution.py' -v
