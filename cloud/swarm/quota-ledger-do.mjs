@@ -1,13 +1,10 @@
 /**
  * Phase 59.34 — Cloudflare SQLite-backed Durable Object quota ledger.
  *
- * One DO instance is addressed by provider|credential_scope|window_id.
- * All bucket reservations for that key are committed in one synchronous SQLite
- * transaction. This class is intentionally not wired to a public Worker route.
- * Keep the binding internal and the caller feature flag OFF until deployment,
- * billing/quota preflight, authentication and multi-host tests are approved.
+ * One DO instance is addressed by the canonical JSON identity
+ * [provider, credentialScope, windowId]. All quota buckets for that identity
+ * share one SQLite transaction boundary. This class is not exposed publicly.
  */
-
 export class QuotaLedgerError extends Error {}
 export class QuotaLedgerExhausted extends QuotaLedgerError {}
 
@@ -25,6 +22,21 @@ function integer(value, field, min = 0) {
     throw new QuotaLedgerError(`${field} must be a safe integer >= ${min}`);
   }
   return value;
+}
+
+export function quotaLedgerObjectName(provider, credentialScope, windowId) {
+  nonEmpty(provider, "provider");
+  nonEmpty(credentialScope, "credentialScope");
+  nonEmpty(windowId, "windowId");
+  return JSON.stringify([provider, credentialScope, windowId]);
+}
+
+export function getQuotaLedgerStub(env, provider, credentialScope, windowId) {
+  if (!env?.QUOTA_LEDGER) {
+    throw new QuotaLedgerError("WAITING_FOR_QUOTA: QUOTA_LEDGER binding missing");
+  }
+  const name = quotaLedgerObjectName(provider, credentialScope, windowId);
+  return env.QUOTA_LEDGER.get(env.QUOTA_LEDGER.idFromName(name));
 }
 
 export function validateQuotaRequest(input) {
@@ -59,9 +71,8 @@ export function validateQuotaRequest(input) {
     if (b.observedRemainingUnits > b.limitUnits) throw new QuotaLedgerError("remaining exceeds limit");
     const age = b.nowEpoch - b.observedAtEpoch;
     if (age < 0 || age > b.maxTelemetryAgeSeconds) throw new QuotaLedgerError("stale/future telemetry");
-    if (b.safetyReserveUnits + b.recoveryReserveUnits >= b.observedRemainingUnits) {
-      throw new QuotaLedgerExhausted("protected reserves consume remaining quota");
-    }
+    // Exhausted telemetry is valid evidence and must be persisted. Admission,
+    // not telemetry ingestion, decides whether the bucket can accept work.
   }
   if (!input.costs || typeof input.costs !== "object" || Array.isArray(input.costs)) {
     throw new QuotaLedgerError("costs must be an object");
@@ -75,9 +86,11 @@ export function validateQuotaRequest(input) {
 }
 
 export function availableUnits(bucket, counters) {
+  const committedSinceObservationUnits = counters.committedSinceObservationUnits
+    ?? counters.committedUnits ?? 0;
   return bucket.observedRemainingUnits - bucket.safetyReserveUnits
     - bucket.recoveryReserveUnits - counters.reservedUnits
-    - counters.committedUnits - counters.uncertainUnits;
+    - committedSinceObservationUnits - counters.uncertainUnits;
 }
 
 export class QuotaLedgerDO {
@@ -85,6 +98,12 @@ export class QuotaLedgerDO {
     this.ctx = ctx;
     this.env = env;
     const sql = ctx.storage.sql;
+    sql.exec(`CREATE TABLE IF NOT EXISTS quota_meta (
+      singleton INTEGER PRIMARY KEY CHECK(singleton=1),
+      provider TEXT NOT NULL,
+      credential_scope TEXT NOT NULL,
+      window_id TEXT NOT NULL
+    )`);
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_buckets (
       bucket_id TEXT PRIMARY KEY,
       provider TEXT NOT NULL,
@@ -97,6 +116,7 @@ export class QuotaLedgerDO {
       recovery_reserve_units INTEGER NOT NULL,
       reserved_units INTEGER NOT NULL DEFAULT 0,
       committed_units INTEGER NOT NULL DEFAULT 0,
+      committed_since_observation_units INTEGER NOT NULL DEFAULT 0,
       uncertain_units INTEGER NOT NULL DEFAULT 0
     )`);
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_reservations (
@@ -115,14 +135,26 @@ export class QuotaLedgerDO {
     validateQuotaRequest(input);
     const sql = this.ctx.storage.sql;
     return this.ctx.storage.transactionSync(() => {
+      const identity = sql.exec("SELECT * FROM quota_meta WHERE singleton=1").one();
+      if (identity && (identity.provider !== input.provider
+        || identity.credential_scope !== input.credentialScope
+        || identity.window_id !== input.windowId)) {
+        throw new QuotaLedgerError("Durable Object identity does not match provider/credential/window");
+      }
+      if (!identity) {
+        sql.exec("INSERT INTO quota_meta(singleton,provider,credential_scope,window_id) VALUES(1,?,?,?)",
+          input.provider,input.credentialScope,input.windowId);
+      }
+
       const prior = sql.exec(
         "SELECT reservation_id FROM quota_reservations WHERE reservation_id = ?",
         input.reservationId
       ).one();
       if (prior) throw new QuotaLedgerError("duplicate reservation id");
 
-      // Refresh each bucket only from newer telemetry. Same-timestamp readings
-      // can only reduce observed remaining; stale observations cannot replenish it.
+      // Refresh from newer telemetry. A fresh provider remaining snapshot already
+      // reflects earlier committed provider calls, so reset only the since-snapshot
+      // counter; preserve in-flight reservations and uncertain outcomes.
       for (const b of input.buckets) {
         const existing = sql.exec(
           "SELECT * FROM quota_buckets WHERE bucket_id = ?", b.bucketId
@@ -136,13 +168,15 @@ export class QuotaLedgerDO {
           sql.exec(`INSERT INTO quota_buckets
             (bucket_id,provider,credential_scope,window_id,limit_units,
              observed_remaining_units,observed_at_epoch,safety_reserve_units,
-             recovery_reserve_units,reserved_units,committed_units,uncertain_units)
-            VALUES (?,?,?,?,?,?,?,?,?,0,0,0)`,
+             recovery_reserve_units,reserved_units,committed_units,
+             committed_since_observation_units,uncertain_units)
+            VALUES (?,?,?,?,?,?,?,?,?,0,0,0,0)`,
             b.bucketId,input.provider,input.credentialScope,input.windowId,b.limitUnits,
             b.observedRemainingUnits,b.observedAtEpoch,b.safetyReserveUnits,b.recoveryReserveUnits);
         } else if (b.observedAtEpoch > existing.observed_at_epoch) {
           sql.exec(`UPDATE quota_buckets SET limit_units=?,observed_remaining_units=?,
-            observed_at_epoch=?,safety_reserve_units=?,recovery_reserve_units=? WHERE bucket_id=?`,
+            observed_at_epoch=?,safety_reserve_units=?,recovery_reserve_units=?,
+            committed_since_observation_units=0 WHERE bucket_id=?`,
             b.limitUnits,b.observedRemainingUnits,b.observedAtEpoch,b.safetyReserveUnits,
             b.recoveryReserveUnits,b.bucketId);
         } else if (b.observedAtEpoch === existing.observed_at_epoch) {
@@ -153,16 +187,26 @@ export class QuotaLedgerDO {
         }
       }
 
-      // Check every required bucket before changing any counters.
+      // Admission is all-or-nothing. Return WAITING_FOR_QUOTA rather than throw
+      // so a fresh exhausted telemetry snapshot commits instead of rolling back.
       for (const [bucketId, units] of Object.entries(input.costs)) {
         const row = sql.exec("SELECT * FROM quota_buckets WHERE bucket_id=?", bucketId).one();
         const b = input.buckets.find(x => x.bucketId === bucketId);
-        const remaining = row.observed_remaining_units - row.safety_reserve_units
-          - row.recovery_reserve_units - row.reserved_units
-          - row.committed_units - row.uncertain_units;
-        if (units > remaining) throw new QuotaLedgerExhausted(`${bucketId} exhausted; WAITING_FOR_QUOTA`);
         if (b.nowEpoch - row.observed_at_epoch > b.maxTelemetryAgeSeconds) {
-          throw new QuotaLedgerError("stored telemetry is stale; WAITING_FOR_QUOTA");
+          return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
+            reason:"stored telemetry is stale",bucketId};
+        }
+        const remaining = availableUnits(
+          {observedRemainingUnits:row.observed_remaining_units,
+           safetyReserveUnits:row.safety_reserve_units,
+           recoveryReserveUnits:row.recovery_reserve_units},
+          {reservedUnits:row.reserved_units,
+           committedSinceObservationUnits:row.committed_since_observation_units,
+           uncertainUnits:row.uncertain_units}
+        );
+        if (units > remaining) {
+          return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
+            reason:"bucket capacity or protected reserve exhausted",bucketId};
         }
       }
 
@@ -201,7 +245,9 @@ export class QuotaLedgerDO {
       }
       for (const [bucketId, units] of Object.entries(input.actualByBucket)) {
         sql.exec(`UPDATE quota_buckets SET reserved_units=reserved_units-?,
-          committed_units=committed_units+? WHERE bucket_id=?`,reserved[bucketId],units,bucketId);
+          committed_units=committed_units+?,
+          committed_since_observation_units=committed_since_observation_units+?
+          WHERE bucket_id=?`,reserved[bucketId],units,units,bucketId);
       }
       sql.exec(`UPDATE quota_reservations SET actual_by_bucket_json=?,status='SETTLED',
         settled_at_epoch=? WHERE reservation_id=?`,
@@ -234,6 +280,7 @@ export class QuotaLedgerDO {
   snapshot() {
     const sql = this.ctx.storage.sql;
     return {
+      identity: sql.exec("SELECT * FROM quota_meta WHERE singleton=1").one(),
       buckets: sql.exec("SELECT * FROM quota_buckets ORDER BY bucket_id").toArray(),
       reservations: sql.exec("SELECT * FROM quota_reservations ORDER BY created_at_epoch").toArray()
     };
