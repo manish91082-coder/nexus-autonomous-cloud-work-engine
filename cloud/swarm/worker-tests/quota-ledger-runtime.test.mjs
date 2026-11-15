@@ -243,6 +243,41 @@ describe("Phase 59.37 authenticated internal quota RPC", () => {
     expect(snapshot.buckets[0].reserved_units).toBe(10);
   });
 
+  it("prevents one authenticated caller from settling another caller's reservation", async () => {
+    const input = {
+      ...identity("caller-ownership"),
+      buckets: [bucket("core")],
+      costs: { core: 10 }
+    };
+    const stub = stubFor(input);
+    const secondaryInput = {
+      ...input,
+      reservationId: "reservation-secondary-owned",
+      workerId: "worker-secondary-owned"
+    };
+    const response = await env.SECOND_CALLER.fetch(new Request(
+      "https://secondary-caller/reserve",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action: "reserve", input: secondaryInput })
+      }
+    ));
+    expect((await response.json()).status).toBe("RESERVED");
+
+    const rejected = await call(stub, "settle", {
+      ...secondaryInput,
+      actualByBucket: { core: 5 },
+      nowEpoch: 1020
+    });
+    expect(rejected.status).toBe("REJECTED");
+    expect(rejected.error.message).toMatch(/owner\/state mismatch/);
+    const snapshot = await call(stub, "snapshot", input);
+    expect(snapshot.reservations[0].caller_id).toBe("secondary");
+    expect(snapshot.reservations[0].status).toBe("RESERVED");
+    expect(snapshot.buckets[0].reserved_units).toBe(10);
+  });
+
   it("prevents oversubscription across authenticated primary and auxiliary Worker callers", async () => {
     const input = {
       ...identity("cross-worker-race"),
