@@ -10,6 +10,7 @@ import {
   requireQuotaStoreEnabled, nonEmpty, integer
 } from "./quota-ledger-contract.mjs";
 import { reconcileGitHubQuotaTelemetry } from "./github-quota-telemetry.mjs";
+import { getGitHubOperationDefinition } from "./github-operation-registry.mjs";
 export { QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest, requireQuotaStoreEnabled };
 
 const encoder = new TextEncoder();
@@ -302,6 +303,18 @@ export class QuotaLedgerDO extends DurableObject {
     if (!costs || typeof costs !== "object" || Array.isArray(costs)
       || Object.keys(costs).length === 0) {
       throw new QuotaLedgerError("operation cost is not verified; WAITING_FOR_QUOTA");
+    }
+    if (input.requestFingerprint !== undefined) {
+      const reviewedOperation = getGitHubOperationDefinition(input.operation);
+      if (!reviewedOperation) {
+        throw new QuotaLedgerError("request fingerprint supplied for an unregistered operation");
+      }
+      const registeredEntries = Object.entries(costs);
+      if (registeredEntries.length !== 1
+        || registeredEntries[0][0] !== reviewedOperation.resource
+        || registeredEntries[0][1] !== reviewedOperation.primaryUnits) {
+        throw new QuotaLedgerError("server-side operation cost does not match reviewed registry");
+      }
     }
     const entries = Object.entries(costs);
     for (const [bucketId, units] of entries) {
