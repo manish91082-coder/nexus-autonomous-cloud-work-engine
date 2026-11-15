@@ -3144,7 +3144,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Review/merge prototype to master; protect branch from force push; install least-privilege GitHub App on selected repos after owner consent; implement shared Actions/API quota reservations; integrate P10CR worker lease and read-only Flash Loan status client only after race/failure tests.",
+        "next": "Prototype merged to master but still disabled. Next: enable branch ruleset to prohibit force-push/deletion; prepare least-privilege GitHub App installation on controller repo (owner approval); implement shared GitHub Actions/API quota reservations; then integrate P10CR worker lease and a read-only Flash Loan status client. Do not enable cross-project writes before duplicate/stale-fence/failure tests and 7/30-day soak.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -3268,7 +3268,7 @@
         "phase59_18_pr_status": "MERGED",
         "phase59_18_merge_commit": "56e709168b947f4221fba27b342fb58b11326d7b"
       },
-      "blocker": "Git-ref CAS prototype merged to master and live 20-way integration pass verified. It is not yet enforced by project cells. Remaining gates: branch ruleset/force-push protection, least-privilege GitHub App owner installation, shared Actions/API quota arbiter, P10CR lock client, read-only Flash Loan client, duplicate/stale-fence tests and 7/30-day soak.",
+      "blocker": "Prototype merged to master and live 20-way integration pass verified. Still disabled for project-cell writes. Remaining gates: branch ruleset, owner-approved GitHub App, global Actions/API quota arbiter, P10CR worker client, read-only Flash Loan client, duplicate/stale-fence tests and 7/30-day soak.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task."
     }
   ],
