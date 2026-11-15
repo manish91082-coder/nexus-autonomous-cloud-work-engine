@@ -1,3 +1,41 @@
+# LIVE CONTINUITY — PHASE 59.41 GITHUB QUOTA CLIENT LIFECYCLE (15-Nov-2026)
+
+**Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
+**Canonical repo:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Current task:** P59-003 AI agentic swarm foundation, IN_PROGRESS  
+**Paused:** P59-001; **Blocked:** P59-002  
+**Spend:** ₹0; **verified platform earnings:** ₹0; **live LLM inference:** disabled
+
+## Phase59.41 completed and merged
+
+Report: [GitHub Quota Client Lifecycle](research/PHASE_59_41_GITHUB_QUOTA_CLIENT_LIFECYCLE_2026-11-15.md)
+
+- PR [#20](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/20) merged to master at `c1dccb36dba3b0b65a6d7655cbc41e55dcb3815f`.
+- Exact Workers/workerd runtime run [43713060718](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43713060718) passed **46/46 tests** on code head `07c2b8c62e7f09501f05b436c5026706e841dfff`.
+- PR head `94bf665eaceb48d8f34fd0dac7e6f5ae711fd9dc` passed **13/13** regression checks, including quota, journal, contention, telemetry and PostgreSQL contract workflows.
+- Added authenticated client lifecycle: reserve → exactly one GitHub request → reservation-linked response telemetry → conservative settlement/mark uncertain.
+- Stable caller request IDs are mandatory; duplicate reservation IDs never replay the provider request.
+- Network ambiguity, telemetry-write failure and settlement-acknowledgement failure retain uncertain budget.
+- Added a narrow evidence-backed endpoint registry: only `GET /repos/{owner}/{repo}`, no query parameters, one primary core request unit. Unknown endpoints/query shapes are NO-GO.
+- SHA-256 request-shape fingerprint is persisted and server-side operation/cost registry membership is checked.
+- Added bounded reservation lease (default 300 seconds, allowed 30–900), migration-safe SQLite schema and expiry-to-`UNCERTAIN_BUDGET_RETAINED` recovery. Expiry never releases quota.
+- All provider requests in CI are mocked. No live GitHub API calls, credentials, Cloudflare hosted deployment, inference or spend.
+
+## Current production boundary
+
+Quota feature flag remains OFF. The client is a tested foundation module and is **not yet wired into mission workers**. Only one read-only GitHub endpoint is allowlisted. Search, code search, GraphQL and mutations remain NO-GO. Secondary-rate-limit pacing, Retry-After and independent physical-host proof are not yet implemented.
+
+## Next exact sequence — Phase59.42
+
+1. Build a separate secondary-rate-limit controller for 403/429, Retry-After, concurrency and bounded backoff. Never replay an ambiguous mutation.
+2. Expand the endpoint registry one endpoint at a time from official docs and observed telemetry; keep search/code_search/GraphQL as distinct resource models.
+3. Add lease renewal/heartbeat for long-running tasks and audited uncertain-budget reconciliation.
+4. Obtain genuinely independent-host contention and failure-injection evidence.
+5. Integrate the quota client into one read-only swarm worker in mocked/shadow mode, with production flags still OFF.
+6. Preserve all owner gates for secrets, provider accounts, hosted deployment, billing, public release and live inference.
+
+---
+
 # LIVE CONTINUITY — PHASE 59.40 TELEMETRY-DRIVEN QUOTA ADMISSION (15-Nov-2026)
 
 **Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
