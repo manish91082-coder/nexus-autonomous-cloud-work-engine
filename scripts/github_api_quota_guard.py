@@ -90,6 +90,9 @@ class GitHubApiQuotaGuard:
 
     def observe_transport_failure(self):
         self.transport_failures += 1
+        self.headers_observed = True
+        self.telemetry_missing = True
+        self.rate_remaining = None
 
     def snapshot(self):
         return {
