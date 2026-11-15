@@ -3144,7 +3144,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Review recurring worker contents:write necessity and isolate publisher; stage Node24 SHA pinning for non-recurring product workflows; then implement shared-store federation lock and GitHub Actions/API quota arbiter.",
+        "next": "Review/merge prototype to master; protect branch from force push; install least-privilege GitHub App on selected repos after owner consent; implement shared Actions/API quota reservations; integrate P10CR worker lease and read-only Flash Loan status client only after race/failure tests.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -3250,9 +3250,22 @@
         "ai_execution": "MISSION_AI_ENABLED not true; no inference request made; AI provider remains unconfigured.",
         "remaining_supply_chain": "Non-recurring product/QA and manual-only legacy workflows still contain version-tag refs; staged migration pending. Legacy bounty/gig lanes remain excluded.",
         "worker_permission_decision": "CONTENTS_WRITE_RETAINED_TEMPORARILY: ai_task_executor persists ai_worker_report.json and control/ai_usage_state.json; six-call/day and 30-minute cooldown depend on durable state. Removing write without a replacement store/publisher weakens safeguards. Current AI disabled; no inference. Next design isolated publisher + durable quota store and prove idempotency/fencing before read-only compute.",
-        "worker_write_scope": "GITHUB_TOKEN repository-scoped; commit step stages only ai_worker_report.json and control/ai_usage_state.json and only for DRAFT_READY_FOR_EVIDENCE_REVIEW."
+        "worker_write_scope": "GITHUB_TOKEN repository-scoped; commit step stages only ai_worker_report.json and control/ai_usage_state.json and only for DRAFT_READY_FOR_EVIDENCE_REVIEW.",
+        "phase59_18": "GITHUB_GIT_REF_CAS_LIVE_PROBE_PASS_NOT_PRODUCTION_ENABLED",
+        "phase59_18_report": "research/PHASE_59_18_GITHUB_GIT_REF_CAS_FEDERATION_LOCK_PROTOTYPE_2026-11-15.md",
+        "lock_branch": "federation-locks",
+        "lock_branch_head": "70b446f9608159e83326bee2da63970b6afb6ea1",
+        "lock_live_ci_run_id": 43686678257,
+        "lock_live_test": "20 simultaneous contenders -> exactly 1 lease winner and 19 BUSY; release committed; active leases 0; 15-event SHA-256 journal verified.",
+        "lock_unit_tests": "7/7 PASS including 100-contender deterministic CAS simulator.",
+        "lock_parameters": {
+          "lease_seconds": 900,
+          "heartbeat_seconds": 300,
+          "max_active_leases": 8
+        },
+        "lock_enforcement_boundary": "Prototype branch only. No project-cell clients, cross-repo GitHub App, branch ruleset, global quota arbiter or production integration. Cross-project writes disabled."
       },
-      "blocker": "Active workflows Node24 SHA-pinned and exact CI PASS. Worker contents:write is retained temporarily because durable AI quota/cooldown state must persist; separate publisher and durable quota store required before reducing worker to read-only. Remaining gates: staged non-recurring workflow pinning and real shared federation lock/quota service.",
+      "blocker": "Git-ref CAS prototype has live 20-way integration pass and 100-way deterministic simulator pass but is not yet merged or enforced by project cells. Remaining gates: PR review/merge, branch ruleset, GitHub App installation/owner consent, global quota arbiter, P10CR/Flashloan clients and 7/30-day soak.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task."
     }
   ],
