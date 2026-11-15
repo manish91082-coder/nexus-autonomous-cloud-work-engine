@@ -34,18 +34,21 @@ export default defineConfig({
               { type: "ESModule", path: "./quota-ledger-do.mjs" },
               { type: "ESModule", path: "./quota-ledger-contract.mjs" },
               { type: "ESModule", path: "./github-quota-telemetry.mjs" },
-              { type: "ESModule", path: "./github-operation-registry.mjs" }
+              { type: "ESModule", path: "./github-operation-registry.mjs" },
+              { type: "ESModule", path: "./github-secondary-rate-limit.mjs" }
             ],
             bindings: {
               NEXUS_QUOTA_STORE_ENABLED: "true",
               NEXUS_QUOTA_RESERVATION_TTL_SECONDS: "30",
+              NEXUS_GITHUB_SECONDARY_MAX_IN_FLIGHT: "2",
+              NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE: "2",
               NEXUS_QUOTA_CALLER_KEYS: JSON.stringify({
                 primary: primaryTestSecret,
                 secondary: secondaryTestSecret
               }),
               NEXUS_QUOTA_CALLER_POLICIES: JSON.stringify({
-                primary: ["reserve", "settle", "markUncertain", "expireReservations", "snapshot", "recordTelemetry"],
-                secondary: ["reserve", "settle", "markUncertain", "recordTelemetry"]
+                primary: ["reserve", "settle", "markUncertain", "expireReservations", "snapshot", "recordTelemetry", "recordSecondaryLimit"],
+                secondary: ["reserve", "settle", "markUncertain", "recordTelemetry", "recordSecondaryLimit"]
               }),
               NEXUS_QUOTA_BUCKET_POLICIES: JSON.stringify({
                 core: {safetyReserveUnits: 5, recoveryReserveUnits: 5, maxTelemetryAgeSeconds: 300},

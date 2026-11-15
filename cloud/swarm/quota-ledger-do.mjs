@@ -11,6 +11,7 @@ import {
 } from "./quota-ledger-contract.mjs";
 import { reconcileGitHubQuotaTelemetry } from "./github-quota-telemetry.mjs";
 import { getGitHubOperationDefinition } from "./github-operation-registry.mjs";
+import { secondaryBackoffSeconds } from "./github-secondary-rate-limit.mjs";
 export { QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest, requireQuotaStoreEnabled };
 
 const encoder = new TextEncoder();
@@ -82,6 +83,29 @@ export class QuotaLedgerDO extends DurableObject {
       nonce TEXT NOT NULL,
       expires_at_epoch INTEGER NOT NULL,
       PRIMARY KEY (caller_id, nonce)
+    )`);
+    sql.exec(`CREATE TABLE IF NOT EXISTS quota_secondary_control (
+      credential_scope TEXT PRIMARY KEY,
+      provider TEXT NOT NULL,
+      cooldown_until_epoch INTEGER NOT NULL DEFAULT 0,
+      consecutive_secondary_hits INTEGER NOT NULL DEFAULT 0,
+      last_kind TEXT,
+      last_status INTEGER,
+      last_reason TEXT,
+      updated_at_epoch INTEGER NOT NULL
+    )`);
+    sql.exec(`CREATE TABLE IF NOT EXISTS quota_secondary_inflight (
+      reservation_id TEXT PRIMARY KEY,
+      credential_scope TEXT NOT NULL,
+      endpoint_key TEXT NOT NULL,
+      expires_at_epoch INTEGER NOT NULL
+    )`);
+    sql.exec(`CREATE TABLE IF NOT EXISTS quota_secondary_endpoint_points (
+      reservation_id TEXT PRIMARY KEY,
+      credential_scope TEXT NOT NULL,
+      endpoint_key TEXT NOT NULL,
+      points INTEGER NOT NULL,
+      occurred_at_epoch INTEGER NOT NULL
     )`);
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_telemetry_current (
       bucket_id TEXT PRIMARY KEY,
@@ -189,6 +213,9 @@ export class QuotaLedgerDO extends DurableObject {
           break;
         case "recordTelemetry":
           result = this.#recordTelemetry(input, auth.callerId);
+          break;
+        case "recordSecondaryLimit":
+          result = this.#recordSecondaryLimit(input, auth.callerId);
           break;
         case "snapshot":
           result = this.#snapshot();
@@ -359,6 +386,62 @@ export class QuotaLedgerDO extends DurableObject {
         ).toArray()[0];
         if (prior) return { reservationId: input.reservationId, status: "DUPLICATE_RESERVATION" };
 
+        const secondaryControl = sql.exec(
+          "SELECT * FROM quota_secondary_control WHERE credential_scope=?",
+          input.credentialScope
+        ).toArray()[0];
+        if (secondaryControl && secondaryControl.cooldown_until_epoch > now) {
+          return {
+            reservationId:input.reservationId,
+            status:"WAITING_FOR_QUOTA",
+            reason:"SECONDARY_RATE_LIMIT_COOLDOWN",
+            retryAtEpoch:secondaryControl.cooldown_until_epoch
+          };
+        }
+
+        const reviewedOperation = input.requestFingerprint
+          ? getGitHubOperationDefinition(input.operation) : null;
+        let secondaryEndpoint = null;
+        let secondaryPoints = 0;
+        let maxInFlight = 20;
+        let maxEndpointPoints = 600;
+        if (reviewedOperation) {
+          maxInFlight = Number(this.env?.NEXUS_GITHUB_SECONDARY_MAX_IN_FLIGHT ?? 20);
+          maxEndpointPoints = Number(this.env?.NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE ?? 600);
+          if (!Number.isSafeInteger(maxInFlight) || maxInFlight < 1 || maxInFlight > 80
+            || !Number.isSafeInteger(maxEndpointPoints) || maxEndpointPoints < 1 || maxEndpointPoints > 800) {
+            throw new QuotaLedgerError("secondary rate-limit local policy is outside safe bounds");
+          }
+          secondaryEndpoint = reviewedOperation.endpointKey;
+          secondaryPoints = reviewedOperation.secondaryPoints;
+          sql.exec("DELETE FROM quota_secondary_inflight WHERE expires_at_epoch <= ?", now);
+          sql.exec("DELETE FROM quota_secondary_endpoint_points WHERE occurred_at_epoch <= ?", now-120);
+          const active = sql.exec(
+            "SELECT COUNT(*) AS count FROM quota_secondary_inflight WHERE credential_scope=?",
+            input.credentialScope
+          ).toArray()[0].count;
+          if (active >= maxInFlight) {
+            const oldest = sql.exec(
+              "SELECT MIN(expires_at_epoch) AS retry_at FROM quota_secondary_inflight WHERE credential_scope=?",
+              input.credentialScope
+            ).toArray()[0].retry_at;
+            return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
+              reason:"SECONDARY_CONCURRENCY_LIMIT",retryAtEpoch:oldest};
+          }
+          const recent = sql.exec(
+            "SELECT COALESCE(SUM(points),0) AS total FROM quota_secondary_endpoint_points WHERE credential_scope=? AND endpoint_key=? AND occurred_at_epoch>?",
+            input.credentialScope,secondaryEndpoint,now-60
+          ).toArray()[0].total;
+          if (recent + secondaryPoints > maxEndpointPoints) {
+            const oldest = sql.exec(
+              "SELECT MIN(occurred_at_epoch) AS oldest FROM quota_secondary_endpoint_points WHERE credential_scope=? AND endpoint_key=? AND occurred_at_epoch>?",
+              input.credentialScope,secondaryEndpoint,now-60
+            ).toArray()[0].oldest;
+            return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
+              reason:"SECONDARY_ENDPOINT_POINT_BUDGET",retryAtEpoch:oldest+60};
+          }
+        }
+
         const plans = [];
         for (const [bucketId, units] of entries) {
           const telemetry = sql.exec(
@@ -451,6 +534,12 @@ export class QuotaLedgerDO extends DurableObject {
           VALUES (?,?,?,?,?,?,?, 'RESERVED', ?)`,
           input.reservationId,input.workerId,callerId,input.operation,
           input.requestFingerprint ?? "",now+ttlSeconds,JSON.stringify(reservedByBucket),now);
+        if (reviewedOperation) {
+          sql.exec("INSERT INTO quota_secondary_inflight(reservation_id,credential_scope,endpoint_key,expires_at_epoch) VALUES(?,?,?,?)",
+            input.reservationId,input.credentialScope,secondaryEndpoint,now+ttlSeconds);
+          sql.exec("INSERT INTO quota_secondary_endpoint_points(reservation_id,credential_scope,endpoint_key,points,occurred_at_epoch) VALUES(?,?,?,?,?)",
+            input.reservationId,input.credentialScope,secondaryEndpoint,secondaryPoints,now);
+        }
         return {
           reservationId:input.reservationId,
           status:"RESERVED",
@@ -495,6 +584,7 @@ export class QuotaLedgerDO extends DurableObject {
       }
       sql.exec("UPDATE quota_reservations SET status='UNCERTAIN_BUDGET_RETAINED', settled_at_epoch=? WHERE reservation_id=? AND status='RESERVED'",
         now,row.reservation_id);
+      sql.exec("DELETE FROM quota_secondary_inflight WHERE reservation_id=?", row.reservation_id);
     }
     return expired.length;
   }
@@ -554,6 +644,7 @@ export class QuotaLedgerDO extends DurableObject {
       sql.exec(`UPDATE quota_reservations SET actual_by_bucket_json=?,status='SETTLED',
         settled_at_epoch=? WHERE reservation_id=?`,
         JSON.stringify(input.actualByBucket),Math.floor(Date.now()/1000),input.reservationId);
+      sql.exec("DELETE FROM quota_secondary_inflight WHERE reservation_id=?", input.reservationId);
       return {reservationId:input.reservationId,status:"SETTLED",actualByBucket:input.actualByBucket};
     });
   }
@@ -589,10 +680,83 @@ export class QuotaLedgerDO extends DurableObject {
       }
       sql.exec("UPDATE quota_reservations SET status='UNCERTAIN_BUDGET_RETAINED' WHERE reservation_id=?",
         input.reservationId);
+      sql.exec("DELETE FROM quota_secondary_inflight WHERE reservation_id=?", input.reservationId);
       return {reservationId:input.reservationId,status:"UNCERTAIN_BUDGET_RETAINED"};
     });
   }
 
+  #recordSecondaryLimit(input, callerId) {
+    if (input.provider !== "github") throw new QuotaLedgerError("secondary limit provider must be github");
+    nonEmpty(input.credentialScope, "credentialScope");
+    nonEmpty(input.windowId, "windowId");
+    nonEmpty(input.reservationId, "reservationId");
+    nonEmpty(input.workerId, "workerId");
+    if (![403, 429].includes(input.status)) throw new QuotaLedgerError("secondary limit status must be 403 or 429");
+    if (!["PRIMARY_LIMIT", "SECONDARY_LIMIT"].includes(input.kind)) throw new QuotaLedgerError("invalid rate-limit kind");
+    const now = Math.floor(Date.now() / 1000);
+    const retryAfter = input.retryAfterSeconds === undefined || input.retryAfterSeconds === null
+      ? null : integer(input.retryAfterSeconds, "retryAfterSeconds");
+    if (retryAfter !== null && retryAfter > 86400) throw new QuotaLedgerError("Retry-After exceeds 24-hour safety ceiling");
+    const resetAt = input.resetAtEpoch === undefined || input.resetAtEpoch === null
+      ? null : integer(input.resetAtEpoch, "resetAtEpoch");
+    const minimumWait = input.minimumWaitSeconds === undefined || input.minimumWaitSeconds === null
+      ? (input.kind === "SECONDARY_LIMIT" ? 60 : 0)
+      : integer(input.minimumWaitSeconds, "minimumWaitSeconds");
+    if (minimumWait > 900) throw new QuotaLedgerError("minimum secondary wait exceeds 900-second safety ceiling");
+    if (resetAt !== null && (resetAt <= now || resetAt > now + 86400)) {
+      throw new QuotaLedgerError("rate-limit reset must be within the next 24 hours");
+    }
+    if (input.kind === "PRIMARY_LIMIT" && resetAt === null) {
+      throw new QuotaLedgerError("primary limit cooldown requires provider reset timestamp");
+    }
+    const sql = this.ctx.storage.sql;
+    return this.ctx.storage.transactionSync(() => {
+      const identity = sql.exec("SELECT * FROM quota_meta WHERE singleton=1").toArray()[0];
+      if (!identity || identity.provider !== input.provider
+        || identity.credential_scope !== input.credentialScope || identity.window_id !== input.windowId) {
+        throw new QuotaLedgerError("secondary limit credential/partition identity mismatch");
+      }
+      const reservation = sql.exec("SELECT * FROM quota_reservations WHERE reservation_id=?",
+        input.reservationId).toArray()[0];
+      if (!reservation || reservation.worker_id !== input.workerId
+        || reservation.caller_id !== callerId || reservation.status !== "RESERVED") {
+        throw new QuotaLedgerError("secondary limit reservation owner/state mismatch");
+      }
+      const prior = sql.exec("SELECT * FROM quota_secondary_control WHERE credential_scope=?",
+        input.credentialScope).toArray()[0];
+      let consecutive = prior?.consecutive_secondary_hits ?? 0;
+      let backoff = 0;
+      let proposed;
+      if (input.kind === "PRIMARY_LIMIT") {
+        proposed = resetAt;
+        if (retryAfter !== null) proposed = Math.max(proposed, now + retryAfter);
+        consecutive = 0;
+      } else {
+        consecutive = prior && now - prior.updated_at_epoch <= 3600
+          ? consecutive + 1 : 1;
+        backoff = secondaryBackoffSeconds(consecutive);
+        proposed = now + Math.max(minimumWait, retryAfter ?? 0, backoff);
+        if (resetAt !== null) proposed = Math.max(proposed, resetAt);
+      }
+      const cooldownUntil = Math.max(prior?.cooldown_until_epoch ?? 0, proposed);
+      const reason = typeof input.reason === "string" && input.reason.length <= 128
+        ? input.reason : input.kind;
+      sql.exec(`INSERT INTO quota_secondary_control
+        (credential_scope,provider,cooldown_until_epoch,consecutive_secondary_hits,
+         last_kind,last_status,last_reason,updated_at_epoch)
+        VALUES (?,?,?,?,?,?,?,?)
+        ON CONFLICT(credential_scope) DO UPDATE SET
+          provider=excluded.provider,
+          cooldown_until_epoch=MAX(quota_secondary_control.cooldown_until_epoch,excluded.cooldown_until_epoch),
+          consecutive_secondary_hits=excluded.consecutive_secondary_hits,
+          last_kind=excluded.last_kind,last_status=excluded.last_status,
+          last_reason=excluded.last_reason,updated_at_epoch=excluded.updated_at_epoch`,
+        input.credentialScope,input.provider,cooldownUntil,consecutive,
+        input.kind,input.status,reason,now);
+      return {status:"SECONDARY_COOLDOWN_RECORDED",kind:input.kind,
+        cooldownUntilEpoch:cooldownUntil,consecutiveSecondaryHits:consecutive,backoffSeconds:backoff};
+    });
+  }
   #recordTelemetry(input, callerId) {
     const telemetry = input.telemetry;
     if (!telemetry || typeof telemetry !== "object" || Array.isArray(telemetry)) {
@@ -801,7 +965,10 @@ export class QuotaLedgerDO extends DurableObject {
       buckets: sql.exec("SELECT * FROM quota_bucket_counters ORDER BY bucket_id,provider_window_id").toArray(),
       reservations: sql.exec("SELECT * FROM quota_reservations ORDER BY created_at_epoch").toArray(),
       telemetryCurrent: sql.exec("SELECT * FROM quota_telemetry_current ORDER BY bucket_id").toArray(),
-      telemetryObservations: sql.exec("SELECT * FROM quota_telemetry_observations ORDER BY observed_at_epoch").toArray()
+      telemetryObservations: sql.exec("SELECT * FROM quota_telemetry_observations ORDER BY observed_at_epoch").toArray(),
+      secondaryControl: sql.exec("SELECT * FROM quota_secondary_control ORDER BY credential_scope").toArray()[0] ?? null,
+      secondaryInflight: sql.exec("SELECT * FROM quota_secondary_inflight ORDER BY expires_at_epoch").toArray(),
+      secondaryEndpointPoints: sql.exec("SELECT * FROM quota_secondary_endpoint_points ORDER BY occurred_at_epoch").toArray()
     };
   }
 }
