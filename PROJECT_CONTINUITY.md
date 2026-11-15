@@ -6,24 +6,36 @@
 **Paused:** P59-001; **Blocked:** P59-002  
 **Spend:** ₹0; **verified PCNE:** ₹0; **live LLM inference:** disabled
 
-## Phase59.35 completed — runtime contract PASS
+## Phase59.35 completed — 11/11 runtime tests PASS
 
 Report: [Phase59.35 Workers Runtime Validation](research/PHASE_59_35_CLOUDFLARE_WORKERS_RUNTIME_VALIDATION_2026-11-15.md)
 
-- Exact tested commit: `575d0165fb5edb813ca4e0c55600d46b1e7f2cd1`.
-- Runtime workflow [43706315030](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43706315030) SUCCESS: 1 test file, 7/7 tests passed.
-- Cloudflare Workers Vitest integration exercised the SQLite-backed Durable Object in the workerd-compatible runtime: first reservation/empty lookup, settlement, telemetry persistence with fail-closed admission, 20-way same-object contention (10 accepted), duplicate delivery, uncertain usage retention and canonical provider/credential/window object identity.
-- The adapter is now a proper `DurableObject` subclass. Pure validation contracts are separated from Cloudflare runtime imports. The adapter records quota telemetry in a first transaction and reserves in a separate all-or-nothing transaction so rejected exhausted telemetry remains observable without creating a reservation.
-- **Not production-ready:** this is local workerd/Miniflare test execution in GitHub-hosted CI, not a deployment to Cloudflare's hosted platform. Forced eviction/restart, independent-host/multi-region contention, provider telemetry, internal caller auth, mission-worker integration and billing/quota preflight remain outstanding. Feature flag stays OFF.
+- Baseline run [43706315030](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43706315030) passed 7/7 tests on `575d0165fb5edb813ca4e0c55600d46b1e7f2cd1`.
+- Extended exact-head run [43706366316](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43706366316) passed **11/11 tests** on `f1813e44196a6e1ccd2c76fb89bbfb254811d04f`.
+- Runtime runs inside Cloudflare's Workers Vitest / workerd-compatible test environment with SQLite-backed Durable Object storage. It is not a hosted Cloudflare deployment.
+- Verified: first reservation/empty lookup; multi-bucket settlement; exhausted telemetry persisted without reservation; 20 concurrent same-object RPCs with exactly 10 admitted; duplicate delivery; uncertain usage retention; canonical identity; identity mismatch rejection; newer telemetry rebase without double subtraction; forced Durable Object eviction/recovery; transaction rollback.
+- The DO is an RPC-compatible `DurableObject` subclass. Runtime-independent contracts remain separately Node-testable. Feature flag remains OFF.
+
+## Additional Phase59.34 adapter record
+
+- Cloudflare SQLite Durable Object is the selected cloud-native quota-store path.
+- PostgreSQL PR [#12](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/12) is also merged as an optional portable reference adapter; PostgreSQL 16 CI [43705546117](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43705546117) passed.
+- The PostgreSQL alternative is not selected, connected, provisioned or deployed. No DSN or credentials are stored. Neither adapter is enabled.
+
+## Production boundary
+
+No hosted Cloudflare resource, namespace, database account, provider telemetry collector, internal authentication integration, mission-worker connection, live LLM inference or paid fallback is active. Runtime acceptance is not independent-host/multi-region proof. No production SLA is claimed.
 
 ## Next exact sequence — Phase59.36
 
-1. Force Durable Object eviction/restart and prove SQLite persistence/recovery.
-2. Add a second Worker entrypoint sharing the exact same DO binding; prove canonical identity and cross-caller contention.
-3. Add independent-host simulation and stale/future/out-of-order telemetry tests.
-4. Add internal caller authentication and replay protections.
-5. Then add provider telemetry adapters, measured operation-cost maps, reservation expiry/uncertain reconciliation and audit export.
-6. Keep quota store disabled until all gates pass.
+1. Add a second Worker entrypoint sharing the same Durable Object namespace; verify canonical identity and cross-caller contention.
+2. Add independent-host simulation and stale/future/out-of-order/window-reset telemetry tests.
+3. Add internal caller authentication, binding isolation and replay protection.
+4. Build provider-specific telemetry adapters and measured endpoint-to-bucket operation-cost maps.
+5. Add reservation expiry, uncertain-use reconciliation, audit export and restore drills.
+6. Only then wire the quota client behind the disabled feature flag into read-only swarm workers.
+
+Keep the zero-cost-first rule, no laptop dependency, no paid fallback, no external account activation, and all owner-only gates intact.
 
 ---
 
