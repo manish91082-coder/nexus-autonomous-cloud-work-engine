@@ -1,3 +1,49 @@
+# LIVE CONTINUITY — PHASE 59.31 SWARM-FIRST EXECUTION (15-Nov-2026)
+
+**Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
+**Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Authority:** `MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md`  
+**Current task:** P59-003 — AI agentic swarm foundation, IN_PROGRESS  
+**Paused:** P59-001 revenue-source research (paused, not cancelled)  
+**Blocked:** P59-002 product build  
+**Spend:** ₹0. **Verified PCNE:** ₹0.  
+**Scope exclusion:** Tech Cloud ERP is unrelated and excluded. Do not research or refer to it in this mission.
+
+## Owner correction and current status
+
+The owner explicitly redirected work to the AI agentic swarm. Earlier focus on product-source ranking and unrelated asset discovery was drift. P59-003 is now the sole active P0 in `control/automation_queue.json`; `control/mission_state.json` is aligned to Phase59.31. P59-001 is paused until the swarm foundation is safe and operational.
+
+## Phase59.31 current-head forensic audit
+
+Report: [Phase59.31 Swarm-First Recovery and Current-HEAD Forensic Audit](research/PHASE_59_31_SWARM_FIRST_FORENSIC_AUDIT_AND_RECOVERY_2026-11-15.md)
+
+- Current master HEAD at audit start: `e41e60a90b6f19da2d3aa7bce21c7ad6a149f15a`; recursive tree complete, 376 entries, 23 workflow files. The prior 14-workflow inventory is stale.
+- The scheduled Mission Autonomous AI Worker wakes every five minutes and exits after bounded work. It is not a permanent daemon or production multi-host swarm.
+- Existing B4 SQLite durable execution, specialist workflow, Git-ref CAS lock, quota arbiter, and cloud soak are prototypes/tests with different integration boundaries. None should be described as a deployed production swarm.
+- The five specialist roles are deterministic validators; no LLM inference is currently configured or used by the specialist graph.
+- `ai_task_executor.py` is one bounded optional Cloudflare draft call, disabled without owner-configured secrets and explicit zero-billing confirmation. It is not wired into the five specialist roles as a multi-agent inference graph.
+- Global quota arbiter is not enabled; its previous request-cost audit found the current reservation design inadequate for measured synthetic load.
+- Mission workflow has repository contents:write at workflow level; next design must separate read-only compute workers from one constrained single-writer publisher.
+- Federation Git-ref CAS probe passed 20 contenders with one winner/19 BUSY, but project clients and cross-thread lease enforcement are disabled.
+- Phase59.25 cloud soak was eight threads on one GitHub-hosted runner for about 219 seconds, not eight independent hosts or a 7/30-day soak.
+- Phase59.26 specialist workflow PR #10 and CI passed 11 specialist, 7 coordinator and 17 runtime tests; synthetic fixtures correctly returned HOLD. This is not live research/inference.
+
+## Exact next sequence
+
+1. Complete dependency/test inventory, action SHA pin audit, latest workflow-run outcomes and branch-ruleset visibility at current master.
+2. Redesign shared quota arbitration using measured per-operation request costs and one global cross-run/cross-repository budget; no self-consuming reservation writes, no underfunded allocations, fail closed to WAITING_FOR_QUOTA.
+3. Split compute from publishing: read-only workers produce isolated artifacts; one narrowly scoped publisher validates schema, task lease/fencing token and approved paths before any canonical write.
+4. Wire the standalone durable execution journal into the dispatcher and mission worker; add atomic task claims, checkpoints, replay, dead-letter, idempotency and crash recovery.
+5. Integrate specialist roles behind a provider-neutral model adapter only after verified zero-billing/model terms/data policy and quota caps. Begin with research/drafting only; generated code is never executed directly.
+6. Prepare a least-privilege GitHub App approval packet (exact repositories, scopes, purpose, expiry and revocation). Do not install or request consent until the packet is ready.
+7. Add P10CR project-cell lease client first; keep other projects read-only and isolated until individually validated.
+8. Complete independent multi-host tests, then 7-day and 30-day soak with stop conditions and export/recovery drills.
+9. Resume P59-001 only after the swarm has a safe operational foundation. P59-002 remains blocked until a product passes V5 gates.
+
+No paid fallback, hidden billing, account rotation, KYC bypass or local laptop dependency. Google OAuth is not needed merely for GitHub Actions. Owner approval remains mandatory for provider OAuth/GitHub App installation, account activation, legal terms, KYC, publication, payment and irreversible actions.
+
+---
+
 # OWNER CORRECTION — SWARM IS THE ACTIVE MISSION (15-Nov-2026)
 The AI agentic swarm for the autonomous revenue mission is the immediate priority. P59-003 is active; P59-001 is paused. Tech Cloud ERP is unrelated and excluded from this project. Do not resume that asset thread.
 
