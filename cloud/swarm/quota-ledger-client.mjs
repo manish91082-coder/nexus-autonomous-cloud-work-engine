@@ -31,7 +31,9 @@ function requireText(value, field, max = 256) {
 function makeRequestId(value) {
   // A caller-supplied durable id is mandatory: generating a new UUID per retry
   // would defeat duplicate suppression after a worker crash.
-  return requireText(value, "requestId", 128);
+  const id = requireText(value, "requestId", 128);
+  if (!/^[A-Za-z0-9._:-]{1,128}$/.test(id)) throw new TypeError("requestId contains unsafe characters");
+  return id;
 }
 
 async function signedRpcRequest({ callerId, secret, action, input, nowEpoch, nonce }) {
@@ -111,7 +113,8 @@ export async function executeQuotaGuardedGitHubRequest({
   requireText(workerId, "workerId");
   if (!(request instanceof Request)) throw new TypeError("request must be a Request");
   const url = new URL(request.url);
-  if (url.protocol !== "https:" || url.hostname !== "api.github.com") {
+  if (url.protocol !== "https:" || url.hostname !== "api.github.com"
+    || url.port !== "" || url.username !== "" || url.password !== "") {
     throw new TypeError("quota-guarded requests must target https://api.github.com");
   }
   const reviewed = await resolveGitHubOperation(request);
@@ -155,7 +158,7 @@ export async function executeQuotaGuardedGitHubRequest({
 
   let response;
   try {
-    response = await fetchImpl(request);
+    response = await fetchImpl(request, { redirect: "manual" });
   } catch (error) {
     const uncertain = await ledgerCall(env, "markUncertain", {
       ...base
