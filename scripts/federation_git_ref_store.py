@@ -64,9 +64,9 @@ def canonical_json(value):
 
 
 
-def verify_event_chain(events, initial_hash="0" * 64):
+def verify_event_chain(events, initial_hash="0" * 64, start_sequence=0):
     previous = initial_hash
-    expected_sequence = 0
+    expected_sequence = start_sequence
     for event in events:
         if not isinstance(event, dict) or event.get("sequence") != expected_sequence:
             return False
