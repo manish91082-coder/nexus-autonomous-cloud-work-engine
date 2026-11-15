@@ -55,8 +55,8 @@ The existing production worker remains deterministic and the AI provider remains
 
 Core invariants:
 1. Task registration is idempotent and binds ID, key, payload and owner-gate policy.
-2. SQLite transactions serialize claims across threads/processes; only one concurrent claimant wins.
-3. Task and publisher locks use monotonically increasing fencing tokens; stale tokens cannot heartbeat, finish or publish.
+2. SQLite transactions serialize claims across threads and spawned processes; failure-injection tests confirm one concurrent claimant wins.
+3. Task and publisher locks use monotonically increasing fencing tokens; task and publisher heartbeats extend only the current lease; stale tokens cannot heartbeat, finish or publish.
 4. Event records are append-only at the SQL layer and chained with SHA-256; verification detects out-of-band mutation.
 5. Checkpoint, status transition and event append occur in one transaction.
 6. Retry delay is bounded exponential backoff; attempts are capped and exhausted tasks enter DEAD_LETTER.
@@ -65,7 +65,7 @@ Core invariants:
 
 ## Local verification
 
-- python3 -m unittest discover -s tests -p 'test_durable_execution.py' -v: 15/15 PASS.
+- python3 -m unittest discover -s tests -p 'test_durable_execution.py' -v: 16/16 PASS, including a six-process spawned claim race and publisher heartbeat/fencing.
 - python3 -m py_compile scripts/durable_execution.py: PASS.
 - python3 -m json.tool schemas/durable-execution-v1.schema.json: PASS.
 - Runtime: Python 3.13 in the isolated tool container.
