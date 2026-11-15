@@ -57,9 +57,7 @@ export function validateQuotaRequest(input) {
     if (b.observedRemainingUnits > b.limitUnits) throw new QuotaLedgerError("remaining exceeds limit");
     const age = b.nowEpoch - b.observedAtEpoch;
     if (age < 0 || age > b.maxTelemetryAgeSeconds) throw new QuotaLedgerError("stale/future telemetry");
-    if (b.safetyReserveUnits + b.recoveryReserveUnits >= b.observedRemainingUnits) {
-      throw new QuotaLedgerExhausted("protected reserves consume remaining quota");
-    }
+    // Exhausted telemetry is valid evidence; reserve() must persist it and return WAITING_FOR_QUOTA.
   }
   if (!input.costs || typeof input.costs !== "object" || Array.isArray(input.costs)) {
     throw new QuotaLedgerError("costs must be an object");
