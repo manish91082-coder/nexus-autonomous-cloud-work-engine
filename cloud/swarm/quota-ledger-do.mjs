@@ -845,6 +845,81 @@ export class QuotaLedgerDO extends DurableObject {
         cooldownUntilEpoch:cooldownUntil,consecutiveSecondaryHits:consecutive,backoffSeconds:backoff};
     });
   }
+  #reconcileUncertain(input, callerId) {
+    nonEmpty(input?.reservationId, "reservationId");
+    nonEmpty(input?.workerId, "workerId");
+    const now = Math.floor(Date.now() / 1000);
+    const sql = this.ctx.storage.sql;
+    return this.ctx.storage.transactionSync(() => {
+      const row = sql.exec("SELECT * FROM quota_reservations WHERE reservation_id=?",
+        input.reservationId).toArray()[0];
+      if (!row || row.worker_id !== input.workerId || row.caller_id !== callerId) {
+        throw new QuotaLedgerError("reconciliation reservation owner mismatch");
+      }
+      if (row.status === "RECONCILED_TELEMETRY_LINKED") {
+        return {status:"ALREADY_RECONCILED",reservationId:input.reservationId};
+      }
+      if (!["UNCERTAIN_BUDGET_RETAINED","PARTIALLY_RECONCILED"].includes(row.status)) {
+        throw new QuotaLedgerError("reservation is not in an uncertain state");
+      }
+      const reserved = JSON.parse(row.reserved_by_bucket_json);
+      const reconciled = JSON.parse(row.reconciled_by_bucket_json || "{}");
+      const newEvidence = {};
+      for (const [bucketId,reservation] of Object.entries(reserved)) {
+        if (reconciled[bucketId]) continue;
+        const observation = sql.exec(`SELECT o.* FROM quota_telemetry_observations o
+          JOIN quota_telemetry_current c ON c.bucket_id=o.bucket_id
+          WHERE o.reservation_id=? AND o.bucket_id=? AND o.window_id=?
+            AND o.telemetry_source='response_header' AND o.authority_rank>=100
+            AND o.observed_at_epoch>=?
+            AND c.window_id=o.window_id AND c.reset_at_epoch=o.reset_at_epoch
+            AND c.observed_at_epoch>=o.observed_at_epoch
+            AND c.observed_remaining_units<=o.observed_remaining_units
+            AND c.used_units>=o.used_units
+          ORDER BY o.observed_at_epoch DESC LIMIT 1`,
+          input.reservationId,bucketId,reservation.providerWindowId,row.created_at_epoch
+        ).toArray()[0];
+        if (!observation) continue;
+        const counter = sql.exec(
+          "SELECT * FROM quota_bucket_counters WHERE bucket_id=? AND provider_window_id=?",
+          bucketId,reservation.providerWindowId
+        ).toArray()[0];
+        if (!counter || counter.uncertain_units < reservation.units) {
+          throw new QuotaLedgerError("uncertain counter missing or inconsistent during reconciliation");
+        }
+        sql.exec(`UPDATE quota_bucket_counters SET
+          uncertain_units=uncertain_units-?,committed_units=committed_units+?
+          WHERE bucket_id=? AND provider_window_id=?`,
+          reservation.units,reservation.units,bucketId,reservation.providerWindowId);
+        const evidence = {
+          chargedUpperBoundUnits:reservation.units,
+          observationId:observation.observation_id,
+          observedAtEpoch:observation.observed_at_epoch,
+          source:observation.telemetry_source,
+          authorityRank:observation.authority_rank
+        };
+        reconciled[bucketId]=evidence;
+        newEvidence[bucketId]=observation.observation_id;
+      }
+      const allReconciled = Object.keys(reconciled).length === Object.keys(reserved).length;
+      const anyReconciled = Object.keys(reconciled).length > 0;
+      const status = allReconciled ? "RECONCILED_TELEMETRY_LINKED"
+        : anyReconciled ? "PARTIALLY_RECONCILED" : "UNCERTAIN_BUDGET_RETAINED";
+      sql.exec(`UPDATE quota_reservations SET reconciled_by_bucket_json=?,status=?,
+        reconciled_at_epoch=? WHERE reservation_id=?`,
+        JSON.stringify(reconciled),status,allReconciled ? now : null,input.reservationId);
+      const auditId = crypto.randomUUID();
+      sql.exec(`INSERT INTO quota_reconciliation_audit
+        (audit_id,reservation_id,caller_id,result_status,evidence_observation_ids_json,
+         reconciled_buckets_json,created_at_epoch) VALUES(?,?,?,?,?,?,?)`,
+        auditId,input.reservationId,callerId,status,JSON.stringify(newEvidence),
+        JSON.stringify(reconciled),now);
+      return {status,reservationId:input.reservationId,
+        reconciledBuckets:Object.keys(reconciled),
+        remainingUncertainBuckets:Object.keys(reserved).filter(key=>!reconciled[key]),
+        newEvidenceObservationIds:newEvidence,auditId};
+    });
+  }
   #recordTelemetry(input, callerId) {
     const telemetry = input.telemetry;
     if (!telemetry || typeof telemetry !== "object" || Array.isArray(telemetry)) {
