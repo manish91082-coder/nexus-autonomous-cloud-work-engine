@@ -20,7 +20,7 @@ export async function requestFingerprint(method, url) {
   return [...new Uint8Array(digest)].map(value => value.toString(16).padStart(2, "0")).join("");
 }
 
-export function resolveReviewedOperation(registry, operation, method, url) {
+export async function resolveReviewedOperation(registry, operation, method, url) {
   const entry = registry?.[operation];
   if (!entry || entry.status !== "REVIEWED" || entry.costEvidence?.verified !== true) {
     throw new Error("NO_GO_UNKNOWN_OR_UNREVIEWED_OPERATION_COST");
@@ -78,7 +78,7 @@ export async function runQuotaBoundRequest({
     || typeof captureTelemetry !== "function" || typeof actualUsageFromResponse !== "function") {
     throw new TypeError("complete lifecycle dependencies required");
   }
-  const reviewed = resolveReviewedOperation(
+  const reviewed = await resolveReviewedOperation(
     registry, operation, reservation.method, reservation.url
   );
   const requestId = reservation.requestId || crypto.randomUUID();
