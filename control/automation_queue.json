@@ -3268,8 +3268,48 @@
         "phase59_18_pr_status": "MERGED",
         "phase59_18_merge_commit": "56e709168b947f4221fba27b342fb58b11326d7b"
       },
-      "blocker": "Prototype merged to master and live 20-way integration pass verified. Still disabled for project-cell writes. Remaining gates: branch ruleset, owner-approved GitHub App, global Actions/API quota arbiter, P10CR worker client, read-only Flash Loan client, duplicate/stale-fence tests and 7/30-day soak.",
-      "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task."
+      "blocker": "Phase59.25 actual GitHub Git-ref REST cloud soak passed on a dedicated disposable branch. Still disabled for production/project-cell writes. Remaining gates: branch ruleset, owner-approved GitHub App, cross-run/cross-repository global Actions/API quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation, and 7/30-day soak. Do not infer production autonomy from the short single-runner cloud soak.",
+      "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task.",
+      "phase59_25_evidence": {
+        "report": "research/PHASE_59_25_GITHUB_CLOUD_OPERATIONAL_SOAK_2026-11-15.md",
+        "pr_number": 9,
+        "pr_head": "cbba2e23596d901646a4e16f0cfc71ca01b44d8c",
+        "merge_commit": "e26459df09c7765ddea71c3002a8fcf90778b950",
+        "cloud_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43694502929",
+        "cloud_run_conclusion": "success",
+        "ci_run": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43694502933",
+        "ci_run_conclusion": "success",
+        "workers": 8,
+        "unique_durable_claims": 8,
+        "duplicate_delivery_attempts": 8,
+        "duplicate_delivery_rejections": 8,
+        "contention_recovery_claims": 3,
+        "stale_fence_rejected": true,
+        "heartbeat_cycles": 6,
+        "journal_event_count": 15,
+        "cloud_soak_seconds": 218.698,
+        "api_requests": 405,
+        "api_request_ceiling": 480,
+        "rate_remaining": 4504,
+        "safety_reserve": 100,
+        "transport_failures": 0,
+        "test_branch_cleanup": "SUCCESS",
+        "production_branch_touched": false,
+        "production_clients_enabled": false,
+        "ai_provider_inference_enabled": false,
+        "new_spend_inr": 0,
+        "verified_pcne_inr": 0,
+        "limitations": [
+          "Eight worker threads ran within one GitHub-hosted runner; not an eight-host deployment.",
+          "Short bounded soak is not a 7-day/30-day production soak.",
+          "Shared request budget is process/run-local; global cross-run/cross-repository quota arbiter remains a gate."
+        ]
+      },
+      "completed_acceptance": [
+        "Actual GitHub Git-ref REST CAS cloud run on an isolated disposable branch: 8/8 durable claims, 8/8 duplicate rejection, stale-fence rejection, six batch heartbeats and 15-event hash-chain verification.",
+        "Thread-safe shared run-wide request budget and fail-closed safety reserve tested in GitHub Actions.",
+        "Exact-head cloud soak and regression CI passed; disposable branch cleanup verified."
+      ]
     }
   ],
   "dead_letter": [],
