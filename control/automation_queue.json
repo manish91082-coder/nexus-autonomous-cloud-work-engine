@@ -3144,7 +3144,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Workflow supply-chain/least-privilege hardening review; enumerate third-party Actions refs and SHA pin feasibility, workflow permission needs, timeouts and schedule staggering. Then select a real shared atomic store for federation locks/quota ledger.",
+        "next": "Review recurring worker contents:write necessity and isolate publisher; stage Node24 SHA pinning for non-recurring product workflows; then implement shared-store federation lock and GitHub Actions/API quota arbiter.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -3234,9 +3234,23 @@
         "b4_extended_test_count": 21,
         "backup_restore": "SQLite online backup/restore preserves task, checkpoint, lease, event hash chain; restored task heartbeat and completion pass.",
         "crash_soak": "Six spawned workers abruptly exit after claim/checkpoint; all recover, old fencing tokens rejected, higher token reclaims task.",
-        "crash_after_finish": "Committed COMPLETED state survives abrupt worker exit; no requeue and duplicate claim rejected."
+        "crash_after_finish": "Committed COMPLETED state survives abrupt worker exit; no requeue and duplicate claim rejected.",
+        "phase59_16": "ACTIVE_RECURRING_WORKFLOWS_NODE24_SHA_PINNED_AND_EXACT_CI_PASS",
+        "phase59_16_report": "research/PHASE_59_16_RECURRING_WORKFLOW_SUPPLY_CHAIN_HARDENING_2026-11-15.md",
+        "recurring_workflow_commit": "c84124f4bff06c2f6a6eec193720bb89bda8cee2",
+        "recurring_worker_run_id": 43685697202,
+        "recurring_guard_run_id": 43685697162,
+        "recurring_workflow_ci_status": "BOTH_SUCCESS",
+        "node24_actions_sha_pinned": {
+          "checkout": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "setup_python": "6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "upload_artifact": "cf430e030ddbb5b0abf93d22962f4752f3646cd9"
+        },
+        "action_signatures": "All three pinned action release commits verified by GitHub commit verification; action.yml declares node24.",
+        "ai_execution": "MISSION_AI_ENABLED not true; no inference request made; AI provider remains unconfigured.",
+        "remaining_supply_chain": "Non-recurring product/QA and manual-only legacy workflows still contain version-tag refs; staged migration pending. Legacy bounty/gig lanes remain excluded."
       },
-      "blocker": "B4 prototype tests and 14-workflow inventory are verified. Remaining P59-003 gates: workflow supply-chain/least-privilege review and implementation; then deploy a real shared atomic federation lock/quota service. SQLite is single-host only; no production integration yet.",
+      "blocker": "B4 prototype is CI-tested but not production-integrated. Active recurring workflows are Node24 SHA-pinned and exact-commit CI PASS. Remaining gates: worker permission minimization, staged pinning of non-recurring workflows, then real shared atomic federation lock/quota service.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task."
     }
   ],
