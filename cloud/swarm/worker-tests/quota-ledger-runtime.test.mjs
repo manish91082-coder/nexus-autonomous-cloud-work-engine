@@ -1,152 +1,198 @@
 import { describe, it, expect } from "vitest";
-import { env } from "cloudflare:workers";
-import { quotaLedgerObjectName } from "../quota-ledger-do.mjs";
+import { env, evictDurableObject, runInDurableObject } from "cloudflare:test";
+import {
+  getQuotaLedgerStub, quotaLedgerObjectName
+} from "../quota-ledger-do.mjs";
 
-const identity = (suffix) => ({
-  provider: "github",
-  credentialScope: "installation-42/repository-99",
-  windowId: "hour-2026-11-15T18",
-  controlPlaneProvider: "cloudflare",
-  reservationId: "reservation-" + suffix,
-  workerId: "worker-" + suffix,
-  operation: "core+search"
-});
+const base = {
+  provider: "github-rest",
+  credentialScope: "app-7/repo-p10cr",
+  windowId: "2026-11-15T17Z",
+  controlPlaneProvider: "cloudflare-do"
+};
 
-function bucket(bucketId, remaining = 100, overrides = {}) {
+function request(reservationId, overrides = {}) {
+  const buckets = overrides.buckets ?? [
+    { bucketId: "core", limitUnits: 1000, observedRemainingUnits: 500,
+      safetyReserveUnits: 50, recoveryReserveUnits: 50,
+      observedAtEpoch: 1000, maxTelemetryAgeSeconds: 300, nowEpoch: 1010 },
+    { bucketId: "search", limitUnits: 500, observedRemainingUnits: 300,
+      safetyReserveUnits: 20, recoveryReserveUnits: 20,
+      observedAtEpoch: 1000, maxTelemetryAgeSeconds: 300, nowEpoch: 1010 }
+  ];
   return {
-    bucketId,
-    limitUnits: 1000,
-    observedRemainingUnits: remaining,
-    safetyReserveUnits: 5,
-    recoveryReserveUnits: 5,
-    observedAtEpoch: 1000,
-    maxTelemetryAgeSeconds: 120,
-    nowEpoch: 1010,
-    ...overrides
+    ...base,
+    reservationId,
+    workerId: `worker-${reservationId}`,
+    operation: "runtime-contract",
+    buckets,
+    costs: overrides.costs ?? { core: 10, search: 5 }
   };
 }
 
-function stubFor(input) {
-  const id = env.QUOTA_LEDGER.idFromName(
-    quotaLedgerObjectName(input.provider, input.credentialScope, input.windowId)
-  );
-  return env.QUOTA_LEDGER.get(id);
+function ledger(identity = base) {
+  return getQuotaLedgerStub(env, identity.provider, identity.credentialScope, identity.windowId);
 }
 
-describe("Phase 59.35 Cloudflare Workers runtime: SQLite Durable Object", () => {
-  it("initializes SQLite schema and accepts first reservation (zero-row lookups)", async () => {
-    const input = {
-      ...identity("first"),
-      buckets: [bucket("core"), bucket("search")],
-      costs: { core: 10, search: 3 }
-    };
-    const stub = stubFor(input);
-    const result = await stub.reserve(input);
-    expect(result.status).toBe("RESERVED");
-    expect(result.reservedByBucket).toEqual({ core: 10, search: 3 });
-    const snapshot = await stub.snapshot();
-    expect(snapshot.buckets).toHaveLength(2);
+describe("Phase 59.35 Cloudflare Workers runtime validation", () => {
+  it("routes the same provider/credential/window to one deterministic object", () => {
+    const a = quotaLedgerObjectName("github", "app/repo", "hour-1");
+    const b = quotaLedgerObjectName("github", "app/repo", "hour-1");
+    const c = quotaLedgerObjectName("github", "app", "repo/hour-1");
+    expect(a).toBe(b);
+    expect(a).not.toBe(c);
+    const id1 = env.QUOTA_LEDGER.idFromName(a);
+    const id2 = env.QUOTA_LEDGER.idFromName(b);
+    expect(id1.toString()).toBe(id2.toString());
   });
 
-  it("settles every bucket and persists committed usage across stub reacquisition", async () => {
-    const input = {
-      ...identity("settle"),
-      buckets: [bucket("core"), bucket("search")],
-      costs: { core: 20, search: 5 }
-    };
-    const name = quotaLedgerObjectName(input.provider, input.credentialScope, input.windowId);
-    const id = env.QUOTA_LEDGER.idFromName(name);
-    let stub = env.QUOTA_LEDGER.get(id);
-    await stub.reserve(input);
-    const result = await stub.settle({
-      reservationId: input.reservationId,
-      workerId: input.workerId,
-      actualByBucket: { core: 12, search: 3 },
+  it("executes multi-bucket reserve and settlement in SQLite-backed DO storage", async () => {
+    const stub = ledger();
+    const reserved = await stub.reserve(request("runtime-settle"));
+    expect(reserved.status).toBe("RESERVED");
+    const settled = await stub.settle({
+      reservationId: "runtime-settle",
+      workerId: "worker-runtime-settle",
+      actualByBucket: { core: 7, search: 3 },
+      nowEpoch: 1020
+    });
+    expect(settled.status).toBe("SETTLED");
+    const snap = await stub.snapshot();
+    expect(snap.buckets.find(x => x.bucket_id === "core").committed_units).toBe(7);
+    expect(snap.buckets.find(x => x.bucket_id === "search").committed_units).toBe(3);
+  });
+
+  it("persists fresh exhausted telemetry but admits no work", async () => {
+    const stub = ledger();
+    const result = await stub.reserve(request("exhausted-telemetry", {
+      buckets: [
+        { bucketId: "core", limitUnits: 1000, observedRemainingUnits: 80,
+          safetyReserveUnits: 50, recoveryReserveUnits: 50,
+          observedAtEpoch: 1100, maxTelemetryAgeSeconds: 60, nowEpoch: 1110 }
+      ],
+      costs: { core: 1 }
+    }));
+    expect(result.status).toBe("WAITING_FOR_QUOTA");
+    const snap = await stub.snapshot();
+    expect(snap.buckets.find(x => x.bucket_id === "core").observed_remaining_units).toBe(80);
+    expect(snap.buckets.find(x => x.bucket_id === "core").reserved_units).toBe(0);
+    expect(snap.reservations).toHaveLength(0);
+  });
+
+  it("admits all required buckets or none when one bucket is exhausted", async () => {
+    const stub = ledger();
+    const result = await stub.reserve(request("atomic-no-go", {
+      buckets: [
+        { bucketId: "core", limitUnits: 1000, observedRemainingUnits: 500,
+          safetyReserveUnits: 50, recoveryReserveUnits: 50,
+          observedAtEpoch: 1000, maxTelemetryAgeSeconds: 300, nowEpoch: 1010 },
+        { bucketId: "search", limitUnits: 500, observedRemainingUnits: 101,
+          safetyReserveUnits: 50, recoveryReserveUnits: 50,
+          observedAtEpoch: 1000, maxTelemetryAgeSeconds: 300, nowEpoch: 1010 }
+      ],
+      costs: { core: 20, search: 2 }
+    }));
+    expect(result.status).toBe("WAITING_FOR_QUOTA");
+    const snap = await stub.snapshot();
+    expect(snap.buckets.find(x => x.bucket_id === "core").reserved_units).toBe(0);
+    expect(snap.reservations).toHaveLength(0);
+  });
+
+  it("serializes 32 concurrent RPC clients without oversubscribing one bucket", async () => {
+    const stub = ledger();
+    const requests = Array.from({ length: 32 }, (_, i) => request(`race-${i}`, {
+      buckets: [
+        { bucketId: "core", limitUnits: 1000, observedRemainingUnits: 500,
+          safetyReserveUnits: 50, recoveryReserveUnits: 50,
+          observedAtEpoch: 1000, maxTelemetryAgeSeconds: 300, nowEpoch: 1010 }
+      ],
+      costs: { core: 20 }
+    }));
+    const results = await Promise.all(requests.map(input => stub.reserve(input)));
+    expect(results.filter(x => x.status === "RESERVED")).toHaveLength(20);
+    expect(results.filter(x => x.status === "WAITING_FOR_QUOTA")).toHaveLength(12);
+    const snap = await stub.snapshot();
+    expect(snap.buckets[0].reserved_units).toBe(400);
+    expect(snap.reservations).toHaveLength(20);
+  });
+
+  it("retains unknown outcomes and does not refund quota", async () => {
+    const stub = ledger();
+    await stub.reserve(request("uncertain-runtime"));
+    const result = await stub.markUncertain({
+      reservationId: "uncertain-runtime",
+      workerId: "worker-uncertain-runtime"
+    });
+    expect(result.status).toBe("UNCERTAIN_BUDGET_RETAINED");
+    const snap = await stub.snapshot();
+    expect(snap.buckets.find(x => x.bucket_id === "core").reserved_units).toBe(0);
+    expect(snap.buckets.find(x => x.bucket_id === "core").uncertain_units).toBe(10);
+  });
+
+  it("survives Durable Object eviction and resumes from SQLite", async () => {
+    const stub = ledger();
+    await stub.reserve(request("eviction-runtime"));
+    await evictDurableObject(stub);
+    const afterEviction = ledger();
+    const snap = await afterEviction.snapshot();
+    expect(snap.reservations.find(x => x.reservation_id === "eviction-runtime").status).toBe("RESERVED");
+    const result = await afterEviction.settle({
+      reservationId: "eviction-runtime",
+      workerId: "worker-eviction-runtime",
+      actualByBucket: { core: 8, search: 4 },
       nowEpoch: 1020
     });
     expect(result.status).toBe("SETTLED");
-    stub = env.QUOTA_LEDGER.get(id);
-    const snapshot = await stub.snapshot();
-    const core = snapshot.buckets.find(x => x.bucket_id === "core");
-    expect(core.reserved_units).toBe(0);
-    expect(core.committed_units).toBe(12);
   });
 
-  it("rolls back all bucket initialization and writes when one bucket is exhausted", async () => {
-    const input = {
-      ...identity("rollback"),
-      buckets: [bucket("core"), bucket("search", 11)],
-      costs: { core: 10, search: 2 }
-    };
-    const stub = stubFor(input);
-    await expect(stub.reserve(input)).rejects.toThrow(/exhausted/);
-    const snapshot = await stub.snapshot();
-    expect(snapshot.buckets).toHaveLength(0);
-    expect(snapshot.reservations).toHaveLength(0);
-  });
-
-  it("serializes concurrent reservations against one shared bucket", async () => {
-    const input = {
-      ...identity("contention"),
-      buckets: [bucket("core", 100, { safetyReserveUnits: 0, recoveryReserveUnits: 0 })],
-      costs: { core: 10 }
-    };
-    const stub = stubFor(input);
-    const attempts = Array.from({ length: 20 }, (_, i) =>
-      stub.reserve({
-        ...input,
-        reservationId: "contend-" + i,
-        workerId: "parallel-worker-" + i
-      }).then(() => true).catch(error => {
-        if (/exhausted/.test(String(error))) return false;
-        throw error;
-      })
-    );
-    const outcomes = await Promise.all(attempts);
-    expect(outcomes.filter(Boolean)).toHaveLength(10);
-    const snapshot = await stub.snapshot();
-    const core = snapshot.buckets.find(x => x.bucket_id === "core");
-    expect(core.reserved_units).toBe(100);
-    expect(snapshot.reservations).toHaveLength(10);
-  });
-
-  it("rejects duplicate reservation IDs without double counting", async () => {
-    const input = {
-      ...identity("duplicate"),
-      buckets: [bucket("core")],
-      costs: { core: 7 }
-    };
-    const stub = stubFor(input);
-    await stub.reserve(input);
-    await expect(stub.reserve(input)).rejects.toThrow(/duplicate/);
-    const snapshot = await stub.snapshot();
-    expect(snapshot.buckets[0].reserved_units).toBe(7);
-  });
-
-  it("retains uncertain usage instead of releasing reserved capacity", async () => {
-    const input = {
-      ...identity("uncertain"),
-      buckets: [bucket("core")],
-      costs: { core: 9 }
-    };
-    const stub = stubFor(input);
-    await stub.reserve(input);
-    const result = await stub.markUncertain({
-      reservationId: input.reservationId,
-      workerId: input.workerId
+  it("rebases committed usage on newer telemetry without double subtraction", async () => {
+    const stub = ledger();
+    await stub.reserve(request("telemetry-before"));
+    await stub.settle({
+      reservationId: "telemetry-before",
+      workerId: "worker-telemetry-before",
+      actualByBucket: { core: 10, search: 5 },
+      nowEpoch: 1020
     });
-    expect(result.status).toBe("UNCERTAIN_BUDGET_RETAINED");
-    const snapshot = await stub.snapshot();
-    expect(snapshot.buckets[0].reserved_units).toBe(0);
-    expect(snapshot.buckets[0].uncertain_units).toBe(9);
+    const refreshed = request("telemetry-after", {
+      buckets: [
+        { bucketId: "core", limitUnits: 1000, observedRemainingUnits: 470,
+          safetyReserveUnits: 50, recoveryReserveUnits: 50,
+          observedAtEpoch: 1030, maxTelemetryAgeSeconds: 300, nowEpoch: 1040 }
+      ],
+      costs: { core: 1 }
+    });
+    expect((await stub.reserve(refreshed)).status).toBe("RESERVED");
+    const core = (await stub.snapshot()).buckets.find(x => x.bucket_id === "core");
+    expect(core.committed_units).toBe(10);
+    expect(core.committed_since_observation_units).toBe(0);
+    expect(core.reserved_units).toBe(1);
   });
 
-  it("derives collision-safe object names from the provider, credential and window tuple", () => {
-    expect(quotaLedgerObjectName("ab", "c", "d")).not.toBe(
-      quotaLedgerObjectName("a", "bc", "d")
-    );
-    expect(quotaLedgerObjectName("gh", "installation/1", "hour/2")).toBe(
-      quotaLedgerObjectName("gh", "installation/1", "hour/2")
-    );
+  it("rejects a mismatched provider/credential/window identity on the same object", async () => {
+    const stub = ledger();
+    await stub.reserve(request("identity-owner"));
+    await expect(stub.reserve({
+      ...request("identity-intruder"),
+      credentialScope: "different-installation/repo"
+    })).rejects.toThrow(/identity/);
+  });
+
+  it("rolls back SQLite writes when a transaction callback throws", async () => {
+    const stub = ledger();
+    const before = (await stub.snapshot()).buckets.length;
+    await runInDurableObject(stub, (_instance, state) => {
+      expect(() => state.storage.transactionSync(() => {
+        state.storage.sql.exec(`INSERT INTO quota_buckets
+          (bucket_id,provider,credential_scope,window_id,limit_units,
+           observed_remaining_units,observed_at_epoch,safety_reserve_units,
+           recovery_reserve_units,reserved_units,committed_units,
+           committed_since_observation_units,uncertain_units)
+          VALUES ('rollback-probe','github-rest','app-7/repo-p10cr',
+          '2026-11-15T17Z',100,100,1000,0,0,0,0,0,0)`);
+        throw new Error("forced-rollback-probe");
+      })).toThrow("forced-rollback-probe");
+    });
+    expect((await stub.snapshot()).buckets).toHaveLength(before);
   });
 });
