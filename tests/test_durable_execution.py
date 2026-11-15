@@ -237,12 +237,12 @@ class DurableExecutionTests(unittest.TestCase):
         child_script = Path(self.tmp.name) / "tree_child.py"
         parent_script = Path(self.tmp.name) / "tree_parent.py"
         pid_file = Path(self.tmp.name) / "child.pid"
-        child_script.write_text("import time\\ntime.sleep(30)\\n", encoding="utf-8")
+        child_script.write_text("import time\ntime.sleep(30)\n", encoding="utf-8")
         parent_script.write_text(
-            "import subprocess, sys, time\\n"
-            "p = subprocess.Popen([sys.executable, " + repr(str(child_script)) + "])\\n"
-            "open(" + repr(str(pid_file)) + ", 'w').write(str(p.pid))\\n"
-            "time.sleep(30)\\n",
+            "import subprocess, sys, time\n"
+            "p = subprocess.Popen([sys.executable, " + repr(str(child_script)) + "])\n"
+            "open(" + repr(str(pid_file)) + ", 'w').write(str(p.pid))\n"
+            "time.sleep(30)\n",
             encoding="utf-8",
         )
         result = run_isolated_process([sys.executable, str(parent_script)],
