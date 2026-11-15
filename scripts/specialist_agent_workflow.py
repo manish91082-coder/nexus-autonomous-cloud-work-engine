@@ -22,7 +22,7 @@ class SpecialistWorkflowError(ValueError):
 
 
 ROLE_IDS = (
-    "SOURCE_INTEGRITY",
+    "EVIDENCE_INTEGRITY_RED_TEAM",
     "BUYER_DEMAND",
     "PAYOUT_ELIGIBILITY",
     "UNIT_ECONOMICS",
@@ -82,19 +82,40 @@ def _validated_evidence(payload):
     return valid, invalid
 
 
-def _integrity_worker(payload):
+def _integrity_red_team_worker(payload):
     valid, invalid = _validated_evidence(payload)
+    evidence = {x["evidence_id"]: x for x in valid}
+    unsupported = []
+    claims = payload.get("claims", [])
+    if not isinstance(claims, list):
+        claims = [{"claim_id": "CLAIMS_FIELD", "evidence_ids": [], "claim": "claims must be an array"}]
+    for index, claim in enumerate(claims):
+        if not isinstance(claim, dict):
+            unsupported.append({"index": index, "reason": "MALFORMED_CLAIM"})
+            continue
+        ids = claim.get("evidence_ids", [])
+        if not isinstance(ids, list) or not ids:
+            unsupported.append({"claim_id": claim.get("claim_id", str(index)), "reason": "NO_EVIDENCE_LINK"})
+            continue
+        bad = [
+            evidence_id for evidence_id in ids
+            if evidence_id not in evidence
+            or evidence[evidence_id].get("status") != "VERIFIED"
+            or evidence[evidence_id].get("source_type") == "MODEL_DRAFT"
+        ]
+        if bad:
+            unsupported.append({"claim_id": claim.get("claim_id", str(index)), "reason": "UNVERIFIED_OR_UNKNOWN_EVIDENCE", "evidence_ids": sorted(str(x) for x in bad)})
+    draft_ids = sorted(x["evidence_id"] for x in valid if x.get("source_type") == "MODEL_DRAFT" or x.get("status") != "VERIFIED")
     return {
-        "role": "SOURCE_INTEGRITY",
-        "status": "PASS" if valid and not invalid else "HOLD",
-        "valid_evidence_ids": sorted(x["evidence_id"] for x in valid),
+        "role": "EVIDENCE_INTEGRITY_RED_TEAM",
+        "status": "PASS" if valid and not invalid and not unsupported and not draft_ids else "HOLD",
+        "valid_evidence_ids": sorted(evidence),
         "invalid_evidence": invalid,
         "evidence_count": len(valid),
-        "note": "Evidence is checked for schema/provenance/hash shape only; source truth is not independently fetched here.",
-    }
-
-
-def _demand_worker(payload):
+        "unsupported_claims": unsupported,
+        "unverified_or_model_draft_evidence_ids": draft_ids,
+        "note": "Independent deterministic evidence/provenance and claim-linkage review; source truth is not independently fetched here.",
+    }def _demand_worker(payload):
     valid, _ = _validated_evidence(payload)
     qualifying = [
         x for x in valid
@@ -181,54 +202,13 @@ def _economics_worker(payload):
     }
 
 
-def _red_team_worker(payload):
-    valid, _ = _validated_evidence(payload)
-    evidence = {x["evidence_id"]: x for x in valid}
-    unsupported = []
-    claims = payload.get("claims", [])
-    if not isinstance(claims, list):
-        claims = [{"claim_id": "CLAIMS_FIELD", "evidence_ids": [], "claim": "claims must be an array"}]
-    for index, claim in enumerate(claims):
-        if not isinstance(claim, dict):
-            unsupported.append({"index": index, "reason": "MALFORMED_CLAIM"})
-            continue
-        ids = claim.get("evidence_ids", [])
-        if not isinstance(ids, list) or not ids:
-            unsupported.append({"claim_id": claim.get("claim_id", str(index)), "reason": "NO_EVIDENCE_LINK"})
-            continue
-        bad = [
-            evidence_id for evidence_id in ids
-            if evidence_id not in evidence
-            or evidence[evidence_id].get("status") != "VERIFIED"
-            or evidence[evidence_id].get("source_type") == "MODEL_DRAFT"
-        ]
-        if bad:
-            unsupported.append({
-                "claim_id": claim.get("claim_id", str(index)),
-                "reason": "UNVERIFIED_OR_UNKNOWN_EVIDENCE",
-                "evidence_ids": sorted(str(x) for x in bad),
-            })
-    draft_ids = sorted(
-        x["evidence_id"] for x in valid
-        if x.get("source_type") == "MODEL_DRAFT" or x.get("status") != "VERIFIED"
-    )
-    return {
-        "role": "INDEPENDENT_RED_TEAM",
-        "status": "HOLD" if unsupported or draft_ids else "PASS",
-        "unsupported_claims": unsupported,
-        "unverified_or_model_draft_evidence_ids": draft_ids,
-        "note": "Red-team checks evidence linkage and labels; it does not certify source truth.",
-    }
-
-
 def build_specialists():
     return [
-        Specialist("SOURCE_INTEGRITY", _integrity_worker),
+        Specialist("EVIDENCE_INTEGRITY_RED_TEAM", _integrity_red_team_worker),
         Specialist("BUYER_DEMAND", _demand_worker),
         Specialist("PAYOUT_ELIGIBILITY", _payout_worker),
         Specialist("UNIT_ECONOMICS", _economics_worker),
         Specialist("RIGHTS_COMPLIANCE", _rights_worker),
-        Specialist("INDEPENDENT_RED_TEAM", _red_team_worker),
     ]
 
 
@@ -269,7 +249,7 @@ def run_source_family(batch_id, source):
         "payload": payload,
     }
     audit = run_specialists(
-        envelope, build_specialists(), timeout_seconds=10.0, max_workers=6,
+        envelope, build_specialists(), timeout_seconds=10.0, max_workers=5,
     )
     return {
         "source_id": source_id,
