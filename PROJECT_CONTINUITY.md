@@ -3658,3 +3658,18 @@ Added a durable quota reservation policy over the existing Git-ref CAS store:
 **Activation blocker discovered:** the current flat event-directory verifier caps its listing at 1,000 files. At the theoretical maximum 36 reservations/hour, quota events alone can exceed this ceiling in under two days. The arbiter therefore remains a merged prototype and MUST NOT be activated at this ceiling until event-journal partitioning/pagination and 30-day verification are designed and tested. Actual REST call cost also needs measurement under success and CAS conflict paths.
 
 Remaining gates: event-journal redesign and bounded retention, API-call calibration, branch ruleset/force-push protection verification, least-privilege GitHub App installation, P10CR worker integration, read-only Flash Loan client, and 7-day/30-day soak. AI inference remains disabled. PCNE ₹0; authorized spend ₹0. P59-003 IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED.
+
+
+
+# PHASE 59.20 — PARTITIONED FEDERATION EVENT JOURNAL — 15 NOVEMBER 2026
+
+**Report:** [Phase 59.20 Partitioned Federation Event Journal](research/PHASE_59_20_PARTITIONED_FEDERATION_EVENT_JOURNAL_2026-11-15.md)  
+**PR:** [#4 — merged](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/4)  
+**Merge commit:** `e8cdce4246ff4fec21e1cd2fb554826ece1e702c`  
+**Exact tested head:** `b3ecbb0d6bef482b386decac0f290198afcaa546`
+
+New event layout: `federation/locks/events/v2/YYYY/MM/chunk-NNNNNNNN.json`. Chunks contain at most 256 contiguous events. The writer reads the chunk at the observed parent commit and commits updated state plus chunk through the same fast-forward-only CAS update. The verifier supports old root-level one-event files (including genesis sequence 0), traverses bounded year/month/chunk listings, merges all events by sequence and verifies the complete hash chain against the state checkpoint.
+
+Exact CI: lock tests 7/7, quota tests 8/8, partitioned journal tests 6/6, Python compile PASS. Exact-head checks 43691219839 and 43691219842 SUCCESS; final push suite 43691202352 SUCCESS. An initial fixture error was corrected after inspecting actual genesis sequence-zero semantics; no production data was changed.
+
+No live writes to `federation-locks`, no project clients enabled, and no 30-day soak. Quota Arbiter remains disabled. Next Phase59.21: instrument actual REST calls for no-conflict, conflict and maximum retry paths; recalibrate reservation units; simulate 30-day event volume and repository growth; then proceed to live controlled soak. Branch ruleset and GitHub App remain unverified/not installed. PCNE ₹0; authorized spend ₹0. P59-003 IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED.
