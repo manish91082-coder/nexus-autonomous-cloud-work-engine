@@ -1,36 +1,36 @@
 {
   "schema_version": "1.0",
-  "status": "PROTOTYPE_ON_DEDICATED_BRANCH_NOT_ENABLED_FOR_PROJECT_CLIENTS",
-  "backend": "GITHUB_GIT_REF_FAST_FORWARD_CAS",
+  "status": "PROTOTYPE_GITHUB_GIT_REF_CAS_LIVE_PROBE_PASS_NOT_ENABLED_FOR_PROJECT_CLIENTS",
   "branch": "federation-locks",
   "state_path": "federation/locks/state.json",
   "event_path_pattern": "federation/locks/events/{sequence}.json",
+  "atomicity": "Each transition creates a commit whose parent is the previously observed branch HEAD; branch ref update must be fast-forward only. Concurrent stale-parent commits are rejected and must reread/retry.",
   "lease_seconds": 900,
   "heartbeat_seconds": 300,
   "max_active_leases": 8,
-  "live_evidence": {
-    "run_id": 43686678257,
-    "status": "success",
-    "workflow_commit": "10bcb6231c017928b3163176084b8296d5d689ce",
-    "contenders": 20,
-    "winners": 1,
-    "busy": 19,
+  "fencing": "Monotonically increasing global fencing token, persisted in the same state commit as lease transition.",
+  "idempotency": "project_id/repository/task_id/idempotency_key",
+  "canonical_write": "Only a worker with the currently valid lease and fencing token may publish; stale tokens are rejected.",
+  "fail_closed": "On API 403/429/5xx, network error, branch conflict exhaustion, malformed state or unknown quota, do not grant lease; keep task WAITING_FOR_QUOTA/WAITING_FOR_LOCK.",
+  "no_paid_fallback": true,
+  "project_isolation": true,
+  "status_note": "Dedicated branch prototype only. Seven unit/state tests pass including 100-contender deterministic CAS simulator. Latest live GitHub Actions probe 43686678257: 20 simultaneous contenders, exactly one lease owner and 19 BUSY exits, committed release, zero active leases, and complete 15-event SHA-256 journal verification. Workflow branch-filtered and job-scoped contents:write. No project-cell client, cross-repo App installation, 100-way live race, branch ruleset or quota arbiter yet. Cross-project writes remain disabled.",
+  "live_probe": {
+    "workflow_run_id": 43686678257,
+    "workflow_run_status": "success",
+    "tested_commit": "10bcb6231c017928b3163176084b8296d5d689ce",
+    "live_contenders": 20,
+    "live_winners": 1,
+    "live_busy": 19,
     "release_committed": true,
-    "active_leases_after": 0,
+    "remaining_active_leases": 0,
+    "event_journal_verified": true,
     "event_count": 15,
-    "event_chain_verified": true,
     "branch_head_after_probe": "70b446f9608159e83326bee2da63970b6afb6ea1"
   },
-  "unit_evidence": {
-    "tests": 7,
+  "unit_tests": {
+    "count": 7,
     "status": "PASS",
-    "simulated_concurrent_contenders": 100,
-    "expected_winners": 1,
-    "observed_winners": 1
-  },
-  "enforcement_boundary": "Only clients using this branch can be coordinated. No project-cell or ChatGPT thread client is deployed; branch ruleset and GitHub App installation are pending.",
-  "fail_closed": "API 403/429/5xx, malformed state, CAS retry exhaustion or unknown quota must not grant lease; retain task in WAITING_FOR_LOCK/WAITING_FOR_QUOTA.",
-  "no_paid_fallback": true,
-  "project_missions_remain_separate": true,
-  "report": "research/PHASE_59_18_GITHUB_GIT_REF_CAS_FEDERATION_LOCK_PROTOTYPE_2026-11-15.md"
+    "includes": "100 concurrent contenders against deterministic atomic CAS simulator; exactly one winner"
+  }
 }
