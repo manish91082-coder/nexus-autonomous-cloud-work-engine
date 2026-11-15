@@ -1,3 +1,40 @@
+# LIVE CONTINUITY — PHASE 59.38 GITHUB QUOTA TELEMETRY CONTRACTS (15-Nov-2026)
+
+**Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
+**Canonical repo:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Current task:** P59-003 AI agentic swarm foundation, IN_PROGRESS  
+**Paused:** P59-001; **Blocked:** P59-002  
+**Spend:** ₹0; **verified PCNE:** ₹0; **live LLM inference:** disabled
+
+## Phase59.38 completed and merged
+
+Report: [GitHub Quota Telemetry Contracts](research/PHASE_59_38_GITHUB_QUOTA_TELEMETRY_CONTRACTS_2026-11-15.md)
+
+- PR [#16](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/16) merged at `6d9f0f7622464627bab103dad023390f8ae4d8f0`.
+- Exact Node 24 CI [43708502624](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43708502624) passed **28/28 tests**; all 14 PR check runs passed.
+- Added pure parsers for response `x-ratelimit-*` headers, Fetch `Headers`, `GET /rate_limit` overview, GraphQL `rateLimit.cost`, 200 primary-limit error responses, 403/429 cooldowns and Retry-After.
+- Per-response headers outrank periodic overview snapshots. Newer authoritative response observations may show increased remaining capacity; same-second observations use a conservative minimum.
+- Resource mapping is driven by `x-ratelimit-resource` and the resource map returned by GitHub. Distinct families include core, search, code_search, graphql and special returned resources. `actions_runner_registration` is only used when GitHub reports that specific runner-registration resource. Ordinary Actions REST endpoints are not invented as a separate bucket. Deprecated `source_import` is ignored.
+- Generic REST/GraphQL secondary point defaults remain provisional. Endpoint admission requires evidence-backed cost overrides or measured GraphQL `rateLimit.cost` provenance.
+- Published secondary ceilings are encoded as local guardrails, not live counters. Secondary-limit status is not directly queryable.
+
+## Production boundary
+
+These are pure deterministic parser contracts only. They are not connected to the Durable Object store or a live provider client. No GitHub token, live API call, Cloudflare deployment, quota activation, live inference or spend is involved. Production quota feature flag remains OFF.
+
+## Next exact sequence — Phase59.39
+
+1. Extend Durable Object bucket schema with telemetry source, authority rank, provenance, freshness and reset-window fields.
+2. Add authenticated `recordTelemetry` action with caller allowlists and provider/credential/window identity checks.
+3. Enforce response-header-over-periodic-overview precedence, stale/future/out-of-order rejection and reset rollover transactionally.
+4. Add safe provider response hooks that capture headers without logging tokens or request secrets.
+5. Test regional remaining increases, same-second observations, expired windows, secondary cooldown and cross-caller telemetry updates.
+6. Keep live credentials and quota feature flag disabled; use fixtures until an owner-approved zero-billing deployment path exists.
+
+Keep zero-cost-first, no laptop dependency, no paid fallback, no external account activation, and all owner-only gates intact.
+
+---
+
 # LIVE CONTINUITY — PHASE 59.37 INTERNAL CALLER AUTHENTICATION (15-Nov-2026)
 
 **Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
