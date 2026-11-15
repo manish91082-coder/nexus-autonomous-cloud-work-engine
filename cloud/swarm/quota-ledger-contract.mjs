@@ -39,34 +39,9 @@ export function validateQuotaRequest(input) {
   nonEmpty(input.reservationId, "reservationId");
   nonEmpty(input.workerId, "workerId");
   nonEmpty(input.operation, "operation");
-  if (!Array.isArray(input.buckets) || input.buckets.length === 0) {
-    throw new QuotaLedgerError("at least one bucket is required");
+  if (input.buckets !== undefined || input.costs !== undefined) {
+    throw new QuotaLedgerError("caller-supplied telemetry and costs are forbidden; use server-side operation registry");
   }
-  const seen = new Set();
-  for (const b of input.buckets) {
-    nonEmpty(b.bucketId, "bucketId");
-    if (seen.has(b.bucketId)) throw new QuotaLedgerError("duplicate bucket id");
-    seen.add(b.bucketId);
-    integer(b.limitUnits, "limitUnits", 1);
-    integer(b.observedRemainingUnits, "observedRemainingUnits");
-    integer(b.safetyReserveUnits, "safetyReserveUnits");
-    integer(b.recoveryReserveUnits, "recoveryReserveUnits");
-    integer(b.observedAtEpoch, "observedAtEpoch");
-    integer(b.nowEpoch, "nowEpoch");
-    integer(b.maxTelemetryAgeSeconds, "maxTelemetryAgeSeconds");
-    if (b.observedRemainingUnits > b.limitUnits) throw new QuotaLedgerError("remaining exceeds limit");
-    const age = b.nowEpoch - b.observedAtEpoch;
-    if (age < 0 || age > b.maxTelemetryAgeSeconds) throw new QuotaLedgerError("stale/future telemetry");
-    // Exhausted telemetry is valid evidence; reserve() must persist it and return WAITING_FOR_QUOTA.
-  }
-  if (!input.costs || typeof input.costs !== "object" || Array.isArray(input.costs)) {
-    throw new QuotaLedgerError("costs must be an object");
-  }
-  const costKeys = Object.keys(input.costs);
-  if (!costKeys.length || costKeys.some(k => !seen.has(k))) {
-    throw new QuotaLedgerError("costs must reference known buckets");
-  }
-  for (const [key, value] of Object.entries(input.costs)) integer(value, `costs.${key}`, 1);
   return true;
 }
 
