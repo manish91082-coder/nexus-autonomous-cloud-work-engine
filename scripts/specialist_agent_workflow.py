@@ -114,7 +114,10 @@ def _integrity_red_team_worker(payload):
         "unsupported_claims": unsupported,
         "unverified_or_model_draft_evidence_ids": draft_ids,
         "note": "Independent deterministic evidence/provenance and claim-linkage review; source truth is not independently fetched here.",
-    }def _demand_worker(payload):
+    }
+
+
+def _demand_worker(payload):
     valid, _ = _validated_evidence(payload)
     qualifying = [
         x for x in valid
