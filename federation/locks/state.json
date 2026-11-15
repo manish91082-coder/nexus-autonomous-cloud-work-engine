@@ -3,18 +3,24 @@
   "federation_id": "MANISH-AI-PROJECT-FEDERATION-2026",
   "status": "PROTOTYPE_NOT_ENABLED_FOR_CROSS_PROJECT_WRITES",
   "backend": "GITHUB_GIT_REF_FAST_FORWARD_CAS",
-  "generation": 0,
-  "next_fencing_token": 0,
+  "generation": 1,
+  "next_fencing_token": 1,
   "max_active_leases": 8,
   "lease_seconds": 900,
   "heartbeat_seconds": 300,
-  "leases": [],
+  "leases": [
+    {
+      "scope": "CAS-TEST-SCOPE",
+      "project_id": "P10CR",
+      "repository": "manish91082-coder/nexus-autonomous-cloud-work-engine",
+      "task_id": "CAS-TEST",
+      "idempotency_key": "cas-test-v1",
+      "worker_id": "CAS-WORKER-A",
+      "fencing_token": 1,
+      "expires_at_utc": "2026-11-15T06:45:00Z"
+    }
+  ],
   "quota_reservations": [],
   "idempotency_records": [],
-  "updated_at_utc": "2026-11-15T00:00:00Z",
-  "notes": [
-    "Project queues and constitutions remain separate.",
-    "This branch is a coordination journal only.",
-    "No project client is authorized until race tests and least-privilege installation are complete."
-  ]
+  "updated_at_utc": "2026-11-15T06:30:00Z"
 }

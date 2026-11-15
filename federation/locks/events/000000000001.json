@@ -1,0 +1,13 @@
+{
+  "sequence": 1,
+  "event_id": "cas-test-CAS-WORKER-A",
+  "kind": "LEASE_CLAIMED",
+  "timestamp_utc": "2026-11-15T06:30:00Z",
+  "actor": "CAS-WORKER-A",
+  "scope": "CAS-TEST-SCOPE",
+  "fencing_token": 1,
+  "previous_event_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "payload": {
+    "test": "competing writer CAS"
+  }
+}
