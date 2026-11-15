@@ -3599,3 +3599,10 @@ The remaining product build/QA and legacy manual-only workflows still contain ma
 Next: assess whether the recurring worker can be split into read-only compute and a narrowly scoped evidence publisher; then migrate non-recurring product workflows in small batches. After that implement a real shared-store federation lease/quota service. No use of local SQLite as a cross-host lock.
 
 B4 remains standalone; no production worker integration or 24x7 service claim. PCNE ₹0; authorized spend ₹0.
+
+
+## Phase 59.16 permission decision — 15 November 2026
+
+Reviewed `scripts/ai_task_executor.py` and the recurring worker's commit step. The worker persists `ai_worker_report.json` and `control/ai_usage_state.json`; the latter enforces six calls/day and a 30-minute cooldown across ephemeral GitHub runners. Removing `contents: write` now without a replacement durable quota store would reset or weaken those safeguards. Therefore retain the repository-scoped write permission temporarily. The commit step stages only those two exact files and only when status is `DRAFT_READY_FOR_EVIDENCE_REVIEW`. Current AI remains disabled; exact run logs confirm no inference request.
+
+Next permission redesign: separate read-only compute from a single-writer publisher, validate artifact schemas/paths, and preserve quota state with an atomic durable store plus duplicate-run idempotency/fencing. Only then downgrade compute to read-only. Do not claim least-privilege completion yet.
