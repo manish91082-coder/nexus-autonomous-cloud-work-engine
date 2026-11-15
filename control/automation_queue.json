@@ -3263,9 +3263,12 @@
           "heartbeat_seconds": 300,
           "max_active_leases": 8
         },
-        "lock_enforcement_boundary": "Prototype branch only. No project-cell clients, cross-repo GitHub App, branch ruleset, global quota arbiter or production integration. Cross-project writes disabled."
+        "lock_enforcement_boundary": "Prototype merged to master but still disabled for all project-cell/ChatGPT-thread writes. Branch ruleset, GitHub App, quota arbiter, client integration and soak tests pending.",
+        "phase59_18_pr_number": 2,
+        "phase59_18_pr_status": "MERGED",
+        "phase59_18_merge_commit": "56e709168b947f4221fba27b342fb58b11326d7b"
       },
-      "blocker": "Git-ref CAS prototype has live 20-way integration pass and 100-way deterministic simulator pass but is not yet merged or enforced by project cells. Remaining gates: PR review/merge, branch ruleset, GitHub App installation/owner consent, global quota arbiter, P10CR/Flashloan clients and 7/30-day soak.",
+      "blocker": "Git-ref CAS prototype merged to master and live 20-way integration pass verified. It is not yet enforced by project cells. Remaining gates: branch ruleset/force-push protection, least-privilege GitHub App owner installation, shared Actions/API quota arbiter, P10CR lock client, read-only Flash Loan client, duplicate/stale-fence tests and 7/30-day soak.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task."
     }
   ],
