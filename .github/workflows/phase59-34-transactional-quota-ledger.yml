@@ -1,0 +1,31 @@
+name: Phase 59.34 Transactional Quota Ledger Adapter
+
+on:
+  push:
+    branches: [master, phase59-34-transactional-quota-ledger]
+    paths:
+      - 'cloud/swarm/quota-ledger-do.mjs'
+      - 'cloud/swarm/quota-ledger-do.test.mjs'
+      - '.github/workflows/phase59-34-transactional-quota-ledger.yml'
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-34-transactional-quota-ledger
+  cancel-in-progress: false
+
+jobs:
+  adapter-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Syntax check
+        run: node --check cloud/swarm/quota-ledger-do.mjs
+      - name: Contract tests
+        run: node --test cloud/swarm/quota-ledger-do.test.mjs
