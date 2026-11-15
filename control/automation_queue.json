@@ -15,8 +15,8 @@
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
-    "last_reconciled_from_mission_state": "PHASE_59_39_TRANSACTIONAL_TELEMETRY_INGESTION",
-    "reconciliation_note": "P59-003 remains sole active P0. Phase59.39 PR #17 merged at 0035b58418400072e3279520e779576e1c63fa70. Workers/workerd runtime CI 43709081325 passed 31/31; ledger contract 43709055620 and telemetry parser 43708870130 passed. Authenticated primary-only recordTelemetry persists current telemetry and append-only observations with source authority, freshness, safe provenance, out-of-order and reset-window reconciliation. Crucial boundary: telemetry is persisted but NOT yet used for quota reservation admission. No live API, credentials, hosted deployment, inference or spend; production feature flag OFF. Next Phase59.40: use stored telemetry as sole admission source, separate stable DO partition from resource reset windows, preserve old-window reservations safely, atomic multi-resource admission and recovery tests. P59-001 paused; P59-002 blocked."
+    "last_reconciled_from_mission_state": "PHASE_59_40_TELEMETRY_DRIVEN_ADMISSION",
+    "reconciliation_note": "P59-003 remains sole active P0. Phase59.40 PR #18 merged at 893e7beb30adc3cdb7e0067b9070cb8322c9b83a. Exact Workers runtime code head 7ebaf1ff34dd4468f7d180b93bc78811e426c47a passed 35/35 tests; quota contract CI 43709858448 passed 8/8; telemetry parser regression 43709781464 passed. Reserve now consumes only authenticated stored telemetry and server-side operation/policy registries; caller-supplied telemetry/costs are rejected. Per-resource reset-window counters and reservation-window binding prevent old-window settlement from debiting a new window. Secondary workers can settle own reservations and submit only response telemetry linked to their own reservation. Operation/policy maps are test fixtures; no live API, credentials, deployment, inference or spend; feature flag OFF. Next Phase59.41 worker request lifecycle, reviewed operation cost registry, reservation expiry/crash recovery, idempotent retry and independent-host failure proof. P59-001 paused; P59-002 blocked."
   },
   "tasks": [
     {
@@ -3337,7 +3337,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Phase59.40: use quota_telemetry_current as sole source of provider limit/remaining/reset for admission; separate stable DO partition from resource reset windows; preserve old-window reservations and uncertain outcomes safely; local safety reserves; fail-closed missing/stale/future telemetry and unknown costs; atomic multi-resource admission, cross-caller contention, reset-boundary, duplicate-delivery and crash-recovery tests.",
+        "next": "Phase59.41: production-safe reserve -> provider request -> reservation-linked response telemetry -> settle/mark uncertain client lifecycle; reviewed endpoint/query fingerprint operation registry; unknown costs NO-GO; reservation expiry/crash recovery; idempotent retry and duplicate response handling; independent-host contention/failure injection. Keep feature flag OFF.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -3701,6 +3701,28 @@
           "spend_inr": 0,
           "inference_enabled": false,
           "next": "Phase59.40 sole-source telemetry-driven admission, stable partition/per-resource reset-window separation, safe old-window settlement, multi-resource atomic admission and crash recovery."
+        },
+        "phase59_40": {
+          "report": "research/PHASE_59_40_TELEMETRY_DRIVEN_ADMISSION_2026-11-15.md",
+          "pr_number": 18,
+          "pr_state": "MERGED",
+          "merge_commit": "893e7beb30adc3cdb7e0067b9070cb8322c9b83a",
+          "code_tested_sha": "7ebaf1ff34dd4468f7d180b93bc78811e426c47a",
+          "workers_runtime_run": 43709858465,
+          "workers_runtime_conclusion": "SUCCESS",
+          "workers_runtime_tests": 35,
+          "ledger_contract_run": 43709858448,
+          "ledger_contract_conclusion": "SUCCESS",
+          "telemetry_parser_run": 43709781464,
+          "telemetry_parser_conclusion": "SUCCESS",
+          "status": "TELEMETRY_DRIVEN_ADMISSION_IMPLEMENTED_IN_TEST_RUNTIME",
+          "production_status": "NOT_DEPLOYED_FEATURE_FLAG_OFF",
+          "cost_and_policy_registries": "TEST_FIXTURES_ONLY",
+          "live_api_calls": 0,
+          "credentials_used": false,
+          "spend_inr": 0,
+          "inference_enabled": false,
+          "next": "Phase59.41 worker request lifecycle, reviewed endpoint/query cost registry, reservation expiry and crash recovery, idempotent retry, independent-host concurrency/failure proof."
         }
       },
       "blocker": "Remaining production-enablement gates: branch ruleset, owner-approved least-privilege GitHub App, cross-run/cross-repository global Actions/API quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation, and 7/30-day soak. Phase59.25 proved only eight worker threads on one GitHub-hosted runner; Phase59.26 specialist handlers are deterministic and provider-neutral, not live LLM inference. Keep all production clients disabled.",
