@@ -48,6 +48,7 @@ def main():
     lease = winners[0][1]
     store.assert_fence(lease["scope"], lease["worker_id"], lease["fencing_token"])
     store.release(lease["scope"], lease["worker_id"], lease["fencing_token"])
+    journal = store.verify_journal()
     final = store.snapshot()["state"]
     if any(item["scope"] == lease["scope"] for item in final["leases"]):
         raise SystemExit("probe lease cleanup failed")
@@ -61,6 +62,8 @@ def main():
         "release_committed": True,
         "remaining_active_leases": len(final["leases"]),
         "branch": "federation-locks",
+        "journal_verified": journal["verified"],
+        "journal_event_count": journal["event_count"],
     }, indent=2))
 
 
