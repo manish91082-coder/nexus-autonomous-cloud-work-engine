@@ -105,6 +105,8 @@ class PostgresQuotaStore:
                         conn.execute("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE")
                         return operation(conn)
             except Exception as exc:
+                if self._sqlstate(exc) == "23505":
+                    raise QuotaStoreConflict("duplicate reservation or uniqueness conflict") from exc
                 if self._sqlstate(exc) in ("40001", "40P01") and attempt < self.max_serialization_retries:
                     time.sleep(min(0.01 * (2 ** attempt), 0.2))
                     continue
@@ -126,42 +128,36 @@ class PostgresQuotaStore:
         return self._transaction(apply)
 
     def register_bucket(self, bucket: QuotaBucket):
-        """Ingest a trusted provider telemetry snapshot; never call a provider here."""
-        bucket.validate()
+        """Ingest trusted telemetry, including exhausted snapshots, without provider calls."""
+        try:
+            bucket.validate()
+        except MultiBucketExhausted:
+            # Exhausted telemetry must replace stale capacity, not be rejected.
+            pass
         key = BucketKey(bucket.provider, bucket.credential_scope, bucket.window_id, bucket.bucket_id)
         def apply(conn):
-            row = conn.execute(
-                """SELECT provider, credential_scope, window_id, bucket_id
-                   FROM p10cr_quota_buckets
-                   WHERE provider=%s AND credential_scope=%s AND window_id=%s AND bucket_id=%s
-                   FOR UPDATE""",
-                (key.provider, key.credential_scope, key.window_id, key.bucket_id),
-            ).fetchone()
-            values = (
-                bucket.limit_units, bucket.observed_remaining_units,
-                bucket.safety_reserve_units, bucket.recovery_reserve_units,
-                bucket.control_plane_provider, bucket.observed_at_epoch,
-                bucket.max_telemetry_age_seconds,
+            conn.execute(
+                """INSERT INTO p10cr_quota_buckets
+                   (provider,credential_scope,window_id,bucket_id,limit_units,
+                    observed_remaining_units,safety_reserve_units,recovery_reserve_units,
+                    control_plane_provider,observed_at_epoch,max_telemetry_age_seconds,
+                    committed_since_observation_units)
+                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,0)
+                   ON CONFLICT (provider,credential_scope,window_id,bucket_id)
+                   DO UPDATE SET limit_units=EXCLUDED.limit_units,
+                     observed_remaining_units=EXCLUDED.observed_remaining_units,
+                     safety_reserve_units=EXCLUDED.safety_reserve_units,
+                     recovery_reserve_units=EXCLUDED.recovery_reserve_units,
+                     control_plane_provider=EXCLUDED.control_plane_provider,
+                     observed_at_epoch=EXCLUDED.observed_at_epoch,
+                     max_telemetry_age_seconds=EXCLUDED.max_telemetry_age_seconds,
+                     committed_since_observation_units=0""",
+                (key.provider,key.credential_scope,key.window_id,key.bucket_id,
+                 bucket.limit_units,bucket.observed_remaining_units,
+                 bucket.safety_reserve_units,bucket.recovery_reserve_units,
+                 bucket.control_plane_provider,bucket.observed_at_epoch,
+                 bucket.max_telemetry_age_seconds),
             )
-            if row is None:
-                conn.execute(
-                    """INSERT INTO p10cr_quota_buckets
-                       (provider,credential_scope,window_id,bucket_id,limit_units,
-                        observed_remaining_units,safety_reserve_units,recovery_reserve_units,
-                        control_plane_provider,observed_at_epoch,max_telemetry_age_seconds)
-                       VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
-                    (key.provider,key.credential_scope,key.window_id,key.bucket_id,*values),
-                )
-            else:
-                conn.execute(
-                    """UPDATE p10cr_quota_buckets SET limit_units=%s,
-                       observed_remaining_units=%s,safety_reserve_units=%s,
-                       recovery_reserve_units=%s,control_plane_provider=%s,
-                       observed_at_epoch=%s,max_telemetry_age_seconds=%s,
-                       committed_since_observation_units=0
-                       WHERE provider=%s AND credential_scope=%s AND window_id=%s AND bucket_id=%s""",
-                    (*values,key.provider,key.credential_scope,key.window_id,key.bucket_id),
-                )
             return key
         return self._transaction(apply)
 
