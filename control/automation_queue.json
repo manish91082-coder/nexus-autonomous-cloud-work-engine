@@ -15,8 +15,8 @@
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
-    "last_reconciled_from_mission_state": "PHASE_59_37_INTERNAL_CALLER_AUTH_AND_REPLAY_PROTECTION",
-    "reconciliation_note": "P59-003 remains sole active P0. Phase59.37 PR #15 merged at d3ffd9b29e5b317451f3c6c9ee1ccbe493caafde; exact Workers runtime CI 43707931301 passed 18/18 and 13/13 check runs. Internal quota RPC now HMAC-SHA256 authenticated, 30s clock skew, per-caller nonce replay protection (120s TTL), per-caller action allowlists, caller-owned reservations and fail-closed feature flag. Only dummy test secrets/local flag enabled in test harness. No hosted deployment, live telemetry, live inference or spend. Next Phase59.38: GitHub REST/Search/GraphQL/Actions quota telemetry adapters, evidence-backed endpoint cost maps, stale/future/out-of-order/reset-window tests, reservation expiry and uncertain reconciliation. P59-001 paused; P59-002 blocked."
+    "last_reconciled_from_mission_state": "PHASE_59_38_GITHUB_QUOTA_TELEMETRY_CONTRACTS",
+    "reconciliation_note": "P59-003 remains sole active P0. Phase59.38 PR #16 merged at 6d9f0f7622464627bab103dad023390f8ae4d8f0; exact Node 24 CI 43708502624 passed 28/28 tests and 14/14 PR checks. GitHub response-header and /rate_limit telemetry parsers, authority/freshness/window reconciliation, primary/secondary throttle handling and evidence-gated REST/GraphQL cost classification are committed. Resource mapping uses x-ratelimit-resource; core/search/code_search/graphql and returned special resources are distinct. No generic Actions bucket is invented; actions_runner_registration is only the runner-registration resource. Parser not connected to DO store; no live API, credentials, deployment, inference or spend. Next Phase59.39: authenticated transactional telemetry ingestion, source authority/provenance/freshness/reset fields, response hooks, stale/out-of-order/reset tests. P59-001 paused; P59-002 blocked."
   },
   "tasks": [
     {
@@ -3337,7 +3337,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Phase59.38: build provider-specific read-only quota telemetry adapters (GitHub REST/core, Search, GraphQL, Actions), normalize remaining/limit/reset/resource/freshness with provenance, measure endpoint-to-bucket costs, fail closed on unknown costs, test stale/future/out-of-order/reset boundaries, then reservation expiry and uncertain reconciliation. Integrate into read-only swarm workers only after evidence and safety gates.",
+        "next": "Phase59.39: integrate telemetry into authenticated Durable Object store; add source authority/provenance/freshness/reset fields; authenticated recordTelemetry action; header-overview precedence; stale/future/out-of-order rejection; reset rollover; response hooks with no secret logging; regional remaining increase and cross-caller telemetry tests. No live credentials or quota activation.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -3662,6 +3662,25 @@
           "spend_inr": 0,
           "inference_enabled": false,
           "next": "Phase59.38 provider-specific read-only GitHub REST/Search/GraphQL/Actions telemetry adapters, measured endpoint-to-bucket costs, stale/future/out-of-order/reset-window tests, reservation expiry and uncertain-use reconciliation."
+        },
+        "phase59_38": {
+          "report": "research/PHASE_59_38_GITHUB_QUOTA_TELEMETRY_CONTRACTS_2026-11-15.md",
+          "pr_number": 16,
+          "pr_state": "MERGED",
+          "merge_commit": "6d9f0f7622464627bab103dad023390f8ae4d8f0",
+          "tested_sha": "1585ac608a9229ff548d46089bb1033790a57c7b",
+          "ci_run": 43708502624,
+          "ci_conclusion": "SUCCESS",
+          "tests_passed": 28,
+          "tests_total": 28,
+          "checks_passed": 14,
+          "status": "PURE_TELEMETRY_PARSER_NOT_CONNECTED_TO_DO_STORE",
+          "resource_taxonomy": "x-ratelimit-resource dynamic; core/search/code_search/graphql and special categories; no generic Actions bucket",
+          "live_api_calls": 0,
+          "credentials_used": false,
+          "spend_inr": 0,
+          "inference_enabled": false,
+          "next": "Phase59.39 authenticated transactional telemetry ingestion into DO store with source authority, provenance, freshness, reset-window handling and response hooks."
         }
       },
       "blocker": "Remaining production-enablement gates: branch ruleset, owner-approved least-privilege GitHub App, cross-run/cross-repository global Actions/API quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation, and 7/30-day soak. Phase59.25 proved only eight worker threads on one GitHub-hosted runner; Phase59.26 specialist handlers are deterministic and provider-neutral, not live LLM inference. Keep all production clients disabled.",
