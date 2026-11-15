@@ -1,3 +1,40 @@
+# LIVE CONTINUITY — PHASE 59.39 AUTHENTICATED TRANSACTIONAL TELEMETRY INGESTION (15-Nov-2026)
+
+**Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
+**Canonical repo:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Current task:** P59-003 AI agentic swarm foundation, IN_PROGRESS  
+**Paused:** P59-001; **Blocked:** P59-002  
+**Spend:** ₹0; **verified PCNE:** ₹0; **live LLM inference:** disabled
+
+## Phase59.39 completed and merged
+
+Report: [Transactional Telemetry Ingestion](research/PHASE_59_39_TRANSACTIONAL_TELEMETRY_INGESTION_2026-11-15.md)
+
+- PR [#17](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/17) merged at `0035b58418400072e3279520e779576e1c63fa70`.
+- Exact Workers runtime run [43709081325](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43709081325) passed **31/31 tests** on `983edfb91d7e71176560dd0e5d772b46fe060e03`.
+- Ledger contract CI [43709055620](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43709055620) and telemetry parser CI [43708870130](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43708870130) passed.
+- Added authenticated primary-only `recordTelemetry` action and SQLite current/append-only observation tables.
+- Validates GitHub provider, credential/partition/resource-window identity, source-derived authority, 300-second freshness, 5-second future tolerance and sanitized provenance.
+- Reconciles response-header > GraphQL rateLimit field > periodic overview; handles regional remaining increases, same-second conservative values, out-of-order observations and reset rollover.
+
+## Critical boundary
+
+Telemetry is transactionally persisted but **is not yet connected to quota reservation admission**. The reserve path must not be described as using live GitHub telemetry. No live GitHub API request, token, credential, hosted Cloudflare deployment, billing, live inference or spend was used. Production quota feature flag remains OFF.
+
+## Next exact sequence — Phase59.40
+
+1. Make `quota_telemetry_current` the sole source of provider limit/remaining/reset for quota admission.
+2. Separate stable Durable Object partition identity from each resource's provider reset window.
+3. Preserve old-window reservations and uncertain outcomes safely across reset; old-window settlement must not debit a new window.
+4. Keep safety/recovery reserves as local policy, not provider telemetry.
+5. Fail closed on missing/stale/future telemetry and unknown endpoint costs.
+6. Add atomic multi-resource admission, cross-caller contention, reset-boundary, duplicate-delivery and crash-recovery tests.
+7. Keep the feature flag OFF; fixtures only until every gate is verified.
+
+Keep zero-cost-first, no laptop dependency, no paid fallback, no external account activation, and all owner-only gates intact.
+
+---
+
 # LIVE CONTINUITY — PHASE 59.38 GITHUB QUOTA TELEMETRY CONTRACTS (15-Nov-2026)
 
 **Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
