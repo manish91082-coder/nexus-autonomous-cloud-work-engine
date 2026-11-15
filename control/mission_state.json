@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_59_29_CANONICAL_ASSET_REAUDIT_COMPLETE",
+  "phase": "PHASE_59_30_WEIGHTED_SOURCE_FAMILY_SCORECARD_COMPLETE",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
   "last_verified_head": "8489a3cf3690b20f896952329141b598e2ea35e5",
-  "current_focus": "P59-001 remains sole active task. Phase59.29 exact-head audit of canonical repository completed: 13 product-registry rows split into 8 built assets and 5 research-only candidates; all eight assets passed 39 Python unit tests, CSV/Orbit Node tests, Recruitment Chromium/Firefox QA and Orbit Chromium QA. Zero of eight is release-ready or has verified buyer demand; two MIT license files need owner/scope review; six asset folders have no LICENSE. Freeze existing product feature work. Next complete weighted V5 source-family scorecard with unknowns explicit; then choose one greenfield B2B buyer problem for two-signal demand and 10–15 substitute validation. No build or spend.",
+  "current_focus": "P59-001 remains sole active task. Phase59.30 applied exact V5 weights with evidence-floor scores and unknowns explicit: Marketplace apps 38/100, B2B vertical SaaS 33, digital products 32, stock 29, creator IP/books 28, sponsorship/open-source 27, affiliate/ads 26, AI/API 23, games 21, software/IP licensing 16; other models NOT SCREENED. These are research-priority floors, not forecasts. Generic Jira AI-agent approval/audit candidate NO-GO due direct Marketplace apps and GitHub native agentic controls; two Reddit threads are qualitative pain only, no WTP. Marketplace-distributed B2B software/vertical SaaS remains provisional first source family. No product selected, no build/spend. Next research a new recurring B2B workflow problem in a marketplace ecosystem with two independent buyer signals, 10-15 substitutes, price-bearing WTP, India payout, positive economics, rights and self-serve.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -157,7 +157,7 @@
   ],
   "phase53_research_checkpoint": "14-Nov completed: WP webhook / Action Scheduler / COD fraud generic hypotheses NO-GO; Workspace attachment archival / invoice extraction / approvals / notification clones NO-GO. Formula Integrity technical matrix completed; HOLD due event/identity/API/quotas plus no proven recurring demand. Continue P53-001 Google Workspace problem-first research beyond these categories.",
   "last_observed_at": "2026-11-15T14:40:00+05:30",
-  "resume_checkpoint": "Phase59.29 report research/PHASE_59_29_CANONICAL_EIGHT_ASSET_REAUDIT_2026-11-15.md. Exact-head audit CI run 43696122496 SUCCESS on 7b3432eae96f1d6781ed345abf6c6475697e5d0a; 39 Python unit tests; CSV and Orbit Node suites pass; Recruitment Chromium/Firefox and Orbit Chromium browser QA pass; read-only registry audit artifact 14154258760. Product registry 13 rows = 8 built assets + 5 research-only candidates. Release-ready 0/8; verified buyer demand 0/8; product PCNE ₹0; public listings 0. Two MIT license files require owner/scope review; six folders have no LICENSE. No product is approved. P59-001 remains IN_PROGRESS; P59-003 PAUSED; P59-002 BLOCKED. Next: complete weighted V5 source-family scorecard with evidence confidence and unknowns explicit, then choose a greenfield B2B buyer problem for two independent demand signals and 10–15 substitute audit. No build or spend.",
+  "resume_checkpoint": "Phase59.30 scorecard report research/PHASE_59_30_V5_WEIGHTED_SOURCE_FAMILY_SCORECARD_2026-11-15.md; V5 ranking section18 updated. V5 weights applied exactly (20/15/15/12/8/10/10/10). Evidence-floor scores: Marketplace apps 38, B2B vertical SaaS 33, digital products 32, stock assets29, creator IP/books28, sponsorship/open-source27, affiliate/advertising26, AI/API23, games21, software/IP licensing16, other models NOT SCREENED. Unknown candidate-level evidence is zero; these are not forecasts. Generic Jira AI-agent approval/audit candidate NO-GO after 15 direct/adjacent substitutes; community pain is not WTP. Atlassian Forge payout terms are favourable but India seller eligibility not confirmed. P59-001 IN_PROGRESS; P59-003 PAUSED; P59-002 BLOCKED; no product selected; build unauthorized; PCNE ₹0; spend ₹0. Next: discover a new recurring B2B workflow problem within marketplace ecosystem and require two independent buyer signals, 10-15 substitutes, price-bearing WTP, India payout, positive net economics, rights and self-serve gates.",
   "last_observed_head_semantics": "Master HEAD observed before this control-plane checkpoint; this checkpoint creates subsequent commits. Fetch live master again on next continuation. last_verified_head remains the last independently verified CI SHA, not the observed HEAD.",
   "phase53_latest_report": "research/PHASE_53_FORMULA_INTEGRITY_TECHNICAL_FEASIBILITY_2026-11-14.md",
   "phase53_supporting_reports": [
@@ -1217,5 +1217,42 @@
     "public_listings": 0,
     "spend_inr": 0,
     "next": "Complete weighted V5 source-family scorecard with explicit unknowns; shortlist greenfield B2B buyer problems."
+  },
+  "phase59_30": {
+    "status": "WEIGHTED_EVIDENCE_FLOOR_SCORECARD_RECORDED",
+    "report": "research/PHASE_59_30_V5_WEIGHTED_SOURCE_FAMILY_SCORECARD_2026-11-15.md",
+    "ranking_section": 18,
+    "weights": {
+      "revenue_ceiling": 20,
+      "buyer_payment_evidence": 15,
+      "repeatability": 15,
+      "distribution": 12,
+      "time_to_first_pcne": 8,
+      "automation": 10,
+      "net_economics": 10,
+      "rights_platform_feasibility": 10
+    },
+    "evidence_floor_scores": {
+      "marketplace_apps": 38,
+      "b2b_vertical_saas": 33,
+      "digital_products": 32,
+      "stock_assets": 29,
+      "creator_ip_books_courses": 28,
+      "sponsorship_open_source": 27,
+      "affiliate_advertising": 26,
+      "ai_api_software": 23,
+      "games": 21,
+      "software_ip_licensing": 16,
+      "other_lawful_internet_native": "NOT_SCREENED"
+    },
+    "score_semantics": "Research-priority evidence floors, not forecasts or product scores; unknown candidate-level evidence is zero; hard gates override scores.",
+    "generic_jira_ai_agent_approval_audit": "NO_GO_CANDIDATE",
+    "substitutes_audited": 15,
+    "independent_qualitative_pain_threads": 2,
+    "candidate_wtp_verified": false,
+    "atl_forge_india_payout_eligibility": "NOT_CONFIRMED",
+    "concrete_product_selected": false,
+    "build_authorized": false,
+    "next": "Research a new recurring B2B workflow problem within marketplace ecosystem; require two independent buyer signals, 10-15 substitutes, price-bearing WTP, India payout, positive economics, rights and self-serve."
   }
 }
