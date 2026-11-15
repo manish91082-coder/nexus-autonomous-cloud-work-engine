@@ -214,6 +214,15 @@ test("uses at least one minute backoff when secondary-limit status is not explic
   assert.equal(result.secondary_limit_state, "UNKNOWN");
 });
 
+test("does not misclassify an ordinary permission-denied 403 as a rate limit", () => {
+  assert.throws(() => parseGitHubRateLimitError({
+    status: 403,
+    headers: {},
+    body: {message: "Resource not accessible by integration"},
+    observedAtEpoch: 1794784800
+  }), /not identified as a rate-limit error/);
+});
+
 test("rejects non-rate-limit HTTP statuses in throttle parser", () => {
   assert.throws(() => parseGitHubRateLimitError({
     status: 500, headers: {}, observedAtEpoch: 1794784800
