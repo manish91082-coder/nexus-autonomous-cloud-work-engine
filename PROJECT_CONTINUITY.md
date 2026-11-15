@@ -3569,3 +3569,33 @@ Financial invariants unchanged: verified PCNE ₹0; bank-settled receipts ₹0; 
 **Next:** workflow supply-chain and least-privilege review, including third-party Action SHA pin feasibility, permissions, secret references, explicit timeouts and schedule staggering. Then select/prove a real shared atomic store for federation lease and quota services. Do not use SQLite as a multi-host lock.
 
 No existing workflow or independent project was modified. P59-003 remains IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED. PCNE ₹0; authorized spend ₹0.
+
+
+# PHASE 59.16 — RECURRING WORKFLOW SUPPLY-CHAIN HARDENING — 15 NOVEMBER 2026
+
+**Report:** [Phase 59.16 Recurring Workflow Supply-Chain Hardening](research/PHASE_59_16_RECURRING_WORKFLOW_SUPPLY_CHAIN_HARDENING_2026-11-15.md)  
+**Exact workflow commit:** `c84124f4bff06c2f6a6eec193720bb89bda8cee2`
+
+Only the two recurring P10CR control-plane workflows were changed:
+- `mission-autonomous-worker.yml`
+- `mission-continuity-guard.yml`
+
+Their GitHub Actions dependencies are now full-SHA pinned to upstream signed Node24 releases:
+- checkout v7.0.1 — `3d3c42e5aac5ba805825da76410c181273ba90b1`
+- setup-python v7.1.0 — `6d4fd22b20465ccc0f7354476588e8df7c9ca0e0`
+- upload-artifact v7.0.2 — `cf430e030ddbb5b0abf93d22962f4752f3646cd9`
+
+All three commit signatures verified and each release `action.yml` declares `node24`.
+
+Exact-commit verification:
+- Mission Autonomous AI Worker run `43685697202`: SUCCESS.
+- Mission Continuity Guard run `43685697162`: SUCCESS.
+- Worker tests: 17 runtime + 7 coordinator + 2 AI safety + 3 product smoke + 7 recruitment assurance; mission guard PASS; queue `POLL_OK`; errors empty.
+- AI executor explicitly failed closed because `MISSION_AI_ENABLED` is not true; no inference request made.
+- Node 20 deprecation warning is absent from both runs after upgrade.
+
+The remaining product build/QA and legacy manual-only workflows still contain major-version tags. They are deliberately deferred to a staged migration to avoid triggering many simultaneous Actions jobs and to keep legacy bounty/gig lanes outside P10CR. The recurring worker still has `contents: write`; permission minimization and a single-writer publisher review remain open. No AI provider or global federation lock/quota runtime is deployed.
+
+Next: assess whether the recurring worker can be split into read-only compute and a narrowly scoped evidence publisher; then migrate non-recurring product workflows in small batches. After that implement a real shared-store federation lease/quota service. No use of local SQLite as a cross-host lock.
+
+B4 remains standalone; no production worker integration or 24x7 service claim. PCNE ₹0; authorized spend ₹0.
