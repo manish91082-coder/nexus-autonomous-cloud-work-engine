@@ -34,6 +34,7 @@ export default defineConfig({
               { type: "ESModule", path: "./quota-ledger-contract.mjs" }
             ],
             bindings: {
+              NEXUS_QUOTA_STORE_ENABLED: "true",
               NEXUS_QUOTA_CALLER_KEYS: JSON.stringify({
                 primary: primaryTestSecret,
                 secondary: secondaryTestSecret
