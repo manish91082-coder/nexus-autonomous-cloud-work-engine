@@ -72,7 +72,7 @@ describe("Phase 59.35 Cloudflare Workers runtime: SQLite Durable Object", () => 
     expect(core.committed_units).toBe(12);
   });
 
-  it("rolls back all bucket initialization and writes when one bucket is exhausted", async () => {
+  it("persists exhausted telemetry but admits none of a multi-bucket reservation", async () => {
     const input = {
       ...identity("rollback"),
       buckets: [bucket("core"), bucket("search", 11)],
