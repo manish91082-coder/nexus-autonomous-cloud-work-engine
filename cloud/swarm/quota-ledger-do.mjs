@@ -347,6 +347,10 @@ export class QuotaLedgerDO extends DurableObject {
             return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
               reason:"provider reset window expired; awaiting fresh telemetry",bucketId};
           }
+          if (telemetry.authority_rank < 80) {
+            return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
+              reason:"periodic overview is insufficient authority for admission",bucketId};
+          }
           const providerWindowId = telemetry.window_id;
           const existing = sql.exec(
             "SELECT * FROM quota_bucket_counters WHERE bucket_id=? AND provider_window_id=?",
