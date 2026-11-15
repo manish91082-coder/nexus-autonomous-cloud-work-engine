@@ -241,6 +241,70 @@ describe("Phase 59.35 Cloudflare Workers runtime: SQLite Durable Object", () => 
     });
   });
 
+  it("routes an auxiliary Worker caller to the same Durable Object identity", async () => {
+    const input = {
+      ...identity("cross-worker-shared"),
+      buckets: [bucket("core", 100, { safetyReserveUnits: 0, recoveryReserveUnits: 0 })],
+      costs: { core: 10 }
+    };
+    const primaryStub = stubFor(input);
+    const primary = await primaryStub.reserve(input);
+    expect(primary.status).toBe("RESERVED");
+
+    const response = await env.SECOND_CALLER.fetch(new Request(
+      "https://secondary-caller/reserve",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action: "reserve", input: {
+          ...input,
+          reservationId: "reservation-cross-worker-secondary",
+          workerId: "worker-cross-worker-secondary"
+        } })
+      }
+    ));
+    expect(response.status).toBe(200);
+    const secondary = await response.json();
+    expect(secondary.status).toBe("RESERVED");
+
+    const snapshot = await primaryStub.snapshot();
+    expect(snapshot.buckets.find(x => x.bucket_id === "core").reserved_units).toBe(20);
+    expect(snapshot.reservations).toHaveLength(2);
+  });
+
+  it("prevents oversubscription across primary and auxiliary Worker callers", async () => {
+    const input = {
+      ...identity("cross-worker-race"),
+      buckets: [bucket("core", 100, { safetyReserveUnits: 0, recoveryReserveUnits: 0 })],
+      costs: { core: 10 }
+    };
+    const primaryStub = stubFor(input);
+    const attempts = Array.from({ length: 20 }, (_, i) => {
+      const requestInput = {
+        ...input,
+        reservationId: "cross-race-" + i,
+        workerId: "cross-race-worker-" + i
+      };
+      if (i % 2 === 0) {
+        return primaryStub.reserve(requestInput);
+      }
+      return env.SECOND_CALLER.fetch(new Request(
+        "https://secondary-caller/reserve",
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ action: "reserve", input: requestInput })
+        }
+      )).then(response => response.json());
+    });
+    const results = await Promise.all(attempts);
+    expect(results.filter(x => x.status === "RESERVED")).toHaveLength(10);
+    expect(results.filter(x => x.status === "WAITING_FOR_QUOTA")).toHaveLength(10);
+    const snapshot = await primaryStub.snapshot();
+    expect(snapshot.buckets.find(x => x.bucket_id === "core").reserved_units).toBe(100);
+    expect(snapshot.reservations).toHaveLength(10);
+  });
+
   it("derives collision-safe object names from the provider, credential and window tuple", () => {
     expect(quotaLedgerObjectName("ab", "c", "d")).not.toBe(
       quotaLedgerObjectName("a", "bc", "d")
