@@ -314,3 +314,16 @@ No testnet deployment, X post, video, submission, award or settled revenue is cl
 - Limits: eight threads on one GitHub-hosted runner, not eight hosts; short soak is not 7/30-day production soak; shared quota budget is run-local, not cross-run/cross-repository global arbitration. Production clients remain disabled. No AI inference, paid service, owner-gated action or spend. Verified PCNE ₹0; authorized spend ₹0.
 - Mission state and queue reconciliation recorded. P59-003 remains IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED.
 - **Next:** Phase 59.26 specialist agent workflow integration with typed role contracts, bounded parallel research, evidence provenance, independent review and fail-closed action gates. Retain production-disabled boundary until global quota, branch ruleset, owner-approved GitHub App, production client and 7/30-day soak gates pass.
+
+
+## 2026-11-15 — PHASE 59.26 SPECIALIST WORKFLOW MERGED; SAFE HANDOFF TO P59-001
+
+- PR [#10](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/10) merged to canonical `master`; tested head `8489a3cf3690b20f896952329141b598e2ea35e5`; merge commit `6b8c76f23a2c7094a2e37eac3c3d62dc73823090`.
+- CI run 43695358970 SUCCESS: 11 specialist workflow tests, 7 coordinator tests, 17 swarm runtime tests, schema validation and synthetic integration demo.
+- Added five bounded deterministic specialist roles: evidence integrity/red-team, buyer demand, payout eligibility, unit economics and rights/compliance. Four source families can run concurrently; each family invokes five specialists, up to 20 specialist invocations per batch.
+- Conservative decisions: missing evidence => HOLD; contradictory hard gate or negative contribution => NO_GO; all gates passing => READY_FOR_HUMAN_REVIEW only. No automatic product GO.
+- Synthetic demo invoked 20 specialist workers across four source families; all four returned HOLD because fixtures were INTERNAL_TEST/UNVERIFIED. Artifact ID 14154018654; dossier SHA-256 `73aba0c1bb44a323a0a12d3bf3457a134cb4e483d1118b1967a56a462aae3d44`. This is not actual market research.
+- Specialist handlers are deterministic/provider-neutral; no live LLM inference, external network calls, production writes, account actions or spend. They analyze supplied evidence only.
+- Phase59.26 safe handoff is complete. P59-001 is now the sole active task for evidence-backed V5 portfolio-wide revenue-source research. P59-003 is PAUSED, not abandoned, with branch ruleset, owner-approved GitHub App, cross-run/global quota arbiter, P10CR worker client, read-only Flash Loan client, multi-host validation and 7/30-day soak still outstanding. P59-002 remains BLOCKED pending P59-001 source selection and product gates.
+- Mission economics unchanged: verified PCNE ₹0; authorized spend ₹0.
+- **Next:** reopen the exact V5 portfolio ranking and prior evidence reports, re-verify previous claims/current payout terms, compare all remaining source families, audit owned/licensable assets, and select one credible first product only after demand, payout, rights, unit economics and self-serve fulfilment gates pass. No build or spend before the decision dossier.
