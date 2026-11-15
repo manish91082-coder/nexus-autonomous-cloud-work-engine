@@ -421,9 +421,9 @@ export class QuotaLedgerDO extends DurableObject {
     if (!telemetry || typeof telemetry !== "object" || Array.isArray(telemetry)) {
       throw new QuotaLedgerError("telemetry record required");
     }
-    if (telemetry.provider !== input.provider
+    if (input.provider !== "github" || telemetry.provider !== input.provider
       || telemetry.credential_scope !== input.credentialScope) {
-      throw new QuotaLedgerError("telemetry credential identity mismatch");
+      throw new QuotaLedgerError("telemetry provider/credential identity mismatch");
     }
     const sourceRanks = {
       response_header: 100,
@@ -431,8 +431,12 @@ export class QuotaLedgerDO extends DurableObject {
       rate_limit_endpoint: 50
     };
     const expectedRank = sourceRanks[telemetry.telemetry_source];
-    if (!expectedRank || telemetry.authority_rank !== expectedRank) {
+    if (!expectedRank || telemetry.authority_rank !== expectedRank
+      || telemetry.is_authoritative !== (expectedRank >= 100)) {
       throw new QuotaLedgerError("unknown telemetry source or authority rank");
+    }
+    if (!["OBSERVED", "PERIODIC_OVERVIEW"].includes(telemetry.freshness)) {
+      throw new QuotaLedgerError("invalid telemetry freshness label");
     }
     nonEmpty(telemetry.bucket_id, "telemetry.bucket_id");
     if (!/^[a-z][a-z0-9_]{0,63}$/.test(telemetry.bucket_id)) {
@@ -460,11 +464,14 @@ export class QuotaLedgerDO extends DurableObject {
     const provenance = {
       endpoint: nonEmpty(telemetry.provenance.endpoint, "provenance.endpoint"),
       method: nonEmpty(telemetry.provenance.method, "provenance.method"),
-      status: integer(telemetry.provenance.status, "provenance.status"),
+      status: integer(telemetry.provenance.status, "provenance.status", 1),
       request_id: typeof telemetry.provenance.request_id === "string"
-        ? telemetry.provenance.request_id : null,
+        ? telemetry.provenance.request_id.slice(0, 256) : null,
       source: telemetry.provenance.source
     };
+    if (provenance.source !== telemetry.telemetry_source) {
+      throw new QuotaLedgerError("telemetry provenance/source mismatch");
+    }
     const provenanceJson = JSON.stringify(provenance);
     if (provenanceJson.length > 2048) throw new QuotaLedgerError("telemetry provenance too large");
 
