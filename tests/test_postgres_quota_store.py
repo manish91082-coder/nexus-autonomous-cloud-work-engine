@@ -111,6 +111,27 @@ class PostgresQuotaStoreIntegrationTests(unittest.TestCase):
         self.assertEqual(snap["committed_since_observation_units"],0)
         self.assertEqual(snap["observed_remaining_units"],470)
 
+    def test_same_bucket_label_across_providers_requires_full_identity(self):
+        other = QuotaBucket(
+            provider="other-api", credential_scope="account-2/repo-x",
+            window_id="window-2", bucket_id="core", limit_units=1000,
+            observed_remaining_units=500, safety_reserve_units=50,
+            recovery_reserve_units=50, control_plane_provider="cloudflare-postgres",
+            observed_at_epoch=1000, max_telemetry_age_seconds=300, now_epoch=1010,
+        )
+        other_key = BucketKey(other.provider,other.credential_scope,other.window_id,other.bucket_id)
+        self.store.register_bucket(other)
+        self.store.reserve("r-collision","w-collision","two-providers",
+                           {self.core_key:5,other_key:7},now_epoch=1010)
+        with self.assertRaises(MultiBucketConfigurationError):
+            self.store.settle("r-collision","w-collision",{"core":2})
+        result = self.store.settle(
+            "r-collision","w-collision",{self.core_key:2,other_key:3}
+        )
+        self.assertEqual(result["status"],"SETTLED")
+        self.assertEqual(self.store.snapshot(self.core_key)["committed_since_observation_units"],2)
+        self.assertEqual(self.store.snapshot(other_key)["committed_since_observation_units"],3)
+
     def test_32_concurrent_clients_cannot_oversubscribe_shared_bucket(self):
         # Each worker opens an independent PostgreSQL connection. This validates
         # database transaction serialization, not a multi-region deployment/SLA.
