@@ -31,7 +31,7 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase59.18 Git-ref CAS prototype merged by PR #2. Phase59.19 quota arbiter merged by PR #3 (commit 11426eb45945eb739d0c922c9b2aac48bc93be33), CI 43689177099 SUCCESS. 36 conservative reservation units/hour on controller lock-store (360 REST request budget), project-fair shares and 4 P10CR emergency units. Not enabled for any project clients. Flat journal 1000-file audit cap blocks activation pending partition/pagination and 30-day verification; request calibration, branch ruleset, GitHub App, client integration and soak remain.",
+      "status": "P59-003 IN_PROGRESS; Phase59.21 source-derived request-cost audit complete. Git-ref store mutation costs 9 REST requests per successful attempt, 45 worst-case at max_retries=5. Synthetic 8-lease/300-second heartbeat model yields 69,120 events and 622,080 no-conflict requests over 30 days (864/hour). Quota arbiter remains disabled: 10-request unit underfunds worst-case and reservation writes self-consume the same API budget. No clients enabled or live lock-branch writes. Next Phase59.22 lower-write lease protocol and non-self-referential quota design.",
       "last_observed_head": "5f502ebcd112b737fc07ec2e84270b298d42777a",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
@@ -91,7 +91,19 @@
         "branch ruleset not verified",
         "GitHub App not installed",
         "client integration and 7/30-day soak"
-      ]
+      ],
+      "phase59_21_report": "research/PHASE_59_21_FEDERATION_API_COST_AND_30_DAY_GROWTH_AUDIT_2026-11-15.md",
+      "phase59_21_request_cost": {
+        "successful_mutation_attempt_requests": 9,
+        "max_retries": 5,
+        "worst_case_mutation_requests": 45,
+        "read_snapshot_requests": 3,
+        "synthetic_30d_heartbeats": 69120,
+        "synthetic_30d_chunks": 270,
+        "synthetic_30d_no_conflict_requests": 622080,
+        "synthetic_average_requests_per_hour": 864,
+        "live_soak": false
+      }
     },
     {
       "project_id": "FLASHLOAN-RESEARCH",
