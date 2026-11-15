@@ -62,7 +62,9 @@ class QuotaTelemetryTests(unittest.TestCase):
         snapshot = guard.snapshot()
         self.assertEqual(snapshot["requests_attempted"], 1)
         self.assertEqual(snapshot["transport_failures"], 1)
-        self.assertFalse(snapshot["headers_observed"])
+        self.assertTrue(snapshot["headers_observed"])
+        with self.assertRaisesRegex(ApiQuotaGuardError, "telemetry unavailable"):
+            guard.before_request()
 
     def test_invalid_ceiling_is_rejected(self):
         with self.assertRaises(ValueError):
