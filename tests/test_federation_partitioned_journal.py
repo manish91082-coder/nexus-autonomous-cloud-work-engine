@@ -1,10 +1,11 @@
 import base64
+import hashlib
 import json
 import unittest
 
 from scripts.federation_git_ref_store import (
     EVENT_CHUNK_SIZE, FederationLockError, GitHubGitRefStore,
-    _apply_event, _event_for, append_event_to_chunk, event_partition_path,
+    _apply_event, _event_for, append_event_to_chunk, canonical_json, event_partition_path,
 )
 
 
@@ -52,23 +53,29 @@ class PartitionedJournalTests(unittest.TestCase):
 
     def test_verifier_reads_legacy_and_partitioned_events_in_one_chain(self):
         from datetime import datetime, timezone
+        genesis_body = {
+            "sequence": 0, "event_id": "genesis-test", "kind": "FEDERATION_LOCK_STORE_INITIALIZED",
+            "timestamp_utc": "2026-11-15T00:00:00Z", "actor": "TEST",
+            "previous_event_hash": "0" * 64, "payload": {},
+        }
+        genesis = {**genesis_body, "event_hash": hashlib.sha256(canonical_json(genesis_body).encode("utf-8")).hexdigest()}
         state = {
             "schema_version": "1.0", "federation_id": "TEST",
             "generation": 0, "next_fencing_token": 0,
             "max_active_leases": 8, "lease_seconds": 900, "heartbeat_seconds": 300,
             "leases": [], "quota_reservations": [], "idempotency_records": [],
-            "event_sequence": 0, "last_event_hash": "0" * 64,
+            "event_sequence": 0, "last_event_hash": genesis["event_hash"],
             "updated_at_utc": "2026-11-15T00:00:00Z",
         }
         times = [
-            datetime(2026, 11, 15, 6, 0, tzinfo=timezone.utc),
             datetime(2026, 11, 15, 6, 1, tzinfo=timezone.utc),
             datetime(2026, 11, 15, 6, 2, tzinfo=timezone.utc),
         ]
-        events = [make_event(state, stamp) for stamp in times]
+        appended = [make_event(state, stamp) for stamp in times]
+        events = [genesis, *appended]
         legacy = events[0]
         chunk = events[1:]
-        legacy_path = "federation/locks/events/000000000001.json"
+        legacy_path = "federation/locks/events/000000000000.json"
         chunk_path = "federation/locks/events/v2/2026/11/chunk-00000000.json"
         docs = {
             legacy_path: legacy,
