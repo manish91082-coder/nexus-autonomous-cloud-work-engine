@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "status": "PROTOTYPE_AND_QUOTA_ARBITER_MERGED_NOT_ENABLED_FOR_PROJECT_CLIENTS",
+  "status": "PARTITIONED_JOURNAL_MERGED_QUOTA_ARBITER_NOT_ENABLED",
   "branch": "federation-locks",
   "state_path": "federation/locks/state.json",
   "event_path_pattern": "federation/locks/events/{sequence}.json",
@@ -38,7 +38,7 @@
     "merge_commit": "56e709168b947f4221fba27b342fb58b11326d7b",
     "status": "merged"
   },
-  "enforcement_boundary": "CAS lock prototype and quota reservation policy are merged, but no production project-cell or ChatGPT-thread client is enabled. Quota activation is blocked pending event-journal partition/pagination and 30-day audit design, measured API request calibration, branch ruleset, GitHub App, client integration and soak tests.",
+  "enforcement_boundary": "Partitioned event journal is merged and unit-tested, but not live-soaked on federation-locks. Quota arbiter remains disabled; no project client enabled. Phase59.21 API-call instrumentation and 30-day simulation required.",
   "quota_arbiter": {
     "status": "PROTOTYPE_MERGED_NOT_ENABLED",
     "report": "research/PHASE_59_19_FEDERATION_QUOTA_ARBITER_PROTOTYPE_2026-11-15.md",
@@ -66,5 +66,31 @@
       "project clients and 7/30-day soak not completed"
     ],
     "scope_limit": "Controller repository federation lock-store REST admission only; not an account-wide Actions-minute meter and not a meter for other repositories' independent GITHUB_TOKEN quotas."
+  },
+  "event_journal": {
+    "status": "PARTITIONED_V2_MERGED_NOT_LIVE_SOAKED",
+    "path_pattern": "federation/locks/events/v2/YYYY/MM/chunk-NNNNNNNN.json",
+    "chunk_size_events": 256,
+    "sequence_chunking": "global sequence floor((sequence-1)/256), UTC year/month partitions",
+    "legacy_compatibility": "root-level one-event JSON files including genesis sequence 0 remain readable",
+    "verifier": "combines legacy files and partition chunks, sorts by sequence, verifies complete SHA-256 chain and state tail",
+    "pr_number": 4,
+    "merge_commit": "e8cdce4246ff4fec21e1cd2fb554826ece1e702c",
+    "tested_head": "b3ecbb0d6bef482b386decac0f290198afcaa546",
+    "test_counts": {
+      "lock": 7,
+      "quota": 8,
+      "partitioned_journal": 6,
+      "total": 21
+    },
+    "live_lock_branch_writes": false,
+    "thirty_day_soak": false,
+    "activation_blockers": [
+      "instrument actual API calls under success/CAS conflict/max retries",
+      "synthetic 30-day event-volume and Git repository growth simulation",
+      "monthly listing ceiling and verifier runtime soak",
+      "quota reservation recalibration",
+      "branch ruleset and GitHub App/client gates"
+    ]
   }
 }
