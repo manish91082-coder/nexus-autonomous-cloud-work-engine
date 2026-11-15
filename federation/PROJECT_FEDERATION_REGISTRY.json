@@ -31,8 +31,8 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase 59.15 B4 exact GitHub Actions CI SUCCESS on SHA 9d52266067751a28b3302cb34e43056ee991d8fc (run 43685420046), 21/21 tests pass including SQLite backup/restore, six crash-window recoveries, crash-after-finish durability and Linux process-tree termination. All 14 workflows inventoried. B4 remains standalone; no production integration, shared cross-host lock/quota runtime or AI provider.",
-      "last_observed_head": "30f2d955edf4cecb344b9c5d624b279e97c4aa2d",
+      "status": "P59-003 IN_PROGRESS; Phase 59.16 B4 21/21 CI PASS and backup/restore/crash soak verified; all 14 workflows inventoried. Active recurring worker and guard upgraded to signed Node24 action releases pinned by full SHA; exact-commit Worker 43685697202 and Guard 43685697162 SUCCESS. AI remains disabled/no inference; B4 standalone; no production federation lock/quota runtime.",
+      "last_observed_head": "b9e5c634a7b621f9a0508ceb33bae8240391250e",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
       "phase59_14_report": "research/PHASE_59_14_B4_CRASH_RECOVERY_AND_WORKFLOW_INVENTORY_2026-11-15.md",
@@ -44,7 +44,13 @@
       "phase59_15_test_sha": "9d52266067751a28b3302cb34e43056ee991d8fc",
       "phase59_15_ci_run_id": 43685420046,
       "phase59_15_test_count": 21,
-      "phase59_15_production_integrated": false
+      "phase59_15_production_integrated": false,
+      "phase59_16_report": "research/PHASE_59_16_RECURRING_WORKFLOW_SUPPLY_CHAIN_HARDENING_2026-11-15.md",
+      "phase59_16_commit": "c84124f4bff06c2f6a6eec193720bb89bda8cee2",
+      "phase59_16_worker_run_id": 43685697202,
+      "phase59_16_guard_run_id": 43685697162,
+      "phase59_16_node24_pins": true,
+      "phase59_16_production_integrated": false
     },
     {
       "project_id": "FLASHLOAN-RESEARCH",
