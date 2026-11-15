@@ -465,6 +465,7 @@ export class QuotaLedgerDO extends DurableObject {
     const method = nonEmpty(telemetry.provenance.method, "provenance.method").toUpperCase();
     const status = integer(telemetry.provenance.status, "provenance.status", 100);
     if (!/^[A-Z]+ \/[A-Za-z0-9._/-]{1,220}$/.test(endpoint) || endpoint.includes("?")
+      || !endpoint.startsWith(method + " ")
       || !["GET", "HEAD", "OPTIONS", "POST", "PATCH", "PUT", "DELETE"].includes(method)
       || status > 599) {
       throw new QuotaLedgerError("unsafe telemetry provenance fields");
