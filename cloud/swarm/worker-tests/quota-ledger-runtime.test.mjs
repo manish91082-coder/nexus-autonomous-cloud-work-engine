@@ -1425,7 +1425,7 @@ describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
       credentialScope:"mocked-shadow/readonly-worker"
     };
     const stub = stubFor(input);
-    await seedBucket(stub,input,"core",5000,{limitUnits:5000});
+    await seedBucket(stub,input,"core",5000,{limitUnits:5000,resetAtEpoch:2000000000});
     const envelope = {
       schema_version:"1.0",
       run_id:"phase44-shadow-run",
