@@ -90,6 +90,9 @@ export class QuotaLedgerDO extends DurableObject {
     if (!auth.ok) {
       return Response.json({ status: "REJECTED", reason: auth.reason }, { status: auth.status });
     }
+    if (this.env?.NEXUS_QUOTA_STORE_ENABLED !== "true") {
+      return Response.json({ status: "WAITING_FOR_QUOTA", reason: "QUOTA_STORE_DISABLED" }, { status: 503 });
+    }
 
     let body;
     try {
