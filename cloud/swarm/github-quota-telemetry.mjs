@@ -192,7 +192,7 @@ export function reconcileGitHubQuotaTelemetry(current, incoming) {
   return {record: incoming, decision: "ACCEPT_NEWER_OBSERVATION"};
 }
 
-/** Parse a GitHub REST 403/429 rate-limit response into a cooldown directive. */
+/** Parse a GitHub primary/secondary rate-limit error response into a cooldown directive. */
 export function parseGitHubRateLimitError({status, headers, body = null, observedAtEpoch}) {
   if (status !== 200 && status !== 403 && status !== 429) {
     throw new GitHubQuotaTelemetryError("rate-limit error status must be 200, 403 or 429");
@@ -253,7 +253,8 @@ export function parseGitHubRateLimitError({status, headers, body = null, observe
  */
 export function classifyGitHubOperationCost({
   apiKind, method, endpoint, graphqlOperationKind = null,
-  endpointSpecificSecondaryPoints = null, graphqlPrimaryCost = null
+  endpointSpecificSecondaryPoints = null, endpointCostEvidence = null,
+  graphqlPrimaryCost = null, graphqlCostEvidence = null
 }) {
   nonEmpty(endpoint, "endpoint");
   const verb = nonEmpty(method, "method").toUpperCase();
@@ -261,7 +262,11 @@ export function classifyGitHubOperationCost({
     if (!REST_METHODS.has(verb)) throw new GitHubQuotaTelemetryError("unsupported REST method");
     const primaryUnits = endpoint === "/rate_limit" && verb === "GET" ? 0 : 1;
     const documentedDefault = ["GET", "HEAD", "OPTIONS"].includes(verb) ? 1 : 5;
-    const verified = endpointSpecificSecondaryPoints !== null;
+    const verified = endpointSpecificSecondaryPoints !== null
+      && typeof endpointCostEvidence === "string" && endpointCostEvidence.length > 0;
+    if (endpointSpecificSecondaryPoints !== null && !verified) {
+      throw new GitHubQuotaTelemetryError("endpoint-specific cost evidence required");
+    }
     const secondaryPoints = verified
       ? nonNegativeInteger(endpointSpecificSecondaryPoints, "endpointSpecificSecondaryPoints", 1)
       : documentedDefault;
@@ -272,6 +277,7 @@ export function classifyGitHubOperationCost({
       primary_units: primaryUnits,
       secondary_points: secondaryPoints,
       secondary_points_source: verified ? "endpoint_specific_verified_override" : "documented_general_default",
+      endpoint_cost_evidence: verified ? endpointCostEvidence : null,
       endpoint_cost_verified: verified,
       admission_ready: verified,
       note: endpoint === "/rate_limit" && verb === "GET"
@@ -287,6 +293,11 @@ export function classifyGitHubOperationCost({
     const secondaryPoints = graphqlOperationKind === "query" ? 1 : 5;
     const primaryCost = graphqlPrimaryCost === null
       ? null : nonNegativeInteger(graphqlPrimaryCost, "graphqlPrimaryCost", 1);
+    const measured = primaryCost !== null
+      && typeof graphqlCostEvidence === "string" && graphqlCostEvidence.length > 0;
+    if (primaryCost !== null && !measured) {
+      throw new GitHubQuotaTelemetryError("GraphQL measured-cost evidence required");
+    }
     return {
       api_kind: "graphql",
       endpoint,
@@ -294,8 +305,9 @@ export function classifyGitHubOperationCost({
       primary_units: primaryCost,
       secondary_points: secondaryPoints,
       secondary_points_source: "documented_graphql_operation_default",
-      endpoint_cost_verified: primaryCost !== null,
-      admission_ready: primaryCost !== null,
+      endpoint_cost_evidence: measured ? graphqlCostEvidence : null,
+      endpoint_cost_verified: measured,
+      admission_ready: measured,
       note: "GraphQL primary quota is points-based; use measured rateLimit.cost"
     };
   }
