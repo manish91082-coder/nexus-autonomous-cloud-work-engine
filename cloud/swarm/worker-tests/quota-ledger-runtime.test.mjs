@@ -69,7 +69,7 @@ async function seedBuckets(stub, input, entries) {
   return result;
 }
 
-describe("Phase 59.40 telemetry-driven quota admission", () => {
+describe("Phase 59.41 guarded GitHub request lifecycle", () => {
   it("admits only from stored telemetry and returns provider-window reservations", async () => {
     const input = identity("first", "core10_search3");
     const stub = stubFor(input);
@@ -965,6 +965,24 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
     const after = await call(stub,"snapshot",input);
     expect(after.buckets[0].uncertain_units).toBe(10);
     expect(after.buckets[0].reserved_units).toBe(10);
+  });
+
+  it("fails closed for unregistered GitHub endpoints and query shapes", async () => {
+    const input = identity("client-unregistered-endpoint", "github.rest.repositories.get.v1");
+    await seedBucket(stubFor(input),input,"core",100);
+    await expect(executeQuotaGuardedGitHubRequest({
+      env,credentialScope:input.credentialScope,operation:input.operation,
+      workerId:input.workerId,requestId:"unregistered-search",
+      request:new Request("https://api.github.com/search/code?q=secret"),
+      fetchImpl:async()=>{throw new Error("must not run");}
+    })).rejects.toThrow(/UNKNOWN_ENDPOINT_COST_NO_GO/);
+
+    await expect(executeQuotaGuardedGitHubRequest({
+      env,credentialScope:input.credentialScope,operation:input.operation,
+      workerId:input.workerId,requestId:"unreviewed-query",
+      request:new Request("https://api.github.com/repos/acme/demo?per_page=1"),
+      fetchImpl:async()=>{throw new Error("must not run");}
+    })).rejects.toThrow(/UNREVIEWED_QUERY_SHAPE_NO_GO/);
   });
 
   it("derives collision-safe object names from the provider, credential and window tuple", () => {
