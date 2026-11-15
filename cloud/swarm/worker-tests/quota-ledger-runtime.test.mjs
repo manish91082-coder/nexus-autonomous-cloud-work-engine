@@ -866,6 +866,88 @@ describe("Phase 59.41 guarded GitHub request lifecycle", () => {
     expect(snapshot.buckets[0].committed_since_observation_units).toBe(0);
   });
 
+  it("retains uncertain budget when response telemetry persistence fails", async () => {
+    const input = identity("client-telemetry-failure", "github.rest.repositories.get.v1");
+    const injectedEnv = {
+      ...env,
+      QUOTA_LEDGER: {
+        idFromName: name => name,
+        get: () => ({
+          fetch: async request => {
+            const {action} = await request.json();
+            if (action === "reserve") {
+              return Response.json({status:"RESERVED",reservedByBucket:{core:1}});
+            }
+            if (action === "recordTelemetry") {
+              return Response.json({status:"WAITING_FOR_QUOTA",reason:"INJECTED_TELEMETRY_WRITE_FAILURE"},{status:503});
+            }
+            if (action === "markUncertain") {
+              return Response.json({status:"UNCERTAIN_BUDGET_RETAINED"});
+            }
+            return Response.json({status:"REJECTED"},{status:400});
+          }
+        })
+      }
+    };
+    let providerCalls = 0;
+    const result = await executeQuotaGuardedGitHubRequest({
+      env:injectedEnv,credentialScope:input.credentialScope,operation:input.operation,
+      workerId:input.workerId,requestId:"telemetry-failure-001",
+      request:new Request("https://api.github.com/repos/acme/demo"),
+      fetchImpl:async()=> {
+        providerCalls += 1;
+        return new Response("provider-response",{status:200,headers:{
+          "x-ratelimit-limit":"100","x-ratelimit-remaining":"99",
+          "x-ratelimit-used":"1","x-ratelimit-reset":String(Math.floor(Date.now()/1000)+3600),
+          "x-ratelimit-resource":"core"
+        }});
+      }
+    });
+    expect(providerCalls).toBe(1);
+    expect(result.status).toBe("RESPONSE_RECEIVED_ACCOUNTING_UNCERTAIN");
+    expect(result.accounting.status).toBe("UNCERTAIN_BUDGET_RETAINED");
+  });
+
+  it("retains uncertain budget when settlement acknowledgement fails after a provider response", async () => {
+    const input = identity("client-settlement-failure", "github.rest.repositories.get.v1");
+    const injectedEnv = {
+      ...env,
+      QUOTA_LEDGER: {
+        idFromName: name => name,
+        get: () => ({
+          fetch: async request => {
+            const {action} = await request.json();
+            if (action === "reserve") {
+              return Response.json({status:"RESERVED",reservedByBucket:{core:1}});
+            }
+            if (action === "recordTelemetry") {
+              return Response.json({status:"RECORDED"});
+            }
+            if (action === "settle") {
+              return Response.json({status:"WAITING_FOR_QUOTA",reason:"INJECTED_SETTLEMENT_FAILURE"},{status:503});
+            }
+            if (action === "markUncertain") {
+              return Response.json({status:"UNCERTAIN_BUDGET_RETAINED"});
+            }
+            return Response.json({status:"REJECTED"},{status:400});
+          }
+        })
+      }
+    };
+    const result = await executeQuotaGuardedGitHubRequest({
+      env:injectedEnv,credentialScope:input.credentialScope,operation:input.operation,
+      workerId:input.workerId,requestId:"settlement-failure-001",
+      request:new Request("https://api.github.com/repos/acme/demo"),
+      fetchImpl:async()=>new Response("provider-response",{status:200,headers:{
+        "x-ratelimit-limit":"100","x-ratelimit-remaining":"99",
+        "x-ratelimit-used":"1","x-ratelimit-reset":String(Math.floor(Date.now()/1000)+3600),
+        "x-ratelimit-resource":"core"
+      }})
+    });
+    expect(result.status).toBe("RESPONSE_RECEIVED_ACCOUNTING_UNCERTAIN");
+    expect(result.accounting.uncertainty.status).toBe("UNCERTAIN_BUDGET_RETAINED");
+  });
+
   it("does not send a provider request when authoritative quota admission is unavailable", async () => {
     const input = identity("client-no-admission", "github.rest.repositories.get.v1");
     const stub = stubFor(input);
