@@ -1,0 +1,14 @@
+{
+  "$schema": "https://developers.cloudflare.com/workers/wrangler/config-schema.json",
+  "name": "nexus-quota-ledger-runtime-tests",
+  "main": "../quota-ledger-do.mjs",
+  "compatibility_date": "2026-11-15",
+  "durable_objects": {
+    "bindings": [
+      { "name": "QUOTA_LEDGER", "class_name": "QuotaLedgerDO" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["QuotaLedgerDO"] }
+  ]
+}
