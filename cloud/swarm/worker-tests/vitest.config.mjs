@@ -110,7 +110,8 @@ export default defineConfig({
               NEXUS_QUOTA_CALLER_SECRET: primaryTestSecret,
               NEXUS_SWARM_READ_ONLY_ENABLED: "true",
               NEXUS_SWARM_SHADOW_MODE: "true",
-              NEXUS_SWARM_GITHUB_CREDENTIAL_SCOPE: "mocked-shadow/readonly-worker"
+              NEXUS_SWARM_GITHUB_CREDENTIAL_SCOPE: "mocked-shadow/readonly-worker",
+              NEXUS_SWARM_SHADOW_RESET_EPOCH: "2000000000"
             },
             durableObjects: {
               QUOTA_LEDGER: sharedQuotaNamespace
