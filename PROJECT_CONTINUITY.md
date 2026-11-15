@@ -7,7 +7,7 @@
 **Paused:** P59-001 revenue-source research (paused, not cancelled)  
 **Blocked:** P59-002 product build  
 **Spend:** ₹0. **Verified PCNE:** ₹0.  
-**Scope exclusion:** Tech Cloud ERP is unrelated and excluded. Do not research or refer to it in this mission.
+**Scope exclusion:** The unrelated asset discussion is excluded. Do not resume it in this mission.
 
 ## Owner correction and current status
 
