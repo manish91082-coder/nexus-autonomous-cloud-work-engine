@@ -90,6 +90,9 @@ class PartitionedJournalTests(unittest.TestCase):
             ],
         }
         store = GitHubGitRefStore.__new__(GitHubGitRefStore)
+        store.branch = "federation-locks"
+        store.events_dir = "federation/locks/events"
+        store.repository = "test/repo"
         store._read_snapshot = lambda: ("a" * 40, "b" * 40, state)
 
         def fake_request(method, path, payload=None):
