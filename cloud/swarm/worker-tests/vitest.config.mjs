@@ -33,7 +33,8 @@ export default defineConfig({
               { type: "ESModule", path: "./quota-ledger-host.mjs" },
               { type: "ESModule", path: "./quota-ledger-do.mjs" },
               { type: "ESModule", path: "./quota-ledger-contract.mjs" },
-              { type: "ESModule", path: "./github-quota-telemetry.mjs" }
+              { type: "ESModule", path: "./github-quota-telemetry.mjs" },
+              { type: "ESModule", path: "./github-operation-registry.mjs" }
             ],
             bindings: {
               NEXUS_QUOTA_STORE_ENABLED: "true",
