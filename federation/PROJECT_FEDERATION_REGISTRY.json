@@ -31,8 +31,8 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase 59.16 B4 21/21 CI PASS and backup/restore/crash soak verified; all 14 workflows inventoried. Active recurring worker and guard upgraded to signed Node24 action releases pinned by full SHA; exact-commit Worker 43685697202 and Guard 43685697162 SUCCESS. AI remains disabled/no inference; B4 standalone; no production federation lock/quota runtime.",
-      "last_observed_head": "4aae75fa4539a825b14ba1b99f29e0b3b77bcf18",
+      "status": "P59-003 IN_PROGRESS; Phase 59.18 B4 21/21 CI PASS, 14 workflows inventoried, active recurring worker/guard pinned to signed Node24 action SHAs with exact CI PASS. Dedicated federation-locks branch GitHub Git-ref CAS prototype live-tested: run 43686678257, 20 simultaneous claim contenders yielded exactly one winner and 19 BUSY, release committed, zero active leases, 15-event SHA-256 journal verified. Prototype not merged/enforced by project cells; no cross-repo App, quota arbiter or production integration.",
+      "last_observed_head": "bd6e92fda5fa49a2de941e5ee77fea026814605e",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
       "phase59_14_report": "research/PHASE_59_14_B4_CRASH_RECOVERY_AND_WORKFLOW_INVENTORY_2026-11-15.md",
@@ -51,7 +51,17 @@
       "phase59_16_guard_run_id": 43685697162,
       "phase59_16_node24_pins": true,
       "phase59_16_production_integrated": false,
-      "phase59_16_worker_write_permission": "RETAINED_TEMPORARILY_FOR_DURABLE_AI_QUOTA_STATE; compute-to-publisher split pending; AI currently disabled and no inference."
+      "phase59_16_worker_write_permission": "RETAINED_TEMPORARILY_FOR_DURABLE_AI_QUOTA_STATE; compute-to-publisher split pending; AI currently disabled and no inference.",
+      "phase59_18_report": "research/PHASE_59_18_GITHUB_GIT_REF_CAS_FEDERATION_LOCK_PROTOTYPE_2026-11-15.md",
+      "phase59_18_branch": "federation-locks",
+      "phase59_18_branch_head": "70b446f9608159e83326bee2da63970b6afb6ea1",
+      "phase59_18_live_run_id": 43686678257,
+      "phase59_18_live_contenders": 20,
+      "phase59_18_live_winners": 1,
+      "phase59_18_live_busy": 19,
+      "phase59_18_journal_events": 15,
+      "phase59_18_active_leases": 0,
+      "phase59_18_production_integrated": false
     },
     {
       "project_id": "FLASHLOAN-RESEARCH",
@@ -148,16 +158,17 @@
     "cloud_compute": "Never borrow another project's runner, database, model process, artifact or secrets. P10CR fallback order: durable queue/defer; eligible lightweight Cloudflare dispatch; verified zero-cost independent compute; approved free-only model endpoints. Unknown price/terms/quota fails closed."
   },
   "coordination_policy": {
-    "lock_service": "B4 standalone SQLite lease/fencing prototype only; no deployed cross-host/global lock service. Implement federation runtime only over a verified shared atomic store.",
+    "lock_service": "Dedicated federation-locks branch Git-ref fast-forward CAS prototype; live 20-contender race and 15-event journal verification pass. Not yet merged/enforced by project cells. Do not enable cross-project writes until PR review, branch ruleset, GitHub App install and client race tests.",
     "task_key": "project_id/repository/task_id/idempotency_key",
     "lease_seconds": 900,
-    "heartbeat_seconds": 60,
+    "heartbeat_seconds": 300,
     "fencing": "Monotonic fencing token per lock scope; stale workers cannot write canonical state.",
     "state_writer": "One authorized publisher per repository control-plane path; other workers submit isolated branches/PRs.",
     "conflict_resolution": "Never last-write-wins for mission state, queues, constitutions, revenue ledgers or evidence registers.",
     "run_deduplication": "Idempotency key + workflow run ID + project/task identity.",
-    "quota_arbitration": "Design specified; no deployed shared quota arbiter yet. Next: per-project GitHub Actions/API budgets, fair reservations and WAITING_FOR_QUOTA; no paid fallback.",
-    "thread_identity": "Record chat_thread_ref or automation_id where available; missing identity remains unknown."
+    "quota_arbitration": "Not deployed. Next build per-project GitHub Actions/API quota reservations and fair scheduling; GITHUB_TOKEN budget and secondary content limits require bounded commits/heartbeats.",
+    "thread_identity": "Record chat_thread_ref or automation_id where available; missing identity remains unknown.",
+    "max_active_leases": 8
   },
   "owner_approval_policy": {
     "owner_approves": "GitHub App installation, OAuth scopes, Google consent, account setup, KYC, terms, billing changes, public releases and irreversible actions.",
@@ -172,13 +183,11 @@
     "This registry is a coordination contract, not proof other repos currently enforce locks."
   ],
   "next_actions": [
-    "Apply the Phase 59.13 Flash Loan resource audit: keep missions isolated; add global Actions/API admission control and read-only status observation; do not modify Flash Loan workflows or queues.",
-    "Implement B4 durable event journal and lease/fencing runtime in Nexus.",
-    "Implement federation registry reader, atomic claim/heartbeat/release and stale-lease recovery.",
-    "Add project-local federation clients without changing local missions.",
-    "Create least-privilege GitHub App; owner installs/approves through official UI.",
-    "Implement provider-specific OAuth consent broker with minimum scopes.",
-    "Inventory workflows across selected repos and classify triggers; change duplicate schedules only after evidence and owner approval.",
-    "Add shared quota reservations and run concurrency drills."
+    "Review and merge Phase 59.18 Git-ref CAS prototype into master without enabling project-cell writes.",
+    "Protect federation-locks branch against force push/deletion; verify ruleset and recovery path.",
+    "Install least-privilege GitHub App on selected repos after owner approval; keep Flash Loan client read-only initially.",
+    "Implement per-project GitHub Actions/API quota reservations, fairness and WAITING_FOR_QUOTA.",
+    "Integrate P10CR worker claim/assert/release with lease/fencing after cross-thread and duplicate-dispatch tests.",
+    "Run 7-day and 30-day soak tests before enabling cross-project writes."
   ]
 }
