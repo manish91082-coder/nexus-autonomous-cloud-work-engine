@@ -249,6 +249,18 @@ class DurableStore:
             self._event(db,scope,"LOCK_ACQUIRED",stamp,worker=worker,token=token,payload={"expires_at_utc":_iso(expiry)})
             return {"scope_key":scope_key,"worker_id":worker,"fencing_token":token,"expires_at_utc":_iso(expiry)}
 
+    def heartbeat_lock(self, scope_key, worker, token, *, now=None, lease_seconds=900):
+        stamp, scope = _now(now), f"lock:{_id(scope_key,'scope_key')}"
+        if not isinstance(lease_seconds,int) or isinstance(lease_seconds,bool) or not MIN_LEASE <= lease_seconds <= MAX_LEASE:
+            raise DurableExecutionError("invalid lease duration")
+        with self._tx() as db:
+            old = self._lease(db,scope,_id(worker,"worker"),token,stamp)
+            expiry = stamp + timedelta(seconds=lease_seconds)
+            db.execute("UPDATE leases SET expires_at=?,heartbeat_at=? WHERE scope=?",(_iso(expiry),_iso(stamp),scope))
+            self._event(db,scope,"LOCK_HEARTBEAT",stamp,worker=worker,token=token,
+                        payload={"previous_expiry":old["expires_at"],"new_expiry":_iso(expiry)})
+            return {"scope_key":scope_key,"worker_id":worker,"fencing_token":token,"expires_at_utc":_iso(expiry)}
+
     def assert_fence(self, scope_key, worker, token, *, now=None):
         stamp, scope = _now(now), f"lock:{_id(scope_key,'scope_key')}"
         with self._read() as db: self._lease(db,scope,_id(worker,"worker"),token,stamp)
