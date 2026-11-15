@@ -248,7 +248,8 @@ class PostgresQuotaStore:
                     "reserved_by_bucket":{k.bucket_id:normalized[k] for k in ordered},"status":"RESERVED"}
         return self._transaction(apply)
 
-    def settle(self, reservation_id: str, worker_id: str, actual_by_bucket: Mapping[str, int]):
+    def settle(self, reservation_id: str, worker_id: str, actual_by_bucket: Mapping[Any, int]):
+        """Settle by full BucketKey; a bare bucket_id is accepted only when unambiguous."""
         if not isinstance(actual_by_bucket, Mapping):
             raise MultiBucketConfigurationError("actual_by_bucket must be a mapping")
         def apply(conn):
@@ -264,34 +265,50 @@ class PostgresQuotaStore:
                    ORDER BY provider,credential_scope,window_id,bucket_id""",
                 (reservation_id,),
             ).fetchall()
-            expected = {row[3]:row[4] for row in items}
-            if set(actual_by_bucket) != set(expected):
-                raise MultiBucketConfigurationError("settlement must report every reserved bucket")
-            for bucket_id, units in actual_by_bucket.items():
+            expected = {BucketKey(row[0],row[1],row[2],row[3]):row[4] for row in items}
+            actual = {}
+            for raw_key, units in actual_by_bucket.items():
+                if isinstance(raw_key, str):
+                    matches = [key for key in expected if key.bucket_id == raw_key]
+                    if len(matches) != 1:
+                        raise MultiBucketConfigurationError(
+                            "bare bucket_id is ambiguous; provide full BucketKey identity"
+                        )
+                    key = matches[0]
+                else:
+                    key = self._key(raw_key)
+                if key not in expected or key in actual:
+                    raise MultiBucketConfigurationError("unknown or duplicate settlement bucket")
                 if not isinstance(units,int) or isinstance(units,bool) or units < 0:
                     raise MultiBucketConfigurationError("actual usage must be non-negative integers")
-                if units > expected[bucket_id]:
-                    raise MultiBucketExhausted(f"{bucket_id} actual use exceeded reservation")
-            for provider,scope,window,bucket_id,reserved in items:
-                actual = actual_by_bucket[bucket_id]
+                if units > expected[key]:
+                    raise MultiBucketExhausted(f"{key.bucket_id} actual use exceeded reservation")
+                actual[key] = units
+            if set(actual) != set(expected):
+                raise MultiBucketConfigurationError("settlement must report every reserved bucket")
+            for key in sorted(expected):
+                reserved = expected[key]
+                units = actual[key]
                 conn.execute(
                     """UPDATE p10cr_quota_buckets
                        SET reserved_units=reserved_units-%s,
                            committed_since_observation_units=committed_since_observation_units+%s
                        WHERE provider=%s AND credential_scope=%s AND window_id=%s AND bucket_id=%s""",
-                    (reserved,actual,provider,scope,window,bucket_id),
+                    (reserved,units,key.provider,key.credential_scope,key.window_id,key.bucket_id),
                 )
                 conn.execute(
                     """UPDATE p10cr_quota_reservation_items SET actual_units=%s
                        WHERE reservation_id=%s AND provider=%s AND credential_scope=%s
                        AND window_id=%s AND bucket_id=%s""",
-                    (actual,reservation_id,provider,scope,window,bucket_id),
+                    (units,reservation_id,key.provider,key.credential_scope,key.window_id,key.bucket_id),
                 )
             conn.execute(
                 "UPDATE p10cr_quota_reservations SET status='SETTLED' WHERE reservation_id=%s",
                 (reservation_id,),
             )
-            return {"reservation_id":reservation_id,"status":"SETTLED","actual_by_bucket":dict(actual_by_bucket)}
+            return {"reservation_id":reservation_id,"status":"SETTLED",
+                    "actual_by_bucket":{f"{k.provider}|{k.credential_scope}|{k.window_id}|{k.bucket_id}":actual[k]
+                                        for k in sorted(actual)}}
         return self._transaction(apply)
 
     def mark_uncertain(self, reservation_id: str, worker_id: str):
