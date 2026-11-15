@@ -1,0 +1,82 @@
+name: Phase 59.29 Canonical Eight-Asset Reaudit CI
+
+on:
+  push:
+    branches:
+      - phase59-29-canonical-asset-reaudit
+    paths:
+      - 'control/product_registry.json'
+      - 'products/**'
+      - 'tests/test_msme_ops_desk.py'
+      - 'tests/test_recruitment_revenue_assurance.py'
+      - 'tests/recruitment_browser_qa.mjs'
+      - 'scripts/audit_canonical_product_assets.py'
+      - '.github/workflows/phase59-29-canonical-asset-reaudit.yml'
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-29-canonical-asset-reaudit
+  cancel-in-progress: false
+
+jobs:
+  canonical-assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - name: Checkout canonical repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Check runtime versions
+        run: |
+          python3 --version
+          node --version
+          npm --version
+      - name: Run MSME Ops Desk and Recruitment Desk offline/formula tests
+        run: |
+          python3 -m unittest discover -s tests -p 'test_msme_ops_desk.py' -v
+          python3 -m unittest discover -s tests -p 'test_recruitment_revenue_assurance.py' -v
+      - name: Run Job-to-Cash Control Kit tests
+        run: python3 -m unittest discover -s products/ai-ops-starter/tests -p 'test_*.py' -v
+      - name: Run Message-to-Action tests
+        run: python3 -m unittest discover -s products/message-to-action-reliability/tests -p 'test_*.py' -v
+      - name: Run Revenue Ops Control tests
+        run: python3 -m unittest discover -s products/revenue-ops-control/tests -p 'test_*.py' -v
+      - name: Run Travel Revenue Demo tests
+        run: python3 -m unittest discover -s products/travel-revenue-demo/tests -p 'test_*.py' -v
+      - name: Run CSV-to-Action and Orbit Relay puzzle tests
+        run: |
+          node --test products/csv-to-action/tests/csv_engine.test.cjs
+          node --test products/orbit-relay/tests/puzzle.test.cjs
+      - name: Install isolated browser QA runtime
+        run: |
+          npm install --no-save --no-audit --no-fund playwright
+          npx playwright install --with-deps chromium firefox
+      - name: Run Recruitment Desk Chromium and Firefox browser QA
+        shell: bash
+        run: |
+          python3 -m http.server 8765 --directory products/recruitment-agency-revenue-assurance >/tmp/recruitment-desk-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 20); do
+            if curl --fail --silent http://127.0.0.1:8765/ >/dev/null; then break; fi
+            sleep 1
+          done
+          BASE_URL=http://127.0.0.1:8765/ node tests/recruitment_browser_qa.mjs
+      - name: Run Orbit Relay Chromium browser QA
+        run: node --test products/orbit-relay/tests/browser.test.cjs
+      - name: Build read-only canonical asset inventory
+        run: python3 scripts/audit_canonical_product_assets.py
+      - name: Upload machine-readable asset audit
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2 (Node 24)
+        with:
+          name: phase59-29-canonical-asset-audit-${{ github.run_id }}
+          path: canonical_asset_audit.json
+          retention-days: 30
