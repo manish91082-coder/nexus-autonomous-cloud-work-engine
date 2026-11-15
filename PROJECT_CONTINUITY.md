@@ -3774,3 +3774,16 @@ Date: 2026-11-15
 - Production federation branch untouched; production clients disabled; no AI inference, paid service, owner-gated action or spend. PCNE ₹0; authorized spend ₹0.
 - P59-003 remains active; P59-001 remains paused until safe handoff; P59-002 remains blocked. Mission target and canonical repository unchanged.
 - Next: Phase 59.26 specialist agent workflow integration with typed role contracts, bounded parallel research, evidence provenance, independent review and fail-closed action gates. Keep production disabled pending global quota arbiter, branch ruleset, owner-approved GitHub App, production clients and 7/30-day soak.
+
+
+## PHASE 59.26 UPDATE — SPECIALIST WORKFLOW MERGED; P59-001 RESUMED
+Date: 2026-11-15
+
+- PR #10 merged to canonical `master`; exact head `8489a3cf3690b20f896952329141b598e2ea35e5`; merge commit `6b8c76f23a2c7094a2e37eac3c3d62dc73823090`.
+- CI run 43695358970 SUCCESS: 11 specialist tests, 7 coordinator regressions, 17 swarm runtime regressions, JSON schema validation and four-family synthetic demo.
+- Five typed deterministic specialists; up to four source families in parallel and 20 specialist invocations per batch. Conservative outputs HOLD / NO_GO / READY_FOR_HUMAN_REVIEW only. No automatic product GO.
+- Demo used synthetic INTERNAL_TEST/UNVERIFIED fixtures and correctly returned HOLD for all four families. Artifact 14154018654. Not actual market evidence.
+- No live LLM inference, external network calls, production writes, account actions or spend. PCNE ₹0; authorized spend ₹0.
+- Safe handoff complete: P59-001 is now the sole active task for V5 portfolio-wide evidence-backed revenue-source research. P59-003 is PAUSED with production gates outstanding; P59-002 remains BLOCKED.
+- P59-003 remaining gates: branch ruleset, owner-approved least-privilege GitHub App, cross-run/cross-repository global quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation and 7/30-day soak. Production clients remain disabled.
+- Next: re-open the exact V5 ranking and prior source reports; validate prior claims and current terms; research all eligible source families and owned/licensable assets; choose the first product only after buyer demand, India payout, rights, positive net contribution and self-serve fulfilment gates. No build or spend before approval dossier.
