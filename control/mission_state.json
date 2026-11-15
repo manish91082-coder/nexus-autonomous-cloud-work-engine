@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE",
+  "phase": "PHASE_59_14_B4_CRASH_RECOVERY_AND_COMPLETE_WORKFLOW_INVENTORY",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -10,8 +10,8 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
-  "last_verified_head": "7a1dd14eeda25ae035d1fabb7e97873aa154b8a0",
-  "current_focus": "P59-003 B4 durable execution prototype committed; 16 local tests pass; exact GitHub Actions run remains unverified. Production worker and federation runtime remain unchanged; provider is unconfigured.",
+  "last_verified_head": "8b52ecca1c6007c13af0bf368e440b1b8e51d8c4",
+  "current_focus": "P59-003: B4 exact GitHub Actions CI PASS on 8b52ecca1c6007c13af0bf368e440b1b8e51d8c4; 18/18 tests pass including abrupt spawned-process crash/checkpoint recovery, stale fencing, and Linux descendant process-group termination. Complete 14/14 workflow inventory captured. B4 remains standalone; production worker/federation runtime not integrated; AI provider unconfigured.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -63,7 +63,7 @@
     "CREATOR_IP_ROYALTIES_STOCK_ASSETS",
     "GAMES_SPONSORSHIP_AFFILIATE_ADVERTISING"
   ],
-  "last_exact_head_ci_status": "Last independently verified worker CI remains #340 SUCCESS on old SHA 7a1dd14eeda25ae035d1fabb7e97873aa154b8a0. B4 workflow commit 2411570a67296111a3bef33090da083101c109dc and test commit eda24e43232ec7732c9cf4956eebca522a1543b0 are committed; combined status returned no contexts and exact Actions run ID could not be retrieved. Do not claim B4 GitHub CI success.",
+  "last_exact_head_ci_status": "B4 Durable Execution Contract run 43685216997 SUCCESS on exact test SHA 8b52ecca1c6007c13af0bf368e440b1b8e51d8c4; validate job PASS; schema JSON PASS; 18/18 durable execution tests PASS on GitHub-hosted Ubuntu 26.04, including process crash recovery and Linux process-tree termination. Prior fixture failures retained and corrected. This verifies B4 test commit, not current later documentation/control commits or production integration.",
   "phase46_control_commits": [
     "72230902a478552d007d94d330e216238c9b2982",
     "ae552163e2b1e65590fc98454d8f7817bc73fa92",
@@ -157,7 +157,7 @@
   ],
   "phase53_research_checkpoint": "14-Nov completed: WP webhook / Action Scheduler / COD fraud generic hypotheses NO-GO; Workspace attachment archival / invoice extraction / approvals / notification clones NO-GO. Formula Integrity technical matrix completed; HOLD due event/identity/API/quotas plus no proven recurring demand. Continue P53-001 Google Workspace problem-first research beyond these categories.",
   "last_observed_at": "2026-11-15T08:31:25+05:30",
-  "resume_checkpoint": "15-Nov-2026 Phase 59.12: B4 durable execution prototype committed. SQLite journal, atomic task claims, idempotency, task/publisher heartbeat and fencing, checkpoints, bounded retry/dead-letter, append-only hash chain, process allowlist/timeout; 16/16 local tests pass including spawned multi-process race. New read-only B4 CI workflow is committed but exact Actions run cannot be retrieved; combined status empty. Eight continuity-referenced workflows and five runtime modules inspected; exhaustive workflow directory listing still required. Production worker not integrated; no AI provider configured. P59-003 remains IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED; PCNE ₹0; spend ₹0.",
+  "resume_checkpoint": "15-Nov-2026 Phase 59.14: B4 exact GitHub Actions run 43685216997 SUCCESS on test SHA 8b52ecca1c6007c13af0bf368e440b1b8e51d8c4; schema validation and 18/18 tests PASS on Ubuntu 26.04. Added abrupt spawned worker crash after durable checkpoint, lease-expiry recovery, stale fencing rejection and Linux forked descendant process-group termination. Complete GitHub recursive workflow tree: 14/14 files inspected; two recurring schedules (5-minute mission worker, daily continuity guard), 3 manual-only legacy bounty/job/gig workflows remain excluded from P10CR. B4 is still standalone, not production-integrated; no live federation lock/quota arbiter; AI provider unconfigured. P59-003 remains IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED; PCNE ₹0; spend ₹0.",
   "last_observed_head_semantics": "Master HEAD observed before this control-plane checkpoint; this checkpoint creates subsequent commits. Fetch live master again on next continuation. last_verified_head remains the last independently verified CI SHA, not the observed HEAD.",
   "phase53_latest_report": "research/PHASE_53_FORMULA_INTEGRITY_TECHNICAL_FEASIBILITY_2026-11-14.md",
   "phase53_supporting_reports": [
@@ -844,5 +844,44 @@
     "verified_pcne_inr": 0,
     "verified_bank_settled_receipts_inr": 0,
     "authorized_spend_inr": 0
+  },
+  "latest_b4_workflow_run": {
+    "name": "B4 Durable Execution Contract",
+    "run_id": 43685216997,
+    "status": "success",
+    "conclusion": "success",
+    "head_sha": "8b52ecca1c6007c13af0bf368e440b1b8e51d8c4",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43685216997",
+    "completed_at": "2026-11-15T06:23:35Z",
+    "runner": "GitHub-hosted ubuntu-26.04",
+    "test_count": 18,
+    "checks": [
+      "Schema JSON validation PASS",
+      "SQLite atomic claims and multi-process race PASS",
+      "Abrupt process crash after checkpoint PASS",
+      "Checkpoint persistence after reopen PASS",
+      "Expired lease recovery and stale worker fencing PASS",
+      "Linux process-group descendant termination PASS",
+      "Event hash chain and retry/dead-letter tests PASS"
+    ]
+  },
+  "phase59_12_ci_status": "SUPERSEDED_BY_PHASE_59_14_EXACT_B4_CI_SUCCESS",
+  "phase59_12_workflow_inventory": "SUPERSEDED: complete recursive GitHub tree enumeration returned truncated=false with 14 workflow files; all 14 fetched and classified in Phase 59.14.",
+  "phase59_14": {
+    "status": "B4_EXACT_CI_PASS_18_OF_18; CRASH_RECOVERY_AND_LINUX_PROCESS_TREE_PASS; WORKFLOW_INVENTORY_14_OF_14",
+    "report": "research/PHASE_59_14_B4_CRASH_RECOVERY_AND_WORKFLOW_INVENTORY_2026-11-15.md",
+    "b4_test_sha": "8b52ecca1c6007c13af0bf368e440b1b8e51d8c4",
+    "b4_ci_run_id": 43685216997,
+    "b4_test_count": 18,
+    "workflows_total": 14,
+    "recurring_schedules": 2,
+    "recurring_worker_schedule": "3-59/5 * * * *",
+    "continuity_guard_schedule": "41 2 * * *",
+    "production_integrated": false,
+    "federation_runtime_deployed": false,
+    "ai_provider_configured": false,
+    "authorized_spend_inr": 0,
+    "pcne_inr": 0,
+    "next": "B4 SQLite backup/restore integrity and repeated crash-window soak; then implement a real shared-store federation lease service and per-project GitHub Actions/API quota reservations. Do not pretend local SQLite is cross-host atomic."
   }
 }
