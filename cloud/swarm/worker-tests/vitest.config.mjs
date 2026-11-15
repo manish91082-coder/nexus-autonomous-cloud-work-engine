@@ -26,7 +26,13 @@ export default defineConfig({
               { type: "ESModule", path: "./quota-ledger-host.mjs" },
               { type: "ESModule", path: "./quota-ledger-do.mjs" },
               { type: "ESModule", path: "./quota-ledger-contract.mjs" }
-            ]
+            ],
+            durableObjects: {
+              QUOTA_LEDGER: {
+                className: "QuotaLedgerDO",
+                useSQLite: true
+              }
+            }
           },
           {
             name: "p10cr-secondary-caller",
