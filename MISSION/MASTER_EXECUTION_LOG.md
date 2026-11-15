@@ -338,3 +338,17 @@ No testnet deployment, X post, video, submission, award or settled revenue is cl
 - V5 provisional first source family remains productized B2B / vertical SaaS / marketplace-distributed apps. No concrete product GO, no build, no spend. PCNE ₹0; authorized spend ₹0.
 - P59-001 remains sole active task. P59-003 remains PAUSED; P59-002 remains BLOCKED.
 - **Next:** complete remaining source-family scorecard with unknowns explicit; re-audit only canonical repository's eight assets; compare any rights-cleared owned asset against a greenfield buyer problem. Require two independent demand signals, 10–15 substitutes, price-bearing WTP, India payout, positive fully-loaded economics, rights and self-serve gates before build.
+
+
+## 2026-11-15 — PHASE 59.29 CANONICAL EIGHT-ASSET RE-AUDIT
+
+- Added read-only audit script `scripts/audit_canonical_product_assets.py` and workflow `.github/workflows/phase59-29-canonical-asset-reaudit.yml`.
+- Exact-head GitHub Actions run 43696122496 SUCCESS on `7b3432eae96f1d6781ed345abf6c6475697e5d0a`; 39 Python unit tests passed; CSV-to-Action and Orbit Relay puzzle Node tests passed; Recruitment Desk Chromium/Firefox browser QA passed; Orbit Relay Chromium browser QA passed; registry/path/README inventory passed.
+- Product registry has 13 rows: eight built product directories and five research-only candidate rows. These five are not built products.
+- Eight built assets: MSME Ops Desk Lite; Recruitment Agency Revenue Assurance Desk; Job-to-Cash Control Kit; CSV to Action; Message-to-Action Reliability; Revenue Ops Control; Travel Revenue Demo; Orbit Relay.
+- Release-ready assets 0/8; verified buyer demand 0/8; public listings 0; product PCNE ₹0. Two folders have MIT license files, both still requiring owner/scope/copyright review; six folders have no product-level LICENSE file.
+- No other repository or mission included. No accounts, KYC, listings, customer data, publication or spend.
+- Evidence report `research/PHASE_59_29_CANONICAL_EIGHT_ASSET_REAUDIT_2026-11-15.md`; artifact 14154258760, SHA-256 `74fb02d7901d6bab9f877c37ba649e023ea5e553812c9e259f46a875c02d5995`.
+- Owned-vs-greenfield decision: freeze feature development on existing assets. None passes buyer demand, rights, payout, unit economics and self-serve release gates. Greenfield B2B / vertical SaaS / marketplace-distributed software remains provisional first source family, concrete buyer problem not yet selected.
+- P59-001 remains sole active task; P59-003 paused; P59-002 blocked; PCNE ₹0; spend ₹0.
+- **Next:** complete weighted V5 source-family scorecard with evidence confidence and unknowns explicit; do not invent candidate-level forecasts. Then shortlist greenfield B2B buyer problems for two independent demand signals and 10–15 substitute audit. No build or spend before gates pass.
