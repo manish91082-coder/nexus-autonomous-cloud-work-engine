@@ -3847,3 +3847,15 @@ Date: 2026-11-15
 - Safe handoff complete: P59-001 is now the sole active task for V5 portfolio-wide evidence-backed revenue-source research. P59-003 is PAUSED with production gates outstanding; P59-002 remains BLOCKED.
 - P59-003 remaining gates: branch ruleset, owner-approved least-privilege GitHub App, cross-run/cross-repository global quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation and 7/30-day soak. Production clients remain disabled.
 - Next: re-open the exact V5 ranking and prior source reports; validate prior claims and current terms; research all eligible source families and owned/licensable assets; choose the first product only after buyer demand, India payout, rights, positive net contribution and self-serve fulfilment gates. No build or spend before approval dossier.
+
+
+## PHASE 59.28 UPDATE — NEW CANDIDATE GATES
+Date: 2026-11-15
+
+- Report: `research/PHASE_59_28_NEW_CANDIDATE_GATES_2026-11-15.md`; V5 portfolio ranking section 16 updated.
+- Generic eBRC/IRM reconciliation is NO-GO due DGFT bulk self-certification/IRM API, free eBRC.in exporter app/API and paid adjacent export workflow products.
+- Generic AI-agency cost/margin/billing ledger is NO-GO as a clone due Walleta Agency's direct feature/pricing offer and crowded open/free observability alternatives. Parent AI/API software source family remains open for a genuinely differentiated workflow.
+- Gumroad India INR payout is a qualified distribution rail only; no product/demand proven. Direct fee 10% + $0.50 plus processing; Discover 30%; $100 threshold and KYC/review apply.
+- B2B productized vertical SaaS / marketplace-distributed apps remain provisional first source family; no product selected, no build authorized.
+- P59-001 remains the single active task; P59-003 paused; P59-002 blocked. PCNE ₹0; authorized spend ₹0.
+- Next: complete source-family scorecard with unknowns explicit; canonical-repository asset re-audit; compare rights-cleared owned asset vs greenfield buyer problem; require two independent demand signals, 10–15 substitutes, WTP, India payout, positive fully-loaded unit economics, rights and self-serve gates.
