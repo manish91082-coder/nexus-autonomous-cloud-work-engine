@@ -47,6 +47,20 @@ test("parses authoritative core response headers with non-secret provenance", ()
   assert.equal("token" in result.provenance, false);
 });
 
+test("accepts a native Fetch Headers object with case-insensitive names", () => {
+  const headers = new Headers(baseHeaders());
+  const result = parseGitHubRateLimitHeaders({
+    headers,
+    credentialScope: "github-app-installation:42",
+    observedAtEpoch: 1794784800,
+    endpoint: "GET /repos/acme/demo",
+    method: "GET",
+    status: 200
+  });
+  assert.equal(result.bucket_id, "core");
+  assert.equal(result.observed_remaining_units, 4200);
+});
+
 test("keeps search, code_search, GraphQL and runner-registration resources distinct", () => {
   const resources = ["search", "code_search", "graphql", "actions_runner_registration"];
   const parsed = resources.map(resource => headerRecord({"x-ratelimit-resource": resource}));
