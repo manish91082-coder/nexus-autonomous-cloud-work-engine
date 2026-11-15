@@ -38,6 +38,10 @@ export default defineConfig({
               NEXUS_QUOTA_CALLER_KEYS: JSON.stringify({
                 primary: primaryTestSecret,
                 secondary: secondaryTestSecret
+              }),
+              NEXUS_QUOTA_CALLER_POLICIES: JSON.stringify({
+                primary: ["reserve", "settle", "markUncertain", "snapshot"],
+                secondary: ["reserve"]
               })
             },
             durableObjects: {
