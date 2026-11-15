@@ -3070,7 +3070,7 @@
           "Amazon KDP 2026 royalty terms"
         ],
         "critical_distinction": "Revenue engine vs distribution rail; same SaaS product across two marketplaces is not two separate product streams.",
-        "next": "Complete the weighted V5 source-family scorecard with evidence confidence and unknowns explicit. Do not fabricate numerical forecasts where candidate-level buyer counts, price, conversion, retention or cost data are absent. Then select the next greenfield B2B buyer problem for two-signal demand validation and 10–15 substitute audit. No product build until all hard gates pass.",
+        "next": "Research a new recurring B2B workflow problem in a marketplace ecosystem, excluding already rejected generic approval/audit, eBRC, agency-margin, recruitment, agri reconciliation, manufacturing job-work and generic AI reviewer hypotheses. Require two independent buyer signals, 10–15 substitute audit, price-bearing WTP, India payout, positive fully-loaded unit economics, rights and self-serve fulfilment. No build or spend.",
         "asset_audit_report": "research/PHASE_59_2_EXISTING_SOFTWARE_IP_ASSET_AUDIT_2026-11-14.md",
         "asset_audit_status": "COMPLETED_INITIAL_REPOSITORY_AUDIT; NO_EXISTING_ASSET_PASSES_FIRST_PRODUCT_GATE",
         "canonical_assets_audited": 8,
@@ -3220,7 +3220,60 @@
           "spend_inr": 0,
           "scope": "Canonical repository only; no other repository or mission included."
         },
-        "owned_vs_greenfield_decision": "None of the eight canonical built assets is release-ready; all lack verified buyer demand; rights/release gates remain. Freeze feature development on existing assets. Greenfield B2B/vertical SaaS/marketplace-distributed software remains provisional first source family, concrete buyer problem not yet selected."
+        "owned_vs_greenfield_decision": "None of the eight canonical built assets is release-ready; all lack verified buyer demand; rights/release gates remain. Freeze feature development on existing assets. Greenfield B2B/vertical SaaS/marketplace-distributed software remains provisional first source family, concrete buyer problem not yet selected.",
+        "phase59_30": {
+          "report": "research/PHASE_59_30_V5_WEIGHTED_SOURCE_FAMILY_SCORECARD_2026-11-15.md",
+          "portfolio_ranking_section": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md#18",
+          "scoring_method": "V5_WEIGHTED_EVIDENCE_FLOOR_UNKNOWN_CANDIDATE_DATA_ZERO",
+          "weights": {
+            "revenue_ceiling": 20,
+            "buyer_payment_evidence": 15,
+            "repeatability": 15,
+            "distribution": 12,
+            "time_to_first_pcne": 8,
+            "automation": 10,
+            "net_economics": 10,
+            "rights_platform_feasibility": 10
+          },
+          "evidence_floor_scores": {
+            "marketplace_apps": 38,
+            "b2b_vertical_saas": 33,
+            "digital_products": 32,
+            "stock_assets": 29,
+            "creator_ip_books_courses": 28,
+            "sponsorship_open_source": 27,
+            "affiliate_advertising": 26,
+            "ai_api_software": 23,
+            "games": 21,
+            "software_ip_licensing": 16,
+            "other_lawful_internet_native": "NOT_SCREENED"
+          },
+          "score_semantics": "Research-priority evidence floors, not forecasts or product scores; unknown candidate-level evidence is zero and hard gates override score.",
+          "atl_forge_economics": {
+            "eligible_forge_share_up_to_1m_lifetime": "100% gross revenue",
+            "forge_developer_share_after_threshold": "83% from 2026-10-01",
+            "connect_developer_share": "75%",
+            "remittance_threshold_usd": 500,
+            "payout_timing": "30-60 days after qualifying month",
+            "india_seller_payout_eligibility": "NOT_CONFIRMED"
+          },
+          "candidate_screens": {
+            "generic_jira_ai_agent_approval_audit": "NO_GO_CANDIDATE",
+            "direct_competitors": [
+              "Approval Flow: Required Sign-Offs for Jira",
+              "AgentGate"
+            ],
+            "direct_and_adjacent_substitutes_audited": 15,
+            "community_pain_signals": 2,
+            "buyer_wtp_verified": false
+          },
+          "portfolio_decision": "MARKETPLACE_DISTRIBUTED_B2B_SOFTWARE_VERTICAL_SAAS_PROVISIONAL_FIRST_SOURCE_FAMILY",
+          "concrete_product_selected": false,
+          "build_authorized": false,
+          "pcne_inr": 0,
+          "authorized_spend_inr": 0,
+          "next": "Research a new recurring B2B workflow problem in a marketplace ecosystem; require two independent buyer signals, 10-15 substitutes, price-bearing WTP, India payout, positive fully-loaded economics, rights and self-serve gates."
+        }
       },
       "dependency_note": "Safe handoff from Phase59.26 completed. Resume evidence-backed V5 portfolio-wide research now. Use public/official source research and supplied evidence; specialist workflow is deterministic/provider-neutral and must not be described as live LLM research. No product build until the P59-001 selection and all P59-002 release gates pass."
     },
