@@ -1,3 +1,40 @@
+# LIVE CONTINUITY — PHASE 59.37 INTERNAL CALLER AUTHENTICATION (15-Nov-2026)
+
+**Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
+**Canonical repo:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Current task:** P59-003 AI agentic swarm foundation, IN_PROGRESS  
+**Paused:** P59-001; **Blocked:** P59-002  
+**Spend:** ₹0; **verified PCNE:** ₹0; **live LLM inference:** disabled
+
+## Phase59.37 completed and merged
+
+Report: [Internal Caller Authentication and Replay Protection](research/PHASE_59_37_INTERNAL_CALLER_AUTH_AND_REPLAY_PROTECTION_2026-11-15.md)
+
+- PR [#15](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/15) merged at `d3ffd9b29e5b317451f3c6c9ee1ccbe493caafde`.
+- Exact Workers runtime CI [43707931301](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43707931301) passed **18/18 tests** on `d8ba113fe16ad97e65f49581885152c043e34a26`; 13/13 check runs passed.
+- Durable Object public surface is authenticated `fetch()` only; quota mutation and snapshot methods are private.
+- HMAC-SHA256 binds caller ID, timestamp, nonce, method, path and exact body hash. Clock skew is limited to 30 seconds; nonce replay protection uses a per-caller SQLite table with 120-second TTL.
+- Caller action policies: primary can reserve/settle/mark uncertain/snapshot; secondary can reserve/mark uncertain only. Reservation ownership is bound to authenticated caller ID.
+- Provider/credential/window identity is enforced on all actions. Host feature flag is fail-closed and remains OFF outside the local test harness.
+- Test-only dummy keys and local feature flag are used only in the isolated Workers runtime; no real secrets are committed.
+
+## Production boundary
+
+No hosted Cloudflare deployment, real provider telemetry, key rotation service, KMS integration, live inference or paid fallback. No production SLA or independent-host/multi-region proof. ₹0 spend remains the verified state.
+
+## Next exact sequence — Phase59.38
+
+1. Build read-only GitHub quota telemetry adapters for REST/core, Search, GraphQL and Actions buckets.
+2. Normalize observed limit, remaining, reset timestamp, resource identity and telemetry freshness with provenance.
+3. Build measured endpoint-to-bucket operation-cost maps; unknown cost must fail closed, not be guessed.
+4. Test stale, future, out-of-order telemetry and provider reset/window rollover.
+5. Add reservation expiry, uncertain-use reconciliation, audit export and restore drills.
+6. Only then integrate the authenticated quota client behind the disabled feature flag into read-only swarm workers.
+
+Keep zero-cost-first, no laptop dependency, no paid fallback, no external account activation, and all owner-only gates intact.
+
+---
+
 # LIVE CONTINUITY — PHASE 59.36 CROSS-WORKER DURABLE OBJECT VALIDATION (15-Nov-2026)
 
 **Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
