@@ -7,6 +7,7 @@
  */
 import { quotaLedgerObjectName } from "./quota-ledger-contract.mjs";
 import { parseGitHubRateLimitHeaders } from "./github-quota-telemetry.mjs";
+import { resolveGitHubOperation } from "./github-operation-registry.mjs";
 
 const encoder = new TextEncoder();
 
@@ -112,8 +113,12 @@ export async function executeQuotaGuardedGitHubRequest({
   if (url.protocol !== "https:" || url.hostname !== "api.github.com") {
     throw new TypeError("quota-guarded requests must target https://api.github.com");
   }
-  if (request.method === "GET" && url.pathname === "/rate_limit") {
-    throw new TypeError("periodic overview cannot be used as an admission operation");
+  const reviewed = await resolveGitHubOperation(request);
+  if (!reviewed.allowed) {
+    throw new TypeError(`GitHub operation NO-GO: ${reviewed.reason}`);
+  }
+  if (operation !== reviewed.operation) {
+    throw new TypeError("operation ID does not match the reviewed endpoint registry");
   }
 
   const stableRequestId = makeRequestId(requestId);
@@ -125,7 +130,8 @@ export async function executeQuotaGuardedGitHubRequest({
     controlPlaneProvider: "cloudflare",
     reservationId,
     workerId,
-    operation
+    operation: reviewed.operation,
+    requestFingerprint: reviewed.requestFingerprint
   };
   const rpcOptions = { nowEpoch, nonceFactory };
   const admission = await ledgerCall(env, "reserve", base, rpcOptions);
