@@ -3904,3 +3904,13 @@ Date: 2026-11-15
 - Report `research/PHASE_59_29_CANONICAL_EIGHT_ASSET_REAUDIT_2026-11-15.md`; artifact 14154258760.
 - Freeze existing product feature work. P59-001 remains active; P59-003 paused; P59-002 blocked. PCNE ₹0; spend ₹0.
 - Next: weighted V5 source-family scorecard with unknowns explicit, then greenfield B2B buyer-problem shortlist and two-signal/10–15-substitute validation. No build or spend before gates.
+
+
+## PHASE 59.30 UPDATE — V5 WEIGHTED SOURCE-FAMILY SCORECARD
+Date: 2026-11-15
+
+- Report `research/PHASE_59_30_V5_WEIGHTED_SOURCE_FAMILY_SCORECARD_2026-11-15.md`; V5 ranking section 18 updated.
+- Applied V5 weights 20/15/15/12/8/10/10/10. Evidence-floor scores: Marketplace apps 38; B2B vertical SaaS33; digital products32; stock29; creator IP/books28; sponsorship/open-source27; affiliate/advertising26; AI/API23; games21; software/IP licensing16; other models NOT SCREENED. Unknown candidate-level evidence scores zero. These are research-priority floors, not forecasts.
+- Generic Jira AI-agent approval/audit app NO-GO after 15 direct/adjacent substitutes. Community pain is not WTP. Atlassian Forge economics are attractive but India seller payout eligibility remains unconfirmed.
+- Marketplace-distributed B2B software / vertical SaaS remains provisional first source family; no concrete product selected; no build/spend. P59-001 active; P59-003 paused; P59-002 blocked; PCNE ₹0.
+- Next: discover a new recurring B2B workflow problem within a marketplace ecosystem, with two independent buyer signals, 10–15 substitute audit, price-bearing WTP, India payout, positive economics, rights and self-serve fulfilment.
