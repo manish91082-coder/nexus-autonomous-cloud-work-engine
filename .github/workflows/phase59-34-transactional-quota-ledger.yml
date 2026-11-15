@@ -5,6 +5,7 @@ on:
     branches: [master, phase59-34-transactional-quota-ledger]
     paths:
       - 'cloud/swarm/quota-ledger-do.mjs'
+      - 'cloud/swarm/quota-ledger-contract.mjs'
       - 'cloud/swarm/quota-ledger-do.test.mjs'
       - '.github/workflows/phase59-34-transactional-quota-ledger.yml'
   pull_request:
