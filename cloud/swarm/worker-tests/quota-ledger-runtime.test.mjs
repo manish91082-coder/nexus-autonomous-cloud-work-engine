@@ -966,9 +966,13 @@ describe("Phase 59.41 guarded GitHub request lifecycle", () => {
     // Wait for the real persisted lease to expire; no clock override or test backdoor.
     await new Promise(resolve => setTimeout(resolve, 30100));
 
+    // A retry with the same durable request key triggers the automatic
+    // expiry sweep before duplicate suppression, and must never re-send work.
+    const duplicate = await call(stub,"reserve",input);
+    expect(duplicate.status).toBe("DUPLICATE_RESERVATION");
     const sweep = await call(stub,"expireReservations",input);
     expect(sweep.status).toBe("EXPIRY_SWEEP_COMPLETE");
-    expect(sweep.expiredCount).toBe(1);
+    expect(sweep.expiredCount).toBe(0);
     const snapshot = await call(stub,"snapshot",input);
     expect(snapshot.reservations.find(x=>x.reservation_id===input.reservationId).status)
       .toBe("UNCERTAIN_BUDGET_RETAINED");
