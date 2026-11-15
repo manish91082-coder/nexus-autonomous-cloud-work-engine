@@ -9,13 +9,16 @@ import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 from scripts.federation_git_ref_store import (
     GitHubGitRefStore, LockBusy, StaleFence, LockStoreUnavailable,
 )
 from scripts.github_api_quota_guard import GitHubApiQuotaGuard
 
-ROOT = Path(__file__).resolve().parents[1]
 REPORT = ROOT / "phase59_25_cloud_soak_report.json"
 STATE_PATH = "federation/phase59-25-cloud-soak/state.json"
 EVENTS_DIR = "federation/phase59-25-cloud-soak/events"
