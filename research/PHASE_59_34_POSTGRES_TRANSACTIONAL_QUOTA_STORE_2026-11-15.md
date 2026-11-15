@@ -1,7 +1,7 @@
 # Phase 59.34 — Independent PostgreSQL Transactional Quota Store
 
 **Mission:** P10CR / P59-003 swarm foundation  
-**Implementation status:** PR branch; CI pending  
+**Implementation status:** PR #12 merged; optional reference adapter only  
 **Production feature flag:** OFF by default  
 **Provider inference:** disabled  
 **Spend:** ₹0
@@ -22,9 +22,9 @@ Phase 59.32 and 59.33 supplied deterministic quota policy contracts but no share
 - Telemetry refresh rebases the committed-since-observation counter to avoid double-subtracting usage already reflected in the fresh provider remaining count.
 - Explicit `P10CR_QUOTA_STORE_ENABLED=true` is required in addition to constructor opt-in. Default is disabled.
 
-## Verification target
+## Verified CI
 
-A PostgreSQL 16 service in GitHub Actions exercises independent database connections. The 32-client race expects exactly 20 reservations of 20 units to succeed against 400 admissible units and 12 to fail closed. Other tests cover multi-bucket atomicity, telemetry freshness, duplicate IDs, ownership, settlement, uncertain outcomes and disabled-by-default behavior.
+PR [#12](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/12) merged at `bb9a69b309d0fd9740640d26a19505087a28b348`. Exact tested head `3d1a6d618fcddc89e8b75606be6a7603b1523661` passed PostgreSQL 16 CI [43705546117](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43705546117). The run exercised independent database connections. The 32-client race expects exactly 20 reservations of 20 units to succeed against 400 admissible units and 12 to fail closed. Other tests cover multi-bucket atomicity, telemetry freshness, duplicate IDs, ownership, settlement, uncertain outcomes and disabled-by-default behavior.
 
 This is a same-database concurrent-client CI proof. It is **not** a proof of multi-region networking, provider deployment, high availability, backup/restore, failover or 7/30-day soak. Those remain later gates.
 
@@ -37,6 +37,6 @@ This is a same-database concurrent-client CI proof. It is **not** a proof of mul
 - No credentials or DSN are stored in the repository.
 - No live LLM inference or paid fallback is enabled.
 
-## Next gate
+## Final disposition
 
-Pass exact-head PostgreSQL CI, review SQL/transaction invariants, then create a deployment-neutral owner approval packet for a genuinely independent zero-cost-eligible PostgreSQL control-plane service. Do not provision or connect an external account, accept terms, enter billing, or enable the feature flag without owner approval and verified zero-billing conditions.
+This adapter is retained as an optional portable reference, not the selected runtime path. The selected P10CR path is the Cloudflare SQLite-backed Durable Object because it aligns with the previously approved cloud-native event/control-plane architecture. No PostgreSQL account/instance has been provisioned or connected, no DSN or secret is present, and its feature flag remains off. Do not provision or connect an external account, accept terms, enter billing, or enable this alternative without owner approval and verified zero-billing conditions.
