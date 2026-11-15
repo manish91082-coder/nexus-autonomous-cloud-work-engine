@@ -1,0 +1,52 @@
+name: Phase 59.34 PostgreSQL Transactional Quota Store
+
+on:
+  push:
+    branches: [master, phase59-34-transactional-quota-store]
+    paths:
+      - 'scripts/postgres_quota_store.py'
+      - 'scripts/multibucket_quota_contract.py'
+      - 'migrations/phase59_34_postgres_quota_store.sql'
+      - 'tests/test_postgres_quota_store.py'
+      - '.github/workflows/phase59-34-postgres-quota-store.yml'
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-34-postgres-quota-store
+  cancel-in-progress: false
+
+jobs:
+  postgres-transaction-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: quota_test
+          POSTGRES_PASSWORD: quota_test
+          POSTGRES_DB: quota_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U quota_test -d quota_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      P10CR_QUOTA_STORE_ENABLED: "true"
+      P10CR_TEST_DATABASE_URL: postgresql://quota_test:quota_test@localhost:5432/quota_test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install pinned PostgreSQL driver
+        run: python3 -m pip install --disable-pip-version-check 'psycopg[binary]==3.2.9'
+      - name: Compile quota adapter
+        run: python3 -m py_compile scripts/postgres_quota_store.py scripts/multibucket_quota_contract.py
+      - name: Run PostgreSQL transaction and concurrency tests
+        run: python3 -m unittest discover -s tests -p 'test_postgres_quota_store.py' -v
