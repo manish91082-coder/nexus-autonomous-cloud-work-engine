@@ -620,6 +620,74 @@ export class QuotaLedgerDO extends DurableObject {
     });
   }
 
+  #recordSecondaryLimit(input, callerId) {
+    if (input.provider !== "github") throw new QuotaLedgerError("secondary limit provider must be github");
+    nonEmpty(input.credentialScope, "credentialScope");
+    nonEmpty(input.windowId, "windowId");
+    nonEmpty(input.reservationId, "reservationId");
+    nonEmpty(input.workerId, "workerId");
+    if (![403, 429].includes(input.status)) throw new QuotaLedgerError("secondary limit status must be 403 or 429");
+    if (!["PRIMARY_LIMIT", "SECONDARY_LIMIT"].includes(input.kind)) throw new QuotaLedgerError("invalid rate-limit kind");
+    const now = Math.floor(Date.now() / 1000);
+    const retryAfter = input.retryAfterSeconds === undefined || input.retryAfterSeconds === null
+      ? null : integer(input.retryAfterSeconds, "retryAfterSeconds");
+    if (retryAfter !== null && retryAfter > 86400) throw new QuotaLedgerError("Retry-After exceeds 24-hour safety ceiling");
+    const resetAt = input.resetAtEpoch === undefined || input.resetAtEpoch === null
+      ? null : integer(input.resetAtEpoch, "resetAtEpoch");
+    if (resetAt !== null && (resetAt <= now || resetAt > now + 86400)) {
+      throw new QuotaLedgerError("rate-limit reset must be within the next 24 hours");
+    }
+    if (input.kind === "PRIMARY_LIMIT" && resetAt === null) {
+      throw new QuotaLedgerError("primary limit cooldown requires provider reset timestamp");
+    }
+    const sql = this.ctx.storage.sql;
+    return this.ctx.storage.transactionSync(() => {
+      const identity = sql.exec("SELECT * FROM quota_meta WHERE singleton=1").toArray()[0];
+      if (!identity || identity.provider !== input.provider
+        || identity.credential_scope !== input.credentialScope || identity.window_id !== input.windowId) {
+        throw new QuotaLedgerError("secondary limit credential/partition identity mismatch");
+      }
+      const reservation = sql.exec("SELECT * FROM quota_reservations WHERE reservation_id=?",
+        input.reservationId).toArray()[0];
+      if (!reservation || reservation.worker_id !== input.workerId
+        || reservation.caller_id !== callerId || reservation.status !== "RESERVED") {
+        throw new QuotaLedgerError("secondary limit reservation owner/state mismatch");
+      }
+      const prior = sql.exec("SELECT * FROM quota_secondary_control WHERE credential_scope=?",
+        input.credentialScope).toArray()[0];
+      let consecutive = prior?.consecutive_secondary_hits ?? 0;
+      let backoff = 0;
+      let proposed;
+      if (input.kind === "PRIMARY_LIMIT") {
+        proposed = resetAt;
+        if (retryAfter !== null) proposed = Math.max(proposed, now + retryAfter);
+        consecutive = 0;
+      } else {
+        consecutive = prior && now - prior.updated_at_epoch <= 3600
+          ? consecutive + 1 : 1;
+        backoff = secondaryBackoffSeconds(consecutive);
+        proposed = now + Math.max(input.minimumWaitSeconds ?? 60, retryAfter ?? 0, backoff);
+        if (resetAt !== null) proposed = Math.max(proposed, resetAt);
+      }
+      const cooldownUntil = Math.max(prior?.cooldown_until_epoch ?? 0, proposed);
+      const reason = typeof input.reason === "string" && input.reason.length <= 128
+        ? input.reason : input.kind;
+      sql.exec(`INSERT INTO quota_secondary_control
+        (credential_scope,provider,cooldown_until_epoch,consecutive_secondary_hits,
+         last_kind,last_status,last_reason,updated_at_epoch)
+        VALUES (?,?,?,?,?,?,?,?)
+        ON CONFLICT(credential_scope) DO UPDATE SET
+          provider=excluded.provider,
+          cooldown_until_epoch=MAX(quota_secondary_control.cooldown_until_epoch,excluded.cooldown_until_epoch),
+          consecutive_secondary_hits=excluded.consecutive_secondary_hits,
+          last_kind=excluded.last_kind,last_status=excluded.last_status,
+          last_reason=excluded.last_reason,updated_at_epoch=excluded.updated_at_epoch`,
+        input.credentialScope,input.provider,cooldownUntil,consecutive,
+        input.kind,input.status,reason,now);
+      return {status:"SECONDARY_COOLDOWN_RECORDED",kind:input.kind,
+        cooldownUntilEpoch:cooldownUntil,consecutiveSecondaryHits:consecutive,backoffSeconds:backoff};
+    });
+  }
   #recordTelemetry(input, callerId) {
     const telemetry = input.telemetry;
     if (!telemetry || typeof telemetry !== "object" || Array.isArray(telemetry)) {
