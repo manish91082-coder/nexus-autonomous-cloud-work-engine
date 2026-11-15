@@ -1,0 +1,29 @@
+name: Phase 59.32 Quota Budget Model Tests
+
+on:
+  push:
+    branches: [master, phase59-32-quota-budget-model]
+    paths:
+      - 'scripts/quota_budget_model.py'
+      - 'tests/test_quota_budget_model.py'
+      - '.github/workflows/phase59-32-quota-budget-model.yml'
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-32-quota-budget-model
+  cancel-in-progress: false
+
+jobs:
+  quota-budget-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Run quota budget model tests
+        run: python3 -m unittest discover -s tests -p 'test_quota_budget_model.py' -v
