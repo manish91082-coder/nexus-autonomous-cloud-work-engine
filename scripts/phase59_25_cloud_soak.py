@@ -282,6 +282,7 @@ def main():
         "isolated_state_path": STATE_PATH,
         "worker_count": WORKER_COUNT,
         "cas_retry_policy": "bounded exponential backoff with per-store jitter; max 5 attempts per claim",
+        "contention_recovery_policy": "serially retry CASConflict losers only; HTTP, quota, permission and transport failures remain fail-closed",
         "unique_durable_claims": len(workers),
         "contention_recovery_claims": sum(1 for x in workers if x["status"] == "CLAIMED_AFTER_CONTENTION_RECOVERY"),
         "unique_fencing_tokens": len({x["fencing_token"] for x in workers}),
