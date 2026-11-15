@@ -233,3 +233,16 @@ See [Phase 59.29 exact-head audit report](research/PHASE_59_29_CANONICAL_EIGHT_A
 - The five non-built registry candidates remain research-only/NO-GO as previously recorded; they are not products and were not included in the eight-asset test count.
 - **Owned-vs-greenfield decision:** no existing asset passes demand, substitute-gap, WTP, India payout, positive fully-loaded economics, rights and self-serve gates. Freeze feature development on existing assets. Greenfield B2B/vertical SaaS/marketplace app remains the provisional first source family, with no concrete buyer problem selected.
 - Next: complete the weighted V5 source-family scorecard, showing unknowns explicitly; then shortlist candidate buyer problems. No build, listing, account activation or spend.
+
+
+## 18. Phase 59.30 — weighted evidence-floor scorecard and Jira agent-approval screen (15-Nov-2026)
+
+See [Phase 59.30 scorecard](research/PHASE_59_30_V5_WEIGHTED_SOURCE_FAMILY_SCORECARD_2026-11-15.md).
+
+- V5 weights applied: revenue ceiling 20; buyer/payment evidence 15; repeatability 15; distribution 12; time to first PCNE 8; automation 10; net economics 10; rights/platform feasibility 10.
+- Evidence-floor scores (unknown candidate-level evidence = 0): Marketplace apps 38/100; recurring B2B/vertical SaaS 33; digital products 32; stock assets 29; creator IP/books 28; sponsorship/open-source 27; affiliate/advertising 26; AI/API 23; games 21; software/IP licensing 16; other lawful Internet-native models 0 (not screened).
+- These are source-family research-priority floors, not forecasts or product scores. A zero means not established in current evidence, not zero market potential. No score overrides hard gates.
+- Atlassian Forge economics revalidated: eligible Forge apps receive 100% gross revenue share up to $1m lifetime, 83% developer share after threshold from 1-Oct-2026; $500 profit remittance threshold and 30–60-day payout; free usage allowance per app with paid overage and payment method requirements. India seller payout eligibility not confirmed.
+- Generic Jira AI-agent approval/audit app: NO-GO candidate. Direct Marketplace apps Approval Flow and AgentGate provide sign-off, agent gating, audit receipts and Forge-native controls; GitHub ships native agentic workflows/enterprise AI controls; 15 direct/adjacent alternatives audited. Two Reddit threads indicate qualitative pain but no buyer WTP.
+- **Portfolio decision unchanged:** Marketplace-distributed B2B software / vertical SaaS remains provisional first source family; Gumroad digital product rail remains secondary; no concrete product selected; no build or spend. P59-001 IN_PROGRESS; P59-003 PAUSED; P59-002 BLOCKED; PCNE ₹0.
+- Next: research a new recurring B2B workflow problem in a marketplace ecosystem, excluding already rejected generic approval/audit, eBRC, agency-margin, recruitment, agri reconciliation, manufacturing job-work and generic AI reviewer hypotheses. Require two independent buyer signals, 10–15 substitute audit, price-bearing WTP, India payout, positive fully-loaded economics, rights and self-serve fulfilment.
