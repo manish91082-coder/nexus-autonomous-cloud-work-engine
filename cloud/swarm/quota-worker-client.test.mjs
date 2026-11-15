@@ -50,7 +50,7 @@ test("unknown or unreviewed endpoint cost fails closed before reserve", async ()
 });
 
 test("registry rejects endpoint/query drift", async () => {
-  assert.throws(() => resolveReviewedOperation(registry, "readItems", "GET",
+  await assert.rejects(() => resolveReviewedOperation(registry, "readItems", "GET",
     "https://api.example.test/v1/items?different=1"), /NO_GO_OPERATION_REGISTRY_MISMATCH/);
 });
 
