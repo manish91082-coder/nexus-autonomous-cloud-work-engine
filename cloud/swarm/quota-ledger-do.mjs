@@ -7,7 +7,7 @@
 import { DurableObject } from "cloudflare:workers";
 import {
   QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest,
-  requireQuotaStoreEnabled, nonEmpty, integer, availableUnits
+  requireQuotaStoreEnabled, nonEmpty, integer
 } from "./quota-ledger-contract.mjs";
 import { reconcileGitHubQuotaTelemetry } from "./github-quota-telemetry.mjs";
 export { QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest, requireQuotaStoreEnabled };
@@ -40,20 +40,20 @@ export class QuotaLedgerDO extends DurableObject {
       credential_scope TEXT NOT NULL,
       window_id TEXT NOT NULL
     )`);
-    sql.exec(`CREATE TABLE IF NOT EXISTS quota_buckets (
-      bucket_id TEXT PRIMARY KEY,
+    sql.exec(`CREATE TABLE IF NOT EXISTS quota_bucket_counters (
+      bucket_id TEXT NOT NULL,
+      provider_window_id TEXT NOT NULL,
       provider TEXT NOT NULL,
       credential_scope TEXT NOT NULL,
-      window_id TEXT NOT NULL,
-      limit_units INTEGER NOT NULL,
-      observed_remaining_units INTEGER NOT NULL,
-      observed_at_epoch INTEGER NOT NULL,
+      partition_window_id TEXT NOT NULL,
       safety_reserve_units INTEGER NOT NULL,
       recovery_reserve_units INTEGER NOT NULL,
       reserved_units INTEGER NOT NULL DEFAULT 0,
       committed_units INTEGER NOT NULL DEFAULT 0,
       committed_since_observation_units INTEGER NOT NULL DEFAULT 0,
-      uncertain_units INTEGER NOT NULL DEFAULT 0
+      uncertain_units INTEGER NOT NULL DEFAULT 0,
+      last_observed_at_epoch INTEGER NOT NULL,
+      PRIMARY KEY (bucket_id, provider_window_id)
     )`);
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_reservations (
       reservation_id TEXT PRIMARY KEY,
@@ -91,6 +91,7 @@ export class QuotaLedgerDO extends DurableObject {
     )`);
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_telemetry_observations (
       observation_id TEXT PRIMARY KEY,
+      reservation_id TEXT,
       bucket_id TEXT NOT NULL,
       provider TEXT NOT NULL,
       credential_scope TEXT NOT NULL,
@@ -167,7 +168,7 @@ export class QuotaLedgerDO extends DurableObject {
           result = this.#markUncertain(input, auth.callerId);
           break;
         case "recordTelemetry":
-          result = this.#recordTelemetry(input);
+          result = this.#recordTelemetry(input, auth.callerId);
           break;
         case "snapshot":
           result = this.#snapshot();
@@ -270,89 +271,155 @@ export class QuotaLedgerDO extends DurableObject {
 
   #reserve(input, callerId) {
     validateQuotaRequest(input);
-    const sql = this.ctx.storage.sql;
+    let operationCosts;
+    let bucketPolicies;
     try {
-      const prior = sql.exec(
-        "SELECT reservation_id FROM quota_reservations WHERE reservation_id = ?",
-        input.reservationId
-      ).toArray()[0];
-      if (prior) return { reservationId: input.reservationId, status: "DUPLICATE_RESERVATION" };
+      operationCosts = JSON.parse(this.env?.NEXUS_QUOTA_OPERATION_COSTS || "{}");
+      bucketPolicies = JSON.parse(this.env?.NEXUS_QUOTA_BUCKET_POLICIES || "{}");
+    } catch {
+      throw new QuotaLedgerError("server-side quota policy registry invalid");
+    }
+    const costs = operationCosts?.[input.operation];
+    if (!costs || typeof costs !== "object" || Array.isArray(costs)
+      || Object.keys(costs).length === 0) {
+      throw new QuotaLedgerError("operation cost is not verified; WAITING_FOR_QUOTA");
+    }
+    const entries = Object.entries(costs);
+    for (const [bucketId, units] of entries) {
+      if (!/^[a-z][a-z0-9_]{0,63}$/.test(bucketId)) {
+        throw new QuotaLedgerError("invalid operation bucket id");
+      }
+      integer(units, `operationCosts.${input.operation}.${bucketId}`, 1);
+      const policy = bucketPolicies[bucketId];
+      if (!policy || typeof policy !== "object" || Array.isArray(policy)) {
+        throw new QuotaLedgerError(`local bucket policy missing: ${bucketId}`);
+      }
+      integer(policy.safetyReserveUnits, `policy.${bucketId}.safetyReserveUnits`);
+      integer(policy.recoveryReserveUnits, `policy.${bucketId}.recoveryReserveUnits`);
+      integer(policy.maxTelemetryAgeSeconds, `policy.${bucketId}.maxTelemetryAgeSeconds`, 1);
+      if (policy.maxTelemetryAgeSeconds > 300) {
+        throw new QuotaLedgerError("local telemetry age policy exceeds hard 300-second ceiling");
+      }
+    }
 
-      this.ctx.storage.transactionSync(() => {
+    const sql = this.ctx.storage.sql;
+    const now = Math.floor(Date.now() / 1000);
+    try {
+      return this.ctx.storage.transactionSync(() => {
+        const prior = sql.exec(
+          "SELECT reservation_id FROM quota_reservations WHERE reservation_id = ?",
+          input.reservationId
+        ).toArray()[0];
+        if (prior) return { reservationId: input.reservationId, status: "DUPLICATE_RESERVATION" };
+
         const identity = sql.exec("SELECT * FROM quota_meta WHERE singleton=1").toArray()[0];
-        if (identity && (identity.provider !== input.provider
+        if (!identity) {
+          return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
+            reason:"authoritative telemetry not initialized"};
+        }
+        if (identity.provider !== input.provider
           || identity.credential_scope !== input.credentialScope
-          || identity.window_id !== input.windowId)) {
+          || identity.window_id !== input.windowId) {
           throw new QuotaLedgerError("Durable Object identity mismatch");
         }
-        if (!identity) {
-          sql.exec("INSERT INTO quota_meta(singleton,provider,credential_scope,window_id) VALUES(1,?,?,?)",
-            input.provider,input.credentialScope,input.windowId);
-        }
 
-        for (const b of input.buckets) {
-          const existing = sql.exec("SELECT * FROM quota_buckets WHERE bucket_id = ?", b.bucketId).toArray()[0];
+        const plans = [];
+        for (const [bucketId, units] of entries) {
+          const telemetry = sql.exec(
+            "SELECT * FROM quota_telemetry_current WHERE bucket_id=?", bucketId
+          ).toArray()[0];
+          if (!telemetry) {
+            return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
+              reason:"authoritative bucket telemetry missing",bucketId};
+          }
+          if (telemetry.provider !== input.provider
+            || telemetry.credential_scope !== input.credentialScope
+            || telemetry.partition_window_id !== input.windowId) {
+            throw new QuotaLedgerError("telemetry credential/partition identity mismatch");
+          }
+          const policy = bucketPolicies[bucketId];
+          const age = now - telemetry.observed_at_epoch;
+          if (age < -5 || age > policy.maxTelemetryAgeSeconds) {
+            return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
+              reason:age < -5 ? "future telemetry rejected" : "stored telemetry is stale",bucketId};
+          }
+          if (telemetry.reset_at_epoch <= now) {
+            return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
+              reason:"provider reset window expired; awaiting fresh telemetry",bucketId};
+          }
+          if (telemetry.authority_rank < 80) {
+            return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
+              reason:"periodic overview is insufficient authority for admission",bucketId};
+          }
+          const providerWindowId = telemetry.window_id;
+          const existing = sql.exec(
+            "SELECT * FROM quota_bucket_counters WHERE bucket_id=? AND provider_window_id=?",
+            bucketId, providerWindowId
+          ).toArray()[0];
           if (existing && (existing.provider !== input.provider
             || existing.credential_scope !== input.credentialScope
-            || existing.window_id !== input.windowId)) {
-            throw new QuotaLedgerError("bucket identity/window collision");
+            || existing.partition_window_id !== input.windowId)) {
+            throw new QuotaLedgerError("bucket counter identity collision");
           }
-          if (!existing) {
-            sql.exec(`INSERT INTO quota_buckets
-              (bucket_id,provider,credential_scope,window_id,limit_units,
-               observed_remaining_units,observed_at_epoch,safety_reserve_units,
-               recovery_reserve_units,reserved_units,committed_units,
-               committed_since_observation_units,uncertain_units)
-              VALUES (?,?,?,?,?,?,?,?,?,0,0,0,0)`,
-              b.bucketId,input.provider,input.credentialScope,input.windowId,b.limitUnits,
-              b.observedRemainingUnits,b.observedAtEpoch,b.safetyReserveUnits,b.recoveryReserveUnits);
-          } else if (b.observedAtEpoch > existing.observed_at_epoch) {
-            sql.exec(`UPDATE quota_buckets SET limit_units=?,observed_remaining_units=?,
-              observed_at_epoch=?,safety_reserve_units=?,recovery_reserve_units=?,
-              committed_since_observation_units=0 WHERE bucket_id=?`,
-              b.limitUnits,b.observedRemainingUnits,b.observedAtEpoch,b.safetyReserveUnits,
-              b.recoveryReserveUnits,b.bucketId);
-          } else if (b.observedAtEpoch === existing.observed_at_epoch) {
-            sql.exec(`UPDATE quota_buckets SET observed_remaining_units=MIN(observed_remaining_units,?),
-              safety_reserve_units=MAX(safety_reserve_units,?),
-              recovery_reserve_units=MAX(recovery_reserve_units,?) WHERE bucket_id=?`,
-              b.observedRemainingUnits,b.safetyReserveUnits,b.recoveryReserveUnits,b.bucketId);
+          if (existing && telemetry.observed_at_epoch < existing.last_observed_at_epoch) {
+            return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
+              reason:"telemetry observation older than accounting checkpoint",bucketId};
           }
+          const committedSince = existing
+            ? (telemetry.observed_at_epoch > existing.last_observed_at_epoch
+              ? 0 : existing.committed_since_observation_units)
+            : 0;
+          const safety = Math.max(existing?.safety_reserve_units ?? 0, policy.safetyReserveUnits);
+          const recovery = Math.max(existing?.recovery_reserve_units ?? 0, policy.recoveryReserveUnits);
+          const reserved = existing?.reserved_units ?? 0;
+          const uncertain = existing?.uncertain_units ?? 0;
+          const available = telemetry.observed_remaining_units
+            - safety - recovery - reserved - committedSince - uncertain;
+          if (units > available) {
+            return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
+              reason:"provider capacity or protected local reserve exhausted",bucketId};
+          }
+          plans.push({
+            bucketId, units, providerWindowId, telemetryObservedAt:telemetry.observed_at_epoch,
+            safety, recovery, existing, committedSince, reserved, uncertain
+          });
         }
-      });
 
-      return this.ctx.storage.transactionSync(() => {
-        for (const [bucketId, units] of Object.entries(input.costs)) {
-          const row = sql.exec("SELECT * FROM quota_buckets WHERE bucket_id=?", bucketId).toArray()[0];
-          if (!row) throw new QuotaLedgerError("quota bucket missing after telemetry refresh");
-          const b = input.buckets.find(x => x.bucketId === bucketId);
-          if (b.nowEpoch - row.observed_at_epoch > b.maxTelemetryAgeSeconds) {
-            return { reservationId: input.reservationId, status: "WAITING_FOR_QUOTA",
-              reason: "stored telemetry is stale", bucketId };
+        const reservedByBucket = {};
+        for (const plan of plans) {
+          if (!plan.existing) {
+            sql.exec(`INSERT INTO quota_bucket_counters
+              (bucket_id,provider_window_id,provider,credential_scope,partition_window_id,
+               safety_reserve_units,recovery_reserve_units,reserved_units,committed_units,
+               committed_since_observation_units,uncertain_units,last_observed_at_epoch)
+              VALUES (?,?,?,?,?,?,?, ?,0,0,0,?)`,
+              plan.bucketId,plan.providerWindowId,input.provider,input.credentialScope,
+              input.windowId,plan.safety,plan.recovery,plan.units,plan.telemetryObservedAt);
+          } else {
+            sql.exec(`UPDATE quota_bucket_counters SET
+              safety_reserve_units=?,recovery_reserve_units=?,reserved_units=reserved_units+?,
+              committed_since_observation_units=?,last_observed_at_epoch=?
+              WHERE bucket_id=? AND provider_window_id=?`,
+              plan.safety,plan.recovery,plan.units,plan.committedSince,
+              plan.telemetryObservedAt,plan.bucketId,plan.providerWindowId);
           }
-          const remaining = availableUnits(
-            { observedRemainingUnits: row.observed_remaining_units,
-              safetyReserveUnits: row.safety_reserve_units,
-              recoveryReserveUnits: row.recovery_reserve_units },
-            { reservedUnits: row.reserved_units,
-              committedSinceObservationUnits: row.committed_since_observation_units,
-              uncertainUnits: row.uncertain_units }
-          );
-          if (units > remaining) {
-            return { reservationId: input.reservationId, status: "WAITING_FOR_QUOTA",
-              reason: "bucket capacity or protected reserve exhausted", bucketId };
-          }
-        }
-        for (const [bucketId, units] of Object.entries(input.costs)) {
-          sql.exec("UPDATE quota_buckets SET reserved_units=reserved_units+? WHERE bucket_id=?",
-            units,bucketId);
+          reservedByBucket[plan.bucketId] = {
+            units:plan.units,
+            providerWindowId:plan.providerWindowId,
+            telemetryObservedAt:plan.telemetryObservedAt
+          };
         }
         sql.exec(`INSERT INTO quota_reservations
           (reservation_id,worker_id,caller_id,operation,reserved_by_bucket_json,status,created_at_epoch)
           VALUES (?,?,?,?,?, 'RESERVED', ?)`,
-          input.reservationId,input.workerId,callerId,input.operation,JSON.stringify(input.costs),
-          Math.min(...input.buckets.map(b=>b.nowEpoch)));
-        return { reservationId: input.reservationId, status: "RESERVED", reservedByBucket: input.costs };
+          input.reservationId,input.workerId,callerId,input.operation,
+          JSON.stringify(reservedByBucket),now);
+        return {
+          reservationId:input.reservationId,
+          status:"RESERVED",
+          reservedByBucket:Object.fromEntries(plans.map(p=>[p.bucketId,p.units])),
+          providerWindows:Object.fromEntries(plans.map(p=>[p.bucketId,p.providerWindowId]))
+        };
       });
     } catch (error) {
       return { status: "REJECTED", error: {
@@ -378,19 +445,46 @@ export class QuotaLedgerDO extends DurableObject {
       if (Object.keys(reserved).sort().join("|") !== Object.keys(input.actualByBucket).sort().join("|")) {
         throw new QuotaLedgerError("settlement must report every reserved bucket");
       }
-      for (const [bucketId, units] of Object.entries(input.actualByBucket)) {
-        integer(units, `actual.${bucketId}`);
-        if (units > reserved[bucketId]) throw new QuotaLedgerExhausted(`${bucketId} exceeded reservation`);
+      const updates = [];
+      for (const [bucketId, actualUnits] of Object.entries(input.actualByBucket)) {
+        integer(actualUnits, `actual.${bucketId}`);
+        const reservation = reserved[bucketId];
+        if (!reservation || typeof reservation !== "object") {
+          throw new QuotaLedgerError("reservation window envelope malformed");
+        }
+        if (actualUnits > reservation.units) {
+          throw new QuotaLedgerExhausted(`${bucketId} exceeded reservation`);
+        }
+        const counter = sql.exec(
+          "SELECT * FROM quota_bucket_counters WHERE bucket_id=? AND provider_window_id=?",
+          bucketId,reservation.providerWindowId
+        ).toArray()[0];
+        if (!counter || counter.reserved_units < reservation.units) {
+          throw new QuotaLedgerError("reserved bucket-window counter missing or inconsistent");
+        }
+        const linkedObservation = sql.exec(`SELECT observation_id
+          FROM quota_telemetry_observations
+          WHERE reservation_id=? AND bucket_id=? AND window_id=? AND authority_rank>=80
+          LIMIT 1`,
+          input.reservationId,bucketId,reservation.providerWindowId
+        ).toArray()[0];
+        updates.push({
+          bucketId,actualUnits,reservation,
+          committedSinceDelta:linkedObservation ? 0 : actualUnits
+        });
       }
-      for (const [bucketId, units] of Object.entries(input.actualByBucket)) {
-        sql.exec(`UPDATE quota_buckets SET reserved_units=reserved_units-?,
+      for (const update of updates) {
+        sql.exec(`UPDATE quota_bucket_counters SET
+          reserved_units=reserved_units-?,
           committed_units=committed_units+?,
           committed_since_observation_units=committed_since_observation_units+?
-          WHERE bucket_id=?`,reserved[bucketId],units,units,bucketId);
+          WHERE bucket_id=? AND provider_window_id=?`,
+          update.reservation.units,update.actualUnits,update.committedSinceDelta,
+          update.bucketId,update.reservation.providerWindowId);
       }
       sql.exec(`UPDATE quota_reservations SET actual_by_bucket_json=?,status='SETTLED',
         settled_at_epoch=? WHERE reservation_id=?`,
-        JSON.stringify(input.actualByBucket),integer(input.nowEpoch,"nowEpoch"),input.reservationId);
+        JSON.stringify(input.actualByBucket),Math.floor(Date.now()/1000),input.reservationId);
       return {reservationId:input.reservationId,status:"SETTLED",actualByBucket:input.actualByBucket};
     });
   }
@@ -406,9 +500,23 @@ export class QuotaLedgerDO extends DurableObject {
         throw new QuotaLedgerError("reservation owner/state mismatch");
       }
       const reserved = JSON.parse(rec.reserved_by_bucket_json);
-      for (const [bucketId, units] of Object.entries(reserved)) {
-        sql.exec(`UPDATE quota_buckets SET reserved_units=reserved_units-?,
-          uncertain_units=uncertain_units+? WHERE bucket_id=?`,units,units,bucketId);
+      for (const [bucketId, reservation] of Object.entries(reserved)) {
+        if (!reservation || typeof reservation !== "object") {
+          throw new QuotaLedgerError("reservation window envelope malformed");
+        }
+        const counter = sql.exec(
+          "SELECT * FROM quota_bucket_counters WHERE bucket_id=? AND provider_window_id=?",
+          bucketId,reservation.providerWindowId
+        ).toArray()[0];
+        if (!counter || counter.reserved_units < reservation.units) {
+          throw new QuotaLedgerError("reserved bucket-window counter missing or inconsistent");
+        }
+      }
+      for (const [bucketId, reservation] of Object.entries(reserved)) {
+        sql.exec(`UPDATE quota_bucket_counters SET
+          reserved_units=reserved_units-?,uncertain_units=uncertain_units+?
+          WHERE bucket_id=? AND provider_window_id=?`,
+          reservation.units,reservation.units,bucketId,reservation.providerWindowId);
       }
       sql.exec("UPDATE quota_reservations SET status='UNCERTAIN_BUDGET_RETAINED' WHERE reservation_id=?",
         input.reservationId);
@@ -416,7 +524,7 @@ export class QuotaLedgerDO extends DurableObject {
     });
   }
 
-  #recordTelemetry(input) {
+  #recordTelemetry(input, callerId) {
     const telemetry = input.telemetry;
     if (!telemetry || typeof telemetry !== "object" || Array.isArray(telemetry)) {
       throw new QuotaLedgerError("telemetry record required");
@@ -485,6 +593,14 @@ export class QuotaLedgerDO extends DurableObject {
     }
     const provenanceJson = JSON.stringify(provenance);
     if (provenanceJson.length > 2048) throw new QuotaLedgerError("telemetry provenance too large");
+    const reservationId = input.reservationId === undefined || input.reservationId === null
+      ? null : nonEmpty(input.reservationId, "reservationId");
+    if (callerId !== "primary" && !reservationId) {
+      throw new QuotaLedgerError("secondary telemetry must be linked to its own reservation");
+    }
+    if (callerId !== "primary" && expectedRank < 80) {
+      throw new QuotaLedgerError("secondary caller may submit only response-linked telemetry");
+    }
 
     const incoming = {
       provider: telemetry.provider,
@@ -513,6 +629,21 @@ export class QuotaLedgerDO extends DurableObject {
       if (!identity) {
         sql.exec("INSERT INTO quota_meta(singleton,provider,credential_scope,window_id) VALUES(1,?,?,?)",
           input.provider, input.credentialScope, input.windowId);
+      }
+
+      if (reservationId) {
+        const reservationRow = sql.exec(
+          "SELECT * FROM quota_reservations WHERE reservation_id=?", reservationId
+        ).toArray()[0];
+        if (!reservationRow || reservationRow.caller_id !== callerId
+          || reservationRow.status !== "RESERVED") {
+          throw new QuotaLedgerError("telemetry reservation owner/state mismatch");
+        }
+        const reservedByBucket = JSON.parse(reservationRow.reserved_by_bucket_json);
+        const reservedBucket = reservedByBucket[incoming.bucket_id];
+        if (!reservedBucket || reservedBucket.providerWindowId !== incoming.window_id) {
+          throw new QuotaLedgerError("telemetry does not match reserved provider window");
+        }
       }
 
       const currentRow = sql.exec(
@@ -544,11 +675,11 @@ export class QuotaLedgerDO extends DurableObject {
         incoming.freshness, provenanceJson
       ];
       sql.exec(`INSERT INTO quota_telemetry_observations
-        (observation_id,bucket_id,provider,credential_scope,partition_window_id,window_id,
+        (observation_id,reservation_id,bucket_id,provider,credential_scope,partition_window_id,window_id,
          limit_units,observed_remaining_units,used_units,reset_at_epoch,observed_at_epoch,
          telemetry_source,authority_rank,is_authoritative,freshness,provenance_json)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-        observationId, ...values);
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        observationId, reservationId, ...values);
 
       const accepted = reconciled.decision.startsWith("ACCEPT")
         || reconciled.decision === "SAME_SECOND_CONSERVATIVE_MIN";
@@ -574,6 +705,16 @@ export class QuotaLedgerDO extends DurableObject {
           row.limit_units,row.observed_remaining_units,row.used_units,row.reset_at_epoch,
           row.observed_at_epoch,row.telemetry_source,row.authority_rank,
           row.is_authoritative ? 1 : 0,row.freshness,rowProvenance);
+        const counter = sql.exec(
+          "SELECT * FROM quota_bucket_counters WHERE bucket_id=? AND provider_window_id=?",
+          row.bucket_id,row.window_id
+        ).toArray()[0];
+        if (counter && row.observed_at_epoch > counter.last_observed_at_epoch) {
+          sql.exec(`UPDATE quota_bucket_counters
+            SET committed_since_observation_units=0,last_observed_at_epoch=?
+            WHERE bucket_id=? AND provider_window_id=?`,
+            row.observed_at_epoch,row.bucket_id,row.window_id);
+        }
       }
       return {
         status: "RECORDED",
@@ -588,7 +729,7 @@ export class QuotaLedgerDO extends DurableObject {
     const sql = this.ctx.storage.sql;
     return {
       identity: sql.exec("SELECT * FROM quota_meta WHERE singleton=1").toArray()[0] ?? null,
-      buckets: sql.exec("SELECT * FROM quota_buckets ORDER BY bucket_id").toArray(),
+      buckets: sql.exec("SELECT * FROM quota_bucket_counters ORDER BY bucket_id,provider_window_id").toArray(),
       reservations: sql.exec("SELECT * FROM quota_reservations ORDER BY created_at_epoch").toArray(),
       telemetryCurrent: sql.exec("SELECT * FROM quota_telemetry_current ORDER BY bucket_id").toArray(),
       telemetryObservations: sql.exec("SELECT * FROM quota_telemetry_observations ORDER BY observed_at_epoch").toArray()

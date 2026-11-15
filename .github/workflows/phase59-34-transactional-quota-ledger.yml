@@ -2,7 +2,7 @@ name: Phase 59.34 Transactional Quota Ledger Adapter
 
 on:
   push:
-    branches: [master, phase59-34-transactional-quota-ledger, phase59-37-internal-caller-auth, phase59-39-transactional-telemetry-ingestion]
+    branches: [master, phase59-34-transactional-quota-ledger, phase59-37-internal-caller-auth, phase59-39-transactional-telemetry-ingestion, phase59-40-telemetry-driven-admission]
     paths:
       - 'cloud/swarm/quota-ledger-do.mjs'
       - 'cloud/swarm/quota-ledger-contract.mjs'
