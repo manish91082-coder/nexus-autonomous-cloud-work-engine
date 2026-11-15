@@ -7,7 +7,11 @@ import {
   parseGitHubGraphqlRateLimit
 } from "../github-quota-telemetry.mjs";
 import { createSignedRequest, signedCall } from "./quota-auth-test-helper.mjs";
-import { executeQuotaGuardedGitHubRequest } from "../quota-ledger-client.mjs";
+import {
+  executeQuotaGuardedGitHubRequest,
+  renewQuotaReservation,
+  reconcileUncertainQuotaReservation
+} from "../quota-ledger-client.mjs";
 import {
   classifyGitHubRateLimitResponse,
   secondaryBackoffSeconds
@@ -1274,8 +1278,10 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
     const stub = stubFor(input);
     await seedBucket(stub,input,"core",100);
     expect((await call(stub,"reserve",input)).status).toBe("RESERVED");
-    const first = await call(stub,"renewReservation",{
-      ...input,heartbeatId:"heartbeat-1",expectedLeaseVersion:0,extensionSeconds:120
+    const first = await renewQuotaReservation({
+      env,credentialScope:input.credentialScope,reservationId:input.reservationId,
+      workerId:input.workerId,heartbeatId:"heartbeat-1",expectedLeaseVersion:0,
+      extensionSeconds:120
     });
     expect(first.status).toBe("LEASE_RENEWED");
     expect(first.leaseVersion).toBe(1);
@@ -1322,7 +1328,10 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
       ...input,reservationId:input.reservationId,telemetry
     })).status).toBe("RECORDED");
     expect((await call(stub,"markUncertain",input)).status).toBe("UNCERTAIN_BUDGET_RETAINED");
-    const reconciled = await call(stub,"reconcileUncertain",input);
+    const reconciled = await reconcileUncertainQuotaReservation({
+      env,credentialScope:input.credentialScope,reservationId:input.reservationId,
+      workerId:input.workerId
+    });
     expect(reconciled.status).toBe("RECONCILED_TELEMETRY_LINKED");
     expect(reconciled.reconciledBuckets).toEqual(["core"]);
     expect(reconciled.remainingUncertainBuckets).toEqual([]);
@@ -1331,6 +1340,30 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
     expect(snapshot.buckets[0].committed_units).toBe(10);
     expect(snapshot.reconciliationAudit).toHaveLength(1);
     expect(snapshot.reservations[0].status).toBe("RECONCILED_TELEMETRY_LINKED");
+  });
+
+  it("lets the primary reconciler resolve a secondary-owned reservation using linked response evidence", async () => {
+    const input = identity("secondary-owned-reconcile","core10");
+    const stub = stubFor(input);
+    const seeded = await seedBucket(stub,input,"core",100);
+    const secondary = {callerId:"secondary",secret:"secondary-test-secret-0123456789abcdef"};
+    expect((await call(stub,"reserve",input,secondary)).status).toBe("RESERVED");
+    const telemetry = parseGitHubRateLimitHeaders({
+      headers:new Headers({
+        "x-ratelimit-limit":"100","x-ratelimit-remaining":"90","x-ratelimit-used":"10",
+        "x-ratelimit-reset":String(seeded.reset_at_epoch),"x-ratelimit-resource":"core"
+      }),
+      credentialScope:input.credentialScope,observedAtEpoch:Math.floor(Date.now()/1000),
+      endpoint:"GET /repos/acme/demo",method:"GET",status:200
+    });
+    expect((await call(stub,"recordTelemetry",{
+      ...input,reservationId:input.reservationId,telemetry
+    },secondary)).status).toBe("RECORDED");
+    expect((await call(stub,"markUncertain",input,secondary)).status)
+      .toBe("UNCERTAIN_BUDGET_RETAINED");
+    const reconciled = await call(stub,"reconcileUncertain",input);
+    expect(reconciled.status).toBe("RECONCILED_TELEMETRY_LINKED");
+    expect(reconciled.reconciledBuckets).toEqual(["core"]);
   });
 
   it("does not release uncertain quota when no linked provider response evidence exists", async () => {
