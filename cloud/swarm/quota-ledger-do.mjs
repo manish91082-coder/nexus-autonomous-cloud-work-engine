@@ -240,6 +240,15 @@ export class QuotaLedgerDO extends DurableObject {
             expiredCount: this.#expireReservations()
           }));
           break;
+        case "renewReservation":
+          result = this.#renewReservation(input, auth.callerId);
+          break;
+        case "reconcileUncertain":
+          if (auth.callerId !== "primary") {
+            throw new QuotaLedgerError("only primary caller may reconcile uncertain reservations");
+          }
+          result = this.#reconcileUncertain(input, auth.callerId);
+          break;
         case "recordTelemetry":
           result = this.#recordTelemetry(input, auth.callerId);
           break;
