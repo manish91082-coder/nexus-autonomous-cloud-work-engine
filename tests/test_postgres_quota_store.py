@@ -79,6 +79,15 @@ class PostgresQuotaStoreIntegrationTests(unittest.TestCase):
         with self.assertRaises(MultiBucketConfigurationError):
             self.store.reserve("r4","w4","stale",{key:1},now_epoch=120)
 
+    def test_exhausted_telemetry_replaces_old_capacity_and_fails_closed(self):
+        exhausted = make_bucket("core",remaining=80,observed=1020)
+        self.store.register_bucket(exhausted)
+        snap = self.store.snapshot(self.core_key)
+        self.assertEqual(snap["observed_remaining_units"],80)
+        with self.assertRaises(MultiBucketExhausted):
+            self.store.reserve("r-exhausted","w-exhausted","must-wait",
+                               {self.core_key:1},now_epoch=1030)
+
     def test_duplicate_reservation_and_wrong_owner_rejected(self):
         self.store.reserve("r5","w5","once",{self.core_key:10},now_epoch=1010)
         with self.assertRaises(QuotaStoreConflict):
