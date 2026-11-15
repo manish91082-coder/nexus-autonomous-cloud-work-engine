@@ -1,3 +1,40 @@
+# LIVE CONTINUITY — PHASE 59.40 TELEMETRY-DRIVEN QUOTA ADMISSION (15-Nov-2026)
+
+**Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
+**Canonical repo:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Current task:** P59-003 AI agentic swarm foundation, IN_PROGRESS  
+**Paused:** P59-001; **Blocked:** P59-002  
+**Spend:** ₹0; **verified PCNE:** ₹0; **live LLM inference:** disabled
+
+## Phase59.40 completed and merged
+
+Report: [Telemetry-Driven Admission](research/PHASE_59_40_TELEMETRY_DRIVEN_ADMISSION_2026-11-15.md)
+
+- PR [#18](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/18) merged at `893e7beb30adc3cdb7e0067b9070cb8322c9b83a`.
+- Exact code head `7ebaf1ff34dd4468f7d180b93bc78811e426c47a`: Workers/workerd runtime [43709858465](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43709858465) **35/35 PASS**; quota contract [43709858448](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43709858448) **8/8 PASS**; telemetry parser regression [43709781464](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43709781464) PASS.
+- Reserve rejects caller-supplied telemetry and costs; provider limit/remaining/reset come only from authenticated `quota_telemetry_current`.
+- Server-side operation-cost and bucket-policy registries control admission. Unknown operations fail closed. These registries are test fixtures only.
+- Periodic overview alone cannot admit; response header or GraphQL authority rank >=80 is required.
+- `quota_bucket_counters` uses resource + provider reset-window identity. Reservations bind to exact provider windows; old-window settlement cannot debit a new window.
+- Secondary workers can settle their own reservations and submit only response telemetry linked to their own reservation. Cross-caller ownership remains forbidden.
+
+## Production boundary
+
+This is a test-runtime admission implementation, not a deployed quota service. No live GitHub API call, real credential, Cloudflare hosted deployment, billing, live inference or spend. Production feature flag remains OFF. Operation costs and bucket policies are test fixtures and must not be represented as a production-ready registry.
+
+## Next exact sequence — Phase59.41
+
+1. Build production-safe worker client lifecycle: reserve → provider request → response telemetry linked to reservation → settle/mark uncertain.
+2. Build reviewed endpoint operation registry with provenance and query fingerprint; unknown costs remain NO-GO.
+3. Add reservation expiry and crash recovery for workers dying between reserve and settlement.
+4. Add idempotent retry and duplicate response handling.
+5. Add independent-host concurrency and failure-injection tests against the same Durable Object namespace.
+6. Keep feature flag OFF until owner-approved zero-billing deployment path and secret provisioning are independently verified.
+
+Keep zero-cost-first, no laptop dependency, no paid fallback, no external account activation, and all owner-only gates intact.
+
+---
+
 # LIVE CONTINUITY — PHASE 59.39 AUTHENTICATED TRANSACTIONAL TELEMETRY INGESTION (15-Nov-2026)
 
 **Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
