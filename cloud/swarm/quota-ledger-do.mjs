@@ -60,12 +60,17 @@ export class QuotaLedgerDO extends DurableObject {
       worker_id TEXT NOT NULL,
       caller_id TEXT NOT NULL,
       operation TEXT NOT NULL,
+      request_fingerprint TEXT NOT NULL DEFAULT '',
       reserved_by_bucket_json TEXT NOT NULL,
       actual_by_bucket_json TEXT,
       status TEXT NOT NULL,
       created_at_epoch INTEGER NOT NULL,
       settled_at_epoch INTEGER
     )`);
+    const reservationColumns = sql.exec("PRAGMA table_info(quota_reservations)").toArray();
+    if (!reservationColumns.some(column => column.name === "request_fingerprint")) {
+      sql.exec("ALTER TABLE quota_reservations ADD COLUMN request_fingerprint TEXT NOT NULL DEFAULT ''");
+    }
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_auth_nonces (
       caller_id TEXT NOT NULL,
       nonce TEXT NOT NULL,
@@ -410,10 +415,11 @@ export class QuotaLedgerDO extends DurableObject {
           };
         }
         sql.exec(`INSERT INTO quota_reservations
-          (reservation_id,worker_id,caller_id,operation,reserved_by_bucket_json,status,created_at_epoch)
-          VALUES (?,?,?,?,?, 'RESERVED', ?)`,
+          (reservation_id,worker_id,caller_id,operation,request_fingerprint,
+           reserved_by_bucket_json,status,created_at_epoch)
+          VALUES (?,?,?,?,?,?, 'RESERVED', ?)`,
           input.reservationId,input.workerId,callerId,input.operation,
-          JSON.stringify(reservedByBucket),now);
+          input.requestFingerprint ?? "",JSON.stringify(reservedByBucket),now);
         return {
           reservationId:input.reservationId,
           status:"RESERVED",
