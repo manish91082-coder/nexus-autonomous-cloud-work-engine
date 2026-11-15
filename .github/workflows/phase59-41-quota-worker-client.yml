@@ -1,0 +1,27 @@
+name: Phase 59.41 Quota Worker Client Lifecycle
+on:
+  push:
+    branches: [phase59-41-worker-client-lifecycle]
+    paths:
+      - "cloud/swarm/quota-worker-client.mjs"
+      - "cloud/swarm/quota-worker-client.test.mjs"
+      - ".github/workflows/phase59-41-quota-worker-client.yml"
+  pull_request:
+    paths:
+      - "cloud/swarm/quota-worker-client.mjs"
+      - "cloud/swarm/quota-worker-client.test.mjs"
+      - ".github/workflows/phase59-41-quota-worker-client.yml"
+permissions:
+  contents: read
+jobs:
+  lifecycle-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Run lifecycle contract tests
+        run: node --test cloud/swarm/quota-worker-client.test.mjs
+      - name: Syntax check
+        run: node --check cloud/swarm/quota-worker-client.mjs
