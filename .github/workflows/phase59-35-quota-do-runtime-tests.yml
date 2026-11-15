@@ -2,7 +2,7 @@ name: Phase 59.35 Cloudflare Workers SQLite Durable Object Runtime Tests
 
 on:
   push:
-    branches: [master, phase59-35-quota-do-runtime-tests]
+    branches: [master, phase59-35-quota-do-runtime-tests, phase59-35-workers-runtime-rpc-fix]
     paths:
       - 'cloud/swarm/quota-ledger-do.mjs'
       - 'cloud/swarm/worker-tests/**'
