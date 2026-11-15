@@ -32,7 +32,7 @@
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
       "status": "P59-003 IN_PROGRESS; Phase 59.16 B4 21/21 CI PASS and backup/restore/crash soak verified; all 14 workflows inventoried. Active recurring worker and guard upgraded to signed Node24 action releases pinned by full SHA; exact-commit Worker 43685697202 and Guard 43685697162 SUCCESS. AI remains disabled/no inference; B4 standalone; no production federation lock/quota runtime.",
-      "last_observed_head": "b9e5c634a7b621f9a0508ceb33bae8240391250e",
+      "last_observed_head": "4aae75fa4539a825b14ba1b99f29e0b3b77bcf18",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
       "phase59_14_report": "research/PHASE_59_14_B4_CRASH_RECOVERY_AND_WORKFLOW_INVENTORY_2026-11-15.md",
@@ -50,7 +50,8 @@
       "phase59_16_worker_run_id": 43685697202,
       "phase59_16_guard_run_id": 43685697162,
       "phase59_16_node24_pins": true,
-      "phase59_16_production_integrated": false
+      "phase59_16_production_integrated": false,
+      "phase59_16_worker_write_permission": "RETAINED_TEMPORARILY_FOR_DURABLE_AI_QUOTA_STATE; compute-to-publisher split pending; AI currently disabled and no inference."
     },
     {
       "project_id": "FLASHLOAN-RESEARCH",
