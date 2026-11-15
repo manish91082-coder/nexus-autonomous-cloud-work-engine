@@ -3070,7 +3070,7 @@
           "Amazon KDP 2026 royalty terms"
         ],
         "critical_distinction": "Revenue engine vs distribution rail; same SaaS product across two marketplaces is not two separate product streams.",
-        "next": "Research a new recurring B2B workflow problem in a marketplace ecosystem, excluding already rejected generic approval/audit, eBRC, agency-margin, recruitment, agri reconciliation, manufacturing job-work and generic AI reviewer hypotheses. Require two independent buyer signals, 10–15 substitute audit, price-bearing WTP, India payout, positive fully-loaded unit economics, rights and self-serve fulfilment. No build or spend.",
+        "next": "Screen a recurring, higher-frequency MSP/CSP workflow such as renewal/cancellation/seat reconciliation or another marketplace B2B workflow. Require two independent buyer signals, 10–15 direct/adjacent substitutes, price-bearing WTP, India payout, positive fully-loaded economics, rights and self-serve permission model. No build or spend.",
         "asset_audit_report": "research/PHASE_59_2_EXISTING_SOFTWARE_IP_ASSET_AUDIT_2026-11-14.md",
         "asset_audit_status": "COMPLETED_INITIAL_REPOSITORY_AUDIT; NO_EXISTING_ASSET_PASSES_FIRST_PRODUCT_GATE",
         "canonical_assets_audited": 8,
@@ -3273,6 +3273,26 @@
           "pcne_inr": 0,
           "authorized_spend_inr": 0,
           "next": "Research a new recurring B2B workflow problem in a marketplace ecosystem; require two independent buyer signals, 10-15 substitutes, price-bearing WTP, India payout, positive fully-loaded economics, rights and self-serve gates."
+        },
+        "phase59_31": {
+          "report": "research/PHASE_59_31_MSP_CSP_SLA_CREDIT_CLAIM_ASSISTANT_SCREEN_2026-11-15.md",
+          "candidate_id": "MSP-M365-CSP-CREDIT-CLAIM-ASSISTANT",
+          "disposition": "HOLD_NO_BUILD",
+          "independent_msp_pain_signals": 2,
+          "additional_economic_counter_signal": 1,
+          "direct_and_adjacent_substitutes": 15,
+          "official_claim_deadlines": {
+            "non_azure": "1 month from end of billing month",
+            "azure": "2 months from end of billing month"
+          },
+          "graph_permission": "ServiceHealth.Read.All",
+          "customer_consent_and_partner_authorization": "REQUIRED",
+          "price_bearing_wtp_verified": false,
+          "recurring_claim_frequency_verified": false,
+          "india_csp_payout_eligibility": "NOT_VERIFIED",
+          "self_serve_low_privilege_model": "NOT_ESTABLISHED",
+          "pcne_inr": 0,
+          "spend_inr": 0
         }
       },
       "dependency_note": "Safe handoff from Phase59.26 completed. Resume evidence-backed V5 portfolio-wide research now. Use public/official source research and supplied evidence; specialist workflow is deterministic/provider-neutral and must not be described as live LLM research. No product build until the P59-001 selection and all P59-002 release gates pass.",
