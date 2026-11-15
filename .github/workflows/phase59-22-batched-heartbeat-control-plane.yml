@@ -1,0 +1,38 @@
+name: Phase 59.22 Batched Heartbeat Control Plane Tests
+
+on:
+  push:
+    branches:
+      - phase59-22-batched-heartbeat-control-plane
+    paths:
+      - 'scripts/federation_git_ref_store.py'
+      - 'tests/test_federation_git_ref_store.py'
+      - 'tests/test_federation_quota_arbiter.py'
+      - 'tests/test_federation_partitioned_journal.py'
+      - '.github/workflows/phase59-22-batched-heartbeat-control-plane.yml'
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-22-batched-heartbeat-control-plane-ci
+  cancel-in-progress: false
+
+jobs:
+  journal-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout phase branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Compile federation modules
+        run: python3 -m py_compile scripts/federation_git_ref_store.py scripts/federation_quota_arbiter.py
+      - name: Run federation lock, quota and partitioned journal tests
+        run: |
+          python3 -m unittest discover -s tests -p 'test_federation_git_ref_store.py' -v
+          python3 -m unittest discover -s tests -p 'test_federation_quota_arbiter.py' -v
+          python3 -m unittest discover -s tests -p 'test_federation_partitioned_journal.py' -v

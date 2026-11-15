@@ -229,6 +229,53 @@ def heartbeat_transition(state, scope, worker_id, token, *, now=None):
     return new_state, lease, event
 
 
+def heartbeat_batch_transition(state, renewals, *, now=None):
+    """Renew several leases in one atomic state transition and one journal event.
+
+    renewals is an iterable of (scope, worker_id, fencing_token) tuples.
+    A single stale/expired/malformed member rejects the entire batch.
+    """
+    validate_state(state)
+    if not isinstance(renewals, (list, tuple)) or not renewals:
+        raise FederationLockError("heartbeat batch must contain at least one renewal")
+    if len(renewals) > state["max_active_leases"]:
+        raise FederationLockError("heartbeat batch exceeds active lease cap")
+    stamp = now or utc_now()
+    normalized = []
+    seen = set()
+    for item in renewals:
+        if not isinstance(item, (list, tuple)) or len(item) != 3:
+            raise FederationLockError("invalid heartbeat batch member")
+        scope, worker_id, token = item
+        if not isinstance(scope, str) or not scope or not isinstance(worker_id, str) or not worker_id:
+            raise FederationLockError("invalid heartbeat batch identity")
+        if not isinstance(token, int) or isinstance(token, bool) or token < 1 or scope in seen:
+            raise FederationLockError("invalid or duplicate heartbeat batch fencing token")
+        seen.add(scope)
+        normalized.append((scope, worker_id, token))
+
+    new_state = copy.deepcopy(state)
+    updated = []
+    for scope, worker_id, token in normalized:
+        lease = next((x for x in new_state["leases"] if x["scope"] == scope), None)
+        if not lease or lease["worker_id"] != worker_id or lease["fencing_token"] != token:
+            raise StaleFence("heartbeat batch contains a stale owner or fencing token")
+        if parse_utc(lease["expires_at_utc"]) <= stamp:
+            raise StaleFence("heartbeat batch contains an expired lease")
+        lease["heartbeat_at_utc"] = iso_utc(stamp)
+        lease["expires_at_utc"] = iso_utc(stamp + timedelta(seconds=new_state["lease_seconds"]))
+        updated.append(copy.deepcopy(lease))
+
+    event = _event_for(
+        new_state, "LEASE_HEARTBEAT_BATCH", "federation-controller",
+        {"renewed_scopes": [x[0] for x in normalized], "renewed_count": len(normalized)},
+        stamp, "federation/heartbeat-batch", None,
+    )
+    _apply_event(new_state, event)
+    validate_state(new_state)
+    return new_state, updated, event
+
+
 def release_transition(state, scope, worker_id, token, *, now=None):
     validate_state(state)
     stamp = now or utc_now()
@@ -377,6 +424,12 @@ class GitHubGitRefStore:
     def heartbeat(self, scope, worker_id, fencing_token, *, now=None):
         def transition(state):
             return heartbeat_transition(state, scope, worker_id, fencing_token, now=now)
+        return self._mutate(transition)
+
+    def heartbeat_batch(self, renewals, *, now=None):
+        """Renew up to max_active_leases with one CAS commit and one journal event."""
+        def transition(state):
+            return heartbeat_batch_transition(state, renewals, now=now)
         return self._mutate(transition)
 
     def release(self, scope, worker_id, fencing_token, *, now=None):
