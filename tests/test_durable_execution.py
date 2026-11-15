@@ -34,6 +34,17 @@ def _crash_after_checkpoint(db_path, marker):
     Path(marker).write_text(str(lease["fencing_token"]), encoding="utf-8")
     os._exit(23)
 
+def _crash_at_stage(db_path, marker, task_id, stage):
+    store = DurableStore(db_path)
+    lease = store.claim_task(task_id, f"worker-{stage}", now=T0, lease_seconds=15)
+    if stage in {"checkpoint", "finish"}:
+        store.checkpoint(task_id, f"worker-{stage}", lease["fencing_token"], {"stage": stage}, now=T0)
+    if stage == "finish":
+        store.finish_task(task_id, f"worker-{stage}", lease["fencing_token"], success=True,
+                          result={"committed": True}, now=T0)
+    Path(marker).write_text(str(lease["fencing_token"]), encoding="utf-8")
+    os._exit(23)
+
 class DurableExecutionTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
@@ -272,6 +283,77 @@ class DurableExecutionTests(unittest.TestCase):
                 break
             time.sleep(0.05)
         self.assertFalse(alive, "descendant process survived process-group timeout")
+
+
+    def test_sqlite_online_backup_restore_preserves_checkpoint_lease_and_hash_chain(self):
+        self.store.register_task("BACKUP-TASK", "backup-idem", {}, now=T0)
+        lease = self.store.claim_task("BACKUP-TASK", "backup-worker", now=T0)
+        self.store.checkpoint("BACKUP-TASK", "backup-worker", lease["fencing_token"],
+                              {"cursor": 99, "batch": "alpha"}, now=T0)
+        backup_path = Path(self.tmp.name) / "restored.sqlite3"
+        source = sqlite3.connect(self.db)
+        destination = sqlite3.connect(backup_path)
+        try:
+            source.backup(destination)
+        finally:
+            destination.close()
+            source.close()
+        restored = DurableStore(backup_path)
+        task = restored.get_task("BACKUP-TASK")
+        self.assertEqual(task["checkpoint"], {"batch": "alpha", "cursor": 99})
+        self.assertEqual(task["status"], "LEASED")
+        self.assertTrue(restored.verify_event_chain())
+        restored.heartbeat("BACKUP-TASK", "backup-worker", lease["fencing_token"], now=T0)
+        completed = restored.finish_task("BACKUP-TASK", "backup-worker", lease["fencing_token"],
+                                         success=True, result={"restored": True}, now=T0)
+        self.assertEqual(completed["status"], "COMPLETED")
+        self.assertTrue(restored.verify_event_chain())
+
+    def test_repeated_crash_window_recovery_after_claim_and_checkpoint(self):
+        ctx = multiprocessing.get_context("spawn")
+        for index in range(6):
+            task_id = f"SOAK-{index}"
+            self.store.register_task(task_id, f"soak-idem-{index}", {}, max_attempts=3, now=T0)
+            stage = "claim" if index % 2 == 0 else "checkpoint"
+            marker = Path(self.tmp.name) / f"{task_id}.marker"
+            child = ctx.Process(target=_crash_at_stage, args=(str(self.db), str(marker), task_id, stage))
+            child.start()
+            child.join(10)
+            self.assertEqual(child.exitcode, 23, f"crash stage {stage}, iteration {index}")
+            old_token = int(marker.read_text(encoding="utf-8"))
+            reopened = DurableStore(self.db)
+            self.assertEqual(reopened.recover_expired_leases(now=T0 + timedelta(seconds=16)), [task_id])
+            task = reopened.get_task(task_id)
+            self.assertEqual(task["status"], "READY")
+            expected_checkpoint = {"stage": "checkpoint"} if stage == "checkpoint" else {}
+            self.assertEqual(task["checkpoint"], expected_checkpoint)
+            self.assertTrue(reopened.verify_event_chain())
+            with self.assertRaises(DurableExecutionError):
+                reopened.heartbeat(task_id, f"worker-{stage}", old_token, now=T0 + timedelta(seconds=17))
+            new_lease = reopened.claim_task(task_id, f"recovery-{index}", now=T0 + timedelta(seconds=76))
+            self.assertGreater(new_lease["fencing_token"], old_token)
+            reopened.finish_task(task_id, f"recovery-{index}", new_lease["fencing_token"],
+                                 success=True, result={"recovered": True}, now=T0 + timedelta(seconds=77))
+            self.assertEqual(reopened.get_task(task_id)["status"], "COMPLETED")
+
+    def test_crash_after_finish_commit_remains_completed(self):
+        self.store.register_task("FINISH-CRASH", "finish-crash-idem", {}, now=T0)
+        marker = Path(self.tmp.name) / "finish-crash.marker"
+        ctx = multiprocessing.get_context("spawn")
+        child = ctx.Process(target=_crash_at_stage,
+                            args=(str(self.db), str(marker), "FINISH-CRASH", "finish"))
+        child.start()
+        child.join(10)
+        self.assertEqual(child.exitcode, 23)
+        self.assertTrue(marker.exists())
+        reopened = DurableStore(self.db)
+        task = reopened.get_task("FINISH-CRASH")
+        self.assertEqual(task["status"], "COMPLETED")
+        self.assertEqual(task["result"], {"committed": True})
+        self.assertEqual(reopened.recover_expired_leases(now=T0 + timedelta(seconds=100)), [])
+        with self.assertRaises(DurableExecutionError):
+            reopened.claim_task("FINISH-CRASH", "duplicate-replay", now=T0 + timedelta(seconds=100))
+        self.assertTrue(reopened.verify_event_chain())
 
 if __name__ == "__main__":
     unittest.main()
