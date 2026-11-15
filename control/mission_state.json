@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_59_15_B4_BACKUP_RESTORE_AND_CRASH_WINDOW_SOAK",
+  "phase": "PHASE_59_16_RECURRING_WORKFLOW_SUPPLY_CHAIN_HARDENING",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -10,8 +10,8 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
-  "last_verified_head": "9d52266067751a28b3302cb34e43056ee991d8fc",
-  "current_focus": "P59-003: B4 exact GitHub Actions CI PASS on SHA 9d52266067751a28b3302cb34e43056ee991d8fc; 21/21 tests pass including SQLite online backup/restore, six repeated abrupt crash/recovery iterations across claim/checkpoint, crash after completion commit, and Linux descendant process-group termination. Complete 14/14 workflow inventory. B4 remains standalone; production worker/federation runtime not integrated; AI provider unconfigured.",
+  "last_verified_head": "c84124f4bff06c2f6a6eec193720bb89bda8cee2",
+  "current_focus": "P59-003: B4 standalone prototype has 21/21 exact CI tests PASS (run 43685420046). Complete 14-workflow inventory recorded. Active recurring mission worker and continuity guard upgraded to verified signed Node 24 action releases pinned by full SHA; exact-commit Worker run 43685697202 and Guard run 43685697162 both SUCCESS. Worker AI remains disabled; no inference request. B4 and federation are not production-integrated.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -63,7 +63,7 @@
     "CREATOR_IP_ROYALTIES_STOCK_ASSETS",
     "GAMES_SPONSORSHIP_AFFILIATE_ADVERTISING"
   ],
-  "last_exact_head_ci_status": "B4 Durable Execution Contract run 43685420046 SUCCESS on exact test SHA 9d52266067751a28b3302cb34e43056ee991d8fc; validate job PASS; schema JSON PASS; 21/21 tests PASS on GitHub-hosted Ubuntu 26.04. Includes SQLite online backup/restore, six repeated abrupt crash/recovery iterations, crash-after-finish commit durability, Linux process-tree kill, stale fencing and event-chain verification. This is a single-host prototype test, not distributed consensus or production integration.",
+  "last_exact_head_ci_status": "Active recurring workflows verified on exact commit c84124f4bff06c2f6a6eec193720bb89bda8cee2: Mission Autonomous AI Worker run 43685697202 SUCCESS; Mission Continuity Guard run 43685697162 SUCCESS. Worker tests 17+7+2+3+7 all PASS; mission guard PASS; deterministic queue POLL_OK; AI executor fails closed because MISSION_AI_ENABLED is not true; no inference request. Node 20 deprecation warning absent after pinning verified Node 24 action releases.",
   "phase46_control_commits": [
     "72230902a478552d007d94d330e216238c9b2982",
     "ae552163e2b1e65590fc98454d8f7817bc73fa92",
@@ -157,7 +157,7 @@
   ],
   "phase53_research_checkpoint": "14-Nov completed: WP webhook / Action Scheduler / COD fraud generic hypotheses NO-GO; Workspace attachment archival / invoice extraction / approvals / notification clones NO-GO. Formula Integrity technical matrix completed; HOLD due event/identity/API/quotas plus no proven recurring demand. Continue P53-001 Google Workspace problem-first research beyond these categories.",
   "last_observed_at": "2026-11-15T08:31:25+05:30",
-  "resume_checkpoint": "15-Nov-2026 Phase 59.15: B4 exact GitHub Actions run 43685420046 SUCCESS on SHA 9d52266067751a28b3302cb34e43056ee991d8fc; schema validation and 21/21 tests PASS. SQLite online backup/restore verified, six spawned workers crashed after claim/checkpoint and recovered with preserved state and stale-token fencing, crash after finish commit retained COMPLETED, Linux descendant process group killed. All 14 workflows inventoried. B4 remains standalone; no production worker, shared cross-host federation lock/quota arbiter or AI provider. Next: workflow supply-chain/least-privilege review; then choose a real shared atomic store. P59-003 IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED; PCNE ₹0; spend ₹0.",
+  "resume_checkpoint": "15-Nov-2026 Phase 59.16: B4 SQLite backup/restore and six crash-window soak tests PASS; 21/21 exact B4 CI run 43685420046 on SHA 9d52266067751a28b3302cb34e43056ee991d8fc. Complete 14/14 workflow inventory. Recurring Mission Worker and Continuity Guard now pin verified signed Node24 releases by full SHA; exact commit c84124f4bff06c2f6a6eec193720bb89bda8cee2 verified: Worker 43685697202 SUCCESS, Guard 43685697162 SUCCESS; Node20 deprecation warning absent; worker confirms AI disabled/no inference. Product/QA and legacy manual workflows still need staged pinning. B4 standalone only; no global lock/quota service. P59-003 IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED; PCNE ₹0; spend ₹0.",
   "last_observed_head_semantics": "Master HEAD observed before this control-plane checkpoint; this checkpoint creates subsequent commits. Fetch live master again on next continuation. last_verified_head remains the last independently verified CI SHA, not the observed HEAD.",
   "phase53_latest_report": "research/PHASE_53_FORMULA_INTEGRITY_TECHNICAL_FEASIBILITY_2026-11-14.md",
   "phase53_supporting_reports": [
@@ -894,5 +894,24 @@
     "crash_after_finish": "COMPLETED_STATE_PERSISTS_AND_DUPLICATE_CLAIM_REJECTED",
     "limits": "Single-host SQLite only; no cross-host consensus, production worker integration or cloud failover.",
     "next": "Workflow supply-chain and least-privilege hardening review; then choose and prove shared atomic store for federation lock and quota arbitration."
+  },
+  "phase59_16": {
+    "status": "RECURRING_MISSION_WORKFLOWS_NODE24_SHA_PINNED_AND_EXACT_CI_PASS",
+    "report": "research/PHASE_59_16_RECURRING_WORKFLOW_SUPPLY_CHAIN_HARDENING_2026-11-15.md",
+    "commit": "c84124f4bff06c2f6a6eec193720bb89bda8cee2",
+    "worker_run_id": 43685697202,
+    "guard_run_id": 43685697162,
+    "actions": {
+      "checkout": "v7.0.1@3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "setup_python": "v7.1.0@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+      "upload_artifact": "v7.0.2@cf430e030ddbb5b0abf93d22962f4752f3646cd9"
+    },
+    "all_action_commits_signature_verified": true,
+    "node_runtime": "node24",
+    "node20_deprecation_warning_absent": true,
+    "remaining_workflows": "Product build/QA and legacy manual-only workflows still use major tags; staged pinning pending.",
+    "production_integrated": false,
+    "ai_provider_configured": false,
+    "next": "Review recurring worker contents:write permission; stage Node24 SHA pinning for non-recurring product workflows; then deploy a real shared-store federation lease/quota service."
   }
 }
