@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   validateQuotaRequest, availableUnits, requireQuotaStoreEnabled, QuotaLedgerError,
-  QuotaLedgerExhausted
+  QuotaLedgerExhausted, quotaLedgerObjectName
 } from "./quota-ledger-do.mjs";
 
 const sample = (overrides={}) => ({
@@ -42,4 +42,17 @@ test("missing binding fails closed even if flag set",()=>{
 });
 test("exhaustion is a distinct error class",()=>{
   assert.ok(new QuotaLedgerExhausted("x") instanceof QuotaLedgerError);
+});
+
+test("canonical Durable Object identity is stable and collision-safe",()=>{
+  const a = quotaLedgerObjectName("github","app/repo","hour-1");
+  const b = quotaLedgerObjectName("github","app/repo","hour-1");
+  const c = quotaLedgerObjectName("github","app","repo/hour-1");
+  assert.equal(a,b);
+  assert.notEqual(a,c);
+});
+test("exhausted but fresh telemetry is accepted as evidence",()=>{
+  const request = sample({buckets:[{...sample().buckets[0],
+    observedRemainingUnits:100,safetyReserveUnits:60,recoveryReserveUnits:40}]});
+  assert.equal(validateQuotaRequest(request),true);
 });
