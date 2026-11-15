@@ -29,7 +29,8 @@ function requireText(value, field, max = 256) {
 }
 
 function makeRequestId(value) {
-  if (value === undefined || value === null) return crypto.randomUUID();
+  // A caller-supplied durable id is mandatory: generating a new UUID per retry
+  // would defeat duplicate suppression after a worker crash.
   return requireText(value, "requestId", 128);
 }
 
