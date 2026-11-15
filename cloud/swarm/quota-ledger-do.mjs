@@ -1,6 +1,8 @@
 /**
- * Phase 59.34 — Cloudflare SQLite-backed Durable Object quota ledger.
- * Production routes and caller feature flag remain disabled pending acceptance.
+ * Phase 59.34/59.37 — SQLite-backed Durable Object quota ledger with
+ * authenticated, replay-protected internal Worker RPC.
+ *
+ * Public surface: fetch() only. All quota mutation/snapshot methods are private.
  */
 import { DurableObject } from "cloudflare:workers";
 import {
@@ -9,9 +11,27 @@ import {
 } from "./quota-ledger-contract.mjs";
 export { QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest, requireQuotaStoreEnabled };
 
+const encoder = new TextEncoder();
+const MAX_CLOCK_SKEW_SECONDS = 30;
+const NONCE_TTL_SECONDS = 120;
+
+function bytesToHex(bytes) {
+  return Array.from(new Uint8Array(bytes), value => value.toString(16).padStart(2, "0")).join("");
+}
+
+function base64ToBytes(value) {
+  if (typeof value !== "string" || value.length < 16 || value.length > 256) {
+    throw new QuotaLedgerError("invalid signature encoding");
+  }
+  const binary = atob(value);
+  return Uint8Array.from(binary, char => char.charCodeAt(0));
+}
+
 export class QuotaLedgerDO extends DurableObject {
   constructor(ctx, env) {
     super(ctx, env);
+    this.ctx = ctx;
+    this.env = env;
     const sql = ctx.storage.sql;
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_meta (
       singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -44,31 +64,62 @@ export class QuotaLedgerDO extends DurableObject {
       created_at_epoch INTEGER NOT NULL,
       settled_at_epoch INTEGER
     )`);
+    sql.exec(`CREATE TABLE IF NOT EXISTS quota_auth_nonces (
+      caller_id TEXT NOT NULL,
+      nonce TEXT NOT NULL,
+      expires_at_epoch INTEGER NOT NULL,
+      PRIMARY KEY (caller_id, nonce)
+    )`);
   }
 
   async fetch(request) {
     if (request.method !== "POST") {
-      return Response.json({ status: "REJECTED", error: { message: "POST required" } }, { status: 405 });
+      return Response.json({ status: "REJECTED", error: "POST required" }, { status: 405 });
     }
+    if (new URL(request.url).pathname !== "/rpc") {
+      return Response.json({ status: "REJECTED", error: "unknown internal path" }, { status: 404 });
+    }
+    let bodyBytes;
     try {
-      const body = await request.json();
-      const input = body?.input;
+      bodyBytes = new Uint8Array(await request.arrayBuffer());
+    } catch {
+      return Response.json({ status: "REJECTED", error: "request body unavailable" }, { status: 400 });
+    }
+
+    const auth = await this.#authenticate(request, bodyBytes);
+    if (!auth.ok) {
+      return Response.json({ status: "REJECTED", reason: auth.reason }, { status: auth.status });
+    }
+
+    let body;
+    try {
+      body = JSON.parse(new TextDecoder().decode(bodyBytes));
+    } catch {
+      return Response.json({ status: "REJECTED", error: "invalid JSON" }, { status: 400 });
+    }
+    const input = body?.input;
+    if (!input || typeof input !== "object" || Array.isArray(input)) {
+      return Response.json({ status: "REJECTED", error: "input object required" }, { status: 400 });
+    }
+
+    try {
+      this.#assertIdentity(input, body.action === "reserve");
       let result;
-      switch (body?.action) {
+      switch (body.action) {
         case "reserve":
-          result = this.reserve(input);
+          result = this.#reserve(input);
           break;
         case "settle":
-          result = this.settle(input);
+          result = this.#settle(input);
           break;
         case "markUncertain":
-          result = this.markUncertain(input);
+          result = this.#markUncertain(input);
           break;
         case "snapshot":
-          result = this.snapshot();
+          result = this.#snapshot();
           break;
         default:
-          return Response.json({ status: "REJECTED", error: { message: "unknown action" } }, { status: 400 });
+          return Response.json({ status: "REJECTED", error: "unknown action" }, { status: 400 });
       }
       return Response.json(result);
     } catch (error) {
@@ -79,23 +130,100 @@ export class QuotaLedgerDO extends DurableObject {
     }
   }
 
-  reserve(input) {
+  async #authenticate(request, bodyBytes) {
+    const callerId = request.headers.get("x-nexus-caller-id") || "";
+    const timestampText = request.headers.get("x-nexus-timestamp") || "";
+    const nonce = request.headers.get("x-nexus-nonce") || "";
+    const signatureText = request.headers.get("x-nexus-signature") || "";
+    if (!/^[A-Za-z0-9._-]{1,64}$/.test(callerId)) {
+      return { ok: false, status: 401, reason: "UNAUTHENTICATED_CALLER" };
+    }
+    if (!/^\d{1,12}$/.test(timestampText)
+      || !/^[A-Za-z0-9_-]{16,128}$/.test(nonce)) {
+      return { ok: false, status: 401, reason: "INVALID_AUTH_ENVELOPE" };
+    }
+    const timestamp = Number(timestampText);
+    const now = Math.floor(Date.now() / 1000);
+    if (!Number.isSafeInteger(timestamp) || Math.abs(now - timestamp) > MAX_CLOCK_SKEW_SECONDS) {
+      return { ok: false, status: 401, reason: "AUTH_TIMESTAMP_EXPIRED" };
+    }
+
+    let keys;
+    try {
+      keys = JSON.parse(this.env?.NEXUS_QUOTA_CALLER_KEYS || "{}");
+    } catch {
+      return { ok: false, status: 503, reason: "CALLER_KEY_REGISTRY_INVALID" };
+    }
+    const secret = keys && typeof keys === "object" && !Array.isArray(keys)
+      ? keys[callerId] : undefined;
+    if (typeof secret !== "string" || secret.length < 32) {
+      return { ok: false, status: 401, reason: "CALLER_NOT_AUTHORIZED" };
+    }
+
+    try {
+      const digest = await crypto.subtle.digest("SHA-256", bodyBytes);
+      const bodyHash = bytesToHex(digest);
+      const method = request.method.toUpperCase();
+      const path = new URL(request.url).pathname;
+      const canonical = [callerId, timestampText, nonce, method, path, bodyHash].join("\n");
+      const key = await crypto.subtle.importKey(
+        "raw", encoder.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["verify"]
+      );
+      const signature = base64ToBytes(signatureText);
+      const valid = await crypto.subtle.verify("HMAC", key, signature, encoder.encode(canonical));
+      if (!valid) return { ok: false, status: 401, reason: "SIGNATURE_INVALID" };
+    } catch {
+      return { ok: false, status: 401, reason: "SIGNATURE_INVALID" };
+    }
+
+    // Consume the nonce only after the HMAC and clock checks pass. The unique
+    // key is per caller; expired entries are pruned in the same SQLite transaction.
+    try {
+      this.ctx.storage.transactionSync(() => {
+        this.ctx.storage.sql.exec(
+          "DELETE FROM quota_auth_nonces WHERE expires_at_epoch <= ?", now
+        );
+        this.ctx.storage.sql.exec(
+          "INSERT INTO quota_auth_nonces(caller_id,nonce,expires_at_epoch) VALUES(?,?,?)",
+          callerId, nonce, now + NONCE_TTL_SECONDS
+        );
+      });
+    } catch (error) {
+      if (String(error?.message || error).includes("UNIQUE constraint failed")) {
+        return { ok: false, status: 409, reason: "REPLAYED_NONCE" };
+      }
+      return { ok: false, status: 503, reason: "AUTH_NONCE_STORE_UNAVAILABLE" };
+    }
+    return { ok: true, callerId };
+  }
+
+  #assertIdentity(input, allowUninitialized) {
+    nonEmpty(input.provider, "provider");
+    nonEmpty(input.credentialScope, "credentialScope");
+    nonEmpty(input.windowId, "windowId");
+    const identity = this.ctx.storage.sql.exec(
+      "SELECT provider,credential_scope,window_id FROM quota_meta WHERE singleton=1"
+    ).toArray()[0];
+    if (!identity && allowUninitialized) return true;
+    if (!identity) throw new QuotaLedgerError("quota ledger identity not initialized");
+    if (identity.provider !== input.provider
+      || identity.credential_scope !== input.credentialScope
+      || identity.window_id !== input.windowId) {
+      throw new QuotaLedgerError("Durable Object identity mismatch");
+    }
+    return true;
+  }
+
+  #reserve(input) {
     validateQuotaRequest(input);
     const sql = this.ctx.storage.sql;
     try {
-      // Durable idempotency check. The method contains no await between this
-      // check and the following transactions, so one DO serializes the caller.
       const prior = sql.exec(
         "SELECT reservation_id FROM quota_reservations WHERE reservation_id = ?",
         input.reservationId
       ).toArray()[0];
-      if (prior) {
-        return { reservationId: input.reservationId, status: "DUPLICATE_RESERVATION" };
-      }
+      if (prior) return { reservationId: input.reservationId, status: "DUPLICATE_RESERVATION" };
 
-      // Phase A: persist the newest trusted telemetry independently. If the
-      // subsequent admission is rejected, fresh exhausted telemetry must remain
-      // recorded rather than being rolled back with the reservation attempt.
       this.ctx.storage.transactionSync(() => {
         const identity = sql.exec("SELECT * FROM quota_meta WHERE singleton=1").toArray()[0];
         if (identity && (identity.provider !== input.provider
@@ -109,9 +237,7 @@ export class QuotaLedgerDO extends DurableObject {
         }
 
         for (const b of input.buckets) {
-          const existing = sql.exec(
-            "SELECT * FROM quota_buckets WHERE bucket_id = ?", b.bucketId
-          ).toArray()[0];
+          const existing = sql.exec("SELECT * FROM quota_buckets WHERE bucket_id = ?", b.bucketId).toArray()[0];
           if (existing && (existing.provider !== input.provider
             || existing.credential_scope !== input.credentialScope
             || existing.window_id !== input.windowId)) {
@@ -127,16 +253,12 @@ export class QuotaLedgerDO extends DurableObject {
               b.bucketId,input.provider,input.credentialScope,input.windowId,b.limitUnits,
               b.observedRemainingUnits,b.observedAtEpoch,b.safetyReserveUnits,b.recoveryReserveUnits);
           } else if (b.observedAtEpoch > existing.observed_at_epoch) {
-            // Provider remaining telemetry already includes prior provider calls.
-            // Reset only the since-observation counter; preserve reservations and
-            // uncertain usage because those calls may still be in flight/unknown.
             sql.exec(`UPDATE quota_buckets SET limit_units=?,observed_remaining_units=?,
               observed_at_epoch=?,safety_reserve_units=?,recovery_reserve_units=?,
               committed_since_observation_units=0 WHERE bucket_id=?`,
               b.limitUnits,b.observedRemainingUnits,b.observedAtEpoch,b.safetyReserveUnits,
               b.recoveryReserveUnits,b.bucketId);
           } else if (b.observedAtEpoch === existing.observed_at_epoch) {
-            // Same timestamp may tighten capacity but must never replenish it.
             sql.exec(`UPDATE quota_buckets SET observed_remaining_units=MIN(observed_remaining_units,?),
               safety_reserve_units=MAX(safety_reserve_units,?),
               recovery_reserve_units=MAX(recovery_reserve_units,?) WHERE bucket_id=?`,
@@ -145,20 +267,14 @@ export class QuotaLedgerDO extends DurableObject {
         }
       });
 
-      // Phase B: one all-or-nothing admission transaction across every costed
-      // bucket. Returning WAITING commits no reservation rows/counters.
       return this.ctx.storage.transactionSync(() => {
         for (const [bucketId, units] of Object.entries(input.costs)) {
           const row = sql.exec("SELECT * FROM quota_buckets WHERE bucket_id=?", bucketId).toArray()[0];
           if (!row) throw new QuotaLedgerError("quota bucket missing after telemetry refresh");
           const b = input.buckets.find(x => x.bucketId === bucketId);
           if (b.nowEpoch - row.observed_at_epoch > b.maxTelemetryAgeSeconds) {
-            return {
-              reservationId: input.reservationId,
-              status: "WAITING_FOR_QUOTA",
-              reason: "stored telemetry is stale",
-              bucketId
-            };
+            return { reservationId: input.reservationId, status: "WAITING_FOR_QUOTA",
+              reason: "stored telemetry is stale", bucketId };
           }
           const remaining = availableUnits(
             { observedRemainingUnits: row.observed_remaining_units,
@@ -169,15 +285,10 @@ export class QuotaLedgerDO extends DurableObject {
               uncertainUnits: row.uncertain_units }
           );
           if (units > remaining) {
-            return {
-              reservationId: input.reservationId,
-              status: "WAITING_FOR_QUOTA",
-              reason: "bucket capacity or protected reserve exhausted",
-              bucketId
-            };
+            return { reservationId: input.reservationId, status: "WAITING_FOR_QUOTA",
+              reason: "bucket capacity or protected reserve exhausted", bucketId };
           }
         }
-
         for (const [bucketId, units] of Object.entries(input.costs)) {
           sql.exec("UPDATE quota_buckets SET reserved_units=reserved_units+? WHERE bucket_id=?",
             units,bucketId);
@@ -187,11 +298,9 @@ export class QuotaLedgerDO extends DurableObject {
           VALUES (?,?,?,?, 'RESERVED', ?)`,
           input.reservationId,input.workerId,input.operation,JSON.stringify(input.costs),
           Math.min(...input.buckets.map(b=>b.nowEpoch)));
-        return { reservationId: input.reservationId, status: "RESERVED",
-          reservedByBucket: input.costs };
+        return { reservationId: input.reservationId, status: "RESERVED", reservedByBucket: input.costs };
       });
     } catch (error) {
-      // Invalid requests and storage failures cross RPC as structured data.
       return { status: "REJECTED", error: {
         name: error?.name || "Error",
         message: String(error?.message || error)
@@ -199,7 +308,7 @@ export class QuotaLedgerDO extends DurableObject {
     }
   }
 
-  settle(input) {
+  #settle(input) {
     nonEmpty(input?.reservationId, "reservationId");
     nonEmpty(input?.workerId, "workerId");
     if (!input.actualByBucket || typeof input.actualByBucket !== "object"
@@ -232,7 +341,7 @@ export class QuotaLedgerDO extends DurableObject {
     });
   }
 
-  markUncertain(input) {
+  #markUncertain(input) {
     nonEmpty(input?.reservationId, "reservationId");
     nonEmpty(input?.workerId, "workerId");
     const sql = this.ctx.storage.sql;
@@ -253,7 +362,7 @@ export class QuotaLedgerDO extends DurableObject {
     });
   }
 
-  snapshot() {
+  #snapshot() {
     const sql = this.ctx.storage.sql;
     return {
       identity: sql.exec("SELECT * FROM quota_meta WHERE singleton=1").toArray()[0] ?? null,
