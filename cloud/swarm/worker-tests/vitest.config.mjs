@@ -36,12 +36,13 @@ export default defineConfig({
             ],
             bindings: {
               NEXUS_QUOTA_STORE_ENABLED: "true",
+              NEXUS_QUOTA_RESERVATION_TTL_SECONDS: "300",
               NEXUS_QUOTA_CALLER_KEYS: JSON.stringify({
                 primary: primaryTestSecret,
                 secondary: secondaryTestSecret
               }),
               NEXUS_QUOTA_CALLER_POLICIES: JSON.stringify({
-                primary: ["reserve", "settle", "markUncertain", "snapshot", "recordTelemetry"],
+                primary: ["reserve", "settle", "markUncertain", "expireReservations", "snapshot", "recordTelemetry"],
                 secondary: ["reserve", "settle", "markUncertain", "recordTelemetry"]
               }),
               NEXUS_QUOTA_BUCKET_POLICIES: JSON.stringify({
