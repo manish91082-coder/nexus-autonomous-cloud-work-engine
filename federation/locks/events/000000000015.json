@@ -1,0 +1,14 @@
+{
+  "sequence": 15,
+  "event_id": "107d859c-5eb7-4fab-8c9d-2a01e3c42f58",
+  "kind": "LEASE_CLAIMED",
+  "timestamp_utc": "2026-11-15T06:50:28Z",
+  "actor": "probe-worker-11",
+  "scope": "P10CR-CAS-PROBE/manish91082-coder/nexus-autonomous-cloud-work-engine/CAS-PROBE-43687248495-1",
+  "fencing_token": 8,
+  "previous_event_hash": "5e2b39b152d9934d7c43716ecbcaf6bef693cd6bcdf87a74369274b764e5c6c7",
+  "payload": {
+    "idempotency_key": "cas-probe-43687248495-1"
+  },
+  "event_hash": "429f75e35b0a3b63216545fcc9be35078c6433a527dbb887c1a4501be8e6be94"
+}
