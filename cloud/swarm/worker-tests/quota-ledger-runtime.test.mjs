@@ -1366,6 +1366,31 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
     expect(reconciled.reconciledBuckets).toEqual(["core"]);
   });
 
+  it("reconciles only evidenced buckets and retains the rest of a multi-bucket reservation", async () => {
+    const input = identity("partial-uncertain-reconcile","multi");
+    const stub = stubFor(input);
+    const coreSeed = await seedBucket(stub,input,"core",100);
+    await seedBucket(stub,input,"search",100);
+    expect((await call(stub,"reserve",input)).status).toBe("RESERVED");
+    const telemetry = parseGitHubRateLimitHeaders({
+      headers:new Headers({
+        "x-ratelimit-limit":"100","x-ratelimit-remaining":"90","x-ratelimit-used":"10",
+        "x-ratelimit-reset":String(coreSeed.reset_at_epoch),"x-ratelimit-resource":"core"
+      }),
+      credentialScope:input.credentialScope,observedAtEpoch:Math.floor(Date.now()/1000),
+      endpoint:"GET /repos/acme/demo",method:"GET",status:200
+    });
+    await call(stub,"recordTelemetry",{...input,reservationId:input.reservationId,telemetry});
+    await call(stub,"markUncertain",input);
+    const result = await call(stub,"reconcileUncertain",input);
+    expect(result.status).toBe("PARTIALLY_RECONCILED");
+    expect(result.reconciledBuckets).toEqual(["core"]);
+    expect(result.remainingUncertainBuckets).toEqual(["search"]);
+    const snapshot = await call(stub,"snapshot",input);
+    expect(snapshot.buckets.find(x=>x.bucket_id==="core").uncertain_units).toBe(0);
+    expect(snapshot.buckets.find(x=>x.bucket_id==="search").uncertain_units).toBe(5);
+  });
+
   it("does not release uncertain quota when no linked provider response evidence exists", async () => {
     const input = identity("uncertain-no-evidence","core10");
     const stub = stubFor(input);
