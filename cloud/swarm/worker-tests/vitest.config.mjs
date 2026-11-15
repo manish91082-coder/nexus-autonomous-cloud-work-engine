@@ -18,7 +18,7 @@ export default defineConfig({
             durableObjects: {
               QUOTA_LEDGER: {
                 className: "QuotaLedgerDO",
-                scriptName: "nexus-quota-ledger-runtime-tests",
+                scriptName: "core:entry",
                 useSQLite: true
               }
             }
