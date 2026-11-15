@@ -299,3 +299,18 @@ No testnet deployment, X post, video, submission, award or settled revenue is cl
 - No live lock-branch writes, production clients, AI inference, paid service, owner-gated action or spend was enabled. Verified realized net receipts ₹0; authorized spend ₹0.
 - State reconciliation commit: `b22efc7fe2482b18a8ed8346bb7413c5fc8a26fe`.
 - **Next:** Phase 59.25 controlled cloud test execution and operational soak, with bounded workers, request ceiling/safety reserve, fault injection, durable evidence and explicit stop conditions. Keep production clients disabled until acceptance criteria are met. Then Phase 59.26 specialist workflow integration and safe revenue handoff.
+
+
+## 2026-11-15 — PHASE 59.25 ACTUAL GITHUB CLOUD OPERATIONAL SOAK
+
+- PR [#9](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/9) merged to canonical `master`. Tested head `cbba2e23596d901646a4e16f0cfc71ca01b44d8c`; merge commit `e26459df09c7765ddea71c3002a8fcf90778b950`.
+- Added a thread-safe shared API quota guard and optional run-wide budget injection into GitHub Git-ref store clients; added per-store jitter for CAS conflict retries; added a bounded serial recovery lane for CASConflict losers only.
+- Actual GitHub-hosted cloud run [43694502929](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43694502929) SUCCESS. Read-only contract/regression CI [43694502933](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43694502933) SUCCESS. PR-head regression runs 43694934944 (59.24), 43694934769 (59.25), 43694934713 (59.19), 43694934698 (59.22), 43694934676 (59.23), 43694934672 (59.20) all SUCCESS.
+- Actual GitHub REST Git-ref CAS writes occurred only on the disposable `phase59-25-cloud-soak-state` branch and isolated path `federation/phase59-25-cloud-soak/`. The branch was deleted after execution; production `federation-locks` was untouched.
+- Results: 8/8 unique durable claims; 8 unique fencing tokens; 3 CAS-conflict losers recovered by bounded serial retry; 8/8 duplicate delivery attempts rejected; wrong-owner stale-fence rejected; six atomic heartbeat batches renewed all eight leases; 15-event hash chain verified.
+- Short soak target 180 seconds; measured soak interval 218.698 seconds. Run duration 277.294 seconds.
+- API telemetry: 405 requests against a 480 run-wide ceiling; remaining rate quota 4,504; safety reserve 100; zero transport failures; telemetry complete.
+- Evidence report: `research/PHASE_59_25_GITHUB_CLOUD_OPERATIONAL_SOAK_2026-11-15.md`. Machine artifact ID 14153369478, SHA-256 `398d49ba831a527a845367647a457f194fc187af250bcc3f4674312d422e07e5`.
+- Limits: eight threads on one GitHub-hosted runner, not eight hosts; short soak is not 7/30-day production soak; shared quota budget is run-local, not cross-run/cross-repository global arbitration. Production clients remain disabled. No AI inference, paid service, owner-gated action or spend. Verified PCNE ₹0; authorized spend ₹0.
+- Mission state and queue reconciliation recorded. P59-003 remains IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED.
+- **Next:** Phase 59.26 specialist agent workflow integration with typed role contracts, bounded parallel research, evidence provenance, independent review and fail-closed action gates. Retain production-disabled boundary until global quota, branch ruleset, owner-approved GitHub App, production client and 7/30-day soak gates pass.
