@@ -351,6 +351,10 @@ class GitHubGitRefStore:
             self.quota_guard.observe_transport_failure()
             raise LockStoreUnavailable(f"GitHub API unavailable: {type(exc).__name__}") from exc
 
+    def quota_telemetry(self):
+        """Return sanitized process-local request and rate-limit telemetry."""
+        return self.quota_guard.snapshot()
+
     def _ref_get_path(self):
         return "/repos/" + self.repository + "/git/ref/heads/" + urllib.parse.quote(self.branch, safe="/")
 
