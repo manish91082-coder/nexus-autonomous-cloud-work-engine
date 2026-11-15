@@ -26,6 +26,14 @@ def _claim_in_process(db_path, worker, barrier, output):
     except DurableExecutionError:
         output.put("LOST")
 
+
+def _crash_after_checkpoint(db_path, marker):
+    store = DurableStore(db_path)
+    lease = store.claim_task("CRASH-TASK", "crash-worker", now=T0, lease_seconds=15)
+    store.checkpoint("CRASH-TASK", "crash-worker", lease["fencing_token"], {"cursor": 41}, now=T0)
+    Path(marker).write_text(str(lease["fencing_token"]), encoding="utf-8")
+    os._exit(23)
+
 class DurableExecutionTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
@@ -198,6 +206,66 @@ class DurableExecutionTests(unittest.TestCase):
             conn.execute("UPDATE events SET kind='TAMPERED' WHERE seq=1")
         self.assertFalse(self.store.verify_event_chain())
 
+
+
+    def test_process_crash_recovers_checkpoint_and_fences_old_worker(self):
+        self.store.register_task("CRASH-TASK", "crash-idem", {}, max_attempts=3, now=T0)
+        marker = Path(self.tmp.name) / "crash.marker"
+        ctx = multiprocessing.get_context("spawn")
+        child = ctx.Process(target=_crash_after_checkpoint, args=(str(self.db), str(marker)))
+        child.start()
+        child.join(10)
+        self.assertEqual(child.exitcode, 23)
+        self.assertTrue(marker.exists())
+        old_token = int(marker.read_text(encoding="utf-8"))
+        reopened = DurableStore(self.db)
+        self.assertEqual(reopened.get_task("CRASH-TASK")["checkpoint"], {"cursor": 41})
+        recovered = reopened.recover_expired_leases(now=T0 + timedelta(seconds=16))
+        self.assertEqual(recovered, ["CRASH-TASK"])
+        task = reopened.get_task("CRASH-TASK")
+        self.assertEqual(task["status"], "READY")
+        self.assertEqual(task["last_error_code"], "LEASE_EXPIRED")
+        self.assertEqual(task["checkpoint"], {"cursor": 41})
+        with self.assertRaises(DurableExecutionError):
+            reopened.heartbeat("CRASH-TASK", "crash-worker", old_token, now=T0 + timedelta(seconds=17))
+        self.assertTrue(reopened.verify_event_chain())
+        resumed = reopened.claim_task("CRASH-TASK", "recovery-worker", now=T0 + timedelta(seconds=76))
+        self.assertGreater(resumed["fencing_token"], old_token)
+
+    @unittest.skipUnless(os.name == "posix" and Path("/proc").exists(), "Linux /proc process-tree assertion")
+    def test_linux_timeout_kills_entire_child_process_group(self):
+        child_script = Path(self.tmp.name) / "tree_child.py"
+        parent_script = Path(self.tmp.name) / "tree_parent.py"
+        pid_file = Path(self.tmp.name) / "child.pid"
+        child_script.write_text("import time\\ntime.sleep(30)\\n", encoding="utf-8")
+        parent_script.write_text(
+            "import subprocess, sys, time\\n"
+            "p = subprocess.Popen([sys.executable, " + repr(str(child_script)) + "])\\n"
+            "open(" + repr(str(pid_file)) + ", 'w').write(str(p.pid))\\n"
+            "time.sleep(30)\\n",
+            encoding="utf-8",
+        )
+        result = run_isolated_process([sys.executable, str(parent_script)],
+                                      allowed_executables={sys.executable},
+                                      allowed_script_paths={str(parent_script)},
+                                      timeout_seconds=0.6)
+        self.assertEqual(result["status"], "TIMED_OUT")
+        self.assertTrue(pid_file.exists())
+        child_pid = int(pid_file.read_text(encoding="utf-8"))
+        deadline = time.monotonic() + 5
+        alive = True
+        while time.monotonic() < deadline:
+            try:
+                stat = Path(f"/proc/{child_pid}/stat").read_text(encoding="utf-8")
+                state = stat.rsplit(")", 1)[1].strip().split()[0]
+                if state == "Z":
+                    alive = False
+                    break
+            except FileNotFoundError:
+                alive = False
+                break
+            time.sleep(0.05)
+        self.assertFalse(alive, "descendant process survived process-group timeout")
 
 if __name__ == "__main__":
     unittest.main()
