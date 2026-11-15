@@ -67,3 +67,14 @@ These were deliberately not changed in this migration. They are not part of P10C
 4. Implement the real shared-store federation lease service and GitHub Actions/API quota arbiter only after the storage and permission boundaries are proven.
 
 Financial state unchanged: verified PCNE ₹0; bank-settled receipts ₹0; authorized spend ₹0.
+
+
+## Permission-minimization decision — retain bounded repository write for now
+
+Source review of `scripts/ai_task_executor.py` confirms the worker writes two files:
+- `ai_worker_report.json` — untrusted draft/status output.
+- `control/ai_usage_state.json` — durable daily call count and last-call timestamp used by the six-calls/day cap and 30-minute cooldown.
+
+The workflow commits only these two explicit paths, and only when the report status is `DRAFT_READY_FOR_EVIDENCE_REVIEW`. If `contents: write` were removed now without replacing the quota-state persistence path, the next ephemeral runner could lose the prior daily counter/cooldown and the zero-cost circuit-breaker would become weaker. Therefore **do not downgrade the active worker to contents: read yet**.
+
+Current run evidence shows AI remains disabled by default and made no inference request. The write permission is repository-scoped, not organization administration. Next, design a separate single-writer publisher and durable quota-state mechanism with artifact schema/path validation, duplicate-run idempotency and fencing; only after that can compute be read-only and publisher alone retain contents: write. Do not introduce a second publisher or move quota state to ephemeral artifacts without a tested persistence contract.
