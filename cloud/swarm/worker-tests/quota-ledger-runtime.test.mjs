@@ -7,6 +7,7 @@ import {
   parseGitHubGraphqlRateLimit
 } from "../github-quota-telemetry.mjs";
 import { createSignedRequest, signedCall } from "./quota-auth-test-helper.mjs";
+import { executeQuotaGuardedGitHubRequest } from "../quota-ledger-client.mjs";
 
 const identity = (suffix, operation = "core10") => ({
   provider: "github",
@@ -808,6 +809,124 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
     expect(snapshot.buckets[0].reserved_units).toBe(0);
     expect(snapshot.buckets[0].committed_units).toBe(10);
     expect(snapshot.buckets[0].committed_since_observation_units).toBe(0);
+  });
+
+  it("reserves, sends once, links response telemetry and settles conservatively", async () => {
+    const input = identity("client-lifecycle", "core10");
+    const stub = stubFor(input);
+    const seeded = await seedBucket(stub, input, "core", 100);
+    let providerCalls = 0;
+    const result = await executeQuotaGuardedGitHubRequest({
+      env,
+      credentialScope: input.credentialScope,
+      operation: input.operation,
+      workerId: input.workerId,
+      requestId: "lifecycle-001",
+      request: new Request("https://api.github.com/repos/acme/demo"),
+      fetchImpl: async () => {
+        providerCalls += 1;
+        return new Response(JSON.stringify({ok:true}), {
+          status: 200,
+          headers: {
+            "content-type":"application/json",
+            "x-ratelimit-limit":"100",
+            "x-ratelimit-remaining":"90",
+            "x-ratelimit-used":"10",
+            "x-ratelimit-reset":String(seeded.reset_at_epoch),
+            "x-ratelimit-resource":"core",
+            "x-github-request-id":"12345678-1234-4123-8123-123456789abc"
+          }
+        });
+      }
+    });
+    expect(result.status).toBe("COMPLETED");
+    expect(providerCalls).toBe(1);
+    expect(result.settlement.status).toBe("SETTLED");
+    const snapshot = await call(stub, "snapshot", input);
+    expect(snapshot.reservations.find(x => x.reservation_id === "p10cr:lifecycle-001").status)
+      .toBe("SETTLED");
+    expect(snapshot.telemetryObservations.some(x => x.reservation_id === "p10cr:lifecycle-001")).toBe(true);
+    expect(snapshot.buckets[0].reserved_units).toBe(0);
+    expect(snapshot.buckets[0].committed_units).toBe(10);
+    expect(snapshot.buckets[0].committed_since_observation_units).toBe(0);
+  });
+
+  it("does not send a provider request when authoritative quota admission is unavailable", async () => {
+    const input = identity("client-no-admission", "core10");
+    const stub = stubFor(input);
+    const now = Math.floor(Date.now()/1000);
+    const overview = parseGitHubRateLimitOverview({
+      credentialScope:input.credentialScope,
+      observedAtEpoch:now,
+      payload:{resources:{core:{limit:100,used:0,remaining:100,reset:now+3600}}}
+    }).buckets[0];
+    await call(stub, "recordTelemetry", {
+      provider:input.provider,credentialScope:input.credentialScope,
+      windowId:input.windowId,telemetry:overview
+    });
+    let providerCalls = 0;
+    const result = await executeQuotaGuardedGitHubRequest({
+      env,credentialScope:input.credentialScope,operation:input.operation,
+      workerId:input.workerId,requestId:"no-admission-001",
+      request:new Request("https://api.github.com/repos/acme/demo"),
+      fetchImpl:async()=>{providerCalls+=1;return new Response("should-not-run");}
+    });
+    expect(result.status).toBe("NOT_SENT");
+    expect(providerCalls).toBe(0);
+    expect(result.admission.reason).toMatch(/insufficient authority/);
+  });
+
+  it("retains the full reservation as uncertain when the provider outcome is ambiguous", async () => {
+    const input = identity("client-ambiguous", "core10");
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",100);
+    const result = await executeQuotaGuardedGitHubRequest({
+      env,credentialScope:input.credentialScope,operation:input.operation,
+      workerId:input.workerId,requestId:"ambiguous-001",
+      request:new Request("https://api.github.com/repos/acme/demo"),
+      fetchImpl:async()=>{throw new Error("connection reset after write");}
+    });
+    expect(result.status).toBe("PROVIDER_OUTCOME_UNCERTAIN");
+    expect(result.accounting.status).toBe("UNCERTAIN_BUDGET_RETAINED");
+    const snapshot = await call(stub,"snapshot",input);
+    expect(snapshot.buckets[0].reserved_units).toBe(0);
+    expect(snapshot.buckets[0].uncertain_units).toBe(10);
+  });
+
+  it("never replays a provider request for a duplicate stable request ID", async () => {
+    const input = identity("client-idempotent", "core10");
+    const stub = stubFor(input);
+    const seeded = await seedBucket(stub,input,"core",100);
+    let providerCalls = 0;
+    const execute = () => executeQuotaGuardedGitHubRequest({
+      env,credentialScope:input.credentialScope,operation:input.operation,
+      workerId:input.workerId,requestId:"same-stable-request",
+      request:new Request("https://api.github.com/repos/acme/demo"),
+      fetchImpl:async()=>{
+        providerCalls+=1;
+        return new Response("ok",{status:200,headers:{
+          "x-ratelimit-limit":"100","x-ratelimit-remaining":"90",
+          "x-ratelimit-used":"10","x-ratelimit-reset":String(seeded.reset_at_epoch),
+          "x-ratelimit-resource":"core"
+        }});
+      }
+    });
+    const first = await execute();
+    const second = await execute();
+    expect(first.status).toBe("COMPLETED");
+    expect(second.status).toBe("DUPLICATE_REQUEST_NOT_REPLAYED");
+    expect(providerCalls).toBe(1);
+  });
+
+  it("rejects non-GitHub destinations before reserving or making a network call", async () => {
+    const input = identity("client-host-restriction", "core10");
+    await seedBucket(stubFor(input),input,"core",100);
+    await expect(executeQuotaGuardedGitHubRequest({
+      env,credentialScope:input.credentialScope,operation:input.operation,
+      workerId:input.workerId,requestId:"wrong-host",
+      request:new Request("https://example.com/data"),
+      fetchImpl:async()=>{throw new Error("must not run");}
+    })).rejects.toThrow(/api.github.com/);
   });
 
   it("derives collision-safe object names from the provider, credential and window tuple", () => {
