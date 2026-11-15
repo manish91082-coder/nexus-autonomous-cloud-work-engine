@@ -167,11 +167,3 @@ export class QuotaLedgerDO extends DurableObject {
   }
 }
 
-/** Disabled-by-default caller guard; no provider worker should bypass this. */
-export function requireQuotaStoreEnabled(env) {
-  if (env?.NEXUS_QUOTA_STORE_ENABLED !== "true") {
-    throw new QuotaLedgerError("WAITING_FOR_QUOTA: transactional quota store disabled");
-  }
-  if (!env?.QUOTA_LEDGER) throw new QuotaLedgerError("WAITING_FOR_QUOTA: QUOTA_LEDGER binding missing");
-  return env.QUOTA_LEDGER;
-}
