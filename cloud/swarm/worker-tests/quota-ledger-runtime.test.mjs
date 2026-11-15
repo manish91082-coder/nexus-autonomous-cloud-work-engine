@@ -812,7 +812,7 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
   });
 
   it("reserves, sends once, links response telemetry and settles conservatively", async () => {
-    const input = identity("client-lifecycle", "core10");
+    const input = identity("client-lifecycle", "github.rest.repositories.get.v1");
     const stub = stubFor(input);
     const seeded = await seedBucket(stub, input, "core", 100);
     let providerCalls = 0;
@@ -843,8 +843,9 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
     expect(providerCalls).toBe(1);
     expect(result.settlement.status).toBe("SETTLED");
     const snapshot = await call(stub, "snapshot", input);
-    expect(snapshot.reservations.find(x => x.reservation_id === "p10cr:lifecycle-001").status)
-      .toBe("SETTLED");
+    const storedReservation = snapshot.reservations.find(x => x.reservation_id === "p10cr:lifecycle-001");
+    expect(storedReservation.status).toBe("SETTLED");
+    expect(storedReservation.request_fingerprint).toMatch(/^[a-f0-9]{64}$/);
     expect(snapshot.telemetryObservations.some(x => x.reservation_id === "p10cr:lifecycle-001")).toBe(true);
     expect(snapshot.buckets[0].reserved_units).toBe(0);
     expect(snapshot.buckets[0].committed_units).toBe(10);
@@ -852,7 +853,7 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
   });
 
   it("does not send a provider request when authoritative quota admission is unavailable", async () => {
-    const input = identity("client-no-admission", "core10");
+    const input = identity("client-no-admission", "github.rest.repositories.get.v1");
     const stub = stubFor(input);
     const now = Math.floor(Date.now()/1000);
     const overview = parseGitHubRateLimitOverview({
@@ -877,7 +878,7 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
   });
 
   it("retains the full reservation as uncertain when the provider outcome is ambiguous", async () => {
-    const input = identity("client-ambiguous", "core10");
+    const input = identity("client-ambiguous", "github.rest.repositories.get.v1");
     const stub = stubFor(input);
     await seedBucket(stub,input,"core",100);
     const result = await executeQuotaGuardedGitHubRequest({
@@ -894,7 +895,7 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
   });
 
   it("never replays a provider request for a duplicate stable request ID", async () => {
-    const input = identity("client-idempotent", "core10");
+    const input = identity("client-idempotent", "github.rest.repositories.get.v1");
     const stub = stubFor(input);
     const seeded = await seedBucket(stub,input,"core",100);
     let providerCalls = 0;
@@ -919,7 +920,7 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
   });
 
   it("rejects non-GitHub destinations before reserving or making a network call", async () => {
-    const input = identity("client-host-restriction", "core10");
+    const input = identity("client-host-restriction", "github.rest.repositories.get.v1");
     await seedBucket(stubFor(input),input,"core",100);
     await expect(executeQuotaGuardedGitHubRequest({
       env,credentialScope:input.credentialScope,operation:input.operation,
