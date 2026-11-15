@@ -4,7 +4,7 @@
 **Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
 **Mission authority:** `MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md`  
 **Current task:** P59-003 IN_PROGRESS; P59-001 PAUSED (not cancelled); P59-002 BLOCKED.  
-**Scope exclusion:** Tech Cloud ERP is unrelated and is not part of this mission. Do not research, inventory, compare or mention it in future mission work.  
+**Scope exclusion:** An unrelated asset thread is outside this mission. Do not research, inventory or compare it here.  
 **Financial truth:** spend ₹0; PCNE ₹0; no model inference enabled.
 
 ## 1. Correction and restored mission objective
