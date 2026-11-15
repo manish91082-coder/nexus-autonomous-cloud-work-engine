@@ -217,6 +217,32 @@ describe("Phase 59.37 authenticated internal quota RPC", () => {
     expect(snapshot.reservations).toHaveLength(2);
   });
 
+  it("enforces least-privilege action policy for the secondary caller", async () => {
+    const input = {
+      ...identity("least-privilege"),
+      buckets: [bucket("core")],
+      costs: { core: 10 }
+    };
+    const stub = stubFor(input);
+    await call(stub, "reserve", input);
+    const response = await env.SECOND_CALLER.fetch(new Request(
+      "https://secondary-caller/settle",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          action: "settle",
+          input: { ...input, actualByBucket: { core: 5 }, nowEpoch: 1020 }
+        })
+      }
+    ));
+    expect(response.status).toBe(403);
+    expect((await response.json()).reason).toBe("CALLER_ACTION_FORBIDDEN");
+    const snapshot = await call(stub, "snapshot", input);
+    expect(snapshot.reservations[0].status).toBe("RESERVED");
+    expect(snapshot.buckets[0].reserved_units).toBe(10);
+  });
+
   it("prevents oversubscription across authenticated primary and auxiliary Worker callers", async () => {
     const input = {
       ...identity("cross-worker-race"),
