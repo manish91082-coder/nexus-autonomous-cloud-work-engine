@@ -51,7 +51,7 @@ test("keeps search, code_search, GraphQL and runner-registration resources disti
   const resources = ["search", "code_search", "graphql", "actions_runner_registration"];
   const parsed = resources.map(resource => headerRecord({"x-ratelimit-resource": resource}));
   assert.deepEqual(parsed.map(x => x.bucket_id), resources);
-  assert.equal(new Set(parsed.map(x => x.window_id)).size, 1);
+  assert.equal(new Set(parsed.map(x => x.window_id)).size, 4);
 });
 
 test("fails closed when a required rate-limit header is absent", () => {
