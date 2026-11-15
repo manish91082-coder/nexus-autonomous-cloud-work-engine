@@ -5,6 +5,7 @@ on:
     branches: [master, phase59-35-quota-do-runtime-tests]
     paths:
       - 'cloud/swarm/quota-ledger-do.mjs'
+      - 'cloud/swarm/quota-ledger-contract.mjs'
       - 'cloud/swarm/worker-tests/**'
       - '.github/workflows/phase59-35-quota-do-runtime-tests.yml'
   pull_request:
