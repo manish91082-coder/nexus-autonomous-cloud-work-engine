@@ -1,7 +1,7 @@
 # Phase 59.41 — Quota-Bound Worker Client Lifecycle
 
 **Mission:** P10CR / P59-003 AI agentic swarm foundation  
-**Status:** PARTIAL IMPLEMENTATION; isolated lifecycle contract tests pass on prior exact head; latest hardening run pending  
+**Status:** PARTIAL IMPLEMENTATION; isolated lifecycle contract tests PASS  
 **Branch:** `phase59-41-worker-client-lifecycle`  
 **Spend:** ₹0; **live provider requests:** none; **production feature flag:** OFF
 
@@ -12,18 +12,19 @@
 - Unknown or unreviewed operation costs fail closed before reservation.
 - Endpoint identity binds HTTP method, exact path and normalized query fingerprint; query-order variation is canonicalized.
 - Added Workers-compatible Web Crypto HMAC request signing helper for the existing internal `POST /rpc` envelope; no Node-only crypto import.
+- Added concrete `createQuotaLedgerClient()` adapter for a configured Durable Object namespace. It derives the canonical provider/credential/partition object name, signs every RPC, validates the response, and exposes reserve/settle/mark-uncertain/record-telemetry methods.
 - Transport failure, response telemetry failure, or failed settlement retains budget by transitioning the reservation to uncertain; it never silently refunds.
 - Denied admission never invokes the provider request.
 - Added isolated Node 24 CI: `phase59-41-quota-worker-client.yml`.
 
 ## Test evidence
 
-- Run [43712495782](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43712495782): **8/8 PASS**, syntax check PASS, exact tested commit `adec1bda30e12a3ead47df4fa3dd8343f5c19ceb`.
-- Latest hardening commit `558ea045e108d8cb9c2af432ad38e69454f6c21f` requires the telemetry RPC adapter as a lifecycle dependency. CI run [43712557637](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43712557637) was pending when this report was authored; do not attribute the prior 8/8 result to this newer commit.
+- Latest exact-head run [43712659315](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43712659315): **10/10 PASS**, syntax check PASS, tested commit `6ff4651298b8d58d346e59f0a39de417741e6428`.
+- Earlier 8/8 and 10/10 runs are superseded by the latest 10/10 result.
 
 ## Explicit gaps / NO-GO boundaries
 
-- This is an isolated orchestration contract, not yet a concrete production Worker binding adapter. The injected `ledger` interface must be wired to the authenticated Durable Object RPC and independently tested.
+- The concrete Durable Object adapter is covered with a fake namespace contract, but it is not yet wired into the production swarm Worker entrypoint or exercised against a live Workers binding in the workerd harness.
 - No provider-specific request implementation or live API calls were made.
 - No reviewed production endpoint-cost registry exists. The test registry is synthetic and cannot authorize production calls.
 - Reservation expiry, stale-worker lease fencing, crash recovery/reconciliation, and idempotent provider retries are not implemented in this phase yet.
