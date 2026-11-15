@@ -811,6 +811,19 @@ describe("Phase 59.41 guarded GitHub request lifecycle", () => {
     expect(snapshot.buckets[0].committed_since_observation_units).toBe(0);
   });
 
+  it("rejects a signed fingerprint attached to an operation absent from the reviewed registry", async () => {
+    const input = identity("client-registry-server-check", "core10");
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",100);
+    const result = await call(stub,"reserve",{
+      ...input,
+      requestFingerprint:"a".repeat(64)
+    });
+    expect(result.status).toBe("REJECTED");
+    expect(result.error.message).toMatch(/unregistered operation/);
+    expect((await call(stub,"snapshot",input)).reservations).toHaveLength(0);
+  });
+
   it("reserves, sends once, links response telemetry and settles conservatively", async () => {
     const input = identity("client-lifecycle", "github.rest.repositories.get.v1");
     const stub = stubFor(input);
