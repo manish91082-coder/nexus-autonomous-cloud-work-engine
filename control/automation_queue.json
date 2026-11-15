@@ -3070,7 +3070,7 @@
           "Amazon KDP 2026 royalty terms"
         ],
         "critical_distinction": "Revenue engine vs distribution rail; same SaaS product across two marketplaces is not two separate product streams.",
-        "next": "Resume V5 portfolio-wide source map. Re-open the complete prior ranking and evidence reports; verify source citations/current terms, expand remaining eligible source families, quantify risk-adjusted PCNE and time-to-first-paid transaction, audit owned/licensable assets, and select one source only after all gates. Do not build or spend before the decision dossier passes.",
+        "next": "Complete remaining source-family scorecard with explicit unknowns; re-audit only canonical repository's eight existing product assets; compare any rights-cleared owned asset against a greenfield buyer problem. Select one candidate only after two independent demand signals, 10–15 substitute audit, price-bearing WTP, India payout, positive fully-loaded unit economics, rights and self-serve gates. No build or spend.",
         "asset_audit_report": "research/PHASE_59_2_EXISTING_SOFTWARE_IP_ASSET_AUDIT_2026-11-14.md",
         "asset_audit_status": "COMPLETED_INITIAL_REPOSITORY_AUDIT; NO_EXISTING_ASSET_PASSES_FIRST_PRODUCT_GATE",
         "canonical_assets_audited": 8,
@@ -3149,6 +3149,52 @@
           "dropbox_targeted_queries": 5,
           "dropbox_matches": 0,
           "interpretation": "NOT_FOUND_IN_CONNECTED_SURFACES; DOES_NOT_PROVE_NONEXISTENCE; ownership/source/rights remain UNVERIFIED"
+        },
+        "phase59_28": {
+          "report": "research/PHASE_59_28_NEW_CANDIDATE_GATES_2026-11-15.md",
+          "source_ranking_update": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md#16",
+          "external_research_date": "2026-11-15",
+          "candidates": {
+            "generic_ebrc_reconciliation": {
+              "disposition": "NO_GO_CANDIDATE",
+              "reasons": [
+                "DGFT first-party IRM API and bulk self-certification",
+                "eBRC.in exporter app free at any volume",
+                "eBRC.in API free general use up to 250 production certificates/month and 10 entities",
+                "EximJinn ₹1500/month",
+                "ExportEazy ₹2999 and ₹7999/month tiers",
+                "OneCompliance broader export workflow"
+              ],
+              "concrete_product_selected": false
+            },
+            "generic_ai_agency_cost_margin_ledger": {
+              "disposition": "NO_GO_AS_CLONE",
+              "direct_competitor": "Walleta Agency",
+              "published_price_usd_per_month": [
+                149,
+                349,
+                599
+              ],
+              "adjacent_agent_observability_tools": 13,
+              "differentiated_gap_verified": false,
+              "parent_ai_api_source_family": "OPEN"
+            },
+            "gumroad_distribution": {
+              "disposition": "QUALIFIED_RAIL_PRODUCT_NONE",
+              "india_local_bank_payout_inr": true,
+              "direct_fee": "10% + $0.50 plus card processing",
+              "discover_fee": "30%",
+              "standard_payout_threshold_usd": 100,
+              "kyc_and_review_required": true,
+              "product_demand_verified": false
+            }
+          },
+          "portfolio_decision": "B2B_PRODUCTIZED_VERTICAL_SAAS_MARKETPLACE_DISTRIBUTION_PROVISIONAL_FIRST",
+          "concrete_product_selected": false,
+          "build_authorized": false,
+          "pcne_inr": 0,
+          "authorized_spend_inr": 0,
+          "next": "Complete source-family scorecard with unknowns explicit; canonical asset-only re-audit; compare rights-cleared owned asset vs greenfield buyer problem."
         }
       },
       "dependency_note": "Safe handoff from Phase59.26 completed. Resume evidence-backed V5 portfolio-wide research now. Use public/official source research and supplied evidence; specialist workflow is deterministic/provider-neutral and must not be described as live LLM research. No product build until the P59-001 selection and all P59-002 release gates pass."
