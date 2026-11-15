@@ -116,6 +116,7 @@ class DurableExecutionTests(unittest.TestCase):
                 conn.execute("UPDATE events SET kind='MUTATED' WHERE seq=1")
             with self.assertRaises(sqlite3.IntegrityError):
                 conn.execute("DELETE FROM events WHERE seq=1")
+        conn.close()
 
     def test_retry_backoff_then_dead_letter(self):
         self.store.register_task("T1", "idem-1", {}, max_attempts=2, now=T0)
@@ -204,6 +205,7 @@ class DurableExecutionTests(unittest.TestCase):
         with sqlite3.connect(self.db) as conn:
             conn.execute("DROP TRIGGER events_no_update")
             conn.execute("UPDATE events SET kind='TAMPERED' WHERE seq=1")
+        conn.close()
         self.assertFalse(self.store.verify_event_chain())
 
 
