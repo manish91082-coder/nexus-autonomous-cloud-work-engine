@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { env } from "cloudflare:workers";
-import { quotaLedgerObjectName } from "../quota-ledger-do.mjs";
+import { quotaLedgerObjectName } from "../quota-ledger-contract.mjs";
 
 const identity = (suffix) => ({
   provider: "github",
