@@ -15,9 +15,9 @@ from scripts.federation_git_ref_store import (
 )
 
 REQUESTS_PER_RESERVATION = 10
-GLOBAL_RESERVATIONS_PER_UTC_HOUR = 40
+GLOBAL_RESERVATIONS_PER_UTC_HOUR = 36
 PROJECT_CAPS = {
-    "P10CR": 16,
+    "P10CR": 12,
     "FLASHLOAN-RESEARCH": 8,
     "ZCIRA": 6,
     "DAILY1000": 4,
@@ -61,9 +61,9 @@ def reserve_quota_transition(state, project_id, reservation_id, worker_id,
     current = [x for x in reservations if x.get("window_start_utc") == hour]
     if len(current) >= GLOBAL_RESERVATIONS_PER_UTC_HOUR:
         raise LockBusy("global controller API quota exhausted; WAITING_FOR_QUOTA")
-    project_count = sum(1 for x in current if x.get("project_id") == project)
+    project_count = sum(1 for x in current if x.get("project_id") == project and x.get("emergency") is False)
     cap = PROJECT_CAPS[project]
-    if project_count >= cap:
+    if not emergency and project_count >= cap:
         raise LockBusy("project fairness allocation exhausted; WAITING_FOR_QUOTA")
     emergency_count = sum(1 for x in current if x.get("emergency") is True)
     if emergency:
