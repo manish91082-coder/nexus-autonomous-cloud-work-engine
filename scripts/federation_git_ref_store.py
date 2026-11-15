@@ -90,8 +90,8 @@ def append_event_to_chunk(existing, event, chunk_size=EVENT_CHUNK_SIZE):
     path = event_partition_path("events", event, chunk_size)
     if existing:
         previous = existing[-1]
-        if not isinstance(previous, dict) or previous.get("sequence") >= event["sequence"]:
-            raise FederationLockError("event chunk sequence is not strictly increasing")
+        if not isinstance(previous, dict) or event["sequence"] != previous.get("sequence", -2) + 1:
+            raise FederationLockError("event chunk sequence is not contiguous")
         if event_partition_path("events", previous, chunk_size) != path:
             raise FederationLockError("event does not belong to this chunk")
     return [*existing, event]
