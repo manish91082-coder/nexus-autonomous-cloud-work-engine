@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
-  "status": "PARTITIONED_JOURNAL_MERGED_QUOTA_ARBITER_NOT_ENABLED",
+  "status": "PHASE59_21_AUDIT_COMPLETE_CLIENTS_AND_QUOTA_DISABLED",
   "branch": "federation-locks",
   "state_path": "federation/locks/state.json",
-  "event_path_pattern": "federation/locks/events/{sequence}.json",
+  "event_path_pattern": "federation/locks/events/v2/YYYY/MM/chunk-NNNNNNNN.json",
   "atomicity": "Each transition creates a commit whose parent is the previously observed branch HEAD; branch ref update must be fast-forward only. Concurrent stale-parent commits are rejected and must reread/retry.",
   "lease_seconds": 900,
   "heartbeat_seconds": 300,
@@ -59,13 +59,23 @@
     "client_integration": false,
     "live_reservations_written": false,
     "activation_blockers": [
-      "flat event journal verifier currently caps directory listing at 1000 files; partition/pagination and 30-day audit required",
-      "measure actual REST calls under normal and CAS-conflict paths",
-      "branch ruleset/force-push protection not verified",
-      "least-privilege GitHub App not installed",
-      "project clients and 7/30-day soak not completed"
+      "source-derived mutation cost is 9 REST requests per successful attempt and up to 45 at max_retries=5",
+      "10-request reservation underfunds worst-case mutation",
+      "quota reservation itself is a lock-store mutation; self-accounting is unresolved",
+      "synthetic 30-day heartbeat model shows 864 no-conflict mutation requests/hour at 8 active leases and 300-second heartbeat",
+      "lower-write heartbeat protocol and 8-way contention simulation required",
+      "branch ruleset, GitHub App, client integration and controlled soak remain"
     ],
-    "scope_limit": "Controller repository federation lock-store REST admission only; not an account-wide Actions-minute meter and not a meter for other repositories' independent GITHUB_TOKEN quotas."
+    "scope_limit": "Controller repository federation lock-store REST admission only; not an account-wide Actions-minute meter and not a meter for other repositories' independent GITHUB_TOKEN quotas.",
+    "request_cost_audit": {
+      "successful_mutation_attempt_requests": 9,
+      "max_retries": 5,
+      "worst_case_mutation_requests": 45,
+      "read_snapshot_requests": 3,
+      "requests_per_reservation_current": 10,
+      "reservation_write_cost_included": false,
+      "live_measurement": false
+    }
   },
   "event_journal": {
     "status": "PARTITIONED_V2_MERGED_NOT_LIVE_SOAKED",
@@ -92,5 +102,18 @@
       "quota reservation recalibration",
       "branch ruleset and GitHub App/client gates"
     ]
+  },
+  "phase59_21": {
+    "report": "research/PHASE_59_21_FEDERATION_API_COST_AND_30_DAY_GROWTH_AUDIT_2026-11-15.md",
+    "base_master": "8737f249fb630f922623cbdf745c283ea2f7e1bd",
+    "request_cost_success": 9,
+    "request_cost_max_retry": 45,
+    "synthetic_30d_heartbeats": 69120,
+    "synthetic_30d_chunks": 270,
+    "synthetic_30d_no_conflict_requests": 622080,
+    "synthetic_average_requests_per_hour": 864,
+    "live_soak": false,
+    "lock_branch_writes": false,
+    "clients_enabled": false
   }
 }
