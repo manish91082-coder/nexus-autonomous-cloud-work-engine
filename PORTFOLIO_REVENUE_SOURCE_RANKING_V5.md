@@ -246,3 +246,15 @@ See [Phase 59.30 scorecard](research/PHASE_59_30_V5_WEIGHTED_SOURCE_FAMILY_SCORE
 - Generic Jira AI-agent approval/audit app: NO-GO candidate. Direct Marketplace apps Approval Flow and AgentGate provide sign-off, agent gating, audit receipts and Forge-native controls; GitHub ships native agentic workflows/enterprise AI controls; 15 direct/adjacent alternatives audited. Two Reddit threads indicate qualitative pain but no buyer WTP.
 - **Portfolio decision unchanged:** Marketplace-distributed B2B software / vertical SaaS remains provisional first source family; Gumroad digital product rail remains secondary; no concrete product selected; no build or spend. P59-001 IN_PROGRESS; P59-003 PAUSED; P59-002 BLOCKED; PCNE ₹0.
 - Next: research a new recurring B2B workflow problem in a marketplace ecosystem, excluding already rejected generic approval/audit, eBRC, agency-margin, recruitment, agri reconciliation, manufacturing job-work and generic AI reviewer hypotheses. Require two independent buyer signals, 10–15 substitute audit, price-bearing WTP, India payout, positive fully-loaded economics, rights and self-serve fulfilment.
+
+
+## 19. Phase 59.31 — MSP Microsoft 365 CSP SLA-credit assistant screen (15-Nov-2026)
+
+See [Phase 59.31 candidate report](research/PHASE_59_31_MSP_CSP_SLA_CREDIT_CLAIM_ASSISTANT_SCREEN_2026-11-15.md).
+
+- Two independent r/msp discussions (55 and 226 votes) show friction around submitting Microsoft 365 SLA-credit claims for CSP customers; a third discussion includes explicit economic skepticism and an anecdotal ~$600 estimate for 1,200 seats.
+- Official Microsoft Partner Center process has strict evidence requirements and one-month (non-Azure) / two-month (Azure) claim windows. Graph Service Communications API can expose service health, but ServiceHealth.Read.All and customer/partner authorisation are sensitive gates.
+- 15 direct/adjacent substitutes audited: Microsoft Partner Center, Graph, Crayon, Pax8, ServiceNow, Aavenir, Qvery, Mientha, Kestra, Jira SLA apps, Motadata and manual PSA/spreadsheet processes.
+- Candidate disposition: **HOLD — do not build**. Pain is evidenced; price-bearing WTP, repeatable claim frequency, small-MSP economics, India CSP eligibility and a least-privilege consent model are not.
+- No change to source-family ranking. Marketplace-distributed B2B software / vertical SaaS remains provisional first. No product selected, no build or spend. P59-001 remains active; P59-003 paused; P59-002 blocked; PCNE ₹0.
+- Next: screen a recurring, higher-frequency MSP/CSP workflow (e.g. renewal/cancellation/seat reconciliation) or another marketplace B2B workflow; require two independent buyer signals, 10–15 substitutes and price-bearing WTP before selecting.
