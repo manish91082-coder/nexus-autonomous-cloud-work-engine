@@ -150,7 +150,7 @@ class DurableExecutionTests(unittest.TestCase):
                                       allowed_executables={sys.executable},
                                       allowed_script_paths={str(script)},
                                       timeout_seconds=0.2)
-        self.assertEqual(result["status"], "TIMED_OUT")
+        self.assertEqual(result["status"], "TIMED_OUT", msg=str(result))
         self.assertTrue(result["timed_out"])
         self.assertFalse(result["output_captured"])
 
@@ -239,12 +239,16 @@ class DurableExecutionTests(unittest.TestCase):
         pid_file = Path(self.tmp.name) / "child.pid"
         child_script.write_text("import time\ntime.sleep(30)\n", encoding="utf-8")
         parent_script.write_text(
-            "import subprocess, sys, time\n"
-            "p = subprocess.Popen([sys.executable, " + repr(str(child_script)) + "])\n"
-            "open(" + repr(str(pid_file)) + ", 'w').write(str(p.pid))\n"
-            "time.sleep(30)\n",
+            "import os, time\\n"
+            "pid = os.fork()\\n"
+            "if pid == 0:\\n"
+            "    time.sleep(30)\\n"
+            "    os._exit(0)\\n"
+            "open(" + repr(str(pid_file)) + ", 'w').write(str(pid))\\n"
+            "time.sleep(30)\\n",
             encoding="utf-8",
         )
+        compile(parent_script.read_text(encoding="utf-8"), str(parent_script), "exec")
         result = run_isolated_process([sys.executable, str(parent_script)],
                                       allowed_executables={sys.executable},
                                       allowed_script_paths={str(parent_script)},
