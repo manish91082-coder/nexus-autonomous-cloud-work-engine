@@ -4,14 +4,14 @@ export class QuotaLedgerExhausted extends QuotaLedgerError {}
 
 const MAX_ID = 256;
 
-function nonEmpty(value, field) {
+export function nonEmpty(value, field) {
   if (typeof value !== "string" || value.length < 1 || value.length > MAX_ID) {
     throw new QuotaLedgerError(`invalid ${field}`);
   }
   return value;
 }
 
-function integer(value, field, min = 0) {
+export function integer(value, field, min = 0) {
   if (!Number.isSafeInteger(value) || value < min) {
     throw new QuotaLedgerError(`${field} must be a safe integer >= ${min}`);
   }
