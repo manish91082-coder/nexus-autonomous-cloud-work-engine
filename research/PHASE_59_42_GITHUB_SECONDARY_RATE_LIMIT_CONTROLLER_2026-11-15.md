@@ -1,10 +1,13 @@
 # Phase 59.42 — GitHub Secondary Rate-Limit Controller
 
 **Mission:** P10CR / P59-003 AI Agentic Swarm Foundation  
-**Status:** Implementation branch; Workers/workerd runtime CI PASS; PR pending  
+**Status:** PR #21 merged to master at `7b31d8c0945cb7eb6db93290901683c8711350cf`; all 13 PR checks PASS  
 **Branch:** `phase59-42-secondary-rate-limit-controller`  
+**PR:** [#21](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/21) — merged
+**Merge commit:** `7b31d8c0945cb7eb6db93290901683c8711350cf`
 **Exact tested head:** `3df2a7121262beefd3f32e07cf0d179c99c4b274`  
-**Runtime CI:** [43713811451](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43713811451) — SUCCESS, 53/53 tests  
+**Runtime CI:** [43713811451](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43713811451) — SUCCESS, 53/53 tests
+**PR regression matrix:** 13/13 checks PASS on PR head `0b61ac645718899ae93f7cf80b5244a9a01ce832`  
 **Spend:** ₹0; **live GitHub API calls:** 0; **live inference:** disabled; **production feature flag:** OFF
 
 ## 1. Response classification and cooldown
