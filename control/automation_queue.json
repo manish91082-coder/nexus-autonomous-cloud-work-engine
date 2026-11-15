@@ -16,7 +16,7 @@
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
     "last_reconciled_from_mission_state": "PHASE_59_35_CLOUDFLARE_WORKERS_RUNTIME_VALIDATION",
-    "reconciliation_note": "P59-003 remains sole active P0. Phase59.35 extended Cloudflare Workers Vitest/workerd runtime CI run 43706366316 SUCCESS on f1813e44196a6e1ccd2c76fb89bbfb254811d04f; 11/11 tests pass including forced DO eviction/recovery, transaction rollback, telemetry rebase, identity isolation and 20-way same-object contention (10 admitted). Local Workers runtime only; no hosted deployment or independent-host proof. Feature flag OFF. Phase59.34 PostgreSQL adapter PR #12 is merged and CI-verified as optional reference only; Cloudflare DO remains selected path. Next Phase59.36: second Worker caller/shared binding, cross-caller contention, independent-host simulation, telemetry edge cases, internal auth/replay protection, then telemetry adapters. P59-001 paused; P59-002 blocked."
+    "reconciliation_note": "P59-003 remains sole active P0. Phase59.35 extended Cloudflare Workers Vitest/workerd runtime run 43706366316 SUCCESS on f1813e44196a6e1ccd2c76fb89bbfb254811d04f; 11/11 tests pass, including actual Durable Object eviction/recovery and transaction rollback. Local runtime CI only, not hosted production or independent-host proof. Feature flag OFF. Next Phase59.36 second Worker entrypoint sharing the DO namespace, cross-caller contention, independent-host simulation, telemetry edge cases, internal auth/replay protections, then provider telemetry/cost maps and reconciliation. P59-001 paused; P59-002 blocked."
   },
   "tasks": [
     {
@@ -3588,29 +3588,29 @@
         },
         "phase59_35": {
           "report": "research/PHASE_59_35_CLOUDFLARE_WORKERS_RUNTIME_VALIDATION_2026-11-15.md",
-          "baseline_run": 43706315030,
-          "baseline_tested_sha": "575d0165fb5edb813ca4e0c55600d46b1e7f2cd1",
-          "extended_run": 43706366316,
-          "ci_conclusion": "SUCCESS",
+          "workflow_run": 43706366316,
+          "conclusion": "success",
           "tested_sha": "f1813e44196a6e1ccd2c76fb89bbfb254811d04f",
           "tests_passed": 11,
           "tests_total": 11,
           "verified": [
-            "workerd Workers Vitest runtime",
-            "SQLite DO first reserve and multi-bucket settlement",
-            "exhausted telemetry persistence with no reservation",
-            "20-way same-object contention: 10 accepted",
-            "duplicate delivery and uncertain usage retention",
-            "canonical identity and mismatch rejection",
-            "new telemetry rebase without double subtraction",
-            "forced eviction/restart recovery",
-            "transactionSync rollback"
+            "Workers Vitest/workerd runtime",
+            "SQLite Durable Object eviction/recovery",
+            "transaction rollback",
+            "20-way same-object contention with 10 accepted",
+            "telemetry rebase",
+            "duplicate delivery",
+            "uncertain usage retention",
+            "identity mismatch rejection"
           ],
-          "production_status": "LOCAL_RUNTIME_CI_ONLY_NOT_HOSTED_DEPLOYMENT_NOT_INDEPENDENT_HOST_PROOF",
-          "feature_flag": "OFF",
-          "spend_inr": 0,
-          "inference_enabled": false,
-          "next": "Phase59.36 second Worker entrypoint sharing DO binding, cross-caller contention, independent-host simulation, telemetry edge cases, internal auth/replay protection; then provider telemetry adapters and read-only worker integration behind disabled flag."
+          "limits": [
+            "not deployed to Cloudflare hosted production",
+            "no second Worker entrypoint or independent-host proof",
+            "no provider telemetry adapter",
+            "no production worker integration"
+          ],
+          "production_status": "NOT_DEPLOYED_FEATURE_FLAG_OFF",
+          "next": "Phase59.36 second Worker entrypoint sharing DO namespace, cross-caller contention, independent-host simulation, telemetry edge cases, internal auth and replay protections"
         },
         "phase59_34_postgres_reference_adapter": {
           "report": "research/PHASE_59_34_POSTGRES_TRANSACTIONAL_QUOTA_STORE_2026-11-15.md",
