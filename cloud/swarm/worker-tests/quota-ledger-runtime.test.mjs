@@ -79,7 +79,9 @@ describe("Phase 59.35 Cloudflare Workers runtime: SQLite Durable Object", () => 
       costs: { core: 10, search: 2 }
     };
     const stub = stubFor(input);
-    await expect(stub.reserve(input)).rejects.toThrow(/exhausted/);
+    const rejected = await stub.reserve(input);
+    expect(rejected.status).toBe("REJECTED");
+    expect(rejected.error.message).toMatch(/exhausted/);
     const snapshot = await stub.snapshot();
     expect(snapshot.buckets).toHaveLength(0);
     expect(snapshot.reservations).toHaveLength(0);
@@ -97,10 +99,7 @@ describe("Phase 59.35 Cloudflare Workers runtime: SQLite Durable Object", () => 
         ...input,
         reservationId: "contend-" + i,
         workerId: "parallel-worker-" + i
-      }).then(() => true).catch(error => {
-        if (/exhausted/.test(String(error))) return false;
-        throw error;
-      })
+      }).then(result => result.status === "RESERVED")
     );
     const outcomes = await Promise.all(attempts);
     expect(outcomes.filter(Boolean)).toHaveLength(10);
@@ -118,7 +117,9 @@ describe("Phase 59.35 Cloudflare Workers runtime: SQLite Durable Object", () => 
     };
     const stub = stubFor(input);
     await stub.reserve(input);
-    await expect(stub.reserve(input)).rejects.toThrow(/duplicate/);
+    const rejected = await stub.reserve(input);
+    expect(rejected.status).toBe("REJECTED");
+    expect(rejected.error.message).toMatch(/duplicate/);
     const snapshot = await stub.snapshot();
     expect(snapshot.buckets[0].reserved_units).toBe(7);
   });
