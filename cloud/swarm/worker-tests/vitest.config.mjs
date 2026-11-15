@@ -23,7 +23,8 @@ export default defineConfig({
           QUOTA_LEDGER: sharedQuotaNamespace
         },
         serviceBindings: {
-          SECOND_CALLER: "p10cr-secondary-caller"
+          SECOND_CALLER: "p10cr-secondary-caller",
+          READONLY_SWARM: "p10cr-readonly-swarm-worker"
         },
         workers: [
           {
@@ -87,6 +88,28 @@ export default defineConfig({
             bindings: {
               NEXUS_QUOTA_CALLER_ID: "secondary",
               NEXUS_QUOTA_CALLER_SECRET: secondaryTestSecret
+            },
+            durableObjects: {
+              QUOTA_LEDGER: sharedQuotaNamespace
+            }
+          },
+          {
+            name: "p10cr-readonly-swarm-worker",
+            modules: [
+              { type: "ESModule", path: "../readonly-github-worker.mjs" },
+              { type: "ESModule", path: "../quota-ledger-client.mjs" },
+              { type: "ESModule", path: "../quota-ledger-contract.mjs" },
+              { type: "ESModule", path: "../github-operation-registry.mjs" },
+              { type: "ESModule", path: "../github-secondary-rate-limit.mjs" },
+              { type: "ESModule", path: "../github-quota-telemetry.mjs" }
+            ],
+            bindings: {
+              NEXUS_QUOTA_STORE_ENABLED: "true",
+              NEXUS_QUOTA_CALLER_ID: "primary",
+              NEXUS_QUOTA_CALLER_SECRET: primaryTestSecret,
+              NEXUS_SWARM_READ_ONLY_ENABLED: "true",
+              NEXUS_SWARM_SHADOW_MODE: "true",
+              NEXUS_SWARM_GITHUB_CREDENTIAL_SCOPE: "mocked-shadow/readonly-worker"
             },
             durableObjects: {
               QUOTA_LEDGER: sharedQuotaNamespace
