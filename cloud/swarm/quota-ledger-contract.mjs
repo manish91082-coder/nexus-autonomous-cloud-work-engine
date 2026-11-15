@@ -18,6 +18,31 @@ export function integer(value, field, min = 0) {
   return value;
 }
 
+export function computeReservationLease({
+  nowEpoch, createdAtEpoch, currentExpiresAtEpoch,
+  extensionSeconds = 120, maxLifetimeSeconds = 1800
+}) {
+  integer(nowEpoch, "nowEpoch");
+  integer(createdAtEpoch, "createdAtEpoch");
+  integer(currentExpiresAtEpoch, "currentExpiresAtEpoch");
+  integer(extensionSeconds, "extensionSeconds", 30);
+  integer(maxLifetimeSeconds, "maxLifetimeSeconds", 300);
+  if (extensionSeconds > 300) throw new QuotaLedgerError("lease extension exceeds 300-second limit");
+  if (maxLifetimeSeconds > 3600) throw new QuotaLedgerError("maximum reservation lifetime exceeds 3600-second limit");
+  if (currentExpiresAtEpoch <= nowEpoch) {
+    throw new QuotaLedgerError("reservation lease already expired");
+  }
+  const hardDeadlineEpoch = createdAtEpoch + maxLifetimeSeconds;
+  if (nowEpoch >= hardDeadlineEpoch) {
+    return {status:"LEASE_HARD_DEADLINE_REACHED",expiresAtEpoch:currentExpiresAtEpoch,hardDeadlineEpoch};
+  }
+  const proposed = Math.min(Math.max(currentExpiresAtEpoch,nowEpoch+extensionSeconds),hardDeadlineEpoch);
+  if (proposed <= currentExpiresAtEpoch) {
+    return {status:"LEASE_UNCHANGED",expiresAtEpoch:currentExpiresAtEpoch,hardDeadlineEpoch};
+  }
+  return {status:"LEASE_RENEWED",expiresAtEpoch:proposed,hardDeadlineEpoch};
+}
+
 export function quotaLedgerObjectName(provider, credentialScope, windowId) {
   nonEmpty(provider, "provider");
   nonEmpty(credentialScope, "credentialScope");

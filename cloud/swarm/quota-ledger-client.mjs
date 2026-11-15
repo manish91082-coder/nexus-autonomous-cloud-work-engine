@@ -269,3 +269,46 @@ export async function executeQuotaGuardedGitHubRequest({
     response
   };
 }
+
+/** Renew a live reservation lease with a replay-safe heartbeat ID. */
+export async function renewQuotaReservation({
+  env, credentialScope, reservationId, workerId, heartbeatId,
+  expectedLeaseVersion, extensionSeconds = 120, nowEpoch, nonceFactory
+}) {
+  requireText(credentialScope, "credentialScope");
+  requireText(reservationId, "reservationId");
+  requireText(workerId, "workerId");
+  requireText(heartbeatId, "heartbeatId", 128);
+  const result = await ledgerCall(env, "renewReservation", {
+    provider: "github",
+    credentialScope,
+    windowId: "github-rate-limit-ledger",
+    reservationId,
+    workerId,
+    heartbeatId,
+    expectedLeaseVersion,
+    extensionSeconds
+  }, {nowEpoch,nonceFactory});
+  return result.body;
+}
+
+/**
+ * Reconcile only from authoritative response-header observations already
+ * persisted and linked to the uncertain reservation. No caller-supplied
+ * remaining/usage values can release uncertain quota.
+ */
+export async function reconcileUncertainQuotaReservation({
+  env, credentialScope, reservationId, workerId, nowEpoch, nonceFactory
+}) {
+  requireText(credentialScope, "credentialScope");
+  requireText(reservationId, "reservationId");
+  requireText(workerId, "workerId");
+  const result = await ledgerCall(env, "reconcileUncertain", {
+    provider: "github",
+    credentialScope,
+    windowId: "github-rate-limit-ledger",
+    reservationId,
+    workerId
+  }, {nowEpoch,nonceFactory});
+  return result.body;
+}

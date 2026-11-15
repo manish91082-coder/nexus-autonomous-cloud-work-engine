@@ -7,7 +7,7 @@
 import { DurableObject } from "cloudflare:workers";
 import {
   QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest,
-  requireQuotaStoreEnabled, nonEmpty, integer
+  requireQuotaStoreEnabled, nonEmpty, integer, computeReservationLease
 } from "./quota-ledger-contract.mjs";
 import { reconcileGitHubQuotaTelemetry } from "./github-quota-telemetry.mjs";
 import { getGitHubOperationDefinition } from "./github-operation-registry.mjs";
@@ -64,6 +64,11 @@ export class QuotaLedgerDO extends DurableObject {
       operation TEXT NOT NULL,
       request_fingerprint TEXT NOT NULL DEFAULT '',
       expires_at_epoch INTEGER NOT NULL DEFAULT 0,
+      lease_version INTEGER NOT NULL DEFAULT 0,
+      last_heartbeat_id TEXT,
+      last_heartbeat_epoch INTEGER,
+      reconciled_by_bucket_json TEXT NOT NULL DEFAULT '{}',
+      reconciled_at_epoch INTEGER,
       reserved_by_bucket_json TEXT NOT NULL,
       actual_by_bucket_json TEXT,
       status TEXT NOT NULL,
@@ -78,11 +83,35 @@ export class QuotaLedgerDO extends DurableObject {
       sql.exec("ALTER TABLE quota_reservations ADD COLUMN expires_at_epoch INTEGER NOT NULL DEFAULT 0");
       sql.exec("UPDATE quota_reservations SET expires_at_epoch=created_at_epoch+300 WHERE expires_at_epoch=0");
     }
+    if (!reservationColumns.some(column => column.name === "lease_version")) {
+      sql.exec("ALTER TABLE quota_reservations ADD COLUMN lease_version INTEGER NOT NULL DEFAULT 0");
+    }
+    if (!reservationColumns.some(column => column.name === "last_heartbeat_id")) {
+      sql.exec("ALTER TABLE quota_reservations ADD COLUMN last_heartbeat_id TEXT");
+    }
+    if (!reservationColumns.some(column => column.name === "last_heartbeat_epoch")) {
+      sql.exec("ALTER TABLE quota_reservations ADD COLUMN last_heartbeat_epoch INTEGER");
+    }
+    if (!reservationColumns.some(column => column.name === "reconciled_by_bucket_json")) {
+      sql.exec("ALTER TABLE quota_reservations ADD COLUMN reconciled_by_bucket_json TEXT NOT NULL DEFAULT '{}'");
+    }
+    if (!reservationColumns.some(column => column.name === "reconciled_at_epoch")) {
+      sql.exec("ALTER TABLE quota_reservations ADD COLUMN reconciled_at_epoch INTEGER");
+    }
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_auth_nonces (
       caller_id TEXT NOT NULL,
       nonce TEXT NOT NULL,
       expires_at_epoch INTEGER NOT NULL,
       PRIMARY KEY (caller_id, nonce)
+    )`);
+    sql.exec(`CREATE TABLE IF NOT EXISTS quota_reconciliation_audit (
+      audit_id TEXT PRIMARY KEY,
+      reservation_id TEXT NOT NULL,
+      caller_id TEXT NOT NULL,
+      result_status TEXT NOT NULL,
+      evidence_observation_ids_json TEXT NOT NULL,
+      reconciled_buckets_json TEXT NOT NULL,
+      created_at_epoch INTEGER NOT NULL
     )`);
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_secondary_control (
       credential_scope TEXT PRIMARY KEY,
@@ -210,6 +239,15 @@ export class QuotaLedgerDO extends DurableObject {
             status: "EXPIRY_SWEEP_COMPLETE",
             expiredCount: this.#expireReservations()
           }));
+          break;
+        case "renewReservation":
+          result = this.#renewReservation(input, auth.callerId);
+          break;
+        case "reconcileUncertain":
+          if (auth.callerId !== "primary") {
+            throw new QuotaLedgerError("only primary caller may reconcile uncertain reservations");
+          }
+          result = this.#reconcileUncertain(input, auth.callerId);
           break;
         case "recordTelemetry":
           result = this.#recordTelemetry(input, auth.callerId);
@@ -555,6 +593,56 @@ export class QuotaLedgerDO extends DurableObject {
     }
   }
 
+  #renewReservation(input, callerId) {
+    nonEmpty(input?.reservationId, "reservationId");
+    nonEmpty(input?.workerId, "workerId");
+    const heartbeatId = nonEmpty(input?.heartbeatId, "heartbeatId");
+    if (!/^[A-Za-z0-9._:-]{1,128}$/.test(heartbeatId)) throw new QuotaLedgerError("unsafe heartbeatId");
+    const expectedVersion = integer(input.expectedLeaseVersion, "expectedLeaseVersion");
+    const extensionSeconds = input.extensionSeconds === undefined
+      ? 120 : integer(input.extensionSeconds, "extensionSeconds", 30);
+    if (extensionSeconds > 300) throw new QuotaLedgerError("lease extension exceeds 300-second limit");
+    const maxLifetimeSeconds = Number(this.env?.NEXUS_QUOTA_MAX_RESERVATION_LIFETIME_SECONDS ?? 1800);
+    if (!Number.isSafeInteger(maxLifetimeSeconds) || maxLifetimeSeconds < 300 || maxLifetimeSeconds > 3600) {
+      throw new QuotaLedgerError("maximum reservation lifetime must be 300–3600 seconds");
+    }
+    const now = Math.floor(Date.now() / 1000);
+    const sql = this.ctx.storage.sql;
+    return this.ctx.storage.transactionSync(() => {
+      const row = sql.exec("SELECT * FROM quota_reservations WHERE reservation_id=?",
+        input.reservationId).toArray()[0];
+      if (!row || row.worker_id !== input.workerId || row.caller_id !== callerId
+        || row.status !== "RESERVED") {
+        throw new QuotaLedgerError("reservation owner/state mismatch");
+      }
+      if (row.expires_at_epoch <= now) throw new QuotaLedgerError("reservation lease already expired");
+      if (row.last_heartbeat_id === heartbeatId) {
+        return {status:"DUPLICATE_HEARTBEAT",reservationId:input.reservationId,
+          leaseVersion:row.lease_version,expiresAtEpoch:row.expires_at_epoch};
+      }
+      if (row.lease_version !== expectedVersion) {
+        throw new QuotaLedgerError("LEASE_VERSION_CONFLICT");
+      }
+      const lease = computeReservationLease({
+        nowEpoch:now,createdAtEpoch:row.created_at_epoch,
+        currentExpiresAtEpoch:row.expires_at_epoch,
+        extensionSeconds,maxLifetimeSeconds
+      });
+      if (lease.status !== "LEASE_RENEWED") {
+        return {status:lease.status,reservationId:input.reservationId,
+          leaseVersion:row.lease_version,expiresAtEpoch:row.expires_at_epoch,
+          hardDeadlineEpoch:lease.hardDeadlineEpoch};
+      }
+      const nextVersion = row.lease_version + 1;
+      sql.exec("UPDATE quota_reservations SET expires_at_epoch=?,lease_version=?,last_heartbeat_id=?,last_heartbeat_epoch=? WHERE reservation_id=? AND status='RESERVED'",
+        lease.expiresAtEpoch,nextVersion,heartbeatId,now,input.reservationId);
+      sql.exec("UPDATE quota_secondary_inflight SET expires_at_epoch=? WHERE reservation_id=?",
+        lease.expiresAtEpoch,input.reservationId);
+      return {status:"LEASE_RENEWED",reservationId:input.reservationId,
+        leaseVersion:nextVersion,expiresAtEpoch:lease.expiresAtEpoch,
+        hardDeadlineEpoch:lease.hardDeadlineEpoch};
+    });
+  }
   #expireReservations(now = Math.floor(Date.now() / 1000)) {
     const sql = this.ctx.storage.sql;
     const expired = sql.exec(
@@ -757,6 +845,81 @@ export class QuotaLedgerDO extends DurableObject {
         cooldownUntilEpoch:cooldownUntil,consecutiveSecondaryHits:consecutive,backoffSeconds:backoff};
     });
   }
+  #reconcileUncertain(input, callerId) {
+    nonEmpty(input?.reservationId, "reservationId");
+    nonEmpty(input?.workerId, "workerId");
+    const now = Math.floor(Date.now() / 1000);
+    const sql = this.ctx.storage.sql;
+    return this.ctx.storage.transactionSync(() => {
+      const row = sql.exec("SELECT * FROM quota_reservations WHERE reservation_id=?",
+        input.reservationId).toArray()[0];
+      if (!row || row.worker_id !== input.workerId) {
+        throw new QuotaLedgerError("reconciliation reservation worker mismatch");
+      }
+      if (row.status === "RECONCILED_TELEMETRY_LINKED") {
+        return {status:"ALREADY_RECONCILED",reservationId:input.reservationId};
+      }
+      if (!["UNCERTAIN_BUDGET_RETAINED","PARTIALLY_RECONCILED"].includes(row.status)) {
+        throw new QuotaLedgerError("reservation is not in an uncertain state");
+      }
+      const reserved = JSON.parse(row.reserved_by_bucket_json);
+      const reconciled = JSON.parse(row.reconciled_by_bucket_json || "{}");
+      const newEvidence = {};
+      for (const [bucketId,reservation] of Object.entries(reserved)) {
+        if (reconciled[bucketId]) continue;
+        const observation = sql.exec(`SELECT o.* FROM quota_telemetry_observations o
+          JOIN quota_telemetry_current c ON c.bucket_id=o.bucket_id
+          WHERE o.reservation_id=? AND o.bucket_id=? AND o.window_id=?
+            AND o.telemetry_source='response_header' AND o.authority_rank>=100
+            AND o.observed_at_epoch>=?
+            AND c.window_id=o.window_id AND c.reset_at_epoch=o.reset_at_epoch
+            AND c.observed_at_epoch>=o.observed_at_epoch
+            AND c.observed_remaining_units<=o.observed_remaining_units
+            AND c.used_units>=o.used_units
+          ORDER BY o.observed_at_epoch DESC LIMIT 1`,
+          input.reservationId,bucketId,reservation.providerWindowId,row.created_at_epoch
+        ).toArray()[0];
+        if (!observation) continue;
+        const counter = sql.exec(
+          "SELECT * FROM quota_bucket_counters WHERE bucket_id=? AND provider_window_id=?",
+          bucketId,reservation.providerWindowId
+        ).toArray()[0];
+        if (!counter || counter.uncertain_units < reservation.units) {
+          throw new QuotaLedgerError("uncertain counter missing or inconsistent during reconciliation");
+        }
+        sql.exec(`UPDATE quota_bucket_counters SET
+          uncertain_units=uncertain_units-?,committed_units=committed_units+?
+          WHERE bucket_id=? AND provider_window_id=?`,
+          reservation.units,reservation.units,bucketId,reservation.providerWindowId);
+        const evidence = {
+          chargedUpperBoundUnits:reservation.units,
+          observationId:observation.observation_id,
+          observedAtEpoch:observation.observed_at_epoch,
+          source:observation.telemetry_source,
+          authorityRank:observation.authority_rank
+        };
+        reconciled[bucketId]=evidence;
+        newEvidence[bucketId]=observation.observation_id;
+      }
+      const allReconciled = Object.keys(reconciled).length === Object.keys(reserved).length;
+      const anyReconciled = Object.keys(reconciled).length > 0;
+      const status = allReconciled ? "RECONCILED_TELEMETRY_LINKED"
+        : anyReconciled ? "PARTIALLY_RECONCILED" : "UNCERTAIN_BUDGET_RETAINED";
+      sql.exec(`UPDATE quota_reservations SET reconciled_by_bucket_json=?,status=?,
+        reconciled_at_epoch=? WHERE reservation_id=?`,
+        JSON.stringify(reconciled),status,allReconciled ? now : null,input.reservationId);
+      const auditId = crypto.randomUUID();
+      sql.exec(`INSERT INTO quota_reconciliation_audit
+        (audit_id,reservation_id,caller_id,result_status,evidence_observation_ids_json,
+         reconciled_buckets_json,created_at_epoch) VALUES(?,?,?,?,?,?,?)`,
+        auditId,input.reservationId,callerId,status,JSON.stringify(newEvidence),
+        JSON.stringify(reconciled),now);
+      return {status,reservationId:input.reservationId,
+        reconciledBuckets:Object.keys(reconciled),
+        remainingUncertainBuckets:Object.keys(reserved).filter(key=>!reconciled[key]),
+        newEvidenceObservationIds:newEvidence,auditId};
+    });
+  }
   #recordTelemetry(input, callerId) {
     const telemetry = input.telemetry;
     if (!telemetry || typeof telemetry !== "object" || Array.isArray(telemetry)) {
@@ -952,6 +1115,7 @@ export class QuotaLedgerDO extends DurableObject {
       return {
         status: "RECORDED",
         decision: reconciled.decision,
+        observationId,
         bucketId: incoming.bucket_id,
         current: reconciled.record
       };
@@ -968,7 +1132,8 @@ export class QuotaLedgerDO extends DurableObject {
       telemetryObservations: sql.exec("SELECT * FROM quota_telemetry_observations ORDER BY observed_at_epoch").toArray(),
       secondaryControl: sql.exec("SELECT * FROM quota_secondary_control ORDER BY credential_scope").toArray()[0] ?? null,
       secondaryInflight: sql.exec("SELECT * FROM quota_secondary_inflight ORDER BY expires_at_epoch").toArray(),
-      secondaryEndpointPoints: sql.exec("SELECT * FROM quota_secondary_endpoint_points ORDER BY occurred_at_epoch").toArray()
+      secondaryEndpointPoints: sql.exec("SELECT * FROM quota_secondary_endpoint_points ORDER BY occurred_at_epoch").toArray(),
+      reconciliationAudit: sql.exec("SELECT * FROM quota_reconciliation_audit ORDER BY created_at_epoch").toArray()
     };
   }
 }

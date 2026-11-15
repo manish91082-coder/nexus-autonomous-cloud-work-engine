@@ -26,7 +26,7 @@ export default {
       return Response.json({ status: "REJECTED", error: "invalid JSON" }, { status: 400 });
     }
     const input = body?.input;
-    if (!input || !["reserve", "settle", "markUncertain", "snapshot", "recordTelemetry", "recordSecondaryLimit"].includes(body.action)) {
+    if (!input || !["reserve", "settle", "markUncertain", "snapshot", "recordTelemetry", "recordSecondaryLimit", "renewReservation"].includes(body.action)) {
       return Response.json({ status: "REJECTED", error: "invalid action/input" }, { status: 400 });
     }
     const name = quotaLedgerObjectName(input.provider, input.credentialScope, input.windowId);
