@@ -1,3 +1,4 @@
+import { createSignedRequest } from "./quota-auth-test-helper.mjs";
 
 /**
  * Auxiliary Worker representing a separately deployed caller.
@@ -31,11 +32,8 @@ export default {
     const name = quotaLedgerObjectName(input.provider, input.credentialScope, input.windowId);
     const id = env.QUOTA_LEDGER.idFromName(name);
     const stub = env.QUOTA_LEDGER.get(id);
-    const response = await stub.fetch(new Request("https://quota-ledger.internal/rpc", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ action: body.action, input })
-    }));
+    const signedRequest = await createSignedRequest(env, body.action, input);
+    const response = await stub.fetch(signedRequest);
     const result = await response.json();
     return Response.json(result, { status: response.status });
   }
