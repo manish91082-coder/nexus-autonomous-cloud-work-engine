@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Live, bounded GitHub branch-CAS race probe for the dedicated lock branch."""
+"""Live GitHub branch-CAS race and append-only journal verification probe."""
 from __future__ import annotations
 
 import json
