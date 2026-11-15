@@ -1,0 +1,13 @@
+{
+  "sequence": 2,
+  "event_id": "cas-test-release-a",
+  "kind": "LEASE_RELEASED",
+  "timestamp_utc": "2026-11-15T06:35:00Z",
+  "actor": "CAS-WORKER-A",
+  "scope": "CAS-TEST-SCOPE",
+  "fencing_token": 1,
+  "previous_event_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "payload": {
+    "test": "release after successful first writer; test record cleaned"
+  }
+}
