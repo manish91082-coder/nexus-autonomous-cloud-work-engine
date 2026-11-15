@@ -197,3 +197,18 @@ Correction applied:
 - Direct read of `branches/master/protection` returned HTTP 403 `Resource not accessible by integration`. Therefore branch protection status is **UNVERIFIED**, not assumed absent or present. Owner/admin-level inspection or an explicitly approved integration permission is required.
 - The current recursive tree confirms 23 workflows. A full dependency lockfile and transitive package audit is still outstanding; workflow action references and runtime package installs need a dedicated pin/provenance pass.
 - Current guard success proves state/queue consistency at the tested SHA, not production swarm readiness.
+
+
+## 9. First post-redirect worker proof
+
+Mission Autonomous AI Worker run `43696957638` completed **SUCCESS** on queue commit `ae2d57a07fce4083248237df5881cc170553970f`.
+
+Exact log evidence:
+- Deterministic mission guard: PASS.
+- Swarm runtime, coordinator, AI safety, product smoke and recruitment assurance tests: PASS.
+- Queue poll: `POLL_OK`.
+- Selected task: `P59-003`.
+- AI executor result: `WAITING_FOR_OWNER_CONFIGURATION`.
+- Log explicitly confirms `MISSION_AI_ENABLED` is not true and **no inference request was made**.
+
+This proves the scheduled bounded worker now follows the owner-directed P59-003 queue. It does not prove multi-agent LLM inference, cross-host execution or production deployment. The correct next step is still engineering integration and quota/lease safety, not enabling the AI secret.
