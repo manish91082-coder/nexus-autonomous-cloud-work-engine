@@ -31,7 +31,10 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Worker #341 and Guard #100 passed; live AI/cloud deployment unproven"
+      "status": "P59-003 IN_PROGRESS; Phase 59.12 B4 prototype committed; 16/16 local tests PASS; GitHub B4 CI unverified because run ID is not retrievable; last independently verified worker #340 is on old SHA 7a1dd14; production AI/cloud deployment unproven",
+      "last_observed_head": "2eddfd7ba2beff412db79b84e4d0f979376c2d4e",
+      "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
+      "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md"
     },
     {
       "project_id": "FLASHLOAN-RESEARCH",
