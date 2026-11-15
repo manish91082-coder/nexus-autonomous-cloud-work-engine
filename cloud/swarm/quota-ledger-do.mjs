@@ -4,9 +4,9 @@
  */
 import { DurableObject } from "cloudflare:workers";
 import {
-  QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest
+  QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest, requireQuotaStoreEnabled
 } from "./quota-ledger-contract.mjs";
-export { QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest };
+export { QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest, requireQuotaStoreEnabled };
 export class QuotaLedgerDO extends DurableObject {
   constructor(ctx, env) {
     super(ctx, env);
