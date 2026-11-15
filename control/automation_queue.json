@@ -3124,6 +3124,23 @@
           "external_network_calls": false,
           "automatic_product_go": false,
           "handoff": "SAFE_FOR_PUBLIC_SOURCE_PORTFOLIO_RESEARCH_ONLY"
+        },
+        "phase59_27": {
+          "report": "research/PHASE_59_27_REVENUE_SOURCE_ECONOMICS_REVALIDATION_2026-11-15.md",
+          "decision": "B2B_PRODUCTIZED_VERTICAL_SAAS_PROVISIONAL_FIRST; NO_CONCRETE_PRODUCT_GO",
+          "official_sources_reviewed": [
+            "RBI FY2025-26 software export survey",
+            "Atlassian Marketplace pricing and remittance",
+            "Amazon KDP royalties and payout",
+            "Gumroad India payout",
+            "YouTube YPP eligibility and revenue share",
+            "Adobe Stock contributor royalties",
+            "GitHub Sponsors fees and eligibility",
+            "itch.io payment terms",
+            "Epic First Run revenue share",
+            "Apple App Store Small Business Program"
+          ],
+          "next": "Complete remaining source-family scorecard; verify Tech Cloud ERP asset/rights; compare owned asset vs greenfield; no build until V5 gates pass."
         }
       },
       "dependency_note": "Safe handoff from Phase59.26 completed. Resume evidence-backed V5 portfolio-wide research now. Use public/official source research and supplied evidence; specialist workflow is deterministic/provider-neutral and must not be described as live LLM research. No product build until the P59-001 selection and all P59-002 release gates pass."
