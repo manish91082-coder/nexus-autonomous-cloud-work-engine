@@ -128,3 +128,38 @@ export async function runQuotaBoundRequest({
       reconciliationError: String(error?.message || error) };
   }
 }
+
+/** Concrete binding adapter for a configured Durable Object namespace. */
+export function createQuotaLedgerClient({ namespace, secret, callerId, clock = () => Date.now(), nonceFactory = () => crypto.randomUUID() }) {
+  if (!namespace || typeof namespace.idFromName !== "function" || typeof namespace.get !== "function") {
+    throw new TypeError("QUOTA_LEDGER Durable Object namespace binding required");
+  }
+  async function invoke(action, input) {
+    const identity = input || {};
+    for (const field of ["provider", "credentialScope", "windowId"]) {
+      if (typeof identity[field] !== "string" || identity[field].length < 1 || identity[field].length > 256) {
+        throw new TypeError(`invalid quota identity: ${field}`);
+      }
+    }
+    const objectName = JSON.stringify([identity.provider, identity.credentialScope, identity.windowId]);
+    const stub = namespace.get(namespace.idFromName(objectName));
+    const request = await signedLedgerRequest({
+      secret, callerId, action, input, now: clock(), nonce: nonceFactory()
+    });
+    const response = await stub.fetch(request);
+    let result;
+    try { result = await response.json(); }
+    catch { throw new Error("QUOTA_LEDGER_INVALID_RESPONSE"); }
+    if (!response.ok) {
+      const reason = result?.reason || result?.error?.message || result?.status || "QUOTA_LEDGER_RPC_FAILED";
+      throw new Error(String(reason));
+    }
+    return result;
+  }
+  return Object.freeze({
+    reserve: input => invoke("reserve", input),
+    settle: input => invoke("settle", input),
+    markUncertain: input => invoke("markUncertain", input),
+    recordTelemetry: input => invoke("recordTelemetry", input)
+  });
+}
