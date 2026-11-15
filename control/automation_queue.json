@@ -3144,7 +3144,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "SQLite backup/restore integrity and repeated crash-window soak; workflow supply-chain/least-privilege review; then real shared-store federation lease client and per-project GitHub Actions/API quota reservations. SQLite single-host database is not a cross-host lock service.",
+        "next": "Workflow supply-chain/least-privilege hardening review; enumerate third-party Actions refs and SHA pin feasibility, workflow permission needs, timeouts and schedule staggering. Then select a real shared atomic store for federation locks/quota ledger.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -3225,9 +3225,18 @@
         "workflow_inventory": "COMPLETE: GitHub recursive tree truncated=false; 14/14 workflow files fetched and classified; two recurring schedules; 3 legacy manual-only workflows excluded from P10CR.",
         "workflow_count": 14,
         "recurring_schedule_count": 2,
-        "phase59_14_limitations": "B4 remains standalone; no production worker integration, no deployed cross-host lock service, no shared quota arbiter, no AI provider configured; no cloud failover or 24x7 SLA claimed."
+        "phase59_14_limitations": "B4 remains standalone; no production worker integration, no deployed cross-host lock service, no shared quota arbiter, no AI provider configured; no cloud failover or 24x7 SLA claimed.",
+        "phase59_15": "B4_BACKUP_RESTORE_AND_CRASH_WINDOW_SOAK_PASS_21_OF_21",
+        "phase59_15_report": "research/PHASE_59_15_B4_BACKUP_RESTORE_AND_CRASH_SOAK_2026-11-15.md",
+        "b4_extended_ci_run_id": 43685420046,
+        "b4_extended_ci_sha": "9d52266067751a28b3302cb34e43056ee991d8fc",
+        "b4_extended_ci_status": "SUCCESS",
+        "b4_extended_test_count": 21,
+        "backup_restore": "SQLite online backup/restore preserves task, checkpoint, lease, event hash chain; restored task heartbeat and completion pass.",
+        "crash_soak": "Six spawned workers abruptly exit after claim/checkpoint; all recover, old fencing tokens rejected, higher token reclaims task.",
+        "crash_after_finish": "Committed COMPLETED state survives abrupt worker exit; no requeue and duplicate claim rejected."
       },
-      "blocker": "B4 exact GitHub Actions CI and all 14 workflows are now verified. Remaining P59-003 gates: SQLite backup/restore integrity and crash-window soak, workflow supply-chain/least-privilege review, then deploy a real shared atomic federation lock/quota service before any cross-project client/dispatch. B4 is not production-integrated.",
+      "blocker": "B4 prototype tests and 14-workflow inventory are verified. Remaining P59-003 gates: workflow supply-chain/least-privilege review and implementation; then deploy a real shared atomic federation lock/quota service. SQLite is single-host only; no production integration yet.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task."
     }
   ],
