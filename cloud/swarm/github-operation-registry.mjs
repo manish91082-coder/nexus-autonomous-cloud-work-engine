@@ -64,6 +64,8 @@ export async function resolveGitHubOperation(request) {
     operation: entry.id,
     resource: entry.resource,
     primaryUnits: entry.primaryUnits,
+    endpointKey: entry.endpointKey,
+    secondaryPoints: entry.secondaryPoints,
     registryVersion: GITHUB_OPERATION_REGISTRY_VERSION,
     pathTemplate: entry.pathTemplate,
     requestFingerprint: await sha256Hex(canonical),
