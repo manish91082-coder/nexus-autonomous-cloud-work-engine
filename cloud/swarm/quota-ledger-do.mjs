@@ -7,7 +7,7 @@
 import { DurableObject } from "cloudflare:workers";
 import {
   QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest,
-  requireQuotaStoreEnabled, nonEmpty, integer
+  requireQuotaStoreEnabled, nonEmpty, integer, computeReservationLease
 } from "./quota-ledger-contract.mjs";
 import { reconcileGitHubQuotaTelemetry } from "./github-quota-telemetry.mjs";
 import { getGitHubOperationDefinition } from "./github-operation-registry.mjs";
@@ -64,6 +64,11 @@ export class QuotaLedgerDO extends DurableObject {
       operation TEXT NOT NULL,
       request_fingerprint TEXT NOT NULL DEFAULT '',
       expires_at_epoch INTEGER NOT NULL DEFAULT 0,
+      lease_version INTEGER NOT NULL DEFAULT 0,
+      last_heartbeat_id TEXT,
+      last_heartbeat_epoch INTEGER,
+      reconciled_by_bucket_json TEXT NOT NULL DEFAULT '{}',
+      reconciled_at_epoch INTEGER,
       reserved_by_bucket_json TEXT NOT NULL,
       actual_by_bucket_json TEXT,
       status TEXT NOT NULL,
@@ -78,11 +83,35 @@ export class QuotaLedgerDO extends DurableObject {
       sql.exec("ALTER TABLE quota_reservations ADD COLUMN expires_at_epoch INTEGER NOT NULL DEFAULT 0");
       sql.exec("UPDATE quota_reservations SET expires_at_epoch=created_at_epoch+300 WHERE expires_at_epoch=0");
     }
+    if (!reservationColumns.some(column => column.name === "lease_version")) {
+      sql.exec("ALTER TABLE quota_reservations ADD COLUMN lease_version INTEGER NOT NULL DEFAULT 0");
+    }
+    if (!reservationColumns.some(column => column.name === "last_heartbeat_id")) {
+      sql.exec("ALTER TABLE quota_reservations ADD COLUMN last_heartbeat_id TEXT");
+    }
+    if (!reservationColumns.some(column => column.name === "last_heartbeat_epoch")) {
+      sql.exec("ALTER TABLE quota_reservations ADD COLUMN last_heartbeat_epoch INTEGER");
+    }
+    if (!reservationColumns.some(column => column.name === "reconciled_by_bucket_json")) {
+      sql.exec("ALTER TABLE quota_reservations ADD COLUMN reconciled_by_bucket_json TEXT NOT NULL DEFAULT '{}'");
+    }
+    if (!reservationColumns.some(column => column.name === "reconciled_at_epoch")) {
+      sql.exec("ALTER TABLE quota_reservations ADD COLUMN reconciled_at_epoch INTEGER");
+    }
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_auth_nonces (
       caller_id TEXT NOT NULL,
       nonce TEXT NOT NULL,
       expires_at_epoch INTEGER NOT NULL,
       PRIMARY KEY (caller_id, nonce)
+    )`);
+    sql.exec(`CREATE TABLE IF NOT EXISTS quota_reconciliation_audit (
+      audit_id TEXT PRIMARY KEY,
+      reservation_id TEXT NOT NULL,
+      caller_id TEXT NOT NULL,
+      result_status TEXT NOT NULL,
+      evidence_observation_ids_json TEXT NOT NULL,
+      reconciled_buckets_json TEXT NOT NULL,
+      created_at_epoch INTEGER NOT NULL
     )`);
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_secondary_control (
       credential_scope TEXT PRIMARY KEY,
