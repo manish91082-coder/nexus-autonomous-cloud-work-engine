@@ -520,7 +520,7 @@ export class QuotaLedgerDO extends DurableObject {
     });
   }
 
-  #recordTelemetry(input) {
+  #recordTelemetry(input, callerId) {
     const telemetry = input.telemetry;
     if (!telemetry || typeof telemetry !== "object" || Array.isArray(telemetry)) {
       throw new QuotaLedgerError("telemetry record required");
@@ -589,6 +589,14 @@ export class QuotaLedgerDO extends DurableObject {
     }
     const provenanceJson = JSON.stringify(provenance);
     if (provenanceJson.length > 2048) throw new QuotaLedgerError("telemetry provenance too large");
+    const reservationId = input.reservationId === undefined || input.reservationId === null
+      ? null : nonEmpty(input.reservationId, "reservationId");
+    if (callerId !== "primary" && !reservationId) {
+      throw new QuotaLedgerError("secondary telemetry must be linked to its own reservation");
+    }
+    if (callerId !== "primary" && expectedRank < 80) {
+      throw new QuotaLedgerError("secondary caller may submit only response-linked telemetry");
+    }
 
     const incoming = {
       provider: telemetry.provider,
@@ -617,6 +625,21 @@ export class QuotaLedgerDO extends DurableObject {
       if (!identity) {
         sql.exec("INSERT INTO quota_meta(singleton,provider,credential_scope,window_id) VALUES(1,?,?,?)",
           input.provider, input.credentialScope, input.windowId);
+      }
+
+      if (reservationId) {
+        const reservationRow = sql.exec(
+          "SELECT * FROM quota_reservations WHERE reservation_id=?", reservationId
+        ).toArray()[0];
+        if (!reservationRow || reservationRow.caller_id !== callerId
+          || reservationRow.status !== "RESERVED") {
+          throw new QuotaLedgerError("telemetry reservation owner/state mismatch");
+        }
+        const reservedByBucket = JSON.parse(reservationRow.reserved_by_bucket_json);
+        const reservedBucket = reservedByBucket[incoming.bucket_id];
+        if (!reservedBucket || reservedBucket.providerWindowId !== incoming.window_id) {
+          throw new QuotaLedgerError("telemetry does not match reserved provider window");
+        }
       }
 
       const currentRow = sql.exec(
@@ -648,11 +671,11 @@ export class QuotaLedgerDO extends DurableObject {
         incoming.freshness, provenanceJson
       ];
       sql.exec(`INSERT INTO quota_telemetry_observations
-        (observation_id,bucket_id,provider,credential_scope,partition_window_id,window_id,
+        (observation_id,reservation_id,bucket_id,provider,credential_scope,partition_window_id,window_id,
          limit_units,observed_remaining_units,used_units,reset_at_epoch,observed_at_epoch,
          telemetry_source,authority_rank,is_authoritative,freshness,provenance_json)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-        observationId, ...values);
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        observationId, reservationId, ...values);
 
       const accepted = reconciled.decision.startsWith("ACCEPT")
         || reconciled.decision === "SAME_SECOND_CONSERVATIVE_MIN";
@@ -678,6 +701,16 @@ export class QuotaLedgerDO extends DurableObject {
           row.limit_units,row.observed_remaining_units,row.used_units,row.reset_at_epoch,
           row.observed_at_epoch,row.telemetry_source,row.authority_rank,
           row.is_authoritative ? 1 : 0,row.freshness,rowProvenance);
+        const counter = sql.exec(
+          "SELECT * FROM quota_bucket_counters WHERE bucket_id=? AND provider_window_id=?",
+          row.bucket_id,row.window_id
+        ).toArray()[0];
+        if (counter && row.observed_at_epoch > counter.last_observed_at_epoch) {
+          sql.exec(`UPDATE quota_bucket_counters
+            SET committed_since_observation_units=0,last_observed_at_epoch=?
+            WHERE bucket_id=? AND provider_window_id=?`,
+            row.observed_at_epoch,row.bucket_id,row.window_id);
+        }
       }
       return {
         status: "RECORDED",
