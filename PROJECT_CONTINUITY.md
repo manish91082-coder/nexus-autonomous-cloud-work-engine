@@ -1,3 +1,40 @@
+# LIVE CONTINUITY — PHASE 59.36 CROSS-WORKER DURABLE OBJECT VALIDATION (15-Nov-2026)
+
+**Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
+**Canonical repo:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Current task:** P59-003 AI agentic swarm foundation, IN_PROGRESS  
+**Paused:** P59-001; **Blocked:** P59-002  
+**Spend:** ₹0; **verified PCNE:** ₹0; **live LLM inference:** disabled
+
+## Phase59.36 completed and merged
+
+Report: [Cross-Worker Durable Object Validation](research/PHASE_59_36_CROSS_WORKER_DURABLE_OBJECT_VALIDATION_2026-11-15.md)
+
+- PR [#14](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/14) merged to master at `672c89c0c17237dd10030da4b361529f5294ccd2`.
+- Exact cross-Worker runtime CI [43707115629](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43707115629) passed **11/11 tests** on `1b9012d944bbf81c03d2d8a391bbd3f0f653e77d`.
+- A primary Worker and an auxiliary Worker now bind to the same named SQLite Durable Object host script/namespace.
+- 20 mixed primary/auxiliary callers against 100 admissible units at 10 units each: exactly 10 admitted, 10 `WAITING_FOR_QUOTA`, final reserved units 100, no oversubscription.
+- This is local workerd/Miniflare cross-Worker evidence, not independent physical hosts, multi-region or hosted Cloudflare production proof.
+- Phase59.35 base runtime acceptance remains 11/11, including forced DO eviction/recovery and transaction rollback.
+- PostgreSQL PR #12 remains an optional reference adapter. Its concurrency retry budget was raised to 8; exact CI [43707320455](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43707320455) passed. Cloudflare DO remains selected path.
+
+## Current production boundary
+
+No Cloudflare hosted deployment, provider telemetry collector, internal caller authentication, production worker integration, live LLM inference or paid fallback. Quota feature flag remains OFF. No external account, billing, namespace, secret or spend has been activated.
+
+## Next exact sequence — Phase59.37
+
+1. Implement internal caller authentication and least-privilege binding isolation.
+2. Add replay protection using request IDs, nonces and expiry.
+3. Prove unauthenticated, expired, replayed and wrong-scope callers fail closed without quota-state mutation.
+4. Add hostile-payload, tampering, duplicate delivery and failure-injection tests.
+5. Then Phase59.38 provider-specific telemetry adapters, measured endpoint-to-bucket cost maps, stale/future/out-of-order and provider window-reset tests, reservation expiry and uncertain-use reconciliation.
+6. Only after all gates integrate the quota client behind the disabled feature flag into read-only swarm workers.
+
+Keep zero-cost-first, no laptop dependency, no paid fallback, no account activation, and all owner-only gates intact.
+
+---
+
 # LIVE CONTINUITY — PHASE 59.35 WORKERS RUNTIME VALIDATION (15-Nov-2026)
 
 **Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
