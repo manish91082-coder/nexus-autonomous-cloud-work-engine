@@ -40,6 +40,7 @@ export default defineConfig({
             bindings: {
               NEXUS_QUOTA_STORE_ENABLED: "true",
               NEXUS_QUOTA_RESERVATION_TTL_SECONDS: "30",
+              NEXUS_QUOTA_MAX_RESERVATION_LIFETIME_SECONDS: "300",
               NEXUS_GITHUB_SECONDARY_MAX_IN_FLIGHT: "2",
               NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE: "2",
               NEXUS_QUOTA_CALLER_KEYS: JSON.stringify({
@@ -47,8 +48,8 @@ export default defineConfig({
                 secondary: secondaryTestSecret
               }),
               NEXUS_QUOTA_CALLER_POLICIES: JSON.stringify({
-                primary: ["reserve", "settle", "markUncertain", "expireReservations", "snapshot", "recordTelemetry", "recordSecondaryLimit"],
-                secondary: ["reserve", "settle", "markUncertain", "recordTelemetry", "recordSecondaryLimit"]
+                primary: ["reserve", "settle", "markUncertain", "expireReservations", "renewReservation", "reconcileUncertain", "snapshot", "recordTelemetry", "recordSecondaryLimit"],
+                secondary: ["reserve", "settle", "markUncertain", "renewReservation", "recordTelemetry", "recordSecondaryLimit"]
               }),
               NEXUS_QUOTA_BUCKET_POLICIES: JSON.stringify({
                 core: {safetyReserveUnits: 5, recoveryReserveUnits: 5, maxTelemetryAgeSeconds: 300},
