@@ -15,8 +15,8 @@
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
-    "last_reconciled_from_mission_state": "PHASE_59_36_CROSS_WORKER_DURABLE_OBJECT_VALIDATION",
-    "reconciliation_note": "P59-003 remains sole active P0. Phase59.36 cross-Worker implementation is present on canonical master at 672c89c0c17237dd10030da4b361529f5294ccd2. PR #14 was closed as superseded (not merged) to avoid duplicate merge. Exact Workers runtime run 43707115629 passed 11/11 tests on 1b9012d944bbf81c03d2d8a391bbd3f0f653e77d; 20 mixed primary/auxiliary Worker callers produced 10 accepted and 10 WAITING_FOR_QUOTA. This is local workerd/Miniflare evidence only, not independent-host or production proof. Phase59.34 PostgreSQL adapter remains optional reference; retry budget 8 passed CI 43707320455. No deployment, live inference or spend. Next Phase59.37 internal caller authentication, binding isolation, replay/nonce/expiry protection and hostile-payload tests. P59-001 paused; P59-002 blocked."
+    "last_reconciled_from_mission_state": "PHASE_59_37_INTERNAL_CALLER_AUTH_AND_REPLAY_PROTECTION",
+    "reconciliation_note": "P59-003 remains sole active P0. Phase59.37 PR #15 merged at d3ffd9b29e5b317451f3c6c9ee1ccbe493caafde; exact Workers runtime CI 43707931301 passed 18/18 and 13/13 check runs. Internal quota RPC now HMAC-SHA256 authenticated, 30s clock skew, per-caller nonce replay protection (120s TTL), per-caller action allowlists, caller-owned reservations and fail-closed feature flag. Only dummy test secrets/local flag enabled in test harness. No hosted deployment, live telemetry, live inference or spend. Next Phase59.38: GitHub REST/Search/GraphQL/Actions quota telemetry adapters, evidence-backed endpoint cost maps, stale/future/out-of-order/reset-window tests, reservation expiry and uncertain reconciliation. P59-001 paused; P59-002 blocked."
   },
   "tasks": [
     {
@@ -3337,7 +3337,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Phase59.37 internal caller authentication, binding isolation, replay/nonce/expiry protection, hostile-payload tests; prove unauthenticated, expired, replayed and wrong-scope callers fail closed without quota mutation. Then Phase59.38 provider telemetry adapters, measured endpoint costs, stale/future/out-of-order/window reset tests, reservation expiry and uncertain-use reconciliation.",
+        "next": "Phase59.38: build provider-specific read-only quota telemetry adapters (GitHub REST/core, Search, GraphQL, Actions), normalize remaining/limit/reset/resource/freshness with provenance, measure endpoint-to-bucket costs, fail closed on unknown costs, test stale/future/out-of-order/reset boundaries, then reservation expiry and uncertain reconciliation. Integrate into read-only swarm workers only after evidence and safety gates.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -3644,6 +3644,24 @@
           "pr_state": "CLOSED_SUPERSEDED_NOT_MERGED",
           "pr_merged": false,
           "master_commit": "672c89c0c17237dd10030da4b361529f5294ccd2"
+        },
+        "phase59_37": {
+          "report": "research/PHASE_59_37_INTERNAL_CALLER_AUTH_AND_REPLAY_PROTECTION_2026-11-15.md",
+          "pr_number": 15,
+          "pr_state": "MERGED",
+          "merge_commit": "d3ffd9b29e5b317451f3c6c9ee1ccbe493caafde",
+          "tested_sha": "d8ba113fe16ad97e65f49581885152c043e34a26",
+          "ci_run": 43707931301,
+          "ci_conclusion": "SUCCESS",
+          "tests_passed": 18,
+          "tests_total": 18,
+          "checks_passed": 13,
+          "auth": "HMAC-SHA256; 30-second timestamp skew; per-caller nonce replay store with 120-second TTL; action allowlists; caller-owned reservations; exact body hash",
+          "production_status": "LOCAL_WORKER_RUNTIME_ONLY_NOT_DEPLOYED_FEATURE_FLAG_OFF",
+          "test_secrets": "DUMMY_LOCAL_ONLY",
+          "spend_inr": 0,
+          "inference_enabled": false,
+          "next": "Phase59.38 provider-specific read-only GitHub REST/Search/GraphQL/Actions telemetry adapters, measured endpoint-to-bucket costs, stale/future/out-of-order/reset-window tests, reservation expiry and uncertain-use reconciliation."
         }
       },
       "blocker": "Remaining production-enablement gates: branch ruleset, owner-approved least-privilege GitHub App, cross-run/cross-repository global Actions/API quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation, and 7/30-day soak. Phase59.25 proved only eight worker threads on one GitHub-hosted runner; Phase59.26 specialist handlers are deterministic and provider-neutral, not live LLM inference. Keep all production clients disabled.",
