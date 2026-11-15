@@ -15,6 +15,7 @@ export default defineConfig({
       wrangler: { configPath: "./wrangler.jsonc" },
       miniflare: {
         bindings: {
+          NEXUS_QUOTA_STORE_ENABLED: "true",
           NEXUS_QUOTA_CALLER_ID: "primary",
           NEXUS_QUOTA_CALLER_SECRET: primaryTestSecret
         },
