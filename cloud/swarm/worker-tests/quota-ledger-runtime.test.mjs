@@ -956,6 +956,46 @@ describe("Phase 59.42 GitHub secondary rate-limit controller", () => {
     expect(result.accounting.uncertainty.status).toBe("UNCERTAIN_BUDGET_RETAINED");
   });
 
+  it("records a real 429 Retry-After response and blocks the next guarded provider request", async () => {
+    const input = identity("client-secondary-cooldown", "github.rest.repositories.get.v1");
+    const stub = stubFor(input);
+    const seeded = await seedBucket(stub,input,"core",100);
+    let providerCalls = 0;
+    const first = await executeQuotaGuardedGitHubRequest({
+      env,credentialScope:input.credentialScope,operation:input.operation,
+      workerId:input.workerId,requestId:"secondary-cooldown-first",
+      request:new Request("https://api.github.com/repos/acme/demo"),
+      fetchImpl:async()=>{
+        providerCalls += 1;
+        return new Response(JSON.stringify({message:"You have exceeded a secondary rate limit."}),{
+          status:429,
+          headers:{
+            "content-type":"application/json",
+            "retry-after":"120",
+            "x-ratelimit-limit":"100",
+            "x-ratelimit-remaining":"99",
+            "x-ratelimit-used":"1",
+            "x-ratelimit-reset":String(seeded.reset_at_epoch),
+            "x-ratelimit-resource":"core"
+          }
+        });
+      }
+    });
+    expect(first.status).toBe("COMPLETED");
+    const second = await executeQuotaGuardedGitHubRequest({
+      env,credentialScope:input.credentialScope,operation:input.operation,
+      workerId:"secondary-cooldown-next-worker",requestId:"secondary-cooldown-second",
+      request:new Request("https://api.github.com/repos/acme/demo"),
+      fetchImpl:async()=>{providerCalls+=1;return new Response("must-not-run");}
+    });
+    expect(second.status).toBe("NOT_SENT");
+    expect(second.admission.reason).toBe("SECONDARY_RATE_LIMIT_COOLDOWN");
+    expect(providerCalls).toBe(1);
+    const snapshot = await call(stub,"snapshot",input);
+    expect(snapshot.secondaryControl.cooldown_until_epoch)
+      .toBeGreaterThanOrEqual(Math.floor(Date.now()/1000)+119);
+  });
+
   it("does not send a provider request when authoritative quota admission is unavailable", async () => {
     const input = identity("client-no-admission", "github.rest.repositories.get.v1");
     const stub = stubFor(input);
