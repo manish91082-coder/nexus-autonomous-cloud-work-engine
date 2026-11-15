@@ -2,8 +2,8 @@
 Date: 2026-11-15
 Controller repository: `manish91082-coder/nexus-autonomous-cloud-work-engine`
 Dedicated state branch: `federation-locks`
-Latest live integration run: [43686594557 — SUCCESS](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43686594557)
-Workflow tested commit: `0896e9e48f904dd461eee98d0aa428f2d068afff`
+Latest live integration run: [43686678257 — SUCCESS](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43686678257)
+Workflow tested commit: `10bcb6231c017928b3163176084b8296d5d689ce`
 State branch HEAD after probe: `4a9fe8003401ed4b6421ad513a1cc4056ab548ac`
 
 ## Executive result
@@ -15,10 +15,10 @@ State branch HEAD after probe: `4a9fe8003401ed4b6421ad513a1cc4056ab548ac`
 - Live GitHub race: 20 simultaneous contenders for the same project/repository/task scope; exactly 1 valid lease, 19 received BUSY, no second lease.
 - The winning lease used a monotonically increasing fencing token.
 - Lease release was committed; active lease count returned to zero.
-- Live journal verification: 13 event files, contiguous sequence 0–12, all SHA-256 event links verified, tail hash matched state snapshot.
+- Live journal verification: 15 event files, contiguous sequence 0–14, all SHA-256 event links verified, tail hash matched state snapshot.
 - Workflow completed SUCCESS; no secrets were printed.
 
-The live probe has been repeated across several runs. Latest evidence is run `43686594557`; earlier runs `43686339494`, `43686421752` and `43686479221` also passed the 20-contender live probe after the REST ref endpoint and journal-verifier fixes.
+The live probe has been repeated across several runs. Latest evidence is run `43686594557`; earlier runs `43686339494`, `43686421752`, `43686479221` and `43686594557` also passed the 20-contender live probe after the REST ref endpoint and journal-verifier fixes.
 
 ## Architecture now present on `federation-locks`
 
