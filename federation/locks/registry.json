@@ -1,14 +1,36 @@
 {
   "schema_version": "1.0",
-  "status": "CONTRACT_ONLY_RUNTIME_NOT_IMPLEMENTED",
-  "lock_policy": {
-    "lease_seconds": 900,
-    "heartbeat_seconds": 60,
-    "monotonic_fencing_tokens": true,
-    "one_canonical_writer_per_control_path": true,
-    "stale_writer_rejected": true,
-    "duplicate_dispatch": "IDEMPOTENT_ATTACH_OR_EXIT"
+  "status": "PROTOTYPE_ON_DEDICATED_BRANCH_NOT_ENABLED_FOR_PROJECT_CLIENTS",
+  "backend": "GITHUB_GIT_REF_FAST_FORWARD_CAS",
+  "branch": "federation-locks",
+  "state_path": "federation/locks/state.json",
+  "event_path_pattern": "federation/locks/events/{sequence}.json",
+  "lease_seconds": 900,
+  "heartbeat_seconds": 300,
+  "max_active_leases": 8,
+  "live_evidence": {
+    "run_id": 43686678257,
+    "status": "success",
+    "workflow_commit": "10bcb6231c017928b3163176084b8296d5d689ce",
+    "contenders": 20,
+    "winners": 1,
+    "busy": 19,
+    "release_committed": true,
+    "active_leases_after": 0,
+    "event_count": 15,
+    "event_chain_verified": true,
+    "branch_head_after_probe": "70b446f9608159e83326bee2da63970b6afb6ea1"
   },
-  "locks": [],
-  "note": "Schema/contract placeholder only. B4 must implement atomic claims and race tests before cross-project writes are allowed."
+  "unit_evidence": {
+    "tests": 7,
+    "status": "PASS",
+    "simulated_concurrent_contenders": 100,
+    "expected_winners": 1,
+    "observed_winners": 1
+  },
+  "enforcement_boundary": "Only clients using this branch can be coordinated. No project-cell or ChatGPT thread client is deployed; branch ruleset and GitHub App installation are pending.",
+  "fail_closed": "API 403/429/5xx, malformed state, CAS retry exhaustion or unknown quota must not grant lease; retain task in WAITING_FOR_LOCK/WAITING_FOR_QUOTA.",
+  "no_paid_fallback": true,
+  "project_missions_remain_separate": true,
+  "report": "research/PHASE_59_18_GITHUB_GIT_REF_CAS_FEDERATION_LOCK_PROTOTYPE_2026-11-15.md"
 }
