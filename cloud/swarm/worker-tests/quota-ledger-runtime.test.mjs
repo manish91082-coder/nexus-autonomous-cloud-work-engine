@@ -83,6 +83,51 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
     expect(snapshot.telemetryCurrent).toHaveLength(2);
   });
 
+  it("refuses admission from periodic overview alone", async () => {
+    const now = Math.floor(Date.now()/1000);
+    const input = identity("overview-only","core10");
+    const stub = stubFor(input);
+    const telemetry = parseGitHubRateLimitOverview({
+      credentialScope:input.credentialScope,
+      observedAtEpoch:now,
+      payload:{resources:{core:{
+        limit:100,used:0,remaining:100,reset:now+3600
+      }}}
+    }).buckets[0];
+    await call(stub,"recordTelemetry",{
+      provider:input.provider,credentialScope:input.credentialScope,
+      windowId:input.windowId,telemetry
+    });
+    const result = await call(stub,"reserve",input);
+    expect(result.status).toBe("WAITING_FOR_QUOTA");
+    expect(result.reason).toMatch(/insufficient authority/);
+    expect((await call(stub,"snapshot",input)).buckets).toHaveLength(0);
+  });
+
+  it("rejects an operation absent from the server-side verified cost registry", async () => {
+    const input = identity("unknown-operation","unverified-operation");
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",100);
+    const result = await call(stub,"reserve",input);
+    expect(result.status).toBe("REJECTED");
+    expect(result.error.message).toMatch(/operation cost is not verified/);
+    expect((await call(stub,"snapshot",input)).buckets).toHaveLength(0);
+  });
+
+  it("fails closed when a provider reset window has expired", async () => {
+    const now = Math.floor(Date.now()/1000);
+    const input = identity("expired-window","core10");
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",100,{
+      observedAtEpoch:now-10,
+      resetAtEpoch:now-1
+    });
+    const result = await call(stub,"reserve",input);
+    expect(result.status).toBe("WAITING_FOR_QUOTA");
+    expect(result.reason).toMatch(/reset window expired/);
+    expect((await call(stub,"snapshot",input)).buckets).toHaveLength(0);
+  });
+
   it("settles every resource against its exact provider reset window", async () => {
     const input = identity("settle", "core20_search5");
     const stub = stubFor(input);
@@ -155,6 +200,48 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
     const snapshot = await call(stub,"snapshot",input);
     expect(snapshot.buckets[0].reserved_units).toBe(0);
     expect(snapshot.buckets[0].uncertain_units).toBe(9);
+  });
+
+  it("settles an old-window reservation without debiting the new provider window", async () => {
+    const now = Math.floor(Date.now()/1000);
+    const input = identity("old-window-settlement","core10");
+    const stub = stubFor(input);
+    const oldTelemetry = await seedBucket(stub,input,"core",100,{
+      observedAtEpoch:now,
+      resetAtEpoch:now+1
+    });
+    await call(stub,"reserve",input);
+
+    const newTelemetry = parseGitHubRateLimitHeaders({
+      headers:{
+        "x-ratelimit-limit":"100","x-ratelimit-remaining":"100",
+        "x-ratelimit-used":"0","x-ratelimit-reset":String(now+3600),
+        "x-ratelimit-resource":"core"
+      },
+      credentialScope:input.credentialScope,
+      observedAtEpoch:now+2,
+      endpoint:"GET /repos/acme/demo",method:"GET",status:200
+    });
+    const recorded = await call(stub,"recordTelemetry",{
+      provider:input.provider,credentialScope:input.credentialScope,
+      windowId:input.windowId,telemetry:newTelemetry
+    });
+    expect(recorded.decision).toBe("ACCEPT_NEW_WINDOW_AFTER_RESET");
+    const newReservation = {
+      ...input,
+      reservationId:"reservation-new-window",
+      workerId:"worker-new-window"
+    };
+    expect((await call(stub,"reserve",newReservation)).status).toBe("RESERVED");
+
+    expect((await call(stub,"settle",{...input,actualByBucket:{core:10}})).status).toBe("SETTLED");
+    const counters = (await call(stub,"snapshot",input)).buckets;
+    const oldCounter = counters.find(x=>x.provider_window_id===oldTelemetry.window_id);
+    const newCounter = counters.find(x=>x.provider_window_id===newTelemetry.window_id);
+    expect(oldCounter.reserved_units).toBe(0);
+    expect(oldCounter.committed_units).toBe(10);
+    expect(newCounter.reserved_units).toBe(10);
+    expect(newCounter.committed_units).toBe(0);
   });
 
   it("rebases committed usage only when newer authoritative telemetry arrives", async () => {
