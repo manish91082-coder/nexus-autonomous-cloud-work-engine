@@ -71,9 +71,11 @@ export function validateQuotaRequest(input) {
 }
 
 export function availableUnits(bucket, counters) {
+  const committedSinceObservationUnits = counters.committedSinceObservationUnits
+    ?? counters.committedUnits ?? 0;
   return bucket.observedRemainingUnits - bucket.safetyReserveUnits
     - bucket.recoveryReserveUnits - counters.reservedUnits
-    - counters.committedUnits - counters.uncertainUnits;
+    - committedSinceObservationUnits - counters.uncertainUnits;
 }
 
 /** Disabled-by-default caller guard; no provider worker should bypass this. */
