@@ -40,7 +40,8 @@ export class QuotaLedgerDO extends DurableObject {
   reserve(input) {
     validateQuotaRequest(input);
     const sql = this.ctx.storage.sql;
-    return this.ctx.storage.transactionSync(() => {
+    try {
+      const result = this.ctx.storage.transactionSync(() => {
       const prior = sql.exec(
         "SELECT reservation_id FROM quota_reservations WHERE reservation_id = ?",
         input.reservationId
@@ -103,7 +104,15 @@ export class QuotaLedgerDO extends DurableObject {
         input.reservationId,input.workerId,input.operation,JSON.stringify(input.costs),
         Math.min(...input.buckets.map(b=>b.nowEpoch)));
       return {reservationId:input.reservationId,status:"RESERVED",reservedByBucket:input.costs};
-    });
+      });
+      return result;
+    } catch (error) {
+      // Expected admission failures are returned as data across the RPC boundary.
+      return { status: "REJECTED", error: {
+        name: error?.name || "Error",
+        message: String(error?.message || error)
+      }};
+    }
   }
 
   settle(input) {
