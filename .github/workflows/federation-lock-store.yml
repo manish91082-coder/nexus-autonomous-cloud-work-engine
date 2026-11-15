@@ -1,0 +1,36 @@
+name: Federation Git Ref Lock Store Contract
+
+on:
+  push:
+    paths:
+      - 'scripts/federation_git_ref_store.py'
+      - 'tests/test_federation_git_ref_store.py'
+      - 'scripts/probe_federation_git_ref_store.py'
+      - '.github/workflows/federation-lock-store.yml'
+      - 'federation/locks/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: federation-lock-store-probe
+  cancel-in-progress: false
+
+jobs:
+  contract-and-live-cas:
+    if: github.ref == 'refs/heads/federation-locks'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout dedicated lock branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 (Node 24)
+      - name: Run pure lease state and 100-way CAS simulator tests
+        run: python3 -m unittest discover -s tests -p 'test_federation_git_ref_store.py' -v
+      - name: Run live GitHub branch CAS race probe
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: python3 scripts/probe_federation_git_ref_store.py
