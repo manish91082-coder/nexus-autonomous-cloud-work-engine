@@ -8,6 +8,7 @@
 import { quotaLedgerObjectName } from "./quota-ledger-contract.mjs";
 import { parseGitHubRateLimitHeaders } from "./github-quota-telemetry.mjs";
 import { resolveGitHubOperation } from "./github-operation-registry.mjs";
+import { classifyGitHubRateLimitResponse } from "./github-secondary-rate-limit.mjs";
 
 const encoder = new TextEncoder();
 
@@ -170,6 +171,42 @@ export async function executeQuotaGuardedGitHubRequest({
       accounting: uncertain.body,
       response: null
     };
+  }
+
+  let rateLimitMessage = "";
+  try {
+    const responseBody = await response.clone().json();
+    if (typeof responseBody?.message === "string") rateLimitMessage = responseBody.message;
+  } catch {
+    // A non-JSON response body is not itself rate-limit evidence.
+  }
+  const rateLimit = classifyGitHubRateLimitResponse({
+    status: response.status,
+    headers: response.headers,
+    message: rateLimitMessage,
+    nowEpoch: nowEpoch ?? Math.floor(Date.now() / 1000)
+  });
+  if (rateLimit.rateLimited) {
+    const recordedLimit = await ledgerCall(env, "recordSecondaryLimit", {
+      ...base,
+      status: rateLimit.status,
+      kind: rateLimit.kind,
+      retryAfterSeconds: rateLimit.retryAfterSeconds,
+      resetAtEpoch: rateLimit.resetAtEpoch,
+      minimumWaitSeconds: rateLimit.minimumWaitSeconds,
+      reason: rateLimit.reason
+    }, rpcOptions);
+    if (recordedLimit.httpStatus !== 200
+      || recordedLimit.body?.status !== "SECONDARY_COOLDOWN_RECORDED") {
+      const uncertain = await ledgerCall(env, "markUncertain", base, rpcOptions);
+      return {
+        status: "RESPONSE_RECEIVED_ACCOUNTING_UNCERTAIN",
+        reservationId,
+        error: recordedLimit.body?.reason || recordedLimit.body?.error?.message || "rate-limit cooldown was not persisted",
+        accounting: uncertain.body,
+        response
+      };
+    }
   }
 
   let telemetryResult = null;
