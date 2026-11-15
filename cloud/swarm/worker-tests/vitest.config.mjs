@@ -30,6 +30,7 @@ export default defineConfig({
             durableObjects: {
               QUOTA_LEDGER: {
                 className: "QuotaLedgerDO",
+                scriptName: "p10cr-quota-ledger-host",
                 useSQLite: true
               }
             }
