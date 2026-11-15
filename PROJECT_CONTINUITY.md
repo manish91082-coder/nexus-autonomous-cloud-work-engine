@@ -3454,3 +3454,47 @@ Next: obtain an exhaustive workflow tree and latest Actions run IDs; verify the 
 - Initial Phase 59.12 continuity checkpoint: `d6855d3b9b687bcd38eebb85312f74fbe0694daf`.
 
 The opportunity registry (53 candidates), payout registry (27 providers) and revenue ledger (zero entries) were read back and intentionally left unchanged. No new buyer, payout eligibility or receipt evidence arose from the B4 engineering milestone. P59-003 remains IN_PROGRESS; its directory-enumeration and exact GitHub Actions run-evidence acceptance criteria remain open.
+
+
+# PHASE 59.13 — FLASH LOAN SWARM RESOURCE CONFLICT AUDIT — 15 NOVEMBER 2026
+
+**Audit report:** [Phase 59.13 Flash Loan Swarm Resource Conflict Audit](research/PHASE_59_13_FLASHLOAN_SWARM_RESOURCE_CONFLICT_AUDIT_2026-11-15.md)  
+**Federation registry:** `federation/PROJECT_FEDERATION_REGISTRY.json`  
+**Audited repository:** `manish91082-coder/flashloan-research-agentic-swarm`, main, observed HEAD `f4db040b77ef9b56682873fe6fd6ebcfce5a59bd`.
+
+## Decision
+
+**No direct AI provider quota collision identified; shared GitHub Actions capacity and GitHub API contention risks confirmed.** Keep Flash Loan as an independent project cell. Do not import its queue, mission, SQLite DB, source vault, Ollama process, artifacts or secrets into P10CR. No Flash Loan workflow, schedule, file or run was modified.
+
+## Verified Flash Loan architecture/resources
+
+- Six workflow files inspected: semantic pilot, autonomous source capture, candidate batch preparation, CI, weekly discovery, and source-capture pilot.
+- Semantic pilot run `43683037797` was IN_PROGRESS at audit time; it installs Ollama on an ephemeral `ubuntu-latest` runner and pulls `qwen2.5:3b`, served only on loopback. Timeout 360 minutes; concurrency group `flashloan-agent-form-semantic-pilot`.
+- Source-capture run `43681954178` was IN_PROGRESS at audit time; timeout 300 minutes, source parallelism 2, concurrency group `flashloan-autonomous-source-capture`.
+- Discovery schedule is Monday 02:17 UTC; timeout 120 minutes.
+- Runtime dependencies are project-local; base Python runtime has no dependencies, optional agentic extras pin LangGraph and SQLite checkpoint packages.
+- SQLite state, source vault and workflow artifacts are project/run-local. Workflow-provided GitHub tokens are used; reviewed definitions did not require a PAT.
+- Flash Loan mission constitution explicitly prohibits paid model/service fallback, candidate code execution, wallet/signing/deployment/live trading.
+
+## Conflict assessment
+
+- **Actions:** shared finite account-level runner capacity is a risk. Repository-specific concurrency groups do not form a global cross-repository lock. P10CR must reserve a recovery/short-CI lane and defer heavy jobs when headroom is unknown.
+- **GitHub API:** discovery/source capture may contend with P10CR and other repositories. Add per-project budgets, cache, jittered backoff and durable WAITING_FOR_QUOTA.
+- **AI model quota:** no direct shared provider quota found because Flash Loan uses runner-local Ollama rather than a Cloudflare/OpenRouter/Gemini/Groq endpoint. Do not connect P10CR to that ephemeral process.
+- **Storage/runtime:** separate SQLite/vault/artifact namespaces; no cross-project shared database or worker process.
+- **Mission/authority:** independent project constitutions remain authoritative. Federation may observe status and arbitrate shared resources but cannot change Flash Loan research scope or stop its work without its own authorization.
+
+## P10CR resource fallback order
+
+1. Keep acknowledged work in the durable queue and defer if free capacity is unavailable.
+2. Use only P10CR's reserved, bounded GitHub Actions lane for short CI/recovery tasks.
+3. Use Cloudflare only for eligible lightweight dispatch/watchdog work after deployment and quota/billing guards are verified.
+4. Use Oracle/GCP standby only after actual account eligibility, region, capacity and zero-billing conditions are verified.
+5. Use only P10CR-approved free model endpoints after provider terms, data handling and real quotas are verified. Unknown cost/terms/quota means fail closed.
+6. Never use paid fallback, account rotation, another project's runner, model process, storage, credentials or artifacts.
+
+## Remaining work
+
+The registry is still not a deployed global lock or quota service. Next P10CR work remains P59-003: verify B4 exact GitHub Actions CI, complete exhaustive workflow inventory, add crash/restore and Linux process-tree soak tests, then implement atomic federation lease/fencing clients and shared Actions/API quota reservations. Keep P59-001 paused and P59-002 blocked until the safe handoff and V5 gates permit resumption.
+
+No revenue or payout evidence changed: PCNE ₹0; bank-settled receipts ₹0; authorized spend ₹0. No new permission, spend, billing activation or provider account was requested.
