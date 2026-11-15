@@ -4,9 +4,13 @@ from __future__ import annotations
 
 import json
 import os
+import pathlib
+import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor
 
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 from scripts.federation_git_ref_store import GitHubGitRefStore, LockBusy
 
 
