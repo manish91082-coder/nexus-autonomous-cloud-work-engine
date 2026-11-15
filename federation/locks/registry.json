@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "status": "PROTOTYPE_GITHUB_GIT_REF_CAS",
+  "status": "PROTOTYPE_GITHUB_GIT_REF_CAS_LIVE_PROBE_PASS_NOT_ENABLED_FOR_PROJECT_CLIENTS",
   "branch": "federation-locks",
   "state_path": "federation/locks/state.json",
   "event_path_pattern": "federation/locks/events/{sequence}.json",
@@ -14,5 +14,23 @@
   "fail_closed": "On API 403/429/5xx, network error, branch conflict exhaustion, malformed state or unknown quota, do not grant lease; keep task WAITING_FOR_QUOTA/WAITING_FOR_LOCK.",
   "no_paid_fallback": true,
   "project_isolation": true,
-  "status_note": "Prototype branch initialized; runtime client and 100-way race proof not yet complete. No cross-project worker may use it yet."
+  "status_note": "Dedicated branch initialized; 7 unit/state tests PASS; live GitHub Actions probe with 20 simultaneous contenders produced exactly one lease owner and 19 BUSY exits, released the lease, and verified the 9-event hash chain. No active leases remain. Still a prototype only: no project-cell client, no cross-repo App installation, no 100-way live race, no quota arbiter. Cross-project writes remain disabled.",
+  "live_probe": {
+    "workflow_run_id": 43686479221,
+    "workflow_run_status": "success",
+    "tested_commit": "5e1daf29ec89aaabe60656e93504f7f0d2cf285f",
+    "live_contenders": 20,
+    "live_winners": 1,
+    "live_busy": 19,
+    "release_committed": true,
+    "remaining_active_leases": 0,
+    "event_journal_verified": true,
+    "event_count": 9,
+    "branch_head_after_probe": "9149a7f77352c26cfc8d60cc83ef087364b06792"
+  },
+  "unit_tests": {
+    "count": 7,
+    "status": "PASS",
+    "includes": "100 concurrent contenders against deterministic atomic CAS simulator; exactly one winner"
+  }
 }
