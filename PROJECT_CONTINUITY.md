@@ -1,3 +1,38 @@
+# LIVE CONTINUITY — PHASE 59.43 LEASE RENEWAL AND UNCERTAIN RECONCILIATION (15-Nov-2026)
+
+**Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
+**Canonical repo:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Current task:** P59-003 AI agentic swarm foundation, IN_PROGRESS  
+**Paused:** P59-001; **Blocked:** P59-002  
+**Spend:** ₹0; **verified platform earnings:** ₹0; **live LLM inference:** disabled
+
+## Phase59.43 completed and merged
+
+Report: [Lease Renewal and Evidence-Only Reconciliation](research/PHASE_59_43_LEASE_RENEWAL_UNCERTAIN_RECONCILIATION_2026-11-15.md)
+
+- PR [#22](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/22) merged to master at `af81cfd4020001e04e7a1e5c018c4f1d3ee2b876`.
+- Exact Workers/workerd runtime CI [43714730741](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43714730741) passed **60/60 tests** on `1296291e8ddfa5531b5d4de2a288dd37fbf42e38`.
+- PR head `b4e1e349224014237e3966626ac7b2f55e2b0647` passed **13/13** regression checks.
+- Added idempotent owner/worker-bound reservation heartbeats, monotonic lease versions, 30–300s extension and a bounded total lifetime. Expired leases cannot be revived.
+- Added primary-only uncertain reconciliation based solely on persisted reservation-linked authoritative response-header telemetry in the same provider window.
+- Partial multi-bucket reconciliation releases only evidenced buckets; all others remain uncertain. No evidence means no release.
+- Primary recovery can reconcile secondary-owned reservations; every attempt is audited.
+- No live provider calls, deployment, credentials, inference or spend. Feature flag OFF.
+
+## Current production boundary
+
+The quota client is not yet integrated into a mission worker. No independent physical-host/multi-region proof exists. All provider fetches in CI are mocked. Production flags remain OFF.
+
+## Next exact sequence — Phase59.44
+
+1. Integrate the quota client into one read-only swarm Worker in mocked/shadow mode through the shared Durable Object binding.
+2. Validate task envelope, owner/repository input, no live fetch, stable request ID, reserve → response telemetry → settlement and duplicate suppression.
+3. Prove the worker cannot bypass admission, secondary cooldown, heartbeat or reconciliation rules.
+4. Add independent-host contention/failure harness design and evidence where a genuinely separate runtime is available.
+5. Keep live provider calls, hosted deployment, billing and inference disabled until owner gates are explicitly approved.
+
+---
+
 # LIVE CONTINUITY — PHASE 59.42 GITHUB SECONDARY RATE-LIMIT CONTROL (15-Nov-2026)
 
 **Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
