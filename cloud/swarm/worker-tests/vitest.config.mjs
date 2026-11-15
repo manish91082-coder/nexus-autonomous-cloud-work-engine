@@ -1,26 +1,38 @@
 import { cloudflareTest } from "@cloudflare/vitest-plugin";
 import { defineConfig } from "vitest/config";
 
+const sharedQuotaNamespace = {
+  className: "QuotaLedgerDO",
+  scriptName: "p10cr-quota-ledger-host",
+  useSQLite: true
+};
+
 export default defineConfig({
   plugins: [
     cloudflareTest({
       wrangler: { configPath: "./wrangler.jsonc" },
       miniflare: {
+        durableObjects: {
+          QUOTA_LEDGER: sharedQuotaNamespace
+        },
         serviceBindings: {
           SECOND_CALLER: "p10cr-secondary-caller"
         },
         workers: [
+          {
+            name: "p10cr-quota-ledger-host",
+            rootPath: "../",
+            modules: [
+              { type: "ESModule", path: "./quota-ledger-host.mjs" }
+            ]
+          },
           {
             name: "p10cr-secondary-caller",
             modules: [
               { type: "ESModule", path: "./second-caller.mjs" }
             ],
             durableObjects: {
-              QUOTA_LEDGER: {
-                className: "QuotaLedgerDO",
-                scriptName: "core:entry",
-                useSQLite: true
-              }
+              QUOTA_LEDGER: sharedQuotaNamespace
             }
           }
         ]
