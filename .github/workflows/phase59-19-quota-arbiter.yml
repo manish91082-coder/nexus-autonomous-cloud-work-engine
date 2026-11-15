@@ -1,0 +1,44 @@
+name: Phase 59.19 Federation Quota Arbiter Tests
+
+on:
+  push:
+    branches:
+      - phase59-19-quota-arbiter
+    paths:
+      - 'scripts/federation_git_ref_store.py'
+      - 'scripts/federation_quota_arbiter.py'
+      - 'tests/test_federation_git_ref_store.py'
+      - 'tests/test_federation_quota_arbiter.py'
+      - '.github/workflows/phase59-19-quota-arbiter.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-19-quota-arbiter-ci
+  cancel-in-progress: false
+
+jobs:
+  quota-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout phase branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Run federation lock and quota tests
+        run: |
+          python3 -m unittest discover -s tests -p 'test_federation_git_ref_store.py' -v
+          python3 -m unittest discover -s tests -p 'test_federation_quota_arbiter.py' -v
+      - name: Validate policy is zero-cost and bounded
+        run: |
+          python3 - <<'PY'
+          from scripts.federation_quota_arbiter import (
+              GLOBAL_RESERVATIONS_PER_UTC_HOUR, PROJECT_CAPS,
+              EMERGENCY_CAP_PER_HOUR, REQUESTS_PER_RESERVATION,
+          )
+          assert sum(PROJECT_CAPS.values()) == GLOBAL_RESERVATIONS_PER_UTC_HOUR - EMERGENCY_CAP_PER_HOUR
+          assert GLOBAL_RESERVATIONS_PER_UTC_HOUR * REQUESTS_PER_RESERVATION == 360
+          assert EMERGENCY_CAP_PER_HOUR == 4
+          print("quota policy invariants PASS")
+          PY
