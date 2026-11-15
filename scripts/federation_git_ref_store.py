@@ -38,6 +38,13 @@ class LockStoreUnavailable(FederationLockError):
     pass
 
 
+class ResourceNotFound(FederationLockError):
+    pass
+
+
+EVENT_CHUNK_SIZE = 256
+
+
 def utc_now():
     return datetime.now(timezone.utc)
 
@@ -62,6 +69,32 @@ def parse_utc(value):
 def canonical_json(value):
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
 
+
+
+def event_partition_path(events_dir, event, chunk_size=EVENT_CHUNK_SIZE):
+    """Return a bounded monthly/sequence-chunk path for one immutable event batch."""
+    if not isinstance(chunk_size, int) or chunk_size < 1 or chunk_size > 1024:
+        raise FederationLockError("event chunk size must be 1..1024")
+    sequence = event.get("sequence")
+    stamp = parse_utc(event.get("timestamp_utc", ""))
+    if not isinstance(sequence, int) or sequence < 1:
+        raise FederationLockError("event sequence must be a positive integer")
+    chunk = (sequence - 1) // chunk_size
+    return f"{events_dir}/v2/{stamp:%Y}/{stamp:%m}/chunk-{chunk:08d}.json"
+
+
+def append_event_to_chunk(existing, event, chunk_size=EVENT_CHUNK_SIZE):
+    """Append without exceeding the fixed chunk bound or accepting duplicate sequences."""
+    if not isinstance(existing, list) or len(existing) >= chunk_size:
+        raise FederationLockError("event chunk is malformed or full")
+    path = event_partition_path("events", event, chunk_size)
+    if existing:
+        previous = existing[-1]
+        if not isinstance(previous, dict) or event["sequence"] != previous.get("sequence", -2) + 1:
+            raise FederationLockError("event chunk sequence is not contiguous")
+        if event_partition_path("events", previous, chunk_size) != path:
+            raise FederationLockError("event does not belong to this chunk")
+    return [*existing, event]
 
 
 def verify_event_chain(events, initial_hash="0" * 64, start_sequence=0):
@@ -250,6 +283,8 @@ class GitHubGitRefStore:
                 return json.loads(raw.decode("utf-8")) if raw else {}
         except urllib.error.HTTPError as exc:
             detail = exc.read().decode("utf-8", "replace")[:1000]
+            if exc.code == 404:
+                raise ResourceNotFound(detail or "GitHub resource not found") from exc
             if exc.code in (409, 422) and method == "PATCH" and "/git/refs/" in path:
                 raise CASConflict(detail or "branch ref compare-and-swap conflict") from exc
             if exc.code in (403, 429):
@@ -286,9 +321,23 @@ class GitHubGitRefStore:
     def _commit(self, parent_sha, tree_sha, new_state, event):
         state_blob = self._request("POST", f"/repos/{self.repository}/git/blobs",
                                    {"content": json.dumps(new_state, ensure_ascii=False, indent=2) + "\n", "encoding": "utf-8"})
+        event_path = event_partition_path(self.events_dir, event)
+        encoded_event_path = urllib.parse.quote(event_path, safe="/")
+        try:
+            existing_payload = self._request(
+                "GET", f"/repos/{self.repository}/contents/{encoded_event_path}?ref={urllib.parse.quote(parent_sha)}"
+            )
+            existing_raw = __import__("base64").b64decode(existing_payload["content"]).decode("utf-8")
+            existing_events = json.loads(existing_raw)
+        except ResourceNotFound:
+            existing_events = []
+        except Exception as exc:
+            if isinstance(exc, FederationLockError):
+                raise
+            raise FederationLockError("existing event chunk is malformed or unreadable") from exc
+        chunk_events = append_event_to_chunk(existing_events, event)
         event_blob = self._request("POST", f"/repos/{self.repository}/git/blobs",
-                                   {"content": json.dumps(event, ensure_ascii=False, indent=2) + "\n", "encoding": "utf-8"})
-        event_path = f"{self.events_dir}/{event['sequence']:012d}.json"
+                                   {"content": json.dumps(chunk_events, ensure_ascii=False, indent=2) + "\n", "encoding": "utf-8"})
         tree = self._request("POST", f"/repos/{self.repository}/git/trees", {
             "base_tree": tree_sha,
             "tree": [
@@ -349,30 +398,85 @@ class GitHubGitRefStore:
 
     def verify_journal(self):
         _, _, state = self._read_snapshot()
-        encoded_dir = urllib.parse.quote(self.events_dir, safe="/")
-        listing = self._request("GET", f"/repos/{self.repository}/contents/{encoded_dir}?ref={urllib.parse.quote(self.branch)}")
-        if not isinstance(listing, list) or len(listing) > 1000:
-            raise FederationLockError("event directory listing invalid or exceeds 1000-file audit cap")
-        paths = sorted(
-            item.get("path", "") for item in listing
-            if isinstance(item, dict) and item.get("type") == "file" and item.get("name", "").endswith(".json")
+        ref_query = urllib.parse.quote(self.branch)
+        root = self._request(
+            "GET", f"/repos/{self.repository}/contents/{urllib.parse.quote(self.events_dir, safe='/')}?ref={ref_query}"
         )
+        if not isinstance(root, list) or len(root) > 1000:
+            raise FederationLockError("legacy event root listing invalid or exceeds 1000 entries")
         events = []
-        for path in paths:
-            encoded_path = urllib.parse.quote(path, safe="/")
-            content = self._request("GET", f"/repos/{self.repository}/contents/{encoded_path}?ref={urllib.parse.quote(self.branch)}")
-            try:
-                raw = __import__("base64").b64decode(content["content"]).decode("utf-8")
-                events.append(json.loads(raw))
-            except Exception as exc:
-                raise FederationLockError("event file is missing or malformed") from exc
+
+        # Backward compatibility: original prototype stored one JSON file per event.
+        for item in root:
+            if not isinstance(item, dict):
+                raise FederationLockError("malformed event root entry")
+            if item.get("type") == "file" and item.get("name", "").endswith(".json"):
+                path = item.get("path", "")
+                payload = self._request(
+                    "GET", f"/repos/{self.repository}/contents/{urllib.parse.quote(path, safe='/')}?ref={ref_query}"
+                )
+                try:
+                    raw = __import__("base64").b64decode(payload["content"]).decode("utf-8")
+                    parsed = json.loads(raw)
+                except Exception as exc:
+                    raise FederationLockError("legacy event file is missing or malformed") from exc
+                if not isinstance(parsed, dict):
+                    raise FederationLockError("legacy event file must contain one object")
+                events.append(parsed)
+
+        # New layout: events/v2/YYYY/MM/chunk-NNNNNNNN.json. Each chunk is
+        # bounded to EVENT_CHUNK_SIZE events; directory listings are partition-local.
+        v2 = next((x for x in root if isinstance(x, dict) and x.get("type") == "dir" and x.get("name") == "v2"), None)
+        if v2:
+            years = self._request(
+                "GET", f"/repos/{self.repository}/contents/{urllib.parse.quote(v2['path'], safe='/')}?ref={ref_query}"
+            )
+            if not isinstance(years, list) or len(years) > 1000:
+                raise FederationLockError("event year partition listing invalid")
+            for year in years:
+                if not isinstance(year, dict) or year.get("type") != "dir":
+                    raise FederationLockError("malformed event year partition")
+                months = self._request(
+                    "GET", f"/repos/{self.repository}/contents/{urllib.parse.quote(year['path'], safe='/')}?ref={ref_query}"
+                )
+                if not isinstance(months, list) or len(months) > 1000:
+                    raise FederationLockError("event month partition listing invalid")
+                for month in months:
+                    if not isinstance(month, dict) or month.get("type") != "dir":
+                        raise FederationLockError("malformed event month partition")
+                    chunks = self._request(
+                        "GET", f"/repos/{self.repository}/contents/{urllib.parse.quote(month['path'], safe='/')}?ref={ref_query}"
+                    )
+                    if not isinstance(chunks, list) or len(chunks) > 1000:
+                        raise FederationLockError("event chunk listing invalid")
+                    for chunk in chunks:
+                        if not isinstance(chunk, dict) or chunk.get("type") != "file" or not chunk.get("name", "").endswith(".json"):
+                            raise FederationLockError("malformed event chunk entry")
+                        payload = self._request(
+                            "GET", f"/repos/{self.repository}/contents/{urllib.parse.quote(chunk['path'], safe='/')}?ref={ref_query}"
+                        )
+                        try:
+                            raw = __import__("base64").b64decode(payload["content"]).decode("utf-8")
+                            parsed = json.loads(raw)
+                        except Exception as exc:
+                            raise FederationLockError("event chunk is missing or malformed") from exc
+                        if not isinstance(parsed, list) or not 1 <= len(parsed) <= EVENT_CHUNK_SIZE:
+                            raise FederationLockError("event chunk must contain 1..256 events")
+                        events.extend(parsed)
+
+        events.sort(key=lambda event: event.get("sequence", -1) if isinstance(event, dict) else -1)
         if len(events) != state["event_sequence"] + 1:
             raise FederationLockError("event count does not match state checkpoint")
         if not verify_event_chain(events):
             raise FederationLockError("append-only event hash chain verification failed")
         if not events or events[-1].get("event_hash") != state["last_event_hash"]:
             raise FederationLockError("state last_event_hash does not match journal tail")
-        return {"event_count": len(events), "last_event_hash": state["last_event_hash"], "verified": True}
+        return {
+            "event_count": len(events),
+            "legacy_event_count": sum(1 for x in root if isinstance(x, dict) and x.get("type") == "file" and x.get("name", "").endswith(".json")),
+            "last_event_hash": state["last_event_hash"],
+            "verified": True,
+        }
 
     def snapshot(self):
         head, _, state = self._read_snapshot()
