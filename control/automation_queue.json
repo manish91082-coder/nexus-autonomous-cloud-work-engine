@@ -3144,7 +3144,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Implement B4 event journal, atomic lease/fencing lock service and worker identity, then federation client read-only integrations; only after race tests, request GitHub App installation and migrate one project at a time.",
+        "next": "SQLite backup/restore integrity and repeated crash-window soak; workflow supply-chain/least-privilege review; then real shared-store federation lease client and per-project GitHub Actions/API quota reservations. SQLite single-host database is not a cross-host lock service.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -3211,9 +3211,23 @@
         "phase59_12_local_test_count": 16,
         "phase59_12_ci_status": "UNVERIFIED_RUN_ID_UNAVAILABLE_COMBINED_STATUS_EMPTY",
         "phase59_12_workflow_inventory": "8_CONTINUITY_REFERENCED_FILES_INSPECTED; DIRECTORY_ENUMERATION_NOT_AVAILABLE; EXISTING_WORKFLOWS_UNCHANGED",
-        "phase59_12_production_integrated": false
+        "phase59_12_production_integrated": false,
+        "phase59_14": "B4_EXACT_GITHUB_ACTIONS_CI_SUCCESS_AND_CRASH_RECOVERY_TESTS",
+        "phase59_14_report": "research/PHASE_59_14_B4_CRASH_RECOVERY_AND_WORKFLOW_INVENTORY_2026-11-15.md",
+        "b4_exact_ci_run_id": 43685216997,
+        "b4_exact_ci_sha": "8b52ecca1c6007c13af0bf368e440b1b8e51d8c4",
+        "b4_exact_ci_status": "SUCCESS",
+        "b4_test_count": 18,
+        "b4_added_tests": [
+          "spawned worker abrupt crash after checkpoint; durable checkpoint recovery; expired lease recovery; stale token rejected; new fencing token issued",
+          "Linux forked descendant process-group termination on timeout"
+        ],
+        "workflow_inventory": "COMPLETE: GitHub recursive tree truncated=false; 14/14 workflow files fetched and classified; two recurring schedules; 3 legacy manual-only workflows excluded from P10CR.",
+        "workflow_count": 14,
+        "recurring_schedule_count": 2,
+        "phase59_14_limitations": "B4 remains standalone; no production worker integration, no deployed cross-host lock service, no shared quota arbiter, no AI provider configured; no cloud failover or 24x7 SLA claimed."
       },
-      "blocker": "Standalone B4 prototype is committed and locally tested. Exact GitHub Actions run is not independently retrievable and full .github/workflows directory enumeration is unavailable through the current connector. Existing production automation remains unchanged until exhaustive source/workflow audit and exact-HEAD CI verification.",
+      "blocker": "B4 exact GitHub Actions CI and all 14 workflows are now verified. Remaining P59-003 gates: SQLite backup/restore integrity and crash-window soak, workflow supply-chain/least-privilege review, then deploy a real shared atomic federation lock/quota service before any cross-project client/dispatch. B4 is not production-integrated.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task."
     }
   ],
