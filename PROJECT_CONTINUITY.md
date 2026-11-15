@@ -3704,3 +3704,14 @@ Date: 2026-11-15
 - No live lock-branch writes, production worker clients, AI inference or spend was enabled. P59-003 remains the only active P10CR engineering task; P59-001 revenue portfolio research remains paused until safe handoff; P59-002 remains blocked.
 - Mission truth unchanged: verified realized net receipts ₹0; authorized spend ₹0.
 - Exact next step: Phase 59.24 controlled 8-worker contention, duplicate-delivery and crash-recovery tests; then Phase 59.25 controlled cloud soak; Phase 59.26 specialist worker integration; safe handoff; resume P59-001 revenue-source research.
+
+
+## PHASE 59.24 UPDATE — 8-WORKER CONTENTION, DUPLICATE DELIVERY AND CRASH RECOVERY
+Date: 2026-11-15
+
+- Phase 59.24 PR #8 merged to canonical `master`; tested PR head `32c42e9d3e5d54c13b0fd89e37f11a21ebbf943e`; merge commit `4d2ab567eafb3899c01c34f422d03050c945d7bf`.
+- Eight-worker atomic CAS contention, duplicate-delivery single-winner, lease expiry/crash reclaim with fencing and stale-owner rejection, and crash-after-batched-heartbeat checkpoint tests passed.
+- Exact-head CI runs 43693399517, 43693407055, 43693407090, 43693407140 and 43693407144 all SUCCESS. Report: `research/PHASE_59_24_WORKER_CONTENTION_DUPLICATE_CRASH_RECOVERY_2026-11-15.md`.
+- The harness is in-memory/test-only; it is not live distributed lock or cloud-soak evidence. Production clients and live lock writes remain disabled.
+- P59-003 remains the only active engineering task. P59-001 remains paused until safe handoff; P59-002 remains blocked. Verified realized net receipts ₹0; authorized spend ₹0.
+- Next: Phase 59.25 controlled cloud execution and operational soak with hard request ceilings, safety reserves, fault injection, durable evidence and stop conditions. Then Phase 59.26 specialist workflow integration, safe handoff and revenue research.
