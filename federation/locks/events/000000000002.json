@@ -6,8 +6,9 @@
   "actor": "CAS-WORKER-A",
   "scope": "CAS-TEST-SCOPE",
   "fencing_token": 1,
-  "previous_event_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "previous_event_hash": "9993cfd1a05addb3f7ed5a208aeab726e351b40ec23362b730d057b60d0be063",
   "payload": {
     "test": "release after successful first writer; test record cleaned"
-  }
+  },
+  "event_hash": "a74757a82ea42e400e20fd185c124342d80da6762f2940d42fc67d00777ec194"
 }

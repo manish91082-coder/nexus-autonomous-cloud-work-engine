@@ -11,5 +11,7 @@
   "leases": [],
   "quota_reservations": [],
   "idempotency_records": [],
-  "updated_at_utc": "2026-11-15T06:35:00Z"
+  "updated_at_utc": "2026-11-15T06:35:00Z",
+  "event_sequence": 2,
+  "last_event_hash": "a74757a82ea42e400e20fd185c124342d80da6762f2940d42fc67d00777ec194"
 }
