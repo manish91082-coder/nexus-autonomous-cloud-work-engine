@@ -894,6 +894,17 @@ describe("Phase 59.41 guarded GitHub request lifecycle", () => {
     expect(snapshot.buckets[0].uncertain_units).toBe(1);
   });
 
+  it("requires a caller-stable request ID instead of generating a fresh ID per retry", async () => {
+    const input = identity("client-requires-id", "github.rest.repositories.get.v1");
+    await seedBucket(stubFor(input),input,"core",100);
+    await expect(executeQuotaGuardedGitHubRequest({
+      env,credentialScope:input.credentialScope,operation:input.operation,
+      workerId:input.workerId,
+      request:new Request("https://api.github.com/repos/acme/demo"),
+      fetchImpl:async()=>new Response("must-not-run")
+    })).rejects.toThrow(/requestId/);
+  });
+
   it("never replays a provider request for a duplicate stable request ID", async () => {
     const input = identity("client-idempotent", "github.rest.repositories.get.v1");
     const stub = stubFor(input);
