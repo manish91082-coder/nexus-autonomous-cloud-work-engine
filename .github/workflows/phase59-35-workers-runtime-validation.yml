@@ -1,0 +1,36 @@
+name: Phase 59.35 Cloudflare Workers Runtime Validation
+
+on:
+  push:
+    branches: [master, phase59-35-workers-runtime-validation]
+    paths:
+      - 'cloud/swarm/**'
+      - '.github/workflows/phase59-35-workers-runtime-validation.yml'
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-35-workers-runtime-validation
+  cancel-in-progress: false
+
+jobs:
+  durable-object-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Verify runtime toolchain
+        run: |
+          node --version
+          npm --version
+      - name: Install exact Workers runtime test dependencies
+        working-directory: cloud/swarm
+        run: npm install --no-audit --no-fund --package-lock=false
+      - name: Run actual SQLite-backed Durable Object runtime tests
+        working-directory: cloud/swarm
+        run: npm run test:runtime
