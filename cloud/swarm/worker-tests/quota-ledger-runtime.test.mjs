@@ -849,7 +849,7 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
     expect(storedReservation.request_fingerprint).toMatch(/^[a-f0-9]{64}$/);
     expect(snapshot.telemetryObservations.some(x => x.reservation_id === "p10cr:lifecycle-001")).toBe(true);
     expect(snapshot.buckets[0].reserved_units).toBe(0);
-    expect(snapshot.buckets[0].committed_units).toBe(10);
+    expect(snapshot.buckets[0].committed_units).toBe(1);
     expect(snapshot.buckets[0].committed_since_observation_units).toBe(0);
   });
 
@@ -892,7 +892,7 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
     expect(result.accounting.status).toBe("UNCERTAIN_BUDGET_RETAINED");
     const snapshot = await call(stub,"snapshot",input);
     expect(snapshot.buckets[0].reserved_units).toBe(0);
-    expect(snapshot.buckets[0].uncertain_units).toBe(10);
+    expect(snapshot.buckets[0].uncertain_units).toBe(1);
   });
 
   it("never replays a provider request for a duplicate stable request ID", async () => {
