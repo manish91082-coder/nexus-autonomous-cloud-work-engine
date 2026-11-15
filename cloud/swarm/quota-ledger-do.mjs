@@ -104,6 +104,16 @@ export class QuotaLedgerDO extends DurableObject {
     if (!input || typeof input !== "object" || Array.isArray(input)) {
       return Response.json({ status: "REJECTED", error: "input object required" }, { status: 400 });
     }
+    let callerPolicies;
+    try {
+      callerPolicies = JSON.parse(this.env?.NEXUS_QUOTA_CALLER_POLICIES || "{}");
+    } catch {
+      return Response.json({ status: "REJECTED", reason: "CALLER_POLICY_REGISTRY_INVALID" }, { status: 503 });
+    }
+    const allowedActions = callerPolicies?.[auth.callerId];
+    if (!Array.isArray(allowedActions) || !allowedActions.includes(body.action)) {
+      return Response.json({ status: "REJECTED", reason: "CALLER_ACTION_FORBIDDEN" }, { status: 403 });
+    }
 
     try {
       this.#assertIdentity(input, body.action === "reserve" || body.action === "snapshot");
