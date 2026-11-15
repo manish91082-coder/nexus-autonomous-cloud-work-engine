@@ -15,8 +15,8 @@
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
-    "last_reconciled_from_mission_state": "PHASE_59_35_CLOUDFLARE_WORKERS_RUNTIME_VALIDATION",
-    "reconciliation_note": "P59-003 remains sole active P0. Phase59.35 extended Cloudflare Workers Vitest/workerd runtime run 43706366316 SUCCESS on f1813e44196a6e1ccd2c76fb89bbfb254811d04f; 11/11 tests pass, including actual Durable Object eviction/recovery and transaction rollback. Local runtime CI only, not hosted production or independent-host proof. Feature flag OFF. Next Phase59.36 second Worker entrypoint sharing the DO namespace, cross-caller contention, independent-host simulation, telemetry edge cases, internal auth/replay protections, then provider telemetry/cost maps and reconciliation. P59-001 paused; P59-002 blocked."
+    "last_reconciled_from_mission_state": "PHASE_59_36_CROSS_WORKER_DURABLE_OBJECT_VALIDATION",
+    "reconciliation_note": "P59-003 remains sole active P0. Phase59.36 PR #14 merged at 672c89c0c17237dd10030da4b361529f5294ccd2; exact Workers runtime run 43707115629 passed 11/11. Primary and auxiliary Worker scripts share one named SQLite Durable Object namespace; 20 mixed callers produced 10 accepted and 10 WAITING_FOR_QUOTA with no oversubscription. This is local workerd/Miniflare cross-Worker evidence, not independent-host or production proof. Phase59.34 PostgreSQL adapter remains optional reference; its 32-client CI passed with bounded retry budget 8 in run 43707320455. No deployment, live inference or spend. Next Phase59.37 internal caller authentication, least-privilege binding isolation, replay/nonce/expiry protection and hostile-payload tests. P59-001 paused; P59-002 blocked."
   },
   "tasks": [
     {
@@ -3337,7 +3337,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Phase59.36 second Worker entrypoint/shared Durable Object binding and cross-caller contention; independent-host simulation; stale/future/out-of-order/window-reset telemetry tests; internal caller auth and replay protection. Then provider telemetry adapters, endpoint cost maps, reservation expiry/uncertain reconciliation, audit export and restore. No feature enablement or deployment before gates.",
+        "next": "Phase59.37 internal caller authentication, binding isolation, replay/nonce/expiry protection, hostile-payload tests; prove unauthenticated, expired, replayed and wrong-scope callers fail closed without quota mutation. Then Phase59.38 provider telemetry adapters, measured endpoint costs, stale/future/out-of-order/window reset tests, reservation expiry and uncertain-use reconciliation.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -3619,6 +3619,29 @@
           "ci_run": 43705546117,
           "ci_conclusion": "SUCCESS",
           "status": "OPTIONAL_REFERENCE_NOT_SELECTED_NOT_CONNECTED_NOT_DEPLOYED"
+        },
+        "phase59_36": {
+          "report": "research/PHASE_59_36_CROSS_WORKER_DURABLE_OBJECT_VALIDATION_2026-11-15.md",
+          "pr_number": 14,
+          "merge_commit": "672c89c0c17237dd10030da4b361529f5294ccd2",
+          "tested_sha": "1b9012d944bbf81c03d2d8a391bbd3f0f653e77d",
+          "ci_run": 43707115629,
+          "ci_conclusion": "SUCCESS",
+          "tests_passed": 11,
+          "tests_total": 11,
+          "two_worker_shared_namespace": true,
+          "contention": {
+            "requests": 20,
+            "admitted": 10,
+            "waiting": 10,
+            "units_each": 10,
+            "capacity": 100,
+            "oversubscription": false
+          },
+          "production_status": "LOCAL_CROSS_WORKER_RUNTIME_ONLY_NOT_DEPLOYED_FEATURE_FLAG_OFF",
+          "spend_inr": 0,
+          "inference_enabled": false,
+          "next": "Phase59.37 internal caller authentication, least-privilege binding isolation, replay protection with request IDs/nonces/expiry, and hostile-payload tests."
         }
       },
       "blocker": "Remaining production-enablement gates: branch ruleset, owner-approved least-privilege GitHub App, cross-run/cross-repository global Actions/API quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation, and 7/30-day soak. Phase59.25 proved only eight worker threads on one GitHub-hosted runner; Phase59.26 specialist handlers are deterministic and provider-neutral, not live LLM inference. Keep all production clients disabled.",
