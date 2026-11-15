@@ -17,6 +17,8 @@ import urllib.request
 import uuid
 from datetime import datetime, timedelta, timezone
 
+from scripts.github_api_quota_guard import ApiQuotaGuardError, GitHubApiQuotaGuard
+
 
 class FederationLockError(RuntimeError):
     pass
@@ -295,7 +297,8 @@ class GitHubGitRefStore:
 
     def __init__(self, repository, token=None, *, branch="federation-locks",
                  state_path="federation/locks/state.json", events_dir="federation/locks/events",
-                 api_base="https://api.github.com", max_retries=5, opener=None):
+                 api_base="https://api.github.com", max_retries=5, opener=None,
+                 request_ceiling=None, safety_reserve=None):
         self.repository = repository or os.getenv("GITHUB_REPOSITORY", "")
         self.token = token or os.getenv("GITHUB_TOKEN", "")
         self.branch = branch
@@ -304,6 +307,7 @@ class GitHubGitRefStore:
         self.api_base = api_base.rstrip("/")
         self.max_retries = max_retries
         self.opener = opener or urllib.request.urlopen
+        self.quota_guard = (GitHubApiQuotaGuard.from_environment() if request_ceiling is None and safety_reserve is None else GitHubApiQuotaGuard(request_ceiling=48 if request_ceiling is None else request_ceiling, safety_reserve=100 if safety_reserve is None else safety_reserve))
         if not self.repository or "/" not in self.repository:
             raise FederationLockError("GITHUB_REPOSITORY must be owner/repo")
         if not self.token:
@@ -312,6 +316,10 @@ class GitHubGitRefStore:
             raise FederationLockError("max_retries must be 1..10")
 
     def _request(self, method, path, payload=None):
+        try:
+            self.quota_guard.before_request()
+        except ApiQuotaGuardError as exc:
+            raise LockStoreUnavailable(str(exc)) from exc
         url = self.api_base + path
         data = None if payload is None else json.dumps(payload).encode("utf-8")
         request = urllib.request.Request(
@@ -326,9 +334,11 @@ class GitHubGitRefStore:
         )
         try:
             with self.opener(request, timeout=20) as response:
+                self.quota_guard.observe(getattr(response, "headers", None), getattr(response, "status", 200))
                 raw = response.read()
                 return json.loads(raw.decode("utf-8")) if raw else {}
         except urllib.error.HTTPError as exc:
+            self.quota_guard.observe(getattr(exc, "headers", None), exc.code)
             detail = exc.read().decode("utf-8", "replace")[:1000]
             if exc.code == 404:
                 raise ResourceNotFound(detail or "GitHub resource not found") from exc
@@ -338,7 +348,12 @@ class GitHubGitRefStore:
                 raise LockStoreUnavailable(f"GitHub quota/permission gate HTTP {exc.code}: {detail}") from exc
             raise LockStoreUnavailable(f"GitHub API HTTP {exc.code}: {detail}") from exc
         except (urllib.error.URLError, TimeoutError, OSError, ValueError) as exc:
+            self.quota_guard.observe_transport_failure()
             raise LockStoreUnavailable(f"GitHub API unavailable: {type(exc).__name__}") from exc
+
+    def quota_telemetry(self):
+        """Return sanitized process-local request and rate-limit telemetry."""
+        return self.quota_guard.snapshot()
 
     def _ref_get_path(self):
         return "/repos/" + self.repository + "/git/ref/heads/" + urllib.parse.quote(self.branch, safe="/")
