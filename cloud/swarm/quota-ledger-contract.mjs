@@ -38,7 +38,7 @@ export function computeReservationLease({
   }
   const proposed = Math.min(Math.max(currentExpiresAtEpoch,nowEpoch+extensionSeconds),hardDeadlineEpoch);
   if (proposed <= currentExpiresAtEpoch) {
-    return {status:"LEASE_HARD_DEADLINE_REACHED",expiresAtEpoch:currentExpiresAtEpoch,hardDeadlineEpoch};
+    return {status:"LEASE_UNCHANGED",expiresAtEpoch:currentExpiresAtEpoch,hardDeadlineEpoch};
   }
   return {status:"LEASE_RENEWED",expiresAtEpoch:proposed,hardDeadlineEpoch};
 }
