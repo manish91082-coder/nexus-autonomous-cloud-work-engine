@@ -699,6 +699,10 @@ export class QuotaLedgerDO extends DurableObject {
     if (retryAfter !== null && retryAfter > 86400) throw new QuotaLedgerError("Retry-After exceeds 24-hour safety ceiling");
     const resetAt = input.resetAtEpoch === undefined || input.resetAtEpoch === null
       ? null : integer(input.resetAtEpoch, "resetAtEpoch");
+    const minimumWait = input.minimumWaitSeconds === undefined || input.minimumWaitSeconds === null
+      ? (input.kind === "SECONDARY_LIMIT" ? 60 : 0)
+      : integer(input.minimumWaitSeconds, "minimumWaitSeconds");
+    if (minimumWait > 900) throw new QuotaLedgerError("minimum secondary wait exceeds 900-second safety ceiling");
     if (resetAt !== null && (resetAt <= now || resetAt > now + 86400)) {
       throw new QuotaLedgerError("rate-limit reset must be within the next 24 hours");
     }
@@ -731,7 +735,7 @@ export class QuotaLedgerDO extends DurableObject {
         consecutive = prior && now - prior.updated_at_epoch <= 3600
           ? consecutive + 1 : 1;
         backoff = secondaryBackoffSeconds(consecutive);
-        proposed = now + Math.max(input.minimumWaitSeconds ?? 60, retryAfter ?? 0, backoff);
+        proposed = now + Math.max(minimumWait, retryAfter ?? 0, backoff);
         if (resetAt !== null) proposed = Math.max(proposed, resetAt);
       }
       const cooldownUntil = Math.max(prior?.cooldown_until_epoch ?? 0, proposed);
