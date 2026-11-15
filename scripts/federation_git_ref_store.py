@@ -17,7 +17,7 @@ import urllib.request
 import uuid
 from datetime import datetime, timedelta, timezone
 
-from scripts.github_api_quota_guard import GitHubApiQuotaGuard
+from scripts.github_api_quota_guard import ApiQuotaGuardError, GitHubApiQuotaGuard
 
 
 class FederationLockError(RuntimeError):
@@ -298,7 +298,7 @@ class GitHubGitRefStore:
     def __init__(self, repository, token=None, *, branch="federation-locks",
                  state_path="federation/locks/state.json", events_dir="federation/locks/events",
                  api_base="https://api.github.com", max_retries=5, opener=None,
-                 request_ceiling=48, safety_reserve=100):
+                 request_ceiling=None, safety_reserve=None):
         self.repository = repository or os.getenv("GITHUB_REPOSITORY", "")
         self.token = token or os.getenv("GITHUB_TOKEN", "")
         self.branch = branch
@@ -307,7 +307,7 @@ class GitHubGitRefStore:
         self.api_base = api_base.rstrip("/")
         self.max_retries = max_retries
         self.opener = opener or urllib.request.urlopen
-        self.quota_guard = GitHubApiQuotaGuard(request_ceiling=request_ceiling, safety_reserve=safety_reserve)
+        self.quota_guard = (GitHubApiQuotaGuard.from_environment() if request_ceiling is None and safety_reserve is None else GitHubApiQuotaGuard(request_ceiling=48 if request_ceiling is None else request_ceiling, safety_reserve=100 if safety_reserve is None else safety_reserve))
         if not self.repository or "/" not in self.repository:
             raise FederationLockError("GITHUB_REPOSITORY must be owner/repo")
         if not self.token:
@@ -316,7 +316,10 @@ class GitHubGitRefStore:
             raise FederationLockError("max_retries must be 1..10")
 
     def _request(self, method, path, payload=None):
-        self.quota_guard.before_request()
+        try:
+            self.quota_guard.before_request()
+        except ApiQuotaGuardError as exc:
+            raise LockStoreUnavailable(str(exc)) from exc
         url = self.api_base + path
         data = None if payload is None else json.dumps(payload).encode("utf-8")
         request = urllib.request.Request(
