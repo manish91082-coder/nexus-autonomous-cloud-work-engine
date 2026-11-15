@@ -74,3 +74,12 @@ B4 SQLite provides strong single-host atomic claims, checkpoint durability and l
 ## Financial and mission boundary
 
 P59-003 remains IN_PROGRESS. P59-001 stays PAUSED; P59-002 stays BLOCKED. PCNE ₹0; authorized spend ₹0. No project queue or external workflow was changed by initializing this prototype branch.
+
+
+## Official documentation references
+
+- GitHub REST API rate limits, including `GITHUB_TOKEN` and secondary limits: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api
+- GitHub REST Git refs API and fast-forward ref updates: https://docs.github.com/en/rest/git/refs
+- GitHub REST Git trees and commits API: https://docs.github.com/en/rest/git/trees and https://docs.github.com/en/rest/git/commits
+- Cloudflare D1 limits and free-plan read/write/storage limits: https://developers.cloudflare.com/d1/platform/limits/
+- GitHub Actions usage limits and concurrency: https://docs.github.com/en/actions/reference/limits
