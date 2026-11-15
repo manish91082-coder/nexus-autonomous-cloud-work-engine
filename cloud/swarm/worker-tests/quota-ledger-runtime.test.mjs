@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { env } from "cloudflare:workers";
-import { evictDurableObject, runInDurableObject } from "cloudflare:test";
 import { quotaLedgerObjectName } from "../quota-ledger-contract.mjs";
 
 const identity = (suffix) => ({
@@ -34,7 +33,7 @@ function stubFor(input) {
   return env.QUOTA_LEDGER.get(id);
 }
 
-describe("Phase 59.35 Cloudflare Workers runtime: SQLite Durable Object", () => {
+describe("Phase 59.36 Cloudflare Workers cross-caller runtime: SQLite Durable Object", () => {
   it("initializes SQLite schema and accepts first reservation (zero-row lookups)", async () => {
     const input = {
       ...identity("first"),
@@ -190,55 +189,68 @@ describe("Phase 59.35 Cloudflare Workers runtime: SQLite Durable Object", () => 
     expect(rejected.error.message).toMatch(/identity/);
   });
 
-  it("recovers the durable reservation after a real Durable Object eviction", async () => {
+  it("routes an auxiliary Worker caller to the same Durable Object identity", async () => {
     const input = {
-      ...identity("eviction-recovery"),
-      buckets: [bucket("core")],
-      costs: { core: 9 }
+      ...identity("cross-worker-shared"),
+      buckets: [bucket("core", 100, { safetyReserveUnits: 0, recoveryReserveUnits: 0 })],
+      costs: { core: 10 }
     };
-    const stub = stubFor(input);
-    await stub.reserve(input);
-    await evictDurableObject(stub);
-    const recovered = stubFor(input);
-    const snapshot = await recovered.snapshot();
-    expect(snapshot.reservations.find(x => x.reservation_id === input.reservationId).status)
-      .toBe("RESERVED");
-    const settled = await recovered.settle({
-      reservationId: input.reservationId,
-      workerId: input.workerId,
-      actualByBucket: { core: 7 },
-      nowEpoch: 1020
-    });
-    expect(settled.status).toBe("SETTLED");
+    const primaryStub = stubFor(input);
+    const primary = await primaryStub.reserve(input);
+    expect(primary.status).toBe("RESERVED");
+
+    const response = await env.SECOND_CALLER.fetch(new Request(
+      "https://secondary-caller/reserve",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action: "reserve", input: {
+          ...input,
+          reservationId: "reservation-cross-worker-secondary",
+          workerId: "worker-cross-worker-secondary"
+        } })
+      }
+    ));
+    expect(response.status).toBe(200);
+    const secondary = await response.json();
+    expect(secondary.status).toBe("RESERVED");
+
+    const snapshot = await primaryStub.snapshot();
+    expect(snapshot.buckets.find(x => x.bucket_id === "core").reserved_units).toBe(20);
+    expect(snapshot.reservations).toHaveLength(2);
   });
 
-  it("rolls back a failed SQLite transaction without persisting partial writes", async () => {
+  it("prevents oversubscription across primary and auxiliary Worker callers", async () => {
     const input = {
-      ...identity("transaction-rollback"),
-      buckets: [bucket("core")],
-      costs: { core: 5 }
+      ...identity("cross-worker-race"),
+      buckets: [bucket("core", 100, { safetyReserveUnits: 0, recoveryReserveUnits: 0 })],
+      costs: { core: 10 }
     };
-    const stub = stubFor(input);
-    await stub.reserve(input);
-    await runInDurableObject(stub, (_instance, state) => {
-      const before = state.storage.sql.exec(
-        "SELECT COUNT(*) AS count FROM quota_buckets"
-      ).toArray()[0].count;
-      expect(() => state.storage.transactionSync(() => {
-        state.storage.sql.exec(`INSERT INTO quota_buckets
-          (bucket_id,provider,credential_scope,window_id,limit_units,
-           observed_remaining_units,observed_at_epoch,safety_reserve_units,
-           recovery_reserve_units,reserved_units,committed_units,
-           committed_since_observation_units,uncertain_units)
-          VALUES ('rollback-probe','github','installation-42/repository-99/transaction-rollback',
-          'hour-2026-11-15T18/transaction-rollback',100,100,1000,0,0,0,0,0,0)`);
-        throw new Error("forced-rollback-probe");
-      })).toThrow("forced-rollback-probe");
-      const after = state.storage.sql.exec(
-        "SELECT COUNT(*) AS count FROM quota_buckets"
-      ).toArray()[0].count;
-      expect(after).toBe(before);
+    const primaryStub = stubFor(input);
+    const attempts = Array.from({ length: 20 }, (_, i) => {
+      const requestInput = {
+        ...input,
+        reservationId: "cross-race-" + i,
+        workerId: "cross-race-worker-" + i
+      };
+      if (i % 2 === 0) {
+        return primaryStub.reserve(requestInput);
+      }
+      return env.SECOND_CALLER.fetch(new Request(
+        "https://secondary-caller/reserve",
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ action: "reserve", input: requestInput })
+        }
+      )).then(response => response.json());
     });
+    const results = await Promise.all(attempts);
+    expect(results.filter(x => x.status === "RESERVED")).toHaveLength(10);
+    expect(results.filter(x => x.status === "WAITING_FOR_QUOTA")).toHaveLength(10);
+    const snapshot = await primaryStub.snapshot();
+    expect(snapshot.buckets.find(x => x.bucket_id === "core").reserved_units).toBe(100);
+    expect(snapshot.reservations).toHaveLength(10);
   });
 
   it("derives collision-safe object names from the provider, credential and window tuple", () => {

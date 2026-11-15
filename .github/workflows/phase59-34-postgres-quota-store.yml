@@ -2,7 +2,7 @@ name: Phase 59.34 PostgreSQL Transactional Quota Store
 
 on:
   push:
-    branches: [master, phase59-34-transactional-quota-store]
+    branches: [master, phase59-34-transactional-quota-store, phase59-36-cross-worker-caller]
     paths:
       - 'scripts/postgres_quota_store.py'
       - 'scripts/multibucket_quota_contract.py'

@@ -68,7 +68,7 @@ class PostgresQuotaStore:
         *,
         enabled: bool = False,
         connect: Callable[..., Any] | None = None,
-        max_serialization_retries: int = 5,
+        max_serialization_retries: int = 8,
     ):
         self.dsn = dsn or os.environ.get("P10CR_QUOTA_DATABASE_URL", "")
         self.enabled = enabled and os.environ.get("P10CR_QUOTA_STORE_ENABLED", "").lower() == "true"

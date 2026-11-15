@@ -46,6 +46,39 @@ export class QuotaLedgerDO extends DurableObject {
     )`);
   }
 
+  async fetch(request) {
+    if (request.method !== "POST") {
+      return Response.json({ status: "REJECTED", error: { message: "POST required" } }, { status: 405 });
+    }
+    try {
+      const body = await request.json();
+      const input = body?.input;
+      let result;
+      switch (body?.action) {
+        case "reserve":
+          result = this.reserve(input);
+          break;
+        case "settle":
+          result = this.settle(input);
+          break;
+        case "markUncertain":
+          result = this.markUncertain(input);
+          break;
+        case "snapshot":
+          result = this.snapshot();
+          break;
+        default:
+          return Response.json({ status: "REJECTED", error: { message: "unknown action" } }, { status: 400 });
+      }
+      return Response.json(result);
+    } catch (error) {
+      return Response.json({ status: "REJECTED", error: {
+        name: error?.name || "Error",
+        message: String(error?.message || error)
+      }}, { status: 400 });
+    }
+  }
+
   reserve(input) {
     validateQuotaRequest(input);
     const sql = this.ctx.storage.sql;
