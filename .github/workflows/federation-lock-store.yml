@@ -2,6 +2,8 @@ name: Federation Git Ref Lock Store Contract
 
 on:
   push:
+    branches:
+      - federation-locks
     paths:
       - 'scripts/federation_git_ref_store.py'
       - 'tests/test_federation_git_ref_store.py'
@@ -11,7 +13,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: federation-lock-store-probe
@@ -20,6 +22,8 @@ concurrency:
 jobs:
   contract-and-live-cas:
     if: github.ref == 'refs/heads/federation-locks'
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
