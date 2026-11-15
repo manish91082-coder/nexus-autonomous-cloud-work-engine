@@ -1,0 +1,59 @@
+name: Phase 59.25 Isolated GitHub Cloud Operational Soak
+
+on:
+  push:
+    branches:
+      - phase59-25-cloud-operational-soak
+    paths:
+      - 'scripts/phase59_25_cloud_soak.py'
+      - 'scripts/github_api_quota_guard.py'
+      - 'scripts/federation_git_ref_store.py'
+      - '.github/workflows/phase59-25-cloud-operational-soak.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: phase59-25-isolated-cloud-soak
+  cancel-in-progress: false
+
+jobs:
+  isolated-cloud-soak:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout phase branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Verify isolated test branch exists before any write
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/branches/phase59-25-cloud-soak-state" --jq '.name'
+      - name: Execute bounded 8-worker GitHub REST CAS cloud soak
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PHASE59_25_STATE_BRANCH: phase59-25-cloud-soak-state
+          PHASE59_25_SOAK_SECONDS: '180'
+          PHASE59_25_HEARTBEAT_INTERVAL_SECONDS: '30'
+          PHASE59_25_RUN_REQUEST_CEILING: '480'
+          NEXUS_GITHUB_API_SAFETY_RESERVE: '100'
+        run: python3 scripts/phase59_25_cloud_soak.py
+      - name: Preserve machine-readable cloud soak evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2 (Node 24)
+        with:
+          name: phase59-25-cloud-soak-${{ github.run_id }}
+          path: phase59_25_cloud_soak_report.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Delete isolated test branch
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --silent --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/phase59-25-cloud-soak-state" || true
