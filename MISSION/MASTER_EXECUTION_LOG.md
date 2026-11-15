@@ -270,3 +270,19 @@ No testnet deployment, X post, video, submission, award or settled revenue is cl
 - CSV to Action remains secondary and owner-gated. Orbit Relay remains held. No accounts, KYC, terms, bank/UPI details, publication, paid plan or spend action was performed.
 - `control/mission_state.json` was reconciled in commit `be821b6069e36124b420421b9102e53d5a4e5abc` to record the verified source HEAD and Worker #124 evidence. This is a control-plane continuity update only.
 - Mission truth: target ₹10,00,00,000 verified realized net receipts; actual realized net receipts INR 0; authorized spend INR 0; AI provider inference NOT CONFIGURED.
+
+
+## 2026-11-15 — PHASE 59.23 API QUOTA TELEMETRY AND HARD REQUEST CEILING
+
+- P59-003 continued from the locked Phase 59.22 checkpoint; no mission or repository change.
+- PR [#7](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/7) merged to canonical `master`. PR head: `fccfa5dcea71b0dfd32ced88a53e46de451e11d8`; merge commit: `f6d33ce11dc177fffe396e0371f8d0aa56f3571a`.
+- Added `scripts/github_api_quota_guard.py`, integrated it into `GitHubGitRefStore`, and exposed sanitized process-local telemetry through `quota_telemetry()`.
+- Captures per-invocation request attempts, success/error responses, transport failures, GitHub rate-limit limit/remaining/reset headers and Retry-After.
+- Enforces default hard ceiling 48 API attempts per store invocation and default safety reserve 100 remaining requests. Both are configurable through `NEXUS_GITHUB_API_REQUEST_CEILING` and `NEXUS_GITHUB_API_SAFETY_RESERVE`.
+- Fails closed on missing rate-limit telemetry, observed remaining quota at/below reserve, and transport telemetry loss. Failed attempts are not refunded. Telemetry is not persisted through extra API writes.
+- Exact PR-head CI: Phase 59.23 run 43693254491 SUCCESS; Phase 59.19 run 43693254390 SUCCESS; Phase 59.20 run 43693254373 SUCCESS; Phase 59.22 run 43693254378 SUCCESS. An earlier intermediate test run failed on transport-failure handling; correction was applied and final exact PR head passed.
+- Evidence report: `research/PHASE_59_23_API_QUOTA_TELEMETRY_HARD_CEILING_2026-11-15.md`.
+- Master state reconciliation commit: `026b10ab167003a2dba4afce8d6aaedd1f5cf2c`.
+- These are deterministic code/CI results, not a live API quota soak. No live lock-branch writes, production clients, AI inference, paid service, owner-gated action or spend was enabled.
+- Mission economics unchanged: verified realized net receipts ₹0; authorized spend ₹0. P59-003 remains the sole active engineering task; P59-001 remains paused until safe handoff; P59-002 remains blocked.
+- **Next:** Phase 59.24 controlled 8-worker contention, duplicate-delivery and crash-recovery tests. Then Phase 59.25 controlled cloud soak, Phase 59.26 specialist worker integration, safe handoff, and resume portfolio-wide revenue research.
