@@ -51,6 +51,7 @@ export default defineConfig({
                 graphql: {safetyReserveUnits: 5, recoveryReserveUnits: 5, maxTelemetryAgeSeconds: 300}
               }),
               NEXUS_QUOTA_OPERATION_COSTS: JSON.stringify({
+                "github.rest.repositories.get.v1": {core: 1},
                 core10: {core: 10},
                 core20_search5: {core: 20, search: 5},
                 core10_search3: {core: 10, search: 3},
