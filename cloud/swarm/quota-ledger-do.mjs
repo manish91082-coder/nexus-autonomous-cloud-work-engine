@@ -27,6 +27,13 @@ function integer(value, field, min = 0) {
   return value;
 }
 
+export function quotaLedgerObjectName(provider, credentialScope, windowId) {
+  nonEmpty(provider, "provider");
+  nonEmpty(credentialScope, "credentialScope");
+  nonEmpty(windowId, "windowId");
+  return JSON.stringify([provider, credentialScope, windowId]);
+}
+
 export function validateQuotaRequest(input) {
   if (!input || typeof input !== "object" || Array.isArray(input)) {
     throw new QuotaLedgerError("request must be an object");
@@ -118,7 +125,7 @@ export class QuotaLedgerDO {
       const prior = sql.exec(
         "SELECT reservation_id FROM quota_reservations WHERE reservation_id = ?",
         input.reservationId
-      ).one();
+      ).toArray()[0];
       if (prior) throw new QuotaLedgerError("duplicate reservation id");
 
       // Refresh each bucket only from newer telemetry. Same-timestamp readings
@@ -126,7 +133,7 @@ export class QuotaLedgerDO {
       for (const b of input.buckets) {
         const existing = sql.exec(
           "SELECT * FROM quota_buckets WHERE bucket_id = ?", b.bucketId
-        ).one();
+        ).toArray()[0];
         if (existing && (existing.provider !== input.provider
           || existing.credential_scope !== input.credentialScope
           || existing.window_id !== input.windowId)) {
@@ -155,7 +162,8 @@ export class QuotaLedgerDO {
 
       // Check every required bucket before changing any counters.
       for (const [bucketId, units] of Object.entries(input.costs)) {
-        const row = sql.exec("SELECT * FROM quota_buckets WHERE bucket_id=?", bucketId).one();
+        const row = sql.exec("SELECT * FROM quota_buckets WHERE bucket_id=?", bucketId).toArray()[0];
+        if (!row) throw new QuotaLedgerError("quota bucket missing after initialization");
         const b = input.buckets.find(x => x.bucketId === bucketId);
         const remaining = row.observed_remaining_units - row.safety_reserve_units
           - row.recovery_reserve_units - row.reserved_units
@@ -187,7 +195,7 @@ export class QuotaLedgerDO {
     const sql = this.ctx.storage.sql;
     return this.ctx.storage.transactionSync(() => {
       const rec = sql.exec("SELECT * FROM quota_reservations WHERE reservation_id=?",
-        input.reservationId).one();
+        input.reservationId).toArray()[0];
       if (!rec || rec.worker_id !== input.workerId || rec.status !== "RESERVED") {
         throw new QuotaLedgerError("reservation owner/state mismatch");
       }
@@ -216,7 +224,7 @@ export class QuotaLedgerDO {
     const sql = this.ctx.storage.sql;
     return this.ctx.storage.transactionSync(() => {
       const rec = sql.exec("SELECT * FROM quota_reservations WHERE reservation_id=?",
-        input.reservationId).one();
+        input.reservationId).toArray()[0];
       if (!rec || rec.worker_id !== input.workerId || rec.status !== "RESERVED") {
         throw new QuotaLedgerError("reservation owner/state mismatch");
       }
