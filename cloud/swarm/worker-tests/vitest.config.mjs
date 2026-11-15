@@ -31,7 +31,8 @@ export default defineConfig({
             modules: [
               { type: "ESModule", path: "./quota-ledger-host.mjs" },
               { type: "ESModule", path: "./quota-ledger-do.mjs" },
-              { type: "ESModule", path: "./quota-ledger-contract.mjs" }
+              { type: "ESModule", path: "./quota-ledger-contract.mjs" },
+              { type: "ESModule", path: "./github-quota-telemetry.mjs" }
             ],
             bindings: {
               NEXUS_QUOTA_STORE_ENABLED: "true",
@@ -40,7 +41,7 @@ export default defineConfig({
                 secondary: secondaryTestSecret
               }),
               NEXUS_QUOTA_CALLER_POLICIES: JSON.stringify({
-                primary: ["reserve", "settle", "markUncertain", "snapshot"],
+                primary: ["reserve", "settle", "markUncertain", "snapshot", "recordTelemetry"],
                 secondary: ["reserve", "markUncertain"]
               })
             },

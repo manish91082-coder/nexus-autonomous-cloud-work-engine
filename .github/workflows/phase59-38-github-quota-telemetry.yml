@@ -2,7 +2,7 @@ name: Phase 59.38 GitHub Quota Telemetry Contracts
 
 on:
   push:
-    branches: [master, phase59-38-github-quota-telemetry]
+    branches: [master, phase59-38-github-quota-telemetry, phase59-39-transactional-telemetry-ingestion]
     paths:
       - 'cloud/swarm/github-quota-telemetry.mjs'
       - 'cloud/swarm/github-quota-telemetry.test.mjs'
