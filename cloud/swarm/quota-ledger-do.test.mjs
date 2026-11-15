@@ -6,29 +6,29 @@ import {
 } from "./quota-ledger-contract.mjs";
 
 const sample = (overrides={}) => ({
-  provider:"github", credentialScope:"installation-1/repo-2", windowId:"hour-1",
-  controlPlaneProvider:"cloudflare", reservationId:"r1", workerId:"w1", operation:"search+core",
-  buckets:[
-    {bucketId:"core",limitUnits:5000,observedRemainingUnits:1000,safetyReserveUnits:100,
-     recoveryReserveUnits:100,observedAtEpoch:1000,maxTelemetryAgeSeconds:60,nowEpoch:1020},
-    {bucketId:"search",limitUnits:30,observedRemainingUnits:20,safetyReserveUnits:2,
-     recoveryReserveUnits:2,observedAtEpoch:1000,maxTelemetryAgeSeconds:60,nowEpoch:1020}
-  ],
-  costs:{core:20,search:3}, ...overrides
+  provider:"github",
+  credentialScope:"installation-1/repo-2",
+  windowId:"github-rate-limit-ledger",
+  controlPlaneProvider:"cloudflare",
+  reservationId:"r1",
+  workerId:"w1",
+  operation:"core10",
+  ...overrides
 });
 
-test("validates provider credential window and all bucket telemetry",()=>{
+test("validates identity and server-side operation reference",()=>{
   assert.equal(validateQuotaRequest(sample()),true);
-});
-test("rejects stale and future telemetry",()=>{
-  assert.throws(()=>validateQuotaRequest(sample({buckets:[{...sample().buckets[0],observedAtEpoch:1}]})),/stale\/future/);
-  assert.throws(()=>validateQuotaRequest(sample({buckets:[{...sample().buckets[0],observedAtEpoch:2000}]})),/stale\/future/);
 });
 test("rejects same provider for quota ledger",()=>{
   assert.throws(()=>validateQuotaRequest(sample({controlPlaneProvider:"github"})),/must differ/);
 });
-test("rejects partial or unknown bucket costs",()=>{
-  assert.throws(()=>validateQuotaRequest(sample({costs:{unknown:1}})),/known buckets/);
+test("rejects caller-supplied costs and telemetry buckets",()=>{
+  assert.throws(()=>validateQuotaRequest(sample({costs:{core:1}})),/caller-supplied telemetry and costs are forbidden/);
+  assert.throws(()=>validateQuotaRequest(sample({buckets:[{bucketId:"core"}]})),/caller-supplied telemetry and costs are forbidden/);
+});
+test("rejects missing reservation identity or operation",()=>{
+  assert.throws(()=>validateQuotaRequest(sample({reservationId:""})),/reservationId/);
+  assert.throws(()=>validateQuotaRequest(sample({operation:""})),/operation/);
 });
 test("available units deduct reserved committed uncertain and protected reserves",()=>{
   assert.equal(availableUnits({observedRemainingUnits:100,safetyReserveUnits:10,recoveryReserveUnits:10},
