@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_59_27_REVENUE_SOURCE_ECONOMICS_REVALIDATION",
+  "phase": "PHASE_59_28_NEW_CANDIDATE_GATES_RESEARCHED",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
   "last_verified_head": "8489a3cf3690b20f896952329141b598e2ea35e5",
-  "current_focus": "Phase59.26 merged; safe handoff complete. P59-001 is now the single active task for evidence-backed V5 portfolio-wide revenue-source research. P59-003 is PAUSED, not abandoned: production swarm remains disabled pending branch ruleset, owner-approved least-privilege GitHub App, cross-run/cross-repository global quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation and 7/30-day soak. P59-002 remains BLOCKED until P59-001 selects a source and all product release gates pass. Specialist workflow is deterministic/provider-neutral and does not use live LLM inference.",
+  "current_focus": "P59-001 remains the sole active task. Phase59.28 screened generic eBRC reconciliation NO-GO due DGFT first-party bulk self-certification and free eBRC.in app/API plus paid export workflow substitutes; generic AI-agency client cost/margin ledger NO-GO as a clone due direct Walleta Agency and crowded adjacent observability; Gumroad India INR payout remains a qualified distribution rail only, no product. B2B productized vertical SaaS / marketplace-distributed apps remain provisional first source family, no concrete product selected. Next complete source-family scorecard with unknowns explicit, re-audit only canonical repository assets, compare rights-cleared owned asset vs greenfield buyer problem. No build or spend.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -157,7 +157,7 @@
   ],
   "phase53_research_checkpoint": "14-Nov completed: WP webhook / Action Scheduler / COD fraud generic hypotheses NO-GO; Workspace attachment archival / invoice extraction / approvals / notification clones NO-GO. Formula Integrity technical matrix completed; HOLD due event/identity/API/quotas plus no proven recurring demand. Continue P53-001 Google Workspace problem-first research beyond these categories.",
   "last_observed_at": "2026-11-15T14:15:00+05:30",
-  "resume_checkpoint": "Phase 59.27 completed official source-economics revalidation. Report research/PHASE_59_27_REVENUE_SOURCE_ECONOMICS_REVALIDATION_2026-11-15.md; ranking appended evidence batch 08. B2B productized/vertical SaaS remains provisional first; no concrete product GO. Official evidence: RBI FY25-26 product dev $6.4B of $221.4B software exports; Atlassian Forge 83% post-1-Oct-2026 (100% to $1M lifetime if strict Forge eligibility); KDP India 70% band ₹99–599; Gumroad INR bank payout with $100 threshold/7-day hold; YouTube audience thresholds; Adobe 33/35%; GitHub Sponsors personal fee 0%; game platform shares; Apple $99/year membership conflicts with zero-spend. These are distribution/economic facts, not demand proof. Next: complete source scoring, verify Tech Cloud ERP asset/rights, compare owned asset vs greenfield, 10–15 substitute and two independent demand-signal gates. P59-002 BLOCKED; P59-003 PAUSED; PCNE ₹0; bank receipts ₹0; authorized spend ₹0. Bounded Tech Cloud ERP discovery follow-up: 15 connected owner GitHub repositories listed, none matching; five Dropbox queries returned zero results. This does not prove nonexistence; asset ownership/source/modules/rights remain UNVERIFIED.",
+  "resume_checkpoint": "Phase59.26 safe handoff to P59-001 complete. Phase59.27 official revenue-source economics revalidation already recorded. Phase59.28 report research/PHASE_59_28_NEW_CANDIDATE_GATES_2026-11-15.md and V5 ranking section16 added. Candidate outcomes: generic eBRC/IRM reconciliation NO-GO; generic AI agency client cost/margin/billing ledger NO-GO as clone; Gumroad India INR payout qualified distribution rail only, product none. B2B productized vertical SaaS/marketplace-distributed apps remain provisional first source family. P59-001 remains IN_PROGRESS; P59-003 PAUSED; P59-002 BLOCKED. PCNE ₹0; authorized spend ₹0. Next: complete remaining source-family scorecard with unknowns explicit, re-audit canonical repo's eight existing assets, compare rights-cleared owned asset vs greenfield, require two independent demand signals, 10–15 substitutes, price-bearing WTP, India payout, positive fully-loaded economics, rights and self-serve fulfilment before any build.",
   "last_observed_head_semantics": "Master HEAD observed before this control-plane checkpoint; this checkpoint creates subsequent commits. Fetch live master again on next continuation. last_verified_head remains the last independently verified CI SHA, not the observed HEAD.",
   "phase53_latest_report": "research/PHASE_53_FORMULA_INTEGRITY_TECHNICAL_FEASIBILITY_2026-11-14.md",
   "phase53_supporting_reports": [
@@ -1178,5 +1178,19 @@
     "module_inventory": "USER_REPORTED_35_MODULES_NOT_INDEPENDENTLY_VERIFIED",
     "commercial_rights": "UNVERIFIED",
     "next": "Do not count as deployable or licensable asset until an accessible source/evidence surface is available."
+  },
+  "phase59_28": {
+    "status": "RESEARCH_BATCH_RECORDED",
+    "report": "research/PHASE_59_28_NEW_CANDIDATE_GATES_2026-11-15.md",
+    "portfolio_ranking": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
+    "generic_ebrc_reconciliation": "NO_GO_CANDIDATE",
+    "generic_ai_agency_margin_ledger": "NO_GO_AS_CLONE",
+    "gumroad_india_payout": "QUALIFIED_DISTRIBUTION_RAIL_PRODUCT_NONE",
+    "provisional_first_source_family": "PRODUCTIZED_B2B_VERTICAL_SAAS_MARKETPLACE_DISTRIBUTION",
+    "concrete_product_selected": false,
+    "build_authorized": false,
+    "pcne_inr": 0,
+    "authorized_spend_inr": 0,
+    "next": "Complete source-family scorecard; canonical asset re-audit; compare rights-cleared owned asset vs greenfield buyer problem."
   }
 }
