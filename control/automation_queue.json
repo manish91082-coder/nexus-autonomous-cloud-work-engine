@@ -3070,7 +3070,7 @@
           "Amazon KDP 2026 royalty terms"
         ],
         "critical_distinction": "Revenue engine vs distribution rail; same SaaS product across two marketplaces is not two separate product streams.",
-        "next": "Complete remaining source-family scorecard with explicit unknowns; re-audit only canonical repository's eight existing product assets; compare any rights-cleared owned asset against a greenfield buyer problem. Select one candidate only after two independent demand signals, 10–15 substitute audit, price-bearing WTP, India payout, positive fully-loaded unit economics, rights and self-serve gates. No build or spend.",
+        "next": "Complete the weighted V5 source-family scorecard with evidence confidence and unknowns explicit. Do not fabricate numerical forecasts where candidate-level buyer counts, price, conversion, retention or cost data are absent. Then select the next greenfield B2B buyer problem for two-signal demand validation and 10–15 substitute audit. No product build until all hard gates pass.",
         "asset_audit_report": "research/PHASE_59_2_EXISTING_SOFTWARE_IP_ASSET_AUDIT_2026-11-14.md",
         "asset_audit_status": "COMPLETED_INITIAL_REPOSITORY_AUDIT; NO_EXISTING_ASSET_PASSES_FIRST_PRODUCT_GATE",
         "canonical_assets_audited": 8,
@@ -3197,33 +3197,30 @@
           "next": "Complete source-family scorecard with unknowns explicit; canonical asset-only re-audit; compare rights-cleared owned asset vs greenfield buyer problem."
         },
         "phase59_29": {
-          "report": "research/PHASE_59_29_PORTFOLIO_SOURCE_FAMILY_SCORECARD_AND_ASSET_REQUALIFICATION_2026-11-15.md",
-          "ranking_section": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md#17",
-          "source_family_scorecard": "QUALITATIVE_RANKING_COMPLETED; NUMERIC_SCENARIOS_WITHHELD_BECAUSE_REACHABLE_BUYERS_WTP_CONVERSION_CHURN_AND_FULLY_LOADED_COSTS_ARE_UNKNOWN",
-          "canonical_asset_requalification": {
-            "count": 8,
-            "passes_first_product_gate": 0,
-            "most_complete": "RECRUITMENT_AGENCY_REVENUE_ASSURANCE_DESK_V0.3.0",
-            "disposition": "FROZEN_ON_CURRENT_DIFFERENTIATION_AND_DISTRIBUTION_EVIDENCE"
-          },
-          "tech_cloud_erp": "USER_REPORTED_35_MODULE_ASSET; SOURCE_OWNERSHIP_MODULE_INVENTORY_DEPLOYMENT_AND_COMMERCIAL_RIGHTS_UNVERIFIED; CONNECTED_GITHUB_DROPBOX_SEARCH_NOT_FOUND_DOES_NOT_PROVE_NONEXISTENCE",
-          "atlassian_forge_screen": {
-            "candidates": [
-              "Auditforge",
-              "Audit Trail and Compliance Analytics for Jira",
-              "Incident Follow-Up Compliance Monitor for JSM",
-              "Request Evidence Control for JSM",
-              "Access Assertions"
-            ],
-            "disposition": "GENERIC_AUDIT_COMPLIANCE_EVIDENCE_CLUSTER_NOT_SELECTED",
-            "evidence_boundary": "Captured listing counters include 1 install/no reviews for Auditforge and audit analytics, no installs for incident follow-up monitor; counters do not prove paid adoption or absence of demand."
-          },
-          "parent_source_decision": "B2B_VERTICAL_SAAS_MARKETPLACE_DISTRIBUTED_SOFTWARE_PROVISIONAL_FIRST; NO_CONCRETE_PRODUCT",
-          "build_authorized": false,
-          "pcne_inr": 0,
-          "authorized_spend_inr": 0,
-          "next": "Discover a materially different recurring buyer workflow with measurable financial leakage and a clear budget owner; obtain two independent strong demand signals, audit 10-15 substitutes, verify buyer-specific price-bearing WTP, self-serve acquisition/delivery, India payout, rights and positive fully-loaded unit economics. No build."
-        }
+          "report": "research/PHASE_59_29_CANONICAL_EIGHT_ASSET_REAUDIT_2026-11-15.md",
+          "audit_workflow_run_id": 43696122496,
+          "exact_head": "7b3432eae96f1d6781ed345abf6c6475697e5d0a",
+          "artifact_id": 14154258760,
+          "artifact_sha256": "74fb02d7901d6bab9f877c37ba649e023ea5e553812c9e259f46a875c02d5995",
+          "registry_rows": 13,
+          "built_product_assets": 8,
+          "research_only_candidates": 5,
+          "python_unit_tests": 39,
+          "csv_node_tests": "PASS",
+          "orbit_puzzle_node_tests": "PASS",
+          "recruitment_browser_qa": "CHROMIUM_FIREFOX_PASS",
+          "orbit_browser_qa": "CHROMIUM_PASS",
+          "release_ready_assets": 0,
+          "verified_buyer_demand_assets": 0,
+          "product_level_pcne_inr": 0,
+          "license_files_present": 2,
+          "license_files_pending_owner_and_scope_review": 2,
+          "product_folders_without_license_file": 6,
+          "public_listings": 0,
+          "spend_inr": 0,
+          "scope": "Canonical repository only; no other repository or mission included."
+        },
+        "owned_vs_greenfield_decision": "None of the eight canonical built assets is release-ready; all lack verified buyer demand; rights/release gates remain. Freeze feature development on existing assets. Greenfield B2B/vertical SaaS/marketplace-distributed software remains provisional first source family, concrete buyer problem not yet selected."
       },
       "dependency_note": "Safe handoff from Phase59.26 completed. Resume evidence-backed V5 portfolio-wide research now. Use public/official source research and supplied evidence; specialist workflow is deterministic/provider-neutral and must not be described as live LLM research. No product build until the P59-001 selection and all P59-002 release gates pass."
     },
