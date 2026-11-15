@@ -1,10 +1,13 @@
 # Phase 59.43 — Reservation Lease Renewal and Evidence-Only Reconciliation
 
 **Mission:** P10CR / P59-003 AI Agentic Swarm Foundation  
-**Status:** Implementation branch; Workers/workerd runtime CI PASS; PR pending  
+**Status:** PR #22 merged to master at `af81cfd4020001e04e7a1e5c018c4f1d3ee2b876`; all 13 PR checks PASS  
 **Branch:** `phase59-43-lease-renewal-uncertain-reconciliation`  
+**PR:** [#22](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/22) — merged
+**Merge commit:** `af81cfd4020001e04e7a1e5c018c4f1d3ee2b876`
 **Exact tested head:** `1296291e8ddfa5531b5d4de2a288dd37fbf42e38`  
-**Runtime CI:** [43714730741](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43714730741) — SUCCESS, 60/60 tests  
+**Runtime CI:** [43714730741](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43714730741) — SUCCESS, 60/60 tests
+**PR regression matrix:** 13/13 checks PASS on PR head `b4e1e349224014237e3966626ac7b2f55e2b0647`  
 **Spend:** ₹0; **live provider calls:** 0; **live inference:** disabled; **production feature flag:** OFF
 
 ## 1. Bounded lease renewal / heartbeat
