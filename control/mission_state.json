@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_59_24_WORKER_CONTENTION_CRASH_RECOVERY_MERGED",
+  "phase": "PHASE_59_25_GITHUB_CLOUD_OPERATIONAL_SOAK_MERGED",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -10,8 +10,8 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
-  "last_verified_head": "32c42e9d3e5d54c13b0fd89e37f11a21ebbf943e",
-  "current_focus": "P59-003 Phase59.24 merged. Exact PR-head CI passed the 8-worker CAS contention, duplicate delivery, crash recovery and prior federation regression suites. This is an in-memory test harness, not a live distributed lock or cloud soak. Next Phase59.25: controlled cloud test execution and operational soak with bounded workers, hard request ceiling, safety reserve, fault injection, durable run evidence and explicit stop conditions; production clients remain disabled.",
+  "last_verified_head": "cbba2e23596d901646a4e16f0cfc71ca01b44d8c",
+  "current_focus": "P59-003 Phase59.25 merged. Actual GitHub Git-ref REST CAS cloud soak passed on isolated disposable branch: 8/8 durable claims, 8/8 duplicate deliveries rejected, stale-fence rejection, six atomic batch heartbeats, 15-event journal verified. 405 requests under 480 run ceiling, remaining quota 4504, zero transport failures. Three CAS-conflict losers recovered via bounded serial retry. Test branch cleanup passed; production branch untouched. Eight threads ran in one hosted runner, not eight hosts; short soak is not 7/30-day soak. Next Phase59.26: specialist agent workflow integration with typed roles, bounded parallel research, evidence provenance, independent review and no production writes. Keep production clients disabled until global quota arbiter, branch ruleset, owner-approved GitHub App, P10CR/read-only research clients and 7/30-day soak gates pass.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -63,7 +63,7 @@
     "CREATOR_IP_ROYALTIES_STOCK_ASSETS",
     "GAMES_SPONSORSHIP_AFFILIATE_ADVERTISING"
   ],
-  "last_exact_head_ci_status": "Phase59.24 exact PR head 32c42e9d3e5d54c13b0fd89e37f11a21ebbf943e: Phase59.24 run 43693399517 SUCCESS; Phase59.23 run 43693407055 SUCCESS; Phase59.19 run 43693407090 SUCCESS; Phase59.22 run 43693407140 SUCCESS; Phase59.20 run 43693407144 SUCCESS. Merge commit 4d2ab567eafb3899c01c34f422d03050c945d7bf.",
+  "last_exact_head_ci_status": "Phase59.25 PR head cbba2e23596d901646a4e16f0cfc71ca01b44d8c: cloud soak run 43694502929 SUCCESS; cloud contract/regression run 43694502933 SUCCESS; PR regressions 43694934944, 43694934769, 43694934713, 43694934698, 43694934676 and 43694934672 all SUCCESS. Merge e26459df09c7765ddea71c3002a8fcf90778b950.",
   "phase46_control_commits": [
     "72230902a478552d007d94d330e216238c9b2982",
     "ae552163e2b1e65590fc98454d8f7817bc73fa92",
@@ -147,7 +147,7 @@
     "082dc6c11bce97f5c2d715ea5d9bd3ae15889e3c",
     "81fecc16ee919cc509e7d7bc304c553583a5de5d"
   ],
-  "last_observed_head": "92109f41e06fe574f9025b3029c38b3c2587c039",
+  "last_observed_head": "edec7d655c1fca1a7d346ba232a30e268b4425f7",
   "phase53_research_order": [
     "WORDPRESS_PLUGIN_ECOSYSTEM",
     "GOOGLE_WORKSPACE_MARKETPLACE",
@@ -156,8 +156,8 @@
     "CHROME_WEB_STORE"
   ],
   "phase53_research_checkpoint": "14-Nov completed: WP webhook / Action Scheduler / COD fraud generic hypotheses NO-GO; Workspace attachment archival / invoice extraction / approvals / notification clones NO-GO. Formula Integrity technical matrix completed; HOLD due event/identity/API/quotas plus no proven recurring demand. Continue P53-001 Google Workspace problem-first research beyond these categories.",
-  "last_observed_at": "2026-11-15T13:38:00+05:30",
-  "resume_checkpoint": "Phase59.24 PR #8 merged to master. Exact PR head 32c42e9d3e5d54c13b0fd89e37f11a21ebbf943e passed Phase59.24 run 43693399517, Phase59.23 regression 43693407055, Phase59.19 quota regression 43693407090, Phase59.22 heartbeat regression 43693407140 and Phase59.20 journal regression 43693407144; all SUCCESS. Merge commit 4d2ab567eafb3899c01c34f422d03050c945d7bf. Report research/PHASE_59_24_WORKER_CONTENTION_DUPLICATE_CRASH_RECOVERY_2026-11-15.md. CAS test harness is in-memory and test-only; no production distributed lock or cloud soak claim. P59-003 remains IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED; verified net receipts ₹0; authorized spend ₹0. Next Phase59.25 controlled cloud execution/operational soak; keep production clients disabled.",
+  "last_observed_at": "2026-11-15T14:02:00+05:30",
+  "resume_checkpoint": "Phase59.25 PR #9 merged to master at e26459df09c7765ddea71c3002a8fcf90778b950; tested PR head cbba2e23596d901646a4e16f0cfc71ca01b44d8c. Cloud run 43694502929 SUCCESS, read-only contract/regression CI 43694502933 SUCCESS, PR-head regression runs 43694934944 (59.24), 43694934769 (59.25), 43694934713 (59.19), 43694934698 (59.22), 43694934676 (59.23), 43694934672 (59.20) all SUCCESS. Report research/PHASE_59_25_GITHUB_CLOUD_OPERATIONAL_SOAK_2026-11-15.md. Actual isolated GitHub REST CAS soak: 8 unique durable claims, 8 duplicate rejections, 3 CAS recoveries, stale-fence rejection, 6 heartbeat cycles, 15-event journal; 405/480 API requests, remaining 4504, zero transport failures. Test branch deleted. This is a single GitHub-hosted runner with eight threads, not multi-host deployment or 7/30-day soak. P59-003 IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED; PCNE ₹0; spend ₹0. Next Phase59.26 specialist agent workflow integration; production clients remain disabled pending remaining global quota/owner/branch-rule/long-soak gates.",
   "last_observed_head_semantics": "Master HEAD observed before this control-plane checkpoint; this checkpoint creates subsequent commits. Fetch live master again on next continuation. last_verified_head remains the last independently verified CI SHA, not the observed HEAD.",
   "phase53_latest_report": "research/PHASE_53_FORMULA_INTEGRITY_TECHNICAL_FEASIBILITY_2026-11-14.md",
   "phase53_supporting_reports": [
@@ -492,7 +492,7 @@
     "spend_authorized_inr": 0,
     "drift_verdict": "NO_STRATEGIC_DRIFT; PHASE_55_IS_ONLY_CURRENT_RANK_1_DISCOVERY_LANE"
   },
-  "latest_observed_master_head": "92109f41e06fe574f9025b3029c38b3c2587c039",
+  "latest_observed_master_head": "edec7d655c1fca1a7d346ba232a30e268b4425f7",
   "phase55_execution_status": "BLOCKED_BY_OWNER_GATE",
   "phase56_status": "COMPLETED_NO_GO_GENERAL_SHOPIFY_PAYMENT_RECOVERY_APP",
   "phase56_latest_report": "research/PHASE_56_SHOPIFY_PAYMENT_RECOVERY_FINAL_NO_GO_2026-11-14.md",
@@ -1061,5 +1061,55 @@
       "Other project cells remain isolated",
       "No claim of production 24x7 autonomy until live soak passes"
     ]
+  },
+  "phase59_25": {
+    "status": "MERGED_EXACT_PR_HEAD_CLOUD_SOAK_AND_CI_PASS",
+    "pr_number": 9,
+    "pr_head": "cbba2e23596d901646a4e16f0cfc71ca01b44d8c",
+    "merge_commit": "e26459df09c7765ddea71c3002a8fcf90778b950",
+    "documentation_commit": "3e172e67afb985f2ac2becf30b5768aa2f46ba34",
+    "state_reconciliation_commit": "edec7d655c1fca1a7d346ba232a30e268b4425f7",
+    "cloud_run_id": 43694502929,
+    "cloud_run_status": "SUCCESS",
+    "cloud_ci_run_id": 43694502933,
+    "cloud_ci_status": "SUCCESS",
+    "pr_regression_run_ids": [
+      43694934944,
+      43694934769,
+      43694934713,
+      43694934698,
+      43694934676,
+      43694934672
+    ],
+    "pr_regression_status": "ALL_SUCCESS",
+    "worker_count": 8,
+    "unique_durable_claims": 8,
+    "duplicate_delivery_attempts": 8,
+    "duplicate_delivery_rejections": 8,
+    "contention_recovery_claims": 3,
+    "stale_fence_rejected": true,
+    "heartbeat_cycles": 6,
+    "journal_event_count": 15,
+    "soak_target_seconds": 180,
+    "soak_elapsed_seconds": 218.698,
+    "run_duration_seconds": 277.294,
+    "api_requests_attempted": 405,
+    "api_request_ceiling": 480,
+    "rate_limit_remaining": 4504,
+    "safety_reserve": 100,
+    "transport_failures": 0,
+    "telemetry_missing": false,
+    "test_branch_cleanup": "SUCCESS",
+    "production_federation_branch_touched": false,
+    "production_clients_enabled": false,
+    "ai_provider_inference_enabled": false,
+    "verified_pcne_inr": 0,
+    "new_spend_inr": 0,
+    "limitations": [
+      "Eight worker threads executed within one GitHub-hosted runner, not eight independent hosts.",
+      "Short bounded soak does not satisfy the 7-day/30-day production soak.",
+      "Shared request budget is process/run-local; cross-run/cross-repository global quota arbitration remains a gate."
+    ],
+    "next": "Phase 59.26 specialist agent workflow integration; retain production-disabled boundary."
   }
 }
