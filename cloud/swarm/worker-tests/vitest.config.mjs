@@ -42,7 +42,7 @@ export default defineConfig({
               }),
               NEXUS_QUOTA_CALLER_POLICIES: JSON.stringify({
                 primary: ["reserve", "settle", "markUncertain", "snapshot", "recordTelemetry"],
-                secondary: ["reserve", "markUncertain", "recordTelemetry"]
+                secondary: ["reserve", "settle", "markUncertain", "recordTelemetry"]
               }),
               NEXUS_QUOTA_BUCKET_POLICIES: JSON.stringify({
                 core: {safetyReserveUnits: 5, recoveryReserveUnits: 5, maxTelemetryAgeSeconds: 300},
