@@ -1,4 +1,5 @@
 import json
+import multiprocessing
 import os
 from pathlib import Path
 import sqlite3
@@ -15,6 +16,15 @@ from scripts.durable_execution import DurableExecutionError, DurableStore, run_i
 
 T0 = datetime(2026, 11, 15, 3, 0, tzinfo=timezone.utc)
 
+
+def _claim_in_process(db_path, worker, barrier, output):
+    store = DurableStore(db_path)
+    barrier.wait(timeout=5)
+    try:
+        store.claim_task("T1", worker, now=T0)
+        output.put("WON")
+    except DurableExecutionError:
+        output.put("LOST")
 
 class DurableExecutionTests(unittest.TestCase):
     def setUp(self):
@@ -56,6 +66,20 @@ class DurableExecutionTests(unittest.TestCase):
         winners = [x for x in results if x]
         self.assertEqual(len(winners), 1)
         self.assertEqual(winners[0]["fencing_token"], 1)
+
+    def test_multiprocess_claim_has_exactly_one_winner(self):
+        if "spawn" not in multiprocessing.get_all_start_methods():
+            self.skipTest("spawn process context is unavailable")
+        self.store.register_task("T1", "idem-1", {}, now=T0)
+        ctx = multiprocessing.get_context("spawn")
+        barrier, output = ctx.Barrier(6), ctx.Queue()
+        workers = [ctx.Process(target=_claim_in_process, args=(str(self.db), f"p{i}", barrier, output)) for i in range(6)]
+        for worker in workers: worker.start()
+        for worker in workers: worker.join(10)
+        self.assertTrue(all(worker.exitcode == 0 for worker in workers))
+        results = [output.get(timeout=2) for _ in workers]
+        self.assertEqual(results.count("WON"), 1)
+        self.assertEqual(results.count("LOST"), 5)
 
     def test_fencing_token_increases_after_expiry_recovery(self):
         self.store.register_task("T1", "idem-1", {}, max_attempts=3, now=T0)
@@ -104,10 +128,12 @@ class DurableExecutionTests(unittest.TestCase):
         with self.assertRaises(DurableExecutionError):
             self.store.acquire_lock("canonical/control", "writer-b", now=T0)
         self.assertTrue(self.store.assert_fence("canonical/control", "writer-a", first["fencing_token"], now=T0))
-        second = self.store.acquire_lock("canonical/control", "writer-b", now=T0 + timedelta(seconds=16))
+        extended = self.store.heartbeat_lock("canonical/control", "writer-a", first["fencing_token"], now=T0 + timedelta(seconds=5), lease_seconds=60)
+        self.assertGreater(extended["expires_at_utc"], first["expires_at_utc"])
+        second = self.store.acquire_lock("canonical/control", "writer-b", now=T0 + timedelta(seconds=66))
         self.assertGreater(second["fencing_token"], first["fencing_token"])
         with self.assertRaises(DurableExecutionError):
-            self.store.assert_fence("canonical/control", "writer-a", first["fencing_token"], now=T0 + timedelta(seconds=17))
+            self.store.assert_fence("canonical/control", "writer-a", first["fencing_token"], now=T0 + timedelta(seconds=67))
 
     def test_process_timeout_kills_allowlisted_child(self):
         script = Path(self.tmp.name) / "slow_worker.py"
