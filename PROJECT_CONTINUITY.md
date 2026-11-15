@@ -3949,3 +3949,11 @@ Date: 2026-11-15
 - Generic Jira AI-agent approval/audit app NO-GO after 15 direct/adjacent substitutes. Community pain is not WTP. Atlassian Forge economics are attractive but India seller payout eligibility remains unconfirmed.
 - Marketplace-distributed B2B software / vertical SaaS remains provisional first source family; no concrete product selected; no build/spend. P59-001 active; P59-003 paused; P59-002 blocked; PCNE ₹0.
 - Next: discover a new recurring B2B workflow problem within a marketplace ecosystem, with two independent buyer signals, 10–15 substitute audit, price-bearing WTP, India payout, positive economics, rights and self-serve fulfilment.
+
+## Phase59.31 live verification addendum
+- Owner-directed queue switch is now consistent across `mission_state.current_task`, `automation_queue.current_task` and `queue_policy.current_task`: P59-003.
+- P59-001 PAUSED; P59-002 BLOCKED; P59-003 IN_PROGRESS.
+- The guard initially rejected a stale nested queue-policy pointer. It was corrected; Mission Continuity Guard run 43696953420 passed.
+- Current recursive master tree has 23 workflow files. Repository rulesets API returned []; branch protection read returned 403 to the connected integration, so branch protection remains UNVERIFIED.
+- Daily “Advance ₹10 Cr Mission” automation prompt was updated to prioritize P59-003 swarm foundation and keep P59-001 paused until swarm acceptance gates pass. Schedule was unchanged.
+- Report: [Phase59.31 swarm forensic audit](research/PHASE_59_31_SWARM_FIRST_FORENSIC_AUDIT_AND_RECOVERY_2026-11-15.md).
