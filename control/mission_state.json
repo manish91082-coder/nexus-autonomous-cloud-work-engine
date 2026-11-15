@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
   "last_verified_head": "c84124f4bff06c2f6a6eec193720bb89bda8cee2",
-  "current_focus": "P59-003: B4 standalone prototype has 21/21 exact CI tests PASS (run 43685420046). Complete 14-workflow inventory recorded. Active recurring mission worker and continuity guard upgraded to verified signed Node 24 action releases pinned by full SHA; exact-commit Worker run 43685697202 and Guard run 43685697162 both SUCCESS. Worker AI remains disabled; no inference request. B4 and federation are not production-integrated.",
+  "current_focus": "P59-003: B4 standalone prototype has 21/21 exact CI tests PASS (run 43685420046). Complete 14-workflow inventory recorded. Active recurring mission worker and continuity guard upgraded to verified signed Node 24 action releases pinned by full SHA; exact-commit Worker run 43685697202 and Guard run 43685697162 both SUCCESS. Worker AI remains disabled; no inference request. B4 and federation are not production-integrated. Worker contents:write retained temporarily because daily quota/cooldown state must persist; separate publisher and durable quota store must be proven before downgrading compute to read-only.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -157,7 +157,7 @@
   ],
   "phase53_research_checkpoint": "14-Nov completed: WP webhook / Action Scheduler / COD fraud generic hypotheses NO-GO; Workspace attachment archival / invoice extraction / approvals / notification clones NO-GO. Formula Integrity technical matrix completed; HOLD due event/identity/API/quotas plus no proven recurring demand. Continue P53-001 Google Workspace problem-first research beyond these categories.",
   "last_observed_at": "2026-11-15T08:31:25+05:30",
-  "resume_checkpoint": "15-Nov-2026 Phase 59.16: B4 SQLite backup/restore and six crash-window soak tests PASS; 21/21 exact B4 CI run 43685420046 on SHA 9d52266067751a28b3302cb34e43056ee991d8fc. Complete 14/14 workflow inventory. Recurring Mission Worker and Continuity Guard now pin verified signed Node24 releases by full SHA; exact commit c84124f4bff06c2f6a6eec193720bb89bda8cee2 verified: Worker 43685697202 SUCCESS, Guard 43685697162 SUCCESS; Node20 deprecation warning absent; worker confirms AI disabled/no inference. Product/QA and legacy manual workflows still need staged pinning. B4 standalone only; no global lock/quota service. P59-003 IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED; PCNE ₹0; spend ₹0.",
+  "resume_checkpoint": "15-Nov-2026 Phase 59.16: B4 SQLite backup/restore and six crash-window soak tests PASS; 21/21 exact B4 CI run 43685420046 on SHA 9d52266067751a28b3302cb34e43056ee991d8fc. Complete 14/14 workflow inventory. Recurring Mission Worker and Continuity Guard now pin verified signed Node24 releases by full SHA; exact commit c84124f4bff06c2f6a6eec193720bb89bda8cee2 verified: Worker 43685697202 SUCCESS, Guard 43685697162 SUCCESS; Node20 deprecation warning absent; worker confirms AI disabled/no inference. Product/QA and legacy manual workflows still need staged pinning. B4 standalone only; no global lock/quota service. P59-003 IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED; PCNE ₹0; spend ₹0. Worker contents:write was reviewed and intentionally retained: ai_task_executor persists report + daily quota/cooldown state; removing write before a replacement durable store/publisher would weaken the six-call/day and 30-minute circuit-breaker. Current AI remains disabled and no inference request is made.",
   "last_observed_head_semantics": "Master HEAD observed before this control-plane checkpoint; this checkpoint creates subsequent commits. Fetch live master again on next continuation. last_verified_head remains the last independently verified CI SHA, not the observed HEAD.",
   "phase53_latest_report": "research/PHASE_53_FORMULA_INTEGRITY_TECHNICAL_FEASIBILITY_2026-11-14.md",
   "phase53_supporting_reports": [
@@ -912,6 +912,8 @@
     "remaining_workflows": "Product build/QA and legacy manual-only workflows still use major tags; staged pinning pending.",
     "production_integrated": false,
     "ai_provider_configured": false,
-    "next": "Review recurring worker contents:write permission; stage Node24 SHA pinning for non-recurring product workflows; then deploy a real shared-store federation lease/quota service."
+    "next": "Review recurring worker contents:write permission; stage Node24 SHA pinning for non-recurring product workflows; then deploy a real shared-store federation lease/quota service.",
+    "worker_write_permission_decision": "RETAIN_CONTENTS_WRITE_FOR_NOW: executor persists ai_worker_report.json and control/ai_usage_state.json; daily six-call cap and 30-minute cooldown depend on durable quota state. Removing write without replacement weakens safety. Current inference disabled and no request made. Next design separate single-writer publisher + durable quota store; only then make compute read-only.",
+    "worker_write_scope": "Repository-scoped GITHUB_TOKEN; commit step stages only ai_worker_report.json and control/ai_usage_state.json when status DRAFT_READY_FOR_EVIDENCE_REVIEW. No organization/admin scope."
   }
 }
