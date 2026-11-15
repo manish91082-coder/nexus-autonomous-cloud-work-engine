@@ -14,19 +14,19 @@
   "fail_closed": "On API 403/429/5xx, network error, branch conflict exhaustion, malformed state or unknown quota, do not grant lease; keep task WAITING_FOR_QUOTA/WAITING_FOR_LOCK.",
   "no_paid_fallback": true,
   "project_isolation": true,
-  "status_note": "Dedicated branch initialized; 7 unit/state tests PASS; live GitHub Actions probe with 20 simultaneous contenders produced exactly one lease owner and 19 BUSY exits, released the lease, and verified the 9-event hash chain. No active leases remain. Still a prototype only: no project-cell client, no cross-repo App installation, no 100-way live race, no quota arbiter. Cross-project writes remain disabled.",
+  "status_note": "Dedicated branch prototype only. Seven unit/state tests pass including 100-contender deterministic CAS simulator. Latest live GitHub Actions probe 43686678257: 20 simultaneous contenders, exactly one lease owner and 19 BUSY exits, committed release, zero active leases, and complete 15-event SHA-256 journal verification. Workflow branch-filtered and job-scoped contents:write. No project-cell client, cross-repo App installation, 100-way live race, branch ruleset or quota arbiter yet. Cross-project writes remain disabled.",
   "live_probe": {
-    "workflow_run_id": 43686479221,
+    "workflow_run_id": 43686678257,
     "workflow_run_status": "success",
-    "tested_commit": "5e1daf29ec89aaabe60656e93504f7f0d2cf285f",
+    "tested_commit": "10bcb6231c017928b3163176084b8296d5d689ce",
     "live_contenders": 20,
     "live_winners": 1,
     "live_busy": 19,
     "release_committed": true,
     "remaining_active_leases": 0,
     "event_journal_verified": true,
-    "event_count": 9,
-    "branch_head_after_probe": "9149a7f77352c26cfc8d60cc83ef087364b06792"
+    "event_count": 15,
+    "branch_head_after_probe": "70b446f9608159e83326bee2da63970b6afb6ea1"
   },
   "unit_tests": {
     "count": 7,
