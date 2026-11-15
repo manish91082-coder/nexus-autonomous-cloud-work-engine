@@ -45,7 +45,7 @@ class FederationGitRefStateTests(unittest.TestCase):
         state, e3 = release_transition(state, lease["scope"], "worker-a", 1, now=T0 + timedelta(seconds=301))
         self.assertEqual(state["leases"], [])
         self.assertEqual(state["generation"], 3)
-        self.assertTrue(verify_event_chain([e1, e2, e3]))
+        self.assertTrue(verify_event_chain([e1, e2, e3], start_sequence=1))
         self.assertTrue(validate_state(state))
 
     def test_expired_lease_reclaim_increments_fencing_token(self):
@@ -115,13 +115,13 @@ class FederationGitRefStateTests(unittest.TestCase):
         state, _, event = claim_transition(
             initial_state(), "P10CR", "owner/repo", "T-4", "idem-4", "worker-a", now=T0
         )
-        self.assertTrue(verify_event_chain([event]))
+        self.assertTrue(verify_event_chain([event], start_sequence=1))
         altered = dict(event)
         altered["actor"] = "attacker"
-        self.assertFalse(verify_event_chain([altered]))
+        self.assertFalse(verify_event_chain([altered], start_sequence=1))
         wrong_sequence = dict(event)
         wrong_sequence["sequence"] = 2
-        self.assertFalse(verify_event_chain([wrong_sequence]))
+        self.assertFalse(verify_event_chain([wrong_sequence], start_sequence=1))
 
     def test_stale_worker_cannot_heartbeat_or_release(self):
         state, lease, _ = claim_transition(
