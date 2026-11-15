@@ -241,13 +241,13 @@ class DurableExecutionTests(unittest.TestCase):
         pid_file = Path(self.tmp.name) / "child.pid"
         child_script.write_text("import time\ntime.sleep(30)\n", encoding="utf-8")
         parent_script.write_text(
-            "import os, time\\n"
-            "pid = os.fork()\\n"
-            "if pid == 0:\\n"
-            "    time.sleep(30)\\n"
-            "    os._exit(0)\\n"
-            "open(" + repr(str(pid_file)) + ", 'w').write(str(pid))\\n"
-            "time.sleep(30)\\n",
+            "import os, time\n"
+            "pid = os.fork()\n"
+            "if pid == 0:\n"
+            "    time.sleep(30)\n"
+            "    os._exit(0)\n"
+            "open(" + repr(str(pid_file)) + ", 'w').write(str(pid))\n"
+            "time.sleep(30)\n",
             encoding="utf-8",
         )
         compile(parent_script.read_text(encoding="utf-8"), str(parent_script), "exec")
