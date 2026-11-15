@@ -23,7 +23,9 @@ export default defineConfig({
             name: "p10cr-quota-ledger-host",
             rootPath: "../",
             modules: [
-              { type: "ESModule", path: "./quota-ledger-host.mjs" }
+              { type: "ESModule", path: "./quota-ledger-host.mjs" },
+              { type: "ESModule", path: "./quota-ledger-do.mjs" },
+              { type: "ESModule", path: "./quota-ledger-contract.mjs" }
             ]
           },
           {
