@@ -155,3 +155,11 @@ Next:
 ## 7. Integrity statement
 
 All platform fee, royalty, payout and eligibility facts above are from the linked official provider documentation as observed on 15-Nov-2026. They do not establish this owner's account approval, audience, seller status, product rights, buyer demand, actual fees or revenue. No platform account was accessed, no KYC/terms accepted, no listing submitted, no publication performed, and no spend incurred in this batch.
+
+
+## 8. Existing asset discovery follow-up — Tech Cloud ERP (15-Nov-2026)
+A read-only search was performed after the source-family revalidation:
+- Connected GitHub account listing returned 15 owner repositories; none was named or described as Tech Cloud ERP.
+- Dropbox searches for `Tech Cloud ERP`, `Tech Cloud ERP Software Pvt Ltd`, `Tech Cloud ERP 35 modules`, `Tech Cloud source code` and `Tech Cloud ERP module list` returned no matches.
+- This is a bounded search of the currently connected GitHub and Dropbox surfaces, not proof that the asset does not exist. Other storage locations, local archives, private accounts or company systems were not inspected.
+- Asset gate remains UNVERIFIED. No ownership or source-code rights are inferred. The product ranking cannot yet credit this asset with build-time savings or a licensable product catalogue.
