@@ -1,0 +1,152 @@
+import { describe, it, expect } from "vitest";
+import { env } from "cloudflare:workers";
+import { quotaLedgerObjectName } from "../quota-ledger-do.mjs";
+
+const identity = (suffix) => ({
+  provider: "github",
+  credentialScope: "installation-42/repository-99",
+  windowId: "hour-2026-11-15T18",
+  controlPlaneProvider: "cloudflare",
+  reservationId: "reservation-" + suffix,
+  workerId: "worker-" + suffix,
+  operation: "core+search"
+});
+
+function bucket(bucketId, remaining = 100, overrides = {}) {
+  return {
+    bucketId,
+    limitUnits: 1000,
+    observedRemainingUnits: remaining,
+    safetyReserveUnits: 5,
+    recoveryReserveUnits: 5,
+    observedAtEpoch: 1000,
+    maxTelemetryAgeSeconds: 120,
+    nowEpoch: 1010,
+    ...overrides
+  };
+}
+
+function stubFor(input) {
+  const id = env.QUOTA_LEDGER.idFromName(
+    quotaLedgerObjectName(input.provider, input.credentialScope, input.windowId)
+  );
+  return env.QUOTA_LEDGER.get(id);
+}
+
+describe("Phase 59.35 Cloudflare Workers runtime: SQLite Durable Object", () => {
+  it("initializes SQLite schema and accepts first reservation (zero-row lookups)", async () => {
+    const input = {
+      ...identity("first"),
+      buckets: [bucket("core"), bucket("search")],
+      costs: { core: 10, search: 3 }
+    };
+    const stub = stubFor(input);
+    const result = await stub.reserve(input);
+    expect(result.status).toBe("RESERVED");
+    expect(result.reservedByBucket).toEqual({ core: 10, search: 3 });
+    const snapshot = await stub.snapshot();
+    expect(snapshot.buckets).toHaveLength(2);
+  });
+
+  it("settles every bucket and persists committed usage across stub reacquisition", async () => {
+    const input = {
+      ...identity("settle"),
+      buckets: [bucket("core"), bucket("search")],
+      costs: { core: 20, search: 5 }
+    };
+    const name = quotaLedgerObjectName(input.provider, input.credentialScope, input.windowId);
+    const id = env.QUOTA_LEDGER.idFromName(name);
+    let stub = env.QUOTA_LEDGER.get(id);
+    await stub.reserve(input);
+    const result = await stub.settle({
+      reservationId: input.reservationId,
+      workerId: input.workerId,
+      actualByBucket: { core: 12, search: 3 },
+      nowEpoch: 1020
+    });
+    expect(result.status).toBe("SETTLED");
+    stub = env.QUOTA_LEDGER.get(id);
+    const snapshot = await stub.snapshot();
+    const core = snapshot.buckets.find(x => x.bucket_id === "core");
+    expect(core.reserved_units).toBe(0);
+    expect(core.committed_units).toBe(12);
+  });
+
+  it("rolls back all bucket initialization and writes when one bucket is exhausted", async () => {
+    const input = {
+      ...identity("rollback"),
+      buckets: [bucket("core"), bucket("search", 11)],
+      costs: { core: 10, search: 2 }
+    };
+    const stub = stubFor(input);
+    await expect(stub.reserve(input)).rejects.toThrow(/exhausted/);
+    const snapshot = await stub.snapshot();
+    expect(snapshot.buckets).toHaveLength(0);
+    expect(snapshot.reservations).toHaveLength(0);
+  });
+
+  it("serializes concurrent reservations against one shared bucket", async () => {
+    const input = {
+      ...identity("contention"),
+      buckets: [bucket("core", 100, { safetyReserveUnits: 0, recoveryReserveUnits: 0 })],
+      costs: { core: 10 }
+    };
+    const stub = stubFor(input);
+    const attempts = Array.from({ length: 20 }, (_, i) =>
+      stub.reserve({
+        ...input,
+        reservationId: "contend-" + i,
+        workerId: "parallel-worker-" + i
+      }).then(() => true).catch(error => {
+        if (/exhausted/.test(String(error))) return false;
+        throw error;
+      })
+    );
+    const outcomes = await Promise.all(attempts);
+    expect(outcomes.filter(Boolean)).toHaveLength(10);
+    const snapshot = await stub.snapshot();
+    const core = snapshot.buckets.find(x => x.bucket_id === "core");
+    expect(core.reserved_units).toBe(100);
+    expect(snapshot.reservations).toHaveLength(10);
+  });
+
+  it("rejects duplicate reservation IDs without double counting", async () => {
+    const input = {
+      ...identity("duplicate"),
+      buckets: [bucket("core")],
+      costs: { core: 7 }
+    };
+    const stub = stubFor(input);
+    await stub.reserve(input);
+    await expect(stub.reserve(input)).rejects.toThrow(/duplicate/);
+    const snapshot = await stub.snapshot();
+    expect(snapshot.buckets[0].reserved_units).toBe(7);
+  });
+
+  it("retains uncertain usage instead of releasing reserved capacity", async () => {
+    const input = {
+      ...identity("uncertain"),
+      buckets: [bucket("core")],
+      costs: { core: 9 }
+    };
+    const stub = stubFor(input);
+    await stub.reserve(input);
+    const result = await stub.markUncertain({
+      reservationId: input.reservationId,
+      workerId: input.workerId
+    });
+    expect(result.status).toBe("UNCERTAIN_BUDGET_RETAINED");
+    const snapshot = await stub.snapshot();
+    expect(snapshot.buckets[0].reserved_units).toBe(0);
+    expect(snapshot.buckets[0].uncertain_units).toBe(9);
+  });
+
+  it("derives collision-safe object names from the provider, credential and window tuple", () => {
+    expect(quotaLedgerObjectName("ab", "c", "d")).not.toBe(
+      quotaLedgerObjectName("a", "bc", "d")
+    );
+    expect(quotaLedgerObjectName("gh", "installation/1", "hour/2")).toBe(
+      quotaLedgerObjectName("gh", "installation/1", "hour/2")
+    );
+  });
+});
