@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { env } from "cloudflare:workers";
+import { evictDurableObject, runInDurableObject } from "cloudflare:test";
 import { quotaLedgerObjectName } from "../quota-ledger-contract.mjs";
 
 const identity = (suffix) => ({
@@ -140,6 +141,104 @@ describe("Phase 59.35 Cloudflare Workers runtime: SQLite Durable Object", () => 
     const snapshot = await stub.snapshot();
     expect(snapshot.buckets[0].reserved_units).toBe(0);
     expect(snapshot.buckets[0].uncertain_units).toBe(9);
+  });
+
+  it("rebases committed usage when a newer provider telemetry snapshot arrives", async () => {
+    const input = {
+      ...identity("telemetry-rebase"),
+      buckets: [bucket("core", 100)],
+      costs: { core: 10 }
+    };
+    const stub = stubFor(input);
+    await stub.reserve(input);
+    await stub.settle({
+      reservationId: input.reservationId,
+      workerId: input.workerId,
+      actualByBucket: { core: 8 },
+      nowEpoch: 1020
+    });
+    const refreshed = {
+      ...input,
+      reservationId: "reservation-telemetry-rebase-next",
+      workerId: "worker-telemetry-rebase-next",
+      buckets: [bucket("core", 70, { observedAtEpoch: 1030, nowEpoch: 1040 })],
+      costs: { core: 1 }
+    };
+    expect((await stub.reserve(refreshed)).status).toBe("RESERVED");
+    const core = (await stub.snapshot()).buckets.find(x => x.bucket_id === "core");
+    expect(core.committed_units).toBe(8);
+    expect(core.committed_since_observation_units).toBe(0);
+    expect(core.reserved_units).toBe(1);
+  });
+
+  it("rejects a different provider credential window on an already-bound object", async () => {
+    const input = {
+      ...identity("identity-bound"),
+      buckets: [bucket("core")],
+      costs: { core: 5 }
+    };
+    const stub = stubFor(input);
+    await stub.reserve(input);
+    const intruder = {
+      ...input,
+      credentialScope: "different-installation/repository",
+      reservationId: "reservation-identity-intruder",
+      workerId: "worker-identity-intruder"
+    };
+    const rejected = await stub.reserve(intruder);
+    expect(rejected.status).toBe("REJECTED");
+    expect(rejected.error.message).toMatch(/identity/);
+  });
+
+  it("recovers the durable reservation after a real Durable Object eviction", async () => {
+    const input = {
+      ...identity("eviction-recovery"),
+      buckets: [bucket("core")],
+      costs: { core: 9 }
+    };
+    const stub = stubFor(input);
+    await stub.reserve(input);
+    await evictDurableObject(stub);
+    const recovered = stubFor(input);
+    const snapshot = await recovered.snapshot();
+    expect(snapshot.reservations.find(x => x.reservation_id === input.reservationId).status)
+      .toBe("RESERVED");
+    const settled = await recovered.settle({
+      reservationId: input.reservationId,
+      workerId: input.workerId,
+      actualByBucket: { core: 7 },
+      nowEpoch: 1020
+    });
+    expect(settled.status).toBe("SETTLED");
+  });
+
+  it("rolls back a failed SQLite transaction without persisting partial writes", async () => {
+    const input = {
+      ...identity("transaction-rollback"),
+      buckets: [bucket("core")],
+      costs: { core: 5 }
+    };
+    const stub = stubFor(input);
+    await stub.reserve(input);
+    await runInDurableObject(stub, (_instance, state) => {
+      const before = state.storage.sql.exec(
+        "SELECT COUNT(*) AS count FROM quota_buckets"
+      ).toArray()[0].count;
+      expect(() => state.storage.transactionSync(() => {
+        state.storage.sql.exec(`INSERT INTO quota_buckets
+          (bucket_id,provider,credential_scope,window_id,limit_units,
+           observed_remaining_units,observed_at_epoch,safety_reserve_units,
+           recovery_reserve_units,reserved_units,committed_units,
+           committed_since_observation_units,uncertain_units)
+          VALUES ('rollback-probe','github','installation-42/repository-99/transaction-rollback',
+          'hour-2026-11-15T18/transaction-rollback',100,100,1000,0,0,0,0,0,0)`);
+        throw new Error("forced-rollback-probe");
+      })).toThrow("forced-rollback-probe");
+      const after = state.storage.sql.exec(
+        "SELECT COUNT(*) AS count FROM quota_buckets"
+      ).toArray()[0].count;
+      expect(after).toBe(before);
+    });
   });
 
   it("derives collision-safe object names from the provider, credential and window tuple", () => {
