@@ -725,7 +725,7 @@ export class QuotaLedgerDO extends DurableObject {
     const sql = this.ctx.storage.sql;
     return {
       identity: sql.exec("SELECT * FROM quota_meta WHERE singleton=1").toArray()[0] ?? null,
-      buckets: sql.exec("SELECT * FROM quota_buckets ORDER BY bucket_id").toArray(),
+      buckets: sql.exec("SELECT * FROM quota_bucket_counters ORDER BY bucket_id,provider_window_id").toArray(),
       reservations: sql.exec("SELECT * FROM quota_reservations ORDER BY created_at_epoch").toArray(),
       telemetryCurrent: sql.exec("SELECT * FROM quota_telemetry_current ORDER BY bucket_id").toArray(),
       telemetryObservations: sql.exec("SELECT * FROM quota_telemetry_observations ORDER BY observed_at_epoch").toArray()
