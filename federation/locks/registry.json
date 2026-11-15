@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "status": "PHASE59_21_AUDIT_COMPLETE_CLIENTS_AND_QUOTA_DISABLED",
+  "status": "PHASE59_22_BATCH_HEARTBEAT_MERGED_CLIENTS_AND_QUOTA_DISABLED",
   "branch": "federation-locks",
   "state_path": "federation/locks/state.json",
   "event_path_pattern": "federation/locks/events/v2/YYYY/MM/chunk-NNNNNNNN.json",
@@ -59,12 +59,11 @@
     "client_integration": false,
     "live_reservations_written": false,
     "activation_blockers": [
-      "source-derived mutation cost is 9 REST requests per successful attempt and up to 45 at max_retries=5",
-      "10-request reservation underfunds worst-case mutation",
-      "quota reservation itself is a lock-store mutation; self-accounting is unresolved",
-      "synthetic 30-day heartbeat model shows 864 no-conflict mutation requests/hour at 8 active leases and 300-second heartbeat",
-      "lower-write heartbeat protocol and 8-way contention simulation required",
-      "branch ruleset, GitHub App, client integration and controlled soak remain"
+      "10-request persisted reservation underfunds worst-case mutation",
+      "reservation writes self-consume the same Git-ref API budget; no self-referential arbiter activation",
+      "batch heartbeat merged but no response-header telemetry or hard request ceiling yet",
+      "controlled contention and 7/30-day soak not performed",
+      "branch ruleset and least-privilege app gates remain unverified"
     ],
     "scope_limit": "Controller repository federation lock-store REST admission only; not an account-wide Actions-minute meter and not a meter for other repositories' independent GITHUB_TOKEN quotas.",
     "request_cost_audit": {
@@ -115,5 +114,31 @@
     "live_soak": false,
     "lock_branch_writes": false,
     "clients_enabled": false
-  }
+  },
+  "heartbeat_protocol": {
+    "status": "BATCH_HEARTBEAT_PROTOTYPE_MERGED_NOT_INTEGRATED",
+    "method": "heartbeat_batch",
+    "max_batch_size": 8,
+    "atomicity": "All supplied lease owner/fencing/expiry checks pass before any lease renewal; one stale member rejects entire batch.",
+    "journal": "One LEASE_HEARTBEAT_BATCH event per batch commit.",
+    "pr_number": 6,
+    "merge_commit": "4d04400c3c9357e905f74ff50f2802bf62853cd7",
+    "tested_head": "e01f965ba3bdc51487674f4157e3cc3aaf629d68",
+    "ci_runs": {
+      "batch": 43692571398,
+      "partitioned_journal_regression": 43692571400,
+      "quota_regression": 43692571445
+    },
+    "synthetic_30d": {
+      "batch_mutations": 8640,
+      "events": 8640,
+      "rest_calls_no_conflict": 77760,
+      "requests_per_hour_no_conflict": 108,
+      "worst_case_requests_per_hour_at_5_attempts": 540,
+      "baseline_individual_calls": 622080,
+      "reduction_factor": 8,
+      "live_soak": false
+    }
+  },
+  "next_phase": "PHASE_59_23_RESPONSE_HEADER_QUOTA_TELEMETRY_AND_REQUEST_CEILING"
 }
