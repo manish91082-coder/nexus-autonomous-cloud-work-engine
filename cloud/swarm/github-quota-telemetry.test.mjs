@@ -246,11 +246,19 @@ test("treats GET /rate_limit as zero primary units but not zero secondary points
 test("requires endpoint-specific verified cost for REST admission", () => {
   const result = classifyGitHubOperationCost({
     apiKind: "rest", method: "POST", endpoint: "/repos/acme/demo/issues",
-    endpointSpecificSecondaryPoints: 7
+    endpointSpecificSecondaryPoints: 7,
+    endpointCostEvidence: "verified-cost-registry:phase59-38-fixture"
   });
   assert.equal(result.secondary_points, 7);
   assert.equal(result.endpoint_cost_verified, true);
   assert.equal(result.admission_ready, true);
+});
+
+test("rejects REST endpoint cost overrides without provenance evidence", () => {
+  assert.throws(() => classifyGitHubOperationCost({
+    apiKind: "rest", method: "POST", endpoint: "/repos/acme/demo/issues",
+    endpointSpecificSecondaryPoints: 7
+  }), /evidence required/);
 });
 
 test("classifies GraphQL query/mutation secondary defaults and requires measured primary cost", () => {
@@ -260,7 +268,8 @@ test("classifies GraphQL query/mutation secondary defaults and requires measured
   });
   const mutation = classifyGitHubOperationCost({
     apiKind: "graphql", method: "POST", endpoint: "/graphql",
-    graphqlOperationKind: "mutation", graphqlPrimaryCost: 13
+    graphqlOperationKind: "mutation", graphqlPrimaryCost: 13,
+    graphqlCostEvidence: "graphql-rateLimit-cost:query-hash-fixture"
   });
   assert.equal(query.secondary_points, 1);
   assert.equal(query.primary_units, null);
@@ -287,6 +296,13 @@ test("rejects a normal HTTP 200 response without a rate-limit error message", ()
     body: {message: "Success"},
     observedAtEpoch: 1794784800
   }), /does not contain a rate-limit error/);
+});
+
+test("rejects GraphQL primary-cost admission without query-specific evidence", () => {
+  assert.throws(() => classifyGitHubOperationCost({
+    apiKind: "graphql", method: "POST", endpoint: "/graphql",
+    graphqlOperationKind: "query", graphqlPrimaryCost: 13
+  }), /evidence required/);
 });
 
 test("parses measured GraphQL rateLimit cost and reset window", () => {
