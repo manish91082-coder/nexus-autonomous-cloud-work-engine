@@ -19,7 +19,7 @@ Replace Node-only mocks with Cloudflare's Workers Vitest integration. The tests 
 
 ## Runtime acceptance evidence
 
-Run [43706315030](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43706315030) completed SUCCESS on the exact test commit:
+Run [43706366316](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43706366316) completed SUCCESS on the exact extended-test commit:
 - 1 test file passed.
 - 11 runtime tests passed on exact commit `f1813e44196a6e1ccd2c76fb89bbfb254811d04f`. The earlier baseline run [43706315030](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43706315030) passed 7/7 tests.
 - SQLite schema initialization and first reservation with empty SELECT results.
@@ -60,8 +60,9 @@ PR [#12](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine
 ## Next exact sequence
 
 Phase59.36:
-1. Add deterministic forced-restart/eviction persistence tests and recovery invariants.
-2. Add a second Worker entrypoint in the test harness that calls the same Durable Object binding; verify shared identity and contention across Worker callers.
-3. Add independent-host simulation and stale/future/out-of-order telemetry tests.
-4. Add internal caller authorization and reservation replay protections.
-5. Only then design provider telemetry adapters and wire the store behind the disabled feature flag into read-only swarm workers.
+1. Add a second Worker entrypoint in the test harness that calls the same Durable Object binding; verify shared identity and contention across Worker callers.
+2. Add independent-host simulation and stale/future/out-of-order/window-reset telemetry tests.
+3. Add internal caller authorization, binding isolation and reservation replay protections.
+4. Add provider-specific telemetry adapters and measured endpoint-to-bucket operation-cost maps.
+5. Add reservation expiry, uncertain-use reconciliation, audit export and restore drill.
+6. Only then wire the store behind the disabled feature flag into read-only swarm workers.
