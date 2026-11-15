@@ -1033,5 +1033,33 @@
     "live_distributed_lock_verified": false,
     "production_clients_enabled": false,
     "next": "Phase 59.25 controlled cloud test execution and operational soak"
+  },
+  "latest_architecture_research": {
+    "phase": "PHASE_60_CLOUD_NATIVE_AUTONOMOUS_SWARM_ARCHITECTURE_AUDIT",
+    "report": "research/PHASE_60_CLOUD_NATIVE_AUTONOMOUS_SWARM_ARCHITECTURE_AUDIT_2026-11-15.md",
+    "decision": "GO_FOR_CLOUDFLARE_FIRST_BOUNDED_POC_AFTER_P59_25; NO_GO_FOR_IMMEDIATE_PRODUCTION_MIGRATION",
+    "repository_baseline_head_observed": "986392a42e969454c5be5aa085c7ef4aaa80262c",
+    "completed_at": "2026-11-15",
+    "account_access_or_deployment": "NOT_PERFORMED",
+    "verified_revenue_change": false,
+    "authorized_spend_inr": 0,
+    "next_sequence": [
+      "P59-003_PHASE59_25_CONTROLLED_CLOUD_EXECUTION_AND_OPERATIONAL_SOAK",
+      "P60-A_CLOUDFLARE_READ_ONLY_ACCOUNT_AND_QUOTA_PREFLIGHT",
+      "P60-B_DISPOSABLE_WORKFLOW_DO_D1_R2_PROOF_OF_CONCEPT",
+      "P60-C_DURABILITY_IDEMPOTENCY_FENCING_AND_QUOTA_FAILURE_TESTS",
+      "P60-D_MEMORY_EXPORT_RESTORE",
+      "P60-E_DETERMINISTIC_MOCK_SPECIALIST_GRAPH",
+      "P60-F_OWNER_APPROVED_FREE_INFERENCE_PILOT",
+      "P60-G_P10CR_ONLY_CANARY",
+      "P60-H_7_DAY_AND_30_DAY_SOAK"
+    ],
+    "key_constraints": [
+      "GitHub remains canonical source control and audit evidence, not sole runtime",
+      "Cloudflare free-tier quotas are bounded; fail closed into WAITING_FOR_QUOTA",
+      "No paid fallback, no auto-upgrade, no billing activation",
+      "Other project cells remain isolated",
+      "No claim of production 24x7 autonomy until live soak passes"
+    ]
   }
 }
