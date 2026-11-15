@@ -534,6 +534,12 @@ export class QuotaLedgerDO extends DurableObject {
           VALUES (?,?,?,?,?,?,?, 'RESERVED', ?)`,
           input.reservationId,input.workerId,callerId,input.operation,
           input.requestFingerprint ?? "",now+ttlSeconds,JSON.stringify(reservedByBucket),now);
+        if (reviewedOperation) {
+          sql.exec("INSERT INTO quota_secondary_inflight(reservation_id,credential_scope,endpoint_key,expires_at_epoch) VALUES(?,?,?,?)",
+            input.reservationId,input.credentialScope,secondaryEndpoint,now+ttlSeconds);
+          sql.exec("INSERT INTO quota_secondary_endpoint_points(reservation_id,credential_scope,endpoint_key,points,occurred_at_epoch) VALUES(?,?,?,?,?)",
+            input.reservationId,input.credentialScope,secondaryEndpoint,secondaryPoints,now);
+        }
         return {
           reservationId:input.reservationId,
           status:"RESERVED",
