@@ -10,6 +10,9 @@ on:
       - 'tests/test_federation_git_ref_store.py'
       - 'tests/test_federation_quota_arbiter.py'
       - '.github/workflows/phase59-19-quota-arbiter.yml'
+  pull_request:
+    branches:
+      - master
   workflow_dispatch:
 
 permissions:
