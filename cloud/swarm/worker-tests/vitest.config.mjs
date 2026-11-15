@@ -95,13 +95,14 @@ export default defineConfig({
           },
           {
             name: "p10cr-readonly-swarm-worker",
+            rootPath: "../",
             modules: [
-              { type: "ESModule", path: "../readonly-github-worker.mjs" },
-              { type: "ESModule", path: "../quota-ledger-client.mjs" },
-              { type: "ESModule", path: "../quota-ledger-contract.mjs" },
-              { type: "ESModule", path: "../github-operation-registry.mjs" },
-              { type: "ESModule", path: "../github-secondary-rate-limit.mjs" },
-              { type: "ESModule", path: "../github-quota-telemetry.mjs" }
+              { type: "ESModule", path: "./readonly-github-worker.mjs" },
+              { type: "ESModule", path: "./quota-ledger-client.mjs" },
+              { type: "ESModule", path: "./quota-ledger-contract.mjs" },
+              { type: "ESModule", path: "./github-operation-registry.mjs" },
+              { type: "ESModule", path: "./github-secondary-rate-limit.mjs" },
+              { type: "ESModule", path: "./github-quota-telemetry.mjs" }
             ],
             bindings: {
               NEXUS_QUOTA_STORE_ENABLED: "true",
