@@ -71,6 +71,7 @@ def run_parallel_claims(repository, token, branch, shared_guard):
             with result_lock:
                 failures.append({
                     "worker_id": worker_id,
+                    "worker_index": index,
                     "error_type": type(exc).__name__,
                     "error": str(exc)[:240],
                 })
@@ -82,10 +83,52 @@ def run_parallel_claims(repository, token, branch, shared_guard):
         thread.join(90)
     if any(thread.is_alive() for thread in threads):
         raise RuntimeError("cloud worker thread exceeded 90-second join bound")
-    if failures or len(results) != WORKER_COUNT:
+    # CAS conflicts exhausted by simultaneous workers enter a bounded serial
+    # recovery lane. Non-CAS failures remain fail-closed and are never retried.
+    unresolved = []
+    recovered = []
+    for failure in failures:
+        if failure.get("error_type") != "CASConflict":
+            unresolved.append(failure)
+            continue
+        index = failure["worker_index"]
+        worker_id = failure["worker_id"]
+        task_id = f"cloud-soak-task-{index}"
+        idem = f"phase59-25-idempotency-{index}"
+        recovery_store = make_store(repository, token, branch, shared_guard, retries=3)
+        try:
+            snapshot = recovery_store.snapshot()
+            scope = f"P10CR/{repository}/{task_id}"
+            existing = next((x for x in snapshot["state"]["leases"] if x["scope"] == scope), None)
+            if existing and existing["worker_id"] == worker_id and existing["idempotency_key"] == idem:
+                lease = existing
+                commit_sha = snapshot["head_sha"]
+                status = "CLAIM_CONFIRMED_AFTER_CONTENTION"
+            else:
+                lease, commit_sha = recovery_store.claim(
+                    "P10CR", repository, task_id, idem, worker_id,
+                )
+                status = "CLAIMED_AFTER_CONTENTION_RECOVERY"
+            recovered.append({
+                "worker_id": worker_id,
+                "worker_index": index,
+                "status": status,
+                "fencing_token": lease["fencing_token"],
+                "scope": lease["scope"],
+                "commit_sha": commit_sha,
+                "local_api_requests": recovery_store.quota_telemetry()["requests_attempted"],
+            })
+        except Exception as exc:
+            unresolved.append({
+                **failure,
+                "recovery_error_type": type(exc).__name__,
+                "recovery_error": str(exc)[:240],
+            })
+    results.extend(recovered)
+    if unresolved or len(results) != WORKER_COUNT:
         diagnostics = {
             "successful_workers": results,
-            "worker_failures": failures,
+            "unresolved_worker_failures": unresolved,
             "shared_quota": shared_guard.snapshot(),
         }
         print(json.dumps({"stage": "unique_claims", **diagnostics}, ensure_ascii=False, indent=2))
@@ -240,6 +283,7 @@ def main():
         "worker_count": WORKER_COUNT,
         "cas_retry_policy": "bounded exponential backoff with per-store jitter; max 5 attempts per claim",
         "unique_durable_claims": len(workers),
+        "contention_recovery_claims": sum(1 for x in workers if x["status"] == "CLAIMED_AFTER_CONTENTION_RECOVERY"),
         "unique_fencing_tokens": len({x["fencing_token"] for x in workers}),
         "duplicate_delivery_attempts": WORKER_COUNT,
         "duplicate_delivery_rejections": duplicate_rejections,
