@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "federation_id": "MANISH-AI-PROJECT-FEDERATION-2026",
-  "updated_at": "2026-11-14",
+  "updated_at": "2026-11-15",
   "purpose": "Cross-project coordination only; never merge missions, budgets, data, revenue ledgers or safety boundaries.",
   "authority": {
     "federation_controller": "manish91082-coder/nexus-autonomous-cloud-work-engine",
@@ -45,7 +45,33 @@
       "queue": "SQLite mission/task DAG",
       "scope": "Public GitHub research only; no wallet, signing, trading, deployment or candidate code execution",
       "role": "INDEPENDENT_PROJECT",
-      "status": "7,901 candidates; 38 queries; 28 complete, 10 incomplete; Actions run #52 in progress at audit"
+      "status": "Independent research-only swarm; observed HEAD f4db040b77ef9b56682873fe6fd6ebcfce5a59bd. Six workflows inspected. Semantic pilot run 43683037797 and source-capture run 43681954178 were IN_PROGRESS at 2026-11-15 audit snapshot. Flash Loan Ollama/Qwen inference is loopback-local to an ephemeral GitHub-hosted runner; no direct P10CR model-provider quota collision identified. Shared GitHub Actions concurrency and GitHub API capacity risks remain. No Flash Loan files/runs changed.",
+      "resource_profile": {
+        "actions_workflows_inspected": 6,
+        "long_jobs": {
+          "semantic_pilot": {
+            "run_id": 43683037797,
+            "status_at_audit": "in_progress",
+            "timeout_minutes": 360,
+            "runner": "ubuntu-latest",
+            "model": "qwen2.5:3b via Ollama loopback",
+            "concurrency_group": "flashloan-agent-form-semantic-pilot"
+          },
+          "source_capture": {
+            "run_id": 43681954178,
+            "status_at_audit": "in_progress",
+            "timeout_minutes": 300,
+            "runner": "ubuntu-latest",
+            "parallelism": 2,
+            "concurrency_group": "flashloan-autonomous-source-capture"
+          }
+        },
+        "scheduled_discovery": "weekly Monday 02:17 UTC; 120-minute timeout",
+        "model_execution": "Ollama installed on ephemeral GitHub-hosted runner; not laptop and not a shared cloud model endpoint",
+        "state_storage": "project-local SQLite, source vault and workflow artifacts",
+        "api_auth": "workflow-provided GitHub token; no PAT requirement found in reviewed workflows",
+        "audit_report": "research/PHASE_59_13_FLASHLOAN_SWARM_RESOURCE_CONFLICT_AUDIT_2026-11-15.md"
+      }
     },
     {
       "project_id": "ZCIRA",
@@ -98,10 +124,11 @@
     }
   ],
   "shared_resources": {
-    "github_actions": "Shared account-level capacity must be budgeted; per-repository concurrency is not a global lock.",
-    "github_api": "Concurrent projects share API/rate-limit constraints; reserve per-project budgets and stagger scans.",
-    "free_model_quotas": "Provider/model quotas require shared accounting; project queues remain separate.",
-    "secrets": "No secrets in registry; use dedicated least-privilege GitHub App after owner approval."
+    "github_actions": "Shared finite account-level runner capacity; per-repository concurrency groups are not global locks. Reserve P10CR recovery/CI lane, stagger heavy jobs, and defer work when headroom is unknown or constrained. Exact account concurrency allowance was not verified.",
+    "github_api": "Concurrent repositories can contend for API/search capacity. Enforce per-project request budgets, caching, jittered backoff and WAITING_FOR_QUOTA. No account rotation or block bypass.",
+    "free_model_quotas": "Flash Loan semantic pilot uses Ollama loopback on its own ephemeral GitHub runner; no direct shared Cloudflare/OpenRouter/Gemini/Groq quota identified. P10CR model pool remains separate and disabled until its own free-only quota ledger is verified.",
+    "secrets": "No secrets in registry; use dedicated least-privilege GitHub App after owner approval.",
+    "cloud_compute": "Never borrow another project's runner, database, model process, artifact or secrets. P10CR fallback order: durable queue/defer; eligible lightweight Cloudflare dispatch; verified zero-cost independent compute; approved free-only model endpoints. Unknown price/terms/quota fails closed."
   },
   "coordination_policy": {
     "lock_service": "federation/locks/registry.json (contract placeholder; runtime lock is B4 deliverable)",
@@ -128,6 +155,7 @@
     "This registry is a coordination contract, not proof other repos currently enforce locks."
   ],
   "next_actions": [
+    "Apply the Phase 59.13 Flash Loan resource audit: keep missions isolated; add global Actions/API admission control and read-only status observation; do not modify Flash Loan workflows or queues.",
     "Implement B4 durable event journal and lease/fencing runtime in Nexus.",
     "Implement federation registry reader, atomic claim/heartbeat/release and stale-lease recovery.",
     "Add project-local federation clients without changing local missions.",
