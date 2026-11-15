@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { env } from "cloudflare:workers";
-import { runInDurableObject } from "cloudflare:test";
 import { quotaLedgerObjectName } from "../quota-ledger-contract.mjs";
 import {
   parseGitHubRateLimitHeaders,
@@ -938,13 +937,9 @@ describe("Phase 59.41 guarded GitHub request lifecycle", () => {
     const first = await call(stub,"reserve",input);
     expect(first.status).toBe("RESERVED");
 
-    await runInDurableObject(stub, (_instance, state) => {
-      state.storage.sql.exec(
-        "UPDATE quota_reservations SET expires_at_epoch=? WHERE reservation_id=?",
-        Math.floor(Date.now()/1000)-1,
-        input.reservationId
-      );
-    });
+    // The isolated test Worker config sets the minimum permitted 30-second TTL.
+    // Wait for the real persisted lease to expire; no clock override or test backdoor.
+    await new Promise(resolve => setTimeout(resolve, 30100));
 
     const sweep = await call(stub,"expireReservations",input);
     expect(sweep.status).toBe("EXPIRY_SWEEP_COMPLETE");
