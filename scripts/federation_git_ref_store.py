@@ -298,7 +298,7 @@ class GitHubGitRefStore:
     def __init__(self, repository, token=None, *, branch="federation-locks",
                  state_path="federation/locks/state.json", events_dir="federation/locks/events",
                  api_base="https://api.github.com", max_retries=5, opener=None,
-                 request_ceiling=None, safety_reserve=None):
+                 request_ceiling=None, safety_reserve=None, shared_quota_guard=None):
         self.repository = repository or os.getenv("GITHUB_REPOSITORY", "")
         self.token = token or os.getenv("GITHUB_TOKEN", "")
         self.branch = branch
@@ -308,6 +308,7 @@ class GitHubGitRefStore:
         self.max_retries = max_retries
         self.opener = opener or urllib.request.urlopen
         self.quota_guard = (GitHubApiQuotaGuard.from_environment() if request_ceiling is None and safety_reserve is None else GitHubApiQuotaGuard(request_ceiling=48 if request_ceiling is None else request_ceiling, safety_reserve=100 if safety_reserve is None else safety_reserve))
+        self.shared_quota_guard = shared_quota_guard
         if not self.repository or "/" not in self.repository:
             raise FederationLockError("GITHUB_REPOSITORY must be owner/repo")
         if not self.token:
@@ -317,6 +318,8 @@ class GitHubGitRefStore:
 
     def _request(self, method, path, payload=None):
         try:
+            if self.shared_quota_guard is not None:
+                self.shared_quota_guard.before_request()
             self.quota_guard.before_request()
         except ApiQuotaGuardError as exc:
             raise LockStoreUnavailable(str(exc)) from exc
@@ -334,11 +337,17 @@ class GitHubGitRefStore:
         )
         try:
             with self.opener(request, timeout=20) as response:
-                self.quota_guard.observe(getattr(response, "headers", None), getattr(response, "status", 200))
+                headers = getattr(response, "headers", None)
+                status = getattr(response, "status", 200)
+                self.quota_guard.observe(headers, status)
+                if self.shared_quota_guard is not None:
+                    self.shared_quota_guard.observe(headers, status)
                 raw = response.read()
                 return json.loads(raw.decode("utf-8")) if raw else {}
         except urllib.error.HTTPError as exc:
             self.quota_guard.observe(getattr(exc, "headers", None), exc.code)
+            if self.shared_quota_guard is not None:
+                self.shared_quota_guard.observe(getattr(exc, "headers", None), exc.code)
             detail = exc.read().decode("utf-8", "replace")[:1000]
             if exc.code == 404:
                 raise ResourceNotFound(detail or "GitHub resource not found") from exc
@@ -349,11 +358,16 @@ class GitHubGitRefStore:
             raise LockStoreUnavailable(f"GitHub API HTTP {exc.code}: {detail}") from exc
         except (urllib.error.URLError, TimeoutError, OSError, ValueError) as exc:
             self.quota_guard.observe_transport_failure()
+            if self.shared_quota_guard is not None:
+                self.shared_quota_guard.observe_transport_failure()
             raise LockStoreUnavailable(f"GitHub API unavailable: {type(exc).__name__}") from exc
 
     def quota_telemetry(self):
         """Return sanitized process-local request and rate-limit telemetry."""
-        return self.quota_guard.snapshot()
+        snapshot = self.quota_guard.snapshot()
+        if self.shared_quota_guard is not None:
+            snapshot["shared_run_budget"] = self.shared_quota_guard.snapshot()
+        return snapshot
 
     def _ref_get_path(self):
         return "/repos/" + self.repository + "/git/ref/heads/" + urllib.parse.quote(self.branch, safe="/")
