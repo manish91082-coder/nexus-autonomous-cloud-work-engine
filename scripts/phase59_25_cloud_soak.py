@@ -83,7 +83,13 @@ def run_parallel_claims(repository, token, branch, shared_guard):
     if any(thread.is_alive() for thread in threads):
         raise RuntimeError("cloud worker thread exceeded 90-second join bound")
     if failures or len(results) != WORKER_COUNT:
-        raise RuntimeError("not all eight cloud workers acquired unique durable leases")
+        diagnostics = {
+            "successful_workers": results,
+            "worker_failures": failures,
+            "shared_quota": shared_guard.snapshot(),
+        }
+        print(json.dumps({"stage": "unique_claims", **diagnostics}, ensure_ascii=False, indent=2))
+        raise RuntimeError("cloud worker claim stage failed: " + json.dumps(diagnostics, ensure_ascii=False))
     return sorted(results, key=lambda x: x["worker_id"])
 
 
