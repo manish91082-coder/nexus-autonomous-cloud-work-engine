@@ -329,7 +329,6 @@ export class QuotaLedgerDO extends DurableObject {
         throw new QuotaLedgerError("reservation TTL must be an integer from 30 to 900 seconds");
       }
       return this.ctx.storage.transactionSync(() => {
-        this.#expireReservations(now);
         const prior = sql.exec(
           "SELECT reservation_id FROM quota_reservations WHERE reservation_id = ?",
           input.reservationId
@@ -346,6 +345,7 @@ export class QuotaLedgerDO extends DurableObject {
           || identity.window_id !== input.windowId) {
           throw new QuotaLedgerError("Durable Object identity mismatch");
         }
+        this.#expireReservations(now);
 
         const plans = [];
         for (const [bucketId, units] of entries) {
