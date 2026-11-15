@@ -584,6 +584,7 @@ export class QuotaLedgerDO extends DurableObject {
       }
       sql.exec("UPDATE quota_reservations SET status='UNCERTAIN_BUDGET_RETAINED', settled_at_epoch=? WHERE reservation_id=? AND status='RESERVED'",
         now,row.reservation_id);
+      sql.exec("DELETE FROM quota_secondary_inflight WHERE reservation_id=?", row.reservation_id);
     }
     return expired.length;
   }
@@ -643,6 +644,7 @@ export class QuotaLedgerDO extends DurableObject {
       sql.exec(`UPDATE quota_reservations SET actual_by_bucket_json=?,status='SETTLED',
         settled_at_epoch=? WHERE reservation_id=?`,
         JSON.stringify(input.actualByBucket),Math.floor(Date.now()/1000),input.reservationId);
+      sql.exec("DELETE FROM quota_secondary_inflight WHERE reservation_id=?", input.reservationId);
       return {reservationId:input.reservationId,status:"SETTLED",actualByBucket:input.actualByBucket};
     });
   }
@@ -678,6 +680,7 @@ export class QuotaLedgerDO extends DurableObject {
       }
       sql.exec("UPDATE quota_reservations SET status='UNCERTAIN_BUDGET_RETAINED' WHERE reservation_id=?",
         input.reservationId);
+      sql.exec("DELETE FROM quota_secondary_inflight WHERE reservation_id=?", input.reservationId);
       return {reservationId:input.reservationId,status:"UNCERTAIN_BUDGET_RETAINED"};
     });
   }
