@@ -3636,3 +3636,25 @@ The GitHub Git-ref CAS federation lock prototype was reviewed and merged through
 Latest live evidence remains run `43686678257`: 20 contenders, one lease winner, 19 BUSY, release committed, zero active leases and a verified 15-event hash chain. B4 remains 21/21 pass; active recurring worker/guard remain Node24 SHA-pinned and exact CI pass.
 
 **Merge does not enable the lock service for project cells.** No ChatGPT thread, Flash Loan workflow, ZCIRA, Daily1000 or other project client is yet required to claim a lease. Branch ruleset/force-push protection is not verified; GitHub App installation and cross-repo permissions remain owner approval gates; global Actions/API quota arbitration is not deployed. Continue to fail closed until these are complete.
+
+
+
+# PHASE 59.19 — FEDERATION QUOTA ARBITER PROTOTYPE — 15 NOVEMBER 2026
+
+**Report:** [Phase 59.19 Federation Quota Arbiter Prototype](research/PHASE_59_19_FEDERATION_QUOTA_ARBITER_PROTOTYPE_2026-11-15.md)  
+**PR:** [#3 — merged](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/3)  
+**Merge commit:** `11426eb45945eb739d0c922c9b2aac48bc93be33`  
+**CI:** [43689177099 — SUCCESS](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43689177099), tested head `9c9ac782cebf8e67d63798082cf1587a62342977`
+
+Added a durable quota reservation policy over the existing Git-ref CAS store:
+- 36 reservation units per UTC hour, each conservatively reserving 10 controller-repository REST requests (360 requests/hour total).
+- Project allocations: P10CR 12, Flash Loan Research 8, ZCIRA 6, Daily1000 4, OTHER 2.
+- Four additional units are protected for P10CR emergency recovery.
+- Reservation transitions are persisted through the CAS state/event journal. Duplicate IDs and exhausted project/global budgets fail closed. Released reservations do not refund the hourly budget because requests may already have been consumed.
+- CI passed both the existing lock tests and the quota arbiter contract tests, plus allocation invariants.
+
+**Scope boundary:** this budgets controller-repository federation lock-store API activity only. It does not meter account-wide GitHub Actions minutes or independent GITHUB_TOKEN quotas in other repositories. No live quota reservations were written, no project client is enabled, and no external project was modified.
+
+**Activation blocker discovered:** the current flat event-directory verifier caps its listing at 1,000 files. At the theoretical maximum 36 reservations/hour, quota events alone can exceed this ceiling in under two days. The arbiter therefore remains a merged prototype and MUST NOT be activated at this ceiling until event-journal partitioning/pagination and 30-day verification are designed and tested. Actual REST call cost also needs measurement under success and CAS conflict paths.
+
+Remaining gates: event-journal redesign and bounded retention, API-call calibration, branch ruleset/force-push protection verification, least-privilege GitHub App installation, P10CR worker integration, read-only Flash Loan client, and 7-day/30-day soak. AI inference remains disabled. PCNE ₹0; authorized spend ₹0. P59-003 IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED.
