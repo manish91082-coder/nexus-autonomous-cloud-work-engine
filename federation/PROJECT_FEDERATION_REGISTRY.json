@@ -31,10 +31,15 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase 59.12 B4 prototype committed; 16/16 local tests PASS; GitHub B4 CI unverified because run ID is not retrievable; last independently verified worker #340 is on old SHA 7a1dd14; production AI/cloud deployment unproven",
-      "last_observed_head": "2eddfd7ba2beff412db79b84e4d0f979376c2d4e",
+      "status": "P59-003 IN_PROGRESS; Phase 59.14 B4 exact GitHub Actions CI SUCCESS on SHA 8b52ecca1c6007c13af0bf368e440b1b8e51d8c4 (run 43685216997), 18/18 tests pass including abrupt process crash recovery and Linux process-tree kill; all 14 workflows inventoried. B4 standalone only; production worker/federation runtime not integrated; no AI provider configured.",
+      "last_observed_head": "0180315b561db6f7548072acc8e3f8b5d9e5acbc",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
-      "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md"
+      "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
+      "phase59_14_report": "research/PHASE_59_14_B4_CRASH_RECOVERY_AND_WORKFLOW_INVENTORY_2026-11-15.md",
+      "phase59_14_test_sha": "8b52ecca1c6007c13af0bf368e440b1b8e51d8c4",
+      "phase59_14_ci_run_id": 43685216997,
+      "phase59_14_workflow_count": 14,
+      "phase59_14_production_integrated": false
     },
     {
       "project_id": "FLASHLOAN-RESEARCH",
@@ -131,7 +136,7 @@
     "cloud_compute": "Never borrow another project's runner, database, model process, artifact or secrets. P10CR fallback order: durable queue/defer; eligible lightweight Cloudflare dispatch; verified zero-cost independent compute; approved free-only model endpoints. Unknown price/terms/quota fails closed."
   },
   "coordination_policy": {
-    "lock_service": "federation/locks/registry.json (contract placeholder; runtime lock is B4 deliverable)",
+    "lock_service": "B4 standalone SQLite lease/fencing prototype only; no deployed cross-host/global lock service. Implement federation runtime only over a verified shared atomic store.",
     "task_key": "project_id/repository/task_id/idempotency_key",
     "lease_seconds": 900,
     "heartbeat_seconds": 60,
@@ -139,7 +144,7 @@
     "state_writer": "One authorized publisher per repository control-plane path; other workers submit isolated branches/PRs.",
     "conflict_resolution": "Never last-write-wins for mission state, queues, constitutions, revenue ledgers or evidence registers.",
     "run_deduplication": "Idempotency key + workflow run ID + project/task identity.",
-    "quota_arbitration": "Global provider budget ledger with per-project reservations and backpressure; no paid fallback.",
+    "quota_arbitration": "Design specified; no deployed shared quota arbiter yet. Next: per-project GitHub Actions/API budgets, fair reservations and WAITING_FOR_QUOTA; no paid fallback.",
     "thread_identity": "Record chat_thread_ref or automation_id where available; missing identity remains unknown."
   },
   "owner_approval_policy": {
