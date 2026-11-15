@@ -17,8 +17,7 @@ CREATE TABLE IF NOT EXISTS p10cr_quota_buckets (
   uncertain_units BIGINT NOT NULL DEFAULT 0 CHECK (uncertain_units >= 0),
   PRIMARY KEY (provider, credential_scope, window_id, bucket_id),
   CHECK (provider <> control_plane_provider),
-  CHECK (observed_remaining_units <= limit_units),
-  CHECK (safety_reserve_units + recovery_reserve_units < observed_remaining_units)
+  CHECK (observed_remaining_units <= limit_units)
 );
 
 CREATE TABLE IF NOT EXISTS p10cr_quota_reservations (
