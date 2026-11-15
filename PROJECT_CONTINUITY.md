@@ -3673,3 +3673,13 @@ New event layout: `federation/locks/events/v2/YYYY/MM/chunk-NNNNNNNN.json`. Chun
 Exact CI: lock tests 7/7, quota tests 8/8, partitioned journal tests 6/6, Python compile PASS. Exact-head checks 43691219839 and 43691219842 SUCCESS; final push suite 43691202352 SUCCESS. An initial fixture error was corrected after inspecting actual genesis sequence-zero semantics; no production data was changed.
 
 No live writes to `federation-locks`, no project clients enabled, and no 30-day soak. Quota Arbiter remains disabled. Next Phase59.21: instrument actual REST calls for no-conflict, conflict and maximum retry paths; recalibrate reservation units; simulate 30-day event volume and repository growth; then proceed to live controlled soak. Branch ruleset and GitHub App remain unverified/not installed. PCNE ₹0; authorized spend ₹0. P59-003 IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED.
+
+
+## Phase 59.21 checkpoint — 15 Nov 2026
+- Audited current master HEAD 8737f249fb630f922623cbdf745c283ea2f7e1bd and current Git-ref store/quota arbiter source.
+- Source-derived GitHub REST cost: 9 calls per successful mutation attempt; default max_retries=5; worst-case 45 calls. Read snapshot/assert_fence costs 3. New chunk HTTP 404 still costs one GET.
+- Quota arbiter's 10-request unit is underfunded for retry paths, and reservation writes consume the same lock-store API budget. Arbiter remains disabled.
+- Synthetic 30-day model (8 active leases, heartbeat every 300 seconds): 69,120 heartbeat events, 270 chunks, 622,080 no-conflict REST calls, average 864 calls/hour. This is not a live soak or measured repository-size result.
+- No live federation-locks writes, no clients enabled, no AI provider inference. P59-003 IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED; PCNE ₹0; spend ₹0.
+- Report: research/PHASE_59_21_FEDERATION_API_COST_AND_30_DAY_GROWTH_AUDIT_2026-11-15.md
+- Next: Phase59.22 lower-write lease/heartbeat protocol and non-self-referential quota design with burst-contention tests.
