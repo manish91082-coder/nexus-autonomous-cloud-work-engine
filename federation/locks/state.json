@@ -3,28 +3,15 @@
   "federation_id": "MANISH-AI-PROJECT-FEDERATION-2026",
   "status": "PROTOTYPE_NOT_ENABLED_FOR_CROSS_PROJECT_WRITES",
   "backend": "GITHUB_GIT_REF_FAST_FORWARD_CAS",
-  "generation": 7,
+  "generation": 8,
   "next_fencing_token": 4,
   "max_active_leases": 8,
   "lease_seconds": 900,
   "heartbeat_seconds": 300,
-  "leases": [
-    {
-      "scope": "P10CR-CAS-PROBE/manish91082-coder/nexus-autonomous-cloud-work-engine/CAS-PROBE-43686479221-1",
-      "project_id": "P10CR-CAS-PROBE",
-      "repository": "manish91082-coder/nexus-autonomous-cloud-work-engine",
-      "task_id": "CAS-PROBE-43686479221-1",
-      "idempotency_key": "cas-probe-43686479221-1",
-      "worker_id": "probe-worker-18",
-      "fencing_token": 4,
-      "issued_at_utc": "2026-11-15T06:40:07Z",
-      "heartbeat_at_utc": "2026-11-15T06:40:07Z",
-      "expires_at_utc": "2026-11-15T06:55:07Z"
-    }
-  ],
+  "leases": [],
   "quota_reservations": [],
   "idempotency_records": [],
-  "updated_at_utc": "2026-11-15T06:40:07Z",
-  "event_sequence": 7,
-  "last_event_hash": "7679f5c5d25db73ea00f6fed035bf1966eb13929726e0b201ab6b906b9681c00"
+  "updated_at_utc": "2026-11-15T06:40:14Z",
+  "event_sequence": 8,
+  "last_event_hash": "72045c99bc65e086db2ecba5c46af9f04b829b4caeee80ad099a1fdbe655a1c9"
 }
