@@ -103,7 +103,7 @@ export class QuotaLedgerDO extends DurableObject {
     }
 
     try {
-      this.#assertIdentity(input, body.action === "reserve");
+      this.#assertIdentity(input, body.action === "reserve" || body.action === "snapshot");
       let result;
       switch (body.action) {
         case "reserve":
