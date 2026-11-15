@@ -11,6 +11,7 @@ import {
 } from "./quota-ledger-contract.mjs";
 import { reconcileGitHubQuotaTelemetry } from "./github-quota-telemetry.mjs";
 import { getGitHubOperationDefinition } from "./github-operation-registry.mjs";
+import { secondaryBackoffSeconds } from "./github-secondary-rate-limit.mjs";
 export { QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest, requireQuotaStoreEnabled };
 
 const encoder = new TextEncoder();
@@ -82,6 +83,29 @@ export class QuotaLedgerDO extends DurableObject {
       nonce TEXT NOT NULL,
       expires_at_epoch INTEGER NOT NULL,
       PRIMARY KEY (caller_id, nonce)
+    )`);
+    sql.exec(`CREATE TABLE IF NOT EXISTS quota_secondary_control (
+      credential_scope TEXT PRIMARY KEY,
+      provider TEXT NOT NULL,
+      cooldown_until_epoch INTEGER NOT NULL DEFAULT 0,
+      consecutive_secondary_hits INTEGER NOT NULL DEFAULT 0,
+      last_kind TEXT,
+      last_status INTEGER,
+      last_reason TEXT,
+      updated_at_epoch INTEGER NOT NULL
+    )`);
+    sql.exec(`CREATE TABLE IF NOT EXISTS quota_secondary_inflight (
+      reservation_id TEXT PRIMARY KEY,
+      credential_scope TEXT NOT NULL,
+      endpoint_key TEXT NOT NULL,
+      expires_at_epoch INTEGER NOT NULL
+    )`);
+    sql.exec(`CREATE TABLE IF NOT EXISTS quota_secondary_endpoint_points (
+      reservation_id TEXT PRIMARY KEY,
+      credential_scope TEXT NOT NULL,
+      endpoint_key TEXT NOT NULL,
+      points INTEGER NOT NULL,
+      occurred_at_epoch INTEGER NOT NULL
     )`);
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_telemetry_current (
       bucket_id TEXT PRIMARY KEY,
@@ -189,6 +213,9 @@ export class QuotaLedgerDO extends DurableObject {
           break;
         case "recordTelemetry":
           result = this.#recordTelemetry(input, auth.callerId);
+          break;
+        case "recordSecondaryLimit":
+          result = this.#recordSecondaryLimit(input, auth.callerId);
           break;
         case "snapshot":
           result = this.#snapshot();
