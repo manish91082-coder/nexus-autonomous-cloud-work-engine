@@ -194,3 +194,14 @@ See [Phase 59.27 report](research/PHASE_59_27_REVENUE_SOURCE_ECONOMICS_REVALIDAT
 
 ### 15.1 Existing asset discovery follow-up — Tech Cloud ERP
 A bounded read-only search of the connected GitHub account (15 repositories) and Dropbox was performed on 15-Nov-2026. No Tech Cloud ERP repository or matching Dropbox files were returned for five targeted queries. This does not prove the reported 35-module asset does not exist; other storage/account surfaces were not inspected. Ownership, source, module inventory, deployment, security, maintenance and licensing rights remain UNVERIFIED. Do not score the asset as owned/licensable until evidence is available.
+
+
+## 16. Evidence batch 09 — new candidate gates: eBRC, AI agency ledger and Gumroad (15-Nov-2026)
+
+See [Phase 59.28 report](research/PHASE_59_28_NEW_CANDIDATE_GATES_2026-11-15.md).
+
+- Generic eBRC / IRM / shipping-bill reconciliation: **NO-GO candidate**. DGFT already provides bank-to-DGFT IRM integration and bulk self-certification. eBRC.in/Eximfiles advertises an exporter app free at any volume and a free API general-use allowance of 250 production certificates/month and 10 entities. EximJinn lists ₹1,500/month; ExportEazy lists ₹2,999/month and ₹7,999/month tiers; OneCompliance offers broader export-compliance workflows. No distinct gap or candidate-specific WTP was established.
+- Generic AI-agency per-client cost / margin / billing ledger: **NO-GO as a clone**. Walleta Agency directly markets multi-client cost attribution, provider usage, white-label portal, margin analytics and client billing at $149/$349/$599 monthly. The adjacent agent-observability/audit category has 13 named tools and many open-source/free alternatives. Parent AI/API source family remains open only for a demonstrably different workflow with independent buyer evidence.
+- Gumroad India INR payout remains a **qualified distribution rail**, not a product. Current public terms: 10% + $0.50 direct/profile fee plus card processing; 30% Discover fee; $100 standard payout threshold; India Tuesday payout; KYC and account review. No product demand or owned catalogue is proven.
+- **Source-family decision unchanged:** productized B2B / vertical SaaS / marketplace-distributed apps remain PROVISIONAL FIRST. No concrete product selected; no build authorized; P59-002 remains BLOCKED; P59-001 remains IN_PROGRESS; P59-003 remains PAUSED; PCNE ₹0; authorized spend ₹0.
+- Next: complete the remaining source-family scorecard with explicit unknowns; re-audit only canonical repository assets; compare any rights-cleared existing asset with a greenfield buyer problem; choose one candidate only after two independent demand signals, 10–15 substitute audit, price-bearing WTP, India payout, positive fully-loaded unit economics, rights and self-serve gates.
