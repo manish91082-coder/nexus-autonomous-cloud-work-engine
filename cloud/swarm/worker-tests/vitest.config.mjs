@@ -40,6 +40,8 @@ export default defineConfig({
             bindings: {
               NEXUS_QUOTA_STORE_ENABLED: "true",
               NEXUS_QUOTA_RESERVATION_TTL_SECONDS: "30",
+              NEXUS_GITHUB_SECONDARY_MAX_IN_FLIGHT: "2",
+              NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE: "2",
               NEXUS_QUOTA_CALLER_KEYS: JSON.stringify({
                 primary: primaryTestSecret,
                 secondary: secondaryTestSecret
