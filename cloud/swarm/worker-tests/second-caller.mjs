@@ -1,10 +1,18 @@
-import { quotaLedgerObjectName } from "../quota-ledger-contract.mjs";
 
 /**
  * Auxiliary Worker representing a separately deployed caller.
  * It binds to the main Worker's Durable Object class by script name, so both
  * Workers resolve the same provider/credential/window namespace and object ID.
  */
+function quotaLedgerObjectName(provider, credentialScope, windowId) {
+  for (const [field, value] of Object.entries({provider, credentialScope, windowId})) {
+    if (typeof value !== "string" || value.length < 1 || value.length > 256) {
+      throw new TypeError(`invalid ${field}`);
+    }
+  }
+  return JSON.stringify([provider, credentialScope, windowId]);
+}
+
 export default {
   async fetch(request, env) {
     if (request.method !== "POST") {
