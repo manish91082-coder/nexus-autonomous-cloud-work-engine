@@ -1,0 +1,12 @@
+{
+  "name": "nexus-quota-ledger-worker-runtime-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run --config vitest.config.mjs"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "latest",
+    "vitest": "^4.1.0"
+  }
+}
