@@ -219,3 +219,17 @@ See [Phase 59.29 report](research/PHASE_59_29_PORTFOLIO_SOURCE_FAMILY_SCORECARD_
 - No numeric revenue scenario is emitted because the V5 buyer and cost inputs are not evidenced. No build, publication, account onboarding or spend.
 - **Decision unchanged:** B2B vertical SaaS / marketplace-distributed software remains provisional first source; no concrete product selected; P59-001 IN_PROGRESS; P59-002 BLOCKED; P59-003 PAUSED; PCNE ₹0; authorized spend ₹0.
 - **Next:** continue different buyer-problem discovery around recurring measurable financial leakage and clear budget owner; retain Forge as a channel, not a preselected product. Require two independent demand signals, 10–15 substitutes, price-bearing WTP, India payout, rights and positive fully-loaded self-serve economics before build.
+
+
+## 17. Phase 59.29 — canonical eight-asset re-audit (15-Nov-2026)
+
+See [Phase 59.29 exact-head audit report](research/PHASE_59_29_CANONICAL_EIGHT_ASSET_REAUDIT_2026-11-15.md).
+
+- Product registry has 13 rows: 8 built product directories and 5 research-only candidate rows. This is not 13 built products.
+- Exact-head GitHub Actions audit run 43696122496 passed: 39 Python unit tests; CSV-to-Action and Orbit Relay Node tests; Recruitment Desk Chromium/Firefox QA; Orbit Relay Chromium QA; read-only asset registry/path/README audit.
+- Built assets audited: MSME Ops Desk Lite; Recruitment Agency Revenue Assurance Desk; Job-to-Cash Control Kit; CSV to Action; Message-to-Action Reliability; Revenue Ops Control; Travel Revenue Demo; Orbit Relay.
+- Release-ready: 0/8. Buyer-demand verified: 0/8. Product-level PCNE: ₹0. Public listings/account activation: 0.
+- Two product folders contain MIT license files (Job-to-Cash and CSV to Action), but copyright/owner approval and release review remain open. Six folders have no product-level LICENSE file. No public-release authorization exists for any asset.
+- The five non-built registry candidates remain research-only/NO-GO as previously recorded; they are not products and were not included in the eight-asset test count.
+- **Owned-vs-greenfield decision:** no existing asset passes demand, substitute-gap, WTP, India payout, positive fully-loaded economics, rights and self-serve gates. Freeze feature development on existing assets. Greenfield B2B/vertical SaaS/marketplace app remains the provisional first source family, with no concrete buyer problem selected.
+- Next: complete the weighted V5 source-family scorecard, showing unknowns explicitly; then shortlist candidate buyer problems. No build, listing, account activation or spend.
