@@ -1,0 +1,29 @@
+name: Phase 59.33 Provider Multi-Bucket Quota Contracts
+
+on:
+  push:
+    branches: [master, phase59-33-provider-multibucket-contracts]
+    paths:
+      - 'scripts/multibucket_quota_contract.py'
+      - 'tests/test_multibucket_quota_contract.py'
+      - '.github/workflows/phase59-33-provider-multibucket-contracts.yml'
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-33-provider-multibucket-contracts
+  cancel-in-progress: false
+
+jobs:
+  multibucket-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Run provider multi-bucket contract tests
+        run: python3 -m unittest discover -s tests -p 'test_multibucket_quota_contract.py' -v
