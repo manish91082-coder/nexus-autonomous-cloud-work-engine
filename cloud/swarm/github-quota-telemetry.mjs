@@ -185,7 +185,8 @@ export function reconcileGitHubQuotaTelemetry(current, incoming) {
       ...incoming,
       observed_remaining_units: Math.min(
         current.observed_remaining_units, incoming.observed_remaining_units
-      )
+      ),
+      used_units: Math.max(current.used_units, incoming.used_units)
     };
     return {record: conservative, decision: "SAME_SECOND_CONSERVATIVE_MIN"};
   }
