@@ -3444,3 +3444,13 @@ Commits: B4 source `42419561ee7daac741421a7c9cea9c69e0f61bf8` and heartbeat hard
 No opportunity or payout records were changed because this milestone introduced no new buyer or settlement evidence. Revenue ledger remains empty. PCNE ₹0, bank-settled receipts ₹0, authorized spend ₹0. No KYC, terms, publication, funds movement, wallet signing or private-key access occurred.
 
 Next: obtain an exhaustive workflow tree and latest Actions run IDs; verify the B4 run on the exact test commit; add process-crash/restore and Linux process-tree soak tests; only then implement federation registry client/quota arbitration. Keep all project queues and constitutions independent. P59-001 portfolio-wide revenue research resumes after this safe swarm handoff.
+
+
+## Phase 59.12 control-registry reconciliation commits — 15 November 2026
+
+- Automation queue evidence update: `dd10887ab741caafb8150672c2136fc9be71e917`.
+- Mission state and CI-verification boundary: `c21d8206477974d249c50212ce25816c701af5f7`.
+- Cross-project P10CR federation status reconciled; unsupported Worker #341 / Guard #100 pass claim downgraded to unverified: `d042fa7b001eead6a5b6600ee91b93f1f449d214`.
+- Initial Phase 59.12 continuity checkpoint: `d6855d3b9b687bcd38eebb85312f74fbe0694daf`.
+
+The opportunity registry (53 candidates), payout registry (27 providers) and revenue ledger (zero entries) were read back and intentionally left unchanged. No new buyer, payout eligibility or receipt evidence arose from the B4 engineering milestone. P59-003 remains IN_PROGRESS; its directory-enumeration and exact GitHub Actions run-evidence acceptance criteria remain open.
