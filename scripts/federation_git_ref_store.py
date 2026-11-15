@@ -258,11 +258,14 @@ class GitHubGitRefStore:
         except (urllib.error.URLError, TimeoutError, OSError, ValueError) as exc:
             raise LockStoreUnavailable(f"GitHub API unavailable: {type(exc).__name__}") from exc
 
-    def _ref_path(self):
+    def _ref_get_path(self):
         return "/repos/" + self.repository + "/git/ref/heads/" + urllib.parse.quote(self.branch, safe="/")
 
+    def _ref_update_path(self):
+        return "/repos/" + self.repository + "/git/refs/heads/" + urllib.parse.quote(self.branch, safe="/")
+
     def _read_snapshot(self):
-        ref = self._request("GET", self._ref_path())
+        ref = self._request("GET", self._ref_get_path())
         head = ref.get("object", {}).get("sha")
         if not isinstance(head, str) or len(head) != 40:
             raise FederationLockError("branch ref returned invalid commit SHA")
@@ -298,7 +301,7 @@ class GitHubGitRefStore:
             "tree": tree["sha"],
             "parents": [parent_sha],
         })
-        self._request("PATCH", self._ref_path(), {"sha": commit["sha"], "force": False})
+        self._request("PATCH", self._ref_update_path(), {"sha": commit["sha"], "force": False})
         return commit["sha"]
 
     def _mutate(self, transition):
