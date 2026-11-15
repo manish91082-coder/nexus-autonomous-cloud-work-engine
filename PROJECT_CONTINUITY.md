@@ -3551,3 +3551,21 @@ GitHub recursive tree endpoint returned `truncated=false`; all **14/14** files u
 7. Resume P59-001 portfolio-wide revenue-source ranking after safe swarm handoff; maintain V5 buyer/payout/rights/economics gates.
 
 Financial invariants unchanged: verified PCNE ₹0; bank-settled receipts ₹0; authorized spend ₹0. No account activation, KYC, terms acceptance, billing, publication or funds movement occurred.
+
+
+# PHASE 59.15 — B4 BACKUP/RESTORE + REPEATED CRASH-WINDOW SOAK — 15 NOVEMBER 2026
+
+**Report:** [Phase 59.15 B4 Backup/Restore and Crash Soak](research/PHASE_59_15_B4_BACKUP_RESTORE_AND_CRASH_SOAK_2026-11-15.md)  
+**Exact test SHA:** `9d52266067751a28b3302cb34e43056ee991d8fc`  
+**GitHub Actions:** [B4 Durable Execution Contract run 43685420046 — SUCCESS](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43685420046)
+
+- 21/21 tests PASS on GitHub-hosted Ubuntu 26.04; schema validation PASS.
+- SQLite online backup/restore preserves task, checkpoint, active lease and event hash chain; restored task can heartbeat and complete.
+- Six spawned worker crash iterations alternate abrupt exit after claim and after checkpoint; every task recovers, checkpoint state is correct, stale fencing token is rejected, and a higher fencing token reclaims the task.
+- Abrupt exit immediately after committed finish preserves COMPLETED state; recovery does not requeue it and duplicate claim is rejected.
+- Previous Linux process-tree timeout, crash-after-checkpoint, concurrency and event-chain tests remain passing.
+- This is single-host SQLite prototype evidence, not cross-host consensus or production integration.
+
+**Next:** workflow supply-chain and least-privilege review, including third-party Action SHA pin feasibility, permissions, secret references, explicit timeouts and schedule staggering. Then select/prove a real shared atomic store for federation lease and quota services. Do not use SQLite as a multi-host lock.
+
+No existing workflow or independent project was modified. P59-003 remains IN_PROGRESS; P59-001 PAUSED; P59-002 BLOCKED. PCNE ₹0; authorized spend ₹0.
