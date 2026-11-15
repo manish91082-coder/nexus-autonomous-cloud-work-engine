@@ -7,7 +7,7 @@
 import { DurableObject } from "cloudflare:workers";
 import {
   QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest,
-  requireQuotaStoreEnabled, nonEmpty, integer, availableUnits
+  requireQuotaStoreEnabled, nonEmpty, integer
 } from "./quota-ledger-contract.mjs";
 import { reconcileGitHubQuotaTelemetry } from "./github-quota-telemetry.mjs";
 export { QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest, requireQuotaStoreEnabled };
