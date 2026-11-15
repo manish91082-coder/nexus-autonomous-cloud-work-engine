@@ -655,32 +655,72 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
     expect(snapshot.telemetryCurrent).toHaveLength(0);
   });
 
-  it("restricts telemetry ingestion to the primary caller", async () => {
-    const now = Math.floor(Date.now() / 1000);
-    const credentialScope = "github-app-installation:secondary-denied";
-    const base = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
-    const telemetry = parseGitHubRateLimitHeaders({
-      headers: {
-        "x-ratelimit-limit":"5000","x-ratelimit-remaining":"4200",
-        "x-ratelimit-used":"800","x-ratelimit-reset":String(now + 3600),
+  it("requires secondary telemetry to link to its own reservation and avoids double accounting", async () => {
+    const input = identity("secondary-linked-telemetry","core10");
+    const stub = stubFor(input);
+    const initial = await seedBucket(stub,input,"core",100);
+    const secondaryInput = {
+      ...input,
+      reservationId:"reservation-secondary-telemetry",
+      workerId:"worker-secondary-telemetry"
+    };
+    const reservedResponse = await env.SECOND_CALLER.fetch(new Request(
+      "https://secondary-caller/reserve",
+      {method:"POST",headers:{"content-type":"application/json"},
+       body:JSON.stringify({action:"reserve",input:secondaryInput})}
+    ));
+    expect((await reservedResponse.json()).status).toBe("RESERVED");
+
+    const now = Math.floor(Date.now()/1000);
+    const responseTelemetry = parseGitHubRateLimitHeaders({
+      headers:{
+        "x-ratelimit-limit":"100","x-ratelimit-remaining":"90",
+        "x-ratelimit-used":"10",
+        "x-ratelimit-reset":String(initial.reset_at_epoch),
         "x-ratelimit-resource":"core"
       },
-      credentialScope,observedAtEpoch:now,
+      credentialScope:input.credentialScope,
+      observedAtEpoch:now,
       endpoint:"GET /repos/acme/demo",method:"GET",status:200
     });
-    const response = await env.SECOND_CALLER.fetch(new Request(
+    const unlinked = await env.SECOND_CALLER.fetch(new Request(
       "https://secondary-caller/record-telemetry",
-      {
-        method:"POST",
-        headers:{"content-type":"application/json"},
-        body:JSON.stringify({action:"recordTelemetry",input:{...base,telemetry}})
-      }
+      {method:"POST",headers:{"content-type":"application/json"},
+       body:JSON.stringify({action:"recordTelemetry",input:{
+         provider:input.provider,credentialScope:input.credentialScope,
+         windowId:input.windowId,telemetry:responseTelemetry
+       }})}
     ));
-    expect(response.status).toBe(403);
-    expect((await response.json()).reason).toBe("CALLER_ACTION_FORBIDDEN");
-    const stub = stubFor(base);
-    const snapshot = await call(stub,"snapshot",base);
-    expect(snapshot.telemetryCurrent).toHaveLength(0);
+    expect(unlinked.status).toBe(400);
+    expect((await unlinked.json()).error.message)
+      .toBe("secondary telemetry must be linked to its own reservation");
+
+    const linked = await env.SECOND_CALLER.fetch(new Request(
+      "https://secondary-caller/record-telemetry",
+      {method:"POST",headers:{"content-type":"application/json"},
+       body:JSON.stringify({action:"recordTelemetry",input:{
+         provider:input.provider,credentialScope:input.credentialScope,
+         windowId:input.windowId,reservationId:secondaryInput.reservationId,
+         telemetry:responseTelemetry
+       }})}
+    ));
+    expect(linked.status).toBe(200);
+    expect((await linked.json()).status).toBe("RECORDED");
+
+    const settled = await env.SECOND_CALLER.fetch(new Request(
+      "https://secondary-caller/settle",
+      {method:"POST",headers:{"content-type":"application/json"},
+       body:JSON.stringify({action:"settle",input:{
+         ...secondaryInput,actualByBucket:{core:10}
+       }})}
+    ));
+    expect(settled.status).toBe(200);
+    expect((await settled.json()).status).toBe("SETTLED");
+    const snapshot = await call(stub,"snapshot",input);
+    expect(snapshot.telemetryObservations.some(x=>x.reservation_id===secondaryInput.reservationId)).toBe(true);
+    expect(snapshot.buckets[0].reserved_units).toBe(0);
+    expect(snapshot.buckets[0].committed_units).toBe(10);
+    expect(snapshot.buckets[0].committed_since_observation_units).toBe(0);
   });
 
   it("derives collision-safe object names from the provider, credential and window tuple", () => {
