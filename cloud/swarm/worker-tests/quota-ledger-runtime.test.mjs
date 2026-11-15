@@ -869,7 +869,9 @@ describe("Phase 59.41 guarded GitHub request lifecycle", () => {
   it("retains uncertain budget when response telemetry persistence fails", async () => {
     const input = identity("client-telemetry-failure", "github.rest.repositories.get.v1");
     const injectedEnv = {
-      ...env,
+      NEXUS_QUOTA_STORE_ENABLED: "true",
+      NEXUS_QUOTA_CALLER_ID: env.NEXUS_QUOTA_CALLER_ID,
+      NEXUS_QUOTA_CALLER_SECRET: env.NEXUS_QUOTA_CALLER_SECRET,
       QUOTA_LEDGER: {
         idFromName: name => name,
         get: () => ({
@@ -911,7 +913,9 @@ describe("Phase 59.41 guarded GitHub request lifecycle", () => {
   it("retains uncertain budget when settlement acknowledgement fails after a provider response", async () => {
     const input = identity("client-settlement-failure", "github.rest.repositories.get.v1");
     const injectedEnv = {
-      ...env,
+      NEXUS_QUOTA_STORE_ENABLED: "true",
+      NEXUS_QUOTA_CALLER_ID: env.NEXUS_QUOTA_CALLER_ID,
+      NEXUS_QUOTA_CALLER_SECRET: env.NEXUS_QUOTA_CALLER_SECRET,
       QUOTA_LEDGER: {
         idFromName: name => name,
         get: () => ({
