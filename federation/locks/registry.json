@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "status": "PROTOTYPE_GITHUB_GIT_REF_CAS_LIVE_PROBE_PASS_NOT_ENABLED_FOR_PROJECT_CLIENTS",
+  "status": "PROTOTYPE_MERGED_TO_MASTER_NOT_ENABLED_FOR_PROJECT_CLIENTS",
   "branch": "federation-locks",
   "state_path": "federation/locks/state.json",
   "event_path_pattern": "federation/locks/events/{sequence}.json",
@@ -32,5 +32,11 @@
     "count": 7,
     "status": "PASS",
     "includes": "100 concurrent contenders against deterministic atomic CAS simulator; exactly one winner"
-  }
+  },
+  "master_merge": {
+    "pr_number": 2,
+    "merge_commit": "56e709168b947f4221fba27b342fb58b11326d7b",
+    "status": "merged"
+  },
+  "enforcement_boundary": "Code and state schema are now in master, but no production project-cell or ChatGPT-thread client is enabled. Branch ruleset, GitHub App installation, quota arbiter and soak tests remain pending."
 }
