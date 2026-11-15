@@ -16,7 +16,7 @@
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
     "last_reconciled_from_mission_state": "PHASE_59_35_CLOUDFLARE_WORKERS_RUNTIME_VALIDATION",
-    "reconciliation_note": "P59-003 remains sole active P0. Phase59.35 Cloudflare Workers Vitest/workerd runtime test run 43706315030 SUCCESS on 575d0165fb5edb813ca4e0c55600d46b1e7f2cd1; 7/7 tests pass. This is local Workers runtime CI, not Cloudflare hosted production or independent-host proof. Durable Object feature flag remains OFF. Next Phase59.36 forced eviction/restart recovery, second Worker caller sharing canonical DO identity, cross-caller contention, independent-host simulation, telemetry edge cases and internal auth. P59-001 paused; P59-002 blocked."
+    "reconciliation_note": "P59-003 remains sole active P0. Phase59.35 extended Cloudflare Workers Vitest/workerd runtime CI run 43706366316 SUCCESS on f1813e44196a6e1ccd2c76fb89bbfb254811d04f; 11/11 tests pass including forced DO eviction/recovery, transaction rollback, telemetry rebase, identity isolation and 20-way same-object contention (10 admitted). Local Workers runtime only; no hosted deployment or independent-host proof. Feature flag OFF. Phase59.34 PostgreSQL adapter PR #12 is merged and CI-verified as optional reference only; Cloudflare DO remains selected path. Next Phase59.36: second Worker caller/shared binding, cross-caller contention, independent-host simulation, telemetry edge cases, internal auth/replay protection, then telemetry adapters. P59-001 paused; P59-002 blocked."
   },
   "tasks": [
     {
@@ -3337,7 +3337,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Phase59.34 independent transactional quota-store adapter behind disabled feature flag; prove multi-host atomicity and failure recovery. Then integrate durable execution and single-writer publisher only after quota and lease gates pass.",
+        "next": "Phase59.36 second Worker entrypoint/shared Durable Object binding and cross-caller contention; independent-host simulation; stale/future/out-of-order/window-reset telemetry tests; internal caller auth and replay protection. Then provider telemetry adapters, endpoint cost maps, reservation expiry/uncertain reconciliation, audit export and restore. No feature enablement or deployment before gates.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -3588,30 +3588,37 @@
         },
         "phase59_35": {
           "report": "research/PHASE_59_35_CLOUDFLARE_WORKERS_RUNTIME_VALIDATION_2026-11-15.md",
-          "workflow_run": 43706315030,
-          "conclusion": "success",
-          "tested_sha": "575d0165fb5edb813ca4e0c55600d46b1e7f2cd1",
-          "tests_passed": 7,
-          "tests_total": 7,
+          "baseline_run": 43706315030,
+          "baseline_tested_sha": "575d0165fb5edb813ca4e0c55600d46b1e7f2cd1",
+          "extended_run": 43706366316,
+          "ci_conclusion": "SUCCESS",
+          "tested_sha": "f1813e44196a6e1ccd2c76fb89bbfb254811d04f",
+          "tests_passed": 11,
+          "tests_total": 11,
           "verified": [
-            "Cloudflare Workers Vitest integration under workerd-compatible runtime",
-            "SQLite Durable Object schema and zero-row lookup",
-            "multi-bucket settlement",
-            "persisted exhausted telemetry without reservation",
-            "20-way same-object contention with exactly 10 accepted reservations",
-            "duplicate delivery idempotency",
-            "uncertain usage retention",
-            "canonical provider/credential/window object name"
+            "workerd Workers Vitest runtime",
+            "SQLite DO first reserve and multi-bucket settlement",
+            "exhausted telemetry persistence with no reservation",
+            "20-way same-object contention: 10 accepted",
+            "duplicate delivery and uncertain usage retention",
+            "canonical identity and mismatch rejection",
+            "new telemetry rebase without double subtraction",
+            "forced eviction/restart recovery",
+            "transactionSync rollback"
           ],
-          "limits": [
-            "not deployed to Cloudflare hosted production",
-            "no forced eviction/restart test",
-            "no independent-host or multi-region proof",
-            "no live provider telemetry adapter",
-            "no mission worker integration"
-          ],
-          "production_status": "NOT_DEPLOYED_FEATURE_FLAG_OFF",
-          "next": "Phase59.36 forced eviction/restart recovery, second Worker caller sharing DO binding, cross-caller contention, independent-host simulation, telemetry edge cases and internal auth"
+          "production_status": "LOCAL_RUNTIME_CI_ONLY_NOT_HOSTED_DEPLOYMENT_NOT_INDEPENDENT_HOST_PROOF",
+          "feature_flag": "OFF",
+          "spend_inr": 0,
+          "inference_enabled": false,
+          "next": "Phase59.36 second Worker entrypoint sharing DO binding, cross-caller contention, independent-host simulation, telemetry edge cases, internal auth/replay protection; then provider telemetry adapters and read-only worker integration behind disabled flag."
+        },
+        "phase59_34_postgres_reference_adapter": {
+          "report": "research/PHASE_59_34_POSTGRES_TRANSACTIONAL_QUOTA_STORE_2026-11-15.md",
+          "pr_number": 12,
+          "merge_commit": "bb9a69b309d0fd9740640d26a19505087a28b348",
+          "ci_run": 43705546117,
+          "ci_conclusion": "SUCCESS",
+          "status": "OPTIONAL_REFERENCE_NOT_SELECTED_NOT_CONNECTED_NOT_DEPLOYED"
         }
       },
       "blocker": "Remaining production-enablement gates: branch ruleset, owner-approved least-privilege GitHub App, cross-run/cross-repository global Actions/API quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation, and 7/30-day soak. Phase59.25 proved only eight worker threads on one GitHub-hosted runner; Phase59.26 specialist handlers are deterministic and provider-neutral, not live LLM inference. Keep all production clients disabled.",
