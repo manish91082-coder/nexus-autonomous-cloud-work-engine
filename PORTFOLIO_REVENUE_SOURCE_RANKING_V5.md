@@ -80,7 +80,7 @@ The initial repository asset audit is recorded in [Phase 59.2 report](research/P
 - MSME Ops Desk Lite remains FREE_SAMPLE_ONLY_HOLD; generic features overlap free calculators and trackers.
 - Job-to-Cash, CSV-to-Action, Message-to-Action, Revenue Ops and Travel demos remain unpriced/no-demand, incomplete or duplicative. Orbit Relay is NO-GO as-is.
 - AgentMargin Workbench in the separate ₹1,000/day repository is a candidate asset, not selected: source import remains pending, browser QA incomplete, no live hosting, demand, sales or payout evidence.
-- Tech Cloud ERP is a user-reported 35-module asset family, but no matching repository/source tree surfaced in the connected GitHub account search. Ownership, access, module inventory, deployment, tests, support burden and reuse rights are unverified. Absence from this search is not proof the source does not exist.
+
 - Therefore B2B productized software / vertical SaaS remains the provisional FIRST source family, but concrete product selection remains NONE and build authorization remains NO.
 
 **Next:** research a narrow recurring vertical buyer problem without presuming ERP is the answer; prepare the ERP evidence checklist; qualify AgentMargin against 10–15 substitutes, price-bearing WTP, recurrence and net economics; compare both against a greenfield candidate.
@@ -97,7 +97,6 @@ See [Phase 59.3 report](research/PHASE_59_3_AGENTMARGIN_WORKBENCH_SUBSTITUTE_AND
 - The current user asset is a browser-only calculator with manual assumptions and one-time outputs; no live usage ingestion, invoice reconciliation, per-customer usage ledger or recurring data workflow is shipped. Repeat subscription value is therefore unproven.
 - **Name collision:** an independent public project owned by `rzkarsyad` at `github.com/rzkarsyad/agentmargin` uses the identical AgentMargin name for adjacent customer-level AI margin analytics. Do not assume affiliation or ownership. Rename and clear rights before commercial use.
 
-**Next:** continue P59-001 with recurring vertical SaaS buyer-problem research; keep Tech Cloud ERP ownership/source/module evidence audit open; compare one ERP-derived vertical candidate with one greenfield candidate. AI/B2B software source family remains OPEN. No product selected; P59-002 remains BLOCKED.
 
 
 ## 10. Evidence batch 04 — India vertical SaaS screen (14-Nov-2026)
@@ -109,7 +108,6 @@ Three verticals were screened; none is yet a product GO:
 - **Agri-input distribution — NEXT RESEARCH PRIORITY, NOT PRODUCT GO.** Government of India *Agricultural Situation in India* (July 2022) includes a 13-state field study (780 retailers, 1,300 top buyers, 650 frequent buyers and 1,300 random-walk buyers); reported 57% manual-book stock records and 42% disagreement between PoS and physical stock. This is historical 2022 baseline evidence, not a 2026 adoption estimate. At least nine current specialist alternatives were found, including OP Software (₹3,000/year), AgroKhata, AgriPeople, Pinakexa, TradeX, Tathven, xMatix, ZunderFlow and AgroLynk. A generic agri dealer ERP is not selected.
 - **Small-fleet logistics — HOLD.** Structural fragmentation exists, but low buyer WTP, high onboarding/support and established TMS competition are material risks.
 
-**Next exact research question:** can a self-serve, offline-capable batch-to-claim / credit-and-return reconciliation layer create measurable value for multi-branch agri-input distributors without replacing or interfering with mandated PoS, accounting or ERP systems? Compare 10–15 substitutes and seek independent buyer evidence. Keep Tech Cloud ERP source/ownership/module inventory audit open; its actual code may change build-vs-greenfield ranking. P59-002 remains BLOCKED; no build or spend.
 
 
 ## 11. Evidence batch 05 — agri-input hypothesis competitor gate (14-Nov-2026)
@@ -123,7 +121,6 @@ See [Phase 59.5 report](research/PHASE_59_5_AGRI_INPUT_RECONCILIATION_COMPETITOR
 - Government PIB (30-Aug-2026) reports iFMS connects >14 crore Aadhaar-linked buyers, >2.5 lakh retailers and ~7 crore MT annual fertilizer sales transactions; official system covers movement, stock, retail sale, DBT and dashboards. Do not assume access to iFMS APIs or data.
 - No independent evidence of a distinct uncovered distributor gap, candidate-specific WTP, buyer conversion, retention or acquisition economics was found.
 
-**Next:** return to portfolio-wide vertical SaaS source screening; select a different recurring buyer problem with two independent signals, 10–15 substitutes, price-bearing WTP and a self-serve delivery path. Keep Tech Cloud ERP source/ownership/module audit open. No build.
 
 
 ## 12. Evidence batch 06 — manufacturing job-work / subcontracting screen (14-Nov-2026)
@@ -151,7 +148,6 @@ See [Phase 59.7 report](research/PHASE_59_7_NON_ERP_REVENUE_FAMILY_AND_PAYOUT_SC
 - Adobe Stock lists 33% photo/vector/illustration and 35% video standard royalties, with US$25 minimum and 45-day first-sale wait. Catalogue acceptance and download economics unproven.
 - RapidAPI charges a 20% marketplace fee; India provider payout and a scarce, owned API asset remain unqualified.
 - GitHub Sponsors supports India but requires an adopted project/community; no project-specific sponsor demand exists.
-- White-label/OEM remains conditional on verified ownership, deployable source, documentation and buyer evidence. Tech Cloud ERP remains unverified.
 - **Disposition:** Gumroad digital-product distribution = NEXT RESEARCH only; KDP, stock assets, licensing, API and Sponsors = HOLD/stackable; Etsy = NO-GO under current zero-spend gate. No concrete product GO, no build.
 - Next: find an original reusable technical asset with a differentiated outcome; two independent demand signals, 10–15 substitutes, price-bearing WTP, organic self-serve acquisition, rights and positive fully-loaded economics required. Keep P59-002 BLOCKED.
 
@@ -188,12 +184,7 @@ See [Phase 59.27 report](research/PHASE_59_27_REVENUE_SOURCE_ECONOMICS_REVALIDAT
 - Apple App Store Small Business commission 15%, but $99/year developer membership conflicts with ₹0-spend default unless owner explicitly approves.
 - No speculative revenue scenarios inserted because reachable buyers, price-bearing WTP, conversion, churn and support/runtime costs are not yet evidenced.
 - **Decision unchanged:** productized B2B / vertical SaaS / marketplace apps remain PROVISIONAL FIRST; no concrete product selected; P59-002 BLOCKED; P59-001 IN_PROGRESS; P59-003 PAUSED; PCNE ₹0; spend ₹0.
-- Next research: complete source-family scoring, verify Tech Cloud ERP ownership/source/module/rights evidence, compare one rights-cleared owned asset with one greenfield buyer problem, then perform 10–15 substitute audit and price-bearing demand verification.
 
-
-
-### 15.1 Existing asset discovery follow-up — Tech Cloud ERP
-A bounded read-only search of the connected GitHub account (15 repositories) and Dropbox was performed on 15-Nov-2026. No Tech Cloud ERP repository or matching Dropbox files were returned for five targeted queries. This does not prove the reported 35-module asset does not exist; other storage/account surfaces were not inspected. Ownership, source, module inventory, deployment, security, maintenance and licensing rights remain UNVERIFIED. Do not score the asset as owned/licensable until evidence is available.
 
 
 ## 16. Evidence batch 09 — new candidate gates: eBRC, AI agency ledger and Gumroad (15-Nov-2026)
@@ -213,7 +204,7 @@ See [Phase 59.29 report](research/PHASE_59_29_PORTFOLIO_SOURCE_FAMILY_SCORECARD_
 
 - Portfolio source-family order remains: (1) productized B2B / vertical SaaS and marketplace-distributed software, (2) marketplace distribution as a channel within software, (3) AI agents/APIs, (4) software/IP licensing, (5) digital products, (6) publishing, (7) creator/video, (8) open-source sponsorship, (9) stock assets, (10) games, (11) compliant affiliate/advertising. This is a qualitative evidence ranking, not a numeric forecast; missing reachable buyers, WTP, conversion, churn and fully-loaded cost inputs remain UNKNOWN.
 - Reconciled the canonical eight assets in `control/product_registry.json` against the Phase59.2 source audit. None passes the first-product gate. Recruitment Revenue Assurance Desk remains the most complete reusable utility but is frozen for current differentiation/distribution failure; MSME Ops Desk Lite is free-sample-only; Job-to-Cash, CSV-to-Action, Message-to-Action and Travel demos remain HOLD; Revenue Ops Control is a duplicate freeze; Orbit Relay is NO-GO as-is.
-- Tech Cloud ERP remains USER-REPORTED / UNVERIFIED. No source tree, ownership chain, module inventory, deployment or commercial rights evidence surfaced in connected GitHub/Dropbox. This is not proof of non-existence elsewhere.
+
 - Greenfield Atlassian Forge audit/compliance evidence screen found direct overlap: Auditforge (1 install/no reviews on captured listing; free up to 10 users, BYO Anthropic key, Paid via Atlassian), Audit Trail and Compliance Analytics (1 install/no reviews), Incident Follow-Up Monitor (no installs), Request Evidence Control for JSM (paid evidence-pack product), and Access Assertions (access-review product). Low install counters do not establish an unmet market or WTP. Generic audit/compliance/evidence products are NOT SELECTED.
 - Atlassian Forge economics remain attractive (83% standard share from 1-Oct-2026 and qualifying 100% share up to $1M lifetime Forge revenue), but do not substitute for buyer demand. Remittance after $500 profit, 30–60 days from sale.
 - No numeric revenue scenario is emitted because the V5 buyer and cost inputs are not evidenced. No build, publication, account onboarding or spend.
