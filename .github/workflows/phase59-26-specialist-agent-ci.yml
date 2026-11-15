@@ -1,0 +1,56 @@
+name: Phase 59.26 Specialist Agent Workflow CI
+
+on:
+  push:
+    branches:
+      - phase59-26-specialist-agent-workflow
+    paths:
+      - 'scripts/specialist_agent_workflow.py'
+      - 'scripts/specialist_agent_demo.py'
+      - 'scripts/swarm_coordinator.py'
+      - 'scripts/swarm_runtime.py'
+      - 'tests/test_specialist_agent_workflow.py'
+      - 'tests/test_swarm_coordinator.py'
+      - 'tests/test_swarm_runtime.py'
+      - 'schemas/specialist-agent-workflow-v1.schema.json'
+      - '.github/workflows/phase59-26-specialist-agent-ci.yml'
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-26-specialist-agent-ci
+  cancel-in-progress: false
+
+jobs:
+  specialist-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout phase branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Compile typed specialist workflow and existing swarm runtime
+        run: python3 -m py_compile scripts/specialist_agent_workflow.py scripts/specialist_agent_demo.py scripts/swarm_coordinator.py scripts/swarm_runtime.py
+      - name: Validate specialist workflow schema JSON
+        run: python3 -m json.tool schemas/specialist-agent-workflow-v1.schema.json > /dev/null
+      - name: Run specialist agent workflow tests
+        run: python3 -m unittest discover -s tests -p 'test_specialist_agent_workflow.py' -v
+      - name: Run four-family synthetic specialist integration demo
+        run: python3 scripts/specialist_agent_demo.py
+      - name: Upload synthetic specialist dossier evidence
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2 (Node 24)
+        with:
+          name: phase59-26-specialist-demo-${{ github.run_id }}
+          path: specialist_agent_demo_dossier.json
+          retention-days: 30
+      - name: Run existing swarm coordinator and runtime regressions
+        run: |
+          python3 -m unittest discover -s tests -p 'test_swarm_coordinator.py' -v
+          python3 -m unittest discover -s tests -p 'test_swarm_runtime.py' -v
