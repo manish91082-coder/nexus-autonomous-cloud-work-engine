@@ -3495,7 +3495,7 @@
           "production_clients_enabled": false,
           "next": "Park P59-003 during P59-001 portfolio research; reopen only for production-enablement gates."
         },
-        "last_owner_direction": "2026-11-15: user explicitly corrected drift and directed focus back to building the AI agentic swarm for autonomous revenue mission. Tech Cloud ERP is unrelated and excluded."
+        "last_owner_direction": "2026-11-15: user explicitly corrected drift and directed focus back to building the AI agentic swarm for autonomous revenue mission. The unrelated asset discussion is excluded."
       },
       "blocker": "Remaining production-enablement gates: branch ruleset, owner-approved least-privilege GitHub App, cross-run/cross-repository global Actions/API quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation, and 7/30-day soak. Phase59.25 proved only eight worker threads on one GitHub-hosted runner; Phase59.26 specialist handlers are deterministic and provider-neutral, not live LLM inference. Keep all production clients disabled.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task.",
