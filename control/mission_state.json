@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_59_34_TRANSACTIONAL_QUOTA_LEDGER_ADAPTER",
+  "phase": "PHASE_59_35_CLOUDFLARE_WORKERS_RUNTIME_VALIDATION",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -10,8 +10,8 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
-  "last_verified_head": "6c715870eb624600d18074423c4df5c31c9f1681",
-  "current_focus": "P59-003 swarm foundation. Phase59.34 added a Cloudflare SQLite-backed Durable Object quota ledger adapter with synchronous transactional reserve/settle/uncertain transitions and disabled-by-default caller gate. Isolated Node syntax/contract CI run 43705342311 passed. This is not Cloudflare runtime-tested, configured, deployed, connected to telemetry or mission workers. Next: actual Workers runtime tests with SQLite-backed DO, rollback/concurrency/restart validation, deployment config draft and provider telemetry adapters. Keep feature flag OFF.",
+  "last_verified_head": "575d0165fb5edb813ca4e0c55600d46b1e7f2cd1",
+  "current_focus": "P59-003 swarm foundation. Phase59.35 now has Cloudflare Workers Vitest runtime validation for the SQLite-backed Durable Object. Exact tested commit 575d0165fb5edb813ca4e0c55600d46b1e7f2cd1; run 43706315030 SUCCESS, 7/7 runtime tests. Tests cover first reservation/zero-row reads, settlement, telemetry persistence with fail-closed admission, 20-way concurrent reservation (10 accepted), duplicate delivery, uncertain usage retention and canonical DO identity. This is workerd/Miniflare test runtime, not hosted production deployment or independent-host proof. Keep quota feature flag OFF.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -137,7 +137,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "P59-003 Phase59.35: add actual Cloudflare Workers runtime tests for SQLite-backed Durable Object transactions, rollback, concurrent RPC serialization, deterministic object identity and restart/recovery. Draft Wrangler config only after quota/billing preflight. Then implement provider telemetry adapters and internal caller auth. Do not enable or deploy until independent-host acceptance gates pass.",
+  "next_focus": "P59-003 Phase59.36: forced Durable Object eviction/restart persistence recovery tests; second Worker entrypoint sharing same canonical DO binding and cross-caller contention; independent-host simulation; stale/future/out-of-order telemetry tests; internal caller authentication and replay protections. Then provider telemetry adapters, operation-cost maps, reservation expiry/reconciliation, audit export. No deployment or enablement before all gates.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -1288,5 +1288,16 @@
     "inference_enabled": false,
     "spend_inr": 0,
     "next": "Phase59.34 independent transactional quota-store adapter behind disabled feature flag; independent-host atomicity and failure-injection proof."
+  },
+  "phase_59_35_evidence": {
+    "report": "research/PHASE_59_35_CLOUDFLARE_WORKERS_RUNTIME_VALIDATION_2026-11-15.md",
+    "tested_sha": "575d0165fb5edb813ca4e0c55600d46b1e7f2cd1",
+    "workflow_run": 43706315030,
+    "workflow_conclusion": "success",
+    "runtime_tests_passed": 7,
+    "runtime_tests_total": 7,
+    "environment": "Cloudflare Workers Vitest integration / workerd-compatible runtime under GitHub-hosted CI; not deployed Cloudflare production",
+    "production_status": "FEATURE_FLAG_OFF_NOT_DEPLOYED_NOT_INDEPENDENT_HOST_VERIFIED",
+    "next": "Phase59.36 forced DO eviction/restart recovery, second Worker caller, cross-caller contention, independent-host simulation, telemetry edge cases and internal auth"
   }
 }
