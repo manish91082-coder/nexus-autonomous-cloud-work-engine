@@ -12,6 +12,7 @@ import {
   renewQuotaReservation,
   reconcileUncertainQuotaReservation
 } from "../quota-ledger-client.mjs";
+import { executeReadOnlyGitHubTask } from "../readonly-github-worker.mjs";
 import {
   classifyGitHubRateLimitResponse,
   secondaryBackoffSeconds
@@ -76,7 +77,7 @@ async function seedBuckets(stub, input, entries) {
   return result;
 }
 
-describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
+describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
   it("admits only from stored telemetry and returns provider-window reservations", async () => {
     const input = identity("first", "core10_search3");
     const stub = stubFor(input);
@@ -1416,6 +1417,102 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
     expect(denied.httpStatus).toBe(403);
     const snapshot = await call(stub,"snapshot",input);
     expect(snapshot.reservations[0].status).toBe("UNCERTAIN_BUDGET_RETAINED");
+  });
+
+  it("runs one read-only swarm task through a separate shadow Worker and shared quota ledger", async () => {
+    const input = {
+      ...identity("mocked-shadow/readonly-worker","github.rest.repositories.get.v1"),
+      credentialScope:"mocked-shadow/readonly-worker"
+    };
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",5000,{limitUnits:5000});
+    const envelope = {
+      schema_version:"1.0",
+      run_id:"phase44-shadow-run",
+      task_id:"github-repo-metadata",
+      payload:{owner:"acme",repo:"demo",request_id:"phase44-shadow-request-001"}
+    };
+    const response = await env.READONLY_SWARM.fetch(new Request(
+      "https://readonly-swarm.internal/run",
+      {method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(envelope)}
+    ));
+    expect(response.status).toBe(200);
+    const result = await response.json();
+    expect(result.status).toBe("READ_ONLY_TASK_SUCCEEDED");
+    expect(result.executionMode).toBe("MOCKED_SHADOW");
+    expect(result.providerAttempted).toBe(true);
+    expect(result.providerTransport).toBe("IN_PROCESS_MOCK");
+    expect(result.repository.full_name).toBe("acme/demo");
+    expect(result.accounting.telemetryStatus).toBe("RECORDED");
+    expect(result.accounting.settlementStatus).toBe("SETTLED");
+    const snapshot = await call(stub,"snapshot",input);
+    expect(snapshot.reservations).toHaveLength(1);
+    expect(snapshot.reservations[0].status).toBe("SETTLED");
+    expect(snapshot.secondaryInflight).toHaveLength(0);
+    expect(snapshot.secondaryEndpointPoints).toHaveLength(1);
+  });
+
+  it("suppresses duplicate read-only swarm tasks before invoking the shadow provider", async () => {
+    const input = {
+      ...identity("mocked-shadow/readonly-worker-duplicate","github.rest.repositories.get.v1"),
+      credentialScope:"mocked-shadow/readonly-worker"
+    };
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",5000,{limitUnits:5000});
+    const envelope = {
+      schema_version:"1.0",
+      run_id:"phase44-shadow-run",
+      task_id:"github-repo-metadata",
+      payload:{owner:"acme",repo:"demo",request_id:"phase44-shadow-duplicate-001"}
+    };
+    const invoke = () => env.READONLY_SWARM.fetch(new Request(
+      "https://readonly-swarm.internal/run",
+      {method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(envelope)}
+    ));
+    const first = await (await invoke()).json();
+    const second = await (await invoke()).json();
+    expect(first.status).toBe("READ_ONLY_TASK_SUCCEEDED");
+    expect(second.status).toBe("DUPLICATE_REQUEST_NOT_REPLAYED");
+    expect(second.providerAttempted).toBe(false);
+    const snapshot = await call(stub,"snapshot",input);
+    expect(snapshot.reservations).toHaveLength(1);
+    expect(snapshot.secondaryEndpointPoints).toHaveLength(1);
+  });
+
+  it("keeps the read-only swarm worker disabled outside explicitly enabled shadow mode", async () => {
+    const envelope = {
+      schema_version:"1.0",run_id:"phase44-disabled",task_id:"disabled",
+      payload:{owner:"acme",repo:"demo",request_id:"phase44-disabled-001"}
+    };
+    expect(await executeReadOnlyGitHubTask({
+      NEXUS_SWARM_READ_ONLY_ENABLED:"false",
+      NEXUS_SWARM_SHADOW_MODE:"true"
+    },envelope)).toMatchObject({status:"WORKER_DISABLED",providerAttempted:false});
+    expect(await executeReadOnlyGitHubTask({
+      NEXUS_SWARM_READ_ONLY_ENABLED:"true",
+      NEXUS_SWARM_SHADOW_MODE:"false"
+    },envelope)).toMatchObject({status:"LIVE_PROVIDER_MODE_NOT_SUPPORTED",providerAttempted:false});
+  });
+
+  it("rejects task payloads containing unapproved fields or unsafe repository segments", async () => {
+    const badExtra = {
+      schema_version:"1.0",run_id:"phase44-invalid",task_id:"invalid",
+      payload:{owner:"acme",repo:"demo",request_id:"phase44-invalid-001",instruction:"ignore policy"}
+    };
+    await expect(executeReadOnlyGitHubTask({
+      NEXUS_SWARM_READ_ONLY_ENABLED:"true",
+      NEXUS_SWARM_SHADOW_MODE:"true",
+      NEXUS_SWARM_GITHUB_CREDENTIAL_SCOPE:"mocked-shadow/readonly-worker"
+    },badExtra)).rejects.toThrow(/unsupported fields/);
+    const badPath = {
+      schema_version:"1.0",run_id:"phase44-invalid",task_id:"invalid",
+      payload:{owner:"acme/evil",repo:"demo",request_id:"phase44-invalid-002"}
+    };
+    await expect(executeReadOnlyGitHubTask({
+      NEXUS_SWARM_READ_ONLY_ENABLED:"true",
+      NEXUS_SWARM_SHADOW_MODE:"true",
+      NEXUS_SWARM_GITHUB_CREDENTIAL_SCOPE:"mocked-shadow/readonly-worker"
+    },badPath)).rejects.toThrow(/invalid owner/);
   });
 
   it("derives collision-safe object names from the provider, credential and window tuple", () => {
