@@ -47,7 +47,9 @@ function telemetryRecord({
   source, authorityRank, endpoint, method, status, requestId, extra = {}
 }) {
   nonEmpty(credentialScope, "credentialScope");
-  if (!RESOURCE_RE.test(resource)) throw new GitHubQuotaTelemetryError("invalid rate-limit resource");
+  if (typeof resource !== "string" || !RESOURCE_RE.test(resource)) {
+    throw new GitHubQuotaTelemetryError("invalid rate-limit resource");
+  }
   validateWindow({limit, remaining, used, reset, observedAtEpoch});
   return {
     provider: "github",
@@ -161,10 +163,16 @@ export function reconcileGitHubQuotaTelemetry(current, incoming) {
     return {record: current, decision: "KEEP_NEWER_WINDOW"};
   }
   if (incoming.reset_at_epoch > current.reset_at_epoch) {
-    if (incoming.authority_rank < current.authority_rank) {
-      return {record: current, decision: "KEEP_HIGHER_AUTHORITY_WINDOW"};
+    // Do not let an out-of-order observation claim a future window before the
+    // current window has actually elapsed. Once reset has passed, a periodic
+    // overview may establish the new window if no response header has arrived.
+    if (incoming.observed_at_epoch < current.reset_at_epoch) {
+      return {record: current, decision: "KEEP_CURRENT_WINDOW_UNTIL_RESET"};
     }
-    return {record: incoming, decision: "ACCEPT_NEW_WINDOW"};
+    return {record: incoming, decision: "ACCEPT_NEW_WINDOW_AFTER_RESET"};
+  }
+  if (incoming.authority_rank > current.authority_rank) {
+    return {record: incoming, decision: "ACCEPT_HIGHER_AUTHORITY_SOURCE"};
   }
   if (incoming.authority_rank < current.authority_rank) {
     return {record: current, decision: "KEEP_HIGHER_AUTHORITY_SOURCE"};
@@ -186,8 +194,8 @@ export function reconcileGitHubQuotaTelemetry(current, incoming) {
 
 /** Parse a GitHub REST 403/429 rate-limit response into a cooldown directive. */
 export function parseGitHubRateLimitError({status, headers, body = null, observedAtEpoch}) {
-  if (status !== 403 && status !== 429) {
-    throw new GitHubQuotaTelemetryError("rate-limit error status must be 403 or 429");
+  if (status !== 200 && status !== 403 && status !== 429) {
+    throw new GitHubQuotaTelemetryError("rate-limit error status must be 200, 403 or 429");
   }
   const observed = nonNegativeInteger(observedAtEpoch, "observedAtEpoch");
   const remainingHeader = readHeader(headers, "x-ratelimit-remaining");
@@ -201,6 +209,10 @@ export function parseGitHubRateLimitError({status, headers, body = null, observe
     ? null : nonNegativeInteger(retryAfterHeader, "retry-after");
   const message = typeof body === "string" ? body
     : body && typeof body.message === "string" ? body.message : "";
+  const messageIndicatesLimit = /rate limit exceeded|secondary rate limit/i.test(message);
+  if (status === 200 && !messageIndicatesLimit) {
+    throw new GitHubQuotaTelemetryError("HTTP 200 response does not contain a rate-limit error");
+  }
   if (remaining === 0 && reset !== null && reset > observed) {
     return {
       status: "COOLDOWN",
@@ -321,4 +333,29 @@ export function parseGitHubGraphqlRateLimit({
     }
   });
   return record;
+}
+
+/** Published GitHub secondary-limit ceilings; these are guardrails, not live counters. */
+export function githubSecondaryRateLimitPolicy() {
+  return {
+    source: "published_github_secondary_rate_limit_policy",
+    directly_queryable: false,
+    ceilings: {
+      concurrent_rest_and_graphql_requests: {limit: 100, window: "instantaneous", shared_scope: true},
+      rest_endpoint_points: {limit: 900, window_seconds: 60},
+      graphql_endpoint_points: {limit: 2000, window_seconds: 60},
+      cpu_time: {limit_seconds: 90, window_seconds: 60},
+      graphql_cpu_time: {limit_seconds: 60, window_seconds: 60},
+      content_generating_requests: {limit: 80, window_seconds: 60},
+      content_generating_requests_hourly: {limit: 500, window_seconds: 3600},
+      oauth_token_requests: {limit: 2000, window_seconds: 3600}
+    },
+    caveats: [
+      "some endpoint-specific point costs are not publicly disclosed",
+      "some content endpoints have lower limits",
+      "secondary limits may be imposed for undisclosed reasons",
+      "published limits may change without notice"
+    ],
+    admission_mode: "LOCAL_CONSERVATIVE_GUARDRAIL_ONLY"
+  };
 }
