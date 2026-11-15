@@ -80,11 +80,10 @@ describe("Phase 59.35 Cloudflare Workers runtime: SQLite Durable Object", () => 
     };
     const stub = stubFor(input);
     const rejected = await stub.reserve(input);
-    expect(rejected.status).toBe("WAITING_FOR_QUOTA");
-    expect(rejected.reason).toMatch(/exhausted/);
+    expect(rejected.status).toBe("REJECTED");
+    expect(rejected.error.message).toMatch(/exhausted/);
     const snapshot = await stub.snapshot();
-    expect(snapshot.buckets).toHaveLength(2);
-    expect(snapshot.buckets.every(row => row.reserved_units === 0)).toBe(true);
+    expect(snapshot.buckets).toHaveLength(0);
     expect(snapshot.reservations).toHaveLength(0);
   });
 
@@ -119,7 +118,8 @@ describe("Phase 59.35 Cloudflare Workers runtime: SQLite Durable Object", () => 
     const stub = stubFor(input);
     await stub.reserve(input);
     const rejected = await stub.reserve(input);
-    expect(rejected.status).toBe("DUPLICATE_RESERVATION");
+    expect(rejected.status).toBe("REJECTED");
+    expect(rejected.error.message).toMatch(/duplicate/);
     const snapshot = await stub.snapshot();
     expect(snapshot.buckets[0].reserved_units).toBe(7);
   });
