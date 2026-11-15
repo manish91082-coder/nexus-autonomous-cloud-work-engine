@@ -42,6 +42,12 @@ class PartitionedJournalTests(unittest.TestCase):
         with self.assertRaises(FederationLockError):
             append_event_to_chunk(full, {"sequence": 257, "timestamp_utc": "2026-11-15T06:00:00Z"})
 
+    def test_append_rejects_sequence_gap_inside_chunk(self):
+        previous = {"sequence": 15, "timestamp_utc": "2026-11-15T06:00:00Z"}
+        skipped = {"sequence": 17, "timestamp_utc": "2026-11-15T06:01:00Z"}
+        with self.assertRaises(FederationLockError):
+            append_event_to_chunk([previous], skipped)
+
     def test_month_boundary_uses_separate_partition_even_inside_same_sequence_chunk(self):
         a = {"sequence": 20, "timestamp_utc": "2026-11-30T23:59:59Z"}
         b = {"sequence": 21, "timestamp_utc": "2026-12-01T00:00:00Z"}
