@@ -45,7 +45,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Install pinned PostgreSQL driver
-        run: python3 -m pip install --disable-pip-version-check 'psycopg[binary]==3.2.9'
+        run: python3 -m pip install --disable-pip-version-check 'psycopg[binary]==3.2.13'
       - name: Compile quota adapter
         run: python3 -m py_compile scripts/postgres_quota_store.py scripts/multibucket_quota_contract.py
       - name: Run PostgreSQL transaction and concurrency tests
