@@ -3498,3 +3498,56 @@ The opportunity registry (53 candidates), payout registry (27 providers) and rev
 The registry is still not a deployed global lock or quota service. Next P10CR work remains P59-003: verify B4 exact GitHub Actions CI, complete exhaustive workflow inventory, add crash/restore and Linux process-tree soak tests, then implement atomic federation lease/fencing clients and shared Actions/API quota reservations. Keep P59-001 paused and P59-002 blocked until the safe handoff and V5 gates permit resumption.
 
 No revenue or payout evidence changed: PCNE ₹0; bank-settled receipts ₹0; authorized spend ₹0. No new permission, spend, billing activation or provider account was requested.
+
+
+# PHASE 59.14 — B4 CRASH RECOVERY + COMPLETE WORKFLOW INVENTORY — 15 NOVEMBER 2026
+
+**Report:** [Phase 59.14 B4 Crash Recovery and Workflow Inventory](research/PHASE_59_14_B4_CRASH_RECOVERY_AND_WORKFLOW_INVENTORY_2026-11-15.md)  
+**Exact B4 test SHA:** `8b52ecca1c6007c13af0bf368e440b1b8e51d8c4`  
+**Exact B4 GitHub Actions run:** [43685216997 — SUCCESS](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43685216997)
+
+## Verified B4 result
+
+- B4 workflow job `validate`: SUCCESS.
+- Schema JSON validation: PASS.
+- `tests/test_durable_execution.py`: 18/18 PASS on GitHub-hosted Ubuntu 26.04.
+- Added abrupt spawned-process crash test: task checkpoint persisted, process exits via `os._exit(23)`, SQLite reopened, expired lease recovered, checkpoint preserved, stale worker rejected, new fencing token issued.
+- Added Linux process-tree test: parent forks descendant; timeout kills POSIX process group; descendant disappears/is reaped.
+- SQLite test handles explicitly closed; final successful run logs no ResourceWarning.
+- Failed fixture iterations are preserved in Actions history; final successful test SHA is recorded above.
+
+This proves the standalone B4 prototype tests on a single-host SQLite store and Linux process group. It does not prove distributed consensus, multi-host locks, cloud backup/restore, production worker integration or 24x7 service.
+
+## Complete workflow inventory
+
+GitHub recursive tree endpoint returned `truncated=false`; all **14/14** files under `.github/workflows/` were fetched and classified. Full trigger/permission/concurrency/SHA inventory is in the Phase 59.14 report.
+
+- Two recurring schedules only:
+  - `mission-autonomous-worker.yml`: every five minutes (`3-59/5 * * * *`), bounded 8-minute run, `contents: write`.
+  - `mission-continuity-guard.yml`: daily (`41 2 * * *`), 5-minute run, `contents: read`.
+- Eight product build/package/browser-QA workflows: push-path + manual; read-only contents permissions. Some are 5-minute bounded; recruitment browser QA is 25 minutes; travel build has no explicit timeout.
+- Three legacy manual-only workflows: bounty agent, funded-job scan and Jobbi gigs. They remain excluded from P10CR V5 revenue strategy and are not connected to the P10CR task queue. Bounty/funded-job workflows reference project-specific secrets; do not infer that secrets are configured.
+- One dedicated B4 workflow: B4-specific push paths + manual, contents read, 5-minute timeout, no third-party action.
+- Workflow concurrency groups are repository-scoped, not global.
+- Several workflows use third-party Actions pinned to version tags rather than immutable SHAs; supply-chain hardening remains open. No workflow was changed in this phase.
+
+## Canonical control-plane update
+
+- `control/mission_state.json`: Phase 59.14, exact B4 run/SHA, 18-test result, 14-workflow inventory and explicit production-integration boundary.
+- `control/automation_queue.json`: P59-003 evidence and remaining gates updated.
+- P59-003 remains IN_PROGRESS; P59-001 remains PAUSED; P59-002 remains BLOCKED.
+- B4 remains standalone. Production worker, project queues, provider configuration and existing schedules remain unchanged.
+- No federation lock runtime, cross-repo quota arbiter, GitHub App, AI provider inference or cloud failover is deployed.
+- Flash Loan/ZCIRA/Daily1000/AI Content/Ghost Hunter remain independent project cells.
+
+## Next exact sequence
+
+1. B4 SQLite backup/restore integrity and repeated crash-window soak across register/claim/checkpoint/finish/recovery; retain append-only event-chain verification.
+2. Review third-party Actions SHA pinning, least-privilege permissions, workflow schedule staggering and secret references. Do not disable schedules without safe replacement and evidence.
+3. Implement the federation lock client only after selecting and proving a real shared atomic store. SQLite is single-host only and must not be misrepresented as a cross-host lock.
+4. Implement shared GitHub Actions/API quota reservations, per-project budgets, fairness, idempotent dispatch and `WAITING_FOR_QUOTA`.
+5. Add read-only federation status client to Flash Loan first; do not mutate its mission, queue, workflows or artifacts.
+6. Run 100-way lock races, stale-fencing, duplicate-dispatch, quota-exhaustion and controller-outage tests before enabling cross-project writes.
+7. Resume P59-001 portfolio-wide revenue-source ranking after safe swarm handoff; maintain V5 buyer/payout/rights/economics gates.
+
+Financial invariants unchanged: verified PCNE ₹0; bank-settled receipts ₹0; authorized spend ₹0. No account activation, KYC, terms acceptance, billing, publication or funds movement occurred.
