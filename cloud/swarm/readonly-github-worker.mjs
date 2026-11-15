@@ -76,10 +76,12 @@ async function mockedGitHubFetch(request, owner, repo, resetAtEpoch) {
 
 export async function executeReadOnlyGitHubTask(env, envelope) {
   if (env?.NEXUS_SWARM_READ_ONLY_ENABLED !== "true") {
-    return { status: "WORKER_DISABLED", executionMode: "MOCKED_SHADOW", providerAttempted: false };
+    return { status: "WORKER_DISABLED", executionMode: "MOCKED_SHADOW",
+      liveNetworkUsed: false, providerAttempted: false };
   }
   if (env?.NEXUS_SWARM_SHADOW_MODE !== "true") {
-    return { status: "LIVE_PROVIDER_MODE_NOT_SUPPORTED", executionMode: "MOCKED_SHADOW", providerAttempted: false };
+    return { status: "LIVE_PROVIDER_MODE_NOT_SUPPORTED", executionMode: "MOCKED_SHADOW",
+      liveNetworkUsed: false, providerAttempted: false };
   }
   const task = validateEnvelope(envelope);
   const credentialScope = env.NEXUS_SWARM_GITHUB_CREDENTIAL_SCOPE;
@@ -112,6 +114,7 @@ export async function executeReadOnlyGitHubTask(env, envelope) {
     return {
       status: result.status,
       executionMode: "MOCKED_SHADOW",
+      liveNetworkUsed: false,
       runId: task.runId,
       taskId: task.taskId,
       reservationId: result.reservationId,
@@ -122,6 +125,7 @@ export async function executeReadOnlyGitHubTask(env, envelope) {
     return {
       status: result.status,
       executionMode: "MOCKED_SHADOW",
+      liveNetworkUsed: false,
       runId: task.runId,
       taskId: task.taskId,
       reservationId: result.reservationId,
@@ -134,6 +138,7 @@ export async function executeReadOnlyGitHubTask(env, envelope) {
     return {
       status: "PROVIDER_RESPONSE_ERROR",
       executionMode: "MOCKED_SHADOW",
+      liveNetworkUsed: false,
       runId: task.runId,
       taskId: task.taskId,
       providerStatus: result.response?.status ?? null,
@@ -146,6 +151,7 @@ export async function executeReadOnlyGitHubTask(env, envelope) {
   return {
     status: "READ_ONLY_TASK_SUCCEEDED",
     executionMode: "MOCKED_SHADOW",
+      liveNetworkUsed: false,
     runId: task.runId,
     taskId: task.taskId,
     providerAttempted: true,
@@ -177,6 +183,7 @@ export default {
         status: env?.NEXUS_SWARM_READ_ONLY_ENABLED === "true"
           ? "LIVE_PROVIDER_MODE_NOT_SUPPORTED" : "WORKER_DISABLED",
         executionMode: "MOCKED_SHADOW",
+      liveNetworkUsed: false,
         providerAttempted: false
       },403);
     }
