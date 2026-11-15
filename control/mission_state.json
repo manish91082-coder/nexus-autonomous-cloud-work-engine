@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
   "last_verified_head": "f1813e44196a6e1ccd2c76fb89bbfb254811d04f",
-  "current_focus": "P59-003 swarm foundation. Phase59.35 exact extended Workers runtime CI run 43706366316 passed 11/11 tests on f1813e44196a6e1ccd2c76fb89bbfb254811d04f. Actual workerd/Miniflare SQLite Durable Object tests now cover schema/empty reads, multi-bucket settlement, exhausted telemetry persistence without admission, 20-way contention (10 accepted), duplicate delivery, uncertain usage retention, canonical identity, telemetry rebase without double subtraction, identity mismatch rejection, forced eviction/recovery and transaction rollback. This remains local CI runtime evidence, not Cloudflare hosted deployment or independent-host proof. Quota activation remains OFF; no live LLM inference.",
+  "current_focus": "P59-003 swarm foundation. Phase59.35 exact extended Workers runtime CI run 43706366316 passed 11/11 tests on f1813e44196a6e1ccd2c76fb89bbfb254811d04f. Actual workerd/Miniflare SQLite Durable Object tests cover schema/empty reads, multi-bucket settlement, exhausted telemetry persistence without admission, 20-way contention (10 accepted), duplicate delivery, uncertain usage retention, canonical identity, telemetry rebase without double subtraction, identity mismatch rejection, forced eviction/recovery and transaction rollback. This is local CI runtime evidence, not Cloudflare hosted deployment or independent-host proof. Quota activation remains OFF; no live LLM inference.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -1291,14 +1291,27 @@
   },
   "phase_59_35_evidence": {
     "report": "research/PHASE_59_35_CLOUDFLARE_WORKERS_RUNTIME_VALIDATION_2026-11-15.md",
-    "tested_sha": "575d0165fb5edb813ca4e0c55600d46b1e7f2cd1",
-    "workflow_run": 43706315030,
+    "tested_sha": "f1813e44196a6e1ccd2c76fb89bbfb254811d04f",
+    "workflow_run": 43706366316,
     "workflow_conclusion": "success",
-    "runtime_tests_passed": 7,
-    "runtime_tests_total": 7,
+    "runtime_tests_passed": 11,
+    "runtime_tests_total": 11,
+    "verified": [
+      "first reservation and zero-row SQL reads",
+      "multi-bucket settlement and persisted usage",
+      "exhausted telemetry persistence without reservation admission",
+      "20-way same-DO contention with exactly 10 accepted",
+      "duplicate delivery idempotency",
+      "uncertain usage retention",
+      "telemetry rebase without double subtraction",
+      "provider/credential/window identity mismatch rejection",
+      "forced Durable Object eviction and SQLite reservation recovery",
+      "transactionSync rollback of forced partial write",
+      "collision-safe canonical DO identity"
+    ],
     "environment": "Cloudflare Workers Vitest integration / workerd-compatible runtime under GitHub-hosted CI; not deployed Cloudflare production",
     "production_status": "FEATURE_FLAG_OFF_NOT_DEPLOYED_NOT_INDEPENDENT_HOST_VERIFIED",
-    "next": "Phase59.36 forced DO eviction/restart recovery, second Worker caller, cross-caller contention, independent-host simulation, telemetry edge cases and internal auth"
+    "next": "Phase59.36 second Worker entrypoint sharing same DO namespace, cross-caller contention, independent-host simulation, telemetry edge cases, internal auth and replay protections"
   },
   "phase59_35": {
     "report": "research/PHASE_59_35_CLOUDFLARE_WORKERS_RUNTIME_VALIDATION_2026-11-15.md",
