@@ -208,7 +208,7 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
     const stub = stubFor(input);
     const oldTelemetry = await seedBucket(stub,input,"core",100,{
       observedAtEpoch:now,
-      resetAtEpoch:now+1
+      resetAtEpoch:now+4
     });
     await call(stub,"reserve",input);
 
@@ -219,7 +219,7 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
         "x-ratelimit-resource":"core"
       },
       credentialScope:input.credentialScope,
-      observedAtEpoch:now+2,
+      observedAtEpoch:now+5,
       endpoint:"GET /repos/acme/demo",method:"GET",status:200
     });
     const recorded = await call(stub,"recordTelemetry",{
