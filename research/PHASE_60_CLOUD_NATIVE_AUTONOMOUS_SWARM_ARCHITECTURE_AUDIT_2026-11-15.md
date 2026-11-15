@@ -237,3 +237,18 @@ Do not remove GitHub. Do not switch mission authority. Do not deploy all project
 - Oracle Always Free and idle reclamation: https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm
 
 **Research integrity:** Official documentation establishes product features and published quotas, not this owner's actual account entitlement, availability, billing configuration or deployed service health. Those remain UNVERIFIED until account-level preflight and live tests.
+
+
+## Superseding live-state reconciliation — 15-Nov-2026
+The initial Phase 60 report above captured an earlier Phase 59.24 repository snapshot. A subsequent live fetch on 15-Nov-2026 found that automation had advanced the canonical repository to Phase 59.26. This section supersedes only the stale baseline/resume statements above; it preserves the historical Phase 60 research and its architecture conclusions.
+
+- Current `control/mission_state.json`: `PHASE_59_26_SPECIALIST_WORKFLOW_MERGED_SAFE_HANDOFF_TO_P59_001`; current task `P59-001`.
+- Phase 59.26 PR #10 merged at `6b8c76f23a2c7094a2e37eac3c3d62dc73823090`; exact-head CI run `43695358970` SUCCESS. Five deterministic evidence specialists; four-family synthetic run (20 invocations) returned HOLD for INTERNAL_TEST/UNVERIFIED evidence. This is not live LLM inference or production swarm deployment.
+- P59-001 is the sole active P0 task: complete V5 portfolio-wide revenue-source ranking, reopen evidence reports, verify payout/rights/economics, audit owned/licensable assets and select one product only after all gates.
+- P59-003 is PAUSED, not current: production swarm enablement awaits branch ruleset, owner-approved least-privilege GitHub App, global quota arbitration, worker clients, multi-host validation and 7/30-day soak.
+- P59-002 remains BLOCKED pending P59-001 and product gates.
+- A stale pointer was found in `control/automation_queue.json` (it still said P59-003). It has now been reconciled to P59-001; mission authority and task statuses were not changed.
+- Phase 60 Cloudflare-first architecture remains a future research/PoC lane after P59-003 safety conditions; no cloud account or runtime was deployed.
+- Verified PCNE ₹0; bank receipts ₹0; authorized spend ₹0.
+
+**Correct resume order:** P59-001 portfolio source research → select a product only if V5 gates pass → P59-002 build/validate one product → resume P59-003 production swarm enablement at its explicit safety gates → Phase 60 Cloudflare bounded PoC if still justified. Continue parallel source research where it does not cause extra product builds or spend.
