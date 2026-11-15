@@ -11,7 +11,7 @@ const entries = [
   {
     id: "github.rest.repositories.get.v1",
     method: "GET",
-    pathPattern: /^\/repos\/[^/]+\/[^/]+$/,
+    pathPattern: /^\/repos\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/,
     pathTemplate: "/repos/{owner}/{repo}",
     resource: "core",
     primaryUnits: 1,
