@@ -238,6 +238,7 @@ def main():
         "isolated_state_branch": branch,
         "isolated_state_path": STATE_PATH,
         "worker_count": WORKER_COUNT,
+        "cas_retry_policy": "bounded exponential backoff with per-store jitter; max 5 attempts per claim",
         "unique_durable_claims": len(workers),
         "unique_fencing_tokens": len({x["fencing_token"] for x in workers}),
         "duplicate_delivery_attempts": WORKER_COUNT,
