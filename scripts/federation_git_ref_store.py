@@ -306,6 +306,7 @@ class GitHubGitRefStore:
         self.events_dir = events_dir
         self.api_base = api_base.rstrip("/")
         self.max_retries = max_retries
+        self.retry_jitter = (uuid.uuid4().int % 1000) / 1000.0 * 0.15
         self.opener = opener or urllib.request.urlopen
         self.quota_guard = (GitHubApiQuotaGuard.from_environment() if request_ceiling is None and safety_reserve is None else GitHubApiQuotaGuard(request_ceiling=48 if request_ceiling is None else request_ceiling, safety_reserve=100 if safety_reserve is None else safety_reserve))
         self.shared_quota_guard = shared_quota_guard
@@ -440,7 +441,9 @@ class GitHubGitRefStore:
             except CASConflict as exc:
                 last_conflict = exc
                 if attempt + 1 < self.max_retries:
-                    time.sleep(min(0.1 * (2 ** attempt), 1.0))
+                    # Per-instance jitter prevents synchronized workers from repeatedly
+                    # colliding on the same Git ref after a compare-and-swap conflict.
+                    time.sleep(min(0.1 * (2 ** attempt) + self.retry_jitter, 1.0))
                     continue
                 break
         raise CASConflict(f"CAS retry budget exhausted: {last_conflict}")
