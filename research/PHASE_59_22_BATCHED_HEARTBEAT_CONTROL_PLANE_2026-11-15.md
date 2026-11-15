@@ -8,7 +8,7 @@ Branch: phase59-22-batched-heartbeat-control-plane
 
 Implement a single atomic batch-heartbeat transition for up to the configured active lease cap (8). One controller heartbeat renews all supplied leases, validates every owner/fencing token/expiry, advances one event sequence, and commits once. A single stale member rejects the whole batch. The existing individual heartbeat API remains for compatibility, but the future controller should use batch renewal.
 
-This reduces the full-capacity heartbeat write count from 8 independent mutations per five-minute interval to 1 mutation per interval. At 9 REST calls per no-conflict mutation, the synthetic 30-day model changes from 207,360 calls to 25,920 calls (108 requests/hour), an 8x reduction. This is still a model, not measured traffic. CAS retries can increase it up to 180 requests/hour if every batch mutation consumes all five attempts.
+This reduces the full-capacity heartbeat write count from 8 independent mutations per five-minute interval to 1 mutation per interval. At 9 REST calls per no-conflict mutation, the synthetic 30-day model changes from 622,080 calls to 77,760 calls (108 requests/hour), an 8x reduction. This is still a model, not measured traffic. CAS retries can increase it up to 540 requests/hour if every batch mutation consumes all five attempts.
 
 ## Alternatives evaluated
 
@@ -21,14 +21,14 @@ This reduces the full-capacity heartbeat write count from 8 independent mutation
 ## Request model
 
 Assumptions: 8 continuously active leases, one batch renewal every 300 seconds, 30 days, 9 REST calls per successful no-conflict commit.
-- 2,880 batch renewals per 30 days.
-- 2,880 journal events.
+- 8,640 batch renewals per 30 days.
+- 8,640 journal events.
 - 12 chunks at 256 events/chunk.
 - 25,920 no-conflict REST calls over 30 days.
-- 36 no-conflict calls/hour.
-- Worst-case five attempts for every batch: 129,600 calls over 30 days, 180 calls/hour.
+- 108 no-conflict calls/hour.
+- Worst-case five attempts for every batch: 388,800 calls over 30 days, 540 calls/hour.
 
-Individual model = 8 × 2,880 = 23,040 mutations, 207,360 no-conflict requests, 288 requests/hour. Batch model = 2,880 mutations, 25,920 calls, 36 requests/hour. The ratio is 8x. At the five-attempt worst case, batch model = 180 requests/hour.
+Individual model = 8 × 8,640 = 69,120 mutations, 622,080 no-conflict requests, 864 requests/hour. Batch model = 8,640 mutations, 77,760 calls, 108 requests/hour. The ratio is 8x. At the five-attempt worst case, batch model = 540 requests/hour.
 
 ## Quota decision
 
