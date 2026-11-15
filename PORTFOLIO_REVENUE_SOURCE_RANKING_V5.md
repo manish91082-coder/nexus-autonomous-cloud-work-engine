@@ -169,3 +169,24 @@ See [Phase 59.8 zero-cost swarm feasibility report](research/PHASE_59_8_ZERO_COS
 - Full source-level audit of existing workflows/runtime is not yet complete; Phase A audit is mandatory before modifying existing automation.
 - No swarm deployed; no AI inference provider configured; no spend; PCNE ₹0.
 - P59-003 IN_PROGRESS for forensic audit and staged swarm foundation. P59-001 remains IN_PROGRESS; P59-002 BLOCKED pending product qualification.
+
+
+---
+
+## 15. Evidence batch 08 — official revenue-source economics revalidation (15-Nov-2026)
+
+See [Phase 59.27 report](research/PHASE_59_27_REVENUE_SOURCE_ECONOMICS_REVALIDATION_2026-11-15.md).
+
+- RBI FY2025-26 software-services exports: US$221.4B total, but software product development only US$6.4B (~2.9%). Aggregate exports are not the addressable market for a new self-serve vendor.
+- Atlassian official Marketplace economics effective 1-Oct-2026: qualifying Forge 83%, Connect 75%, Data Center 75%; 100% Forge revenue share up to $1M lifetime Forge revenue if strict Forge-only/OAuth/UI eligibility is met. Remittance threshold $500 profit; 30–60 day post-sale window. High-priority rail, but no product GO.
+- KDP: India 70% eBook royalty band ₹99–₹599; royalty deducts applicable VAT and delivery cost; monthly payment about 60 days after month-end, India bank delivery can add 7–10 business days. Hindi publishing supported. Stackable, no owned catalogue/demand proof.
+- Gumroad: India local INR bank payout confirmed; scheduled payout $100 minimum, 7-day hold, India Tuesday payout day, processor KYC/account review. Distribution rail only; product demand remains unproven.
+- YouTube: full ad monetization requires 1,000 subscribers + 4,000 qualified watch hours or 10M Shorts views, plus review; 55% watch-page ads, 45% Shorts allocation, 70% net fan-funding. YPP terms update announced for 1-Feb-2027. Audience asset not evidenced.
+- Adobe Stock: 33% photo/vector/illustration and 35% video royalty on net licence price; catalogue, acceptance and India payout provider not proven.
+- GitHub Sponsors: personal-account sponsorship fee 0%; eligibility, approval, bank/tax setup and actual open-source adoption required. No project sponsor demand recorded.
+- itch.io open revenue share is configurable 0–100%; payout mode requires tax interview and PayPal/Payoneer, account-level India compatibility still unverified. Epic First Run 100% first $1M net revenue per product/year then 88/12; game demand/discovery unproven.
+- Apple App Store Small Business commission 15%, but $99/year developer membership conflicts with ₹0-spend default unless owner explicitly approves.
+- No speculative revenue scenarios inserted because reachable buyers, price-bearing WTP, conversion, churn and support/runtime costs are not yet evidenced.
+- **Decision unchanged:** productized B2B / vertical SaaS / marketplace apps remain PROVISIONAL FIRST; no concrete product selected; P59-002 BLOCKED; P59-001 IN_PROGRESS; P59-003 PAUSED; PCNE ₹0; spend ₹0.
+- Next research: complete source-family scoring, verify Tech Cloud ERP ownership/source/module/rights evidence, compare one rights-cleared owned asset with one greenfield buyer problem, then perform 10–15 substitute audit and price-bearing demand verification.
+
