@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {
   validateQuotaRequest, availableUnits, requireQuotaStoreEnabled, QuotaLedgerError,
   QuotaLedgerExhausted
-} from "./quota-ledger-do.mjs";
+} from "./quota-ledger-contract.mjs";
 
 const sample = (overrides={}) => ({
   provider:"github", credentialScope:"installation-1/repo-2", windowId:"hour-1",
