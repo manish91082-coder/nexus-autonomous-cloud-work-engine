@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
-  requestFingerprint, resolveReviewedOperation, signedLedgerRequest, runQuotaBoundRequest
+  requestFingerprint, resolveReviewedOperation, signedLedgerRequest, runQuotaBoundRequest, createQuotaLedgerClient
 } from "./quota-worker-client.mjs";
 
 const url = "https://api.example.test/v1/items?b=2&a=1";
@@ -92,4 +92,37 @@ test("denied reservation never invokes provider", async () => {
   const result = await runQuotaBoundRequest(h.args);
   assert.equal(result.status, "WAITING_FOR_QUOTA");
   assert.deepEqual(h.calls.map(call => call[0]), []);
+});
+
+
+test("concrete DO adapter derives canonical identity and signs RPC", async () => {
+  let objectName, captured;
+  const namespace = {
+    idFromName: name => { objectName = name; return { name }; },
+    get: id => ({ fetch: async request => {
+      captured = request;
+      return Response.json({ status: "RESERVED" });
+    }})
+  };
+  const client = createQuotaLedgerClient({
+    namespace, secret: "s".repeat(40), callerId: "primary",
+    clock: () => 1_800_000_000_000,
+    nonceFactory: () => "123e4567-e89b-42d3-a456-426614174000"
+  });
+  const result = await client.reserve({
+    provider: "github", credentialScope: "scope-a", windowId: "partition-a",
+    reservationId: "r1", workerId: "w1", operation: "readItems"
+  });
+  assert.equal(result.status, "RESERVED");
+  assert.equal(objectName, JSON.stringify(["github", "scope-a", "partition-a"]));
+  assert.equal(captured.headers.get("x-nexus-caller-id"), "primary");
+  assert.ok(captured.headers.get("x-nexus-signature"));
+});
+
+test("concrete DO adapter fails closed on missing identity", async () => {
+  const client = createQuotaLedgerClient({
+    namespace: { idFromName: () => ({}), get: () => ({ fetch: async () => Response.json({}) }) },
+    secret: "s".repeat(40), callerId: "primary"
+  });
+  await assert.rejects(() => client.reserve({ provider: "github" }), /credentialScope/);
 });
