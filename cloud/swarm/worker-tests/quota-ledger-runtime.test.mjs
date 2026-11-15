@@ -836,7 +836,8 @@ describe("Phase 59.41 guarded GitHub request lifecycle", () => {
       workerId: input.workerId,
       requestId: "lifecycle-001",
       request: new Request("https://api.github.com/repos/acme/demo"),
-      fetchImpl: async () => {
+      fetchImpl: async (_request, init) => {
+        expect(init.redirect).toBe("manual");
         providerCalls += 1;
         return new Response(JSON.stringify({ok:true}), {
           status: 200,
