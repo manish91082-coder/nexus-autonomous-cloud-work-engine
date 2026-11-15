@@ -91,5 +91,5 @@ test("denied reservation never invokes provider", async () => {
   const h = harness({ ledger: { reserve: async () => ({ status: "WAITING_FOR_QUOTA" }) } });
   const result = await runQuotaBoundRequest(h.args);
   assert.equal(result.status, "WAITING_FOR_QUOTA");
-  assert.deepEqual(h.calls.map(call => call[0]), ["reserve"]);
+  assert.deepEqual(h.calls.map(call => call[0]), []);
 });
