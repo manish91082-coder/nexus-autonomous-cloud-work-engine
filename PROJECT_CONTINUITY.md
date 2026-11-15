@@ -3760,3 +3760,17 @@ Date: 2026-11-15
 - The harness is in-memory/test-only; it is not live distributed lock or cloud-soak evidence. Production clients and live lock writes remain disabled.
 - P59-003 remains the only active engineering task. P59-001 remains paused until safe handoff; P59-002 remains blocked. Verified realized net receipts ₹0; authorized spend ₹0.
 - Next: Phase 59.25 controlled cloud execution and operational soak with hard request ceilings, safety reserves, fault injection, durable evidence and stop conditions. Then Phase 59.26 specialist workflow integration, safe handoff and revenue research.
+
+
+## PHASE 59.25 UPDATE — ACTUAL GITHUB CLOUD OPERATIONAL SOAK
+Date: 2026-11-15
+
+- PR #9 merged to canonical `master`; exact tested head `cbba2e23596d901646a4e16f0cfc71ca01b44d8c`; merge commit `e26459df09c7765ddea71c3002a8fcf90778b950`.
+- Actual cloud run 43694502929 SUCCESS; read-only contract/regression CI 43694502933 SUCCESS; exact PR-head regressions 43694934944, 43694934769, 43694934713, 43694934698, 43694934676 and 43694934672 all SUCCESS.
+- On a dedicated disposable test branch only: 8/8 unique durable leases, 8 unique fencing tokens, 3 CAS conflict recoveries, 8/8 duplicate-delivery rejections, stale-fence rejection, six batch heartbeat cycles renewing eight leases each, 15-event hash-chain verification.
+- 405 GitHub API requests against 480 run ceiling; remaining quota 4,504; safety reserve 100; zero transport failures. Soak target 180 seconds; measured 218.698 seconds. Dedicated test branch cleanup SUCCESS.
+- Evidence report: `research/PHASE_59_25_GITHUB_CLOUD_OPERATIONAL_SOAK_2026-11-15.md`; artifact ID 14153369478.
+- This is actual GitHub REST Git-ref CAS on one GitHub-hosted runner using eight threads, not eight independent hosts. It is not a 7/30-day production soak. Run-local shared budget is not cross-run/cross-repository global quota arbitration.
+- Production federation branch untouched; production clients disabled; no AI inference, paid service, owner-gated action or spend. PCNE ₹0; authorized spend ₹0.
+- P59-003 remains active; P59-001 remains paused until safe handoff; P59-002 remains blocked. Mission target and canonical repository unchanged.
+- Next: Phase 59.26 specialist agent workflow integration with typed role contracts, bounded parallel research, evidence provenance, independent review and fail-closed action gates. Keep production disabled pending global quota arbiter, branch ruleset, owner-approved GitHub App, production clients and 7/30-day soak.
