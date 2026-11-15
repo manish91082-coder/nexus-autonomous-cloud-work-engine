@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { env } from "cloudflare:workers";
+import { runInDurableObject } from "cloudflare:test";
 import { quotaLedgerObjectName } from "../quota-ledger-contract.mjs";
 import {
   parseGitHubRateLimitHeaders,
@@ -928,6 +929,42 @@ describe("Phase 59.40 telemetry-driven quota admission", () => {
       request:new Request("https://example.com/data"),
       fetchImpl:async()=>{throw new Error("must not run");}
     })).rejects.toThrow(/api.github.com/);
+  });
+
+  it("expires abandoned reservations into uncertain budget without releasing capacity", async () => {
+    const input = identity("reservation-expiry", "core10");
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",100);
+    const first = await call(stub,"reserve",input);
+    expect(first.status).toBe("RESERVED");
+
+    await runInDurableObject(stub, (_instance, state) => {
+      state.storage.sql.exec(
+        "UPDATE quota_reservations SET expires_at_epoch=? WHERE reservation_id=?",
+        Math.floor(Date.now()/1000)-1,
+        input.reservationId
+      );
+    });
+
+    const sweep = await call(stub,"expireReservations",input);
+    expect(sweep.status).toBe("EXPIRY_SWEEP_COMPLETE");
+    expect(sweep.expiredCount).toBe(1);
+    const snapshot = await call(stub,"snapshot",input);
+    expect(snapshot.reservations.find(x=>x.reservation_id===input.reservationId).status)
+      .toBe("UNCERTAIN_BUDGET_RETAINED");
+    expect(snapshot.buckets[0].reserved_units).toBe(0);
+    expect(snapshot.buckets[0].uncertain_units).toBe(10);
+
+    const next = {
+      ...input,
+      reservationId:"reservation-after-expiry",
+      workerId:"worker-after-expiry"
+    };
+    const second = await call(stub,"reserve",next);
+    expect(second.status).toBe("RESERVED");
+    const after = await call(stub,"snapshot",input);
+    expect(after.buckets[0].uncertain_units).toBe(10);
+    expect(after.buckets[0].reserved_units).toBe(10);
   });
 
   it("derives collision-safe object names from the provider, credential and window tuple", () => {
