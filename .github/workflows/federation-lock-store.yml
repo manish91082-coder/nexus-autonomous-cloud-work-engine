@@ -9,7 +9,8 @@ on:
       - 'tests/test_federation_git_ref_store.py'
       - 'scripts/probe_federation_git_ref_store.py'
       - '.github/workflows/federation-lock-store.yml'
-      - 'federation/locks/**'
+      - 'federation/locks/state.json'
+      - 'federation/locks/events/**'
   workflow_dispatch:
 
 permissions:
@@ -31,6 +32,8 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 (Node 24)
       - name: Run pure lease state and 100-way CAS simulator tests
         run: python3 -m unittest discover -s tests -p 'test_federation_git_ref_store.py' -v
+      - name: Validate lock state and registry JSON
+        run: python3 -c "import json; json.load(open('federation/locks/state.json')); json.load(open('federation/locks/registry.json'))"
       - name: Run live GitHub branch CAS race probe
         env:
           GITHUB_TOKEN: ${{ github.token }}
