@@ -1,0 +1,34 @@
+name: Phase 59.35 Cloudflare Workers SQLite Durable Object Runtime Tests
+
+on:
+  push:
+    branches: [master, phase59-35-quota-do-runtime-tests]
+    paths:
+      - 'cloud/swarm/quota-ledger-do.mjs'
+      - 'cloud/swarm/worker-tests/**'
+      - '.github/workflows/phase59-35-quota-do-runtime-tests.yml'
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-35-quota-do-runtime-tests
+  cancel-in-progress: false
+
+jobs:
+  workers-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: cloud/swarm/worker-tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install isolated test dependencies
+        run: npm install --no-audit --no-fund
+      - name: Run Cloudflare Workers runtime tests
+        run: npm test
