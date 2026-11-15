@@ -386,6 +386,62 @@ export class QuotaLedgerDO extends DurableObject {
         ).toArray()[0];
         if (prior) return { reservationId: input.reservationId, status: "DUPLICATE_RESERVATION" };
 
+        const secondaryControl = sql.exec(
+          "SELECT * FROM quota_secondary_control WHERE credential_scope=?",
+          input.credentialScope
+        ).toArray()[0];
+        if (secondaryControl && secondaryControl.cooldown_until_epoch > now) {
+          return {
+            reservationId:input.reservationId,
+            status:"WAITING_FOR_QUOTA",
+            reason:"SECONDARY_RATE_LIMIT_COOLDOWN",
+            retryAtEpoch:secondaryControl.cooldown_until_epoch
+          };
+        }
+
+        const reviewedOperation = input.requestFingerprint
+          ? getGitHubOperationDefinition(input.operation) : null;
+        let secondaryEndpoint = null;
+        let secondaryPoints = 0;
+        let maxInFlight = 20;
+        let maxEndpointPoints = 600;
+        if (reviewedOperation) {
+          maxInFlight = Number(this.env?.NEXUS_GITHUB_SECONDARY_MAX_IN_FLIGHT ?? 20);
+          maxEndpointPoints = Number(this.env?.NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE ?? 600);
+          if (!Number.isSafeInteger(maxInFlight) || maxInFlight < 1 || maxInFlight > 80
+            || !Number.isSafeInteger(maxEndpointPoints) || maxEndpointPoints < 1 || maxEndpointPoints > 800) {
+            throw new QuotaLedgerError("secondary rate-limit local policy is outside safe bounds");
+          }
+          secondaryEndpoint = reviewedOperation.endpointKey;
+          secondaryPoints = reviewedOperation.secondaryPoints;
+          sql.exec("DELETE FROM quota_secondary_inflight WHERE expires_at_epoch <= ?", now);
+          sql.exec("DELETE FROM quota_secondary_endpoint_points WHERE occurred_at_epoch <= ?", now-120);
+          const active = sql.exec(
+            "SELECT COUNT(*) AS count FROM quota_secondary_inflight WHERE credential_scope=?",
+            input.credentialScope
+          ).toArray()[0].count;
+          if (active >= maxInFlight) {
+            const oldest = sql.exec(
+              "SELECT MIN(expires_at_epoch) AS retry_at FROM quota_secondary_inflight WHERE credential_scope=?",
+              input.credentialScope
+            ).toArray()[0].retry_at;
+            return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
+              reason:"SECONDARY_CONCURRENCY_LIMIT",retryAtEpoch:oldest};
+          }
+          const recent = sql.exec(
+            "SELECT COALESCE(SUM(points),0) AS total FROM quota_secondary_endpoint_points WHERE credential_scope=? AND endpoint_key=? AND occurred_at_epoch>?",
+            input.credentialScope,secondaryEndpoint,now-60
+          ).toArray()[0].total;
+          if (recent + secondaryPoints > maxEndpointPoints) {
+            const oldest = sql.exec(
+              "SELECT MIN(occurred_at_epoch) AS oldest FROM quota_secondary_endpoint_points WHERE credential_scope=? AND endpoint_key=? AND occurred_at_epoch>?",
+              input.credentialScope,secondaryEndpoint,now-60
+            ).toArray()[0].oldest;
+            return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
+              reason:"SECONDARY_ENDPOINT_POINT_BUDGET",retryAtEpoch:oldest+60};
+          }
+        }
+
         const plans = [];
         for (const [bucketId, units] of entries) {
           const telemetry = sql.exec(
