@@ -75,6 +75,7 @@ export async function runQuotaBoundRequest({
 }) {
   if (typeof providerRequest !== "function" || typeof ledger?.reserve !== "function"
     || typeof ledger?.settle !== "function" || typeof ledger?.markUncertain !== "function"
+    || typeof ledger?.recordTelemetry !== "function"
     || typeof captureTelemetry !== "function" || typeof actualUsageFromResponse !== "function") {
     throw new TypeError("complete lifecycle dependencies required");
   }
