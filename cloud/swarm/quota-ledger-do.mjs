@@ -40,20 +40,20 @@ export class QuotaLedgerDO extends DurableObject {
       credential_scope TEXT NOT NULL,
       window_id TEXT NOT NULL
     )`);
-    sql.exec(`CREATE TABLE IF NOT EXISTS quota_buckets (
-      bucket_id TEXT PRIMARY KEY,
+    sql.exec(`CREATE TABLE IF NOT EXISTS quota_bucket_counters (
+      bucket_id TEXT NOT NULL,
+      provider_window_id TEXT NOT NULL,
       provider TEXT NOT NULL,
       credential_scope TEXT NOT NULL,
-      window_id TEXT NOT NULL,
-      limit_units INTEGER NOT NULL,
-      observed_remaining_units INTEGER NOT NULL,
-      observed_at_epoch INTEGER NOT NULL,
+      partition_window_id TEXT NOT NULL,
       safety_reserve_units INTEGER NOT NULL,
       recovery_reserve_units INTEGER NOT NULL,
       reserved_units INTEGER NOT NULL DEFAULT 0,
       committed_units INTEGER NOT NULL DEFAULT 0,
       committed_since_observation_units INTEGER NOT NULL DEFAULT 0,
-      uncertain_units INTEGER NOT NULL DEFAULT 0
+      uncertain_units INTEGER NOT NULL DEFAULT 0,
+      last_observed_at_epoch INTEGER NOT NULL,
+      PRIMARY KEY (bucket_id, provider_window_id)
     )`);
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_reservations (
       reservation_id TEXT PRIMARY KEY,
@@ -91,6 +91,7 @@ export class QuotaLedgerDO extends DurableObject {
     )`);
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_telemetry_observations (
       observation_id TEXT PRIMARY KEY,
+      reservation_id TEXT,
       bucket_id TEXT NOT NULL,
       provider TEXT NOT NULL,
       credential_scope TEXT NOT NULL,
@@ -167,7 +168,7 @@ export class QuotaLedgerDO extends DurableObject {
           result = this.#markUncertain(input, auth.callerId);
           break;
         case "recordTelemetry":
-          result = this.#recordTelemetry(input);
+          result = this.#recordTelemetry(input, auth.callerId);
           break;
         case "snapshot":
           result = this.#snapshot();
