@@ -1414,7 +1414,8 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
       callerId:"secondary",secret:"secondary-test-secret-0123456789abcdef"
     });
     expect(denied.httpStatus).toBe(403);
-    expect(denied.body.error.message).toMatch(/not permitted/);
+    const snapshot = await call(stub,"snapshot",input);
+    expect(snapshot.reservations[0].status).toBe("UNCERTAIN_BUDGET_RETAINED");
   });
 
   it("derives collision-safe object names from the provider, credential and window tuple", () => {
