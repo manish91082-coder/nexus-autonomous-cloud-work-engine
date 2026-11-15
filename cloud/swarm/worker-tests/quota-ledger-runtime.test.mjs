@@ -4,8 +4,8 @@ import { quotaLedgerObjectName } from "../quota-ledger-contract.mjs";
 
 const identity = (suffix) => ({
   provider: "github",
-  credentialScope: "installation-42/repository-99",
-  windowId: "hour-2026-11-15T18",
+  credentialScope: "installation-42/repository-99/" + suffix,
+  windowId: "hour-2026-11-15T18/" + suffix,
   controlPlaneProvider: "cloudflare",
   reservationId: "reservation-" + suffix,
   workerId: "worker-" + suffix,
