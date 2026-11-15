@@ -31,7 +31,7 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase 59.18 GitHub Git-ref CAS lock prototype merged to master by PR #2 (merge commit 56e709168b947f4221fba27b342fb58b11326d7b). Live integration run 43686678257: 20 contenders -> 1 winner/19 BUSY, lease released, zero active leases, 15-event SHA-256 journal verified. Prototype remains disabled for all project-cell and ChatGPT-thread writes pending branch ruleset, GitHub App installation, quota arbiter, client integration and soak tests.",
+      "status": "P59-003 IN_PROGRESS; Phase59.18 Git-ref CAS prototype merged by PR #2. Phase59.19 quota arbiter merged by PR #3 (commit 11426eb45945eb739d0c922c9b2aac48bc93be33), CI 43689177099 SUCCESS. 36 conservative reservation units/hour on controller lock-store (360 REST request budget), project-fair shares and 4 P10CR emergency units. Not enabled for any project clients. Flat journal 1000-file audit cap blocks activation pending partition/pagination and 30-day verification; request calibration, branch ruleset, GitHub App, client integration and soak remain.",
       "last_observed_head": "5f502ebcd112b737fc07ec2e84270b298d42777a",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
@@ -64,7 +64,34 @@
       "phase59_18_production_integrated": false,
       "phase59_18_pr_number": 2,
       "phase59_18_pr_status": "MERGED",
-      "phase59_18_merge_commit": "56e709168b947f4221fba27b342fb58b11326d7b"
+      "phase59_18_merge_commit": "56e709168b947f4221fba27b342fb58b11326d7b",
+      "phase59_19_report": "research/PHASE_59_19_FEDERATION_QUOTA_ARBITER_PROTOTYPE_2026-11-15.md",
+      "phase59_19_pr_number": 3,
+      "phase59_19_pr_status": "MERGED",
+      "phase59_19_merge_commit": "11426eb45945eb739d0c922c9b2aac48bc93be33",
+      "phase59_19_ci_run_id": 43689177099,
+      "phase59_19_quota_arbiter_enabled": false,
+      "phase59_19_quota_policy": {
+        "global_reservations_per_utc_hour": 36,
+        "requests_per_reservation": 10,
+        "conservative_controller_requests_per_hour": 360,
+        "project_caps": {
+          "P10CR": 12,
+          "FLASHLOAN-RESEARCH": 8,
+          "ZCIRA": 6,
+          "DAILY1000": 4,
+          "OTHER": 2
+        },
+        "p10cr_emergency_reserve_per_hour": 4,
+        "scope": "controller repository lock-store only; not account-wide Actions minutes or other repositories' GITHUB_TOKEN quotas"
+      },
+      "phase59_19_activation_blockers": [
+        "flat event journal 1000-file audit cap; partition/pagination and 30-day verification",
+        "measured REST call calibration",
+        "branch ruleset not verified",
+        "GitHub App not installed",
+        "client integration and 7/30-day soak"
+      ]
     },
     {
       "project_id": "FLASHLOAN-RESEARCH",
