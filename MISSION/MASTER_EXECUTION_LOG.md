@@ -327,3 +327,14 @@ No testnet deployment, X post, video, submission, award or settled revenue is cl
 - Phase59.26 safe handoff is complete. P59-001 is now the sole active task for evidence-backed V5 portfolio-wide revenue-source research. P59-003 is PAUSED, not abandoned, with branch ruleset, owner-approved GitHub App, cross-run/global quota arbiter, P10CR worker client, read-only Flash Loan client, multi-host validation and 7/30-day soak still outstanding. P59-002 remains BLOCKED pending P59-001 source selection and product gates.
 - Mission economics unchanged: verified PCNE ₹0; authorized spend ₹0.
 - **Next:** reopen the exact V5 portfolio ranking and prior evidence reports, re-verify previous claims/current payout terms, compare all remaining source families, audit owned/licensable assets, and select one credible first product only after demand, payout, rights, unit economics and self-serve fulfilment gates pass. No build or spend before the decision dossier.
+
+
+## 2026-11-15 — PHASE 59.28 NEW CANDIDATE GATES (P59-001)
+
+- Added report `research/PHASE_59_28_NEW_CANDIDATE_GATES_2026-11-15.md` and V5 ranking section 16.
+- Generic eBRC/IRM/shipping-bill reconciliation: NO-GO candidate. DGFT first-party bulk self-certification and IRM API integration exist; eBRC.in/Eximfiles advertises a free exporter app at any volume and a free general-use API allowance; EximJinn and ExportEazy offer paid adjacent workflows; OneCompliance covers broader export compliance. No distinct gap or candidate-specific WTP established.
+- Generic AI-agency client-level cost/margin/billing ledger: NO-GO as a clone. Walleta Agency directly markets the core feature bundle at $149/$349/$599 per month; adjacent agent observability/audit alternatives are crowded and many are open source/free. Parent AI/API source family remains open only for a differentiated, evidence-backed workflow.
+- Gumroad India INR payout: qualified distribution rail only; no product selected. Direct fee is 10% + $0.50 plus card processing; Discover is 30%; $100 standard payout threshold and KYC/account review apply.
+- V5 provisional first source family remains productized B2B / vertical SaaS / marketplace-distributed apps. No concrete product GO, no build, no spend. PCNE ₹0; authorized spend ₹0.
+- P59-001 remains sole active task. P59-003 remains PAUSED; P59-002 remains BLOCKED.
+- **Next:** complete remaining source-family scorecard with unknowns explicit; re-audit only canonical repository's eight assets; compare any rights-cleared owned asset against a greenfield buyer problem. Require two independent demand signals, 10–15 substitutes, price-bearing WTP, India payout, positive fully-loaded economics, rights and self-serve gates before build.
