@@ -1,0 +1,13 @@
+{
+  "name": "p10cr-quota-ledger-runtime-test",
+  "main": "./quota-ledger-worker.mjs",
+  "compatibility_date": "2026-11-15",
+  "durable_objects": {
+    "bindings": [
+      { "name": "QUOTA_LEDGER", "class_name": "QuotaLedgerDO" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["QuotaLedgerDO"] }
+  ]
+}
