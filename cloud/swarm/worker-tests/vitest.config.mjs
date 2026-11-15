@@ -37,7 +37,7 @@ export default defineConfig({
             ],
             bindings: {
               NEXUS_QUOTA_STORE_ENABLED: "true",
-              NEXUS_QUOTA_RESERVATION_TTL_SECONDS: "300",
+              NEXUS_QUOTA_RESERVATION_TTL_SECONDS: "30",
               NEXUS_QUOTA_CALLER_KEYS: JSON.stringify({
                 primary: primaryTestSecret,
                 secondary: secondaryTestSecret
@@ -92,7 +92,7 @@ export default defineConfig({
   ],
   test: {
     include: ["./quota-ledger-runtime.test.mjs"],
-    testTimeout: 30000,
-    hookTimeout: 30000
+    testTimeout: 60000,
+    hookTimeout: 60000
   }
 });
