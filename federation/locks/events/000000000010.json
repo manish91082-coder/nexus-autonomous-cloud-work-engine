@@ -1,0 +1,12 @@
+{
+  "sequence": 10,
+  "event_id": "3e846aca-61e0-48d5-a63d-d49dbe011a4d",
+  "kind": "LEASE_RELEASED",
+  "timestamp_utc": "2026-11-15T06:40:53Z",
+  "actor": "probe-worker-11",
+  "scope": "P10CR-CAS-PROBE/manish91082-coder/nexus-autonomous-cloud-work-engine/CAS-PROBE-43686530949-1",
+  "fencing_token": 5,
+  "previous_event_hash": "935b716a6fd9f74ee4ff15f59888cb7460918f5a14ad559cb0b5b77e12bfabb9",
+  "payload": {},
+  "event_hash": "c60d082a0cf0d4cdcf72a2de63acd35bb506a23ded5582f3c34808ee40ddbd24"
+}
