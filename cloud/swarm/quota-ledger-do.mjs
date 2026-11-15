@@ -461,12 +461,22 @@ export class QuotaLedgerDO extends DurableObject {
       || Array.isArray(telemetry.provenance)) {
       throw new QuotaLedgerError("telemetry provenance required");
     }
+    const endpoint = nonEmpty(telemetry.provenance.endpoint, "provenance.endpoint");
+    const method = nonEmpty(telemetry.provenance.method, "provenance.method").toUpperCase();
+    const status = integer(telemetry.provenance.status, "provenance.status", 100);
+    if (!/^[A-Z]+ \/[A-Za-z0-9._/-]{1,220}$/.test(endpoint) || endpoint.includes("?")
+      || !["GET", "HEAD", "OPTIONS", "POST", "PATCH", "PUT", "DELETE"].includes(method)
+      || status > 599) {
+      throw new QuotaLedgerError("unsafe telemetry provenance fields");
+    }
+    const requestId = typeof telemetry.provenance.request_id === "string"
+      && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(telemetry.provenance.request_id)
+      ? telemetry.provenance.request_id : null;
     const provenance = {
-      endpoint: nonEmpty(telemetry.provenance.endpoint, "provenance.endpoint"),
-      method: nonEmpty(telemetry.provenance.method, "provenance.method"),
-      status: integer(telemetry.provenance.status, "provenance.status", 1),
-      request_id: typeof telemetry.provenance.request_id === "string"
-        ? telemetry.provenance.request_id.slice(0, 256) : null,
+      endpoint,
+      method,
+      status,
+      request_id: requestId,
       source: telemetry.provenance.source
     };
     if (provenance.source !== telemetry.telemetry_source) {
