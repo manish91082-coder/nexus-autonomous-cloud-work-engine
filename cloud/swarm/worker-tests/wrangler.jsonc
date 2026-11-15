@@ -1,7 +1,7 @@
 {
   "$schema": "https://developers.cloudflare.com/workers/wrangler/config-schema.json",
   "name": "nexus-quota-ledger-runtime-tests",
-  "main": "../quota-ledger-do.mjs",
+  "main": "../quota-ledger-worker.mjs",
   "compatibility_date": "2026-11-15",
   "durable_objects": {
     "bindings": [
