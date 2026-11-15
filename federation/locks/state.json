@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "federation_id": "MANISH-AI-PROJECT-FEDERATION-2026",
+  "status": "PROTOTYPE_NOT_ENABLED_FOR_CROSS_PROJECT_WRITES",
+  "backend": "GITHUB_GIT_REF_FAST_FORWARD_CAS",
+  "generation": 14,
+  "next_fencing_token": 7,
+  "max_active_leases": 8,
+  "lease_seconds": 900,
+  "heartbeat_seconds": 300,
+  "leases": [],
+  "quota_reservations": [],
+  "idempotency_records": [],
+  "updated_at_utc": "2026-11-15T06:42:47Z",
+  "event_sequence": 14,
+  "last_event_hash": "5e2b39b152d9934d7c43716ecbcaf6bef693cd6bcdf87a74369274b764e5c6c7"
+}

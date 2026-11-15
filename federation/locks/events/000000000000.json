@@ -1,0 +1,14 @@
+{
+  "sequence": 0,
+  "event_id": "genesis-2026-11-15",
+  "kind": "FEDERATION_LOCK_STORE_INITIALIZED",
+  "timestamp_utc": "2026-11-15T00:00:00Z",
+  "actor": "P10CR_CONTROLLER",
+  "previous_event_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "payload": {
+    "branch": "federation-locks",
+    "base_commit": "392b21b80dccb29a48e6e00138944b41b2661383",
+    "backend": "GITHUB_GIT_REF_FAST_FORWARD_CAS"
+  },
+  "event_hash": "a818fe7ae84d6e0f1317f81df2f5ca3bdb147d46a5ce270839781b1a0e791762"
+}
