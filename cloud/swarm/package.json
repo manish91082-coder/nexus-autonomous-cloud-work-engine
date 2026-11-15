@@ -1,0 +1,12 @@
+{
+  "name": "p10cr-quota-ledger-runtime-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:runtime": "vitest run --config vitest.config.mjs"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "1.8.2",
+    "vitest": "4.1.11"
+  }
+}
