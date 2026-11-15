@@ -9,7 +9,7 @@
 
 1. **B2B productized software / vertical SaaS / marketplace-distributed apps remain the provisional first source family.** This is a source-family ranking, not a product GO. Recurring contracts, software distribution and platform billing create a plausible route to cumulative portfolio earnings, but reachable buyers, candidate-specific WTP, conversion, retention and full delivery costs are not yet evidenced.
 2. **No canonical existing product passes the first-product gate.** The eight assets in `control/product_registry.json` were reconciled against the prior Phase 59.2 source-level audit and current registry dispositions. The most complete commercial utility (Recruitment Agency Revenue Assurance Desk) remains frozen after its current generic proposition failed differentiation/distribution qualification. Repository possession is not a legal chain-of-title opinion.
-3. **Tech Cloud ERP remains UNVERIFIED and cannot be compared as an owned asset.** The bounded GitHub/Dropbox search did not surface a source tree, module inventory or rights documents. This does not prove non-existence elsewhere.
+
 4. **Atlassian Forge remains a priority distribution lane, but the newly screened generic Jira audit/compliance evidence products are not selected.** Marketplace listings show existing paid products, but one reviewed listing reports one install/no reviews and another reports no installs. Those public counters are not reliable evidence of paid adoption. Existing feature overlap is already material.
 5. **No credible revenue scenarios are calculated.** Candidate-specific reachable buyer counts, price-bearing WTP, conversion, churn and fully-loaded costs are absent. Numeric scenarios would be invented.
 6. P59-002 remains BLOCKED; P59-003 remains PAUSED; Phase60 cloud PoC remains deferred. No build, listing, account onboarding, KYC, terms acceptance or spend.
@@ -57,7 +57,7 @@ Evidence basis: current `control/product_registry.json`, Phase 59.2 asset audit 
 ### Existing asset vs greenfield decision
 
 - **Existing canonical route:** Recruitment Desk has the best technical completeness but fails current differentiation, distribution and scalable demand gates. Other assets are less complete, duplicate, generic or unvalidated. None is a rational paid launch merely because code already exists.
-- **Potential owned ERP route:** Tech Cloud ERP is user-reported as a 35-module system, but no source tree, module list, legal owner evidence, deployment proof or commercial reuse rights were surfaced in connected GitHub/Dropbox. It receives **zero asset-readiness credit** until inspectable evidence exists. This is an evidence classification, not a claim the asset does not exist.
+
 - **Greenfield route:** can be scoped around a verified recurring buyer workflow, but no candidate in this batch passes demand and WTP gates. Greenfield is therefore not approved either.
 - **Decision:** do not force a weak existing asset into the market; do not start greenfield development without buyer proof. Continue research only.
 
@@ -96,7 +96,7 @@ This is a channel/problem screen, not a recommendation to build a compliance pro
 
 1. Continue P59-001 with a different buyer-problem discovery lane, not another generic ERP clone: identify operational workflows with measurable recurring financial leakage, a clear budget owner, and public evidence from independent buyers.
 2. Keep Atlassian Forge as a distribution lane while screening a different problem; no product selected from the audit/compliance cluster.
-3. Keep Tech Cloud ERP evidence debt open. Do not count it as owned/licensable until source, legal chain of title, module inventory, dependencies and deployment/support evidence are independently inspectable.
+
 4. Do not import or modify any cross-project candidate (including AgentMargin) into this canonical mission repository.
 5. Product selection still requires: two independent strong demand signals; 10–15 substitute audit; buyer-specific price-bearing WTP; reachable organic/self-serve distribution; India payout eligibility; rights; privacy/security; support plan; positive fully-loaded unit economics.
 6. Keep P59-002 BLOCKED, P59-003 PAUSED and Phase60 cloud PoC deferred. No build, public listing, KYC, terms acceptance or spend.
