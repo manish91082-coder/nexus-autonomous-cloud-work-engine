@@ -31,21 +31,12 @@ export default {
     const name = quotaLedgerObjectName(input.provider, input.credentialScope, input.windowId);
     const id = env.QUOTA_LEDGER.idFromName(name);
     const stub = env.QUOTA_LEDGER.get(id);
-    let result;
-    switch (body.action) {
-      case "reserve":
-        result = await stub.reserve(input);
-        break;
-      case "settle":
-        result = await stub.settle(input);
-        break;
-      case "markUncertain":
-        result = await stub.markUncertain(input);
-        break;
-      case "snapshot":
-        result = await stub.snapshot();
-        break;
-    }
-    return Response.json(result);
+    const response = await stub.fetch(new Request("https://quota-ledger.internal/rpc", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ action: body.action, input })
+    }));
+    const result = await response.json();
+    return Response.json(result, { status: response.status });
   }
 };
