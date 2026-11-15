@@ -46,7 +46,7 @@ export class QuotaLedgerDO extends DurableObject {
         "SELECT reservation_id FROM quota_reservations WHERE reservation_id = ?",
         input.reservationId
       ).toArray()[0];
-      if (prior) return { reservationId: input.reservationId, status: "DUPLICATE_RESERVATION" };
+      if (prior) throw new QuotaLedgerError("duplicate reservation id");
 
       // Refresh each bucket only from newer telemetry. Same-timestamp readings
       // can only reduce observed remaining; stale observations cannot replenish it.
@@ -88,19 +88,9 @@ export class QuotaLedgerDO extends DurableObject {
         const remaining = row.observed_remaining_units - row.safety_reserve_units
           - row.recovery_reserve_units - row.reserved_units
           - row.committed_units - row.uncertain_units;
-        if (units > remaining) return {
-          reservationId: input.reservationId,
-          status: "WAITING_FOR_QUOTA",
-          reason: "bucket capacity or protected reserve exhausted",
-          bucketId
-        };
+        if (units > remaining) throw new QuotaLedgerExhausted(`${bucketId} exhausted; WAITING_FOR_QUOTA`);
         if (b.nowEpoch - row.observed_at_epoch > b.maxTelemetryAgeSeconds) {
-          return {
-            reservationId: input.reservationId,
-            status: "WAITING_FOR_QUOTA",
-            reason: "stored telemetry is stale",
-            bucketId
-          };
+          throw new QuotaLedgerError("stored telemetry is stale; WAITING_FOR_QUOTA");
         }
       }
 
