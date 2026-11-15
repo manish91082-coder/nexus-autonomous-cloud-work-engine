@@ -51,7 +51,6 @@ async function mockedGitHubFetch(request, owner, repo, resetAtEpoch) {
     || url.search) {
     throw new TypeError("shadow provider received an unreviewed request");
   }
-  const now = Math.floor(Date.now() / 1000);
   return new Response(JSON.stringify({
     id: 424242,
     full_name: `${owner}/${repo}`,
