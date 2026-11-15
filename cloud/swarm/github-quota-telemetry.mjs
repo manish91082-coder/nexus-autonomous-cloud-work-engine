@@ -213,6 +213,9 @@ export function parseGitHubRateLimitError({status, headers, body = null, observe
   if (status === 200 && !messageIndicatesLimit) {
     throw new GitHubQuotaTelemetryError("HTTP 200 response does not contain a rate-limit error");
   }
+  if (status === 403 && !messageIndicatesLimit && retryAfter === null && remaining !== 0) {
+    throw new GitHubQuotaTelemetryError("HTTP 403 response is not identified as a rate-limit error");
+  }
   if (remaining === 0 && reset !== null && reset > observed) {
     return {
       status: "COOLDOWN",
