@@ -31,15 +31,20 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase 59.14 B4 exact GitHub Actions CI SUCCESS on SHA 8b52ecca1c6007c13af0bf368e440b1b8e51d8c4 (run 43685216997), 18/18 tests pass including abrupt process crash recovery and Linux process-tree kill; all 14 workflows inventoried. B4 standalone only; production worker/federation runtime not integrated; no AI provider configured.",
-      "last_observed_head": "0180315b561db6f7548072acc8e3f8b5d9e5acbc",
+      "status": "P59-003 IN_PROGRESS; Phase 59.15 B4 exact GitHub Actions CI SUCCESS on SHA 9d52266067751a28b3302cb34e43056ee991d8fc (run 43685420046), 21/21 tests pass including SQLite backup/restore, six crash-window recoveries, crash-after-finish durability and Linux process-tree termination. All 14 workflows inventoried. B4 remains standalone; no production integration, shared cross-host lock/quota runtime or AI provider.",
+      "last_observed_head": "30f2d955edf4cecb344b9c5d624b279e97c4aa2d",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
       "phase59_14_report": "research/PHASE_59_14_B4_CRASH_RECOVERY_AND_WORKFLOW_INVENTORY_2026-11-15.md",
       "phase59_14_test_sha": "8b52ecca1c6007c13af0bf368e440b1b8e51d8c4",
       "phase59_14_ci_run_id": 43685216997,
       "phase59_14_workflow_count": 14,
-      "phase59_14_production_integrated": false
+      "phase59_14_production_integrated": false,
+      "phase59_15_report": "research/PHASE_59_15_B4_BACKUP_RESTORE_AND_CRASH_SOAK_2026-11-15.md",
+      "phase59_15_test_sha": "9d52266067751a28b3302cb34e43056ee991d8fc",
+      "phase59_15_ci_run_id": 43685420046,
+      "phase59_15_test_count": 21,
+      "phase59_15_production_integrated": false
     },
     {
       "project_id": "FLASHLOAN-RESEARCH",
