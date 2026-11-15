@@ -1445,37 +1445,17 @@ describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
     expect(result.repository.full_name).toBe("acme/demo");
     expect(result.accounting.telemetryStatus).toBe("RECORDED");
     expect(result.accounting.settlementStatus).toBe("SETTLED");
+    const duplicateResponse = await env.READONLY_SWARM.fetch(new Request(
+      "https://readonly-swarm.internal/run",
+      {method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(envelope)}
+    ));
+    const duplicate = await duplicateResponse.json();
+    expect(duplicate.status).toBe("DUPLICATE_REQUEST_NOT_REPLAYED");
+    expect(duplicate.providerAttempted).toBe(false);
     const snapshot = await call(stub,"snapshot",input);
     expect(snapshot.reservations).toHaveLength(1);
     expect(snapshot.reservations[0].status).toBe("SETTLED");
     expect(snapshot.secondaryInflight).toHaveLength(0);
-    expect(snapshot.secondaryEndpointPoints).toHaveLength(1);
-  });
-
-  it("suppresses duplicate read-only swarm tasks before invoking the shadow provider", async () => {
-    const input = {
-      ...identity("mocked-shadow/readonly-worker-duplicate","github.rest.repositories.get.v1"),
-      credentialScope:"mocked-shadow/readonly-worker"
-    };
-    const stub = stubFor(input);
-    await seedBucket(stub,input,"core",5000,{limitUnits:5000});
-    const envelope = {
-      schema_version:"1.0",
-      run_id:"phase44-shadow-run",
-      task_id:"github-repo-metadata",
-      payload:{owner:"acme",repo:"demo",request_id:"phase44-shadow-duplicate-001"}
-    };
-    const invoke = () => env.READONLY_SWARM.fetch(new Request(
-      "https://readonly-swarm.internal/run",
-      {method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(envelope)}
-    ));
-    const first = await (await invoke()).json();
-    const second = await (await invoke()).json();
-    expect(first.status).toBe("READ_ONLY_TASK_SUCCEEDED");
-    expect(second.status).toBe("DUPLICATE_REQUEST_NOT_REPLAYED");
-    expect(second.providerAttempted).toBe(false);
-    const snapshot = await call(stub,"snapshot",input);
-    expect(snapshot.reservations).toHaveLength(1);
     expect(snapshot.secondaryEndpointPoints).toHaveLength(1);
   });
 
