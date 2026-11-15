@@ -853,8 +853,8 @@ export class QuotaLedgerDO extends DurableObject {
     return this.ctx.storage.transactionSync(() => {
       const row = sql.exec("SELECT * FROM quota_reservations WHERE reservation_id=?",
         input.reservationId).toArray()[0];
-      if (!row || row.worker_id !== input.workerId || row.caller_id !== callerId) {
-        throw new QuotaLedgerError("reconciliation reservation owner mismatch");
+      if (!row || row.worker_id !== input.workerId) {
+        throw new QuotaLedgerError("reconciliation reservation worker mismatch");
       }
       if (row.status === "RECONCILED_TELEMETRY_LINKED") {
         return {status:"ALREADY_RECONCILED",reservationId:input.reservationId};
