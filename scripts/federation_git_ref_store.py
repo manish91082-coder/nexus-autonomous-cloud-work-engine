@@ -346,6 +346,34 @@ class GitHubGitRefStore:
             raise StaleFence("lease expired")
         return True
 
+
+    def verify_journal(self):
+        _, _, state = self._read_snapshot()
+        encoded_dir = urllib.parse.quote(self.events_dir, safe="/")
+        listing = self._request("GET", f"/repos/{self.repository}/contents/{encoded_dir}?ref={urllib.parse.quote(self.branch)}")
+        if not isinstance(listing, list) or len(listing) > 1000:
+            raise FederationLockError("event directory listing invalid or exceeds 1000-file audit cap")
+        paths = sorted(
+            item.get("path", "") for item in listing
+            if isinstance(item, dict) and item.get("type") == "file" and item.get("name", "").endswith(".json")
+        )
+        events = []
+        for path in paths:
+            encoded_path = urllib.parse.quote(path, safe="/")
+            content = self._request("GET", f"/repos/{self.repository}/contents/{encoded_path}?ref={urllib.parse.quote(self.branch)}")
+            try:
+                raw = __import__("base64").b64decode(content["content"]).decode("utf-8")
+                events.append(json.loads(raw))
+            except Exception as exc:
+                raise FederationLockError("event file is missing or malformed") from exc
+        if len(events) != state["event_sequence"] + 1:
+            raise FederationLockError("event count does not match state checkpoint")
+        if not verify_event_chain(events):
+            raise FederationLockError("append-only event hash chain verification failed")
+        if not events or events[-1].get("event_hash") != state["last_event_hash"]:
+            raise FederationLockError("state last_event_hash does not match journal tail")
+        return {"event_count": len(events), "last_event_hash": state["last_event_hash"], "verified": True}
+
     def snapshot(self):
         head, _, state = self._read_snapshot()
         return {"head_sha": head, "state": state}
