@@ -63,6 +63,24 @@ def canonical_json(value):
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
 
 
+
+def verify_event_chain(events, initial_hash="0" * 64):
+    previous = initial_hash
+    expected_sequence = 0
+    for event in events:
+        if not isinstance(event, dict) or event.get("sequence") != expected_sequence:
+            return False
+        body = {key: value for key, value in event.items() if key != "event_hash"}
+        if body.get("previous_event_hash") != previous:
+            return False
+        digest = hashlib.sha256(canonical_json(body).encode("utf-8")).hexdigest()
+        if event.get("event_hash") != digest:
+            return False
+        previous = digest
+        expected_sequence += 1
+    return True
+
+
 def validate_state(state):
     if not isinstance(state, dict) or state.get("schema_version") != "1.0":
         raise FederationLockError("unsupported lock state schema")
