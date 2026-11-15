@@ -190,3 +190,7 @@ See [Phase 59.27 report](research/PHASE_59_27_REVENUE_SOURCE_ECONOMICS_REVALIDAT
 - **Decision unchanged:** productized B2B / vertical SaaS / marketplace apps remain PROVISIONAL FIRST; no concrete product selected; P59-002 BLOCKED; P59-001 IN_PROGRESS; P59-003 PAUSED; PCNE ₹0; spend ₹0.
 - Next research: complete source-family scoring, verify Tech Cloud ERP ownership/source/module/rights evidence, compare one rights-cleared owned asset with one greenfield buyer problem, then perform 10–15 substitute audit and price-bearing demand verification.
 
+
+
+### 15.1 Existing asset discovery follow-up — Tech Cloud ERP
+A bounded read-only search of the connected GitHub account (15 repositories) and Dropbox was performed on 15-Nov-2026. No Tech Cloud ERP repository or matching Dropbox files were returned for five targeted queries. This does not prove the reported 35-module asset does not exist; other storage/account surfaces were not inspected. Ownership, source, module inventory, deployment, security, maintenance and licensing rights remain UNVERIFIED. Do not score the asset as owned/licensable until evidence is available.
