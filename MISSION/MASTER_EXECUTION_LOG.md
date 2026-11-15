@@ -352,3 +352,14 @@ No testnet deployment, X post, video, submission, award or settled revenue is cl
 - Owned-vs-greenfield decision: freeze feature development on existing assets. None passes buyer demand, rights, payout, unit economics and self-serve release gates. Greenfield B2B / vertical SaaS / marketplace-distributed software remains provisional first source family, concrete buyer problem not yet selected.
 - P59-001 remains sole active task; P59-003 paused; P59-002 blocked; PCNE ₹0; spend ₹0.
 - **Next:** complete weighted V5 source-family scorecard with evidence confidence and unknowns explicit; do not invent candidate-level forecasts. Then shortlist greenfield B2B buyer problems for two independent demand signals and 10–15 substitute audit. No build or spend before gates pass.
+
+
+## 2026-11-15 — PHASE 59.30 V5 WEIGHTED SOURCE-FAMILY SCORECARD
+
+- Added report `research/PHASE_59_30_V5_WEIGHTED_SOURCE_FAMILY_SCORECARD_2026-11-15.md`; V5 ranking section 18 appended.
+- Applied V5 weights 20/15/15/12/8/10/10/10 with conservative evidence-floor scoring. Unknown candidate-level evidence scores zero; scores are research-priority floors, not forecasts or product scores; hard gates override scores.
+- Evidence-floor ranking: Marketplace apps 38/100; B2B vertical SaaS 33; digital products 32; stock assets 29; creator IP/books 28; sponsorship/open-source 27; affiliate/advertising 26; AI/API 23; games 21; software/IP licensing 16; other lawful Internet-native models NOT SCREENED.
+- Atlassian Forge economics revalidated: eligible Forge apps receive 100% gross revenue share up to $1m lifetime; 83% developer share after threshold from 1-Oct-2026; $500 profit remittance threshold and 30–60-day payout; Forge free usage allowance then paid overage. India seller payout eligibility not confirmed.
+- Generic Jira AI-agent approval/audit app NO-GO after 15 direct/adjacent substitutes including Approval Flow, AgentGate, GitHub native agentic workflows and observability tools. Two Reddit threads show qualitative pain only, no buyer WTP.
+- Portfolio decision: marketplace-distributed B2B software / vertical SaaS remains provisional first source family; no concrete product selected; no build or spend. P59-001 active; P59-003 paused; P59-002 blocked; PCNE ₹0.
+- **Next:** discover a new recurring B2B workflow problem in a marketplace ecosystem, excluding rejected generic hypotheses. Require two independent buyer signals, 10–15 substitute audit, price-bearing WTP, India payout, positive fully-loaded economics, rights and self-serve fulfilment before build.
