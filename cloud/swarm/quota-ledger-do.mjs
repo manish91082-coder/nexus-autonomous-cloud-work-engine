@@ -57,6 +57,7 @@ export class QuotaLedgerDO extends DurableObject {
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_reservations (
       reservation_id TEXT PRIMARY KEY,
       worker_id TEXT NOT NULL,
+      caller_id TEXT NOT NULL,
       operation TEXT NOT NULL,
       reserved_by_bucket_json TEXT NOT NULL,
       actual_by_bucket_json TEXT,
@@ -120,13 +121,13 @@ export class QuotaLedgerDO extends DurableObject {
       let result;
       switch (body.action) {
         case "reserve":
-          result = this.#reserve(input);
+          result = this.#reserve(input, auth.callerId);
           break;
         case "settle":
-          result = this.#settle(input);
+          result = this.#settle(input, auth.callerId);
           break;
         case "markUncertain":
-          result = this.#markUncertain(input);
+          result = this.#markUncertain(input, auth.callerId);
           break;
         case "snapshot":
           result = this.#snapshot();
@@ -227,7 +228,7 @@ export class QuotaLedgerDO extends DurableObject {
     return true;
   }
 
-  #reserve(input) {
+  #reserve(input, callerId) {
     validateQuotaRequest(input);
     const sql = this.ctx.storage.sql;
     try {
@@ -307,9 +308,9 @@ export class QuotaLedgerDO extends DurableObject {
             units,bucketId);
         }
         sql.exec(`INSERT INTO quota_reservations
-          (reservation_id,worker_id,operation,reserved_by_bucket_json,status,created_at_epoch)
-          VALUES (?,?,?,?, 'RESERVED', ?)`,
-          input.reservationId,input.workerId,input.operation,JSON.stringify(input.costs),
+          (reservation_id,worker_id,caller_id,operation,reserved_by_bucket_json,status,created_at_epoch)
+          VALUES (?,?,?,?,?, 'RESERVED', ?)`,
+          input.reservationId,input.workerId,callerId,input.operation,JSON.stringify(input.costs),
           Math.min(...input.buckets.map(b=>b.nowEpoch)));
         return { reservationId: input.reservationId, status: "RESERVED", reservedByBucket: input.costs };
       });
@@ -321,7 +322,7 @@ export class QuotaLedgerDO extends DurableObject {
     }
   }
 
-  #settle(input) {
+  #settle(input, callerId) {
     nonEmpty(input?.reservationId, "reservationId");
     nonEmpty(input?.workerId, "workerId");
     if (!input.actualByBucket || typeof input.actualByBucket !== "object"
@@ -330,7 +331,7 @@ export class QuotaLedgerDO extends DurableObject {
     return this.ctx.storage.transactionSync(() => {
       const rec = sql.exec("SELECT * FROM quota_reservations WHERE reservation_id=?",
         input.reservationId).toArray()[0];
-      if (!rec || rec.worker_id !== input.workerId || rec.status !== "RESERVED") {
+      if (!rec || rec.worker_id !== input.workerId || rec.caller_id !== callerId || rec.status !== "RESERVED") {
         throw new QuotaLedgerError("reservation owner/state mismatch");
       }
       const reserved = JSON.parse(rec.reserved_by_bucket_json);
@@ -354,14 +355,14 @@ export class QuotaLedgerDO extends DurableObject {
     });
   }
 
-  #markUncertain(input) {
+  #markUncertain(input, callerId) {
     nonEmpty(input?.reservationId, "reservationId");
     nonEmpty(input?.workerId, "workerId");
     const sql = this.ctx.storage.sql;
     return this.ctx.storage.transactionSync(() => {
       const rec = sql.exec("SELECT * FROM quota_reservations WHERE reservation_id=?",
         input.reservationId).toArray()[0];
-      if (!rec || rec.worker_id !== input.workerId || rec.status !== "RESERVED") {
+      if (!rec || rec.worker_id !== input.workerId || rec.caller_id !== callerId || rec.status !== "RESERVED") {
         throw new QuotaLedgerError("reservation owner/state mismatch");
       }
       const reserved = JSON.parse(rec.reserved_by_bucket_json);
