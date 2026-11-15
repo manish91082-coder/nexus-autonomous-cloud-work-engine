@@ -1115,6 +1115,7 @@ export class QuotaLedgerDO extends DurableObject {
       return {
         status: "RECORDED",
         decision: reconciled.decision,
+        observationId,
         bucketId: incoming.bucket_id,
         current: reconciled.record
       };
@@ -1131,7 +1132,8 @@ export class QuotaLedgerDO extends DurableObject {
       telemetryObservations: sql.exec("SELECT * FROM quota_telemetry_observations ORDER BY observed_at_epoch").toArray(),
       secondaryControl: sql.exec("SELECT * FROM quota_secondary_control ORDER BY credential_scope").toArray()[0] ?? null,
       secondaryInflight: sql.exec("SELECT * FROM quota_secondary_inflight ORDER BY expires_at_epoch").toArray(),
-      secondaryEndpointPoints: sql.exec("SELECT * FROM quota_secondary_endpoint_points ORDER BY occurred_at_epoch").toArray()
+      secondaryEndpointPoints: sql.exec("SELECT * FROM quota_secondary_endpoint_points ORDER BY occurred_at_epoch").toArray(),
+      reconciliationAudit: sql.exec("SELECT * FROM quota_reconciliation_audit ORDER BY created_at_epoch").toArray()
     };
   }
 }
