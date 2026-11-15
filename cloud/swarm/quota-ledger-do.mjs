@@ -593,6 +593,56 @@ export class QuotaLedgerDO extends DurableObject {
     }
   }
 
+  #renewReservation(input, callerId) {
+    nonEmpty(input?.reservationId, "reservationId");
+    nonEmpty(input?.workerId, "workerId");
+    const heartbeatId = nonEmpty(input?.heartbeatId, "heartbeatId");
+    if (!/^[A-Za-z0-9._:-]{1,128}$/.test(heartbeatId)) throw new QuotaLedgerError("unsafe heartbeatId");
+    const expectedVersion = integer(input.expectedLeaseVersion, "expectedLeaseVersion");
+    const extensionSeconds = input.extensionSeconds === undefined
+      ? 120 : integer(input.extensionSeconds, "extensionSeconds", 30);
+    if (extensionSeconds > 300) throw new QuotaLedgerError("lease extension exceeds 300-second limit");
+    const maxLifetimeSeconds = Number(this.env?.NEXUS_QUOTA_MAX_RESERVATION_LIFETIME_SECONDS ?? 1800);
+    if (!Number.isSafeInteger(maxLifetimeSeconds) || maxLifetimeSeconds < 300 || maxLifetimeSeconds > 3600) {
+      throw new QuotaLedgerError("maximum reservation lifetime must be 300–3600 seconds");
+    }
+    const now = Math.floor(Date.now() / 1000);
+    const sql = this.ctx.storage.sql;
+    return this.ctx.storage.transactionSync(() => {
+      const row = sql.exec("SELECT * FROM quota_reservations WHERE reservation_id=?",
+        input.reservationId).toArray()[0];
+      if (!row || row.worker_id !== input.workerId || row.caller_id !== callerId
+        || row.status !== "RESERVED") {
+        throw new QuotaLedgerError("reservation owner/state mismatch");
+      }
+      if (row.expires_at_epoch <= now) throw new QuotaLedgerError("reservation lease already expired");
+      if (row.last_heartbeat_id === heartbeatId) {
+        return {status:"DUPLICATE_HEARTBEAT",reservationId:input.reservationId,
+          leaseVersion:row.lease_version,expiresAtEpoch:row.expires_at_epoch};
+      }
+      if (row.lease_version !== expectedVersion) {
+        throw new QuotaLedgerError("LEASE_VERSION_CONFLICT");
+      }
+      const lease = computeReservationLease({
+        nowEpoch:now,createdAtEpoch:row.created_at_epoch,
+        currentExpiresAtEpoch:row.expires_at_epoch,
+        extensionSeconds,maxLifetimeSeconds
+      });
+      if (lease.status !== "LEASE_RENEWED") {
+        return {status:lease.status,reservationId:input.reservationId,
+          leaseVersion:row.lease_version,expiresAtEpoch:row.expires_at_epoch,
+          hardDeadlineEpoch:lease.hardDeadlineEpoch};
+      }
+      const nextVersion = row.lease_version + 1;
+      sql.exec("UPDATE quota_reservations SET expires_at_epoch=?,lease_version=?,last_heartbeat_id=?,last_heartbeat_epoch=? WHERE reservation_id=? AND status='RESERVED'",
+        lease.expiresAtEpoch,nextVersion,heartbeatId,now,input.reservationId);
+      sql.exec("UPDATE quota_secondary_inflight SET expires_at_epoch=? WHERE reservation_id=?",
+        lease.expiresAtEpoch,input.reservationId);
+      return {status:"LEASE_RENEWED",reservationId:input.reservationId,
+        leaseVersion:nextVersion,expiresAtEpoch:lease.expiresAtEpoch,
+        hardDeadlineEpoch:lease.hardDeadlineEpoch};
+    });
+  }
   #expireReservations(now = Math.floor(Date.now() / 1000)) {
     const sql = this.ctx.storage.sql;
     const expired = sql.exec(
