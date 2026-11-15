@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { env } from "cloudflare:workers";
-import { quotaLedgerObjectName } from "../quota-ledger-contract.mjs";
+import { quotaLedgerObjectName, computeReservationLease } from "../quota-ledger-contract.mjs";
 import {
   parseGitHubRateLimitHeaders,
   parseGitHubRateLimitOverview,
@@ -72,7 +72,7 @@ async function seedBuckets(stub, input, entries) {
   return result;
 }
 
-describe("Phase 59.42 GitHub secondary rate-limit controller", () => {
+describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
   it("admits only from stored telemetry and returns provider-window reservations", async () => {
     const input = identity("first", "core10_search3");
     const stub = stubFor(input);
@@ -1252,6 +1252,111 @@ describe("Phase 59.42 GitHub secondary rate-limit controller", () => {
     });
     expect(blocked.status).toBe("WAITING_FOR_QUOTA");
     expect(blocked.reason).toBe("SECONDARY_RATE_LIMIT_COOLDOWN");
+  });
+
+  it("computes bounded reservation lease extensions and a hard lifetime deadline", () => {
+    expect(computeReservationLease({
+      nowEpoch:100,createdAtEpoch:100,currentExpiresAtEpoch:130,
+      extensionSeconds:120,maxLifetimeSeconds:300
+    })).toMatchObject({status:"LEASE_RENEWED",expiresAtEpoch:220,hardDeadlineEpoch:400});
+    expect(computeReservationLease({
+      nowEpoch:299,createdAtEpoch:0,currentExpiresAtEpoch:300,
+      extensionSeconds:300,maxLifetimeSeconds:300
+    })).toMatchObject({status:"LEASE_UNCHANGED",expiresAtEpoch:300,hardDeadlineEpoch:300});
+    expect(computeReservationLease({
+      nowEpoch:300,createdAtEpoch:0,currentExpiresAtEpoch:310,
+      extensionSeconds:120,maxLifetimeSeconds:300
+    })).toMatchObject({status:"LEASE_HARD_DEADLINE_REACHED",hardDeadlineEpoch:300});
+  });
+
+  it("renews reservation leases idempotently with version checks and a hard deadline", async () => {
+    const input = identity("lease-heartbeat","core10");
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",100);
+    expect((await call(stub,"reserve",input)).status).toBe("RESERVED");
+    const first = await call(stub,"renewReservation",{
+      ...input,heartbeatId:"heartbeat-1",expectedLeaseVersion:0,extensionSeconds:120
+    });
+    expect(first.status).toBe("LEASE_RENEWED");
+    expect(first.leaseVersion).toBe(1);
+    const duplicate = await call(stub,"renewReservation",{
+      ...input,heartbeatId:"heartbeat-1",expectedLeaseVersion:0,extensionSeconds:120
+    });
+    expect(duplicate.status).toBe("DUPLICATE_HEARTBEAT");
+    expect(duplicate.expiresAtEpoch).toBe(first.expiresAtEpoch);
+    const stale = await call(stub,"renewReservation",{
+      ...input,heartbeatId:"heartbeat-stale",expectedLeaseVersion:0,extensionSeconds:120
+    });
+    expect(stale.status).toBe("REJECTED");
+    expect(stale.error.message).toMatch(/LEASE_VERSION_CONFLICT/);
+    const second = await call(stub,"renewReservation",{
+      ...input,heartbeatId:"heartbeat-2",expectedLeaseVersion:1,extensionSeconds:300
+    });
+    expect(second.status).toBe("LEASE_RENEWED");
+    const snapshot = await call(stub,"snapshot",input);
+    const reservation = snapshot.reservations.find(x=>x.reservation_id===input.reservationId);
+    expect(reservation.lease_version).toBe(2);
+    expect(reservation.expires_at_epoch).toBeLessThanOrEqual(reservation.created_at_epoch+300);
+    const capped = await call(stub,"renewReservation",{
+      ...input,heartbeatId:"heartbeat-3",expectedLeaseVersion:2,extensionSeconds:300
+    });
+    expect(capped.status).toBe("LEASE_UNCHANGED");
+    expect(capped.expiresAtEpoch).toBe(reservation.expires_at_epoch);
+  });
+
+  it("reconciles uncertain units only when a linked authoritative response observation is current", async () => {
+    const input = identity("uncertain-linked-evidence","core10");
+    const stub = stubFor(input);
+    const seeded = await seedBucket(stub,input,"core",100);
+    expect((await call(stub,"reserve",input)).status).toBe("RESERVED");
+    const now = Math.floor(Date.now()/1000);
+    const telemetry = parseGitHubRateLimitHeaders({
+      headers:new Headers({
+        "x-ratelimit-limit":"100","x-ratelimit-remaining":"90","x-ratelimit-used":"10",
+        "x-ratelimit-reset":String(seeded.reset_at_epoch),"x-ratelimit-resource":"core"
+      }),
+      credentialScope:input.credentialScope,observedAtEpoch:now,
+      endpoint:"GET /repos/acme/demo",method:"GET",status:200
+    });
+    expect((await call(stub,"recordTelemetry",{
+      ...input,reservationId:input.reservationId,telemetry
+    })).status).toBe("RECORDED");
+    expect((await call(stub,"markUncertain",input)).status).toBe("UNCERTAIN_BUDGET_RETAINED");
+    const reconciled = await call(stub,"reconcileUncertain",input);
+    expect(reconciled.status).toBe("RECONCILED_TELEMETRY_LINKED");
+    expect(reconciled.reconciledBuckets).toEqual(["core"]);
+    expect(reconciled.remainingUncertainBuckets).toEqual([]);
+    const snapshot = await call(stub,"snapshot",input);
+    expect(snapshot.buckets[0].uncertain_units).toBe(0);
+    expect(snapshot.buckets[0].committed_units).toBe(10);
+    expect(snapshot.reconciliationAudit).toHaveLength(1);
+    expect(snapshot.reservations[0].status).toBe("RECONCILED_TELEMETRY_LINKED");
+  });
+
+  it("does not release uncertain quota when no linked provider response evidence exists", async () => {
+    const input = identity("uncertain-no-evidence","core10");
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",100);
+    expect((await call(stub,"reserve",input)).status).toBe("RESERVED");
+    expect((await call(stub,"markUncertain",input)).status).toBe("UNCERTAIN_BUDGET_RETAINED");
+    const result = await call(stub,"reconcileUncertain",input);
+    expect(result.status).toBe("UNCERTAIN_BUDGET_RETAINED");
+    expect(result.remainingUncertainBuckets).toEqual(["core"]);
+    const snapshot = await call(stub,"snapshot",input);
+    expect(snapshot.buckets[0].uncertain_units).toBe(10);
+  });
+
+  it("allows only the primary caller to reconcile uncertain reservations", async () => {
+    const input = identity("uncertain-primary-only","core10");
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",100);
+    await call(stub,"reserve",input);
+    await call(stub,"markUncertain",input);
+    const denied = await signedCall(stub,env,"reconcileUncertain",input,{
+      callerId:"secondary",secret:"secondary-test-secret-0123456789abcdef"
+    });
+    expect(denied.httpStatus).toBe(403);
+    expect(denied.body.error.message).toMatch(/not permitted/);
   });
 
   it("derives collision-safe object names from the provider, credential and window tuple", () => {
