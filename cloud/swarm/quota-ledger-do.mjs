@@ -10,6 +10,7 @@ import {
   requireQuotaStoreEnabled, nonEmpty, integer
 } from "./quota-ledger-contract.mjs";
 import { reconcileGitHubQuotaTelemetry } from "./github-quota-telemetry.mjs";
+import { getGitHubOperationDefinition } from "./github-operation-registry.mjs";
 export { QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest, requireQuotaStoreEnabled };
 
 const encoder = new TextEncoder();
@@ -60,12 +61,22 @@ export class QuotaLedgerDO extends DurableObject {
       worker_id TEXT NOT NULL,
       caller_id TEXT NOT NULL,
       operation TEXT NOT NULL,
+      request_fingerprint TEXT NOT NULL DEFAULT '',
+      expires_at_epoch INTEGER NOT NULL DEFAULT 0,
       reserved_by_bucket_json TEXT NOT NULL,
       actual_by_bucket_json TEXT,
       status TEXT NOT NULL,
       created_at_epoch INTEGER NOT NULL,
       settled_at_epoch INTEGER
     )`);
+    const reservationColumns = sql.exec("PRAGMA table_info(quota_reservations)").toArray();
+    if (!reservationColumns.some(column => column.name === "request_fingerprint")) {
+      sql.exec("ALTER TABLE quota_reservations ADD COLUMN request_fingerprint TEXT NOT NULL DEFAULT ''");
+    }
+    if (!reservationColumns.some(column => column.name === "expires_at_epoch")) {
+      sql.exec("ALTER TABLE quota_reservations ADD COLUMN expires_at_epoch INTEGER NOT NULL DEFAULT 0");
+      sql.exec("UPDATE quota_reservations SET expires_at_epoch=created_at_epoch+300 WHERE expires_at_epoch=0");
+    }
     sql.exec(`CREATE TABLE IF NOT EXISTS quota_auth_nonces (
       caller_id TEXT NOT NULL,
       nonce TEXT NOT NULL,
@@ -166,6 +177,15 @@ export class QuotaLedgerDO extends DurableObject {
           break;
         case "markUncertain":
           result = this.#markUncertain(input, auth.callerId);
+          break;
+        case "expireReservations":
+          if (auth.callerId !== "primary") {
+            throw new QuotaLedgerError("only primary caller may expire reservations");
+          }
+          result = this.ctx.storage.transactionSync(() => ({
+            status: "EXPIRY_SWEEP_COMPLETE",
+            expiredCount: this.#expireReservations()
+          }));
           break;
         case "recordTelemetry":
           result = this.#recordTelemetry(input, auth.callerId);
@@ -284,6 +304,18 @@ export class QuotaLedgerDO extends DurableObject {
       || Object.keys(costs).length === 0) {
       throw new QuotaLedgerError("operation cost is not verified; WAITING_FOR_QUOTA");
     }
+    if (input.requestFingerprint !== undefined) {
+      const reviewedOperation = getGitHubOperationDefinition(input.operation);
+      if (!reviewedOperation) {
+        throw new QuotaLedgerError("request fingerprint supplied for an unregistered operation");
+      }
+      const registeredEntries = Object.entries(costs);
+      if (registeredEntries.length !== 1
+        || registeredEntries[0][0] !== reviewedOperation.resource
+        || registeredEntries[0][1] !== reviewedOperation.primaryUnits) {
+        throw new QuotaLedgerError("server-side operation cost does not match reviewed registry");
+      }
+    }
     const entries = Object.entries(costs);
     for (const [bucketId, units] of entries) {
       if (!/^[a-z][a-z0-9_]{0,63}$/.test(bucketId)) {
@@ -305,13 +337,11 @@ export class QuotaLedgerDO extends DurableObject {
     const sql = this.ctx.storage.sql;
     const now = Math.floor(Date.now() / 1000);
     try {
+      const ttlSeconds = Number(this.env?.NEXUS_QUOTA_RESERVATION_TTL_SECONDS ?? 300);
+      if (!Number.isSafeInteger(ttlSeconds) || ttlSeconds < 30 || ttlSeconds > 900) {
+        throw new QuotaLedgerError("reservation TTL must be an integer from 30 to 900 seconds");
+      }
       return this.ctx.storage.transactionSync(() => {
-        const prior = sql.exec(
-          "SELECT reservation_id FROM quota_reservations WHERE reservation_id = ?",
-          input.reservationId
-        ).toArray()[0];
-        if (prior) return { reservationId: input.reservationId, status: "DUPLICATE_RESERVATION" };
-
         const identity = sql.exec("SELECT * FROM quota_meta WHERE singleton=1").toArray()[0];
         if (!identity) {
           return {reservationId:input.reservationId,status:"WAITING_FOR_QUOTA",
@@ -322,6 +352,12 @@ export class QuotaLedgerDO extends DurableObject {
           || identity.window_id !== input.windowId) {
           throw new QuotaLedgerError("Durable Object identity mismatch");
         }
+        this.#expireReservations(now);
+        const prior = sql.exec(
+          "SELECT reservation_id FROM quota_reservations WHERE reservation_id = ?",
+          input.reservationId
+        ).toArray()[0];
+        if (prior) return { reservationId: input.reservationId, status: "DUPLICATE_RESERVATION" };
 
         const plans = [];
         for (const [bucketId, units] of entries) {
@@ -410,10 +446,11 @@ export class QuotaLedgerDO extends DurableObject {
           };
         }
         sql.exec(`INSERT INTO quota_reservations
-          (reservation_id,worker_id,caller_id,operation,reserved_by_bucket_json,status,created_at_epoch)
-          VALUES (?,?,?,?,?, 'RESERVED', ?)`,
+          (reservation_id,worker_id,caller_id,operation,request_fingerprint,expires_at_epoch,
+           reserved_by_bucket_json,status,created_at_epoch)
+          VALUES (?,?,?,?,?,?,?, 'RESERVED', ?)`,
           input.reservationId,input.workerId,callerId,input.operation,
-          JSON.stringify(reservedByBucket),now);
+          input.requestFingerprint ?? "",now+ttlSeconds,JSON.stringify(reservedByBucket),now);
         return {
           reservationId:input.reservationId,
           status:"RESERVED",
@@ -429,6 +466,38 @@ export class QuotaLedgerDO extends DurableObject {
     }
   }
 
+  #expireReservations(now = Math.floor(Date.now() / 1000)) {
+    const sql = this.ctx.storage.sql;
+    const expired = sql.exec(
+      "SELECT * FROM quota_reservations WHERE status='RESERVED' AND expires_at_epoch <= ?",
+      now
+    ).toArray();
+    for (const row of expired) {
+      const reserved = JSON.parse(row.reserved_by_bucket_json);
+      const updates = [];
+      for (const [bucketId, reservation] of Object.entries(reserved)) {
+        if (!reservation || typeof reservation !== "object"
+          || !Number.isSafeInteger(reservation.units) || reservation.units < 1) {
+          throw new QuotaLedgerError("expired reservation envelope malformed");
+        }
+        const counter = sql.exec(
+          "SELECT * FROM quota_bucket_counters WHERE bucket_id=? AND provider_window_id=?",
+          bucketId, reservation.providerWindowId
+        ).toArray()[0];
+        if (!counter || counter.reserved_units < reservation.units) {
+          throw new QuotaLedgerError("expired reservation counter missing or inconsistent");
+        }
+        updates.push({bucketId,reservation});
+      }
+      for (const {bucketId,reservation} of updates) {
+        sql.exec("UPDATE quota_bucket_counters SET reserved_units=reserved_units-?, uncertain_units=uncertain_units+? WHERE bucket_id=? AND provider_window_id=?",
+          reservation.units,reservation.units,bucketId,reservation.providerWindowId);
+      }
+      sql.exec("UPDATE quota_reservations SET status='UNCERTAIN_BUDGET_RETAINED', settled_at_epoch=? WHERE reservation_id=? AND status='RESERVED'",
+        now,row.reservation_id);
+    }
+    return expired.length;
+  }
   #settle(input, callerId) {
     nonEmpty(input?.reservationId, "reservationId");
     nonEmpty(input?.workerId, "workerId");

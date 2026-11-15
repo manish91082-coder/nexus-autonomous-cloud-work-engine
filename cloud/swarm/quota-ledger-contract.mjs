@@ -42,6 +42,10 @@ export function validateQuotaRequest(input) {
   if (input.buckets !== undefined || input.costs !== undefined) {
     throw new QuotaLedgerError("caller-supplied telemetry and costs are forbidden; use server-side operation registry");
   }
+  if (input.requestFingerprint !== undefined
+    && (typeof input.requestFingerprint !== "string" || !/^[a-f0-9]{64}$/.test(input.requestFingerprint))) {
+    throw new QuotaLedgerError("requestFingerprint must be a lowercase SHA-256 hex digest");
+  }
   return true;
 }
 
