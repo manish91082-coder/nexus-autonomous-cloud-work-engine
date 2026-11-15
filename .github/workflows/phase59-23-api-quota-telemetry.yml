@@ -1,0 +1,39 @@
+name: Phase 59.23 API Quota Telemetry and Hard Ceiling
+
+on:
+  push:
+    branches:
+      - phase59-23-api-quota-telemetry
+    paths:
+      - 'scripts/github_api_quota_guard.py'
+      - 'scripts/federation_git_ref_store.py'
+      - 'tests/test_github_api_quota_guard.py'
+      - '.github/workflows/phase59-23-api-quota-telemetry.yml'
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-23-api-quota-telemetry-ci
+  cancel-in-progress: false
+
+jobs:
+  quota-guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout phase branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Compile quota guard and store
+        run: python3 -m py_compile scripts/github_api_quota_guard.py scripts/federation_git_ref_store.py
+      - name: Run API quota telemetry tests
+        run: python3 -m unittest discover -s tests -p 'test_github_api_quota_guard.py' -v
+      - name: Run federation lock, quota and partitioned journal regressions
+        run: |
+          python3 -m unittest discover -s tests -p 'test_federation_git_ref_store.py' -v
+          python3 -m unittest discover -s tests -p 'test_federation_quota_arbiter.py' -v
+          python3 -m unittest discover -s tests -p 'test_federation_partitioned_journal.py' -v
