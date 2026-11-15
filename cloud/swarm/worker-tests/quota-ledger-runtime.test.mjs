@@ -3,7 +3,8 @@ import { env } from "cloudflare:workers";
 import { quotaLedgerObjectName } from "../quota-ledger-contract.mjs";
 import {
   parseGitHubRateLimitHeaders,
-  parseGitHubRateLimitOverview
+  parseGitHubRateLimitOverview,
+  parseGitHubGraphqlRateLimit
 } from "../github-quota-telemetry.mjs";
 import { createSignedRequest, signedCall } from "./quota-auth-test-helper.mjs";
 
@@ -444,6 +445,84 @@ describe("Phase 59.37 authenticated internal quota RPC", () => {
     expect(snapshot.telemetryObservations).toHaveLength(1);
     expect(snapshot.telemetryCurrent[0].authority_rank).toBe(100);
     expect(JSON.parse(snapshot.telemetryCurrent[0].provenance_json).endpoint).toBe("GET /repos/acme/demo");
+  });
+
+  it("stores multiple GitHub resource buckets under one credential ledger partition", async () => {
+    const now = Math.floor(Date.now() / 1000);
+    const credentialScope = "github-app-installation:multi-resource";
+    const base = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
+    const stub = stubFor(base);
+    for (const resource of ["core", "search", "code_search"]) {
+      const telemetry = parseGitHubRateLimitHeaders({
+        headers: {
+          "x-ratelimit-limit":"5000","x-ratelimit-remaining":"4200",
+          "x-ratelimit-used":"800","x-ratelimit-reset":String(now + 3600),
+          "x-ratelimit-resource":resource
+        },
+        credentialScope,observedAtEpoch:now,
+        endpoint:"GET /repos/acme/demo",method:"GET",status:200
+      });
+      expect((await call(stub,"recordTelemetry",{...base,telemetry})).status).toBe("RECORDED");
+    }
+    const snapshot = await call(stub,"snapshot",base);
+    expect(snapshot.telemetryCurrent.map(x => x.bucket_id).sort()).toEqual([
+      "code_search","core","search"
+    ]);
+  });
+
+  it("enforces GraphQL rateLimit authority between periodic overview and response headers", async () => {
+    const now = Math.floor(Date.now() / 1000);
+    const credentialScope = "github-app-installation:graphql-authority";
+    const base = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
+    const stub = stubFor(base);
+    const resetAt = new Date((now + 3600) * 1000).toISOString();
+    const graphql = parseGitHubGraphqlRateLimit({
+      credentialScope,observedAtEpoch:now - 2,
+      payload:{data:{rateLimit:{
+        limit:5000,cost:13,remaining:4200,used:800,resetAt
+      }}}
+    });
+    expect((await call(stub,"recordTelemetry",{...base,telemetry:graphql})).decision).toBe("ACCEPT_INITIAL");
+    const reset = Math.floor(Date.parse(resetAt) / 1000);
+    const overview = parseGitHubRateLimitOverview({
+      credentialScope,observedAtEpoch:now - 1,
+      payload:{resources:{graphql:{limit:5000,used:900,remaining:4100,reset}}}
+    }).buckets[0];
+    expect((await call(stub,"recordTelemetry",{...base,telemetry:overview})).decision)
+      .toBe("KEEP_HIGHER_AUTHORITY_SOURCE");
+    const header = parseGitHubRateLimitHeaders({
+      headers:{
+        "x-ratelimit-limit":"5000","x-ratelimit-remaining":"4300",
+        "x-ratelimit-used":"700","x-ratelimit-reset":String(reset),
+        "x-ratelimit-resource":"graphql"
+      },
+      credentialScope,observedAtEpoch:now,
+      endpoint:"POST /graphql",method:"POST",status:200
+    });
+    expect((await call(stub,"recordTelemetry",{...base,telemetry:header})).decision)
+      .toBe("ACCEPT_HIGHER_AUTHORITY_SOURCE");
+    const snapshot = await call(stub,"snapshot",base);
+    expect(snapshot.telemetryCurrent[0].authority_rank).toBe(100);
+    expect(snapshot.telemetryCurrent[0].observed_remaining_units).toBe(4300);
+  });
+
+  it("rejects telemetry provenance whose endpoint method does not match its method field", async () => {
+    const now = Math.floor(Date.now() / 1000);
+    const credentialScope = "github-app-installation:provenance-mismatch";
+    const base = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
+    const stub = stubFor(base);
+    const telemetry = parseGitHubRateLimitHeaders({
+      headers:{
+        "x-ratelimit-limit":"5000","x-ratelimit-remaining":"4200",
+        "x-ratelimit-used":"800","x-ratelimit-reset":String(now + 3600),
+        "x-ratelimit-resource":"core"
+      },
+      credentialScope,observedAtEpoch:now,
+      endpoint:"GET /repos/acme/demo",method:"POST",status:200
+    });
+    const result = await call(stub,"recordTelemetry",{...base,telemetry});
+    expect(result.status).toBe("REJECTED");
+    expect(result.error.message).toBe("unsafe telemetry provenance fields");
   });
 
   it("does not let a newer periodic overview overwrite response-header authority", async () => {
