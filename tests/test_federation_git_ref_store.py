@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 
 from scripts.federation_git_ref_store import (
     CASConflict, LockBusy, StaleFence, claim_transition, heartbeat_transition,
-    release_transition, validate_state, verify_event_chain,
+    heartbeat_batch_transition, release_transition, validate_state, verify_event_chain,
 )
 
 T0 = datetime(2026, 11, 15, 6, 0, tzinfo=timezone.utc)
@@ -47,6 +47,40 @@ class FederationGitRefStateTests(unittest.TestCase):
         self.assertEqual(state["generation"], 3)
         self.assertTrue(verify_event_chain([e1, e2, e3], start_sequence=1))
         self.assertTrue(validate_state(state))
+
+    def test_batch_heartbeat_renews_eight_leases_with_one_event(self):
+        state = initial_state()
+        renewals = []
+        for i in range(8):
+            state, lease, _ = claim_transition(
+                state, f"P10CR-{i}", f"owner/repo-{i}", f"T-{i}", f"idem-{i}", f"worker-{i}", now=T0
+            )
+            renewals.append((lease["scope"], lease["worker_id"], lease["fencing_token"]))
+        before_events = state["event_sequence"]
+        renewed_state, leases, event = heartbeat_batch_transition(
+            state, renewals, now=T0 + timedelta(seconds=300)
+        )
+        self.assertEqual(len(leases), 8)
+        self.assertEqual(event["kind"], "LEASE_HEARTBEAT_BATCH")
+        self.assertEqual(renewed_state["event_sequence"], before_events + 1)
+        self.assertEqual(renewed_state["generation"], state["generation"] + 1)
+        self.assertTrue(all(x["expires_at_utc"] == "2026-11-15T06:20:00Z" for x in leases))
+        self.assertTrue(verify_event_chain([event], initial_hash=state["last_event_hash"],
+                                           start_sequence=before_events + 1))
+
+    def test_batch_heartbeat_is_atomic_when_any_member_is_stale(self):
+        state, lease, _ = claim_transition(
+            initial_state(), "P10CR", "owner/repo", "T-1", "idem-1", "worker-a", now=T0
+        )
+        with self.assertRaises(StaleFence):
+            heartbeat_batch_transition(
+                state,
+                [(lease["scope"], "worker-a", lease["fencing_token"]),
+                 ("missing/scope", "worker-b", 999)],
+                now=T0 + timedelta(seconds=300),
+            )
+        self.assertEqual(state["event_sequence"], 1)
+        self.assertEqual(state["leases"][0]["expires_at_utc"], "2026-11-15T06:15:00Z")
 
     def test_expired_lease_reclaim_increments_fencing_token(self):
         state, first, _ = claim_transition(
