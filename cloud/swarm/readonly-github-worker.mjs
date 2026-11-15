@@ -43,7 +43,7 @@ function validateEnvelope(value) {
  * This phase intentionally has no live-network implementation.
  * The only provider transport is a deterministic in-process shadow fixture.
  */
-async function mockedGitHubFetch(request, owner, repo) {
+async function mockedGitHubFetch(request, owner, repo, resetAtEpoch) {
   const url = new URL(request.url);
   if (request.method !== "GET"
     || url.hostname !== "api.github.com"
@@ -68,7 +68,7 @@ async function mockedGitHubFetch(request, owner, repo) {
       "x-ratelimit-limit": "5000",
       "x-ratelimit-remaining": "4999",
       "x-ratelimit-used": "1",
-      "x-ratelimit-reset": String(now + 3600),
+      "x-ratelimit-reset": String(resetAtEpoch),
       "x-ratelimit-resource": "core",
       "x-github-request-id": "P10CR-SHADOW-MOCK"
     }
@@ -88,6 +88,10 @@ export async function executeReadOnlyGitHubTask(env, envelope) {
     return { status: "WAITING_FOR_CONFIGURATION", reason: "shadow credential scope is not configured", providerAttempted: false };
   }
 
+  const shadowResetAtEpoch = Number(env.NEXUS_SWARM_SHADOW_RESET_EPOCH ?? (Math.floor(Date.now()/1000)+3600));
+  if (!Number.isSafeInteger(shadowResetAtEpoch) || shadowResetAtEpoch <= Math.floor(Date.now()/1000)) {
+    return {status:"WAITING_FOR_CONFIGURATION",reason:"invalid shadow telemetry reset window",providerAttempted:false};
+  }
   const request = new Request(`https://api.github.com/repos/${task.owner}/${task.repo}`, {
     method: "GET",
     headers: {
@@ -102,7 +106,7 @@ export async function executeReadOnlyGitHubTask(env, envelope) {
     request,
     requestId: task.requestId,
     workerId: WORKER_ID,
-    fetchImpl: req => mockedGitHubFetch(req, task.owner, task.repo)
+    fetchImpl: req => mockedGitHubFetch(req, task.owner, task.repo, shadowResetAtEpoch)
   });
 
   if (result.status === "DUPLICATE_REQUEST_NOT_REPLAYED") {
