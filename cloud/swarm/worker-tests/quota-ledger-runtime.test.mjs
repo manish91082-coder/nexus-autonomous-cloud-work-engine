@@ -8,6 +8,10 @@ import {
 } from "../github-quota-telemetry.mjs";
 import { createSignedRequest, signedCall } from "./quota-auth-test-helper.mjs";
 import { executeQuotaGuardedGitHubRequest } from "../quota-ledger-client.mjs";
+import {
+  classifyGitHubRateLimitResponse,
+  secondaryBackoffSeconds
+} from "../github-secondary-rate-limit.mjs";
 
 const identity = (suffix, operation = "core10") => ({
   provider: "github",
@@ -68,7 +72,7 @@ async function seedBuckets(stub, input, entries) {
   return result;
 }
 
-describe("Phase 59.41 guarded GitHub request lifecycle", () => {
+describe("Phase 59.42 GitHub secondary rate-limit controller", () => {
   it("admits only from stored telemetry and returns provider-window reservations", async () => {
     const input = identity("first", "core10_search3");
     const stub = stubFor(input);
@@ -1093,6 +1097,121 @@ describe("Phase 59.41 guarded GitHub request lifecycle", () => {
       request:new Request("https://api.github.com/repos/acme/demo?per_page=1"),
       fetchImpl:async()=>{throw new Error("must not run");}
     })).rejects.toThrow(/UNREVIEWED_QUERY_SHAPE_NO_GO/);
+  });
+
+  it("classifies GitHub primary and secondary 403/429 evidence without treating permission 403 as throttling", () => {
+    const now = Math.floor(Date.now()/1000);
+    expect(classifyGitHubRateLimitResponse({
+      status:403,headers:{},message:"Resource not accessible by integration",nowEpoch:now
+    }).rateLimited).toBe(false);
+    expect(classifyGitHubRateLimitResponse({
+      status:429,headers:{"retry-after":"120"},message:"",nowEpoch:now
+    })).toMatchObject({
+      rateLimited:true,kind:"SECONDARY_LIMIT",retryAfterSeconds:120,reason:"RETRY_AFTER_HEADER"
+    });
+    expect(classifyGitHubRateLimitResponse({
+      status:403,
+      headers:{"x-ratelimit-remaining":"0","x-ratelimit-reset":String(now+3600)},
+      message:"API rate limit exceeded",nowEpoch:now
+    })).toMatchObject({
+      rateLimited:true,kind:"PRIMARY_LIMIT",resetAtEpoch:now+3600
+    });
+    expect(classifyGitHubRateLimitResponse({
+      status:403,headers:{},message:"You have exceeded a secondary rate limit.",nowEpoch:now
+    })).toMatchObject({
+      rateLimited:true,kind:"SECONDARY_LIMIT",minimumWaitSeconds:60
+    });
+  });
+
+  it("uses bounded exponential backoff for repeated secondary-limit responses", () => {
+    expect([1,2,3,4,5,6].map(n=>secondaryBackoffSeconds(n)))
+      .toEqual([60,120,240,480,900,900]);
+  });
+
+  it("enforces the shared in-flight cap for reviewed GitHub operations", async () => {
+    const input = identity("secondary-inflight-cap","github.rest.repositories.get.v1");
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",100);
+    const reserve = async suffix => call(stub,"reserve",{
+      ...input,
+      reservationId:"secondary-flight-"+suffix,
+      workerId:"secondary-flight-worker-"+suffix,
+      requestFingerprint:"a".repeat(64)
+    });
+    expect((await reserve("1")).status).toBe("RESERVED");
+    expect((await reserve("2")).status).toBe("RESERVED");
+    const blocked = await reserve("3");
+    expect(blocked.status).toBe("WAITING_FOR_QUOTA");
+    expect(blocked.reason).toBe("SECONDARY_CONCURRENCY_LIMIT");
+  });
+
+  it("enforces rolling per-endpoint secondary points after reservations settle", async () => {
+    const input = identity("secondary-point-cap","github.rest.repositories.get.v1");
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",100);
+    for (const suffix of ["1","2"]) {
+      const request = {
+        ...input,
+        reservationId:"secondary-points-"+suffix,
+        workerId:"secondary-points-worker-"+suffix,
+        requestFingerprint:"b".repeat(64)
+      };
+      const reserved = await call(stub,"reserve",request);
+      expect(reserved.status).toBe("RESERVED");
+      expect((await call(stub,"settle",{...request,actualByBucket:{core:1}})).status)
+        .toBe("SETTLED");
+    }
+    const blocked = await call(stub,"reserve",{
+      ...input,
+      reservationId:"secondary-points-3",
+      workerId:"secondary-points-worker-3",
+      requestFingerprint:"c".repeat(64)
+    });
+    expect(blocked.status).toBe("WAITING_FOR_QUOTA");
+    expect(blocked.reason).toBe("SECONDARY_ENDPOINT_POINT_BUDGET");
+    expect(blocked.retryAtEpoch).toBeGreaterThan(Math.floor(Date.now()/1000));
+  });
+
+  it("persists a Retry-After cooldown and blocks subsequent provider admission", async () => {
+    const input = identity("secondary-retry-after","github.rest.repositories.get.v1");
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",100);
+    const request = {...input,requestFingerprint:"d".repeat(64)};
+    expect((await call(stub,"reserve",request)).status).toBe("RESERVED");
+    const cooldown = await call(stub,"recordSecondaryLimit",{
+      ...request,status:429,kind:"SECONDARY_LIMIT",retryAfterSeconds:120,
+      resetAtEpoch:null,minimumWaitSeconds:0,reason:"RETRY_AFTER_HEADER"
+    });
+    expect(cooldown.status).toBe("SECONDARY_COOLDOWN_RECORDED");
+    expect(cooldown.cooldownUntilEpoch).toBeGreaterThanOrEqual(Math.floor(Date.now()/1000)+120);
+    expect((await call(stub,"settle",{...request,actualByBucket:{core:1}})).status).toBe("SETTLED");
+    const blocked = await call(stub,"reserve",{
+      ...input,reservationId:"secondary-retry-after-next",workerId:"secondary-retry-after-next-worker",
+      requestFingerprint:"e".repeat(64)
+    });
+    expect(blocked.status).toBe("WAITING_FOR_QUOTA");
+    expect(blocked.reason).toBe("SECONDARY_RATE_LIMIT_COOLDOWN");
+  });
+
+  it("persists a primary reset cooldown when remaining reaches zero", async () => {
+    const input = identity("primary-reset-cooldown","github.rest.repositories.get.v1");
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",100);
+    const request = {...input,requestFingerprint:"f".repeat(64)};
+    expect((await call(stub,"reserve",request)).status).toBe("RESERVED");
+    const reset = Math.floor(Date.now()/1000)+3600;
+    const cooldown = await call(stub,"recordSecondaryLimit",{
+      ...request,status:403,kind:"PRIMARY_LIMIT",retryAfterSeconds:null,
+      resetAtEpoch:reset,minimumWaitSeconds:0,reason:"PRIMARY_REMAINING_ZERO"
+    });
+    expect(cooldown.status).toBe("SECONDARY_COOLDOWN_RECORDED");
+    expect(cooldown.cooldownUntilEpoch).toBe(reset);
+    const blocked = await call(stub,"reserve",{
+      ...input,reservationId:"primary-reset-next",workerId:"primary-reset-next-worker",
+      requestFingerprint:"1".repeat(64)
+    });
+    expect(blocked.status).toBe("WAITING_FOR_QUOTA");
+    expect(blocked.reason).toBe("SECONDARY_RATE_LIMIT_COOLDOWN");
   });
 
   it("derives collision-safe object names from the provider, credential and window tuple", () => {
