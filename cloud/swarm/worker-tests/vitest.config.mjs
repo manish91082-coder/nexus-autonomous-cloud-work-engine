@@ -41,7 +41,7 @@ export default defineConfig({
               }),
               NEXUS_QUOTA_CALLER_POLICIES: JSON.stringify({
                 primary: ["reserve", "settle", "markUncertain", "snapshot"],
-                secondary: ["reserve"]
+                secondary: ["reserve", "markUncertain"]
               })
             },
             durableObjects: {
