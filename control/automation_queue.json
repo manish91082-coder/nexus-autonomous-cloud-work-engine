@@ -3248,9 +3248,11 @@
         },
         "action_signatures": "All three pinned action release commits verified by GitHub commit verification; action.yml declares node24.",
         "ai_execution": "MISSION_AI_ENABLED not true; no inference request made; AI provider remains unconfigured.",
-        "remaining_supply_chain": "Non-recurring product/QA and manual-only legacy workflows still contain version-tag refs; staged migration pending. Legacy bounty/gig lanes remain excluded."
+        "remaining_supply_chain": "Non-recurring product/QA and manual-only legacy workflows still contain version-tag refs; staged migration pending. Legacy bounty/gig lanes remain excluded.",
+        "worker_permission_decision": "CONTENTS_WRITE_RETAINED_TEMPORARILY: ai_task_executor persists ai_worker_report.json and control/ai_usage_state.json; six-call/day and 30-minute cooldown depend on durable state. Removing write without a replacement store/publisher weakens safeguards. Current AI disabled; no inference. Next design isolated publisher + durable quota store and prove idempotency/fencing before read-only compute.",
+        "worker_write_scope": "GITHUB_TOKEN repository-scoped; commit step stages only ai_worker_report.json and control/ai_usage_state.json and only for DRAFT_READY_FOR_EVIDENCE_REVIEW."
       },
-      "blocker": "B4 prototype is CI-tested but not production-integrated. Active recurring workflows are Node24 SHA-pinned and exact-commit CI PASS. Remaining gates: worker permission minimization, staged pinning of non-recurring workflows, then real shared atomic federation lock/quota service.",
+      "blocker": "Active workflows Node24 SHA-pinned and exact CI PASS. Worker contents:write is retained temporarily because durable AI quota/cooldown state must persist; separate publisher and durable quota store required before reducing worker to read-only. Remaining gates: staged non-recurring workflow pinning and real shared federation lock/quota service.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task."
     }
   ],
