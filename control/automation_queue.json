@@ -3035,7 +3035,7 @@
       "id": "P59-001",
       "title": "Map and rank the complete eligible revenue-source portfolio; select the largest credible risk-adjusted net-revenue source for first execution",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "PAUSED",
       "depends_on": [
         "P57-001"
       ],
@@ -3275,7 +3275,8 @@
           "next": "Research a new recurring B2B workflow problem in a marketplace ecosystem; require two independent buyer signals, 10-15 substitutes, price-bearing WTP, India payout, positive fully-loaded economics, rights and self-serve gates."
         }
       },
-      "dependency_note": "Safe handoff from Phase59.26 completed. Resume evidence-backed V5 portfolio-wide research now. Use public/official source research and supplied evidence; specialist workflow is deterministic/provider-neutral and must not be described as live LLM research. No product build until the P59-001 selection and all P59-002 release gates pass."
+      "dependency_note": "Safe handoff from Phase59.26 completed. Resume evidence-backed V5 portfolio-wide research now. Use public/official source research and supplied evidence; specialist workflow is deterministic/provider-neutral and must not be described as live LLM research. No product build until the P59-001 selection and all P59-002 release gates pass.",
+      "pause_reason": "Owner explicitly redirected execution to the original mission-critical AI agentic swarm build. Revenue-source discovery is paused, not cancelled; resume only after swarm production-enablement foundation is completed or owner redirects."
     },
     {
       "id": "P59-002",
@@ -3294,7 +3295,7 @@
       "id": "P59-003",
       "title": "Audit and implement zero-cost-first autonomous multi-agent research and execution swarm",
       "priority": "P0",
-      "status": "PAUSED",
+      "status": "IN_PROGRESS",
       "depends_on": [],
       "idempotency_key": "phase59-autonomous-swarm-foundation-v1",
       "owner_gate": false,
@@ -3318,7 +3319,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Prototype merged to master but still disabled. Next: enable branch ruleset to prohibit force-push/deletion; prepare least-privilege GitHub App installation on controller repo (owner approval); implement shared GitHub Actions/API quota reservations; then integrate P10CR worker lease and a read-only Flash Loan status client. Do not enable cross-project writes before duplicate/stale-fence/failure tests and 7/30-day soak.",
+        "next": "Resume P59-003 as the active mission-critical swarm workstream. First perform a fresh full forensic audit at current master HEAD: recursive tree shows 23 workflow files (prior 14-file inventory is stale), all workflow permissions/triggers/schedules/secrets/state writes, runtime scripts, tests, dependency pins and current run outcomes. Then fix/complete global quota arbitration design, branch ruleset and least-privilege GitHub App approval packet, project worker lease clients, read-only cross-project clients, multi-host tests and 7/30-day soak. No live model inference until provider allowlist, zero-billing proof, quota guard and owner-approved account scope; no paid fallback.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -3473,7 +3474,8 @@
           "automatic_product_go": false,
           "production_clients_enabled": false,
           "next": "Park P59-003 during P59-001 portfolio research; reopen only for production-enablement gates."
-        }
+        },
+        "last_owner_direction": "2026-11-15: user explicitly corrected drift and directed focus back to building the AI agentic swarm for autonomous revenue mission. Tech Cloud ERP is unrelated and excluded."
       },
       "blocker": "Remaining production-enablement gates: branch ruleset, owner-approved least-privilege GitHub App, cross-run/cross-repository global Actions/API quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation, and 7/30-day soak. Phase59.25 proved only eight worker threads on one GitHub-hosted runner; Phase59.26 specialist handlers are deterministic and provider-neutral, not live LLM inference. Keep all production clients disabled.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task.",
@@ -3517,12 +3519,12 @@
         "Thread-safe shared run-wide request budget and fail-closed safety reserve tested in GitHub Actions.",
         "Exact-head cloud soak and regression CI passed; disposable branch cleanup verified."
       ],
-      "pause_reason": "Phase59.26 specialist workflow handoff completed. P59-003 is parked while P59-001 resumes the revenue-source portfolio research lane. Keep production swarm disabled. Resume P59-003 only for scheduled/necessary cross-run global quota arbitration, branch ruleset and owner-approved GitHub App gates, production worker-client integration, independent multi-host validation and the 7/30-day soak. No production project-cell writes."
+      "pause_reason": null
     }
   ],
   "dead_letter": [],
   "updated_at": "2026-11-15",
-  "current_task": "P59-001",
+  "current_task": "P59-003",
   "last_updated": "2026-11-15",
-  "sequence_note": "Phase59.29 source-family scorecard and eight-asset requalification completed. P59-001 remains the sole active research task. P59-003 PAUSED; P59-002 BLOCKED; no product selected or build authorized."
+  "sequence_note": "OWNER REDIRECT: P59-003 swarm foundation is now sole active P0; P59-001 revenue-source research paused, not cancelled. Exclude Tech Cloud ERP from this mission. Preserve ₹0 spend, owner gates, project isolation and no paid fallback."
 }
