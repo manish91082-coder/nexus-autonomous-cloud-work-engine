@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "status": "PROTOTYPE_MERGED_TO_MASTER_NOT_ENABLED_FOR_PROJECT_CLIENTS",
+  "status": "PROTOTYPE_AND_QUOTA_ARBITER_MERGED_NOT_ENABLED_FOR_PROJECT_CLIENTS",
   "branch": "federation-locks",
   "state_path": "federation/locks/state.json",
   "event_path_pattern": "federation/locks/events/{sequence}.json",
@@ -38,5 +38,33 @@
     "merge_commit": "56e709168b947f4221fba27b342fb58b11326d7b",
     "status": "merged"
   },
-  "enforcement_boundary": "Code and state schema are now in master, but no production project-cell or ChatGPT-thread client is enabled. Branch ruleset, GitHub App installation, quota arbiter and soak tests remain pending."
+  "enforcement_boundary": "CAS lock prototype and quota reservation policy are merged, but no production project-cell or ChatGPT-thread client is enabled. Quota activation is blocked pending event-journal partition/pagination and 30-day audit design, measured API request calibration, branch ruleset, GitHub App, client integration and soak tests.",
+  "quota_arbiter": {
+    "status": "PROTOTYPE_MERGED_NOT_ENABLED",
+    "report": "research/PHASE_59_19_FEDERATION_QUOTA_ARBITER_PROTOTYPE_2026-11-15.md",
+    "pr_number": 3,
+    "merge_commit": "11426eb45945eb739d0c922c9b2aac48bc93be33",
+    "ci_run_id": 43689177099,
+    "global_reservations_per_utc_hour": 36,
+    "requests_per_reservation": 10,
+    "conservative_controller_requests_per_hour": 360,
+    "project_caps": {
+      "P10CR": 12,
+      "FLASHLOAN-RESEARCH": 8,
+      "ZCIRA": 6,
+      "DAILY1000": 4,
+      "OTHER": 2
+    },
+    "p10cr_emergency_reserve_per_hour": 4,
+    "client_integration": false,
+    "live_reservations_written": false,
+    "activation_blockers": [
+      "flat event journal verifier currently caps directory listing at 1000 files; partition/pagination and 30-day audit required",
+      "measure actual REST calls under normal and CAS-conflict paths",
+      "branch ruleset/force-push protection not verified",
+      "least-privilege GitHub App not installed",
+      "project clients and 7/30-day soak not completed"
+    ],
+    "scope_limit": "Controller repository federation lock-store REST admission only; not an account-wide Actions-minute meter and not a meter for other repositories' independent GITHUB_TOKEN quotas."
+  }
 }
