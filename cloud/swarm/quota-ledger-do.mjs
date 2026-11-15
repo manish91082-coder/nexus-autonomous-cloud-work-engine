@@ -961,7 +961,10 @@ export class QuotaLedgerDO extends DurableObject {
       buckets: sql.exec("SELECT * FROM quota_bucket_counters ORDER BY bucket_id,provider_window_id").toArray(),
       reservations: sql.exec("SELECT * FROM quota_reservations ORDER BY created_at_epoch").toArray(),
       telemetryCurrent: sql.exec("SELECT * FROM quota_telemetry_current ORDER BY bucket_id").toArray(),
-      telemetryObservations: sql.exec("SELECT * FROM quota_telemetry_observations ORDER BY observed_at_epoch").toArray()
+      telemetryObservations: sql.exec("SELECT * FROM quota_telemetry_observations ORDER BY observed_at_epoch").toArray(),
+      secondaryControl: sql.exec("SELECT * FROM quota_secondary_control ORDER BY credential_scope").toArray()[0] ?? null,
+      secondaryInflight: sql.exec("SELECT * FROM quota_secondary_inflight ORDER BY expires_at_epoch").toArray(),
+      secondaryEndpointPoints: sql.exec("SELECT * FROM quota_secondary_endpoint_points ORDER BY occurred_at_epoch").toArray()
     };
   }
 }
