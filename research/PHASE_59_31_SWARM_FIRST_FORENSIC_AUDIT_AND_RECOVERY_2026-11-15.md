@@ -174,3 +174,26 @@ Red-team critic        Security reviewer     Rights/policy
 - Next exact task: complete remaining dependency/test/run/branch-ruleset audit, then redesign quota arbiter and build the single-writer lease-enforced P10CR worker integration in an isolated PR.
 
 **No revenue, deployment, production swarm or 24x7 uptime is claimed by this report.**
+
+
+## 7. Live control-plane reconciliation addendum
+
+After the initial owner-directed task switch, GitHub Actions exposed a genuine continuity-guard failure. The root cause was not a code defect: `automation_queue.json.current_task` had been changed to P59-003 while the nested `queue_policy.current_task` still pointed to P59-001. The deterministic guard correctly rejected this split-brain queue state.
+
+Correction applied:
+- `queue.current_task` = P59-003.
+- `queue_policy.current_task` = P59-003.
+- P59-003 = IN_PROGRESS, sole active P0.
+- P59-001 = PAUSED, not cancelled.
+- P59-002 = BLOCKED.
+- `mission_state.json.current_task` and phase aligned to Phase59.31 swarm foundation.
+- Active continuity and queue records were scrubbed of the unrelated asset thread; it is out of scope.
+
+**Verification:** Mission Continuity Guard run `43696953420` completed SUCCESS on state commit `93a6ce75a91c8fdd7d8a1bee752dba7068132e68`. Subsequent queue/continuity commits triggered new runs; their final outcomes must be read from live Actions before declaring the entire checkpoint green.
+
+## 8. Branch protection visibility and remaining audit limits
+
+- Repository rulesets endpoint returned an empty list (`[]`) for the connected integration's visible rulesets.
+- Direct read of `branches/master/protection` returned HTTP 403 `Resource not accessible by integration`. Therefore branch protection status is **UNVERIFIED**, not assumed absent or present. Owner/admin-level inspection or an explicitly approved integration permission is required.
+- The current recursive tree confirms 23 workflows. A full dependency lockfile and transitive package audit is still outstanding; workflow action references and runtime package installs need a dedicated pin/provenance pass.
+- Current guard success proves state/queue consistency at the tested SHA, not production swarm readiness.
