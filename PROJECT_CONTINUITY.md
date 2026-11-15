@@ -1,3 +1,38 @@
+# LIVE CONTINUITY — PHASE 59.42 GITHUB SECONDARY RATE-LIMIT CONTROL (15-Nov-2026)
+
+**Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
+**Canonical repo:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Current task:** P59-003 AI agentic swarm foundation, IN_PROGRESS  
+**Paused:** P59-001; **Blocked:** P59-002  
+**Spend:** ₹0; **verified platform earnings:** ₹0; **live LLM inference:** disabled
+
+## Phase59.42 completed and merged
+
+Report: [GitHub Secondary Rate-Limit Controller](research/PHASE_59_42_GITHUB_SECONDARY_RATE_LIMIT_CONTROLLER_2026-11-15.md)
+
+- PR [#21](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/21) merged to master at `7b31d8c0945cb7eb6db93290901683c8711350cf`.
+- Exact Workers/workerd runtime CI [43713811451](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43713811451) passed **53/53 tests** on `3df2a7121262beefd3f32e07cf0d179c99c4b274`.
+- PR head `0b61ac645718899ae93f7cf80b5244a9a01ce832` passed **13/13** regression checks.
+- Added GitHub 403/429 classification, Retry-After/reset handling, permission-403 exclusion and bounded exponential secondary backoff.
+- Durable credential cooldown now blocks later admission. Local policy defaults: 20 in-flight registered requests and 600 endpoint points/minute. These are our own guardrails, not GitHub's global limits.
+- Only one reviewed GitHub endpoint is active; its one secondary point is the general documented GET default, not a guarantee for every endpoint.
+- All provider requests in CI are mocked. No live API calls, credentials, deployment, inference or spend.
+
+## Current production boundary
+
+Quota feature flag remains OFF. The client is not wired into mission workers. The local Durable Object can only control requests routed through this system; it cannot observe other external clients. No independent physical-host or multi-region proof exists. Search, code search, GraphQL and mutations remain NO-GO.
+
+## Next exact sequence — Phase59.43
+
+1. Add bounded lease renewal/heartbeat for long-running read-only operations, with owner/scope checks and no indefinite extension.
+2. Add audited uncertain-budget reconciliation. Capacity can be released only with authoritative provider evidence.
+3. Add failure/restart tests for lease renewal and reconciliation.
+4. Design an independent-host contention/failure harness where a genuinely separate runtime is available.
+5. Integrate the client into one read-only swarm worker in mocked/shadow mode, keeping production flags OFF.
+6. Preserve owner gates for credentials, hosted deployment, billing, public release and live inference.
+
+---
+
 # LIVE CONTINUITY — PHASE 59.41 GITHUB QUOTA CLIENT LIFECYCLE (15-Nov-2026)
 
 **Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
