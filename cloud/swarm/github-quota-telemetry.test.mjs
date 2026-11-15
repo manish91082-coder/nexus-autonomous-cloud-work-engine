@@ -7,7 +7,8 @@ import {
   reconcileGitHubQuotaTelemetry,
   parseGitHubRateLimitError,
   classifyGitHubOperationCost,
-  parseGitHubGraphqlRateLimit
+  parseGitHubGraphqlRateLimit,
+  githubSecondaryRateLimitPolicy
 } from "./github-quota-telemetry.mjs";
 
 const baseHeaders = (overrides = {}) => ({
@@ -137,6 +138,34 @@ test("does not replace a newer quota window with an older reset window", () => {
   assert.equal(result.decision, "KEEP_NEWER_WINDOW");
 });
 
+test("allows a periodic overview to establish the next window after the prior reset", () => {
+  const current = headerRecord({"x-ratelimit-reset": "1794788400"}, 1794784800);
+  const overview = parseGitHubRateLimitOverview({
+    credentialScope: "github-app-installation:42",
+    observedAtEpoch: 1794788400,
+    payload: {resources: {
+      core: {limit:5000, used:10, remaining:4990, reset:1794792000}
+    }}
+  }).buckets[0];
+  const result = reconcileGitHubQuotaTelemetry(current, overview);
+  assert.equal(result.decision, "ACCEPT_NEW_WINDOW_AFTER_RESET");
+  assert.equal(result.record.reset_at_epoch, 1794792000);
+});
+
+test("does not accept a future overview window before the current window resets", () => {
+  const current = headerRecord({"x-ratelimit-reset": "1794788400"}, 1794784800);
+  const overview = parseGitHubRateLimitOverview({
+    credentialScope: "github-app-installation:42",
+    observedAtEpoch: 1794786000,
+    payload: {resources: {
+      core: {limit:5000, used:10, remaining:4990, reset:1794792000}
+    }}
+  }).buckets[0];
+  const result = reconcileGitHubQuotaTelemetry(current, overview);
+  assert.equal(result.record, current);
+  assert.equal(result.decision, "KEEP_CURRENT_WINDOW_UNTIL_RESET");
+});
+
 test("rejects cross-credential telemetry reconciliation", () => {
   const current = headerRecord();
   const incoming = {
@@ -148,7 +177,7 @@ test("rejects cross-credential telemetry reconciliation", () => {
 
 test("classifies primary rate-limit exhaustion using reset timestamp", () => {
   const result = parseGitHubRateLimitError({
-    status: 403,
+    status: 200,
     headers: {
       "x-ratelimit-remaining": "0",
       "x-ratelimit-reset": "1794788400"
@@ -188,7 +217,7 @@ test("uses at least one minute backoff when secondary-limit status is not explic
 test("rejects non-rate-limit HTTP statuses in throttle parser", () => {
   assert.throws(() => parseGitHubRateLimitError({
     status: 500, headers: {}, observedAtEpoch: 1794784800
-  }), /must be 403 or 429/);
+  }), /must be 200, 403 or 429/);
 });
 
 test("keeps generic REST method costs provisional until endpoint-specific cost is verified", () => {
@@ -241,6 +270,25 @@ test("classifies GraphQL query/mutation secondary defaults and requires measured
   assert.equal(mutation.admission_ready, true);
 });
 
+test("exposes published secondary-limit ceilings as policy, not live telemetry", () => {
+  const policy = githubSecondaryRateLimitPolicy();
+  assert.equal(policy.directly_queryable, false);
+  assert.equal(policy.ceilings.concurrent_rest_and_graphql_requests.limit, 100);
+  assert.equal(policy.ceilings.rest_endpoint_points.limit, 900);
+  assert.equal(policy.ceilings.graphql_endpoint_points.limit, 2000);
+  assert.equal(policy.ceilings.content_generating_requests_hourly.limit, 500);
+  assert.equal(policy.admission_mode, "LOCAL_CONSERVATIVE_GUARDRAIL_ONLY");
+});
+
+test("rejects a normal HTTP 200 response without a rate-limit error message", () => {
+  assert.throws(() => parseGitHubRateLimitError({
+    status: 200,
+    headers: {"x-ratelimit-remaining": "0", "x-ratelimit-reset": "1794788400"},
+    body: {message: "Success"},
+    observedAtEpoch: 1794784800
+  }), /does not contain a rate-limit error/);
+});
+
 test("parses measured GraphQL rateLimit cost and reset window", () => {
   const result = parseGitHubGraphqlRateLimit({
     credentialScope: "github-app-installation:42",
@@ -250,7 +298,7 @@ test("parses measured GraphQL rateLimit cost and reset window", () => {
       cost: 13,
       remaining: 4200,
       used: 800,
-      resetAt: "2026-11-15T18:00:00Z"
+      resetAt: "2026-11-16T00:20:00Z"
     }}}
   });
   assert.equal(result.bucket_id, "graphql");
