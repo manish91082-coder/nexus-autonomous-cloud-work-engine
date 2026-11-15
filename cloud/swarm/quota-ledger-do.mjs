@@ -441,19 +441,46 @@ export class QuotaLedgerDO extends DurableObject {
       if (Object.keys(reserved).sort().join("|") !== Object.keys(input.actualByBucket).sort().join("|")) {
         throw new QuotaLedgerError("settlement must report every reserved bucket");
       }
-      for (const [bucketId, units] of Object.entries(input.actualByBucket)) {
-        integer(units, `actual.${bucketId}`);
-        if (units > reserved[bucketId]) throw new QuotaLedgerExhausted(`${bucketId} exceeded reservation`);
+      const updates = [];
+      for (const [bucketId, actualUnits] of Object.entries(input.actualByBucket)) {
+        integer(actualUnits, `actual.${bucketId}`);
+        const reservation = reserved[bucketId];
+        if (!reservation || typeof reservation !== "object") {
+          throw new QuotaLedgerError("reservation window envelope malformed");
+        }
+        if (actualUnits > reservation.units) {
+          throw new QuotaLedgerExhausted(`${bucketId} exceeded reservation`);
+        }
+        const counter = sql.exec(
+          "SELECT * FROM quota_bucket_counters WHERE bucket_id=? AND provider_window_id=?",
+          bucketId,reservation.providerWindowId
+        ).toArray()[0];
+        if (!counter || counter.reserved_units < reservation.units) {
+          throw new QuotaLedgerError("reserved bucket-window counter missing or inconsistent");
+        }
+        const linkedObservation = sql.exec(`SELECT observation_id
+          FROM quota_telemetry_observations
+          WHERE reservation_id=? AND bucket_id=? AND window_id=? AND authority_rank>=80
+          LIMIT 1`,
+          input.reservationId,bucketId,reservation.providerWindowId
+        ).toArray()[0];
+        updates.push({
+          bucketId,actualUnits,reservation,
+          committedSinceDelta:linkedObservation ? 0 : actualUnits
+        });
       }
-      for (const [bucketId, units] of Object.entries(input.actualByBucket)) {
-        sql.exec(`UPDATE quota_buckets SET reserved_units=reserved_units-?,
+      for (const update of updates) {
+        sql.exec(`UPDATE quota_bucket_counters SET
+          reserved_units=reserved_units-?,
           committed_units=committed_units+?,
           committed_since_observation_units=committed_since_observation_units+?
-          WHERE bucket_id=?`,reserved[bucketId],units,units,bucketId);
+          WHERE bucket_id=? AND provider_window_id=?`,
+          update.reservation.units,update.actualUnits,update.committedSinceDelta,
+          update.bucketId,update.reservation.providerWindowId);
       }
       sql.exec(`UPDATE quota_reservations SET actual_by_bucket_json=?,status='SETTLED',
         settled_at_epoch=? WHERE reservation_id=?`,
-        JSON.stringify(input.actualByBucket),integer(input.nowEpoch,"nowEpoch"),input.reservationId);
+        JSON.stringify(input.actualByBucket),Math.floor(Date.now()/1000),input.reservationId);
       return {reservationId:input.reservationId,status:"SETTLED",actualByBucket:input.actualByBucket};
     });
   }
@@ -469,9 +496,23 @@ export class QuotaLedgerDO extends DurableObject {
         throw new QuotaLedgerError("reservation owner/state mismatch");
       }
       const reserved = JSON.parse(rec.reserved_by_bucket_json);
-      for (const [bucketId, units] of Object.entries(reserved)) {
-        sql.exec(`UPDATE quota_buckets SET reserved_units=reserved_units-?,
-          uncertain_units=uncertain_units+? WHERE bucket_id=?`,units,units,bucketId);
+      for (const [bucketId, reservation] of Object.entries(reserved)) {
+        if (!reservation || typeof reservation !== "object") {
+          throw new QuotaLedgerError("reservation window envelope malformed");
+        }
+        const counter = sql.exec(
+          "SELECT * FROM quota_bucket_counters WHERE bucket_id=? AND provider_window_id=?",
+          bucketId,reservation.providerWindowId
+        ).toArray()[0];
+        if (!counter || counter.reserved_units < reservation.units) {
+          throw new QuotaLedgerError("reserved bucket-window counter missing or inconsistent");
+        }
+      }
+      for (const [bucketId, reservation] of Object.entries(reserved)) {
+        sql.exec(`UPDATE quota_bucket_counters SET
+          reserved_units=reserved_units-?,uncertain_units=uncertain_units+?
+          WHERE bucket_id=? AND provider_window_id=?`,
+          reservation.units,reservation.units,bucketId,reservation.providerWindowId);
       }
       sql.exec("UPDATE quota_reservations SET status='UNCERTAIN_BUDGET_RETAINED' WHERE reservation_id=?",
         input.reservationId);
