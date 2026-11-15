@@ -10,7 +10,7 @@
 
 Report: [Cross-Worker Durable Object Validation](research/PHASE_59_36_CROSS_WORKER_DURABLE_OBJECT_VALIDATION_2026-11-15.md)
 
-- PR [#14](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/14) merged to master at `672c89c0c17237dd10030da4b361529f5294ccd2`.
+- Cross-Worker implementation committed directly to canonical master at `672c89c0c17237dd10030da4b361529f5294ccd2`. PR [#14](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/14) was closed as superseded (not merged) because master already contained the implementation; this avoids a duplicate merge.
 - Exact cross-Worker runtime CI [43707115629](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43707115629) passed **11/11 tests** on `1b9012d944bbf81c03d2d8a391bbd3f0f653e77d`.
 - A primary Worker and an auxiliary Worker now bind to the same named SQLite Durable Object host script/namespace.
 - 20 mixed primary/auxiliary callers against 100 admissible units at 10 units each: exactly 10 admitted, 10 `WAITING_FOR_QUOTA`, final reserved units 100, no oversubscription.
