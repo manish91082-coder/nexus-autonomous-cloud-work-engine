@@ -63,6 +63,7 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     expect(recovered.tasks[0].status).toBe("LEASED");
     expect(recovered.checkpoints[0].checkpoint_seq).toBe(1);
     expect(recovered.checkpoints[0].checkpoint_hash).toBe(checkpoint.checkpointHash);
+    expect(recovered.checkpoints[0].run_id).toBe(claim.runId);
 
     const completed = await rpc(stub, "complete", {
       taskId: task.taskId, workerId: "worker-a", runId: claim.runId, fencingToken: claim.fencingToken,
@@ -111,6 +112,12 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     const second = await rpc(stub, "claim", { taskId: task.taskId, workerId: "worker-old", leaseSeconds: 30 }, "secondary");
     expect(second.status).toBe("CLAIMED");
     expect(second.fencingToken).toBeGreaterThan(first.fencingToken);
+    expect(second.runId).not.toBe(first.runId);
+    const wrongRun = await rpc(stub, "heartbeat", {
+      taskId: task.taskId, workerId: "worker-old", runId: first.runId, fencingToken: second.fencingToken, leaseSeconds: 30
+    }, "secondary");
+    expect(wrongRun.status).toBe("REJECTED");
+    expect(wrongRun.error.message).toBe("STALE_OR_INVALID_FENCING_TOKEN");
     const stale = await rpc(stub, "checkpoint", {
       taskId: task.taskId, workerId: "worker-old", runId: first.runId, fencingToken: first.fencingToken,
       checkpointSeq: 1, checkpoint: { stale: true }
