@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { verifyGitHubCredentialProvenance } from "./credential-provenance.mjs";
 import { computeGitHubRequestFingerprint } from "./request-fingerprint.mjs";
 import { verifyEgressDispatchReceipt } from "./egress-receipt.mjs";
+import { computeGitHubResponseHeadersEvidence } from "./github-response-evidence.mjs";
 
 const now = 1900000000;
 const b64u = value => Buffer.from(value).toString("base64url");
@@ -58,6 +59,12 @@ async function createHarness() {
     assert.equal(canonical.repositoryId, repositoryId);
     assert.equal(canonical.credentialLane, lane);
     const dispatchId = "synthetic-dispatch-harness-0001";
+    const responseHeaders = new Headers({
+      "x-ratelimit-limit": "5000", "x-ratelimit-remaining": "4999",
+      "x-ratelimit-used": "1", "x-ratelimit-reset": String(now + 300),
+      "x-ratelimit-resource": "core", "x-github-request-id": "SYNTHETIC-REQUEST-ID"
+    });
+    const responseEvidence = await computeGitHubResponseHeadersEvidence(responseHeaders);
     // Simulates Authorization attachment inside the trusted gateway boundary.
     // The token is never returned, logged, or included in the EDR.
     const authorizationAttached = token.length > 0;
@@ -70,10 +77,11 @@ async function createHarness() {
       canonical_url_sha256: await sha256(new TextEncoder().encode(canonical.url)),
       request_body_sha256: fingerprint.requestBodySha256,
       request_fingerprint: fingerprint.fingerprint, token_sha256: verifiedCla.tokenSha256,
+      response_headers_sha256: outcome === "response_received" ? responseEvidence.sha256 : null,
       dispatch_id: dispatchId, started_at: now - 1, completed_at: now,
       response_status: outcome === "response_received" ? 200 : null, outcome
     };
-    return { receipt: await signJws(gatewayKey.pair, "gateway-test-key", claims), fingerprint, dispatchId };
+    return { receipt: await signJws(gatewayKey.pair, "gateway-test-key", claims), fingerprint, dispatchId, responseEvidence };
   }
 
   async function ledgerSettle({ lease, dispatch }) {
@@ -91,7 +99,8 @@ async function createHarness() {
       canonicalUrlSha256: await sha256(new TextEncoder().encode(JSON.parse(dispatch.fingerprint.canonical).url)),
       requestFingerprint: dispatch.fingerprint.fingerprint,
       requestBodySha256: dispatch.fingerprint.requestBodySha256,
-      tokenSha256: claVerified.tokenSha256, dispatchId: dispatch.dispatchId
+      tokenSha256: claVerified.tokenSha256,
+      responseHeadersSha256: dispatch.responseEvidence.sha256, dispatchId: dispatch.dispatchId
     });
     // The ledger verifies signed CLA claims without receiving the broker token.
   // Token-to-CLA binding is enforced by the gateway before dispatch.
