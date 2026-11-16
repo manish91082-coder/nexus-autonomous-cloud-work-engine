@@ -3,6 +3,7 @@ import { env } from "cloudflare:workers";
 import { evictDurableObject } from "cloudflare:test";
 import { signedCall } from "./quota-auth-test-helper.mjs";
 import { swarmRunSha256 } from "../swarm-run-ledger-do.mjs";
+import { swarmRunLedgerCall } from "../swarm-run-ledger-client.mjs";
 
 const PROJECT_ID = "P10CR";
 const SECRETS = {
@@ -175,6 +176,19 @@ describe("Phase 59.53 durable swarm run ledger", () => {
     },"worker-b");
     expect(noClaim.status).toBe("NOT_CLAIMABLE");
     expect((await call(stub,"verifyEventChain",{projectId:PROJECT_ID})).status).toBe("VALID");
+  });
+
+  it("fails closed on credential-like task data and the disabled client path", async () => {
+    const stub=stubFor("secret-data-rejection");
+    const rejected=await call(stub,"registerTask",{
+      taskId:"P10CR:secret-data",idempotencyKey:"idem:secret-data",taskType:"SYNTHETIC",
+      payload:{source:"fixture",apiKey:"must-not-persist"},maxAttempts:1,ownerGate:false,nowEpoch:8000
+    });
+    expect(rejected.status).toBe("REJECTED");
+    expect(rejected.error.message).toMatch(/credential-like field is forbidden/);
+    const disabled=await swarmRunLedgerCall({...env,NEXUS_SWARM_RUN_LEDGER_ENABLED:"false"},"snapshot",{projectId:PROJECT_ID});
+    expect(disabled.httpStatus).toBe(503);
+    expect(disabled.body.reason).toBe("RUN_LEDGER_DISABLED");
   });
 
   it("rejects cross-project state access and replays of authenticated RPC nonces", async () => {
