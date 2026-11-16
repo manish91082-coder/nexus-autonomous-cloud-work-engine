@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
   "last_verified_head": "17f2de069868273eac8893a37f56dd860b8d36e0",
-  "current_focus": "P59-003 Phase59.49: durable provider-response journal/idempotency and duplicate settlement fencing. Phase59.48 PR #29 merged after exact-head Workers/workerd runtime and all 13/13 regression workflows SUCCESS. Production flags OFF; AI inference disabled; mock-only providers; external network 0; spend ₹0.",
+  "current_focus": "P59-003 Phase59.49 candidate: durable provider-response receipt journal and replay-safe settlement idempotency. Branch phase59-49-response-journal-settlement-idempotency; exact-head cloud CI pending. Production flags OFF; AI inference disabled; mock-only providers; external network 0; spend ₹0.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -136,7 +136,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.49: prove duplicate settlement idempotency and durable provider-response journal/recovery boundaries using deterministic mocks and cloud CI. Keep production flags OFF, AI inference disabled, external network 0, spend ₹0. Do not claim hard process-crash coverage unless a real runtime termination harness proves it.",
+  "next_focus": "Complete exact-head Phase59.49 Workers/workerd runtime and regression CI. Do not merge until all required checks pass. If successful, reconcile master and proceed to dedicated crash-window/recovery harness for provider response arrival before durable receipt commit.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -2049,5 +2049,34 @@
       "not revenue evidence"
     ],
     "next": "Phase59.49 durable provider-response journal/idempotency and duplicate settlement fencing."
+  },
+  "phase59_49_candidate": {
+    "report": "research/PHASE_59_49_RESPONSE_JOURNAL_SETTLEMENT_IDEMPOTENCY_2026-11-16.md",
+    "branch": "phase59-49-response-journal-settlement-idempotency",
+    "status": "OPEN_CI_PENDING",
+    "scope": "Reservation-level durable provider response receipt and idempotent duplicate settlement.",
+    "findings": [
+      "Identical settlement replay previously rejected generically instead of acknowledged idempotently.",
+      "Telemetry response observations existed, but no compact reservation-level provider response receipt existed."
+    ],
+    "changes": [
+      "SETTLEMENT_ALREADY_APPLIED for exact same actualByBucket replay, without counter mutation.",
+      "Conflicting settlement replay fails closed.",
+      "Concurrent identical settlement must charge once.",
+      "SQLite quota_provider_response_journal stores metadata-only provider response receipt in same transaction as response-header telemetry observation.",
+      "Snapshot exposes journal for audit."
+    ],
+    "evidence_boundary": [
+      "receipt is durable only after telemetry write commits",
+      "provider response and local SQLite cannot be one atomic transaction",
+      "hard termination before receipt commit remains covered by lease expiry and uncertain-budget retention",
+      "not production deployment or revenue evidence"
+    ],
+    "production_feature_flag": "OFF",
+    "ai_inference": false,
+    "spend_inr": 0,
+    "external_network_requests": 0,
+    "pr_number": null,
+    "pr_state": "NOT_OPENED"
   }
 }
