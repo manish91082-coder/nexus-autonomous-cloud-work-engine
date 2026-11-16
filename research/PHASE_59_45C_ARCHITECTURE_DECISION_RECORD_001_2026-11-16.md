@@ -31,7 +31,7 @@ The general swarm Worker and Quota Admission Client receive neither private key 
 
 ### Decision D — Request identity
 
-The canonical request fingerprint is SHA-256 over a versioned canonical serialization of provider, repository numeric ID, operation registry ID, HTTP method, canonical URL (fixed api.github.com host; normalized path/query; no credentials/fragments), request body SHA-256, and credential lane.
+For response evidence, EDR additionally carries `response_headers_sha256`, computed over the versioned allowlist of `retry-after`, `x-github-request-id`, and `x-ratelimit-*` headers consumed by quota telemetry. It is null for outcomes without a response. QLDO compares the supplied header evidence against this signed digest.\n\nThe canonical request fingerprint is SHA-256 over a versioned canonical serialization of provider, repository numeric ID, operation registry ID, HTTP method, canonical URL (fixed api.github.com host; normalized path/query; no credentials/fragments), request body SHA-256, and credential lane.
 
 GEG independently computes the same fingerprint from the actual request it is about to send. QLDO compares it to the reservation record and EDR. Caller-supplied fingerprints are never trusted.
 
