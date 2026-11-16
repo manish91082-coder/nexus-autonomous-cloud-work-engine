@@ -29,3 +29,7 @@ This is a deterministic Cloudflare workerd test with a shared Durable Object nam
 ## Next
 
 After exact-head CI, inspect the run logs and all regression checks. If the runtime test exposes scheduling assumptions, correct the test without raising the endpoint budget or weakening quota policy. Only then reconcile the merge and proceed to crash/restart, lease expiry and stale-fence tests.
+
+## CI diagnostic correction
+
+The first exact-head run executed 64 runtime tests: 63 passed and one failed only because the test incorrectly required both worker identities to receive an admission in the same 16-request burst. The observed ledger still admitted exactly two requests under the configured two-point endpoint budget, rejected the remaining requests, and settled both reservations. Both admitted reservations happened to belong to the primary worker. The quota contract does not currently promise fair scheduling between worker identities, so the test now asserts the actual safety contract: no oversubscription, valid worker attribution, and zero residual reserved/uncertain units. Fairness remains a separate future policy decision and is not silently assumed.
