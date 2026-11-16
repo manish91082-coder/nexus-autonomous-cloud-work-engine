@@ -1,7 +1,7 @@
 # Phase 59.46 — Concurrent installation-wide quota arbitration
 
 **Mission:** P10CR / P59-003 only  
-**Status:** implementation submitted for corrected exact-head CI  
+**Status:** MERGED after corrected exact-head CI  
 **Spend:** ₹0  
 **Provider calls:** deterministic mocks only  
 **External network:** 0  
@@ -26,9 +26,17 @@ Extend Phase 59.45A's two-client shared installation-scope workerd proof with a 
 
 This is a deterministic Cloudflare workerd test with a shared Durable Object namespace and synthetic installation scope. It is not proof of independent physical hosts, separate hosted workflow runs, a real GitHub App installation, Cloudflare production deployment, live provider access or revenue.
 
+## Exact-head CI and merge evidence
+
+- Tested PR head: `4bf26dccd50ddf3b0887e310c3ad6f3d74386273`
+- Workers/workerd runtime run: `43830209099` — SUCCESS
+- PR regression workflows: 13/13 SUCCESS
+- PR #27 merged at: `ea8d785691b9e92ae8034cec2dafab70573ad249`
+- Spend: ₹0; external network requests: 0; AI inference: disabled; production flags: OFF.
+
 ## Next
 
-After corrected exact-head CI, inspect the run logs and all regression checks. If the runtime test exposes scheduling assumptions, correct the test without raising the endpoint budget or weakening quota policy. Only then reconcile the merge and proceed to crash/restart, lease expiry and stale-fence tests.
+Phase 59.47: deterministic crash/restart, lease expiry and stale-fencing rejection tests. Preserve fail-closed quota semantics and do not enable production clients.
 
 ## CI diagnostic correction
 
