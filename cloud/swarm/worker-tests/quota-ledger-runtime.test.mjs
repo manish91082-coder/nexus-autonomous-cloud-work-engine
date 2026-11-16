@@ -937,7 +937,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
               return Response.json({status:"RECORDED"});
             }
             if (action === "settle") {
-              return Response.json({status:"WAITING_FOR_QUOTA",reason:"INJECTED_SETTLEMENT_FAILURE"},{status:503});
+              throw new Error("simulated ledger transport loss after provider response");
             }
             if (action === "markUncertain") {
               return Response.json({status:"UNCERTAIN_BUDGET_RETAINED"});
@@ -1109,8 +1109,20 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
     // Wait for the persisted lease to expire; no clock override or test backdoor.
     await new Promise(resolve => setTimeout(resolve, 30100));
 
-    // A late worker must not settle after its lease expires, even if no other
-    // request has yet triggered the expiry sweep.
+    // A late heartbeat must itself trigger and commit expiry, not leave the
+    // reservation RESERVED while rejecting the stale worker.
+    const staleHeartbeat = await call(stub,"renewReservation",{
+      ...input,heartbeatId:"heartbeat-after-expiry",expectedLeaseVersion:0,extensionSeconds:120
+    });
+    expect(staleHeartbeat.status).toBe("REJECTED");
+    expect(staleHeartbeat.error.message).toMatch(/reservation lease already expired/);
+    const afterHeartbeat = await call(stub,"snapshot",input);
+    expect(afterHeartbeat.reservations.find(x=>x.reservation_id===input.reservationId).status)
+      .toBe("UNCERTAIN_BUDGET_RETAINED");
+    expect(afterHeartbeat.buckets[0].reserved_units).toBe(0);
+    expect(afterHeartbeat.buckets[0].uncertain_units).toBe(10);
+
+    // A late settlement racing after that heartbeat must also be rejected.
     const staleSettlement = await call(stub,"settle",{
       ...input,actualByBucket:{core:10}
     });

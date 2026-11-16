@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
   "last_verified_head": "e4683f10e49d61f8c61a6ae4567f64150fafd40a",
-  "current_focus": "P59-003 Phase59.48: stale heartbeat after lease expiry, duplicate/late settlement races, and crash between deterministic provider response and durable settlement. Phase59.47 PR #28 merged after exact-head Workers/workerd runtime SUCCESS and all 13/13 regression workflows SUCCESS. Production flags OFF; AI inference disabled; provider mocks only; external network 0; spend ₹0.",
+  "current_focus": "P59-003 Phase59.48 candidate: stale heartbeat expiry fencing and provider-response/settlement transport-failure accounting. Branch phase59-48-heartbeat-settlement-crash-window; exact-head CI pending. Production flags OFF; AI inference disabled; mock-only providers; external network 0; spend ₹0.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -136,7 +136,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.48: test stale heartbeat after lease expiry, duplicate/late settlement races, and crash between deterministic provider response and durable settlement. Add fail-closed invariants and exact-head cloud CI. Preserve canonical repository isolation, mocked providers, production flags OFF, AI inference disabled, external network 0 and spend ₹0.",
+  "next_focus": "Complete exact-head Phase59.48 Workers/workerd runtime and regression CI; do not merge before all required checks pass. If successful, reconcile master then proceed to duplicate settlement/idempotency and provider-response journal durability.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -2006,5 +2006,28 @@
       "not AI inference",
       "not revenue evidence"
     ]
+  },
+  "phase59_48_candidate": {
+    "report": "research/PHASE_59_48_HEARTBEAT_SETTLEMENT_CRASH_WINDOW_2026-11-16.md",
+    "branch": "phase59-48-heartbeat-settlement-crash-window",
+    "status": "OPEN_CI_PENDING",
+    "scope": "Stale heartbeat after lease expiry; duplicate/late settlement rejection; provider-response to settlement-RPC transport-loss accounting.",
+    "finding": "Expired renewReservation previously rejected inside transaction without committing expiry; thrown settlement RPC transport errors after provider response escaped the explicit uncertain-accounting fallback.",
+    "correction": "Sweep expiry inside heartbeat transaction and reject via post-commit sentinel; catch settlement transport failure and attempt markUncertain without replaying provider request.",
+    "assertions": [
+      "late heartbeat rejected after lease expiry",
+      "heartbeat-triggered expiry commits UNCERTAIN_BUDGET_RETAINED",
+      "reserved units=0 and uncertain units retain full reservation",
+      "subsequent late settlement rejected",
+      "settlement transport loss after provider response attempts uncertain transition",
+      "stable request ID prevents provider replay",
+      "external network requests=0"
+    ],
+    "production_feature_flag": "OFF",
+    "ai_inference": false,
+    "spend_inr": 0,
+    "external_network_requests": 0,
+    "pr_number": null,
+    "pr_state": "NOT_OPENED"
   }
 }

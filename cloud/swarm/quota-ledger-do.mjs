@@ -608,14 +608,25 @@ export class QuotaLedgerDO extends DurableObject {
     }
     const now = Math.floor(Date.now() / 1000);
     const sql = this.ctx.storage.sql;
-    return this.ctx.storage.transactionSync(() => {
+    const result = this.ctx.storage.transactionSync(() => {
+      // A heartbeat is also a lease boundary. Expiry must be committed before
+      // rejecting a late worker, otherwise the stale reservation can remain
+      // RESERVED until an unrelated request happens to sweep it.
+      this.#expireReservations(now);
       const row = sql.exec("SELECT * FROM quota_reservations WHERE reservation_id=?",
         input.reservationId).toArray()[0];
-      if (!row || row.worker_id !== input.workerId || row.caller_id !== callerId
-        || row.status !== "RESERVED") {
+      if (!row || row.worker_id !== input.workerId || row.caller_id !== callerId) {
         throw new QuotaLedgerError("reservation owner/state mismatch");
       }
-      if (row.expires_at_epoch <= now) throw new QuotaLedgerError("reservation lease already expired");
+      // Commit expiry by returning a sentinel. Throwing inside transactionSync
+      // would roll back the RESERVED -> UNCERTAIN transition.
+      if (row.status === "UNCERTAIN_BUDGET_RETAINED" && row.expires_at_epoch <= now) {
+        return {status:"LEASE_EXPIRED",reservationId:input.reservationId,
+          leaseVersion:row.lease_version,expiresAtEpoch:row.expires_at_epoch};
+      }
+      if (row.status !== "RESERVED") {
+        throw new QuotaLedgerError("reservation owner/state mismatch");
+      }
       if (row.last_heartbeat_id === heartbeatId) {
         return {status:"DUPLICATE_HEARTBEAT",reservationId:input.reservationId,
           leaseVersion:row.lease_version,expiresAtEpoch:row.expires_at_epoch};
@@ -642,6 +653,10 @@ export class QuotaLedgerDO extends DurableObject {
         leaseVersion:nextVersion,expiresAtEpoch:lease.expiresAtEpoch,
         hardDeadlineEpoch:lease.hardDeadlineEpoch};
     });
+    if (result.status === "LEASE_EXPIRED") {
+      throw new QuotaLedgerError("reservation lease already expired");
+    }
+    return result;
   }
   #expireReservations(now = Math.floor(Date.now() / 1000)) {
     const sql = this.ctx.storage.sql;
