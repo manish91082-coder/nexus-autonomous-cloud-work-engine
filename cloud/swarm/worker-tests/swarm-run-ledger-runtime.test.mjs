@@ -135,15 +135,15 @@ describe("Phase 59.53 durable swarm run ledger", () => {
     expect(checkpoint2.status).toBe("CHECKPOINT_SAVED");
     const result={decision:"HOLD",modelInferenceUsed:false,externalNetworkRequests:0};
     const finished=await call(stub,"finishTask",{
-      taskId:"P10CR:fence-001",workerId:"worker-b",fenceToken:2,success:true,result,nowEpoch:3081
+      taskId:"P10CR:fence-001",workerId:"worker-b",fenceToken:2,success:true,result,nowEpoch:3079
     },"worker-b");
     expect(finished.status).toBe("COMPLETED");
     const replay=await call(stub,"finishTask",{
-      taskId:"P10CR:fence-001",workerId:"worker-b",fenceToken:2,success:true,result,nowEpoch:3079
+      taskId:"P10CR:fence-001",workerId:"worker-b",fenceToken:2,success:true,result,nowEpoch:3080
     },"worker-b");
     expect(replay.status).toBe("ALREADY_COMPLETED");
     const wrongOwnerReplay=await call(stub,"finishTask",{
-      taskId:"P10CR:fence-001",workerId:"worker-a",fenceToken:1,success:true,result,nowEpoch:3080
+      taskId:"P10CR:fence-001",workerId:"worker-a",fenceToken:1,success:true,result,nowEpoch:3081
     },"worker-a");
     expect(wrongOwnerReplay.status).toBe("REJECTED");
     const final=await call(stub,"snapshot",{projectId:PROJECT_ID});
