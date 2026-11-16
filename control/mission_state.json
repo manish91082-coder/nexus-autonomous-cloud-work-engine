@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_59_45A_INSTALLATION_WIDE_QUOTA_SHARING",
+  "phase": "PHASE_59_46_MERGED_PHASE_59_47_CRASH_RESTART_LEASE_FENCING",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -10,8 +10,8 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
-  "last_verified_head": "58352e68fe71abdb71e8dae68580b0d96601ba14",
-  "current_focus": "P59-003 swarm foundation. Phase59.45A merged. Phase59.46 PR #27 corrected: runtime fairness assumption removed and evidence report aligned; latest PR head 4bf26dccd50ddf3b0887e310c3ad6f3d74386273. Exact-head CI not yet evidenced; do not merge until Workers/workerd and all regression checks pass.",
+  "last_verified_head": "ea8d785691b9e92ae8034cec2dafab70573ad249",
+  "current_focus": "P59-003 swarm foundation. Phase59.46 PR #27 merged after corrected exact-head Workers/workerd runtime SUCCESS and all 13 PR regression workflows SUCCESS. Merge commit ea8d785691b9e92ae8034cec2dafab70573ad249. Next Phase59.47: crash/restart, lease expiry and stale-fencing rejection. Production flags OFF; AI inference disabled; external network 0; spend ₹0.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -62,7 +62,7 @@
     "CREATOR_IP_ROYALTIES_STOCK_ASSETS",
     "GAMES_SPONSORSHIP_AFFILIATE_ADVERTISING"
   ],
-  "last_exact_head_ci_status": "Phase59.35 Workers/workerd run #122 SUCCESS 62/62 on merge SHA b3978bf0c8d4fda01d4bcbfdcf233cee37ae46e7. Final control checkpoint HEAD 9cdc16a28e9bd958cb5eec78548e464988123e10 independently passed Mission Continuity Guard #244 (111 checks, errors []) and Mission Autonomous AI Worker #444 (POLL_OK selected P59-003; AI inference not requested).",
+  "last_exact_head_ci_status": "Phase59.46 PR #27 exact tested head 4bf26dccd50ddf3b0887e310c3ad6f3d74386273: Workers/workerd run 43830209099 SUCCESS; all 13 PR-triggered regression workflows SUCCESS; merged as ea8d785691b9e92ae8034cec2dafab70573ad249.",
   "phase46_control_commits": [
     "72230902a478552d007d94d330e216238c9b2982",
     "ae552163e2b1e65590fc98454d8f7817bc73fa92",
@@ -136,7 +136,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Verify corrected Phase59.46 exact-head CI at 4bf26dccd50ddf3b0887e310c3ad6f3d74386273, inspect any runtime failure logs, merge only after all required checks pass, reconcile master; then Phase59.47 crash/restart, lease expiry and stale fencing rejection.",
+  "next_focus": "Phase59.47: build deterministic Cloudflare workerd tests for reservation crash/restart recovery, lease expiry and stale-fence rejection; verify no double settlement, no stale owner mutation, uncertain quota retained fail-closed, and all residual counters reconcile. Keep providers mocked, production flags OFF, AI inference disabled, external network 0 and spend ₹0.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -146,7 +146,7 @@
     "082dc6c11bce97f5c2d715ea5d9bd3ae15889e3c",
     "81fecc16ee919cc509e7d7bc304c553583a5de5d"
   ],
-  "last_observed_head": "58352e68fe71abdb71e8dae68580b0d96601ba14",
+  "last_observed_head": "ea8d785691b9e92ae8034cec2dafab70573ad249",
   "phase53_research_order": [
     "WORDPRESS_PLUGIN_ECOSYSTEM",
     "GOOGLE_WORKSPACE_MARKETPLACE",
@@ -155,8 +155,8 @@
     "CHROME_WEB_STORE"
   ],
   "phase53_research_checkpoint": "14-Nov completed: WP webhook / Action Scheduler / COD fraud generic hypotheses NO-GO; Workspace attachment archival / invoice extraction / approvals / notification clones NO-GO. Formula Integrity technical matrix completed; HOLD due event/identity/API/quotas plus no proven recurring demand. Continue P53-001 Google Workspace problem-first research beyond these categories.",
-  "last_observed_at": "2026-11-16T06:17:36Z",
-  "resume_checkpoint": "P59-003 sole active P0. Phase59.45A PR #25 merged at 58352e68fe71abdb71e8dae68580b0d96601ba14. Exact PR head 8a8dfa08bad91bccce25b31c89b4220d1afe34af passed 13/13 check-runs including Phase59.35 Workers/workerd runtime run 43814337444 (SUCCESS). Two independent read-only shadow Worker clients share a single fixture installation quota partition in workerd. This is not hosted cross-run, independent-host, real GitHub App installation, production deployment or revenue evidence. Next Phase59.46 multi-client contention/arbitration harness; production flags OFF, AI inference disabled, external network 0, spend ₹0. P59-001 PAUSED; P59-002 BLOCKED.",
+  "last_observed_at": "2026-11-16T08:18:07Z",
+  "resume_checkpoint": "P59-003 sole active P0. Phase59.46 PR #27 merged at ea8d785691b9e92ae8034cec2dafab70573ad249 after exact-head runtime and 13/13 regression workflows passed. Evidence: 16 concurrent requests, 2 admitted, 14 fail-closed, committed=2, reserved=0, uncertain=0. Workerd fixture only; not independent-host, hosted cross-run, real installation, deployed or revenue proof. Next Phase59.47 crash/restart, lease expiry and stale fencing rejection. P59-001 PAUSED; P59-002 BLOCKED. Production flags OFF; inference disabled; spend ₹0.",
   "last_observed_head_semantics": "Exact master HEAD 9cdc16a28e9bd958cb5eec78548e464988123e10 was independently checked by Mission Continuity Guard #244 (111 checks, zero errors) and Mission Autonomous AI Worker #444 (POLL_OK selected P59-003; AI inference disabled). This final checkpoint commit records those exact-head runs.",
   "phase53_latest_report": "research/PHASE_53_FORMULA_INTEGRITY_TECHNICAL_FEASIBILITY_2026-11-14.md",
   "phase53_supporting_reports": [
@@ -1928,5 +1928,42 @@
       "diagnosis": "The only failure was an invalid fairness assertion: both admitted requests were attributed to primary worker; shared cap of 2 was respected, 14 excess requests rejected, both reservations settled. Current contract does not promise fair scheduling."
     },
     "correction": "Removed uncontracted worker fairness requirement from test and aligned research acceptance criteria; retained quota safety, valid attribution, settlement and zero residual budget assertions."
+  },
+  "phase59_46": {
+    "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
+    "pr_number": 27,
+    "pr_state": "MERGED",
+    "branch": "phase59-46-global-installation-contention-v2",
+    "tested_head": "4bf26dccd50ddf3b0887e310c3ad6f3d74386273",
+    "merge_commit": "ea8d785691b9e92ae8034cec2dafab70573ad249",
+    "exact_head_ci": "SUCCESS",
+    "regression_workflows_passed": 13,
+    "regression_workflows_total": 13,
+    "workers_runtime_run_id": 43830209099,
+    "workers_runtime_conclusion": "SUCCESS",
+    "assertions": {
+      "concurrent_requests": 16,
+      "admitted": 2,
+      "fail_closed": 14,
+      "committed_units": 2,
+      "reserved_units": 0,
+      "uncertain_units": 0,
+      "external_network_requests": 0
+    },
+    "evidence_scope": "Two isolated read-only shadow Worker clients concurrently share one synthetic installation-scope Durable Object quota partition in deterministic Cloudflare workerd runtime.",
+    "limitations": [
+      "not independent physical hosts",
+      "not hosted cross-run or cross-repository production proof",
+      "not real GitHub App installation proof",
+      "not Cloudflare production deployment",
+      "not live provider access",
+      "not AI inference",
+      "not revenue evidence"
+    ],
+    "production_feature_flag": "OFF",
+    "ai_inference": false,
+    "spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "next": "Phase59.47 crash/restart, lease expiry and stale-fencing rejection under deterministic workerd; preserve mock-only providers, production flags OFF and ₹0 spend."
   }
 }
