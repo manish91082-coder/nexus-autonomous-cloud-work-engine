@@ -38,6 +38,12 @@ Different installation IDs must resolve to different partitions. Provider reset-
 - No test pass is claimed until exact-head CI completes.
 - Existing test runtime uses synthetic installation IDs and one local Miniflare shared namespace. It cannot establish independent physical-host or cross-run production atomicity.
 
+## Additional security gap discovered during review
+
+The syntax validator proves that a caller supplied a string in the canonical format; it does **not** prove that the numeric installation ID is the installation actually represented by the authenticated GitHub credential. A compromised or misconfigured trusted caller could still select another syntactically valid installation ID and create a separate quota partition.
+
+Phase 59.45C must bind the quota scope to independently verified installation identity from trusted server-side configuration/credential provenance. The caller must not be able to select or override the installation ID. Token rotation for the same installation must preserve the same scope. Until this binding is implemented and tested, the canonical scope contract is necessary but not sufficient for tenant isolation or global budget correctness.
+
 ## Remaining Phase 59.45 gates
 
 - [ ] Exact-head Workers/workerd runtime CI passes.
