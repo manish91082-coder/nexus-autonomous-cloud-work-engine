@@ -34,7 +34,8 @@ async function createHarness() {
     installation_id: installationId, repository_ids: [repositoryId],
     permissions: { metadata: "read", contents: "read" },
     token_sha256: tokenSha256, issued_at: now - 1, expires_at: now + 120,
-    jti: "synthetic-cla-harness-000001", credential_lane: lane
+    jti: "synthetic-cla-harness-000001", credential_lane: lane,
+    lease_id: leaseId, key_version: "broker-test-v1"
   };
   const cla = await signJws(brokerKey.pair, "broker-test-key", claClaims);
   // The token exists only in this broker/gateway closure. No worker-facing API returns it.
@@ -49,7 +50,7 @@ async function createHarness() {
     const verifiedCla = await verifyGitHubCredentialProvenance({
       assertion: lease.cla, bearerToken: token, publicKeys: publicBrokerKeys, nowEpoch: now,
       issuer: "https://broker.test.invalid", audience: "nexus-quota-ledger",
-      appId: "12345", repositoryId: intent.repositoryId, credentialLane: lane,
+      appId: "12345", repositoryId: intent.repositoryId, credentialLane: lane, leaseId: lease.leaseId,
       requiredPermissions: { metadata: "read" }
     });
     const fingerprint = await computeGitHubRequestFingerprint(intent);
@@ -80,7 +81,7 @@ async function createHarness() {
       assertion: lease.cla, verifyTokenBinding: false,
       publicKeys: publicBrokerKeys, nowEpoch: now,
       issuer: "https://broker.test.invalid", audience: "nexus-quota-ledger",
-      appId: "12345", repositoryId, credentialLane: lane
+      appId: "12345", repositoryId, credentialLane: lane, leaseId: lease.leaseId
     });
     const receipt = await verifyEgressDispatchReceipt({
       receipt: dispatch.receipt, publicKeys: publicGatewayKeys,
