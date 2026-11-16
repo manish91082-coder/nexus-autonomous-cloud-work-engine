@@ -1,30 +1,30 @@
 # LIVE CONTINUITY — PHASE 59.50 PROVIDER-RESPONSE CRASH-WINDOW RECOVERY (16-Nov-2026)
 
 **Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR), AI agentic swarm foundation  
-**Canonical repository:** \`manish91082-coder/nexus-autonomous-cloud-work-engine\`  
-**Canonical branch:** \`master\`  
+**Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Canonical branch:** `master`  
 **Current task:** P59-003, IN_PROGRESS  
 **Paused:** P59-001; **Blocked:** P59-002  
-**Master HEAD:** \`ba58f3bf161329c9787b5bb0a5e4af2d3b27b2fc\`  
+**Master HEAD:** `ba58f3bf161329c9787b5bb0a5e4af2d3b27b2fc`  
 **Spend:** ₹0; **verified platform earnings:** ₹0; **live LLM inference:** disabled  
 **Production feature flags:** OFF; **live provider calls:** 0; **external network in tests:** 0
 
 ## Current verified checkpoint
 
 ### Phase 59.49 — merged
-- PR #30 merged at \`51d2af04cb62b9baf3a41199030f59fe5eaa04ce\`.
-- Exact tested head \`5ceea4646f467b3dde72e40e4e4cc1da13fb1dc2\`.
+- PR #30 merged at `51d2af04cb62b9baf3a41199030f59fe5eaa04ce`.
+- Exact tested head `5ceea4646f467b3dde72e40e4e4cc1da13fb1dc2`.
 - 15/15 exact-head workflow checks passed.
 - Added replay-safe duplicate settlement and metadata-only durable provider response journal.
 - Identical settlement replay is acknowledged without a second charge; conflicting replay fails closed.
 - The response receipt is durable after telemetry/receipt commit. The remote provider and local SQLite are not one atomic transaction.
 
 ### Phase 59.50 — merged
-- PR #31 merged at \`ba58f3bf161329c9787b5bb0a5e4af2d3b27b2fc\`.
-- Exact PR head \`49588f53a58f6824118568102bef8d2890ec586e\`.
+- PR #31 merged at `ba58f3bf161329c9787b5bb0a5e4af2d3b27b2fc`.
+- Exact PR head `49588f53a58f6824118568102bef8d2890ec586e`.
 - 13/13 exact-head workflow checks passed.
 - Cloudflare Workers/workerd runtime run: [43919320063](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43919320063), 67/67 tests passed.
-- New test injects loss of both \`recordTelemetry\` and immediate \`markUncertain\` after one deterministic provider response, reconstructs the Durable Object, expires the 30-second reservation lease, verifies \`UNCERTAIN_BUDGET_RETAINED\`, then retries the same stable request ID and proves provider-call count remains one.
+- New test injects loss of both `recordTelemetry` and immediate `markUncertain` after one deterministic provider response, reconstructs the Durable Object, expires the 30-second reservation lease, verifies `UNCERTAIN_BUDGET_RETAINED`, then retries the same stable request ID and proves provider-call count remains one.
 - No response receipt is fabricated when telemetry never commits.
 
 ## Evidence boundary and deployment truth
