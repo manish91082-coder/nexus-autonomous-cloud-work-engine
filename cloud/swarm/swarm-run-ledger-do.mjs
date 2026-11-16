@@ -311,7 +311,7 @@ export class SwarmRunDO extends DurableObject {
       const sql=this.ctx.storage.sql;
       let task=this.#taskRow(taskId);
       if (!task) throw new TypeError("unknown task");
-      if (task.owner_gate===1) return {status:"OWNER_APPROVAL_REQUIRED",task:publicTask(task)};
+      if (task.owner_gate===1) return {status:"OWNER_APPROVAL_REQUIRED",taskId:taskId};
       if (task.status==="COMPLETED") return {status:"ALREADY_COMPLETED",task:publicTask(task)};
       if (["DEAD_LETTER","BLOCKED","PAUSED"].includes(task.status)) return {status:"NOT_CLAIMABLE",task:publicTask(task)};
       const oldLease=sql.exec("SELECT * FROM swarm_run_leases WHERE task_id=?",taskId).toArray()[0];
@@ -384,7 +384,10 @@ export class SwarmRunDO extends DurableObject {
         if (input.success&&task.result_json===result.encoded&&task.last_worker_id===input.workerId) return {status:"ALREADY_COMPLETED",task:publicTask(task)};
         throw new TypeError("terminal task result conflict or non-owner");
       }
-      if (task.status==="DEAD_LETTER") return {status:"ALREADY_TERMINAL",task:publicTask(task)};
+      if (task.status==="DEAD_LETTER") {
+        if (task.last_worker_id!==input.workerId) throw new TypeError("terminal task non-owner");
+        return {status:"ALREADY_TERMINAL",taskId};
+      }
       this.#assertLease(input,callerId,now);
       let nextStatus,availableAt=null;
       if (input.success) nextStatus="COMPLETED";
