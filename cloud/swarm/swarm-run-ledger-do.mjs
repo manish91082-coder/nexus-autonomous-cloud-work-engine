@@ -365,7 +365,7 @@ export class SwarmRunDO extends DurableObject {
     const leaseSeconds=integer(input.leaseSeconds??maxLeaseSeconds,"leaseSeconds",15,maxLeaseSeconds);
     return this.ctx.storage.transactionSync(()=>{
       this.#assertProject({projectId});
-      const lease=this.#assertLease(input,callerId,now), expiresAt=now+leaseSeconds;
+      const lease=this.#assertLease(input,callerId,now), expiresAt=Math.max(lease.expires_at_epoch,now+leaseSeconds);
       this.ctx.storage.sql.exec("UPDATE swarm_run_leases SET expires_at_epoch=?,heartbeat_at_epoch=? WHERE task_id=?",expiresAt,now,input.taskId);
       this.ctx.storage.sql.exec("UPDATE swarm_run_tasks SET updated_at_epoch=? WHERE task_id=?",now,input.taskId);
       this.#event(projectId,input.taskId,"LEASE_HEARTBEAT",now,input.workerId,input.fenceToken,{expiresAtEpoch:expiresAt,callerId});
