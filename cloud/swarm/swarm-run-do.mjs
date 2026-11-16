@@ -65,14 +65,27 @@ export class SwarmRunDO extends DurableObject {
     if (!taskColumns.some(column => column.name === "last_fencing_token")) {
       sql.exec("ALTER TABLE swarm_tasks ADD COLUMN last_fencing_token INTEGER NOT NULL DEFAULT 0");
     }
+    if (!taskColumns.some(column => column.name === "result_run_id")) {
+      sql.exec("ALTER TABLE swarm_tasks ADD COLUMN result_run_id TEXT");
+    }
     sql.exec(`CREATE TABLE IF NOT EXISTS swarm_leases (
       task_id TEXT PRIMARY KEY, run_id TEXT NOT NULL UNIQUE, worker_id TEXT NOT NULL, fencing_token INTEGER NOT NULL,
       expires_at INTEGER NOT NULL, heartbeat_at INTEGER NOT NULL
     )`);
+    const leaseColumns = sql.exec("PRAGMA table_info(swarm_leases)").toArray();
+    if (!leaseColumns.some(column => column.name === "run_id")) {
+      sql.exec("ALTER TABLE swarm_leases ADD COLUMN run_id TEXT NOT NULL DEFAULT ''");
+      sql.exec("UPDATE swarm_leases SET run_id='legacy:' || task_id || ':' || fencing_token WHERE run_id=''");
+    }
+    sql.exec("CREATE UNIQUE INDEX IF NOT EXISTS swarm_leases_run_id_unique ON swarm_leases(run_id)");
     sql.exec(`CREATE TABLE IF NOT EXISTS swarm_checkpoints (
       task_id TEXT PRIMARY KEY, checkpoint_seq INTEGER NOT NULL, checkpoint_json TEXT NOT NULL,
       checkpoint_hash TEXT NOT NULL, run_id TEXT NOT NULL, fencing_token INTEGER NOT NULL, updated_at INTEGER NOT NULL
     )`);
+    const checkpointColumns = sql.exec("PRAGMA table_info(swarm_checkpoints)").toArray();
+    if (!checkpointColumns.some(column => column.name === "run_id")) {
+      sql.exec("ALTER TABLE swarm_checkpoints ADD COLUMN run_id TEXT NOT NULL DEFAULT 'LEGACY'");
+    }
     sql.exec(`CREATE TABLE IF NOT EXISTS swarm_events (
       seq INTEGER PRIMARY KEY, event_id TEXT NOT NULL UNIQUE, task_id TEXT NOT NULL,
       event_type TEXT NOT NULL, payload_json TEXT NOT NULL, prev_hash TEXT NOT NULL,
@@ -176,6 +189,7 @@ export class SwarmRunDO extends DurableObject {
   async #register(input) {
     const taskId = safeId(input.taskId, "taskId");
     const projectId = safeId(input.projectId, "projectId", 64);
+    if (projectId !== "P10CR") throw new Error("PROJECT_CELL_IDENTITY_MISMATCH");
     const taskType = safeId(input.taskType, "taskType", 96);
     const idempotencyKey = safeId(input.idempotencyKey, "idempotencyKey");
     const payloadHash = hashText(input.payloadHash);
