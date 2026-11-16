@@ -13,6 +13,7 @@ import {
 import { reconcileGitHubQuotaTelemetry } from "./github-quota-telemetry.mjs";
 import { getGitHubOperationDefinition } from "./github-operation-registry.mjs";
 import { secondaryBackoffSeconds } from "./github-secondary-rate-limit.mjs";
+import { ensureQuotaDispatchSchema } from "./quota-dispatch-schema.mjs";
 export { QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest, requireQuotaStoreEnabled };
 
 const encoder = new TextEncoder();
@@ -174,6 +175,9 @@ export class QuotaLedgerDO extends DurableObject {
       provenance_json TEXT NOT NULL
     )`);
 
+    // Additive storage preparation only. Trusted verification and atomic
+    // finalizeDispatch enforcement remain separate acceptance gates.
+    ensureQuotaDispatchSchema(sql);
   }
 
   async fetch(request) {
