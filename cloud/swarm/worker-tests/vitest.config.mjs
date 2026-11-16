@@ -28,7 +28,9 @@ export default defineConfig({
           SECOND_CALLER: "p10cr-secondary-caller",
           SHADOW_WORKER: "p10cr-read-only-shadow-worker",
           SECOND_SHADOW_WORKER: "p10cr-read-only-shadow-worker-secondary",
-          PHASE_59_44_SHADOW_WORKER: "p10cr-read-only-shadow-worker-phase-59-44"
+          PHASE_59_44_SHADOW_WORKER: "p10cr-read-only-shadow-worker-phase-59-44",
+          PHASE_59_46_PRIMARY: "p10cr-read-only-shadow-worker-phase-59-46-primary",
+          PHASE_59_46_SECONDARY: "p10cr-read-only-shadow-worker-phase-59-46-secondary"
         },
         workers: [
           {
@@ -176,6 +178,52 @@ export default defineConfig({
             durableObjects: {
               QUOTA_LEDGER: sharedQuotaNamespace
             }
+          },
+          {
+            name: "p10cr-read-only-shadow-worker-phase-59-46-primary",
+            rootPath: "../",
+            modules: [
+              { type: "ESModule", path: "./read-only-swarm-worker.mjs" },
+              { type: "ESModule", path: "./quota-ledger-client.mjs" },
+              { type: "ESModule", path: "./quota-ledger-contract.mjs" },
+              { type: "ESModule", path: "./github-quota-telemetry.mjs" },
+              { type: "ESModule", path: "./github-operation-registry.mjs" },
+              { type: "ESModule", path: "./github-secondary-rate-limit.mjs" }
+            ],
+            bindings: {
+              NEXUS_QUOTA_STORE_ENABLED: "true",
+              NEXUS_QUOTA_CALLER_ID: "shadow",
+              NEXUS_QUOTA_CALLER_SECRET: shadowWorkerTestSecret,
+              NEXUS_QUOTA_CREDENTIAL_SCOPE: "github-app-installation:shadow-test-46",
+              NEXUS_SWARM_WORKER_ID: "p10cr-read-only-shadow-worker-phase-59-46-primary",
+              NEXUS_SWARM_MODE: "SHADOW",
+              NEXUS_SWARM_SHADOW_RESET_AT: "4102444800",
+              NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE: "2"
+            },
+            durableObjects: { QUOTA_LEDGER: sharedQuotaNamespace }
+          },
+          {
+            name: "p10cr-read-only-shadow-worker-phase-59-46-secondary",
+            rootPath: "../",
+            modules: [
+              { type: "ESModule", path: "./read-only-swarm-worker.mjs" },
+              { type: "ESModule", path: "./quota-ledger-client.mjs" },
+              { type: "ESModule", path: "./quota-ledger-contract.mjs" },
+              { type: "ESModule", path: "./github-quota-telemetry.mjs" },
+              { type: "ESModule", path: "./github-operation-registry.mjs" },
+              { type: "ESModule", path: "./github-secondary-rate-limit.mjs" }
+            ],
+            bindings: {
+              NEXUS_QUOTA_STORE_ENABLED: "true",
+              NEXUS_QUOTA_CALLER_ID: "shadow-secondary",
+              NEXUS_QUOTA_CALLER_SECRET: shadowWorkerSecondaryTestSecret,
+              NEXUS_QUOTA_CREDENTIAL_SCOPE: "github-app-installation:shadow-test-46",
+              NEXUS_SWARM_WORKER_ID: "p10cr-read-only-shadow-worker-phase-59-46-secondary",
+              NEXUS_SWARM_MODE: "SHADOW",
+              NEXUS_SWARM_SHADOW_RESET_AT: "4102444800",
+              NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE: "2"
+            },
+            durableObjects: { QUOTA_LEDGER: sharedQuotaNamespace }
           },
         ]
       }
