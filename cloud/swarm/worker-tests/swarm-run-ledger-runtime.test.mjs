@@ -178,6 +178,18 @@ describe("Phase 59.53 durable swarm run ledger", () => {
     expect((await call(stub,"verifyEventChain",{projectId:PROJECT_ID})).status).toBe("VALID");
   });
 
+  it("signs authenticated client RPCs into the canonical P10CR project cell", async () => {
+    const input={
+      projectId:PROJECT_ID,taskId:"P10CR:client-smoke",idempotencyKey:"idem:client-smoke",
+      taskType:"SYNTHETIC_RESEARCH",payload:{fixture:"client"},maxAttempts:2,ownerGate:false
+    };
+    const registered=await swarmRunLedgerCall(env,"registerTask",input);
+    expect(registered.httpStatus).toBe(200);
+    expect(registered.body.status).toBe("REGISTERED");
+    const snapshot=await swarmRunLedgerCall(env,"snapshot",{projectId:PROJECT_ID});
+    expect(snapshot.body.tasks.some(task=>task.taskId==="P10CR:client-smoke")).toBe(true);
+  });
+
   it("fails closed on credential-like task data and the disabled client path", async () => {
     const stub=stubFor("secret-data-rejection");
     const rejected=await call(stub,"registerTask",{
