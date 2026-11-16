@@ -23,7 +23,8 @@ export default defineConfig({
           QUOTA_LEDGER: sharedQuotaNamespace
         },
         serviceBindings: {
-          SECOND_CALLER: "p10cr-secondary-caller"
+          SECOND_CALLER: "p10cr-secondary-caller",
+          SHADOW_WORKER: "p10cr-read-only-shadow-worker"
         },
         workers: [
           {
@@ -92,6 +93,30 @@ export default defineConfig({
               QUOTA_LEDGER: sharedQuotaNamespace
             }
           }
+
+          {
+            name: "p10cr-read-only-shadow-worker",
+            rootPath: "../",
+            modules: [
+              { type: "ESModule", path: "./read-only-swarm-worker.mjs" },
+              { type: "ESModule", path: "./quota-ledger-client.mjs" },
+              { type: "ESModule", path: "./quota-ledger-contract.mjs" },
+              { type: "ESModule", path: "./github-quota-telemetry.mjs" },
+              { type: "ESModule", path: "./github-operation-registry.mjs" },
+              { type: "ESModule", path: "./github-secondary-rate-limit.mjs" }
+            ],
+            bindings: {
+              NEXUS_QUOTA_STORE_ENABLED: "true",
+              NEXUS_QUOTA_CALLER_ID: "secondary",
+              NEXUS_QUOTA_CALLER_SECRET: secondaryTestSecret,
+              NEXUS_QUOTA_CREDENTIAL_SCOPE: "installation-42/repository-99/shadow-worker",
+              NEXUS_SWARM_MODE: "SHADOW",
+              NEXUS_SWARM_SHADOW_RESET_AT: "4102444800"
+            },
+            durableObjects: {
+              QUOTA_LEDGER: sharedQuotaNamespace
+            }
+          },
         ]
       }
     })

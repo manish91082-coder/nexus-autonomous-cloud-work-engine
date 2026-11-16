@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus.local/schemas/read-only-swarm-worker-envelope-v1.schema.json",
+  "title": "P10CR Read-only Swarm Worker Shadow Envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "mode",
+    "projectId",
+    "taskId",
+    "taskType",
+    "runId",
+    "requestId",
+    "operation",
+    "target"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "mode": { "const": "SHADOW" },
+    "projectId": { "const": "P10CR" },
+    "taskId": { "const": "P59-003" },
+    "taskType": { "const": "READ_ONLY_REPOSITORY_METADATA" },
+    "runId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 14,
+      "maxLength": 128,
+      "pattern": "^p10cr-shadow:[A-Za-z0-9._:-]+$"
+    },
+    "operation": { "const": "github.rest.repositories.get.v1" },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner", "repo"],
+      "properties": {
+        "owner": { "const": "manish91082-coder" },
+        "repo": { "const": "nexus-autonomous-cloud-work-engine" }
+      }
+    }
+  }
+}

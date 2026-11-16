@@ -1427,3 +1427,111 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
     );
   });
 });
+
+
+describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
+  const shadowInput = {
+    provider: "github",
+    credentialScope: "installation-42/repository-99/shadow-worker",
+    windowId: "github-rate-limit-ledger",
+    controlPlaneProvider: "cloudflare",
+    reservationId: "shadow-seed",
+    workerId: "shadow-seed-worker",
+    operation: "github.rest.repositories.get.v1"
+  };
+  const envelope = {
+    schemaVersion: "1.0",
+    mode: "SHADOW",
+    projectId: "P10CR",
+    taskId: "P59-003",
+    taskType: "READ_ONLY_REPOSITORY_METADATA",
+    runId: "phase59-44-test-001",
+    requestId: "p10cr-shadow:phase59-44-test-001:repo-metadata",
+    operation: "github.rest.repositories.get.v1",
+    target: {
+      owner: "manish91082-coder",
+      repo: "nexus-autonomous-cloud-work-engine"
+    }
+  };
+
+  it("rejects hostile or cross-project envelopes before quota mutation", async () => {
+    const hostile = {
+      ...envelope,
+      target: { owner: "attacker", repo: "other-repository" }
+    };
+    const response = await env.SHADOW_WORKER.fetch(new Request(
+      "https://shadow-worker/shadow/research",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(hostile)
+      }
+    ));
+    expect(response.status).toBe(400);
+    expect(await response.json()).toMatchObject({
+      status: "REJECTED",
+      reason: "INVALID_TASK_ENVELOPE"
+    });
+  });
+
+  it("uses the shared quota Durable Object in shadow mode and suppresses duplicate provider work", async () => {
+    const stub = stubFor(shadowInput);
+    const seeded = await seedBucket(stub, shadowInput, "core", 100, {
+      resetAtEpoch: 4102444800
+    });
+    expect(seeded.reset_at_epoch).toBe(4102444800);
+
+    const invoke = () => env.SHADOW_WORKER.fetch(new Request(
+      "https://shadow-worker/shadow/research",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(envelope)
+      }
+    ));
+
+    const firstResponse = await invoke();
+    expect(firstResponse.status).toBe(200);
+    const first = await firstResponse.json();
+    expect(first).toMatchObject({
+      status: "SHADOW_COMPLETED",
+      projectId: "P10CR",
+      taskId: "P59-003",
+      requestId: envelope.requestId,
+      operation: envelope.operation,
+      quotaStatus: "COMPLETED",
+      settlementStatus: "SETTLED",
+      providerRequestIssued: true,
+      mockProviderCalls: 1,
+      externalNetworkRequests: 0,
+      result: {
+        full_name: "manish91082-coder/nexus-autonomous-cloud-work-engine",
+        private: false,
+        fixture: true
+      }
+    });
+
+    const duplicateResponse = await invoke();
+    expect(duplicateResponse.status).toBe(200);
+    const duplicate = await duplicateResponse.json();
+    expect(duplicate).toMatchObject({
+      status: "DUPLICATE_SUPPRESSED",
+      requestId: envelope.requestId,
+      reservationId: "p10cr:" + envelope.requestId,
+      providerRequestIssued: false,
+      mockProviderCalls: 0,
+      externalNetworkRequests: 0
+    });
+
+    const snapshot = await call(stub, "snapshot", shadowInput);
+    const reservation = snapshot.reservations.find(
+      item => item.reservation_id === "p10cr:" + envelope.requestId
+    );
+    expect(reservation.status).toBe("SETTLED");
+    expect(snapshot.telemetryObservations.some(
+      item => item.reservation_id === reservation.reservation_id
+    )).toBe(true);
+    expect(snapshot.buckets.find(item => item.bucket_id === "core").reserved_units).toBe(0);
+    expect(snapshot.buckets.find(item => item.bucket_id === "core").committed_units).toBe(1);
+  });
+});
