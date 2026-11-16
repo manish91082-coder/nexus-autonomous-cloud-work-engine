@@ -1868,3 +1868,137 @@ describe("Phase 59.50 provider-response crash-window recovery", () => {
   });
 });
 
+describe("Phase 59.51 provider-response journal restart/readback", () => {
+  it("preserves one receipt across Durable Object eviction, accepts identical telemetry and rejects conflicting receipt metadata", async () => {
+    const input = identity("phase59-51-journal-durability", "github.rest.repositories.get.v1");
+    const stub = stubFor(input);
+    const seeded = await seedBucket(stub, input, "core", 100);
+    const now = Math.floor(Date.now() / 1000);
+    const responseRequestId = "12345678-1234-4123-8123-123456789abc";
+    const headers = {
+      "x-ratelimit-limit": "100",
+      "x-ratelimit-remaining": "99",
+      "x-ratelimit-used": "1",
+      "x-ratelimit-reset": String(seeded.reset_at_epoch),
+      "x-ratelimit-resource": "core"
+    };
+    const telemetry = parseGitHubRateLimitHeaders({
+      headers,
+      credentialScope: input.credentialScope,
+      observedAtEpoch: now,
+      endpoint: "GET /repos/acme/demo",
+      method: "GET",
+      status: 200,
+      requestId: responseRequestId
+    });
+
+    const reserved = await call(stub, "reserve", input);
+    expect(reserved.status).toBe("RESERVED");
+    const first = await call(stub, "recordTelemetry", {
+      provider: input.provider,
+      credentialScope: input.credentialScope,
+      windowId: input.windowId,
+      reservationId: input.reservationId,
+      telemetry
+    });
+    expect(first.status).toBe("RECORDED");
+
+    const beforeRestart = await call(stub, "snapshot", input);
+    expect(beforeRestart.providerResponseJournal).toHaveLength(1);
+    const originalReceipt = beforeRestart.providerResponseJournal[0];
+    const originalReservation = beforeRestart.reservations.find(
+      item => item.reservation_id === input.reservationId
+    );
+    expect(originalReceipt).toMatchObject({
+      reservation_id: input.reservationId,
+      caller_id: "primary",
+      request_fingerprint: originalReservation.request_fingerprint,
+      provider_request_id: responseRequestId,
+      response_status: 200,
+      endpoint: "GET /repos/acme/demo",
+      method: "GET",
+      observed_at_epoch: now
+    });
+    expect(beforeRestart.telemetryObservations.some(
+      item => item.observation_id === originalReceipt.first_observation_id
+    )).toBe(true);
+
+    // The receipt and its reservation linkage must survive a real DO
+    // eviction/reconstruction before duplicate and conflict checks run.
+    await evictDurableObject(stub);
+    const afterRestart = await call(stub, "snapshot", input);
+    expect(afterRestart.providerResponseJournal).toHaveLength(1);
+    expect(afterRestart.providerResponseJournal[0]).toEqual(originalReceipt);
+    expect(afterRestart.reservations.find(
+      item => item.reservation_id === input.reservationId
+    ).request_fingerprint).toBe(originalReceipt.request_fingerprint);
+
+    const duplicate = await call(stub, "recordTelemetry", {
+      provider: input.provider,
+      credentialScope: input.credentialScope,
+      windowId: input.windowId,
+      reservationId: input.reservationId,
+      telemetry
+    });
+    expect(duplicate.status).toBe("RECORDED");
+    const afterDuplicate = await call(stub, "snapshot", input);
+    expect(afterDuplicate.providerResponseJournal).toHaveLength(1);
+    expect(afterDuplicate.providerResponseJournal[0]).toEqual(originalReceipt);
+    const observationCountAfterDuplicate = afterDuplicate.telemetryObservations.length;
+
+    const conflicts = [
+      {
+        requestId: "87654321-4321-4321-8321-abcdefabcdef",
+        label: "provider request ID"
+      },
+      {
+        status: 201,
+        label: "HTTP response status"
+      },
+      {
+        endpoint: "GET /repos/acme/other",
+        label: "endpoint"
+      },
+      {
+        method: "POST",
+        endpoint: "POST /repos/acme/demo",
+        label: "HTTP method"
+      },
+      {
+        observedAtEpoch: now - 1,
+        label: "observation timestamp"
+      }
+    ];
+    for (const conflict of conflicts) {
+      const changedTelemetry = parseGitHubRateLimitHeaders({
+        headers,
+        credentialScope: input.credentialScope,
+        observedAtEpoch: conflict.observedAtEpoch ?? now,
+        endpoint: conflict.endpoint ?? "GET /repos/acme/demo",
+        method: conflict.method ?? "GET",
+        status: conflict.status ?? 200,
+        requestId: conflict.requestId ?? responseRequestId
+      });
+      const rejected = await call(stub, "recordTelemetry", {
+        provider: input.provider,
+        credentialScope: input.credentialScope,
+        windowId: input.windowId,
+        reservationId: input.reservationId,
+        telemetry: changedTelemetry
+      });
+      expect(rejected.status).toBe("REJECTED");
+      expect(rejected.error.message).toMatch(/provider response receipt conflict/);
+    }
+
+    const afterConflicts = await call(stub, "snapshot", input);
+    expect(afterConflicts.providerResponseJournal).toHaveLength(1);
+    expect(afterConflicts.providerResponseJournal[0]).toEqual(originalReceipt);
+    expect(afterConflicts.telemetryObservations).toHaveLength(observationCountAfterDuplicate);
+    const finalReservation = afterConflicts.reservations.find(
+      item => item.reservation_id === input.reservationId
+    );
+    expect(finalReservation.request_fingerprint).toBe(originalReceipt.request_fingerprint);
+    expect(finalReservation.caller_id).toBe(originalReceipt.caller_id);
+  });
+});
+
