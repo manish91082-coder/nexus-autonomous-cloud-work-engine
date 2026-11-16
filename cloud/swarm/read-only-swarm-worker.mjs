@@ -102,7 +102,7 @@ async function readEnvelope(request) {
     : { ok: false, status: 400 };
 }
 
-function syntheticProviderResponse(resetAtEpoch) {
+function syntheticProviderResponse(resetAtEpoch, requestId) {
   return new Response(JSON.stringify({
     full_name: CANONICAL_REPOSITORY,
     private: false,
@@ -116,7 +116,7 @@ function syntheticProviderResponse(resetAtEpoch) {
       "x-ratelimit-used": "1",
       "x-ratelimit-reset": String(resetAtEpoch),
       "x-ratelimit-resource": "core",
-      "x-github-request-id": "P10CR-SHADOW-FIXTURE-0001"
+      "x-github-request-id": "P10CR-SHADOW-" + requestId
     }
   });
 }
@@ -154,7 +154,7 @@ export default {
         throw new TypeError("shadow fixture rejected a non-canonical or non-read-only request");
       }
       mockProviderCalls += 1;
-      return syntheticProviderResponse(resetAtEpoch);
+      return syntheticProviderResponse(resetAtEpoch, parsed.value.requestId);
     };
 
     try {
