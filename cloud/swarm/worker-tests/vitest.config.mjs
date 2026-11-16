@@ -5,9 +5,17 @@ const primaryTestSecret = "primary-test-secret-0123456789abcdef";
 const secondaryTestSecret = "secondary-test-secret-0123456789abcdef";
 const shadowWorkerTestSecret = "shadow-worker-test-secret-0123456789abcdef";
 const shadowWorkerSecondaryTestSecret = "shadow-secondary-test-secret-0123456789abcdef";
+const runPrimaryTestSecret = "run-primary-test-secret-0123456789abcdef";
+const runWorkerATestSecret = "run-worker-a-test-secret-0123456789abcdef";
+const runWorkerBTestSecret = "run-worker-b-test-secret-0123456789abcdef";
 const sharedQuotaNamespace = {
   className: "QuotaLedgerDO",
   scriptName: "p10cr-quota-ledger-host",
+  useSQLite: true
+};
+const sharedSwarmRunNamespace = {
+  className: "SwarmRunDO",
+  scriptName: "p10cr-swarm-run-ledger-host",
   useSQLite: true
 };
 
@@ -19,10 +27,19 @@ export default defineConfig({
         bindings: {
           NEXUS_QUOTA_STORE_ENABLED: "true",
           NEXUS_QUOTA_CALLER_ID: "primary",
-          NEXUS_QUOTA_CALLER_SECRET: primaryTestSecret
+          NEXUS_QUOTA_CALLER_SECRET: primaryTestSecret,
+          NEXUS_SWARM_RUN_LEDGER_ENABLED: "true",
+          NEXUS_SWARM_PROJECT_ID: "P10CR",
+          NEXUS_SWARM_RUN_TEST_MODE: "true",
+          NEXUS_SWARM_RUN_CALLER_ID: "primary",
+          NEXUS_SWARM_RUN_CALLER_SECRET: runPrimaryTestSecret,
+          NEXUS_SWARM_RUN_CALLER_KEYS: JSON.stringify({primary:runPrimaryTestSecret,"worker-a":runWorkerATestSecret,"worker-b":runWorkerBTestSecret}),
+          NEXUS_SWARM_RUN_CALLER_POLICIES: JSON.stringify({primary:["registerTask","recoverExpiredLeases","snapshot","verifyEventChain"],"worker-a":["claimTask","heartbeat","checkpoint","finishTask"],"worker-b":["claimTask","heartbeat","checkpoint","finishTask"]}),
+          NEXUS_SWARM_RUN_CALLER_WORKERS: JSON.stringify({"worker-a":"worker-a","worker-b":"worker-b"})
         },
         durableObjects: {
-          QUOTA_LEDGER: sharedQuotaNamespace
+          QUOTA_LEDGER: sharedQuotaNamespace,
+          SWARM_RUN_LEDGER: sharedSwarmRunNamespace
         },
         serviceBindings: {
           SECOND_CALLER: "p10cr-secondary-caller",
@@ -88,6 +105,23 @@ export default defineConfig({
                 useSQLite: true
               }
             }
+          },
+          {
+            name: "p10cr-swarm-run-ledger-host",
+            rootPath: "../",
+            modules: [
+              { type: "ESModule", path: "./swarm-run-ledger-host.mjs" },
+              { type: "ESModule", path: "./swarm-run-ledger-do.mjs" }
+            ],
+            bindings: {
+              NEXUS_SWARM_RUN_LEDGER_ENABLED: "true",
+              NEXUS_SWARM_PROJECT_ID: "P10CR",
+              NEXUS_SWARM_RUN_TEST_MODE: "true",
+              NEXUS_SWARM_RUN_CALLER_KEYS: JSON.stringify({primary:runPrimaryTestSecret,"worker-a":runWorkerATestSecret,"worker-b":runWorkerBTestSecret}),
+              NEXUS_SWARM_RUN_CALLER_POLICIES: JSON.stringify({primary:["registerTask","recoverExpiredLeases","snapshot","verifyEventChain"],"worker-a":["claimTask","heartbeat","checkpoint","finishTask"],"worker-b":["claimTask","heartbeat","checkpoint","finishTask"]}),
+              NEXUS_SWARM_RUN_CALLER_WORKERS: JSON.stringify({"worker-a":"worker-a","worker-b":"worker-b"})
+            },
+            durableObjects: { SWARM_RUN_LEDGER: sharedSwarmRunNamespace }
           },
           {
             name: "p10cr-secondary-caller",
@@ -230,7 +264,7 @@ export default defineConfig({
     })
   ],
   test: {
-    include: ["./quota-ledger-runtime.test.mjs"],
+    include: ["./quota-ledger-runtime.test.mjs", "./swarm-run-ledger-runtime.test.mjs"],
     testTimeout: 60000,
     hookTimeout: 60000
   }
