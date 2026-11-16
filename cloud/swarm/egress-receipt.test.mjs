@@ -62,7 +62,7 @@ test("rejects ambiguous outcomes claiming a response status and invalid time win
 
 test("accepts uncertain outcomes only without a response status", async () => {
   const uncertain={...claims(),outcome:"outcome_uncertain",response_status:null,response_headers_sha256:null};
-  const result=await verifyEgressDispatchReceipt({receipt:await sign(uncertain),...base()});
+  const result=await verifyEgressDispatchReceipt({receipt:await sign(uncertain),...base(),responseHeadersSha256:null});
   assert.equal(result.outcome,"outcome_uncertain");
   assert.equal(result.responseStatus,null);
 });
