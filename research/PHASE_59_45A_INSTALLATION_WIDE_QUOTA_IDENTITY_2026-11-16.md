@@ -64,3 +64,13 @@ The PR was reopened against the corrected head to trigger a fresh PR validation 
 Latest corrected branch head: `54c81037de48747717259b84d1a2a3f37879c36b`.
 
 No deployment, live GitHub API request, inference, real installation credential or spend occurred.
+
+
+## Phase 59.45C fixture isolation correction (16-Nov-2026)
+
+The latest exact-head CI result disproved the earlier request-ID collision hypothesis. The diagnostic response identified `SECONDARY_ENDPOINT_POINT_BUDGET`. The second worker was still denied because the Durable Object host owns the effective endpoint-point budget; setting a higher value only on the shadow Worker clients did not change the host's admission policy. The same installation fixture scope was also used by the preceding Phase 59.44 test in the shared workerd Durable Object namespace.
+
+Correction: isolate Phase 59.45's two clients under the dedicated fixture credential scope `github-app-installation:shadow-test-45`, and seed the test partition with that same scope. Both clients still share one identical scope and one Durable Object namespace with each other. Restore their per-client endpoint budget binding to the normal fixture value of 2; do not weaken the host policy or inflate global test budgets.
+
+This separates Phase 59.45 evidence from Phase 59.44 fixture history while preserving the actual invariant under test: two independently authenticated clients share one installation-scoped quota partition. Exact-head runtime CI must confirm the correction before merge.
+
