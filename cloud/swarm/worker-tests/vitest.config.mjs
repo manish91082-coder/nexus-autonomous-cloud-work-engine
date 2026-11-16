@@ -31,6 +31,8 @@ export default defineConfig({
           NEXUS_SWARM_RUN_LEDGER_ENABLED: "true",
           NEXUS_SWARM_PROJECT_ID: "P10CR",
           NEXUS_SWARM_RUN_TEST_MODE: "true",
+          NEXUS_SWARM_RUN_MAX_CONCURRENCY: "5",
+          NEXUS_SWARM_RUN_MAX_LEASE_SECONDS: "900",
           NEXUS_SWARM_RUN_CALLER_ID: "primary",
           NEXUS_SWARM_RUN_CALLER_SECRET: runPrimaryTestSecret,
           NEXUS_SWARM_RUN_CALLER_KEYS: JSON.stringify({primary:runPrimaryTestSecret,"worker-a":runWorkerATestSecret,"worker-b":runWorkerBTestSecret}),
@@ -117,6 +119,8 @@ export default defineConfig({
               NEXUS_SWARM_RUN_LEDGER_ENABLED: "true",
               NEXUS_SWARM_PROJECT_ID: "P10CR",
               NEXUS_SWARM_RUN_TEST_MODE: "true",
+              NEXUS_SWARM_RUN_MAX_CONCURRENCY: "5",
+              NEXUS_SWARM_RUN_MAX_LEASE_SECONDS: "900",
               NEXUS_SWARM_RUN_CALLER_KEYS: JSON.stringify({primary:runPrimaryTestSecret,"worker-a":runWorkerATestSecret,"worker-b":runWorkerBTestSecret}),
               NEXUS_SWARM_RUN_CALLER_POLICIES: JSON.stringify({primary:["registerTask","recoverExpiredLeases","snapshot","verifyEventChain"],"worker-a":["claimTask","heartbeat","checkpoint","finishTask"],"worker-b":["claimTask","heartbeat","checkpoint","finishTask"]}),
               NEXUS_SWARM_RUN_CALLER_WORKERS: JSON.stringify({"worker-a":"worker-a","worker-b":"worker-b"})
