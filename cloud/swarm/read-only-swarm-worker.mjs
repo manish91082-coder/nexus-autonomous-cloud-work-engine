@@ -137,7 +137,9 @@ export default {
 
     const credentialScope = env?.NEXUS_QUOTA_CREDENTIAL_SCOPE;
     const resetAtEpoch = Number(env?.NEXUS_SWARM_SHADOW_RESET_AT);
-    if (typeof credentialScope !== "string" || credentialScope.length < 1
+    if (typeof credentialScope !== "string"
+      || !credentialScope.startsWith("github-app-installation:")
+      || credentialScope.length > 128
       || !Number.isSafeInteger(resetAtEpoch) || resetAtEpoch <= Math.floor(Date.now() / 1000)) {
       return json(503, { status: "WAITING_FOR_OWNER_CONFIGURATION", reason: "SHADOW_FIXTURE_CONFIGURATION_INVALID" });
     }
