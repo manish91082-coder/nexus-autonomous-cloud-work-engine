@@ -23,7 +23,7 @@ function decode(segment, max) {
   if (binary.length>max) fail("segment too large");
   const bytes=Uint8Array.from(binary,c=>c.charCodeAt(0));
   let canonical=""; for(const b of bytes) canonical+=String.fromCharCode(b);
-  if(btoa(canonical).replace(/=/g,"").replace(/\\+/g,"-").replace(/\\//g,"_")!==segment) fail("non-canonical base64url");
+  if(btoa(canonical).replace(/=/g,"").split("+").join("-").split("/").join("_")!==segment) fail("non-canonical base64url");
   return bytes;
 }
 function parse(bytes,label) {
