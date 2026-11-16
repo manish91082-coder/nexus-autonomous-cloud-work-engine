@@ -3963,6 +3963,43 @@
   "updated_at": "2026-11-16",
   "current_task": "P59-003",
   "last_updated": "2026-11-16",
-  "sequence_note": "P59-003 AI agentic swarm foundation remains sole active P0. Phase59.45A merged and exact-head CI verified. Proceed Phase59.46 multi-client installation-wide quota arbitration. P59-001 remains PAUSED; P59-002 BLOCKED. Preserve canonical repository isolation, ₹0 spend, no paid fallback, production flags OFF and inference disabled.",
-  "last_reconciled_from_mission_state": "Phase59.46 PR #27 updated to head 4bf26dccd50ddf3b0887e310c3ad6f3d74386273; runtime test fairness assumption removed and evidence acceptance aligned. Corrected exact-head CI not yet evidenced; do not merge."
+  "sequence_note": "P59-003 AI agentic swarm foundation remains sole active P0. Phase59.46 PR #27 merged at ea8d785691b9e92ae8034cec2dafab70573ad249 after exact-head Workers/workerd runtime and 13/13 regression workflows passed. Proceed Phase59.47 crash/restart, lease expiry and stale-fencing tests. P59-001 remains PAUSED; P59-002 BLOCKED. Preserve canonical repository isolation, ₹0 spend, no paid fallback, production flags OFF and inference disabled.",
+  "last_reconciled_from_mission_state": "Phase59.46 PR #27 merged at ea8d785691b9e92ae8034cec2dafab70573ad249; tested head 4bf26dccd50ddf3b0887e310c3ad6f3d74386273; Workers/workerd SUCCESS and all 13/13 regression workflows SUCCESS. Next Phase59.47 crash/restart, lease expiry and stale fencing.",
+  "phase59_46": {
+    "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
+    "pr_number": 27,
+    "pr_state": "MERGED",
+    "branch": "phase59-46-global-installation-contention-v2",
+    "tested_head": "4bf26dccd50ddf3b0887e310c3ad6f3d74386273",
+    "merge_commit": "ea8d785691b9e92ae8034cec2dafab70573ad249",
+    "exact_head_ci": "SUCCESS",
+    "regression_workflows_passed": 13,
+    "regression_workflows_total": 13,
+    "workers_runtime_run_id": 43830209099,
+    "workers_runtime_conclusion": "SUCCESS",
+    "assertions": {
+      "concurrent_requests": 16,
+      "admitted": 2,
+      "fail_closed": 14,
+      "committed_units": 2,
+      "reserved_units": 0,
+      "uncertain_units": 0,
+      "external_network_requests": 0
+    },
+    "evidence_scope": "Two isolated read-only shadow Worker clients concurrently share one synthetic installation-scope Durable Object quota partition in deterministic Cloudflare workerd runtime.",
+    "limitations": [
+      "not independent physical hosts",
+      "not hosted cross-run or cross-repository production proof",
+      "not real GitHub App installation proof",
+      "not Cloudflare production deployment",
+      "not live provider access",
+      "not AI inference",
+      "not revenue evidence"
+    ],
+    "production_feature_flag": "OFF",
+    "ai_inference": false,
+    "spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "next": "Phase59.47 crash/restart, lease expiry and stale-fencing rejection under deterministic workerd; preserve mock-only providers, production flags OFF and ₹0 spend."
+  }
 }
