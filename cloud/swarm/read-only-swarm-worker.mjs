@@ -13,7 +13,6 @@ import { executeQuotaGuardedGitHubRequest } from "./quota-ledger-client.mjs";
 const CANONICAL_REPOSITORY = "manish91082-coder/nexus-autonomous-cloud-work-engine";
 const CANONICAL_URL = "https://api.github.com/repos/" + CANONICAL_REPOSITORY;
 const OPERATION = "github.rest.repositories.get.v1";
-const WORKER_ID = "p10cr-read-only-shadow-worker";
 const MAX_BODY_BYTES = 8192;
 const ENVELOPE_KEYS = [
   "schemaVersion", "mode", "projectId", "taskId", "taskType",
@@ -137,9 +136,12 @@ export default {
 
     const credentialScope = env?.NEXUS_QUOTA_CREDENTIAL_SCOPE;
     const resetAtEpoch = Number(env?.NEXUS_SWARM_SHADOW_RESET_AT);
+    const workerId = env?.NEXUS_SWARM_WORKER_ID;
     if (typeof credentialScope !== "string"
       || !credentialScope.startsWith("github-app-installation:")
       || credentialScope.length > 128
+      || !safeId(workerId, 96)
+      || !workerId.startsWith("p10cr-read-only-shadow-worker")
       || !Number.isSafeInteger(resetAtEpoch) || resetAtEpoch <= Math.floor(Date.now() / 1000)) {
       return json(503, { status: "WAITING_FOR_OWNER_CONFIGURATION", reason: "SHADOW_FIXTURE_CONFIGURATION_INVALID" });
     }
@@ -160,7 +162,7 @@ export default {
         env,
         credentialScope,
         operation: parsed.value.operation,
-        workerId: WORKER_ID,
+        workerId,
         requestId: parsed.value.requestId,
         request: new Request(CANONICAL_URL, { method: "GET" }),
         fetchImpl: mockFetch
