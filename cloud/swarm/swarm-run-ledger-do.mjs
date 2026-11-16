@@ -315,8 +315,11 @@ export class SwarmRunDO extends DurableObject {
     const taskId=safeId(input.taskId,"taskId",160);
     const workerId=safeId(input.workerId,"workerId",96);
     this.#assertCallerWorker(callerId,workerId);
-    const leaseSeconds=integer(input.leaseSeconds??900,"leaseSeconds",15,3600);
-    const maxConcurrency=integer(input.maxConcurrency??5,"maxConcurrency",1,32);
+    const maxLeaseSeconds=integer(Number(this.env?.NEXUS_SWARM_RUN_MAX_LEASE_SECONDS??900),"configured max lease seconds",15,3600);
+    const leaseSeconds=integer(input.leaseSeconds??maxLeaseSeconds,"leaseSeconds",15,maxLeaseSeconds);
+    const configuredConcurrency=integer(Number(this.env?.NEXUS_SWARM_RUN_MAX_CONCURRENCY??5),"configured max concurrency",1,32);
+    if (input.maxConcurrency!==undefined&&input.maxConcurrency!==configuredConcurrency) throw new TypeError("maxConcurrency must match configured project policy");
+    const maxConcurrency=configuredConcurrency;
     const now=this.#now(input);
     return this.ctx.storage.transactionSync(()=>{
       this.#assertProject({projectId});
@@ -358,7 +361,8 @@ export class SwarmRunDO extends DurableObject {
 
   #heartbeat(input,callerId) {
     const projectId=safeId(input.projectId,"projectId",64), now=this.#now(input);
-    const leaseSeconds=integer(input.leaseSeconds??900,"leaseSeconds",15,3600);
+    const maxLeaseSeconds=integer(Number(this.env?.NEXUS_SWARM_RUN_MAX_LEASE_SECONDS??900),"configured max lease seconds",15,3600);
+    const leaseSeconds=integer(input.leaseSeconds??maxLeaseSeconds,"leaseSeconds",15,maxLeaseSeconds);
     return this.ctx.storage.transactionSync(()=>{
       this.#assertProject({projectId});
       const lease=this.#assertLease(input,callerId,now), expiresAt=now+leaseSeconds;
