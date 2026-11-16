@@ -27,9 +27,9 @@ function json(status, body) {
   });
 }
 
-function safeId(value, max = 128) {
+function safeId(value, max = 128, min = 1) {
   return typeof value === "string"
-    && value.length >= 1
+    && value.length >= min
     && value.length <= max
     && /^[A-Za-z0-9._:-]+$/.test(value);
 }
@@ -45,7 +45,7 @@ function validateEnvelope(value) {
     || value.taskType !== "READ_ONLY_REPOSITORY_METADATA"
     || value.operation !== OPERATION
     || !safeId(value.runId)
-    || !safeId(value.requestId)
+    || !safeId(value.requestId, 128, 14)
     || !value.requestId.startsWith("p10cr-shadow:")) return false;
   const target = value.target;
   if (!target || typeof target !== "object" || Array.isArray(target)) return false;
@@ -59,9 +59,38 @@ async function readEnvelope(request) {
   if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) {
     return { ok: false, status: 415 };
   }
-  const bytes = new Uint8Array(await request.arrayBuffer());
-  if (bytes.byteLength < 1 || bytes.byteLength > MAX_BODY_BYTES) {
-    return { ok: false, status: 413 };
+  const declaredLength = request.headers.get("content-length");
+  if (declaredLength !== null) {
+    const parsedLength = Number(declaredLength);
+    if (!Number.isSafeInteger(parsedLength) || parsedLength < 0) {
+      return { ok: false, status: 400 };
+    }
+    if (parsedLength > MAX_BODY_BYTES) return { ok: false, status: 413 };
+  }
+  const reader = request.body?.getReader();
+  if (!reader) return { ok: false, status: 400 };
+  const chunks = [];
+  let total = 0;
+  try {
+    while (true) {
+      const part = await reader.read();
+      if (part.done) break;
+      total += part.value.byteLength;
+      if (total > MAX_BODY_BYTES) {
+        await reader.cancel();
+        return { ok: false, status: 413 };
+      }
+      chunks.push(part.value);
+    }
+  } catch {
+    return { ok: false, status: 400 };
+  }
+  if (total < 1) return { ok: false, status: 400 };
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
   }
   let value;
   try {

@@ -92,7 +92,7 @@ export default defineConfig({
             durableObjects: {
               QUOTA_LEDGER: sharedQuotaNamespace
             }
-          }
+          },
 
           {
             name: "p10cr-read-only-shadow-worker",
