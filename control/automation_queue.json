@@ -4022,6 +4022,9 @@
     "ai_inference": false,
     "spend_inr": 0,
     "external_network_requests": 0,
-    "next": "Run exact-head Workers/workerd runtime and all regression workflows; inspect stale-settlement test and full suite; do not merge until all required checks pass."
+    "next": "Run and inspect exact-head Workers/workerd runtime and all regression CI for PR #28. Do not merge until all required checks pass.",
+    "pr_number": 28,
+    "pr_state": "OPEN_CI_PENDING",
+    "head_sha": "02f822a0cbb5933fe0e5d155d4ad932e3c9a8127"
   }
 }
