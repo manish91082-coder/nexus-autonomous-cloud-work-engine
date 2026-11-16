@@ -937,7 +937,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
               return Response.json({status:"RECORDED"});
             }
             if (action === "settle") {
-              return Response.json({status:"WAITING_FOR_QUOTA",reason:"INJECTED_SETTLEMENT_FAILURE"},{status:503});
+              throw new Error("simulated ledger transport loss after provider response");
             }
             if (action === "markUncertain") {
               return Response.json({status:"UNCERTAIN_BUDGET_RETAINED"});
