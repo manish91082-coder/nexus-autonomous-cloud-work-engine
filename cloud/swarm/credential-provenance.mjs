@@ -102,8 +102,12 @@ export async function verifyGitHubCredentialProvenance({
   verifyTokenBinding = true
 }) {
   if (typeof assertion !== "string" || assertion.length > MAX_ASSERTION_LENGTH) fail("assertion missing or too large");
-  if (typeof bearerToken !== "string" || bearerToken.length < 1 || bearerToken.length > 4096
-    || /[\r\n]/.test(bearerToken)) fail("bearer token missing or malformed");
+  if (verifyTokenBinding) {
+    if (typeof bearerToken !== "string" || bearerToken.length < 1 || bearerToken.length > 4096
+      || /[\r\n]/.test(bearerToken)) fail("bearer token missing or malformed");
+  } else if (bearerToken !== undefined) {
+    fail("bearer token forbidden in ledger verification mode");
+  }
   if (!Number.isSafeInteger(nowEpoch) || nowEpoch < 0) fail("invalid clock");
   const parts = assertion.split(".");
   if (parts.length !== 3 || parts.some(part => !part)) fail("compact JWS required");
