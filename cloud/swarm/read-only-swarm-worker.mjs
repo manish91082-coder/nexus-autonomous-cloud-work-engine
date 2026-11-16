@@ -184,6 +184,9 @@ export default {
         return json(503, {
           status: result.status === "NOT_SENT" ? "WAITING_FOR_QUOTA" : "SHADOW_EXECUTION_NOT_CONFIRMED",
           quotaStatus: result.status,
+          quotaAdmissionStatus: result.admission?.status ?? null,
+          quotaAdmissionReason: result.admission?.reason ?? null,
+          quotaAdmissionBucket: result.admission?.bucketId ?? null,
           reservationId: result.reservationId ?? null,
           providerRequestIssued: mockProviderCalls > 0,
           mockProviderCalls,
