@@ -74,3 +74,16 @@ Correction: isolate Phase 59.45's two clients under the dedicated fixture creden
 
 This separates Phase 59.45 evidence from Phase 59.44 fixture history while preserving the actual invariant under test: two independently authenticated clients share one installation-scoped quota partition. Exact-head runtime CI must confirm the correction before merge.
 
+
+
+## Final verification and merge reconciliation (16-Nov-2026 06:17 UTC)
+
+The earlier Phase 59.45B request-ID collision hypothesis is superseded. The subsequent Phase 59.45C diagnostic identified the actual failure: the two shadow Worker clients inherited the Durable Object host's endpoint-point budget, and the preceding Phase 59.44 test had shared the same synthetic fixture scope. The final correction isolated Phase 59.44 under `github-app-installation:shadow-test-44` and retained the two Phase 59.45A clients together under `github-app-installation:shadow-test-45a`, with a dedicated Phase 59.44 Worker binding. The Retry-After assertion was also made boundary-safe by capturing the observation epoch before the RPC.
+
+**Final evidence:** exact PR head `8a8dfa08bad91bccce25b31c89b4220d1afe34af`; 13/13 GitHub check-runs completed successfully, including Cloudflare Workers/workerd runtime run [43814337444](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43814337444). PR #25 was squash-merged at `58352e68fe71abdb71e8dae68580b0d96601ba14` on 2026-11-16 06:17:36 UTC.
+
+This validates two independently authenticated shadow Worker clients with distinct worker IDs, workflow run IDs and request IDs sharing one fixture installation-scope Durable Object quota partition inside workerd. It does **not** validate separate physical hosts, deployed Durable Objects across separate hosted workflow runs, a real GitHub App installation, production operation or revenue generation.
+
+External network requests: 0. Live GitHub API calls by the test: 0. AI inference: disabled. Production feature flags: OFF. Spend: ₹0. Verified realized net receipts: ₹0.
+
+**Next:** Phase 59.46 deterministic concurrent 2/4/8/16-client installation-wide quota arbitration, with oversubscription prevention, duplicate suppression, settlement, crash/fencing checks and zero pending/reserved invariants. No hosted deployment or owner-gated credential activation.
