@@ -57,7 +57,7 @@ test("rejects expired assertions, unknown keys, and repository mismatch", async 
   const claims = {
     iss:"https://broker.test.invalid",aud:"nexus-quota-ledger",sub:"12345",
     installation_id:"42113",repository_ids:["1454085952"],permissions:{metadata:"read"},
-    token_sha256:Buffer.from(digest).toString("hex"),issued_at:now-400,expires_at:now-1,
+    token_sha256:Buffer.from(digest).toString("hex"),issued_at:now-400,expires_at:now+300,
     jti:"synthetic-jti-00000003",credential_lane:"compute_readonly"
   };
   const input = `${json({alg:"ES256",kid:"test-key-1",typ:"JWT"})}.${json(claims)}`;
