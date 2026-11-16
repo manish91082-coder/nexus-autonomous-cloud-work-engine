@@ -5,7 +5,7 @@ import { verifyGitHubCredentialProvenance } from "./credential-provenance.mjs";
 const b64u = value => Buffer.from(value).toString("base64url");
 const json = value => b64u(JSON.stringify(value));
 const token = "synthetic-test-token-never-valid-for-github";
-const now = 1900000000;
+const now = Math.floor(Date.now() / 1000);
 let pair, jwk;
 
 test("verifies ES256 broker proof and derives installation scope from signed claims", async () => {
