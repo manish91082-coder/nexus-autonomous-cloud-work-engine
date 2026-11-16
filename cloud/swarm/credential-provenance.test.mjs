@@ -57,7 +57,7 @@ test("rejects expired assertions, unknown keys, and repository mismatch", async 
   const claims = {
     iss:"https://broker.test.invalid",aud:"nexus-quota-ledger",sub:"12345",
     installation_id:"42113",repository_ids:["1454085952"],permissions:{metadata:"read"},
-    token_sha256:Buffer.from(digest).toString("hex"),issued_at:now-400,expires_at:now+300,
+    token_sha256:Buffer.from(digest).toString("hex"),issued_at:now-400,expires_at:now-1,
     jti:"synthetic-jti-00000003",credential_lane:"compute_readonly"
   };
   const input = `${json({alg:"ES256",kid:"test-key-1",typ:"JWT"})}.${json(claims)}`;
@@ -67,5 +67,9 @@ test("rejects expired assertions, unknown keys, and repository mismatch", async 
     issuer:"https://broker.test.invalid",audience:"nexus-quota-ledger",appId:"12345"};
   await assert.rejects(()=>verifyGitHubCredentialProvenance(base),/time window invalid/);
   await assert.rejects(()=>verifyGitHubCredentialProvenance({...base,publicKeys:{}}),/unknown signing key/);
-  await assert.rejects(()=>verifyGitHubCredentialProvenance({...base,repositoryId:"999"}),/time window invalid/);
+  const validClaims = {...claims,issued_at:now-10,expires_at:now+300,jti:"synthetic-jti-00000004"};
+  const validInput = `${json({alg:"ES256",kid:"test-key-1",typ:"JWT"})}.${json(validClaims)}`;
+  const validSig = await crypto.subtle.sign({name:"ECDSA",hash:"SHA-256"},pair.privateKey,new TextEncoder().encode(validInput));
+  const validAssertion = `${validInput}.${b64u(validSig)}`;
+  await assert.rejects(()=>verifyGitHubCredentialProvenance({...base,assertion:validAssertion,repositoryId:"999"}),/repository not authorized/);
 });
