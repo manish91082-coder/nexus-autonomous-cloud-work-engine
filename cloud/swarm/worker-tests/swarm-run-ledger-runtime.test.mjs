@@ -108,7 +108,7 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     const recovery = await rpc(stub, "recover", {});
     expect(recovery.status).toBe("RECOVERY_COMPLETE");
     expect(recovery.recovered).toBeGreaterThanOrEqual(1);
-    const second = await rpc(stub, "claim", { taskId: task.taskId, workerId: "worker-new", leaseSeconds: 30 }, "secondary");
+    const second = await rpc(stub, "claim", { taskId: task.taskId, workerId: "worker-old", leaseSeconds: 30 }, "secondary");
     expect(second.status).toBe("CLAIMED");
     expect(second.fencingToken).toBeGreaterThan(first.fencingToken);
     const stale = await rpc(stub, "checkpoint", {
@@ -118,7 +118,7 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     expect(stale.status).toBe("REJECTED");
     expect(stale.error.message).toBe("STALE_OR_INVALID_FENCING_TOKEN");
     const valid = await rpc(stub, "heartbeat", {
-      taskId: task.taskId, workerId: "worker-new", fencingToken: second.fencingToken, leaseSeconds: 30
+      taskId: task.taskId, workerId: "worker-old", fencingToken: second.fencingToken, leaseSeconds: 30
     }, "secondary");
     expect(valid.status).toBe("HEARTBEAT_RECORDED");
     expect((await rpc(stub, "snapshot", { taskId: task.taskId })).eventChainValid).toBe(true);
