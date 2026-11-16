@@ -66,12 +66,12 @@ export class SwarmRunDO extends DurableObject {
       sql.exec("ALTER TABLE swarm_tasks ADD COLUMN last_fencing_token INTEGER NOT NULL DEFAULT 0");
     }
     sql.exec(`CREATE TABLE IF NOT EXISTS swarm_leases (
-      task_id TEXT PRIMARY KEY, worker_id TEXT NOT NULL, fencing_token INTEGER NOT NULL,
+      task_id TEXT PRIMARY KEY, run_id TEXT NOT NULL UNIQUE, worker_id TEXT NOT NULL, fencing_token INTEGER NOT NULL,
       expires_at INTEGER NOT NULL, heartbeat_at INTEGER NOT NULL
     )`);
     sql.exec(`CREATE TABLE IF NOT EXISTS swarm_checkpoints (
       task_id TEXT PRIMARY KEY, checkpoint_seq INTEGER NOT NULL, checkpoint_json TEXT NOT NULL,
-      checkpoint_hash TEXT NOT NULL, fencing_token INTEGER NOT NULL, updated_at INTEGER NOT NULL
+      checkpoint_hash TEXT NOT NULL, run_id TEXT NOT NULL, fencing_token INTEGER NOT NULL, updated_at INTEGER NOT NULL
     )`);
     sql.exec(`CREATE TABLE IF NOT EXISTS swarm_events (
       seq INTEGER PRIMARY KEY, event_id TEXT NOT NULL UNIQUE, task_id TEXT NOT NULL,
@@ -233,7 +233,8 @@ export class SwarmRunDO extends DurableObject {
         return { status: "DEAD_LETTER", taskId };
       });
     }
-    return this.#commitEvent(taskId, "TASK_CLAIMED", { workerId, leaseSeconds, attempt: task.attempts + 1 }, () => {
+    const runId = crypto.randomUUID();
+    return this.#commitEvent(taskId, "TASK_CLAIMED", { workerId, runId, leaseSeconds, attempt: task.attempts + 1 }, () => {
       const current = this.#task(taskId), lease = this.#lease(taskId);
       const commitNow = Math.floor(Date.now() / 1000);
       if (current.status === "COMPLETED" || current.status === "DEAD_LETTER") return { skipEvent: true, value: { status: current.status, taskId } };
@@ -243,8 +244,8 @@ export class SwarmRunDO extends DurableObject {
       const fence = (current.last_fencing_token ?? 0) + 1;
       const expiresAt = commitNow + leaseSeconds;
       this.ctx.storage.sql.exec("UPDATE swarm_tasks SET status='LEASED',attempts=attempts+1,last_fencing_token=?,updated_at=? WHERE task_id=?", fence, commitNow, taskId);
-      this.ctx.storage.sql.exec(`INSERT INTO swarm_leases(task_id,worker_id,fencing_token,expires_at,heartbeat_at) VALUES(?,?,?,?,?) ON CONFLICT(task_id) DO UPDATE SET worker_id=excluded.worker_id,fencing_token=excluded.fencing_token,expires_at=excluded.expires_at,heartbeat_at=excluded.heartbeat_at`, taskId, workerId, fence, expiresAt, commitNow);
-      return { status: "CLAIMED", taskId, workerId, fencingToken: fence, leaseExpiresAt: expiresAt, attempt: current.attempts + 1 };
+      this.ctx.storage.sql.exec(`INSERT INTO swarm_leases(task_id,run_id,worker_id,fencing_token,expires_at,heartbeat_at) VALUES(?,?,?,?,?,?) ON CONFLICT(task_id) DO UPDATE SET run_id=excluded.run_id,worker_id=excluded.worker_id,fencing_token=excluded.fencing_token,expires_at=excluded.expires_at,heartbeat_at=excluded.heartbeat_at`, taskId, runId, workerId, fence, expiresAt, commitNow);
+      return { status: "CLAIMED", taskId, runId, workerId, fencingToken: fence, leaseExpiresAt: expiresAt, attempt: current.attempts + 1 };
     });
   }
 
