@@ -5,7 +5,7 @@
  * request, links response-header telemetry to that reservation, and settles
  * conservatively. It never retries a provider request automatically.
  */
-import { quotaLedgerObjectName } from "./quota-ledger-contract.mjs";
+import { quotaLedgerObjectName, validateGitHubInstallationScope } from "./quota-ledger-contract.mjs";
 import { parseGitHubRateLimitHeaders } from "./github-quota-telemetry.mjs";
 import { resolveGitHubOperation } from "./github-operation-registry.mjs";
 import { classifyGitHubRateLimitResponse } from "./github-secondary-rate-limit.mjs";
@@ -110,6 +110,7 @@ export async function executeQuotaGuardedGitHubRequest({
   nonceFactory
 }) {
   requireText(credentialScope, "credentialScope");
+  validateGitHubInstallationScope("github", credentialScope);
   requireText(operation, "operation");
   requireText(workerId, "workerId");
   if (!(request instanceof Request)) throw new TypeError("request must be a Request");

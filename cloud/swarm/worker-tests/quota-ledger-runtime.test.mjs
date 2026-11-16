@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { env } from "cloudflare:workers";
-import { quotaLedgerObjectName, computeReservationLease } from "../quota-ledger-contract.mjs";
+import { quotaLedgerObjectName, computeReservationLease, validateGitHubInstallationScope } from "../quota-ledger-contract.mjs";
 import {
   parseGitHubRateLimitHeaders,
   parseGitHubRateLimitOverview,
@@ -17,9 +17,10 @@ import {
   secondaryBackoffSeconds
 } from "../github-secondary-rate-limit.mjs";
 
+let nextInstallationId = 42000;
 const identity = (suffix, operation = "core10") => ({
   provider: "github",
-  credentialScope: "installation-42/repository-99/" + suffix,
+  credentialScope: "github-app-installation:" + nextInstallationId++,
   windowId: "github-rate-limit-ledger",
   controlPlaneProvider: "cloudflare",
   reservationId: "reservation-" + suffix,
@@ -75,6 +76,58 @@ async function seedBuckets(stub, input, entries) {
   }
   return result;
 }
+
+
+describe("Phase 59.45 canonical installation-wide quota identity", () => {
+  it("accepts only a canonical positive numeric GitHub App installation scope", () => {
+    expect(validateGitHubInstallationScope("github", "github-app-installation:123456789")).toBe(true);
+    expect(() => validateGitHubInstallationScope("github", "installation-42/repository-99")).toThrow(/canonical/);
+    expect(() => validateGitHubInstallationScope("github", "github-app-installation:token-abc")).toThrow(/canonical/);
+    expect(() => validateGitHubInstallationScope("github", "github-app-installation:0")).toThrow(/canonical/);
+  });
+
+  it("routes independent repository/run/token/caller clients to the same installation ledger", () => {
+    const sharedInstallationScope = "github-app-installation:123456789";
+    const clientA = {
+      repository: "owner-a/repo-a",
+      runId: "run-100",
+      tokenId: "token-a",
+      callerId: "worker-a",
+      quotaObjectName: quotaLedgerObjectName("github", sharedInstallationScope, "github-rate-limit-ledger")
+    };
+    const clientB = {
+      repository: "owner-b/repo-b",
+      runId: "run-200",
+      tokenId: "token-b",
+      callerId: "worker-b",
+      quotaObjectName: quotaLedgerObjectName("github", sharedInstallationScope, "github-rate-limit-ledger")
+    };
+    expect(clientA.quotaObjectName).toBe(clientB.quotaObjectName);
+  });
+
+  it("isolates distinct GitHub App installations", () => {
+    const a = quotaLedgerObjectName("github", "github-app-installation:123456789", "github-rate-limit-ledger");
+    const b = quotaLedgerObjectName("github", "github-app-installation:987654321", "github-rate-limit-ledger");
+    expect(a).not.toBe(b);
+  });
+
+  it("rejects a non-canonical scope before any provider network request", async () => {
+    let providerFetchCalls = 0;
+    const request = new Request("https://api.github.com/repos/acme/demo", {method:"GET"});
+    await expect(executeQuotaGuardedGitHubRequest({
+      env: {},
+      credentialScope: "owner/repository/token",
+      operation: "github.rest.repositories.get.v1",
+      request,
+      workerId: "worker-invalid-scope",
+      fetchImpl: async () => {
+        providerFetchCalls += 1;
+        return new Response("unexpected", {status:200});
+      }
+    })).rejects.toThrow(/canonical/);
+    expect(providerFetchCalls).toBe(0);
+  });
+});
 
 describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
   it("admits only from stored telemetry and returns provider-window reservations", async () => {
@@ -284,7 +337,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
     await call(stub,"reserve",input);
     const intruder = {
       ...input,
-      credentialScope:"different-installation/repository",
+      credentialScope:"github-app-installation:42999",
       reservationId:"reservation-identity-intruder",
       workerId:"worker-identity-intruder"
     };
@@ -457,7 +510,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 
   it("persists authenticated response-header telemetry with provenance", async () => {
     const now = Math.floor(Date.now() / 1000);
-    const credentialScope = "github-app-installation:telemetry-initial";
+    const credentialScope = "github-app-installation:42100";
     const telemetry = parseGitHubRateLimitHeaders({
       headers: {
         "x-ratelimit-limit": "5000",
@@ -492,7 +545,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 
   it("stores multiple GitHub resource buckets under one credential ledger partition", async () => {
     const now = Math.floor(Date.now() / 1000);
-    const credentialScope = "github-app-installation:multi-resource";
+    const credentialScope = "github-app-installation:42101";
     const base = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
     const stub = stubFor(base);
     for (const resource of ["core", "search", "code_search"]) {
@@ -515,7 +568,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 
   it("enforces GraphQL rateLimit authority between periodic overview and response headers", async () => {
     const now = Math.floor(Date.now() / 1000);
-    const credentialScope = "github-app-installation:graphql-authority";
+    const credentialScope = "github-app-installation:42102";
     const base = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
     const stub = stubFor(base);
     const resetAt = new Date((now + 3600) * 1000).toISOString();
@@ -551,7 +604,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 
   it("rejects telemetry provenance whose endpoint method does not match its method field", async () => {
     const now = Math.floor(Date.now() / 1000);
-    const credentialScope = "github-app-installation:provenance-mismatch";
+    const credentialScope = "github-app-installation:42103";
     const base = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
     const stub = stubFor(base);
     const telemetry = parseGitHubRateLimitHeaders({
@@ -570,7 +623,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 
   it("does not let a newer periodic overview overwrite response-header authority", async () => {
     const now = Math.floor(Date.now() / 1000);
-    const credentialScope = "github-app-installation:telemetry-authority";
+    const credentialScope = "github-app-installation:42104";
     const inputBase = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
     const stub = stubFor(inputBase);
     const header = parseGitHubRateLimitHeaders({
@@ -598,7 +651,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 
   it("accepts a newer authoritative regional observation when remaining rises", async () => {
     const now = Math.floor(Date.now() / 1000);
-    const credentialScope = "github-app-installation:regional";
+    const credentialScope = "github-app-installation:42105";
     const base = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
     const stub = stubFor(base);
     const make = (remaining, observed) => parseGitHubRateLimitHeaders({
@@ -619,7 +672,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 
   it("uses conservative remaining and maximum used for same-second observations", async () => {
     const now = Math.floor(Date.now() / 1000);
-    const credentialScope = "github-app-installation:same-second";
+    const credentialScope = "github-app-installation:42106";
     const base = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
     const stub = stubFor(base);
     const make = (remaining) => parseGitHubRateLimitHeaders({
@@ -641,7 +694,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 
   it("keeps out-of-order older observations in the audit trail without replacing current", async () => {
     const now = Math.floor(Date.now() / 1000);
-    const credentialScope = "github-app-installation:out-of-order";
+    const credentialScope = "github-app-installation:42107";
     const base = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
     const stub = stubFor(base);
     const make = (remaining, observed) => parseGitHubRateLimitHeaders({
@@ -663,7 +716,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 
   it("accepts a new provider reset window only after the old reset has elapsed", async () => {
     const now = Math.floor(Date.now() / 1000);
-    const credentialScope = "github-app-installation:window-rollover";
+    const credentialScope = "github-app-installation:42108";
     const base = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
     const stub = stubFor(base);
     const make = (remaining, observed, reset) => parseGitHubRateLimitHeaders({
@@ -684,7 +737,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 
   it("does not roll forward to a future window before the current reset", async () => {
     const now = Math.floor(Date.now() / 1000);
-    const credentialScope = "github-app-installation:premature-window";
+    const credentialScope = "github-app-installation:42109";
     const base = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
     const stub = stubFor(base);
     const make = (remaining, reset) => parseGitHubRateLimitHeaders({
@@ -705,7 +758,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 
   it("rejects stale and future telemetry before storing observations", async () => {
     const now = Math.floor(Date.now() / 1000);
-    const credentialScope = "github-app-installation:stale-future";
+    const credentialScope = "github-app-installation:42110";
     const base = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
     const stub = stubFor(base);
     const make = observed => parseGitHubRateLimitHeaders({
@@ -730,7 +783,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 
   it("rejects mismatched credential scope and forged telemetry authority", async () => {
     const now = Math.floor(Date.now() / 1000);
-    const credentialScope = "github-app-installation:scope-a";
+    const credentialScope = "github-app-installation:42111";
     const base = {provider:"github",credentialScope,windowId:"github-rate-limit-ledger"};
     const stub = stubFor(base);
     const telemetry = parseGitHubRateLimitHeaders({
@@ -739,7 +792,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
         "x-ratelimit-used":"800","x-ratelimit-reset":String(now + 3600),
         "x-ratelimit-resource":"core"
       },
-      credentialScope:"github-app-installation:scope-b",
+      credentialScope:"github-app-installation:42112",
       observedAtEpoch:now,endpoint:"GET /repos/acme/demo",method:"GET",status:200
     });
     const wrongScope = await call(stub,"recordTelemetry",{...base,telemetry});
@@ -1432,7 +1485,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
   const shadowInput = {
     provider: "github",
-    credentialScope: "github-app-installation:shadow-test-42",
+    credentialScope: "github-app-installation:42113",
     windowId: "github-rate-limit-ledger",
     controlPlaneProvider: "cloudflare",
     reservationId: "shadow-seed",

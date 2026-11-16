@@ -112,7 +112,7 @@ export default defineConfig({
               NEXUS_QUOTA_STORE_ENABLED: "true",
               NEXUS_QUOTA_CALLER_ID: "shadow",
               NEXUS_QUOTA_CALLER_SECRET: shadowWorkerTestSecret,
-              NEXUS_QUOTA_CREDENTIAL_SCOPE: "github-app-installation:shadow-test-42",
+              NEXUS_QUOTA_CREDENTIAL_SCOPE: "github-app-installation:42113",
               NEXUS_SWARM_MODE: "SHADOW",
               NEXUS_SWARM_SHADOW_RESET_AT: "4102444800"
             },
