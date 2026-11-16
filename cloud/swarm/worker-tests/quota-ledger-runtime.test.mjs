@@ -1618,3 +1618,73 @@ describe("Phase 59.45 installation-wide quota identity across independent P10CR 
     expect(snapshot.buckets.find(item => item.bucket_id === "core").reserved_units).toBe(0);
   });
 });
+
+
+describe("Phase 59.46 concurrent installation-wide arbitration", () => {
+  it("fails closed under a 16-request burst across two independent worker clients without oversubscribing the shared endpoint budget", async () => {
+    const input = {
+      provider: "github",
+      credentialScope: "github-app-installation:shadow-test-46",
+      windowId: "github-rate-limit-ledger",
+      controlPlaneProvider: "cloudflare",
+      reservationId: "phase59-46-seed",
+      workerId: "phase59-46-seed-worker",
+      operation: "github.rest.repositories.get.v1"
+    };
+    const stub = stubFor(input);
+    await seedBucket(stub, input, "core", 100, {resetAtEpoch: 4102444800});
+
+    const requests = Array.from({length: 16}, (_, index) => {
+      const runId = "phase59-46-run-" + String(index + 1).padStart(2, "0");
+      return {
+        binding: index % 2 === 0 ? env.PHASE_59_46_PRIMARY : env.PHASE_59_46_SECONDARY,
+        envelope: {
+          schemaVersion: "1.0",
+          mode: "SHADOW",
+          projectId: "P10CR",
+          taskId: "P59-003",
+          taskType: "READ_ONLY_REPOSITORY_METADATA",
+          runId,
+          requestId: "p10cr-shadow:" + runId + ":metadata",
+          operation: "github.rest.repositories.get.v1",
+          target: {
+            owner: "manish91082-coder",
+            repo: "nexus-autonomous-cloud-work-engine"
+          }
+        }
+      };
+    });
+
+    const responses = await Promise.all(requests.map(({binding, envelope}) =>
+      binding.fetch(new Request("https://shadow-worker/shadow/research", {
+        method: "POST",
+        headers: {"content-type": "application/json"},
+        body: JSON.stringify(envelope)
+      }))
+    ));
+    const payloads = await Promise.all(responses.map(response => response.json()));
+    const admitted = payloads.filter(payload => payload.status === "SHADOW_COMPLETED");
+    const denied = payloads.filter(payload =>
+      payload.status === "WAITING_FOR_QUOTA"
+      || payload.status === "SHADOW_EXECUTION_NOT_CONFIRMED"
+    );
+
+    expect(responses).toHaveLength(16);
+    expect(admitted).toHaveLength(2);
+    expect(denied).toHaveLength(14);
+    expect(payloads.every(payload => payload.externalNetworkRequests === 0)).toBe(true);
+    expect(admitted.every(payload => payload.providerRequestIssued === true)).toBe(true);
+
+    const snapshot = await call(stub, "snapshot", input);
+    const bucket = snapshot.buckets.find(item => item.bucket_id === "core");
+    expect(bucket.committed_units).toBe(2);
+    expect(bucket.reserved_units).toBe(0);
+    expect(bucket.uncertain_units).toBe(0);
+    expect(snapshot.reservations).toHaveLength(2);
+    expect(snapshot.reservations.every(item => item.status === "SETTLED")).toBe(true);
+    expect(new Set(snapshot.reservations.map(item => item.worker_id))).toEqual(new Set([
+      "p10cr-read-only-shadow-worker-phase-59-46-primary",
+      "p10cr-read-only-shadow-worker-phase-59-46-secondary"
+    ]));
+  });
+});
