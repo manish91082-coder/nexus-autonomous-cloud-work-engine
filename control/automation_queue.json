@@ -15,8 +15,8 @@
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
-    "last_reconciled_from_mission_state": "2026-11-16 final Phase59.44 checkpoint HEAD 9cdc16a28e9bd958cb5eec78548e464988123e10; guard #244 and worker #444 passed.",
-    "reconciliation_note": "P59-003 remains sole active P0. Phase59.43 PR #22 merged at af81cfd4020001e04e7a1e5c018c4f1d3ee2b876. Exact Workers/workerd CI 43714730741 SUCCESS 60/60 on 1296291e8ddfa5531b5d4de2a288dd37fbf42e38; PR head b4e1e349224014237e3966626ac7b2f55e2b0647 passed 13/13 regression checks. Added bounded idempotent owner/worker heartbeat, hard lifetime ceiling, and primary-only evidence-linked uncertain reconciliation with partial bucket handling and append-only audit. No live calls, deployment, spend or inference. Feature flag OFF; not yet integrated into mission worker. Next Phase59.44: read-only swarm Worker in mocked/shadow mode through shared DO binding, no live fetch, stable request ID, reserve/telemetry/settle and duplicate suppression; then independent-host harness."
+    "last_reconciled_from_mission_state": "2026-11-16 Phase59.50 reconciled at master HEAD ba58f3bf161329c9787b5bb0a5e4af2d3b27b2fc; PR #31 exact-head CI 13/13 and Workers/workerd 67/67 passed.",
+    "reconciliation_note": "P59-003 remains sole active P0. Phase59.49 PR #30 merged at 51d2af04cb62b9baf3a41199030f59fe5eaa04ce after 15/15 exact-head checks passed. Phase59.50 PR #31 merged at ba58f3bf161329c9787b5bb0a5e4af2d3b27b2fc after 13/13 exact-head checks passed; Workers/workerd run 43919320063 passed 67/67 tests, including response-arrival/receipt-commit transport-loss recovery, Durable Object eviction, lease expiry to UNCERTAIN_BUDGET_RETAINED and stable-request duplicate suppression. Mock provider only; external network 0; live provider calls 0; AI inference disabled; production flags OFF; spend ₹0; verified net receipts ₹0. Next Phase59.51: post-commit response-journal restart/readback, duplicate telemetry receipt reuse, conflicting response metadata rejection and receipt-to-reservation identity verification."
   },
   "tasks": [
     {
@@ -3337,7 +3337,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Complete Phase59.46 exact-head CI; if successful reconcile merge; next Phase59.47 crash/restart, lease expiry and stale fencing.",
+        "next": "Phase59.51: verify post-commit provider-response journal durability across Durable Object eviction/reconstruction; prove repeated telemetry reuses exactly one receipt; conflicting response metadata fails closed; verify authenticated snapshot readback and receipt-to-reservation identity.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -3912,6 +3912,45 @@
             "external network requests=0"
           ],
           "next": "Run and inspect exact-head Workers/workerd and all regression CI for updated PR head; do not merge before every required check passes."
+        },
+        "phase59_49": {
+          "report": "research/PHASE_59_49_RESPONSE_JOURNAL_SETTLEMENT_IDEMPOTENCY_2026-11-16.md",
+          "pr_number": 30,
+          "pr_state": "MERGED",
+          "pr_head_sha": "5ceea4646f467b3dde72e40e4e4cc1da13fb1dc2",
+          "merge_commit": "51d2af04cb62b9baf3a41199030f59fe5eaa04ce",
+          "ci_checks_passed": 15,
+          "ci_checks_total": 15,
+          "production_feature_flag": "OFF",
+          "ai_inference": false,
+          "external_network_requests": 0,
+          "spend_inr": 0
+        },
+        "phase59_50": {
+          "report": "research/PHASE_59_50_PROVIDER_RESPONSE_CRASH_WINDOW_RECOVERY_2026-11-16.md",
+          "pr_number": 31,
+          "pr_state": "MERGED",
+          "branch": "phase59-50-provider-response-crash-window",
+          "pr_head_sha": "49588f53a58f6824118568102bef8d2890ec586e",
+          "merge_commit": "ba58f3bf161329c9787b5bb0a5e4af2d3b27b2fc",
+          "ci_checks_passed": 13,
+          "ci_checks_total": 13,
+          "workers_runtime_run_id": 43919320063,
+          "workers_runtime_tests_passed": 67,
+          "workers_runtime_tests_total": 67,
+          "external_network_requests": 0,
+          "live_provider_calls": 0,
+          "ai_inference": false,
+          "production_feature_flag": "OFF",
+          "spend_inr": 0,
+          "verified_invariants": [
+            "provider mock invoked exactly once",
+            "no response receipt fabricated before telemetry commit",
+            "reservation survives Durable Object eviction/reconstruction",
+            "expired lease retains full uncertain quota",
+            "stable request ID suppresses provider replay after recovery"
+          ],
+          "evidence_boundary": "Injected transport loss and Durable Object eviction/reconstruction in workerd; not physical process-kill proof, independent-host proof, production deployment or revenue."
         }
       },
       "blocker": "Remaining production-enablement gates: branch ruleset, owner-approved least-privilege GitHub App, cross-run/cross-repository global Actions/API quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation, and 7/30-day soak. Phase59.25 proved only eight worker threads on one GitHub-hosted runner; Phase59.26 specialist handlers are deterministic and provider-neutral, not live LLM inference. Keep all production clients disabled.",
@@ -3963,8 +4002,8 @@
   "updated_at": "2026-11-16",
   "current_task": "P59-003",
   "last_updated": "2026-11-16",
-  "sequence_note": "P59-003 remains sole active P0. Phase59.48 merged and reconciled. Phase59.49 candidate branch phase59-49-response-journal-settlement-idempotency adds metadata-only durable provider response receipts and replay-safe settlement idempotency; exact-head CI pending. P59-001 PAUSED; P59-002 BLOCKED. Canonical repository only; ₹0 spend; no paid fallback; production flags OFF; AI inference disabled.",
-  "last_reconciled_from_mission_state": "Phase59.48 PR #29 merged as 17f2de069868273eac8893a37f56dd860b8d36e0 after exact tested head b91d20d08cbc3c0a9a43e94df236a28985f506c passed 13/13 workflows; mission state reconciliation commit e15db71c6e684945b653ff9ee766af8cfa1fd83e.",
+  "sequence_note": "P59-003 remains sole active P0. P59-001 remains PAUSED; P59-002 remains BLOCKED. Phase59.49 and Phase59.50 are merged and exact-head CI verified. Continue one bounded cloud-only swarm engineering phase at a time; keep all providers mocked, production flags OFF, AI inference disabled, external network 0 and spend ₹0. Next Phase59.51: durable response-journal post-commit restart/readback and receipt identity consistency.",
+  "last_reconciled_from_mission_state": "2026-11-16 Phase59.50 merged and CI verified; see control/mission_state.json and research/PHASE_59_50_PROVIDER_RESPONSE_CRASH_WINDOW_RECOVERY_2026-11-16.md.",
   "phase59_46": {
     "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
     "pr_number": 27,
@@ -4088,31 +4127,24 @@
   },
   "phase59_49_candidate": {
     "report": "research/PHASE_59_49_RESPONSE_JOURNAL_SETTLEMENT_IDEMPOTENCY_2026-11-16.md",
-    "branch": "phase59-49-response-journal-settlement-idempotency",
-    "status": "OPEN_CI_PENDING",
-    "scope": "Reservation-level durable provider response receipt and idempotent duplicate settlement.",
-    "findings": [
-      "Identical settlement replay previously rejected generically instead of acknowledged idempotently.",
-      "Telemetry response observations existed, but no compact reservation-level provider response receipt existed."
-    ],
-    "changes": [
-      "SETTLEMENT_ALREADY_APPLIED for exact same actualByBucket replay, without counter mutation.",
-      "Conflicting settlement replay fails closed.",
-      "Concurrent identical settlement must charge once.",
-      "SQLite quota_provider_response_journal stores metadata-only provider response receipt in same transaction as response-header telemetry observation.",
-      "Snapshot exposes journal for audit."
-    ],
-    "evidence_boundary": [
-      "receipt is durable only after telemetry write commits",
-      "provider response and local SQLite cannot be one atomic transaction",
-      "hard termination before receipt commit remains covered by lease expiry and uncertain-budget retention",
-      "not production deployment or revenue evidence"
-    ],
-    "production_feature_flag": "OFF",
-    "ai_inference": false,
-    "spend_inr": 0,
-    "external_network_requests": 0,
-    "pr_number": null,
-    "pr_state": "NOT_OPENED"
+    "pr_number": 30,
+    "pr_state": "MERGED",
+    "merge_commit": "51d2af04cb62b9baf3a41199030f59fe5eaa04ce",
+    "ci_checks_passed": 15,
+    "ci_checks_total": 15
+  },
+  "phase59_50_candidate": {
+    "report": "research/PHASE_59_50_PROVIDER_RESPONSE_CRASH_WINDOW_RECOVERY_2026-11-16.md",
+    "pr_number": 31,
+    "pr_state": "MERGED",
+    "branch": "phase59-50-provider-response-crash-window",
+    "pr_head_sha": "49588f53a58f6824118568102bef8d2890ec586e",
+    "merge_commit": "ba58f3bf161329c9787b5bb0a5e4af2d3b27b2fc",
+    "ci_checks_passed": 13,
+    "ci_checks_total": 13,
+    "workers_runtime_run_id": 43919320063,
+    "workers_runtime_tests_passed": 67,
+    "workers_runtime_tests_total": 67,
+    "next": "Phase59.51: verify post-commit provider-response journal durability across Durable Object eviction/reconstruction; prove repeated telemetry reuses exactly one receipt; conflicting response metadata fails closed; verify authenticated snapshot readback and receipt-to-reservation identity."
   }
 }
