@@ -166,14 +166,14 @@ export class SwarmRunDO extends DurableObject {
     try {
       let result;
       switch (body.action) {
-        case "registerTask": result=this.#registerTask(body.input); break;
+        case "registerTask": if (auth.callerId!=="primary") throw new TypeError("primary caller required"); result=this.#registerTask(body.input); break;
         case "claimTask": result=this.#claimTask(body.input,auth.callerId); break;
         case "heartbeat": result=this.#heartbeat(body.input,auth.callerId); break;
         case "checkpoint": result=this.#checkpoint(body.input,auth.callerId); break;
         case "finishTask": result=this.#finishTask(body.input,auth.callerId); break;
-        case "recoverExpiredLeases": result=this.#recoverExpiredLeases(body.input); break;
-        case "snapshot": result=this.#snapshot(body.input); break;
-        case "verifyEventChain": result=this.#verifyEventChain(body.input); break;
+        case "recoverExpiredLeases": if (auth.callerId!=="primary") throw new TypeError("primary caller required"); result=this.#recoverExpiredLeases(body.input); break;
+        case "snapshot": if (auth.callerId!=="primary") throw new TypeError("primary caller required"); result=this.#snapshot(body.input); break;
+        case "verifyEventChain": if (auth.callerId!=="primary") throw new TypeError("primary caller required"); result=this.#verifyEventChain(body.input); break;
         default: return Response.json({status:"REJECTED",reason:"UNKNOWN_ACTION"},{status:400});
       }
       return Response.json(result);
@@ -263,6 +263,15 @@ export class SwarmRunDO extends DurableObject {
     return nextStatus;
   }
 
+  #assertCallerWorker(callerId,workerId) {
+    let mapping;
+    try { mapping=JSON.parse(this.env?.NEXUS_SWARM_RUN_CALLER_WORKERS||"{}"); }
+    catch { throw new TypeError("caller worker registry invalid"); }
+    if (!mapping || typeof mapping!=="object" || mapping[callerId]!==workerId) {
+      throw new TypeError("caller is not bound to worker identity");
+    }
+  }
+
   #registerTask(input) {
     const projectId=safeId(input.projectId,"projectId",64);
     const taskId=safeId(input.taskId,"taskId",160);
@@ -293,6 +302,7 @@ export class SwarmRunDO extends DurableObject {
     const projectId=safeId(input.projectId,"projectId",64);
     const taskId=safeId(input.taskId,"taskId",160);
     const workerId=safeId(input.workerId,"workerId",96);
+    this.#assertCallerWorker(callerId,workerId);
     const leaseSeconds=integer(input.leaseSeconds??900,"leaseSeconds",15,3600);
     const maxConcurrency=integer(input.maxConcurrency??5,"maxConcurrency",1,32);
     const now=this.#now(input);
@@ -324,8 +334,9 @@ export class SwarmRunDO extends DurableObject {
     });
   }
 
-  #assertLease(input,now) {
+  #assertLease(input,callerId,now) {
     const taskId=safeId(input.taskId,"taskId",160), workerId=safeId(input.workerId,"workerId",96);
+    this.#assertCallerWorker(callerId,workerId);
     const token=integer(input.fenceToken,"fenceToken",1);
     const lease=this.ctx.storage.sql.exec("SELECT * FROM swarm_run_leases WHERE task_id=?",taskId).toArray()[0];
     if (!lease||lease.worker_id!==workerId||lease.fence_token!==token) throw new TypeError("stale fencing token or non-owner");
@@ -350,7 +361,7 @@ export class SwarmRunDO extends DurableObject {
     const projectId=safeId(input.projectId,"projectId",64), checkpoint=jsonObject(input.checkpoint,"checkpoint",MAX_PAYLOAD_BYTES), now=this.#now(input);
     return this.ctx.storage.transactionSync(()=>{
       this.#assertProject({projectId});
-      this.#assertLease(input,now);
+      this.#assertLease(input,callerId,now);
       this.ctx.storage.sql.exec("UPDATE swarm_run_tasks SET checkpoint_json=?,status='IN_PROGRESS',updated_at_epoch=? WHERE task_id=?",checkpoint.encoded,now,input.taskId);
       const digest=swarmRunSha256(checkpoint.encoded);
       this.#event(projectId,input.taskId,"CHECKPOINT_SAVED",now,input.workerId,input.fenceToken,{checkpointSha256:digest,checkpointBytes:encoder.encode(checkpoint.encoded).byteLength,callerId});
@@ -368,6 +379,7 @@ export class SwarmRunDO extends DurableObject {
       this.#assertProject({projectId});
       const sql=this.ctx.storage.sql, task=this.#taskRow(taskId);
       if (!task) throw new TypeError("unknown task");
+      this.#assertCallerWorker(callerId,safeId(input.workerId,"workerId",96));
       if (task.status==="COMPLETED") {
         if (input.success&&task.result_json===result.encoded&&task.last_worker_id===input.workerId) return {status:"ALREADY_COMPLETED",task:publicTask(task)};
         throw new TypeError("terminal task result conflict or non-owner");
