@@ -12,11 +12,11 @@
 
 ## Objective
 
-Implement the missing durable task/run ledger as a separate project-cell Durable Object. Do not overload the existing provider quota ledger. The ledger stores task identity and policy fingerprints, owner approval evidence, lease ownership, monotonically increasing fencing tokens, checkpoints, terminal outcomes and an append-only SHA-256 event chain. It never executes payloads or makes provider requests.
+Implement the missing durable task/run ledger as a separate project-cell Durable Object. Do not overload the existing provider quota ledger. The ledger stores task identity and policy fingerprints, owner approval evidence, lease ownership, monotonically increasing fencing tokens, immutable per-attempt run IDs, run-bound checkpoints, terminal outcomes and an append-only SHA-256 event chain. It never executes payloads or makes provider requests.
 
 ## Implementation
 
-- `cloud/swarm/swarm-run-do.mjs`: SQLite-backed `SwarmRunDO`, authenticated HMAC RPC, replay-protected caller nonces, action allowlists, idempotent task registration, owner approval, atomic claim, bounded lease, heartbeat, monotonic fencing, checkpoint, completion, retry/backoff, dead-letter, expired-lease recovery, snapshot and event-chain verification.
+- `cloud/swarm/swarm-run-do.mjs`: SQLite-backed `SwarmRunDO`, authenticated HMAC RPC, replay-protected caller nonces, action allowlists, idempotent task registration, privileged-primary approval events, atomic claim, bounded lease, unique run ID per attempt, persistent monotonic fencing, run-bound heartbeat/checkpoint/completion/failure, retry/backoff, dead-letter, expired-lease recovery, snapshot and event-chain verification.
 - `cloud/swarm/swarm-run-host.mjs`: isolated host that exports only `SwarmRunDO` and returns 404 on public fetch.
 - `cloud/swarm/worker-tests/wrangler.jsonc`: separate `SWARM_RUNS` Durable Object binding; quota ledger remains separately bound.
 - `cloud/swarm/worker-tests/vitest.config.mjs`: isolated workerd namespace and caller policies for primary/secondary test identities.
@@ -25,9 +25,9 @@ Implement the missing durable task/run ledger as a separate project-cell Durable
 ## Safety and correctness boundaries
 
 1. A task ID or idempotency key cannot be rebound to a different project/type/payload/policy/owner-gate/retry identity.
-2. Owner-gated tasks cannot be claimed until a primary caller records an approval event.
+2. Owner-gated tasks cannot be claimed until a primary caller records an approval event. This is a privileged service-side approval record, not yet proof of a human approval ceremony; production key custody and explicit owner-consent integration remain a hard gate.
 3. Claim and state mutation are serialized through SQLite transactions and an event-head compare-and-swap.
-4. Fencing tokens are stored on the task row and remain monotonic even when lease rows are deleted during recovery or terminal transitions.
+4. Fencing tokens are stored on the task row and remain monotonic even when lease rows are deleted during recovery or terminal transitions. Every claim also creates a unique run ID; all lease mutations require task ID + run ID + worker ID + fencing token + unexpired lease.
 5. Heartbeat, checkpoint, completion and failure require the exact current worker identity, fencing token and unexpired lease.
 6. Checkpoint sequence is monotonic; exact duplicate checkpoint is acknowledged, conflicting sequence is rejected.
 7. Completion is idempotent only for the same result hash; conflicting terminal result fails closed.
