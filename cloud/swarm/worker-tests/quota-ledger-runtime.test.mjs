@@ -1115,7 +1115,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
       ...input,actualByBucket:{core:10}
     });
     expect(staleSettlement.status).toBe("REJECTED");
-    expect(staleSettlement.error.message).toMatch(/reservation owner\/state mismatch/);
+    expect(staleSettlement.error.message).toMatch(/reservation lease already expired/);
 
     // A retry with the same durable request key must not re-send work.
     const duplicate = await call(stub,"reserve",input);
