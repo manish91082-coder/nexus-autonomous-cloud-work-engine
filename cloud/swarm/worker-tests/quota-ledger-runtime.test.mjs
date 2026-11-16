@@ -1537,6 +1537,8 @@ describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
 });
 
 
+// Use a dedicated credential scope: all test Workers share one Miniflare Durable Object namespace,
+// so this fixture must not inherit endpoint-point history from the preceding Phase 59.44 test.
 describe("Phase 59.45 installation-wide quota identity across independent P10CR clients", () => {
   const baseEnvelope = {
     schemaVersion: "1.0",
