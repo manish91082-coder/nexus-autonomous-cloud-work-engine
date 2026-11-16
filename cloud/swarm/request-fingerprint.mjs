@@ -37,6 +37,8 @@ async function canonicalUrl(value, expectedMethod, expectedOperation) {
     || rawPath.split("/").some(segment => segment === "." || segment === "..")) {
     reject("encoded separators or dot segments forbidden");
   }
+  const authority = value.match(/^https:\/\/([^/?#]*)/i)?.[1];
+  if (authority !== "api.github.com") reject("URL authority must be exact canonical host without port");
   let url;
   try { url = new URL(value); } catch { reject("invalid URL"); }
   if (url.protocol !== "https:" || url.hostname !== "api.github.com" || url.port
