@@ -81,8 +81,20 @@ function canonicalJson(value) {
   return "{" + keys.map(key => JSON.stringify(key) + ":" + canonicalJson(value[key])).join(",") + "}";
 }
 
+function assertNoSecretFields(value, path = "payload") {
+  if (Array.isArray(value)) { value.forEach((item,index)=>assertNoSecretFields(item,path+"["+index+"]")); return; }
+  if (!value || typeof value!=="object") return;
+  const blocked=new Set(["secret","password","authorization","apikey","privatekey","accesstoken","refreshtoken","bearertoken","cookie","credential","clientsecret"]);
+  for (const [key,child] of Object.entries(value)) {
+    const normalized=key.replace(/[_-]/g,"").toLowerCase();
+    if (blocked.has(normalized)) throw new TypeError("credential-like field is forbidden in durable task data: "+path+"."+key);
+    assertNoSecretFields(child,path+"."+key);
+  }
+}
+
 function jsonObject(value, label, maxBytes = MAX_PAYLOAD_BYTES) {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new TypeError(label + " must be a JSON object");
+  assertNoSecretFields(value,label);
   const encoded = canonicalJson(value);
   if (encoder.encode(encoded).byteLength > maxBytes) throw new TypeError(label + " exceeds size limit");
   return { encoded, value: JSON.parse(encoded) };
