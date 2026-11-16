@@ -33,6 +33,11 @@ test("verifies ES256 broker proof and derives installation scope from signed cla
   assert.equal(result.credentialScope,"github-app-installation:42113");
   assert.equal(result.installationId,"42113");
   assert.equal(result.credentialLane,"compute_readonly");
+  await assert.rejects(() => verifyGitHubCredentialProvenance({
+    assertion, bearerToken:token, publicKeys:{"test-key-1":jwk}, nowEpoch:now,
+    issuer:"https://broker.test.invalid", audience:"nexus-quota-ledger",
+    appId:"12345", leaseId:"synthetic-lease-other-0001"
+  }), /lease identity mismatch/);
 
   const ledgerResult = await verifyGitHubCredentialProvenance({
     assertion, publicKeys:{"test-key-1":jwk}, nowEpoch:now,
@@ -57,7 +62,7 @@ test("rejects bearer-token substitution", async () => {
     iss:"https://broker.test.invalid",aud:"nexus-quota-ledger",sub:"12345",
     installation_id:"42113",repository_ids:["1454085952"],permissions:{metadata:"read"},
     token_sha256:Buffer.from(digest).toString("hex"),issued_at:now-10,expires_at:now+300,
-    jti:"synthetic-jti-00000002",credential_lane:"compute_readonly",lease_id:"synthetic-lease-test-0002",key_version:"broker-test-v1",lease_id:"synthetic-lease-test-0002",key_version:"broker-test-v1"
+    jti:"synthetic-jti-00000002",credential_lane:"compute_readonly",lease_id:"synthetic-lease-test-0002",key_version:"broker-test-v1"
   };
   const input = `${json({alg:"ES256",kid:"test-key-1",typ:"JWT"})}.${json(claims)}`;
   const sig = await crypto.subtle.sign({name:"ECDSA",hash:"SHA-256"},pair.privateKey,new TextEncoder().encode(input));
