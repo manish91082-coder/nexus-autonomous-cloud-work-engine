@@ -3,6 +3,7 @@ import { defineConfig } from "vitest/config";
 
 const primaryTestSecret = "primary-test-secret-0123456789abcdef";
 const secondaryTestSecret = "secondary-test-secret-0123456789abcdef";
+const shadowWorkerTestSecret = "shadow-worker-test-secret-0123456789abcdef";
 const sharedQuotaNamespace = {
   className: "QuotaLedgerDO",
   scriptName: "p10cr-quota-ledger-host",
@@ -46,11 +47,13 @@ export default defineConfig({
               NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE: "2",
               NEXUS_QUOTA_CALLER_KEYS: JSON.stringify({
                 primary: primaryTestSecret,
-                secondary: secondaryTestSecret
+                secondary: secondaryTestSecret,
+                shadow: shadowWorkerTestSecret
               }),
               NEXUS_QUOTA_CALLER_POLICIES: JSON.stringify({
                 primary: ["reserve", "settle", "markUncertain", "expireReservations", "renewReservation", "reconcileUncertain", "snapshot", "recordTelemetry", "recordSecondaryLimit"],
-                secondary: ["reserve", "settle", "markUncertain", "renewReservation", "recordTelemetry", "recordSecondaryLimit"]
+                secondary: ["reserve", "settle", "markUncertain", "renewReservation", "recordTelemetry", "recordSecondaryLimit"],
+                shadow: ["reserve", "settle", "markUncertain", "renewReservation", "recordTelemetry", "recordSecondaryLimit"]
               }),
               NEXUS_QUOTA_BUCKET_POLICIES: JSON.stringify({
                 core: {safetyReserveUnits: 5, recoveryReserveUnits: 5, maxTelemetryAgeSeconds: 300},
@@ -107,8 +110,8 @@ export default defineConfig({
             ],
             bindings: {
               NEXUS_QUOTA_STORE_ENABLED: "true",
-              NEXUS_QUOTA_CALLER_ID: "secondary",
-              NEXUS_QUOTA_CALLER_SECRET: secondaryTestSecret,
+              NEXUS_QUOTA_CALLER_ID: "shadow",
+              NEXUS_QUOTA_CALLER_SECRET: shadowWorkerTestSecret,
               NEXUS_QUOTA_CREDENTIAL_SCOPE: "github-app-installation:shadow-test-42",
               NEXUS_SWARM_MODE: "SHADOW",
               NEXUS_SWARM_SHADOW_RESET_AT: "4102444800"

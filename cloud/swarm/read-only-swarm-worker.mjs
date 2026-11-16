@@ -46,7 +46,7 @@ function validateEnvelope(value) {
     || value.operation !== OPERATION
     || !safeId(value.runId)
     || !safeId(value.requestId, 128, 14)
-    || !value.requestId.startsWith("p10cr-shadow:")) return false;
+    || !value.requestId.startsWith(`p10cr-shadow:${value.runId}:`)) return false;
   const target = value.target;
   if (!target || typeof target !== "object" || Array.isArray(target)) return false;
   const targetKeys = Object.keys(target).sort();
