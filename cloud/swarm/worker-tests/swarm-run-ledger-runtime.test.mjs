@@ -181,21 +181,28 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
   });
   
   it("runs a deterministic non-provider shadow task through the durable ledger and survives eviction plus duplicate delivery", async () => {
-    const { executeDeterministicShadowTask } = await import("./deterministic-shadow-task.mjs");
+    const { prepareDeterministicShadowTask, resumeDeterministicShadowTask } = await import("./deterministic-shadow-task.mjs");
     const stub = stubFor();
     const task = await register(stub, "phase59-54-integrated-shadow");
-    const first = await executeDeterministicShadowTask({
-      rpc: (action, input, caller) => rpc(stub, action, input, caller),
+    const rpcCall = (action, input, caller) => rpc(stub, action, input, caller);
+    const prepared = await prepareDeterministicShadowTask({
+      rpc: rpcCall,
       task,
-      workerId: "phase59-54-shadow-worker",
-      afterFirstCheckpoint: async () => evictDurableObject(stub)
+      workerId: "phase59-54-shadow-worker"
     });
+    expect(prepared.status).toBe("CHECKPOINTED");
+
+    // Eviction is performed by the test after all request/helper frames return,
+    // matching the already-proven Phase 59.53 workerd restart test pattern.
+    await evictDurableObject(stub);
+
+    const first = await resumeDeterministicShadowTask({ rpc: rpcCall, prepared });
     expect(first.status).toBe("COMPLETED");
     expect(first.output.outcome).toBe("DETERMINISTIC_SHADOW_VERIFIED");
     expect(first.eventChainValid).toBe(true);
 
-    const replay = await executeDeterministicShadowTask({
-      rpc: (action, input, caller) => rpc(stub, action, input, caller),
+    const replay = await prepareDeterministicShadowTask({
+      rpc: rpcCall,
       task,
       workerId: "phase59-54-shadow-worker"
     });
