@@ -7,7 +7,8 @@
 import { DurableObject } from "cloudflare:workers";
 import {
   QuotaLedgerError, QuotaLedgerExhausted, validateQuotaRequest,
-  requireQuotaStoreEnabled, nonEmpty, integer, computeReservationLease
+  requireQuotaStoreEnabled, nonEmpty, integer, computeReservationLease,
+  validateGitHubInstallationScope
 } from "./quota-ledger-contract.mjs";
 import { reconcileGitHubQuotaTelemetry } from "./github-quota-telemetry.mjs";
 import { getGitHubOperationDefinition } from "./github-operation-registry.mjs";
@@ -340,6 +341,7 @@ export class QuotaLedgerDO extends DurableObject {
   #assertIdentity(input, allowUninitialized) {
     nonEmpty(input.provider, "provider");
     nonEmpty(input.credentialScope, "credentialScope");
+    validateGitHubInstallationScope(input.provider, input.credentialScope);
     nonEmpty(input.windowId, "windowId");
     const identity = this.ctx.storage.sql.exec(
       "SELECT provider,credential_scope,window_id FROM quota_meta WHERE singleton=1"
