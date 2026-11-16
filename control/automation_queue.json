@@ -3963,8 +3963,8 @@
   "updated_at": "2026-11-16",
   "current_task": "P59-003",
   "last_updated": "2026-11-16",
-  "sequence_note": "P59-003 AI agentic swarm foundation remains sole active P0. Phase59.46 PR #27 merged at ea8d785691b9e92ae8034cec2dafab70573ad249 after exact-head Workers/workerd runtime and 13/13 regression workflows passed. Proceed Phase59.47 crash/restart, lease expiry and stale-fencing tests. P59-001 remains PAUSED; P59-002 BLOCKED. Preserve canonical repository isolation, ₹0 spend, no paid fallback, production flags OFF and inference disabled.",
-  "last_reconciled_from_mission_state": "Phase59.46 PR #27 merged at ea8d785691b9e92ae8034cec2dafab70573ad249; tested head 4bf26dccd50ddf3b0887e310c3ad6f3d74386273; Workers/workerd SUCCESS and all 13/13 regression workflows SUCCESS. Next Phase59.47 crash/restart, lease expiry and stale fencing.",
+  "sequence_note": "P59-003 remains sole active P0. Phase59.46 merged and master reconciled. Phase59.47 crash/restart and stale lease settlement hardening is active on phase59-47-crash-restart-lease-fencing. P59-001 remains PAUSED; P59-002 BLOCKED. Canonical repository only; ₹0 spend; no paid fallback; production flags OFF; AI inference disabled.",
+  "last_reconciled_from_mission_state": "Phase59.46 merged at ea8d785691b9e92ae8034cec2dafab70573ad249. Phase59.47 candidate branch phase59-47-crash-restart-lease-fencing adds Durable Object eviction recovery and expiry-before-settlement enforcement; exact-head CI pending.",
   "phase59_46": {
     "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
     "pr_number": 27,
@@ -4001,5 +4001,27 @@
     "spend_inr": 0,
     "verified_realized_net_receipts_inr": 0,
     "next": "Phase59.47 crash/restart, lease expiry and stale-fencing rejection under deterministic workerd; preserve mock-only providers, production flags OFF and ₹0 spend."
+  },
+  "phase59_47_candidate": {
+    "report": "research/PHASE_59_47_CRASH_RESTART_LEASE_FENCING_2026-11-16.md",
+    "branch": "phase59-47-crash-restart-lease-fencing",
+    "status": "OPEN_CI_PENDING",
+    "scope": "Durable Object eviction/reconstruction, SQLite reservation persistence, actual lease expiry and stale worker settlement rejection.",
+    "finding": "Settlement path previously did not sweep expired leases before committing; delayed stale worker could settle while status remained RESERVED.",
+    "correction": "Run expiry sweep inside settlement transaction before state/ownership validation; expired reservation transitions to UNCERTAIN_BUDGET_RETAINED and stale settlement is rejected.",
+    "assertions": [
+      "evictDurableObject tears down instance",
+      "SQLite reservation and counters survive reconstruction",
+      "real persisted 30-second lease expires without clock override",
+      "stale settlement rejected before explicit sweep",
+      "reserved units=0 and uncertain units=10 after expiry",
+      "duplicate reservation suppression retained",
+      "external network requests=0"
+    ],
+    "production_feature_flag": "OFF",
+    "ai_inference": false,
+    "spend_inr": 0,
+    "external_network_requests": 0,
+    "next": "Run exact-head Workers/workerd runtime and all regression workflows; inspect stale-settlement test and full suite; do not merge until all required checks pass."
   }
 }
