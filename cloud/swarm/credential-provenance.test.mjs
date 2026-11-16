@@ -33,6 +33,20 @@ test("verifies ES256 broker proof and derives installation scope from signed cla
   assert.equal(result.credentialScope,"github-app-installation:42113");
   assert.equal(result.installationId,"42113");
   assert.equal(result.credentialLane,"compute_readonly");
+
+  const ledgerResult = await verifyGitHubCredentialProvenance({
+    assertion, publicKeys:{"test-key-1":jwk}, nowEpoch:now,
+    issuer:"https://broker.test.invalid", audience:"nexus-quota-ledger",
+    appId:"12345", repositoryId:"1454085952", credentialLane:"compute_readonly",
+    verifyTokenBinding:false
+  });
+  assert.equal(ledgerResult.tokenSha256, hex);
+  assert.equal(ledgerResult.credentialScope, "github-app-installation:42113");
+  await assert.rejects(() => verifyGitHubCredentialProvenance({
+    assertion, bearerToken:token, publicKeys:{"test-key-1":jwk}, nowEpoch:now,
+    issuer:"https://broker.test.invalid", audience:"nexus-quota-ledger",
+    appId:"12345", verifyTokenBinding:false
+  }), /bearer token forbidden/);
 });
 
 test("rejects bearer-token substitution", async () => {
