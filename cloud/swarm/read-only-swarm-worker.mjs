@@ -13,7 +13,6 @@ import { executeQuotaGuardedGitHubRequest } from "./quota-ledger-client.mjs";
 const CANONICAL_REPOSITORY = "manish91082-coder/nexus-autonomous-cloud-work-engine";
 const CANONICAL_URL = "https://api.github.com/repos/" + CANONICAL_REPOSITORY;
 const OPERATION = "github.rest.repositories.get.v1";
-const WORKER_ID = "p10cr-read-only-shadow-worker";
 const MAX_BODY_BYTES = 8192;
 const ENVELOPE_KEYS = [
   "schemaVersion", "mode", "projectId", "taskId", "taskType",
@@ -103,7 +102,7 @@ async function readEnvelope(request) {
     : { ok: false, status: 400 };
 }
 
-function syntheticProviderResponse(resetAtEpoch) {
+function syntheticProviderResponse(resetAtEpoch, requestId) {
   return new Response(JSON.stringify({
     full_name: CANONICAL_REPOSITORY,
     private: false,
@@ -117,7 +116,7 @@ function syntheticProviderResponse(resetAtEpoch) {
       "x-ratelimit-used": "1",
       "x-ratelimit-reset": String(resetAtEpoch),
       "x-ratelimit-resource": "core",
-      "x-github-request-id": "P10CR-SHADOW-FIXTURE-0001"
+      "x-github-request-id": "P10CR-SHADOW-" + requestId
     }
   });
 }
@@ -137,9 +136,12 @@ export default {
 
     const credentialScope = env?.NEXUS_QUOTA_CREDENTIAL_SCOPE;
     const resetAtEpoch = Number(env?.NEXUS_SWARM_SHADOW_RESET_AT);
+    const workerId = env?.NEXUS_SWARM_WORKER_ID;
     if (typeof credentialScope !== "string"
       || !credentialScope.startsWith("github-app-installation:")
       || credentialScope.length > 128
+      || !safeId(workerId, 96)
+      || !workerId.startsWith("p10cr-read-only-shadow-worker")
       || !Number.isSafeInteger(resetAtEpoch) || resetAtEpoch <= Math.floor(Date.now() / 1000)) {
       return json(503, { status: "WAITING_FOR_OWNER_CONFIGURATION", reason: "SHADOW_FIXTURE_CONFIGURATION_INVALID" });
     }
@@ -152,7 +154,7 @@ export default {
         throw new TypeError("shadow fixture rejected a non-canonical or non-read-only request");
       }
       mockProviderCalls += 1;
-      return syntheticProviderResponse(resetAtEpoch);
+      return syntheticProviderResponse(resetAtEpoch, parsed.value.requestId);
     };
 
     try {
@@ -160,7 +162,7 @@ export default {
         env,
         credentialScope,
         operation: parsed.value.operation,
-        workerId: WORKER_ID,
+        workerId,
         requestId: parsed.value.requestId,
         request: new Request(CANONICAL_URL, { method: "GET" }),
         fetchImpl: mockFetch
@@ -182,6 +184,9 @@ export default {
         return json(503, {
           status: result.status === "NOT_SENT" ? "WAITING_FOR_QUOTA" : "SHADOW_EXECUTION_NOT_CONFIRMED",
           quotaStatus: result.status,
+          quotaAdmissionStatus: result.admission?.status ?? null,
+          quotaAdmissionReason: result.admission?.reason ?? null,
+          quotaAdmissionBucket: result.admission?.bucketId ?? null,
           reservationId: result.reservationId ?? null,
           providerRequestIssued: mockProviderCalls > 0,
           mockProviderCalls,

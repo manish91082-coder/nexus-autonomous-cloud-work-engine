@@ -1222,12 +1222,13 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
     await seedBucket(stub,input,"core",100);
     const request = {...input,requestFingerprint:"d".repeat(64)};
     expect((await call(stub,"reserve",request)).status).toBe("RESERVED");
+    const retryAfterObservedAt = Math.floor(Date.now()/1000);
     const cooldown = await call(stub,"recordSecondaryLimit",{
       ...request,status:429,kind:"SECONDARY_LIMIT",retryAfterSeconds:120,
       resetAtEpoch:null,minimumWaitSeconds:0,reason:"RETRY_AFTER_HEADER"
     });
     expect(cooldown.status).toBe("SECONDARY_COOLDOWN_RECORDED");
-    expect(cooldown.cooldownUntilEpoch).toBeGreaterThanOrEqual(Math.floor(Date.now()/1000)+120);
+    expect(cooldown.cooldownUntilEpoch).toBeGreaterThanOrEqual(retryAfterObservedAt+120);
     expect((await call(stub,"settle",{...request,actualByBucket:{core:1}})).status).toBe("SETTLED");
     const blocked = await call(stub,"reserve",{
       ...input,reservationId:"secondary-retry-after-next",workerId:"secondary-retry-after-next-worker",
@@ -1432,7 +1433,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
   const shadowInput = {
     provider: "github",
-    credentialScope: "github-app-installation:shadow-test-42",
+    credentialScope: "github-app-installation:shadow-test-44",
     windowId: "github-rate-limit-ledger",
     controlPlaneProvider: "cloudflare",
     reservationId: "shadow-seed",
@@ -1459,7 +1460,7 @@ describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
       ...envelope,
       target: { owner: "attacker", repo: "other-repository" }
     };
-    const response = await env.SHADOW_WORKER.fetch(new Request(
+    const response = await env.PHASE_59_44_SHADOW_WORKER.fetch(new Request(
       "https://shadow-worker/shadow/research",
       {
         method: "POST",
@@ -1481,7 +1482,7 @@ describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
     });
     expect(seeded.reset_at_epoch).toBe(4102444800);
 
-    const invoke = () => env.SHADOW_WORKER.fetch(new Request(
+    const invoke = () => env.PHASE_59_44_SHADOW_WORKER.fetch(new Request(
       "https://shadow-worker/shadow/research",
       {
         method: "POST",
@@ -1533,5 +1534,87 @@ describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
     )).toBe(true);
     expect(snapshot.buckets.find(item => item.bucket_id === "core").reserved_units).toBe(0);
     expect(snapshot.buckets.find(item => item.bucket_id === "core").committed_units).toBe(1);
+  });
+});
+
+
+// Use a dedicated credential scope: all test Workers share one Miniflare Durable Object namespace,
+// so this fixture must not inherit endpoint-point history from the preceding Phase 59.44 test.
+describe("Phase 59.45 installation-wide quota identity across independent P10CR clients", () => {
+  const baseEnvelope = {
+    schemaVersion: "1.0",
+    mode: "SHADOW",
+    projectId: "P10CR",
+    taskId: "P59-003",
+    taskType: "READ_ONLY_REPOSITORY_METADATA",
+    operation: "github.rest.repositories.get.v1",
+    target: {
+      owner: "manish91082-coder",
+      repo: "nexus-autonomous-cloud-work-engine"
+    }
+  };
+
+  it("shares one installation quota partition across separate workflow runs and worker clients", async () => {
+    const input = {
+      provider: "github",
+      credentialScope: "github-app-installation:shadow-test-45a",
+      windowId: "github-rate-limit-ledger",
+      controlPlaneProvider: "cloudflare",
+      reservationId: "phase59-45-seed",
+      workerId: "phase59-45-seed-worker",
+      operation: "github.rest.repositories.get.v1"
+    };
+    const stub = stubFor(input);
+    await seedBucket(stub, input, "core", 100, {resetAtEpoch: 4102444800});
+
+    const firstEnvelope = {
+      ...baseEnvelope,
+      runId: "phase59-45-run-primary",
+      requestId: "p10cr-shadow:phase59-45-run-primary:metadata"
+    };
+    const secondEnvelope = {
+      ...baseEnvelope,
+      runId: "phase59-45-run-secondary",
+      requestId: "p10cr-shadow:phase59-45-run-secondary:metadata"
+    };
+    const invoke = (binding, value) => binding.fetch(new Request(
+      "https://shadow-worker/shadow/research",
+      {
+        method: "POST",
+        headers: {"content-type": "application/json"},
+        body: JSON.stringify(value)
+      }
+    ));
+
+    const firstResponse = await invoke(env.SHADOW_WORKER, firstEnvelope);
+    const secondResponse = await invoke(env.SECOND_SHADOW_WORKER, secondEnvelope);
+    expect(firstResponse.status).toBe(200);
+    const secondPayload = await secondResponse.clone().json();
+    expect(secondResponse.status, JSON.stringify(secondPayload)).toBe(200);
+    expect(await firstResponse.json()).toMatchObject({
+      status: "SHADOW_COMPLETED",
+      runId: firstEnvelope.runId,
+      providerRequestIssued: true,
+      externalNetworkRequests: 0
+    });
+    expect(await secondResponse.json()).toMatchObject({
+      status: "SHADOW_COMPLETED",
+      runId: secondEnvelope.runId,
+      providerRequestIssued: true,
+      externalNetworkRequests: 0
+    });
+
+    const snapshot = await call(stub, "snapshot", input);
+    const reservations = snapshot.reservations.filter(item =>
+      item.reservation_id === "p10cr:" + firstEnvelope.requestId
+      || item.reservation_id === "p10cr:" + secondEnvelope.requestId
+    );
+    expect(reservations).toHaveLength(2);
+    expect(new Set(reservations.map(item => item.worker_id))).toEqual(new Set([
+      "p10cr-read-only-shadow-worker-primary",
+      "p10cr-read-only-shadow-worker-secondary"
+    ]));
+    expect(snapshot.buckets.find(item => item.bucket_id === "core").committed_units).toBe(2);
+    expect(snapshot.buckets.find(item => item.bucket_id === "core").reserved_units).toBe(0);
   });
 });
