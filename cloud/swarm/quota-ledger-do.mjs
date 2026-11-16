@@ -172,6 +172,18 @@ export class QuotaLedgerDO extends DurableObject {
       freshness TEXT NOT NULL,
       provenance_json TEXT NOT NULL
     )`);
+    sql.exec(`CREATE TABLE IF NOT EXISTS quota_provider_response_journal (
+      reservation_id TEXT PRIMARY KEY,
+      caller_id TEXT NOT NULL,
+      request_fingerprint TEXT NOT NULL,
+      provider_request_id TEXT,
+      response_status INTEGER NOT NULL,
+      endpoint TEXT NOT NULL,
+      method TEXT NOT NULL,
+      observed_at_epoch INTEGER NOT NULL,
+      first_observation_id TEXT NOT NULL,
+      recorded_at_epoch INTEGER NOT NULL
+    )`);
 
   }
 
@@ -708,6 +720,16 @@ export class QuotaLedgerDO extends DurableObject {
       if (!rec || rec.worker_id !== input.workerId || rec.caller_id !== callerId) {
         throw new QuotaLedgerError("reservation owner/state mismatch");
       }
+      // An identical retry after a committed settlement is a read-only replay,
+      // not a second counter mutation. A changed amount is a hard conflict.
+      if (rec.status === "SETTLED") {
+        const priorActual = JSON.parse(rec.actual_by_bucket_json || "{}");
+        if (JSON.stringify(priorActual) === JSON.stringify(input.actualByBucket)) {
+          return {reservationId:input.reservationId,status:"SETTLEMENT_ALREADY_APPLIED",
+            actualByBucket:priorActual};
+        }
+        throw new QuotaLedgerError("settlement idempotency conflict");
+      }
       // Return a sentinel rather than throwing inside transactionSync: throwing
       // would roll back the expiry transition and leave the stale reservation
       // incorrectly marked RESERVED.
@@ -1110,6 +1132,38 @@ export class QuotaLedgerDO extends DurableObject {
         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         observationId, reservationId, ...values);
 
+      // Persist a compact, metadata-only receipt for the provider response in
+      // the same SQLite transaction as its authoritative response-header
+      // observation. No response body or credential material is stored.
+      if (reservationId && incoming.telemetry_source === "response_header") {
+        const reservation = sql.exec(
+          "SELECT caller_id,request_fingerprint FROM quota_reservations WHERE reservation_id=?",
+          reservationId
+        ).toArray()[0];
+        const priorReceipt = sql.exec(
+          "SELECT * FROM quota_provider_response_journal WHERE reservation_id=?",
+          reservationId
+        ).toArray()[0];
+        if (priorReceipt) {
+          if (priorReceipt.caller_id !== callerId
+            || priorReceipt.request_fingerprint !== reservation.request_fingerprint
+            || priorReceipt.provider_request_id !== requestId
+            || priorReceipt.response_status !== status
+            || priorReceipt.endpoint !== endpoint
+            || priorReceipt.method !== method
+            || priorReceipt.observed_at_epoch !== observed) {
+            throw new QuotaLedgerError("provider response receipt conflict");
+          }
+        } else {
+          sql.exec(`INSERT INTO quota_provider_response_journal
+            (reservation_id,caller_id,request_fingerprint,provider_request_id,response_status,
+             endpoint,method,observed_at_epoch,first_observation_id,recorded_at_epoch)
+            VALUES (?,?,?,?,?,?,?,?,?,?)`,
+            reservationId,callerId,reservation.request_fingerprint,requestId,status,
+            endpoint,method,observed,observationId,now);
+        }
+      }
+
       const accepted = reconciled.decision.startsWith("ACCEPT")
         || reconciled.decision === "SAME_SECOND_CONSERVATIVE_MIN";
       if (accepted) {
@@ -1163,6 +1217,7 @@ export class QuotaLedgerDO extends DurableObject {
       reservations: sql.exec("SELECT * FROM quota_reservations ORDER BY created_at_epoch").toArray(),
       telemetryCurrent: sql.exec("SELECT * FROM quota_telemetry_current ORDER BY bucket_id").toArray(),
       telemetryObservations: sql.exec("SELECT * FROM quota_telemetry_observations ORDER BY observed_at_epoch").toArray(),
+      providerResponseJournal: sql.exec("SELECT * FROM quota_provider_response_journal ORDER BY recorded_at_epoch").toArray(),
       secondaryControl: sql.exec("SELECT * FROM quota_secondary_control ORDER BY credential_scope").toArray()[0] ?? null,
       secondaryInflight: sql.exec("SELECT * FROM quota_secondary_inflight ORDER BY expires_at_epoch").toArray(),
       secondaryEndpointPoints: sql.exec("SELECT * FROM quota_secondary_endpoint_points ORDER BY occurred_at_epoch").toArray(),
