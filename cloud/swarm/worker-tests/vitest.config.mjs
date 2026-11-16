@@ -119,7 +119,8 @@ export default defineConfig({
               NEXUS_QUOTA_CREDENTIAL_SCOPE: "github-app-installation:shadow-test-42",
               NEXUS_SWARM_WORKER_ID: "p10cr-read-only-shadow-worker-primary",
               NEXUS_SWARM_MODE: "SHADOW",
-              NEXUS_SWARM_SHADOW_RESET_AT: "4102444800"
+              NEXUS_SWARM_SHADOW_RESET_AT: "4102444800",
+              NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE: "3"
             },
             durableObjects: {
               QUOTA_LEDGER: sharedQuotaNamespace
@@ -143,7 +144,8 @@ export default defineConfig({
               NEXUS_QUOTA_CREDENTIAL_SCOPE: "github-app-installation:shadow-test-42",
               NEXUS_SWARM_WORKER_ID: "p10cr-read-only-shadow-worker-secondary",
               NEXUS_SWARM_MODE: "SHADOW",
-              NEXUS_SWARM_SHADOW_RESET_AT: "4102444800"
+              NEXUS_SWARM_SHADOW_RESET_AT: "4102444800",
+              NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE: "3"
             },
             durableObjects: {
               QUOTA_LEDGER: sharedQuotaNamespace
