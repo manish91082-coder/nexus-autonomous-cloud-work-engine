@@ -292,16 +292,17 @@ export class SwarmRunDO extends DurableObject {
     const taskId = safeId(input.taskId, "taskId"), workerId = safeId(input.workerId, "workerId");
     const fencingToken = input.fencingToken;
     if (!Number.isSafeInteger(fencingToken) || fencingToken < 1) throw new TypeError("invalid fencingToken");
+    const runId = safeId(input.runId, "runId");
     const resultJson = parseJsonObject(input.result, "result", MAX_RESULT_BYTES), resultHash = await sha256(resultJson);
     const task = this.#task(taskId);
     if (task?.status === "COMPLETED") return task.result_hash === resultHash ? { status: "DUPLICATE_COMPLETION", taskId, resultHash } : (() => { throw new Error("TERMINAL_RESULT_CONFLICT"); })();
     const now = Math.floor(Date.now() / 1000);
-    this.#assertLease(taskId, workerId, fencingToken, now, this.#lease(taskId));
-    return this.#commitEvent(taskId, "TASK_COMPLETED", { workerId, fencingToken, resultHash }, () => {
+    this.#assertLease(taskId, workerId, fencingToken, runId, now, this.#lease(taskId));
+    return this.#commitEvent(taskId, "TASK_COMPLETED", { workerId, runId, fencingToken, resultHash }, () => {
       const current = this.#task(taskId);
       if (current.status === "COMPLETED") return current.result_hash === resultHash ? { skipEvent: true, value: { status: "DUPLICATE_COMPLETION", taskId, resultHash } } : (() => { throw new Error("TERMINAL_RESULT_CONFLICT"); })();
       const commitNow = Math.floor(Date.now() / 1000);
-      this.#assertLease(taskId, workerId, fencingToken, commitNow, this.#lease(taskId));
+      this.#assertLease(taskId, workerId, fencingToken, runId, commitNow, this.#lease(taskId));
       this.ctx.storage.sql.exec("UPDATE swarm_tasks SET status='COMPLETED',result_json=?,result_hash=?,updated_at=? WHERE task_id=?", resultJson, resultHash, commitNow, taskId);
       this.ctx.storage.sql.exec("DELETE FROM swarm_leases WHERE task_id=?", taskId);
       return { status: "COMPLETED", taskId, resultHash };
@@ -312,14 +313,15 @@ export class SwarmRunDO extends DurableObject {
     const taskId = safeId(input.taskId, "taskId"), workerId = safeId(input.workerId, "workerId");
     const fencingToken = input.fencingToken;
     if (!Number.isSafeInteger(fencingToken) || fencingToken < 1) throw new TypeError("invalid fencingToken");
+    const runId = safeId(input.runId, "runId");
     const errorCode = safeId(input.errorCode, "errorCode", 96);
     const task = this.#task(taskId), now = Math.floor(Date.now() / 1000);
-    this.#assertLease(taskId, workerId, fencingToken, now, this.#lease(taskId));
+    this.#assertLease(taskId, workerId, fencingToken, runId, now, this.#lease(taskId));
     const dead = task.attempts >= task.max_attempts;
     const delay = Math.min(5 * (2 ** Math.max(0, task.attempts - 1)), 300);
-    return this.#commitEvent(taskId, dead ? "TASK_DEAD_LETTERED" : "TASK_RETRY_SCHEDULED", { workerId, fencingToken, errorCode, retryDelaySeconds: dead ? 0 : delay }, () => {
+    return this.#commitEvent(taskId, dead ? "TASK_DEAD_LETTERED" : "TASK_RETRY_SCHEDULED", { workerId, runId, fencingToken, errorCode, retryDelaySeconds: dead ? 0 : delay }, () => {
       const commitNow = Math.floor(Date.now() / 1000);
-      this.#assertLease(taskId, workerId, fencingToken, commitNow, this.#lease(taskId));
+      this.#assertLease(taskId, workerId, fencingToken, runId, commitNow, this.#lease(taskId));
       this.ctx.storage.sql.exec("UPDATE swarm_tasks SET status=?,next_attempt_at=?,last_error=?,updated_at=? WHERE task_id=?", dead ? "DEAD_LETTER" : "READY", dead ? commitNow : commitNow + delay, errorCode, commitNow, taskId);
       this.ctx.storage.sql.exec("DELETE FROM swarm_leases WHERE task_id=?", taskId);
       return { status: dead ? "DEAD_LETTER" : "RETRY_SCHEDULED", taskId, nextAttemptAt: dead ? null : commitNow + delay, retryDelaySeconds: dead ? 0 : delay };
@@ -380,9 +382,9 @@ export class SwarmRunDO extends DurableObject {
   #task(taskId) { return this.ctx.storage.sql.exec("SELECT * FROM swarm_tasks WHERE task_id=?", taskId).toArray()[0] ?? null; }
   #lease(taskId) { return this.ctx.storage.sql.exec("SELECT * FROM swarm_leases WHERE task_id=?", taskId).toArray()[0] ?? null; }
   #checkpointRow(taskId) { return this.ctx.storage.sql.exec("SELECT * FROM swarm_checkpoints WHERE task_id=?", taskId).toArray()[0] ?? null; }
-  #assertLease(taskId, workerId, fencingToken, now, lease) {
+  #assertLease(taskId, workerId, fencingToken, runId, now, lease) {
     const task = this.#task(taskId);
     if (!task) throw new Error("TASK_NOT_FOUND");
-    if (task.status !== "LEASED" || !lease || lease.worker_id !== workerId || lease.fencing_token !== fencingToken || lease.expires_at <= now) throw new Error("STALE_OR_INVALID_FENCING_TOKEN");
+    if (task.status !== "LEASED" || !lease || lease.worker_id !== workerId || lease.run_id !== runId || lease.fencing_token !== fencingToken || lease.expires_at <= now) throw new Error("STALE_OR_INVALID_FENCING_TOKEN");
   }
 }
