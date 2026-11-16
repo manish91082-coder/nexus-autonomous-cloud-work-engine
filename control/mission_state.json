@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_59_52_END_TO_END_DURABLE_SWARM_INTEGRATION_AUDIT",
+  "phase": "PHASE_59_53_PROJECT_CELL_DURABLE_SWARM_RUN_LEDGER",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -10,8 +10,8 @@
   "authorized_spend_inr": 0,
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
-  "last_verified_head": "076104d6cfbedb1555ccba83d07139336e0ed2a3",
-  "current_focus": "P59-003 Phase59.52 current-HEAD audit merged. Confirmed the scheduled worker selects queue work but does not claim/lease/checkpoint/execute; Python durable SQLite store is standalone and ephemeral on Actions; deterministic specialist graph is not connected to the scheduled worker; shadow Worker is test-only; quota DO is not a task/run journal; no production Wrangler deployment or isolated publisher. PR #35 exact-head CI 13/13, Workers/workerd 68/68. Next Phase59.53: build separate P10CR project-cell SwarmRunDO durable task/run ledger and integrate only a deterministic mock shadow worker.",
+  "last_verified_head": "d6d78ed5cd9d377433c79bd8d213d66098e54f12",
+  "current_focus": "P59-003 Phase59.53 merged: separate P10CR project-cell SwarmRunDO with SQLite-backed task lifecycle, HMAC/replay-protected caller RPC, idempotent registration, primary-only approval event, atomic claim, unique run IDs, persistent monotonic fencing tokens, run-bound heartbeat/checkpoint/completion/failure, retry/backoff, dead-letter, expired-lease recovery and SHA-256 append-only event-chain verification. PR #37 exact-head CI 13/13; Workers/workerd 73/73 across two test files. Quota ledger remains separate. No production deployment, live provider, external network, AI inference or spend. Next Phase59.54: integrate a deterministic mock-only shadow runner with SwarmRunDO.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -136,7 +136,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.53: implement a separate project-cell SwarmRunDO with SQLite-backed idempotent task registration, atomic claim, lease/fencing, heartbeat, checkpoint, completion/retry/dead-letter and append-only hash-chain events. Add workerd tests for two-client contention, eviction/restart, stale-token fencing, duplicate delivery, checkpoint recovery and event-chain verification. Connect only a deterministic mock shadow path. Keep quota ledger separate; no provider, LLM inference, production deployment, external network or spend.",
+  "next_focus": "Phase59.54: add a separate deterministic shadow-runner adapter that uses the project-cell SwarmRunDO for register → claim → checkpoint → deterministic fixture → checkpoint → complete. Keep the provider quota ledger independent and do not call it for this no-provider fixture. Prove duplicate delivery creates one canonical task/run outcome; eviction/reconstruction resumes from the persisted checkpoint; stale run/fencing tokens fail; event-chain remains valid. Add exact-head workerd tests and regression CI. Do not connect LLM inference, live provider fetches, publication, account actions or payments. Production flags OFF, external network 0, spend ₹0.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -2119,17 +2119,19 @@
     "next": "Phase59.51 post-commit journal restart/readback and reservation/receipt identity consistency."
   },
   "latest_phase_ci_run": {
-    "phase": "PHASE_59_52",
-    "pr_number": 35,
-    "run_id": 43921266473,
+    "phase": "PHASE_59_53",
+    "pr_number": 37,
+    "run_id": 43924444452,
     "conclusion": "success",
     "checks_passed": 13,
     "checks_total": 13,
-    "workers_runtime_tests_passed": 68,
-    "workers_runtime_tests_total": 68,
-    "tested_head": "eed6c1dafb77bc4f0afc7256d7b4734566307af4",
-    "merge_commit": "076104d6cfbedb1555ccba83d07139336e0ed2a3",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43921266473"
+    "workers_runtime_test_files_passed": 2,
+    "workers_runtime_test_files_total": 2,
+    "workers_runtime_tests_passed": 73,
+    "workers_runtime_tests_total": 73,
+    "tested_head": "86e1fe604f211f77ecd46c79deec26e7b8d5ce45",
+    "merge_commit": "d6d78ed5cd9d377433c79bd8d213d66098e54f12",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43924444452"
   },
   "phase59_51": {
     "report": "research/PHASE_59_51_PROVIDER_RESPONSE_JOURNAL_RESTART_READBACK_2026-11-16.md",
@@ -2198,5 +2200,59 @@
     "spend_inr": 0,
     "verified_net_receipts_inr": 0,
     "next": "Phase59.53 separate project-cell SwarmRunDO durable task/run ledger."
+  },
+  "phase59_53": {
+    "report": "research/PHASE_59_53_PROJECT_CELL_DURABLE_SWARM_RUN_LEDGER_2026-11-16.md",
+    "schema": "schemas/swarm-run-ledger-v1.schema.json",
+    "implementation_files": [
+      "cloud/swarm/swarm-run-do.mjs",
+      "cloud/swarm/swarm-run-host.mjs",
+      "cloud/swarm/worker-tests/swarm-run-ledger-runtime.test.mjs",
+      "cloud/swarm/worker-tests/wrangler.jsonc",
+      "cloud/swarm/worker-tests/vitest.config.mjs",
+      ".github/workflows/phase59-35-quota-do-runtime-tests.yml"
+    ],
+    "pr_number": 37,
+    "pr_state": "MERGED",
+    "branch": "phase59-53-project-cell-durable-swarm-ledger",
+    "pr_head_sha": "86e1fe604f211f77ecd46c79deec26e7b8d5ce45",
+    "merge_commit": "d6d78ed5cd9d377433c79bd8d213d66098e54f12",
+    "ci_checks_passed": 13,
+    "ci_checks_total": 13,
+    "workers_runtime_run_id": 43924444452,
+    "workers_runtime_test_files_passed": 2,
+    "workers_runtime_test_files_total": 2,
+    "workers_runtime_tests_passed": 73,
+    "workers_runtime_tests_total": 73,
+    "verified": [
+      "separate P10CR project-cell SwarmRunDO; provider quota ledger remains separate",
+      "HMAC-authenticated RPC, caller action allowlists and durable nonce replay protection",
+      "idempotent task registration and P10CR project-cell identity enforcement",
+      "primary-caller approval event required for owner-gated tasks",
+      "atomic claim with unique immutable run ID per attempt",
+      "monotonic fencing token persists across lease deletion and recovery",
+      "heartbeat, checkpoint, completion and failure bound to worker, run ID, fencing token and unexpired lease",
+      "checkpoint idempotency and conflicting checkpoint rejection",
+      "completion idempotency bound to result hash and originating run ID",
+      "bounded exponential retry, dead-letter and expired lease recovery",
+      "append-only SHA-256 event journal and snapshot chain verification",
+      "two independently authenticated callers contend for one task and only one receives the lease",
+      "checkpoint survives Durable Object eviction/reconstruction"
+    ],
+    "evidence_boundary": [
+      "Cloudflare workerd runtime tests only",
+      "no production Cloudflare deployment",
+      "no live provider calls or external network",
+      "no AI inference",
+      "primary-caller approval record is not yet an end-user human-consent ceremony",
+      "no 24x7 SLA or realized revenue evidence"
+    ],
+    "production_feature_flag": "OFF",
+    "ai_inference": false,
+    "external_network_requests": 0,
+    "live_provider_calls": 0,
+    "spend_inr": 0,
+    "verified_net_receipts_inr": 0,
+    "next": "Phase59.54 deterministic shadow-runner integration with SwarmRunDO; no live provider or inference."
   }
 }
