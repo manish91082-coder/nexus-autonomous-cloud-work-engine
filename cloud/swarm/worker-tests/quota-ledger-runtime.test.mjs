@@ -1554,7 +1554,7 @@ describe("Phase 59.45 installation-wide quota identity across independent P10CR 
   it("shares one installation quota partition across separate workflow runs and worker clients", async () => {
     const input = {
       provider: "github",
-      credentialScope: "github-app-installation:shadow-test-45",
+      credentialScope: "github-app-installation:shadow-test-45a",
       windowId: "github-rate-limit-ledger",
       controlPlaneProvider: "cloudflare",
       reservationId: "phase59-45-seed",
