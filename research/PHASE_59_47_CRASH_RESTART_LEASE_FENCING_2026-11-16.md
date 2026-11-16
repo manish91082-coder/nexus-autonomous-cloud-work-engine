@@ -17,7 +17,7 @@ This is a stale-worker acceptance race. Lease expiry must be enforced at the set
 
 ## Change
 
-Before reading and settling a reservation, `#settle` now runs `#expireReservations(now)` inside the same `transactionSync` transaction. An expired reservation is atomically moved from reserved units to uncertain units and its state becomes `UNCERTAIN_BUDGET_RETAINED`. The stale settlement then fails the existing owner/state guard.
+Before reading and settling a reservation, `#settle` now runs `#expireReservations(now)` inside the same `transactionSync` transaction. An expired reservation is atomically moved from reserved units to uncertain units and its state becomes `UNCERTAIN_BUDGET_RETAINED`. The transaction commits the expiry transition by returning an internal sentinel; the public settlement path then rejects outside the transaction with `reservation lease already expired`.
 
 ## Runtime test
 
