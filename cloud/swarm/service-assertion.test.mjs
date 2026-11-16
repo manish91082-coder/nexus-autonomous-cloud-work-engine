@@ -30,13 +30,17 @@ test("rejects wrong action, partition, principal and issuer",async()=>{
 });
 test("rejects overbroad observer policy, wildcard scope, expired and excessive TTL",async()=>{
  const observer={...claims(),principal:"quota-observer",actions:["snapshot","expireReservations"]};
- await assert.rejects(()=>verifyServiceAssertion({assertion:await sign(observer),...base()}),/principal\/action policy/);
+ const observerToken=await sign(observer);
+ await assert.rejects(()=>verifyServiceAssertion({assertion:observerToken,...base()}),/principal\\/action policy/);
  const wildcard={...claims(),partition_scope:["*"]};
- await assert.rejects(()=>verifyServiceAssertion({assertion:await sign(wildcard),...base()}),/explicit installation partition/);
+ const wildcardToken=await sign(wildcard);
+ await assert.rejects(()=>verifyServiceAssertion({assertion:wildcardToken,...base()}),/explicit installation partition/);
  const expired={...claims(),expires_at:now-1};
- await assert.rejects(()=>verifyServiceAssertion({assertion:await sign(expired),...base()}),/time window/);
+ const expiredToken=await sign(expired);
+ await assert.rejects(()=>verifyServiceAssertion({assertion:expiredToken,...base()}),/time window/);
  const long={...claims(),expires_at:now+121};
- await assert.rejects(()=>verifyServiceAssertion({assertion:await sign(long),...base()}),/time window/);
+ const longToken=await sign(long);
+ await assert.rejects(()=>verifyServiceAssertion({assertion:longToken,...base()}),/time window/);
 });
 test("rejects tampered signature and unknown key",async()=>{
  const assertion=await sign(claims());
