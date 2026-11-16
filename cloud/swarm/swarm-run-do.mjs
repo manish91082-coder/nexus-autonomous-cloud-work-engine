@@ -58,9 +58,13 @@ export class SwarmRunDO extends DurableObject {
       idempotency_key TEXT NOT NULL UNIQUE, payload_hash TEXT NOT NULL, policy_hash TEXT NOT NULL,
       owner_gate INTEGER NOT NULL, owner_approved_at INTEGER, owner_approved_by TEXT,
       status TEXT NOT NULL, attempts INTEGER NOT NULL, max_attempts INTEGER NOT NULL,
-      next_attempt_at INTEGER NOT NULL, result_json TEXT, result_hash TEXT, last_error TEXT,
+      next_attempt_at INTEGER NOT NULL, last_fencing_token INTEGER NOT NULL DEFAULT 0, result_json TEXT, result_hash TEXT, last_error TEXT,
       created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL
     )`);
+    const taskColumns = sql.exec("PRAGMA table_info(swarm_tasks)").toArray();
+    if (!taskColumns.some(column => column.name === "last_fencing_token")) {
+      sql.exec("ALTER TABLE swarm_tasks ADD COLUMN last_fencing_token INTEGER NOT NULL DEFAULT 0");
+    }
     sql.exec(`CREATE TABLE IF NOT EXISTS swarm_leases (
       task_id TEXT PRIMARY KEY, worker_id TEXT NOT NULL, fencing_token INTEGER NOT NULL,
       expires_at INTEGER NOT NULL, heartbeat_at INTEGER NOT NULL
@@ -229,16 +233,15 @@ export class SwarmRunDO extends DurableObject {
         return { status: "DEAD_LETTER", taskId };
       });
     }
-    const nextFence = (oldLease?.fencing_token ?? 0) + 1;
-    return this.#commitEvent(taskId, "TASK_CLAIMED", { workerId, fencingToken: nextFence, leaseSeconds, attempt: task.attempts + 1 }, () => {
+    return this.#commitEvent(taskId, "TASK_CLAIMED", { workerId, leaseSeconds, attempt: task.attempts + 1 }, () => {
       const current = this.#task(taskId), lease = this.#lease(taskId);
       if (current.status === "COMPLETED" || current.status === "DEAD_LETTER") return { skipEvent: true, value: { status: current.status, taskId } };
       if (current.owner_gate && current.owner_approved_at === null) return { skipEvent: true, value: { status: "OWNER_APPROVAL_REQUIRED", taskId } };
       if (current.status === "LEASED" && lease && lease.expires_at > now) return { skipEvent: true, value: { status: "BUSY", taskId, leaseExpiresAt: lease.expires_at } };
       if (current.status === "READY" && current.next_attempt_at > now) return { skipEvent: true, value: { status: "BACKOFF", taskId, nextAttemptAt: current.next_attempt_at } };
-      const fence = (lease?.fencing_token ?? 0) + 1;
+      const fence = (current.last_fencing_token ?? 0) + 1;
       const expiresAt = now + leaseSeconds;
-      this.ctx.storage.sql.exec("UPDATE swarm_tasks SET status='LEASED',attempts=attempts+1,updated_at=? WHERE task_id=?", now, taskId);
+      this.ctx.storage.sql.exec("UPDATE swarm_tasks SET status='LEASED',attempts=attempts+1,last_fencing_token=?,updated_at=? WHERE task_id=?", fence, now, taskId);
       this.ctx.storage.sql.exec(`INSERT INTO swarm_leases(task_id,worker_id,fencing_token,expires_at,heartbeat_at) VALUES(?,?,?,?,?) ON CONFLICT(task_id) DO UPDATE SET worker_id=excluded.worker_id,fencing_token=excluded.fencing_token,expires_at=excluded.expires_at,heartbeat_at=excluded.heartbeat_at`, taskId, workerId, fence, expiresAt, now);
       return { status: "CLAIMED", taskId, workerId, fencingToken: fence, leaseExpiresAt: expiresAt, attempt: current.attempts + 1 };
     });
