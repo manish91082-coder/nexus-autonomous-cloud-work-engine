@@ -8,7 +8,7 @@
 const encoder = new TextEncoder();
 const textDecoder = new TextDecoder("utf-8", { fatal: true });
 const MAX_ASSERTION_LENGTH = 8192;
-const MAX_TTL_SECONDS = 900;
+const MAX_TTL_SECONDS = 300;
 
 function fail(message) {
   throw new TypeError(`credential provenance rejected: ${message}`);
@@ -56,7 +56,8 @@ function positiveId(value, field) {
 function validateClaims(claims, nowEpoch, expected) {
   exactKeys(claims, [
     "iss", "aud", "sub", "installation_id", "repository_ids", "permissions",
-    "token_sha256", "issued_at", "expires_at", "jti", "credential_lane"
+    "token_sha256", "issued_at", "expires_at", "jti", "credential_lane",
+    "lease_id", "key_version"
   ]);
   if (claims.iss !== expected.issuer || claims.aud !== expected.audience) fail("issuer or audience mismatch");
   if (claims.sub !== expected.appId) fail("GitHub App subject mismatch");
@@ -78,6 +79,9 @@ function validateClaims(claims, nowEpoch, expected) {
     || claims.expires_at <= claims.issued_at
     || claims.expires_at - claims.issued_at > MAX_TTL_SECONDS) fail("assertion time window invalid");
   if (typeof claims.jti !== "string" || !/^[A-Za-z0-9._:-]{16,128}$/.test(claims.jti)) fail("invalid jti");
+  if (typeof claims.lease_id !== "string" || !/^[A-Za-z0-9._:-]{16,128}$/.test(claims.lease_id)) fail("invalid lease_id");
+  if (typeof claims.key_version !== "string" || !/^[A-Za-z0-9._-]{1,64}$/.test(claims.key_version)) fail("invalid key_version");
+  if (expected.leaseId !== undefined && claims.lease_id !== expected.leaseId) fail("lease identity mismatch");
   if (!["compute_readonly", "publisher_restricted"].includes(claims.credential_lane)) fail("invalid credential lane");
   if (expected.credentialLane && claims.credential_lane !== expected.credentialLane) fail("credential lane mismatch");
   if (expected.repositoryId && !repositoryIds.includes(positiveId(expected.repositoryId, "expected repositoryId"))) {
@@ -98,7 +102,7 @@ function validateClaims(claims, nowEpoch, expected) {
  */
 export async function verifyGitHubCredentialProvenance({
   assertion, bearerToken, publicKeys, nowEpoch = Math.floor(Date.now() / 1000),
-  issuer, audience, appId, repositoryId, credentialLane, requiredPermissions,
+  issuer, audience, appId, repositoryId, credentialLane, requiredPermissions, leaseId,
   verifyTokenBinding = true
 }) {
   if (typeof assertion !== "string" || assertion.length > MAX_ASSERTION_LENGTH) fail("assertion missing or too large");
@@ -122,7 +126,7 @@ export async function verifyGitHubCredentialProvenance({
   if (!keySource) fail("unknown signing key");
   const claims = parseJson(decodeBase64Url(encodedClaims, 6144), "claims");
   const { installationId, repositoryIds } = validateClaims(claims, nowEpoch, {
-    issuer, audience, appId, repositoryId, credentialLane, requiredPermissions
+    issuer, audience, appId, repositoryId, credentialLane, requiredPermissions, leaseId
   });
   const signature = decodeBase64Url(encodedSignature, 64);
   if (signature.byteLength !== 64) fail("invalid ES256 signature length");
@@ -154,6 +158,8 @@ export async function verifyGitHubCredentialProvenance({
     permissions: Object.freeze({ ...claims.permissions }),
     credentialLane: claims.credential_lane,
     assertionId: claims.jti,
+    leaseId: claims.lease_id,
+    keyVersion: claims.key_version,
     expiresAt: claims.expires_at,
     tokenSha256: tokenHex
   });
