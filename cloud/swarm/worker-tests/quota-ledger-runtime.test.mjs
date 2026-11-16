@@ -1764,3 +1764,107 @@ describe("Phase 59.46 concurrent installation-wide arbitration", () => {
     ].includes(workerId))).toBe(true);
   });
 });
+
+describe("Phase 59.50 provider-response crash-window recovery", () => {
+  it("retains uncertain quota and suppresses replay when worker is lost before durable response receipt", async () => {
+    const input = identity("phase59-50-response-before-receipt", "github.rest.repositories.get.v1");
+    const stub = stubFor(input);
+    const seeded = await seedBucket(stub, input, "core", 100, {resetAtEpoch: 4102444800});
+    const reservationId = "p10cr:phase59-50-stable-request";
+    let providerCalls = 0;
+
+    // Model the irreducible crash window: the provider has returned, but the
+    // Worker cannot commit response telemetry or its immediate uncertainty
+    // fallback. The real DO receives only the reservation and remains durable.
+    const realBinding = env.QUOTA_LEDGER;
+    const faultedBinding = {
+      idFromName: name => realBinding.idFromName(name),
+      get: id => {
+        const realStub = realBinding.get(id);
+        return {
+          fetch: async request => {
+            const envelope = await request.clone().json();
+            if (envelope.action === "recordTelemetry" || envelope.action === "markUncertain") {
+              throw new Error("INJECTED_WORKER_LOSS_BEFORE_RECEIPT_COMMIT");
+            }
+            return realStub.fetch(request);
+          }
+        };
+      }
+    };
+    const crashEnv = {
+      NEXUS_QUOTA_STORE_ENABLED: env.NEXUS_QUOTA_STORE_ENABLED,
+      NEXUS_QUOTA_CALLER_ID: env.NEXUS_QUOTA_CALLER_ID,
+      NEXUS_QUOTA_CALLER_SECRET: env.NEXUS_QUOTA_CALLER_SECRET,
+      QUOTA_LEDGER: faultedBinding
+    };
+    const request = new Request("https://api.github.com/repos/acme/demo", {method: "GET"});
+    const providerFetch = async () => {
+      providerCalls += 1;
+      return new Response(JSON.stringify({full_name: "acme/demo"}), {
+        status: 200,
+        headers: {
+          "x-ratelimit-limit": "100",
+          "x-ratelimit-remaining": "99",
+          "x-ratelimit-used": "1",
+          "x-ratelimit-reset": String(seeded.reset_at_epoch),
+          "x-ratelimit-resource": "core",
+          "x-github-request-id": "phase59-50-provider-response"
+        }
+      });
+    };
+
+    await expect(executeQuotaGuardedGitHubRequest({
+      env: crashEnv,
+      credentialScope: input.credentialScope,
+      operation: input.operation,
+      workerId: input.workerId,
+      requestId: "phase59-50-stable-request",
+      request,
+      fetchImpl: providerFetch
+    })).rejects.toThrow("INJECTED_WORKER_LOSS_BEFORE_RECEIPT_COMMIT");
+    expect(providerCalls).toBe(1);
+
+    const beforeRecovery = await call(stub, "snapshot", input);
+    const pending = beforeRecovery.reservations.find(item => item.reservation_id === reservationId);
+    expect(pending.status).toBe("RESERVED");
+    expect(beforeRecovery.providerResponseJournal.some(item => item.reservation_id === reservationId)).toBe(false);
+    expect(beforeRecovery.buckets.find(item => item.bucket_id === "core").reserved_units).toBe(1);
+
+    // Reconstruct the Durable Object from SQLite, then let the real 30-second
+    // lease expire. A stale heartbeat is the first post-expiry operation.
+    await evictDurableObject(stub);
+    await new Promise(resolve => setTimeout(resolve, 30100));
+    const staleHeartbeat = await call(stub, "renewReservation", {
+      ...input,
+      reservationId,
+      heartbeatId: "phase59-50-after-expiry",
+      expectedLeaseVersion: 0,
+      extensionSeconds: 120
+    });
+    expect(staleHeartbeat.status).toBe("REJECTED");
+
+    const recovered = await call(stub, "snapshot", input);
+    const expired = recovered.reservations.find(item => item.reservation_id === reservationId);
+    const core = recovered.buckets.find(item => item.bucket_id === "core");
+    expect(expired.status).toBe("UNCERTAIN_BUDGET_RETAINED");
+    expect(core.reserved_units).toBe(0);
+    expect(core.uncertain_units).toBe(1);
+    expect(recovered.providerResponseJournal.some(item => item.reservation_id === reservationId)).toBe(false);
+
+    // Same stable request ID is a permanent duplicate fence: no second
+    // provider request is issued even though the response receipt is absent.
+    const retry = await executeQuotaGuardedGitHubRequest({
+      env,
+      credentialScope: input.credentialScope,
+      operation: input.operation,
+      workerId: input.workerId,
+      requestId: "phase59-50-stable-request",
+      request,
+      fetchImpl: providerFetch
+    });
+    expect(retry.status).toBe("DUPLICATE_REQUEST_NOT_REPLAYED");
+    expect(providerCalls).toBe(1);
+  });
+});
+
