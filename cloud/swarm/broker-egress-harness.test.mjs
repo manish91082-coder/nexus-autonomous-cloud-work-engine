@@ -86,7 +86,9 @@ async function createHarness() {
       receipt: dispatch.receipt, publicKeys: publicGatewayKeys,
       issuer: "https://egress.test.invalid", audience: "nexus-quota-ledger", nowEpoch: now,
       claJti: claVerified.assertionId, leaseId: lease.leaseId,
-      installationId, repositoryId, requestFingerprint: dispatch.fingerprint.fingerprint,
+      installationId, repositoryId,
+      canonicalUrlSha256: await sha256(new TextEncoder().encode(JSON.parse(dispatch.fingerprint.canonical).url)),
+      requestFingerprint: dispatch.fingerprint.fingerprint,
       requestBodySha256: dispatch.fingerprint.requestBodySha256,
       tokenSha256: claVerified.tokenSha256, dispatchId: dispatch.dispatchId
     });
@@ -167,4 +169,24 @@ test("uncertain egress outcome remains uncertain and is not treated as a success
   const settled = await h.ledgerSettle({ lease: h.lease, dispatch });
   assert.equal(settled.outcome, "outcome_uncertain");
   assert.equal(settled.responseStatus, null);
+});
+
+test("ledger rejects EDR tampering and a receipt bound to a different request URL", async () => {
+  const h = await createHarness();
+  const dispatch = await h.gatewayDispatch({ lease: h.lease, intent: validIntent() });
+  const parts = dispatch.receipt.split(".");
+  parts[1] = b64u(JSON.stringify({
+    ...JSON.parse(Buffer.from(parts[1], "base64url").toString("utf8")),
+    installation_id: "99999"
+  }));
+  const tampered = { ...dispatch, receipt: parts.join(".") };
+  await assert.rejects(() => h.ledgerSettle({ lease: h.lease, dispatch: tampered }), /signature invalid/);
+  const normal = await h.gatewayDispatch({ lease: h.lease, intent: validIntent() });
+  const changed = {
+    ...normal,
+    fingerprint: await computeGitHubRequestFingerprint({
+      ...validIntent(), url: "https://api.github.com/repos/octocat/Other"
+    })
+  };
+  await assert.rejects(() => h.ledgerSettle({ lease: h.lease, dispatch: changed }), /binding mismatch/);
 });
