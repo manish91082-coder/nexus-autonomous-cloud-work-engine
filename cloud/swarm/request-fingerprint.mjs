@@ -32,7 +32,9 @@ async function sha256Hex(bytes) {
 async function canonicalUrl(value, expectedMethod, expectedOperation) {
   if (typeof value !== "string" || value.length > 2048) reject("URL missing or too large");
   // Inspect raw spelling before URL() normalizes dot segments.
-  const rawPath = value.split(/[?#]/, 1)[0];\n  if (/%2f|%5c|%2e/i.test(value) || value.includes("\\\\")\n    || rawPath.split("/").some(segment => segment === "." || segment === "..")) {
+  const rawPath = value.split(/[?#]/, 1)[0];
+  if (/%2f|%5c|%2e/i.test(value) || value.includes("\\\\")
+    || rawPath.split("/").some(segment => segment === "." || segment === "..")) {
     reject("encoded separators or dot segments forbidden");
   }
   let url;
