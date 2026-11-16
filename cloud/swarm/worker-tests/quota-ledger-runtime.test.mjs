@@ -1432,7 +1432,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
   const shadowInput = {
     provider: "github",
-    credentialScope: "installation-42/repository-99/shadow-worker",
+    credentialScope: "github-app-installation:shadow-test-42",
     windowId: "github-rate-limit-ledger",
     controlPlaneProvider: "cloudflare",
     reservationId: "shadow-seed",
