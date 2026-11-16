@@ -5,7 +5,7 @@
  * accepts a caller-supplied digest. The gateway must recompute from the
  * concrete outbound request before attaching Authorization.
  */
-import { getGitHubOperationDefinition } from "./github-operation-registry.mjs";
+import { getGitHubOperationDefinition, resolveGitHubOperation } from "./github-operation-registry.mjs";
 
 const encoder = new TextEncoder();
 const LANES = new Set(["compute_readonly", "publisher_restricted"]);
@@ -31,10 +31,9 @@ async function sha256Hex(bytes) {
   return Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
-function canonicalUrl(value, expectedMethod) {
+async function canonicalUrl(value, expectedMethod) {
   if (typeof value !== "string" || value.length > 2048) reject("URL missing or too large");
-  let url;
-  try { url = new URL(value); } catch { reject("invalid URL"); }
+  if (/%2f|%5c|%2e/i.test(value) || /\\\\|\\/\\.{1,2}(?:\\/|$)/.test(value)) {\n    reject("encoded separators or dot segments forbidden");\n  }\n  let url;\n  try { url = new URL(value); } catch { reject("invalid URL"); }
   if (url.protocol !== "https:" || url.hostname !== "api.github.com" || url.port
     || url.username || url.password || url.hash) reject("URL origin or authority forbidden");
   if (url.search) reject("query parameters are not approved by the current operation registry");
@@ -61,7 +60,7 @@ export async function computeGitHubRequestFingerprint(input) {
   if (!operation) reject("operation is not in the reviewed registry");
   if (typeof input.method !== "string" || input.method !== "GET") reject("method is not allowlisted");
   if (!LANES.has(input.credentialLane)) reject("credential lane is not allowlisted");
-  const url = canonicalUrl(input.url, input.method);
+  const url = await canonicalUrl(input.url, input.method);
   const bodyBytes = bytesOf(input.body);
   if (bodyBytes.byteLength !== 0) reject("GET request body must be empty");
   const requestBodySha256 = await sha256Hex(bodyBytes);
