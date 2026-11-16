@@ -56,6 +56,12 @@ describe("Phase 59.53 durable swarm run ledger", () => {
     });
     expect(conflict.status).toBe("REJECTED");
     expect(conflict.error.message).toMatch(/task identity or policy conflict/);
+    const extraField=await call(stub,"registerTask",{
+      taskId:"P10CR:register-extra",idempotencyKey:"idem:register-extra",taskType:"SYNTHETIC_RESEARCH",
+      payload:{fixture:"synthetic"},maxAttempts:3,ownerGate:false,ownerApproved:true,nowEpoch:1001
+    });
+    expect(extraField.status).toBe("REJECTED");
+    expect(extraField.error.message).toMatch(/unexpected registerTask field/);
     const keyReuse=await call(stub,"registerTask",{
       projectId:PROJECT_ID,taskId:"P10CR:register-002",idempotencyKey:"idem:register-001",
       taskType:"SYNTHETIC_RESEARCH",payload:{fixture:"synthetic",evidenceIds:["E-001"]},
