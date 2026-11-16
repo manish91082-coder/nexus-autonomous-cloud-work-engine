@@ -116,11 +116,11 @@ export default defineConfig({
               NEXUS_QUOTA_STORE_ENABLED: "true",
               NEXUS_QUOTA_CALLER_ID: "shadow",
               NEXUS_QUOTA_CALLER_SECRET: shadowWorkerTestSecret,
-              NEXUS_QUOTA_CREDENTIAL_SCOPE: "github-app-installation:shadow-test-42",
+              NEXUS_QUOTA_CREDENTIAL_SCOPE: "github-app-installation:shadow-test-45",
               NEXUS_SWARM_WORKER_ID: "p10cr-read-only-shadow-worker-primary",
               NEXUS_SWARM_MODE: "SHADOW",
               NEXUS_SWARM_SHADOW_RESET_AT: "4102444800",
-              NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE: "3"
+              NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE: "2"
             },
             durableObjects: {
               QUOTA_LEDGER: sharedQuotaNamespace
@@ -141,11 +141,11 @@ export default defineConfig({
               NEXUS_QUOTA_STORE_ENABLED: "true",
               NEXUS_QUOTA_CALLER_ID: "shadow-secondary",
               NEXUS_QUOTA_CALLER_SECRET: shadowWorkerSecondaryTestSecret,
-              NEXUS_QUOTA_CREDENTIAL_SCOPE: "github-app-installation:shadow-test-42",
+              NEXUS_QUOTA_CREDENTIAL_SCOPE: "github-app-installation:shadow-test-45",
               NEXUS_SWARM_WORKER_ID: "p10cr-read-only-shadow-worker-secondary",
               NEXUS_SWARM_MODE: "SHADOW",
               NEXUS_SWARM_SHADOW_RESET_AT: "4102444800",
-              NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE: "3"
+              NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE: "2"
             },
             durableObjects: {
               QUOTA_LEDGER: sharedQuotaNamespace
