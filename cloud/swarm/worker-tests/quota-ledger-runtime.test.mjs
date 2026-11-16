@@ -110,6 +110,23 @@ describe("Phase 59.45 canonical installation-wide quota identity", () => {
     const b = quotaLedgerObjectName("github", "github-app-installation:987654321", "github-rate-limit-ledger");
     expect(a).not.toBe(b);
   });
+
+  it("rejects a non-canonical scope before any provider network request", async () => {
+    let providerFetchCalls = 0;
+    const request = new Request("https://api.github.com/repos/acme/demo", {method:"GET"});
+    await expect(executeQuotaGuardedGitHubRequest({
+      env: {},
+      credentialScope: "owner/repository/token",
+      operation: "github.rest.repositories.get.v1",
+      request,
+      workerId: "worker-invalid-scope",
+      fetchImpl: async () => {
+        providerFetchCalls += 1;
+        return new Response("unexpected", {status:200});
+      }
+    })).rejects.toThrow(/canonical/);
+    expect(providerFetchCalls).toBe(0);
+  });
 });
 
 describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
