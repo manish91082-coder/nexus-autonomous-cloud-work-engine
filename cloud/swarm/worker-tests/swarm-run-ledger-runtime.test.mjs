@@ -45,6 +45,12 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     const conflict = await rpc(stub, "register", { ...task, payloadHash: await digest("conflicting-payload") });
     expect(conflict.status).toBe("REJECTED");
     expect(conflict.error.message).toBe("TASK_IDEMPOTENCY_CONFLICT");
+    const wrongProject = await rpc(stub, "register", {
+      ...task, taskId: taskId("wrong-project"), projectId: "OTHER_PROJECT",
+      idempotencyKey: "idem:" + taskId("wrong-project")
+    });
+    expect(wrongProject.status).toBe("REJECTED");
+    expect(wrongProject.error.message).toBe("PROJECT_CELL_IDENTITY_MISMATCH");
 
     const blocked = await rpc(stub, "claim", { taskId: task.taskId, workerId: "worker-a", leaseSeconds: 30 }, "secondary");
     expect(blocked.status).toBe("OWNER_APPROVAL_REQUIRED");
@@ -64,6 +70,17 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     expect(recovered.checkpoints[0].checkpoint_seq).toBe(1);
     expect(recovered.checkpoints[0].checkpoint_hash).toBe(checkpoint.checkpointHash);
     expect(recovered.checkpoints[0].run_id).toBe(claim.runId);
+    const duplicateCheckpoint = await rpc(stub, "checkpoint", {
+      taskId: task.taskId, workerId: "worker-a", runId: claim.runId, fencingToken: claim.fencingToken,
+      checkpointSeq: 1, checkpoint: { stage: "evidence-collected", evidenceHash: await digest("fixture-evidence") }
+    }, "secondary");
+    expect(duplicateCheckpoint.status).toBe("DUPLICATE_CHECKPOINT");
+    const conflictingCheckpoint = await rpc(stub, "checkpoint", {
+      taskId: task.taskId, workerId: "worker-a", runId: claim.runId, fencingToken: claim.fencingToken,
+      checkpointSeq: 1, checkpoint: { stage: "evidence-collected", evidenceHash: await digest("altered-evidence") }
+    }, "secondary");
+    expect(conflictingCheckpoint.status).toBe("REJECTED");
+    expect(conflictingCheckpoint.error.message).toBe("CHECKPOINT_SEQUENCE_CONFLICT");
 
     const completed = await rpc(stub, "complete", {
       taskId: task.taskId, workerId: "worker-a", runId: claim.runId, fencingToken: claim.fencingToken,
