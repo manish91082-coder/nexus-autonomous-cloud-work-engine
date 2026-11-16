@@ -23,7 +23,7 @@
       ]
     },
     "input": {
-      "oneOf": [
+      "anyOf": [
         {
           "$ref": "#/$defs/register"
         },
