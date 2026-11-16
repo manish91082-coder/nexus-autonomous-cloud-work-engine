@@ -100,6 +100,12 @@ function jsonObject(value, label, maxBytes = MAX_PAYLOAD_BYTES) {
   return { encoded, value: JSON.parse(encoded) };
 }
 
+function assertKeys(value,label,required,optional=[]) {
+  const allowed=new Set([...required,...optional]);
+  for (const key of Object.keys(value)) if (!allowed.has(key)) throw new TypeError("unexpected "+label+" field: "+key);
+  for (const key of required) if (!Object.prototype.hasOwnProperty.call(value,key)) throw new TypeError("missing "+label+" field: "+key);
+}
+
 function safeId(value, label, max = 160) {
   if (typeof value !== "string" || value.length < 1 || value.length > max
     || !/^[A-Za-z0-9][A-Za-z0-9._:-]*$/.test(value)) throw new TypeError("invalid " + label);
@@ -168,7 +174,8 @@ export class SwarmRunDO extends DurableObject {
     catch { return Response.json({status:"REJECTED",reason:"INVALID_JSON"},{status:400}); }
     if (!body || typeof body !== "object" || Array.isArray(body)
       || !body.input || typeof body.input !== "object" || Array.isArray(body.input)
-      || typeof body.action !== "string") return Response.json({status:"REJECTED",reason:"INVALID_RPC_ENVELOPE"},{status:400});
+      || typeof body.action !== "string" || Object.keys(body).some(key=>!["action","input"].includes(key))
+      || Object.keys(body).length!==2) return Response.json({status:"REJECTED",reason:"INVALID_RPC_ENVELOPE"},{status:400});
     let policies;
     try { policies = JSON.parse(this.env?.NEXUS_SWARM_RUN_CALLER_POLICIES || "{}"); }
     catch { return Response.json({status:"REJECTED",reason:"CALLER_POLICY_REGISTRY_INVALID"},{status:503}); }
@@ -285,6 +292,7 @@ export class SwarmRunDO extends DurableObject {
   }
 
   #registerTask(input) {
+    assertKeys(input,"registerTask",["projectId","taskId","idempotencyKey","taskType","payload","maxAttempts","ownerGate"],["nowEpoch"]);
     const projectId=safeId(input.projectId,"projectId",64);
     const taskId=safeId(input.taskId,"taskId",160);
     const idempotencyKey=safeId(input.idempotencyKey,"idempotencyKey",200);
@@ -311,6 +319,7 @@ export class SwarmRunDO extends DurableObject {
   }
 
   #claimTask(input,callerId) {
+    assertKeys(input,"claimTask",["projectId","taskId","workerId"],["leaseSeconds","maxConcurrency","nowEpoch"]);
     const projectId=safeId(input.projectId,"projectId",64);
     const taskId=safeId(input.taskId,"taskId",160);
     const workerId=safeId(input.workerId,"workerId",96);
@@ -360,6 +369,7 @@ export class SwarmRunDO extends DurableObject {
   }
 
   #heartbeat(input,callerId) {
+    assertKeys(input,"heartbeat",["projectId","taskId","workerId","fenceToken"],["leaseSeconds","nowEpoch"]);
     const projectId=safeId(input.projectId,"projectId",64), now=this.#now(input);
     const maxLeaseSeconds=integer(Number(this.env?.NEXUS_SWARM_RUN_MAX_LEASE_SECONDS??900),"configured max lease seconds",15,3600);
     const leaseSeconds=integer(input.leaseSeconds??maxLeaseSeconds,"leaseSeconds",15,maxLeaseSeconds);
@@ -374,6 +384,7 @@ export class SwarmRunDO extends DurableObject {
   }
 
   #checkpoint(input,callerId) {
+    assertKeys(input,"checkpoint",["projectId","taskId","workerId","fenceToken","checkpoint"],["nowEpoch"]);
     const projectId=safeId(input.projectId,"projectId",64), checkpoint=jsonObject(input.checkpoint,"checkpoint",MAX_PAYLOAD_BYTES), now=this.#now(input);
     return this.ctx.storage.transactionSync(()=>{
       this.#assertProject({projectId});
@@ -386,6 +397,7 @@ export class SwarmRunDO extends DurableObject {
   }
 
   #finishTask(input,callerId) {
+    assertKeys(input,"finishTask",["projectId","taskId","workerId","fenceToken","success"],["result","errorCode","nowEpoch"]);
     const projectId=safeId(input.projectId,"projectId",64), taskId=safeId(input.taskId,"taskId",160);
     if (typeof input.success!=="boolean") throw new TypeError("success must be boolean");
     const result=input.success?jsonObject(input.result??{},"result",MAX_PAYLOAD_BYTES):{encoded:"{}",value:{}};
@@ -419,6 +431,7 @@ export class SwarmRunDO extends DurableObject {
   }
 
   #recoverExpiredLeases(input) {
+    assertKeys(input,"recoverExpiredLeases",["projectId"],["nowEpoch"]);
     const projectId=safeId(input.projectId,"projectId",64), now=this.#now(input);
     return this.ctx.storage.transactionSync(()=>{
       this.#assertProject({projectId});
@@ -434,6 +447,7 @@ export class SwarmRunDO extends DurableObject {
   }
 
   #snapshot(input) {
+    assertKeys(input,"snapshot",["projectId"]);
     const projectId=safeId(input.projectId,"projectId",64);
     this.#assertProject({projectId},true);
     const sql=this.ctx.storage.sql;
@@ -450,6 +464,7 @@ export class SwarmRunDO extends DurableObject {
   }
 
   #verifyEventChain(input) {
+    assertKeys(input,"verifyEventChain",["projectId"]);
     const projectId=safeId(input.projectId,"projectId",64);
     this.#assertProject({projectId},true);
     const events=this.ctx.storage.sql.exec("SELECT * FROM swarm_run_events ORDER BY seq").toArray();
