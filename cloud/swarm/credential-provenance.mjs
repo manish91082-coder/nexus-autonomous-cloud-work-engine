@@ -98,7 +98,8 @@ function validateClaims(claims, nowEpoch, expected) {
  */
 export async function verifyGitHubCredentialProvenance({
   assertion, bearerToken, publicKeys, nowEpoch = Math.floor(Date.now() / 1000),
-  issuer, audience, appId, repositoryId, credentialLane, requiredPermissions
+  issuer, audience, appId, repositoryId, credentialLane, requiredPermissions,
+  verifyTokenBinding = true
 }) {
   if (typeof assertion !== "string" || assertion.length > MAX_ASSERTION_LENGTH) fail("assertion missing or too large");
   if (typeof bearerToken !== "string" || bearerToken.length < 1 || bearerToken.length > 4096
@@ -135,9 +136,12 @@ export async function verifyGitHubCredentialProvenance({
     if (error instanceof TypeError && error.message.startsWith("credential provenance")) throw error;
     fail("signature verification failed");
   }
-  const tokenDigest = await crypto.subtle.digest("SHA-256", encoder.encode(bearerToken));
-  const tokenHex = Array.from(new Uint8Array(tokenDigest), b => b.toString(16).padStart(2, "0")).join("");
-  if (tokenHex !== claims.token_sha256) fail("bearer token digest mismatch");
+  let tokenHex = claims.token_sha256;
+  if (verifyTokenBinding) {
+    const tokenDigest = await crypto.subtle.digest("SHA-256", encoder.encode(bearerToken));
+    tokenHex = Array.from(new Uint8Array(tokenDigest), b => b.toString(16).padStart(2, "0")).join("");
+    if (tokenHex !== claims.token_sha256) fail("bearer token digest mismatch");
+  }
   return Object.freeze({
     provider: "github",
     credentialScope: `github-app-installation:${installationId}`,
