@@ -58,7 +58,7 @@ export class SwarmRunDO extends DurableObject {
       idempotency_key TEXT NOT NULL UNIQUE, payload_hash TEXT NOT NULL, policy_hash TEXT NOT NULL,
       owner_gate INTEGER NOT NULL, owner_approved_at INTEGER, owner_approved_by TEXT,
       status TEXT NOT NULL, attempts INTEGER NOT NULL, max_attempts INTEGER NOT NULL,
-      next_attempt_at INTEGER NOT NULL, last_fencing_token INTEGER NOT NULL DEFAULT 0, result_json TEXT, result_hash TEXT, last_error TEXT,
+      next_attempt_at INTEGER NOT NULL, last_fencing_token INTEGER NOT NULL DEFAULT 0, result_json TEXT, result_hash TEXT, result_run_id TEXT, last_error TEXT,
       created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL
     )`);
     const taskColumns = sql.exec("PRAGMA table_info(swarm_tasks)").toArray();
@@ -295,15 +295,15 @@ export class SwarmRunDO extends DurableObject {
     const runId = safeId(input.runId, "runId");
     const resultJson = parseJsonObject(input.result, "result", MAX_RESULT_BYTES), resultHash = await sha256(resultJson);
     const task = this.#task(taskId);
-    if (task?.status === "COMPLETED") return task.result_hash === resultHash ? { status: "DUPLICATE_COMPLETION", taskId, resultHash } : (() => { throw new Error("TERMINAL_RESULT_CONFLICT"); })();
+    if (task?.status === "COMPLETED") return task.result_hash === resultHash && task.result_run_id === runId ? { status: "DUPLICATE_COMPLETION", taskId, resultHash } : (() => { throw new Error("TERMINAL_RESULT_CONFLICT"); })();
     const now = Math.floor(Date.now() / 1000);
     this.#assertLease(taskId, workerId, fencingToken, runId, now, this.#lease(taskId));
     return this.#commitEvent(taskId, "TASK_COMPLETED", { workerId, runId, fencingToken, resultHash }, () => {
       const current = this.#task(taskId);
-      if (current.status === "COMPLETED") return current.result_hash === resultHash ? { skipEvent: true, value: { status: "DUPLICATE_COMPLETION", taskId, resultHash } } : (() => { throw new Error("TERMINAL_RESULT_CONFLICT"); })();
+      if (current.status === "COMPLETED") return current.result_hash === resultHash && current.result_run_id === runId ? { skipEvent: true, value: { status: "DUPLICATE_COMPLETION", taskId, resultHash } } : (() => { throw new Error("TERMINAL_RESULT_CONFLICT"); })();
       const commitNow = Math.floor(Date.now() / 1000);
       this.#assertLease(taskId, workerId, fencingToken, runId, commitNow, this.#lease(taskId));
-      this.ctx.storage.sql.exec("UPDATE swarm_tasks SET status='COMPLETED',result_json=?,result_hash=?,updated_at=? WHERE task_id=?", resultJson, resultHash, commitNow, taskId);
+      this.ctx.storage.sql.exec("UPDATE swarm_tasks SET status='COMPLETED',result_json=?,result_hash=?,result_run_id=?,updated_at=? WHERE task_id=?", resultJson, resultHash, runId, commitNow, taskId);
       this.ctx.storage.sql.exec("DELETE FROM swarm_leases WHERE task_id=?", taskId);
       return { status: "COMPLETED", taskId, resultHash };
     });
