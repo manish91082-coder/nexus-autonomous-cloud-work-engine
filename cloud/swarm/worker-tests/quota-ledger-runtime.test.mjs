@@ -1586,7 +1586,8 @@ describe("Phase 59.45 installation-wide quota identity across independent P10CR 
     const firstResponse = await invoke(env.SHADOW_WORKER, firstEnvelope);
     const secondResponse = await invoke(env.SECOND_SHADOW_WORKER, secondEnvelope);
     expect(firstResponse.status).toBe(200);
-    expect(secondResponse.status).toBe(200);
+    const secondPayload = await secondResponse.clone().json();
+    expect(secondResponse.status, JSON.stringify(secondPayload)).toBe(200);
     expect(await firstResponse.json()).toMatchObject({
       status: "SHADOW_COMPLETED",
       runId: firstEnvelope.runId,
