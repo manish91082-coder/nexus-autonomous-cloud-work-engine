@@ -1,4 +1,54 @@
-# LIVE CONTINUITY — PHASE 59.43 LEASE RENEWAL AND UNCERTAIN RECONCILIATION (15-Nov-2026)
+# LIVE CONTINUITY — PHASE 59.50 PROVIDER-RESPONSE CRASH-WINDOW RECOVERY (16-Nov-2026)
+
+**Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR), AI agentic swarm foundation  
+**Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Canonical branch:** `master`  
+**Current task:** P59-003, IN_PROGRESS  
+**Paused:** P59-001; **Blocked:** P59-002  
+**Master HEAD:** `ba58f3bf161329c9787b5bb0a5e4af2d3b27b2fc`  
+**Spend:** ₹0; **verified platform earnings:** ₹0; **live LLM inference:** disabled  
+**Production feature flags:** OFF; **live provider calls:** 0; **external network in tests:** 0
+
+## Current verified checkpoint
+
+### Phase 59.49 — merged
+- PR #30 merged at `51d2af04cb62b9baf3a41199030f59fe5eaa04ce`.
+- Exact tested head `5ceea4646f467b3dde72e40e4e4cc1da13fb1dc2`.
+- 15/15 exact-head workflow checks passed.
+- Added replay-safe duplicate settlement and metadata-only durable provider response journal.
+- Identical settlement replay is acknowledged without a second charge; conflicting replay fails closed.
+- The response receipt is durable after telemetry/receipt commit. The remote provider and local SQLite are not one atomic transaction.
+
+### Phase 59.50 — merged
+- PR #31 merged at `ba58f3bf161329c9787b5bb0a5e4af2d3b27b2fc`.
+- Exact PR head `49588f53a58f6824118568102bef8d2890ec586e`.
+- 13/13 exact-head workflow checks passed.
+- Cloudflare Workers/workerd runtime run: [43919320063](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43919320063), 67/67 tests passed.
+- New test injects loss of both `recordTelemetry` and immediate `markUncertain` after one deterministic provider response, reconstructs the Durable Object, expires the 30-second reservation lease, verifies `UNCERTAIN_BUDGET_RETAINED`, then retries the same stable request ID and proves provider-call count remains one.
+- No response receipt is fabricated when telemetry never commits.
+
+## Evidence boundary and deployment truth
+
+The Phase59.50 test is injected transport loss plus Durable Object eviction/reconstruction in Cloudflare workerd. It is not physical process termination at every instruction boundary, independent physical-host proof, a real remote provider transaction, hosted production deployment, a 24×7 SLA or realized revenue.
+
+The P10CR swarm is still a staged, shadow/test-only foundation. Do not describe it as a deployed autonomous revenue system. Provider configuration remains absent; AI inference remains disabled; production flags remain OFF. The read-only shadow worker uses deterministic mock responses and has no publisher, repository-write, model, billing or account capability. The durable dispatcher is not yet integrated into a production worker. Cross-run/cross-repository global quota enforcement and independent-host proof remain outstanding.
+
+## Next sequential phase — Phase 59.51
+
+1. Verify the committed provider-response journal survives Durable Object eviction/reconstruction and authenticated snapshot readback.
+2. Prove duplicate telemetry for the same reservation reuses exactly one receipt without mutating the original receipt.
+3. Prove conflicting provider request ID, status, endpoint, method or observation metadata fails closed and rolls back the conflicting telemetry transaction.
+4. Verify reservation ID, caller ID and request fingerprint linkage cannot be substituted or cross-bound.
+5. Run exact-head Workers/workerd and all required regression workflows; do not merge until all checks pass.
+6. Keep provider calls mocked, external network at zero, production flags OFF, AI inference disabled and spend ₹0.
+
+After Phase59.51, continue the staged P59-003 production-enablement prerequisites: independent-host quota/lease proof, durable dispatcher integration, isolated single-writer publisher, GitHub App least-privilege owner approval, cross-run and cross-repository conflict protection, and 7-day then 30-day cloud soak. No live provider activation, paid fallback, publication, KYC, account creation or spend without the relevant owner gate.
+
+**Revenue recognition remains strict:** only independently earned, platform-credited net receipts count. Current verified realized net receipts: ₹0. Passing infrastructure tests are not revenue evidence.
+
+---
+
+## Historical continuity archive — Phase 59.43 lease renewal and uncertain reconciliation (15-Nov-2026)
 
 **Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR)  
 **Canonical repo:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
