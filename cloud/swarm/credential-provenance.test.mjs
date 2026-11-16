@@ -18,7 +18,7 @@ test("verifies ES256 broker proof and derives installation scope from signed cla
     iss:"https://broker.test.invalid",aud:"nexus-quota-ledger",sub:"12345",
     installation_id:"42113",repository_ids:["1454085952"],
     permissions:{metadata:"read",contents:"read"},token_sha256:hex,
-    issued_at:now-10,expires_at:now+300,jti:"synthetic-jti-00000001",
+    issued_at:now-10,expires_at:now+290,jti:"synthetic-jti-00000001",
     credential_lane:"compute_readonly",lease_id:"synthetic-lease-test-0001",key_version:"broker-test-v1"
   };
   const signingInput = `${json(header)}.${json(claims)}`;
@@ -61,7 +61,7 @@ test("rejects bearer-token substitution", async () => {
   const claims = {
     iss:"https://broker.test.invalid",aud:"nexus-quota-ledger",sub:"12345",
     installation_id:"42113",repository_ids:["1454085952"],permissions:{metadata:"read"},
-    token_sha256:Buffer.from(digest).toString("hex"),issued_at:now-10,expires_at:now+300,
+    token_sha256:Buffer.from(digest).toString("hex"),issued_at:now-10,expires_at:now+290,
     jti:"synthetic-jti-00000002",credential_lane:"compute_readonly",lease_id:"synthetic-lease-test-0002",key_version:"broker-test-v1"
   };
   const input = `${json({alg:"ES256",kid:"test-key-1",typ:"JWT"})}.${json(claims)}`;
@@ -88,7 +88,7 @@ test("rejects expired assertions, unknown keys, and repository mismatch", async 
     issuer:"https://broker.test.invalid",audience:"nexus-quota-ledger",appId:"12345"};
   await assert.rejects(()=>verifyGitHubCredentialProvenance(base),/time window invalid/);
   await assert.rejects(()=>verifyGitHubCredentialProvenance({...base,publicKeys:{}}),/unknown signing key/);
-  const validClaims = {...claims,issued_at:now-10,expires_at:now+300,jti:"synthetic-jti-00000004"};
+  const validClaims = {...claims,issued_at:now-10,expires_at:now+290,jti:"synthetic-jti-00000004"};
   const validInput = `${json({alg:"ES256",kid:"test-key-1",typ:"JWT"})}.${json(validClaims)}`;
   const validSig = await crypto.subtle.sign({name:"ECDSA",hash:"SHA-256"},pair.privateKey,new TextEncoder().encode(validInput));
   const validAssertion = `${validInput}.${b64u(validSig)}`;
