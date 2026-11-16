@@ -13,7 +13,7 @@ const claims = () => ({
   installation_id:"42113",repository_id:"1454085952",
   operation_id:"github.rest.repositories.get.v1",method:"GET",
   canonical_url_sha256:digest,request_body_sha256:digest,
-  request_fingerprint:digest,token_sha256:digest,
+  request_fingerprint:digest,token_sha256:digest,response_headers_sha256:digest,
   dispatch_id:"synthetic-dispatch-000001",started_at:now-2,
   completed_at:now-1,response_status:200,outcome:"response_received"
 });
@@ -29,7 +29,7 @@ const base = () => ({
   installationId:"42113",repositoryId:"1454085952",
   operationId:"github.rest.repositories.get.v1",method:"GET",
   canonicalUrlSha256:digest,requestBodySha256:digest,
-  requestFingerprint:digest,tokenSha256:digest,
+  requestFingerprint:digest,tokenSha256:digest,responseHeadersSha256:digest,
   dispatchId:"synthetic-dispatch-000001"
 });
 
@@ -52,7 +52,7 @@ test("rejects changed binding, unknown key and tampered signature", async () => 
 });
 
 test("rejects ambiguous outcomes claiming a response status and invalid time windows", async () => {
-  const uncertain={...claims(),outcome:"outcome_uncertain",response_status:200};
+  const uncertain={...claims(),outcome:"outcome_uncertain",response_status:200,response_headers_sha256:null};
   const uncertainReceipt = await sign(uncertain);
   await assert.rejects(()=>verifyEgressDispatchReceipt({receipt:uncertainReceipt,...base()}),/null response status/);
   const stale={...claims(),completed_at:now+301};
@@ -61,8 +61,16 @@ test("rejects ambiguous outcomes claiming a response status and invalid time win
 });
 
 test("accepts uncertain outcomes only without a response status", async () => {
-  const uncertain={...claims(),outcome:"outcome_uncertain",response_status:null};
+  const uncertain={...claims(),outcome:"outcome_uncertain",response_status:null,response_headers_sha256:null};
   const result=await verifyEgressDispatchReceipt({receipt:await sign(uncertain),...base()});
   assert.equal(result.outcome,"outcome_uncertain");
   assert.equal(result.responseStatus,null);
+});
+
+test("requires a signed response-header digest for received responses", async () => {
+  const missing={...claims()};
+  delete missing.response_headers_sha256;
+  await assert.rejects(()=>verifyEgressDispatchReceipt({receipt:await sign(missing),...base()}),/schema mismatch/);
+  const invalid={...claims(),response_headers_sha256:"not-a-digest"};
+  await assert.rejects(()=>verifyEgressDispatchReceipt({receipt:await sign(invalid),...base()}),/response header evidence digest required/);
 });
