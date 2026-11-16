@@ -3890,8 +3890,8 @@
         "phase59_46_candidate": {
           "pr_number": 27,
           "branch": "phase59-46-global-installation-contention-v2",
-          "head_sha": "cca2e16f6c377ade5b07a153ecd9b7ec618dc94d",
-          "status": "CORRECTED_HEAD_AWAITING_CI",
+          "head_sha": "4bf26dccd50ddf3b0887e310c3ad6f3d74386273",
+          "status": "CORRECTED_CODE_AND_EVIDENCE_HEAD_AWAITING_EXACT_HEAD_CI",
           "test": "16-way concurrent burst across two independently authenticated shadow Worker clients; fixture endpoint budget remains 2",
           "external_network_requests": 0,
           "spend_inr": 0,
@@ -3902,7 +3902,16 @@
             "total": 64,
             "diagnosis": "invalid worker fairness assertion; two-admission shared cap respected, 14 requests denied, both reservations settled"
           },
-          "correction": "Removed uncontracted worker fairness requirement; retained quota safety and attribution assertions."
+          "correction": "Removed uncontracted worker fairness requirement from test and aligned research acceptance criteria; retained quota safety and attribution assertions.",
+          "assertions": [
+            "16 concurrent requests across two independent shadow Worker identities",
+            "shared endpoint budget remains 2; no oversubscription",
+            "14 excess requests fail closed",
+            "each settled reservation attributed to an authenticated Worker identity; no fairness guarantee",
+            "committed units=2; reserved and uncertain units=0",
+            "external network requests=0"
+          ],
+          "next": "Run and inspect exact-head Workers/workerd and all regression CI for updated PR head; do not merge before every required check passes."
         }
       },
       "blocker": "Remaining production-enablement gates: branch ruleset, owner-approved least-privilege GitHub App, cross-run/cross-repository global Actions/API quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation, and 7/30-day soak. Phase59.25 proved only eight worker threads on one GitHub-hosted runner; Phase59.26 specialist handlers are deterministic and provider-neutral, not live LLM inference. Keep all production clients disabled.",
@@ -3955,5 +3964,5 @@
   "current_task": "P59-003",
   "last_updated": "2026-11-16",
   "sequence_note": "P59-003 AI agentic swarm foundation remains sole active P0. Phase59.45A merged and exact-head CI verified. Proceed Phase59.46 multi-client installation-wide quota arbitration. P59-001 remains PAUSED; P59-002 BLOCKED. Preserve canonical repository isolation, ₹0 spend, no paid fallback, production flags OFF and inference disabled.",
-  "last_reconciled_from_mission_state": "Phase59.46 PR #27 corrected after first exact-head CI: 63/64 runtime tests passed; only failure was unsupported fairness expectation. Corrected head cca2e16f6c377ade5b07a153ecd9b7ec618dc94d awaiting CI."
+  "last_reconciled_from_mission_state": "Phase59.46 PR #27 updated to head 4bf26dccd50ddf3b0887e310c3ad6f3d74386273; runtime test fairness assumption removed and evidence acceptance aligned. Corrected exact-head CI not yet evidenced; do not merge."
 }
