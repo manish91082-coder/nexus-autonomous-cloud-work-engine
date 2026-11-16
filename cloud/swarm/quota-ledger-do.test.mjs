@@ -7,7 +7,7 @@ import {
 
 const sample = (overrides={}) => ({
   provider:"github",
-  credentialScope:"installation-1/repo-2",
+  credentialScope:"github-app-installation:42113",
   windowId:"github-rate-limit-ledger",
   controlPlaneProvider:"cloudflare",
   reservationId:"r1",
