@@ -1,0 +1,471 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/blob/master/schemas/swarm-run-ledger-v1.schema.json",
+  "title": "P10CR Durable Swarm Run Ledger RPC v1",
+  "description": "Internal authenticated RPC contract for the project-cell SwarmRunDO. The ledger stores typed task state and evidence references; it never executes payloads.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/registerTask"
+    },
+    {
+      "$ref": "#/$defs/claimTask"
+    },
+    {
+      "$ref": "#/$defs/heartbeat"
+    },
+    {
+      "$ref": "#/$defs/checkpoint"
+    },
+    {
+      "$ref": "#/$defs/finishTask"
+    },
+    {
+      "$ref": "#/$defs/recoverExpiredLeases"
+    },
+    {
+      "$ref": "#/$defs/snapshot"
+    },
+    {
+      "$ref": "#/$defs/verifyEventChain"
+    }
+  ],
+  "$defs": {
+    "projectId": {
+      "type": "string",
+      "const": "P10CR"
+    },
+    "taskId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "workerId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "jsonObject": {
+      "type": "object",
+      "maxProperties": 256
+    },
+    "rpc": {
+      "type": "object",
+      "required": [
+        "action",
+        "input"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "type": "string"
+        },
+        "input": {
+          "type": "object"
+        }
+      }
+    },
+    "registerTask": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/rpc"
+        }
+      ],
+      "properties": {
+        "action": {
+          "const": "registerTask"
+        },
+        "input": {
+          "type": "object",
+          "required": [
+            "projectId",
+            "taskId",
+            "idempotencyKey",
+            "taskType",
+            "payload",
+            "maxAttempts",
+            "ownerGate"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "projectId": {
+              "$ref": "#/$defs/projectId"
+            },
+            "taskId": {
+              "$ref": "#/$defs/taskId"
+            },
+            "idempotencyKey": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            },
+            "taskType": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            },
+            "payload": {
+              "$ref": "#/$defs/jsonObject"
+            },
+            "maxAttempts": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10
+            },
+            "ownerGate": {
+              "type": "boolean"
+            },
+            "nowEpoch": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "claimTask": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/rpc"
+        }
+      ],
+      "properties": {
+        "action": {
+          "const": "claimTask"
+        },
+        "input": {
+          "type": "object",
+          "required": [
+            "projectId",
+            "taskId",
+            "workerId"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "projectId": {
+              "$ref": "#/$defs/projectId"
+            },
+            "taskId": {
+              "$ref": "#/$defs/taskId"
+            },
+            "workerId": {
+              "$ref": "#/$defs/workerId"
+            },
+            "leaseSeconds": {
+              "type": "integer",
+              "minimum": 15,
+              "maximum": 900
+            },
+            "maxConcurrency": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 32
+            },
+            "nowEpoch": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "heartbeat": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/rpc"
+        }
+      ],
+      "properties": {
+        "action": {
+          "const": "heartbeat"
+        },
+        "input": {
+          "type": "object",
+          "required": [
+            "projectId",
+            "taskId",
+            "workerId",
+            "fenceToken"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "projectId": {
+              "$ref": "#/$defs/projectId"
+            },
+            "taskId": {
+              "$ref": "#/$defs/taskId"
+            },
+            "workerId": {
+              "$ref": "#/$defs/workerId"
+            },
+            "fenceToken": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "leaseSeconds": {
+              "type": "integer",
+              "minimum": 15,
+              "maximum": 900
+            },
+            "nowEpoch": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "checkpoint": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/rpc"
+        }
+      ],
+      "properties": {
+        "action": {
+          "const": "checkpoint"
+        },
+        "input": {
+          "type": "object",
+          "required": [
+            "projectId",
+            "taskId",
+            "workerId",
+            "fenceToken",
+            "checkpoint"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "projectId": {
+              "$ref": "#/$defs/projectId"
+            },
+            "taskId": {
+              "$ref": "#/$defs/taskId"
+            },
+            "workerId": {
+              "$ref": "#/$defs/workerId"
+            },
+            "fenceToken": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "checkpoint": {
+              "$ref": "#/$defs/jsonObject"
+            },
+            "nowEpoch": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "finishTask": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/rpc"
+        }
+      ],
+      "properties": {
+        "action": {
+          "const": "finishTask"
+        },
+        "input": {
+          "type": "object",
+          "required": [
+            "projectId",
+            "taskId",
+            "workerId",
+            "fenceToken",
+            "success"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "projectId": {
+              "$ref": "#/$defs/projectId"
+            },
+            "taskId": {
+              "$ref": "#/$defs/taskId"
+            },
+            "workerId": {
+              "$ref": "#/$defs/workerId"
+            },
+            "fenceToken": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "success": {
+              "type": "boolean"
+            },
+            "result": {
+              "$ref": "#/$defs/jsonObject"
+            },
+            "errorCode": {
+              "type": "string",
+              "maxLength": 96
+            },
+            "nowEpoch": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "recoverExpiredLeases": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/rpc"
+        }
+      ],
+      "properties": {
+        "action": {
+          "const": "recoverExpiredLeases"
+        },
+        "input": {
+          "type": "object",
+          "required": [
+            "projectId"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "projectId": {
+              "$ref": "#/$defs/projectId"
+            },
+            "nowEpoch": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "snapshot": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/rpc"
+        }
+      ],
+      "properties": {
+        "action": {
+          "const": "snapshot"
+        },
+        "input": {
+          "type": "object",
+          "required": [
+            "projectId"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "projectId": {
+              "$ref": "#/$defs/projectId"
+            }
+          }
+        }
+      }
+    },
+    "verifyEventChain": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/rpc"
+        }
+      ],
+      "properties": {
+        "action": {
+          "const": "verifyEventChain"
+        },
+        "input": {
+          "type": "object",
+          "required": [
+            "projectId"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "projectId": {
+              "$ref": "#/$defs/projectId"
+            }
+          }
+        }
+      }
+    },
+    "event": {
+      "type": "object",
+      "required": [
+        "seq",
+        "eventId",
+        "projectId",
+        "taskId",
+        "kind",
+        "atEpoch",
+        "prevHash",
+        "eventHash"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "projectId": {
+          "$ref": "#/$defs/projectId"
+        },
+        "taskId": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/taskId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "kind": {
+          "type": "string"
+        },
+        "atEpoch": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "workerId": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/workerId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "fenceToken": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/jsonObject"
+        },
+        "prevHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "eventHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}
