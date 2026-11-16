@@ -683,6 +683,10 @@ export class QuotaLedgerDO extends DurableObject {
       || Array.isArray(input.actualByBucket)) throw new QuotaLedgerError("actualByBucket required");
     const sql = this.ctx.storage.sql;
     return this.ctx.storage.transactionSync(() => {
+      // Expire leases before accepting a worker's completion. Otherwise a
+      // delayed worker could settle stale work after its lease deadline but
+      // before another request happens to run the expiry sweep.
+      this.#expireReservations(Math.floor(Date.now() / 1000));
       const rec = sql.exec("SELECT * FROM quota_reservations WHERE reservation_id=?",
         input.reservationId).toArray()[0];
       if (!rec || rec.worker_id !== input.workerId || rec.caller_id !== callerId || rec.status !== "RESERVED") {
