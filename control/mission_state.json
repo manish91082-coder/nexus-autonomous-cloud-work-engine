@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
   "last_verified_head": "58352e68fe71abdb71e8dae68580b0d96601ba14",
-  "current_focus": "P59-003 swarm foundation. Phase59.45A merged after exact PR-head CI passed: 13/13 relevant checks including Cloudflare Workers/workerd runtime. Two independently authenticated read-only shadow Worker clients with distinct worker/run/request identities shared one installation-scope Durable Object quota partition in workerd. Fixture-only evidence; no physical-host, hosted cross-run or real installation proof. Next Phase59.46 bounded 2/4/8/16-client contention and global arbitration tests. Production flags OFF, inference disabled, spend ₹0.",
+  "current_focus": "P59-003 swarm foundation. Phase59.45A merged and reconciled. Phase59.46 PR #27 open with a 16-request concurrent burst test across two independent shadow Worker clients sharing one fixture installation quota partition. Exact-head CI pending. Production flags OFF, inference disabled, spend ₹0.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -136,7 +136,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.46: deterministic concurrent 2/4/8/16-client installation-wide quota arbitration, oversubscription prevention, duplicate suppression, reservation settlement and zero-pending invariants; retain mock-only provider responses and no external network.",
+  "next_focus": "Complete Phase59.46 exact-head CI and inspect runtime logs; then Phase59.47 crash/restart, lease expiry and stale fencing rejection.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -1897,5 +1897,25 @@
     "spend_inr": 0,
     "verified_realized_net_receipts_inr": 0,
     "next": "Phase59.46 deterministic concurrent 2/4/8/16-client global installation quota arbitration and oversubscription/fencing/settlement invariants."
+  },
+  "phase59_46_candidate": {
+    "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
+    "pr_number": 27,
+    "pr_state": "OPEN_CI_PENDING",
+    "branch": "phase59-46-global-installation-contention-v2",
+    "head_sha": "cb7a10b50b09013c94c90b01c7bce1ba19fb0736",
+    "scope": "16 concurrent requests across two independent shadow Worker clients, shared installation-scope Durable Object fixture",
+    "assertions": [
+      "2-request endpoint budget not oversubscribed",
+      "excess requests fail closed",
+      "both worker identities represented in settled reservations",
+      "reserved_units=0",
+      "uncertain_units=0",
+      "external_network_requests=0"
+    ],
+    "production_feature_flag": "OFF",
+    "ai_inference": false,
+    "spend_inr": 0,
+    "next": "Wait for exact-head Workers/workerd and regression CI; inspect failure logs if any. Do not merge before all required checks pass."
   }
 }
