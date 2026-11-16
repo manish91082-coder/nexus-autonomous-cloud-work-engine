@@ -1,8 +1,6 @@
 /**
  * Phase 59.45C — deterministic, versioned GitHub request fingerprint.
- *
- * This module is a pure contract boundary: it never sends requests and never
- * accepts a caller-supplied digest. The gateway must recompute from the
+ * Pure contract only. The egress gateway must recompute this from the
  * concrete outbound request before attaching Authorization.
  */
 import { getGitHubOperationDefinition, resolveGitHubOperation } from "./github-operation-registry.mjs";
@@ -31,17 +29,23 @@ async function sha256Hex(bytes) {
   return Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
-async function canonicalUrl(value, expectedMethod) {
+async function canonicalUrl(value, expectedMethod, expectedOperation) {
   if (typeof value !== "string" || value.length > 2048) reject("URL missing or too large");
-  if (/%2f|%5c|%2e/i.test(value) || /\\\\|\\/\\.{1,2}(?:\\/|$)/.test(value)) {\n    reject("encoded separators or dot segments forbidden");\n  }\n  let url;\n  try { url = new URL(value); } catch { reject("invalid URL"); }
+  // Inspect raw spelling before URL() normalizes dot segments.
+  if (/%2f|%5c|%2e/i.test(value) || /\\\\|\\/\\.{1,2}(?:\\/|$)/.test(value)) {
+    reject("encoded separators or dot segments forbidden");
+  }
+  let url;
+  try { url = new URL(value); } catch { reject("invalid URL"); }
   if (url.protocol !== "https:" || url.hostname !== "api.github.com" || url.port
     || url.username || url.password || url.hash) reject("URL origin or authority forbidden");
   if (url.search) reject("query parameters are not approved by the current operation registry");
-  if (/%2f|%5c|%2e/i.test(url.pathname) || /\\|\/\.{1,2}(?:\/|$)/.test(url.pathname)) {
-    reject("encoded separators or dot segments forbidden");
-  }
   if (url.pathname !== decodeURI(url.pathname)) reject("non-canonical path encoding");
   if (expectedMethod !== "GET") reject("method not enabled in current read-only registry");
+  const reviewed = await resolveGitHubOperation(new Request(url.toString(), { method: expectedMethod }));
+  if (!reviewed.allowed || reviewed.operation !== expectedOperation) {
+    reject("URL path does not match the reviewed operation registry");
+  }
   return `https://api.github.com${url.pathname}`;
 }
 
@@ -60,11 +64,11 @@ export async function computeGitHubRequestFingerprint(input) {
   if (!operation) reject("operation is not in the reviewed registry");
   if (typeof input.method !== "string" || input.method !== "GET") reject("method is not allowlisted");
   if (!LANES.has(input.credentialLane)) reject("credential lane is not allowlisted");
-  const url = await canonicalUrl(input.url, input.method);
+  const url = await canonicalUrl(input.url, input.method, operation.id);
   const bodyBytes = bytesOf(input.body);
   if (bodyBytes.byteLength !== 0) reject("GET request body must be empty");
   const requestBodySha256 = await sha256Hex(bodyBytes);
-  const canonicalObject = {
+  const canonical = JSON.stringify({
     schema: "nexus.github.request-fingerprint.v1",
     provider: "github",
     repositoryId: input.repositoryId,
@@ -74,8 +78,7 @@ export async function computeGitHubRequestFingerprint(input) {
     url,
     requestBodySha256,
     credentialLane: input.credentialLane
-  };
-  const canonical = JSON.stringify(canonicalObject);
+  });
   const fingerprint = await sha256Hex(encoder.encode(canonical));
   if (!HEX_256.test(fingerprint)) reject("internal digest failure");
   return Object.freeze({ version: 1, canonical, requestBodySha256, fingerprint });
