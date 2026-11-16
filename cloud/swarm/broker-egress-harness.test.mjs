@@ -159,7 +159,7 @@ test("gateway rejects repository/path/operation mismatch before emitting a recei
     lease: h.lease, intent: { ...validIntent(), repositoryId: "999" }
   }), /repository not authorized/);
   await assert.rejects(() => h.gatewayDispatch({
-    lease: h.lease, intent: { ...validIntent(), url: "https://api.github.com/repos/octocat/Other" }
+    lease: h.lease, intent: { ...validIntent(), url: "https://api.github.com/repos/octocat/Hello-World/issues" }
   }), /URL path does not match/);
   await assert.rejects(() => h.gatewayDispatch({
     lease: h.lease, intent: { ...validIntent(), operationId: "github.rest.unknown.v1" }
@@ -187,7 +187,7 @@ test("ledger rejects EDR tampering and a receipt bound to a different request UR
   const parts = dispatch.receipt.split(".");
   parts[1] = b64u(JSON.stringify({
     ...JSON.parse(Buffer.from(parts[1], "base64url").toString("utf8")),
-    installation_id: "99999"
+    response_status: 201
   }));
   const tampered = { ...dispatch, receipt: parts.join(".") };
   await assert.rejects(() => h.ledgerSettle({ lease: h.lease, dispatch: tampered }), /signature invalid/);
