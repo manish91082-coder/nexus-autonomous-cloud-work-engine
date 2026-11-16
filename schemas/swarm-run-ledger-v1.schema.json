@@ -1,0 +1,279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus-autonomous-cloud-work-engine.invalid/schemas/swarm-run-ledger-v1.schema.json",
+  "title": "P10CR Swarm Run Ledger RPC v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action",
+    "input"
+  ],
+  "properties": {
+    "action": {
+      "enum": [
+        "register",
+        "approve",
+        "claim",
+        "heartbeat",
+        "checkpoint",
+        "complete",
+        "fail",
+        "recover",
+        "snapshot"
+      ]
+    },
+    "input": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/register"
+        },
+        {
+          "$ref": "#/$defs/task"
+        },
+        {
+          "$ref": "#/$defs/claim"
+        },
+        {
+          "$ref": "#/$defs/lease"
+        },
+        {
+          "$ref": "#/$defs/checkpoint"
+        },
+        {
+          "$ref": "#/$defs/complete"
+        },
+        {
+          "$ref": "#/$defs/fail"
+        },
+        {
+          "$ref": "#/$defs/snapshot"
+        },
+        {
+          "type": "object",
+          "maxProperties": 0
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "register": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskId",
+        "projectId",
+        "taskType",
+        "idempotencyKey",
+        "payloadHash",
+        "policyHash",
+        "ownerGate"
+      ],
+      "properties": {
+        "taskId": {
+          "$ref": "#/$defs/id"
+        },
+        "projectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "taskType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 96
+        },
+        "idempotencyKey": {
+          "$ref": "#/$defs/id"
+        },
+        "payloadHash": {
+          "$ref": "#/$defs/digest"
+        },
+        "policyHash": {
+          "$ref": "#/$defs/digest"
+        },
+        "ownerGate": {
+          "type": "boolean"
+        },
+        "maxAttempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        }
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskId"
+      ],
+      "properties": {
+        "taskId": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskId",
+        "workerId"
+      ],
+      "properties": {
+        "taskId": {
+          "$ref": "#/$defs/id"
+        },
+        "workerId": {
+          "$ref": "#/$defs/id"
+        },
+        "leaseSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 300
+        }
+      }
+    },
+    "lease": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskId",
+        "workerId",
+        "fencingToken",
+        "runId"
+      ],
+      "properties": {
+        "taskId": {
+          "$ref": "#/$defs/id"
+        },
+        "workerId": {
+          "$ref": "#/$defs/id"
+        },
+        "fencingToken": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "leaseSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 300
+        },
+        "runId": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "checkpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskId",
+        "workerId",
+        "fencingToken",
+        "checkpointSeq",
+        "checkpoint",
+        "runId"
+      ],
+      "properties": {
+        "taskId": {
+          "$ref": "#/$defs/id"
+        },
+        "workerId": {
+          "$ref": "#/$defs/id"
+        },
+        "fencingToken": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "checkpointSeq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "checkpoint": {
+          "type": "object"
+        },
+        "runId": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "complete": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskId",
+        "workerId",
+        "fencingToken",
+        "result",
+        "runId"
+      ],
+      "properties": {
+        "taskId": {
+          "$ref": "#/$defs/id"
+        },
+        "workerId": {
+          "$ref": "#/$defs/id"
+        },
+        "fencingToken": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "result": {
+          "type": "object"
+        },
+        "runId": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "fail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskId",
+        "workerId",
+        "fencingToken",
+        "errorCode",
+        "runId"
+      ],
+      "properties": {
+        "taskId": {
+          "$ref": "#/$defs/id"
+        },
+        "workerId": {
+          "$ref": "#/$defs/id"
+        },
+        "fencingToken": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "errorCode": {
+          "$ref": "#/$defs/id"
+        },
+        "runId": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "taskId": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    }
+  }
+}
