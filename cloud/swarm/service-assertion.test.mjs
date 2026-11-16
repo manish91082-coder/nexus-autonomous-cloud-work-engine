@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { verifyServiceAssertion } from "./service-assertion.mjs";
 const enc=new TextEncoder();
-function b64u(bytes){let s="";for(const b of bytes)s+=String.fromCharCode(b);return btoa(s).replace(/=/g,"").replace(/\\+/g,"-").replace(/\\//g,"_");}
+function b64u(bytes){let s="";for(const b of bytes)s+=String.fromCharCode(b);return btoa(s).replace(/=/g,"").split("+").join("-").split("/").join("_");}
 let pair,jwk; const now=1_800_000_000;
 async function sign(claims){
  const h=b64u(enc.encode(JSON.stringify({alg:"ES256",kid:"sa-test-v1",typ:"JWT"})));
