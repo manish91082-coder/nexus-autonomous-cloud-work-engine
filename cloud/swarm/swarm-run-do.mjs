@@ -251,15 +251,15 @@ export class SwarmRunDO extends DurableObject {
 
   async #heartbeat(input) {
     const taskId = safeId(input.taskId, "taskId"), workerId = safeId(input.workerId, "workerId");
-    const fencingToken = input.fencingToken;
+    const fencingToken = input.fencingToken, runId = safeId(input.runId, "runId");
     if (!Number.isSafeInteger(fencingToken) || fencingToken < 1) throw new TypeError("invalid fencingToken");
     const leaseSeconds = input.leaseSeconds ?? 30;
     if (!Number.isSafeInteger(leaseSeconds) || leaseSeconds < 1 || leaseSeconds > 300) throw new TypeError("leaseSeconds must be 1..300");
     const now = Math.floor(Date.now() / 1000), lease = this.#lease(taskId);
-    this.#assertLease(taskId, workerId, fencingToken, now, lease);
-    return this.#commitEvent(taskId, "LEASE_HEARTBEAT", { workerId, fencingToken, leaseSeconds }, () => {
+    this.#assertLease(taskId, workerId, fencingToken, runId, now, lease);
+    return this.#commitEvent(taskId, "LEASE_HEARTBEAT", { workerId, runId, fencingToken, leaseSeconds }, () => {
       const commitNow = Math.floor(Date.now() / 1000);
-      this.#assertLease(taskId, workerId, fencingToken, commitNow, this.#lease(taskId));
+      this.#assertLease(taskId, workerId, fencingToken, runId, commitNow, this.#lease(taskId));
       const expiresAt = commitNow + leaseSeconds;
       this.ctx.storage.sql.exec("UPDATE swarm_leases SET expires_at=?,heartbeat_at=? WHERE task_id=?", expiresAt, commitNow, taskId);
       this.ctx.storage.sql.exec("UPDATE swarm_tasks SET updated_at=? WHERE task_id=?", commitNow, taskId);
@@ -269,20 +269,20 @@ export class SwarmRunDO extends DurableObject {
 
   async #checkpoint(input) {
     const taskId = safeId(input.taskId, "taskId"), workerId = safeId(input.workerId, "workerId");
-    const fencingToken = input.fencingToken, checkpointSeq = input.checkpointSeq;
+    const fencingToken = input.fencingToken, checkpointSeq = input.checkpointSeq, runId = safeId(input.runId, "runId");
     if (!Number.isSafeInteger(fencingToken) || fencingToken < 1 || !Number.isSafeInteger(checkpointSeq) || checkpointSeq < 1) throw new TypeError("invalid checkpoint sequence or fencing token");
     const checkpointJson = parseJsonObject(input.checkpoint, "checkpoint", MAX_CHECKPOINT_BYTES);
     const checkpointHash = await sha256(checkpointJson);
     const now = Math.floor(Date.now() / 1000);
-    this.#assertLease(taskId, workerId, fencingToken, now, this.#lease(taskId));
+    this.#assertLease(taskId, workerId, fencingToken, runId, now, this.#lease(taskId));
     const current = this.#checkpointRow(taskId);
     if (current && checkpointSeq === current.checkpoint_seq && checkpointHash === current.checkpoint_hash && current.fencing_token === fencingToken) return { status: "DUPLICATE_CHECKPOINT", taskId, checkpointSeq, checkpointHash };
     if (checkpointSeq !== (current?.checkpoint_seq ?? 0) + 1) throw new Error("CHECKPOINT_SEQUENCE_CONFLICT");
-    return this.#commitEvent(taskId, "TASK_CHECKPOINTED", { workerId, fencingToken, checkpointSeq, checkpointHash }, () => {
-      this.#assertLease(taskId, workerId, fencingToken, Math.floor(Date.now() / 1000), this.#lease(taskId));
+    return this.#commitEvent(taskId, "TASK_CHECKPOINTED", { workerId, runId, fencingToken, checkpointSeq, checkpointHash }, () => {
+      this.#assertLease(taskId, workerId, fencingToken, runId, Math.floor(Date.now() / 1000), this.#lease(taskId));
       const latest = this.#checkpointRow(taskId);
       if (checkpointSeq !== (latest?.checkpoint_seq ?? 0) + 1) throw new Error("CHECKPOINT_SEQUENCE_CONFLICT");
-      this.ctx.storage.sql.exec(`INSERT INTO swarm_checkpoints(task_id,checkpoint_seq,checkpoint_json,checkpoint_hash,fencing_token,updated_at) VALUES(?,?,?,?,?,?) ON CONFLICT(task_id) DO UPDATE SET checkpoint_seq=excluded.checkpoint_seq,checkpoint_json=excluded.checkpoint_json,checkpoint_hash=excluded.checkpoint_hash,fencing_token=excluded.fencing_token,updated_at=excluded.updated_at`, taskId, checkpointSeq, checkpointJson, checkpointHash, fencingToken, now);
+      this.ctx.storage.sql.exec(`INSERT INTO swarm_checkpoints(task_id,checkpoint_seq,checkpoint_json,checkpoint_hash,run_id,fencing_token,updated_at) VALUES(?,?,?,?,?,?,?) ON CONFLICT(task_id) DO UPDATE SET checkpoint_seq=excluded.checkpoint_seq,checkpoint_json=excluded.checkpoint_json,checkpoint_hash=excluded.checkpoint_hash,run_id=excluded.run_id,fencing_token=excluded.fencing_token,updated_at=excluded.updated_at`, taskId, checkpointSeq, checkpointJson, checkpointHash, runId, fencingToken, now);
       this.ctx.storage.sql.exec("UPDATE swarm_tasks SET updated_at=? WHERE task_id=?", Math.floor(Date.now() / 1000), taskId);
       return { status: "CHECKPOINT_SAVED", taskId, checkpointSeq, checkpointHash, fencingToken };
     });
