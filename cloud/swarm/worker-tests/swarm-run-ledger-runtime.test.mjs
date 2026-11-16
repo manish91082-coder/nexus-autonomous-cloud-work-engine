@@ -65,17 +65,17 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     expect(recovered.checkpoints[0].checkpoint_hash).toBe(checkpoint.checkpointHash);
 
     const completed = await rpc(stub, "complete", {
-      taskId: task.taskId, workerId: "worker-a", fencingToken: claim.fencingToken,
+      taskId: task.taskId, workerId: "worker-a", runId: claim.runId, fencingToken: claim.fencingToken,
       result: { outcome: "SHADOW_FIXTURE_VERIFIED", evidenceHash: await digest("fixture-evidence") }
     }, "secondary");
     expect(completed.status).toBe("COMPLETED");
     const duplicateCompletion = await rpc(stub, "complete", {
-      taskId: task.taskId, workerId: "worker-a", fencingToken: claim.fencingToken,
+      taskId: task.taskId, workerId: "worker-a", runId: claim.runId, fencingToken: claim.fencingToken,
       result: { outcome: "SHADOW_FIXTURE_VERIFIED", evidenceHash: await digest("fixture-evidence") }
     }, "secondary");
     expect(duplicateCompletion.status).toBe("DUPLICATE_COMPLETION");
     const terminalConflict = await rpc(stub, "complete", {
-      taskId: task.taskId, workerId: "worker-a", fencingToken: claim.fencingToken, result: { outcome: "ALTERED" }
+      taskId: task.taskId, workerId: "worker-a", runId: claim.runId, fencingToken: claim.fencingToken, result: { outcome: "ALTERED" }
     }, "secondary");
     expect(terminalConflict.status).toBe("REJECTED");
     expect(terminalConflict.error.message).toBe("TERMINAL_RESULT_CONFLICT");
