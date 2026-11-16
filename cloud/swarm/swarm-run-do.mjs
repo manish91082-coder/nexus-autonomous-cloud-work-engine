@@ -243,7 +243,7 @@ export class SwarmRunDO extends DurableObject {
       const fence = (current.last_fencing_token ?? 0) + 1;
       const expiresAt = commitNow + leaseSeconds;
       this.ctx.storage.sql.exec("UPDATE swarm_tasks SET status='LEASED',attempts=attempts+1,last_fencing_token=?,updated_at=? WHERE task_id=?", fence, commitNow, taskId);
-      this.ctx.storage.sql.exec(`INSERT INTO swarm_leases(task_id,worker_id,fencing_token,expires_at,heartbeat_at) VALUES(?,?,?,?,?) ON CONFLICT(task_id) DO UPDATE SET worker_id=excluded.worker_id,fencing_token=excluded.fencing_token,expires_at=excluded.expires_at,heartbeat_at=excluded.heartbeat_at`, taskId, workerId, fence, expiresAt, now);
+      this.ctx.storage.sql.exec(`INSERT INTO swarm_leases(task_id,worker_id,fencing_token,expires_at,heartbeat_at) VALUES(?,?,?,?,?) ON CONFLICT(task_id) DO UPDATE SET worker_id=excluded.worker_id,fencing_token=excluded.fencing_token,expires_at=excluded.expires_at,heartbeat_at=excluded.heartbeat_at`, taskId, workerId, fence, expiresAt, commitNow);
       return { status: "CLAIMED", taskId, workerId, fencingToken: fence, leaseExpiresAt: expiresAt, attempt: current.attempts + 1 };
     });
   }
