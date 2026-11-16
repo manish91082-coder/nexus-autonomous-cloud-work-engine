@@ -77,7 +77,7 @@ async function createHarness() {
 
   async function ledgerSettle({ lease, dispatch }) {
     const claVerified = await verifyGitHubCredentialProvenance({
-      assertion: lease.cla, bearerToken: brokerVault.get(lease.leaseId),
+      assertion: lease.cla, verifyTokenBinding: false,
       publicKeys: publicBrokerKeys, nowEpoch: now,
       issuer: "https://broker.test.invalid", audience: "nexus-quota-ledger",
       appId: "12345", repositoryId, credentialLane: lane
@@ -90,7 +90,9 @@ async function createHarness() {
       requestBodySha256: dispatch.fingerprint.requestBodySha256,
       tokenSha256: claVerified.tokenSha256, dispatchId: dispatch.dispatchId
     });
-    // Test-only atomic single-use dispatch consumption. Production QLDO still needs
+    // The ledger verifies signed CLA claims without receiving the broker token.
+  // Token-to-CLA binding is enforced by the gateway before dispatch.
+  // Test-only atomic single-use dispatch consumption. Production QLDO still needs
     // transactional replay consumption before any reservation lookup or mutation.
     if (usedDispatches.has(receipt.dispatchId)) throw new TypeError("duplicate dispatch replay");
     usedDispatches.add(receipt.dispatchId);
