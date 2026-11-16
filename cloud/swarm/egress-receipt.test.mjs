@@ -53,9 +53,9 @@ test("rejects changed binding, unknown key and tampered signature", async () => 
 
 test("rejects ambiguous outcomes claiming a response status and invalid time windows", async () => {
   const uncertain={...claims(),outcome:"outcome_uncertain",response_status:200};
-  await assert.rejects(()=>verifyEgressDispatchReceipt({receipt:await sign(uncertain),...base()}),/null response status/);
+  const uncertainReceipt = await sign(uncertain);\n  await assert.rejects(()=>verifyEgressDispatchReceipt({receipt:uncertainReceipt,...base()}),/null response status/);
   const stale={...claims(),completed_at:now+301};
-  await assert.rejects(()=>verifyEgressDispatchReceipt({receipt:await sign(stale),...base()}),/time window invalid/);
+  const staleReceipt = await sign(stale);\n  await assert.rejects(()=>verifyEgressDispatchReceipt({receipt:staleReceipt,...base()}),/time window invalid/);
 });
 
 test("accepts uncertain outcomes only without a response status", async () => {
