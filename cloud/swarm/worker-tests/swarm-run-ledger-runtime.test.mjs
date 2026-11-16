@@ -53,7 +53,7 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     const claim = await rpc(stub, "claim", { taskId: task.taskId, workerId: "worker-a", leaseSeconds: 30 }, "secondary");
     expect(claim.status).toBe("CLAIMED");
     const checkpoint = await rpc(stub, "checkpoint", {
-      taskId: task.taskId, workerId: "worker-a", fencingToken: claim.fencingToken,
+      taskId: task.taskId, workerId: "worker-a", runId: claim.runId, fencingToken: claim.fencingToken,
       checkpointSeq: 1, checkpoint: { stage: "evidence-collected", evidenceHash: await digest("fixture-evidence") }
     }, "secondary");
     expect(checkpoint.status).toBe("CHECKPOINT_SAVED");
@@ -112,13 +112,13 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     expect(second.status).toBe("CLAIMED");
     expect(second.fencingToken).toBeGreaterThan(first.fencingToken);
     const stale = await rpc(stub, "checkpoint", {
-      taskId: task.taskId, workerId: "worker-old", fencingToken: first.fencingToken,
+      taskId: task.taskId, workerId: "worker-old", runId: first.runId, fencingToken: first.fencingToken,
       checkpointSeq: 1, checkpoint: { stale: true }
     });
     expect(stale.status).toBe("REJECTED");
     expect(stale.error.message).toBe("STALE_OR_INVALID_FENCING_TOKEN");
     const valid = await rpc(stub, "heartbeat", {
-      taskId: task.taskId, workerId: "worker-old", fencingToken: second.fencingToken, leaseSeconds: 30
+      taskId: task.taskId, workerId: "worker-old", runId: second.runId, fencingToken: second.fencingToken, leaseSeconds: 30
     }, "secondary");
     expect(valid.status).toBe("HEARTBEAT_RECORDED");
     expect((await rpc(stub, "snapshot", { taskId: task.taskId })).eventChainValid).toBe(true);
@@ -128,13 +128,13 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     const stub = stubFor();
     const retryTask = await register(stub, "retry-backoff", { maxAttempts: 2 });
     const first = await rpc(stub, "claim", { taskId: retryTask.taskId, workerId: "worker-retry", leaseSeconds: 30 });
-    const failed = await rpc(stub, "fail", { taskId: retryTask.taskId, workerId: "worker-retry", fencingToken: first.fencingToken, errorCode: "FIXTURE_RETRYABLE" });
+    const failed = await rpc(stub, "fail", { taskId: retryTask.taskId, workerId: "worker-retry", runId: first.runId, fencingToken: first.fencingToken, errorCode: "FIXTURE_RETRYABLE" });
     expect(failed.status).toBe("RETRY_SCHEDULED");
     expect((await rpc(stub, "claim", { taskId: retryTask.taskId, workerId: "worker-too-soon" })).status).toBe("BACKOFF");
 
     const deadTask = await register(stub, "dead-letter", { maxAttempts: 1 });
     const only = await rpc(stub, "claim", { taskId: deadTask.taskId, workerId: "worker-dead", leaseSeconds: 30 });
-    const dead = await rpc(stub, "fail", { taskId: deadTask.taskId, workerId: "worker-dead", fencingToken: only.fencingToken, errorCode: "FIXTURE_PERMANENT_FAILURE" });
+    const dead = await rpc(stub, "fail", { taskId: deadTask.taskId, workerId: "worker-dead", runId: only.runId, fencingToken: only.fencingToken, errorCode: "FIXTURE_PERMANENT_FAILURE" });
     expect(dead.status).toBe("DEAD_LETTER");
     const snapshot = await rpc(stub, "snapshot", {});
     expect(snapshot.tasks.find(x => x.task_id === deadTask.taskId).status).toBe("DEAD_LETTER");
