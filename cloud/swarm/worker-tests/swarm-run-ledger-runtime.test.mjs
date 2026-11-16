@@ -81,6 +81,11 @@ describe("Phase 59.53 durable swarm run ledger", () => {
     const loser=a.status==="ALREADY_LEASED"?a:b;
     expect(claimed.fenceToken).toBe(1);
     expect(loser.workerId).toBe(claimed.workerId);
+    const heartbeat=await call(stub,"heartbeat",{
+      taskId:"P10CR:claim-race",workerId:claimed.workerId,fenceToken:1,leaseSeconds:120,nowEpoch:2002
+    },claimed.workerId);
+    expect(heartbeat.status).toBe("HEARTBEAT_OK");
+    expect(heartbeat.expiresAtEpoch).toBe(2122);
     const spoof=await call(stub,"claimTask",{
       taskId:"P10CR:claim-race",workerId:claimed.workerId==="worker-a"?"worker-b":"worker-a",
       leaseSeconds:60,maxConcurrency:5,nowEpoch:2002
