@@ -49,7 +49,7 @@ function positive(value, label) {
 function validateClaims(c, now, expected) {
   exactKeys(c, ["iss","aud","cla_jti","lease_id","installation_id","repository_id",
     "operation_id","method","canonical_url_sha256","request_body_sha256",
-    "request_fingerprint","token_sha256","dispatch_id","started_at",
+    "request_fingerprint","token_sha256","response_headers_sha256","dispatch_id","started_at",
     "completed_at","response_status","outcome"]);
   if (c.iss !== expected.issuer || c.aud !== expected.audience) fail("issuer or audience mismatch");
   if (typeof c.cla_jti !== "string" || !ID.test(c.cla_jti)
@@ -62,6 +62,13 @@ function validateClaims(c, now, expected) {
   for (const key of ["canonical_url_sha256","request_body_sha256","request_fingerprint","token_sha256"]) {
     if (typeof c[key] !== "string" || !DIGEST.test(c[key])) fail(`invalid ${key}`);
   }
+  if (c.outcome === "response_received") {
+    if (typeof c.response_headers_sha256 !== "string" || !DIGEST.test(c.response_headers_sha256)) {
+      fail("response header evidence digest required");
+    }
+  } else if (c.response_headers_sha256 !== null) {
+    fail("non-response outcome must have null response header digest");
+  }
   if (!Number.isSafeInteger(c.started_at) || !Number.isSafeInteger(c.completed_at)
     || c.started_at < now - MAX_WINDOW_SECONDS || c.started_at > now + 5
     || c.completed_at < c.started_at || c.completed_at > now + 5
@@ -71,7 +78,7 @@ function validateClaims(c, now, expected) {
     if (!Number.isInteger(c.response_status) || c.response_status < 100 || c.response_status > 599) fail("response status required");
   } else if (c.response_status !== null) fail("non-response outcome must have null response status");
   const bindings = ["claJti","leaseId","installationId","repositoryId","operationId","method",
-    "canonicalUrlSha256","requestBodySha256","requestFingerprint","tokenSha256","dispatchId"];
+    "canonicalUrlSha256","requestBodySha256","requestFingerprint","tokenSha256","responseHeadersSha256","dispatchId"];
   const map = {
     claJti:"cla_jti",leaseId:"lease_id",installationId:"installation_id",repositoryId:"repository_id",
     operationId:"operation_id",method:"method",canonicalUrlSha256:"canonical_url_sha256",
@@ -122,7 +129,7 @@ export async function verifyEgressDispatchReceipt({
     repositoryId: claims.repository_id, operationId: claims.operation_id,
     method: claims.method, canonicalUrlSha256: claims.canonical_url_sha256,
     requestBodySha256: claims.request_body_sha256, requestFingerprint: claims.request_fingerprint,
-    tokenSha256: claims.token_sha256, dispatchId: claims.dispatch_id,
+    tokenSha256: claims.token_sha256, responseHeadersSha256: claims.response_headers_sha256, dispatchId: claims.dispatch_id,
     startedAt: claims.started_at, completedAt: claims.completed_at,
     responseStatus: claims.response_status, outcome: claims.outcome
   });
