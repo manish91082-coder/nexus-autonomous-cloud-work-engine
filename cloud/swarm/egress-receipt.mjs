@@ -83,10 +83,14 @@ function validateClaims(c, now, expected) {
     claJti:"cla_jti",leaseId:"lease_id",installationId:"installation_id",repositoryId:"repository_id",
     operationId:"operation_id",method:"method",canonicalUrlSha256:"canonical_url_sha256",
     requestBodySha256:"request_body_sha256",requestFingerprint:"request_fingerprint",
-    tokenSha256:"token_sha256",dispatchId:"dispatch_id"
+    tokenSha256:"token_sha256",responseHeadersSha256:"response_headers_sha256",dispatchId:"dispatch_id"
   };
   for (const key of bindings) {
-    if (expected[key] !== undefined && c[map[key]] !== String(expected[key])) fail(`${map[key]} binding mismatch`);
+    if (expected[key] !== undefined) {
+      const actual = c[map[key]];
+      const matches = expected[key] === null ? actual === null : actual === String(expected[key]);
+      if (!matches) fail(`${map[key]} binding mismatch`);
+    }
   }
   return c;
 }
