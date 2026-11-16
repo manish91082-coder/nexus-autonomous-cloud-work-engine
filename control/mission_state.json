@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_59_46_MERGED_PHASE_59_47_CRASH_RESTART_LEASE_FENCING",
+  "phase": "PHASE_59_47_CRASH_RESTART_LEASE_FENCING",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
   "last_verified_head": "ea8d785691b9e92ae8034cec2dafab70573ad249",
-  "current_focus": "P59-003 swarm foundation. Phase59.46 PR #27 merged after corrected exact-head Workers/workerd runtime SUCCESS and all 13 PR regression workflows SUCCESS. Merge commit ea8d785691b9e92ae8034cec2dafab70573ad249. Next Phase59.47: crash/restart, lease expiry and stale-fencing rejection. Production flags OFF; AI inference disabled; external network 0; spend ₹0.",
+  "current_focus": "P59-003 Phase59.47: Durable Object eviction/reconstruction and stale lease settlement hardening. Candidate branch phase59-47-crash-restart-lease-fencing; exact-head CI pending. Production flags OFF; AI inference disabled; mock-only provider responses; external network 0; spend ₹0.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -136,7 +136,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.47: build deterministic Cloudflare workerd tests for reservation crash/restart recovery, lease expiry and stale-fence rejection; verify no double settlement, no stale owner mutation, uncertain quota retained fail-closed, and all residual counters reconcile. Keep providers mocked, production flags OFF, AI inference disabled, external network 0 and spend ₹0.",
+  "next_focus": "Run exact-head Workers/workerd runtime and all regression workflows; inspect stale-settlement test and full suite; do not merge until all required checks pass.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -1965,5 +1965,30 @@
     "spend_inr": 0,
     "verified_realized_net_receipts_inr": 0,
     "next": "Phase59.47 crash/restart, lease expiry and stale-fencing rejection under deterministic workerd; preserve mock-only providers, production flags OFF and ₹0 spend."
+  },
+  "phase59_47_candidate": {
+    "report": "research/PHASE_59_47_CRASH_RESTART_LEASE_FENCING_2026-11-16.md",
+    "branch": "phase59-47-crash-restart-lease-fencing",
+    "status": "OPEN_CI_PENDING",
+    "scope": "Durable Object eviction/reconstruction, SQLite reservation persistence, actual lease expiry and stale worker settlement rejection.",
+    "finding": "Settlement path previously did not sweep expired leases before committing; delayed stale worker could settle while status remained RESERVED.",
+    "correction": "Run expiry sweep inside settlement transaction before state/ownership validation; expired reservation transitions to UNCERTAIN_BUDGET_RETAINED and stale settlement is rejected.",
+    "assertions": [
+      "evictDurableObject tears down instance",
+      "SQLite reservation and counters survive reconstruction",
+      "real persisted 30-second lease expires without clock override",
+      "stale settlement rejected before explicit sweep",
+      "reserved units=0 and uncertain units=10 after expiry",
+      "duplicate reservation suppression retained",
+      "external network requests=0"
+    ],
+    "production_feature_flag": "OFF",
+    "ai_inference": false,
+    "spend_inr": 0,
+    "external_network_requests": 0,
+    "next": "Run and inspect exact-head Workers/workerd runtime and all regression CI for PR #28. Do not merge until all required checks pass.",
+    "pr_number": 28,
+    "pr_state": "OPEN_CI_PENDING",
+    "head_sha": "02f822a0cbb5933fe0e5d155d4ad932e3c9a8127"
   }
 }

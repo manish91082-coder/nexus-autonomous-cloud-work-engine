@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { env } from "cloudflare:workers";
+import { evictDurableObject } from "cloudflare:test";
 import { quotaLedgerObjectName, computeReservationLease } from "../quota-ledger-contract.mjs";
 import {
   parseGitHubRateLimitHeaders,
@@ -1096,12 +1097,27 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
     const first = await call(stub,"reserve",input);
     expect(first.status).toBe("RESERVED");
 
+    // Force a real Durable Object eviction: in-memory state is discarded while
+    // SQLite-backed reservation and quota counters must survive reconstruction.
+    await evictDurableObject(stub);
+    const recovered = await call(stub,"snapshot",input);
+    expect(recovered.reservations.find(x=>x.reservation_id===input.reservationId).status)
+      .toBe("RESERVED");
+    expect(recovered.buckets[0].reserved_units).toBe(10);
+
     // The isolated test Worker config sets the minimum permitted 30-second TTL.
-    // Wait for the real persisted lease to expire; no clock override or test backdoor.
+    // Wait for the persisted lease to expire; no clock override or test backdoor.
     await new Promise(resolve => setTimeout(resolve, 30100));
 
-    // A retry with the same durable request key triggers the automatic
-    // expiry sweep before duplicate suppression, and must never re-send work.
+    // A late worker must not settle after its lease expires, even if no other
+    // request has yet triggered the expiry sweep.
+    const staleSettlement = await call(stub,"settle",{
+      ...input,actualByBucket:{core:10}
+    });
+    expect(staleSettlement.status).toBe("REJECTED");
+    expect(staleSettlement.error.message).toMatch(/reservation lease already expired/);
+
+    // A retry with the same durable request key must not re-send work.
     const duplicate = await call(stub,"reserve",input);
     expect(duplicate.status).toBe("DUPLICATE_RESERVATION");
     const sweep = await call(stub,"expireReservations",input);
