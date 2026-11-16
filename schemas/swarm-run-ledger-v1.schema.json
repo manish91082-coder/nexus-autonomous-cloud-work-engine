@@ -150,7 +150,8 @@
       "required": [
         "taskId",
         "workerId",
-        "fencingToken"
+        "fencingToken",
+        "runId"
       ],
       "properties": {
         "taskId": {
@@ -167,6 +168,9 @@
           "type": "integer",
           "minimum": 1,
           "maximum": 300
+        },
+        "runId": {
+          "$ref": "#/$defs/id"
         }
       }
     },
@@ -178,7 +182,8 @@
         "workerId",
         "fencingToken",
         "checkpointSeq",
-        "checkpoint"
+        "checkpoint",
+        "runId"
       ],
       "properties": {
         "taskId": {
@@ -197,6 +202,9 @@
         },
         "checkpoint": {
           "type": "object"
+        },
+        "runId": {
+          "$ref": "#/$defs/id"
         }
       }
     },
@@ -207,7 +215,8 @@
         "taskId",
         "workerId",
         "fencingToken",
-        "result"
+        "result",
+        "runId"
       ],
       "properties": {
         "taskId": {
@@ -222,6 +231,9 @@
         },
         "result": {
           "type": "object"
+        },
+        "runId": {
+          "$ref": "#/$defs/id"
         }
       }
     },
@@ -232,7 +244,8 @@
         "taskId",
         "workerId",
         "fencingToken",
-        "errorCode"
+        "errorCode",
+        "runId"
       ],
       "properties": {
         "taskId": {
@@ -246,6 +259,9 @@
           "minimum": 1
         },
         "errorCode": {
+          "$ref": "#/$defs/id"
+        },
+        "runId": {
           "$ref": "#/$defs/id"
         }
       }
