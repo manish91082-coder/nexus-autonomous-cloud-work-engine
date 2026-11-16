@@ -179,4 +179,36 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     expect(replay.status).toBe(409);
     expect((await replay.json()).reason).toBe("AUTH_REPLAY_DETECTED");
   });
+  
+  it("runs a deterministic non-provider shadow task through the durable ledger and survives eviction plus duplicate delivery", async () => {
+    const { executeDeterministicShadowTask } = await import("./deterministic-shadow-task.mjs");
+    const stub = stubFor();
+    const task = await register(stub, "phase59-54-integrated-shadow");
+    const first = await executeDeterministicShadowTask({
+      rpc: (action, input, caller) => rpc(stub, action, input, caller),
+      task,
+      workerId: "phase59-54-shadow-worker",
+      afterFirstCheckpoint: async () => evictDurableObject(stub)
+    });
+    expect(first.status).toBe("COMPLETED");
+    expect(first.output.outcome).toBe("DETERMINISTIC_SHADOW_VERIFIED");
+    expect(first.eventChainValid).toBe(true);
+
+    const replay = await executeDeterministicShadowTask({
+      rpc: (action, input, caller) => rpc(stub, action, input, caller),
+      task,
+      workerId: "phase59-54-shadow-worker"
+    });
+    expect(replay.status).toBe("ALREADY_COMPLETED");
+    expect(replay.resultHash).toBe(first.resultHash);
+
+    const final = await rpc(stub, "snapshot", { taskId: task.taskId });
+    expect(final.tasks[0].status).toBe("COMPLETED");
+    expect(final.tasks[0].result_hash).toBe(first.resultHash);
+    expect(final.tasks[0].result_run_id).toBe(first.runId);
+    expect(final.leases).toHaveLength(0);
+    expect(final.checkpoints).toHaveLength(1);
+    expect(final.checkpoints[0].checkpoint_seq).toBe(2);
+    expect(final.eventChainValid).toBe(true);
+  });
 });
