@@ -118,24 +118,24 @@ describe("Phase 59.53 durable swarm run ledger", () => {
     expect(stale.error.message).toMatch(/stale fencing token|lease expired/);
 
     const waiting=await call(stub,"claimTask",{
-      taskId:"P10CR:fence-001",workerId:"worker-b",leaseSeconds:60,maxConcurrency:5,nowEpoch:3076
+      taskId:"P10CR:fence-001",workerId:"worker-b",leaseSeconds:60,maxConcurrency:5,nowEpoch:3077
     },"worker-b");
     expect(waiting.status).toBe("CLAIMED");
     expect(waiting.fenceToken).toBe(2);
     const oldFinish=await call(stub,"finishTask",{
       taskId:"P10CR:fence-001",workerId:"worker-a",fenceToken:1,success:true,
-      result:{decision:"GO"},nowEpoch:3077
+      result:{decision:"GO"},nowEpoch:3078
     },"worker-a");
     expect(oldFinish.status).toBe("REJECTED");
 
     const checkpoint2=await call(stub,"checkpoint",{
       taskId:"P10CR:fence-001",workerId:"worker-b",fenceToken:2,
-      checkpoint:{stage:"REVIEWED",reviewCount:2},nowEpoch:3077
+      checkpoint:{stage:"REVIEWED",reviewCount:2},nowEpoch:3078
     },"worker-b");
     expect(checkpoint2.status).toBe("CHECKPOINT_SAVED");
     const result={decision:"HOLD",modelInferenceUsed:false,externalNetworkRequests:0};
     const finished=await call(stub,"finishTask",{
-      taskId:"P10CR:fence-001",workerId:"worker-b",fenceToken:2,success:true,result,nowEpoch:3078
+      taskId:"P10CR:fence-001",workerId:"worker-b",fenceToken:2,success:true,result,nowEpoch:3081
     },"worker-b");
     expect(finished.status).toBe("COMPLETED");
     const replay=await call(stub,"finishTask",{
