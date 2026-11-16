@@ -349,7 +349,7 @@ export class SwarmRunDO extends DurableObject {
     const leaseSeconds=integer(input.leaseSeconds??900,"leaseSeconds",15,3600);
     return this.ctx.storage.transactionSync(()=>{
       this.#assertProject({projectId});
-      const lease=this.#assertLease(input,now), expiresAt=now+leaseSeconds;
+      const lease=this.#assertLease(input,callerId,now), expiresAt=now+leaseSeconds;
       this.ctx.storage.sql.exec("UPDATE swarm_run_leases SET expires_at_epoch=?,heartbeat_at_epoch=? WHERE task_id=?",expiresAt,now,input.taskId);
       this.ctx.storage.sql.exec("UPDATE swarm_run_tasks SET updated_at_epoch=? WHERE task_id=?",now,input.taskId);
       this.#event(projectId,input.taskId,"LEASE_HEARTBEAT",now,input.workerId,input.fenceToken,{expiresAtEpoch:expiresAt,callerId});
@@ -385,7 +385,7 @@ export class SwarmRunDO extends DurableObject {
         throw new TypeError("terminal task result conflict or non-owner");
       }
       if (task.status==="DEAD_LETTER") return {status:"ALREADY_TERMINAL",task:publicTask(task)};
-      this.#assertLease(input,now);
+      this.#assertLease(input,callerId,now);
       let nextStatus,availableAt=null;
       if (input.success) nextStatus="COMPLETED";
       else if (task.attempts>=task.max_attempts) nextStatus="DEAD_LETTER";
