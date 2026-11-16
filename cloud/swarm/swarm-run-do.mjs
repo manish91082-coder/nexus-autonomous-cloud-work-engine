@@ -330,15 +330,19 @@ export class SwarmRunDO extends DurableObject {
     const expired = this.ctx.storage.sql.exec("SELECT t.task_id,t.attempts,t.max_attempts FROM swarm_tasks t JOIN swarm_leases l ON l.task_id=t.task_id WHERE t.status='LEASED' AND l.expires_at<=? ORDER BY l.expires_at LIMIT 50", now).toArray();
     let recovered = 0, deadLettered = 0;
     for (const row of expired) {
-      const dead = row.attempts >= row.max_attempts;
-      await this.#commitEvent(row.task_id, dead ? "TASK_DEAD_LETTERED" : "LEASE_EXPIRED_RECOVERED", { attempts: row.attempts, outcome: dead ? "DEAD_LETTER" : "READY" }, () => {
+      const outcome = await this.#commitEvent(row.task_id, row.attempts >= row.max_attempts ? "TASK_DEAD_LETTERED" : "LEASE_EXPIRED_RECOVERED", { attempts: row.attempts }, () => {
         const task = this.#task(row.task_id), lease = this.#lease(row.task_id);
-        if (!lease || lease.expires_at > now || task.status !== "LEASED") return { skipEvent: true, value: false };
+        const commitNow = Math.floor(Date.now() / 1000);
+        if (!lease || lease.expires_at > commitNow || task.status !== "LEASED") {
+          return { skipEvent: true, value: "UNCHANGED" };
+        }
         const terminal = task.attempts >= task.max_attempts;
-        this.ctx.storage.sql.exec("UPDATE swarm_tasks SET status=?,last_error=?,updated_at=? WHERE task_id=?", terminal ? "DEAD_LETTER" : "READY", "LEASE_EXPIRED", now, row.task_id);
+        this.ctx.storage.sql.exec("UPDATE swarm_tasks SET status=?,last_error=?,updated_at=? WHERE task_id=?", terminal ? "DEAD_LETTER" : "READY", "LEASE_EXPIRED", commitNow, row.task_id);
         this.ctx.storage.sql.exec("DELETE FROM swarm_leases WHERE task_id=?", row.task_id);
-        return !terminal;
-      }).then(value => { if (value === true) recovered += 1; else if (value === false) deadLettered += 1; });
+        return terminal ? "DEAD_LETTER" : "READY";
+      });
+      if (outcome === "READY") recovered += 1;
+      else if (outcome === "DEAD_LETTER") deadLettered += 1;
     }
     return { status: "RECOVERY_COMPLETE", recovered, deadLettered, examined: expired.length };
   }
