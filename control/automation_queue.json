@@ -3890,12 +3890,19 @@
         "phase59_46_candidate": {
           "pr_number": 27,
           "branch": "phase59-46-global-installation-contention-v2",
-          "head_sha": "cb7a10b50b09013c94c90b01c7bce1ba19fb0736",
-          "status": "OPEN_CI_PENDING",
+          "head_sha": "cca2e16f6c377ade5b07a153ecd9b7ec618dc94d",
+          "status": "CORRECTED_HEAD_AWAITING_CI",
           "test": "16-way concurrent burst across two independently authenticated shadow Worker clients; fixture endpoint budget remains 2",
           "external_network_requests": 0,
           "spend_inr": 0,
-          "ai_inference": false
+          "ai_inference": false,
+          "first_run": {
+            "run_id": 43816005067,
+            "passed": 63,
+            "total": 64,
+            "diagnosis": "invalid worker fairness assertion; two-admission shared cap respected, 14 requests denied, both reservations settled"
+          },
+          "correction": "Removed uncontracted worker fairness requirement; retained quota safety and attribution assertions."
         }
       },
       "blocker": "Remaining production-enablement gates: branch ruleset, owner-approved least-privilege GitHub App, cross-run/cross-repository global Actions/API quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation, and 7/30-day soak. Phase59.25 proved only eight worker threads on one GitHub-hosted runner; Phase59.26 specialist handlers are deterministic and provider-neutral, not live LLM inference. Keep all production clients disabled.",
@@ -3948,5 +3955,5 @@
   "current_task": "P59-003",
   "last_updated": "2026-11-16",
   "sequence_note": "P59-003 AI agentic swarm foundation remains sole active P0. Phase59.45A merged and exact-head CI verified. Proceed Phase59.46 multi-client installation-wide quota arbitration. P59-001 remains PAUSED; P59-002 BLOCKED. Preserve canonical repository isolation, ₹0 spend, no paid fallback, production flags OFF and inference disabled.",
-  "last_reconciled_from_mission_state": "Phase59.45A merged at 58352e68fe71abdb71e8dae68580b0d96601ba14; Phase59.46 PR #27 open, head cb7a10b50b09013c94c90b01c7bce1ba19fb0736, exact-head CI pending."
+  "last_reconciled_from_mission_state": "Phase59.46 PR #27 corrected after first exact-head CI: 63/64 runtime tests passed; only failure was unsupported fairness expectation. Corrected head cca2e16f6c377ade5b07a153ecd9b7ec618dc94d awaiting CI."
 }
