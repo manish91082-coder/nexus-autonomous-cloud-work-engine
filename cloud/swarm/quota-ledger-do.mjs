@@ -682,14 +682,24 @@ export class QuotaLedgerDO extends DurableObject {
     if (!input.actualByBucket || typeof input.actualByBucket !== "object"
       || Array.isArray(input.actualByBucket)) throw new QuotaLedgerError("actualByBucket required");
     const sql = this.ctx.storage.sql;
-    return this.ctx.storage.transactionSync(() => {
+    const result = this.ctx.storage.transactionSync(() => {
       // Expire leases before accepting a worker's completion. Otherwise a
       // delayed worker could settle stale work after its lease deadline but
       // before another request happens to run the expiry sweep.
-      this.#expireReservations(Math.floor(Date.now() / 1000));
+      const now = Math.floor(Date.now() / 1000);
+      this.#expireReservations(now);
       const rec = sql.exec("SELECT * FROM quota_reservations WHERE reservation_id=?",
         input.reservationId).toArray()[0];
-      if (!rec || rec.worker_id !== input.workerId || rec.caller_id !== callerId || rec.status !== "RESERVED") {
+      if (!rec || rec.worker_id !== input.workerId || rec.caller_id !== callerId) {
+        throw new QuotaLedgerError("reservation owner/state mismatch");
+      }
+      // Return a sentinel rather than throwing inside transactionSync: throwing
+      // would roll back the expiry transition and leave the stale reservation
+      // incorrectly marked RESERVED.
+      if (rec.status === "UNCERTAIN_BUDGET_RETAINED" && rec.expires_at_epoch <= now) {
+        return {reservationId:input.reservationId,status:"LEASE_EXPIRED"};
+      }
+      if (rec.status !== "RESERVED") {
         throw new QuotaLedgerError("reservation owner/state mismatch");
       }
       const reserved = JSON.parse(rec.reserved_by_bucket_json);
@@ -739,6 +749,10 @@ export class QuotaLedgerDO extends DurableObject {
       sql.exec("DELETE FROM quota_secondary_inflight WHERE reservation_id=?", input.reservationId);
       return {reservationId:input.reservationId,status:"SETTLED",actualByBucket:input.actualByBucket};
     });
+    if (result.status === "LEASE_EXPIRED") {
+      throw new QuotaLedgerError("reservation lease already expired");
+    }
+    return result;
   }
 
   #markUncertain(input, callerId) {
