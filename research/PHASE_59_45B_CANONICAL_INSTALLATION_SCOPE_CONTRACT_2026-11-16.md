@@ -7,7 +7,7 @@ Implementation branch: phase59-45b-canonical-installation-scope
 
 ## Status
 
-**Implementation committed to the feature branch; exact-head CI is pending. Not merged. Not production-enabled.**
+**Implementation committed to the feature branch; exact-head CI PASS (14/14 checks). PR #26 remains open, draft and unmerged. Not production-enabled.**
 
 This is the first hardening slice of Phase 59.45. It does not prove independent-host atomicity or a deployed global arbiter.
 
@@ -33,9 +33,10 @@ Different installation IDs must resolve to different partitions. Provider reset-
 ## Validation status
 
 - Source changes were re-fetched from the feature branch after writes.
-- Workflow definition includes `phase59-45b-canonical-installation-scope` in its push branch filter.
-- GitHub Actions exact-head run has not yet been observed through the available run evidence.
-- No test pass is claimed until exact-head CI completes.
+- Workflow definition includes `phase59-45b-canonical-installation-scope` in its push branch filter and includes `cloud/swarm/*.test.mjs` in the path filter.
+- Exact-head CI at `674f20673f3ffc3ea7cb8b15d822def4279dd18a` completed with 14/14 check-runs successful, including Workers runtime.
+- Earlier head `637f4309fdde0279dcaa99587c0d232e6241ad46` had a legacy adapter fixture mismatch; the fixture was corrected and `adapter-contract` passed on the current head.
+- This CI proves repository test behavior only. It does not prove authenticated credential-to-installation binding or independent-host atomicity.
 - Existing test runtime uses synthetic installation IDs and one local Miniflare shared namespace. It cannot establish independent physical-host or cross-run production atomicity.
 
 ## Additional security gap discovered during review
@@ -46,10 +47,10 @@ Phase 59.45C must bind the quota scope to independently verified installation id
 
 ## Remaining Phase 59.45 gates
 
-- [ ] Exact-head Workers/workerd runtime CI passes.
-- [ ] All relevant quota/federation regression workflows pass.
-- [ ] Verify every production GitHub quota entrypoint uses the shared validator.
-- [ ] Verify token refresh does not create a new quota partition.
+- [x] Exact-head Workers/workerd runtime CI passes at head `674f20673f3ffc3ea7cb8b15d822def4279dd18a` (14/14 exact-head check runs successful, including Workers runtime).
+- [x] All relevant quota/federation regression workflows pass at the same exact head (included in the 14/14 successful checks).
+- [ ] Phase 59.45C: bind quota scope to independently verified credential provenance; remove caller-controlled installation ID from all quota entrypoints.
+- [ ] Verify token refresh does not create a new quota partition using signed broker provenance.
 - [ ] Independent GitHub-hosted runner A and B contend against one owner-approved deployed Durable Object namespace.
 - [ ] Crash/replay/lease/fencing/uncertain-recovery scenarios pass against that same shared durable namespace.
 - [ ] No oversubscription under a deliberately constrained shared test budget.
