@@ -8,6 +8,11 @@
         "name": "QUOTA_LEDGER",
         "class_name": "QuotaLedgerDO",
         "script_name": "p10cr-quota-ledger-host"
+      },
+      {
+        "name": "SWARM_RUN_LEDGER",
+        "class_name": "SwarmRunDO",
+        "script_name": "p10cr-swarm-run-ledger-host"
       }
     ]
   }
