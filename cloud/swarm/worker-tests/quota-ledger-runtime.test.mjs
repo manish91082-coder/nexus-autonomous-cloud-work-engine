@@ -155,6 +155,42 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
     expect(core.committed_since_observation_units).toBe(12);
   });
 
+  it("makes duplicate settlement idempotent and rejects conflicting replays", async () => {
+    const input = identity("settlement-idempotency", "core10");
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",100);
+    expect((await call(stub,"reserve",input)).status).toBe("RESERVED");
+
+    const first = await call(stub,"settle",{...input,actualByBucket:{core:7}});
+    const duplicate = await call(stub,"settle",{...input,actualByBucket:{core:7}});
+    const conflict = await call(stub,"settle",{...input,actualByBucket:{core:6}});
+    expect(first.status).toBe("SETTLED");
+    expect(duplicate.status).toBe("SETTLEMENT_ALREADY_APPLIED");
+    expect(conflict.status).toBe("REJECTED");
+    expect(conflict.error.message).toMatch(/settlement idempotency conflict/);
+
+    const snapshot = await call(stub,"snapshot",input);
+    expect(snapshot.reservations[0].status).toBe("SETTLED");
+    expect(snapshot.buckets[0].reserved_units).toBe(0);
+    expect(snapshot.buckets[0].committed_units).toBe(7);
+  });
+
+  it("serializes concurrent identical settlements without double charging", async () => {
+    const input = identity("settlement-concurrent-idempotency", "core10");
+    const stub = stubFor(input);
+    await seedBucket(stub,input,"core",100);
+    expect((await call(stub,"reserve",input)).status).toBe("RESERVED");
+    const results = await Promise.all([
+      call(stub,"settle",{...input,actualByBucket:{core:8}}),
+      call(stub,"settle",{...input,actualByBucket:{core:8}})
+    ]);
+    expect(results.map(x=>x.status).sort())
+      .toEqual(["SETTLED","SETTLEMENT_ALREADY_APPLIED"]);
+    const snapshot = await call(stub,"snapshot",input);
+    expect(snapshot.buckets[0].reserved_units).toBe(0);
+    expect(snapshot.buckets[0].committed_units).toBe(8);
+  });
+
   it("does not partially reserve when any required stored telemetry bucket is exhausted", async () => {
     const input = identity("exhausted", "core10_search2");
     const stub = stubFor(input);
@@ -870,6 +906,16 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
     expect(storedReservation.status).toBe("SETTLED");
     expect(storedReservation.request_fingerprint).toMatch(/^[a-f0-9]{64}$/);
     expect(snapshot.telemetryObservations.some(x => x.reservation_id === "p10cr:lifecycle-001")).toBe(true);
+    expect(snapshot.providerResponseJournal).toHaveLength(1);
+    expect(snapshot.providerResponseJournal[0]).toMatchObject({
+      reservation_id:"p10cr:lifecycle-001",
+      response_status:200,
+      endpoint:"GET /repos/acme/demo",
+      method:"GET",
+      provider_request_id:"12345678-1234-4123-8123-123456789abc"
+    });
+    expect(snapshot.providerResponseJournal[0].request_fingerprint)
+      .toMatch(/^[a-f0-9]{64}$/);
     expect(snapshot.buckets[0].reserved_units).toBe(0);
     expect(snapshot.buckets[0].committed_units).toBe(1);
     expect(snapshot.buckets[0].committed_since_observation_units).toBe(0);
