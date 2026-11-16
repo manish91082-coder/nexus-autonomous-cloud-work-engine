@@ -19,7 +19,7 @@ test("verifies ES256 broker proof and derives installation scope from signed cla
     installation_id:"42113",repository_ids:["1454085952"],
     permissions:{metadata:"read",contents:"read"},token_sha256:hex,
     issued_at:now-10,expires_at:now+300,jti:"synthetic-jti-00000001",
-    credential_lane:"compute_readonly"
+    credential_lane:"compute_readonly",lease_id:"synthetic-lease-test-0001",key_version:"broker-test-v1"
   };
   const signingInput = `${json(header)}.${json(claims)}`;
   const signature = await crypto.subtle.sign({name:"ECDSA",hash:"SHA-256"},pair.privateKey,new TextEncoder().encode(signingInput));
@@ -38,9 +38,11 @@ test("verifies ES256 broker proof and derives installation scope from signed cla
     assertion, publicKeys:{"test-key-1":jwk}, nowEpoch:now,
     issuer:"https://broker.test.invalid", audience:"nexus-quota-ledger",
     appId:"12345", repositoryId:"1454085952", credentialLane:"compute_readonly",
-    verifyTokenBinding:false
+    leaseId:"synthetic-lease-test-0001", verifyTokenBinding:false
   });
   assert.equal(ledgerResult.tokenSha256, hex);
+  assert.equal(ledgerResult.leaseId, "synthetic-lease-test-0001");
+  assert.equal(ledgerResult.keyVersion, "broker-test-v1");
   assert.equal(ledgerResult.credentialScope, "github-app-installation:42113");
   await assert.rejects(() => verifyGitHubCredentialProvenance({
     assertion, bearerToken:token, publicKeys:{"test-key-1":jwk}, nowEpoch:now,
@@ -55,7 +57,7 @@ test("rejects bearer-token substitution", async () => {
     iss:"https://broker.test.invalid",aud:"nexus-quota-ledger",sub:"12345",
     installation_id:"42113",repository_ids:["1454085952"],permissions:{metadata:"read"},
     token_sha256:Buffer.from(digest).toString("hex"),issued_at:now-10,expires_at:now+300,
-    jti:"synthetic-jti-00000002",credential_lane:"compute_readonly"
+    jti:"synthetic-jti-00000002",credential_lane:"compute_readonly",lease_id:"synthetic-lease-test-0002",key_version:"broker-test-v1",lease_id:"synthetic-lease-test-0002",key_version:"broker-test-v1"
   };
   const input = `${json({alg:"ES256",kid:"test-key-1",typ:"JWT"})}.${json(claims)}`;
   const sig = await crypto.subtle.sign({name:"ECDSA",hash:"SHA-256"},pair.privateKey,new TextEncoder().encode(input));
@@ -72,7 +74,7 @@ test("rejects expired assertions, unknown keys, and repository mismatch", async 
     iss:"https://broker.test.invalid",aud:"nexus-quota-ledger",sub:"12345",
     installation_id:"42113",repository_ids:["1454085952"],permissions:{metadata:"read"},
     token_sha256:Buffer.from(digest).toString("hex"),issued_at:now-400,expires_at:now-1,
-    jti:"synthetic-jti-00000003",credential_lane:"compute_readonly"
+    jti:"synthetic-jti-00000003",credential_lane:"compute_readonly",lease_id:"synthetic-lease-test-0003",key_version:"broker-test-v1"
   };
   const input = `${json({alg:"ES256",kid:"test-key-1",typ:"JWT"})}.${json(claims)}`;
   const sig = await crypto.subtle.sign({name:"ECDSA",hash:"SHA-256"},pair.privateKey,new TextEncoder().encode(input));
