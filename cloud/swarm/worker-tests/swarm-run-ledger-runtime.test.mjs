@@ -17,7 +17,7 @@ function stubFor(suffix) {
 }
 
 async function call(stub, action, input, callerId = "primary", extraOptions = {}) {
-  const result = await signedCall(stub, env, action, {...input,projectId:PROJECT_ID}, {
+  const result = await signedCall(stub, env, action, {...input,projectId:input.projectId??PROJECT_ID}, {
     callerId,
     secret: SECRETS[callerId],
     ...extraOptions
