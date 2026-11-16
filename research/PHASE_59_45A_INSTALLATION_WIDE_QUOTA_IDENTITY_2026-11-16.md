@@ -46,3 +46,21 @@ No other repository is part of this test. P10CR mission isolation remains intact
 - Add a deterministic crash/restart and concurrent multi-client contention harness around the same shared ledger, preserving conservative uncertain accounting and fencing.
 - Keep real provider requests mocked, production flags OFF, inference disabled and spend ₹0.
 - Physical independent-host and cross-run hosted validation remain blocked until an owner-approved, zero-billing Cloudflare deployment and real installation identity exist. No deployment or credential is activated by this phase.
+
+
+## Phase 59.45B failure analysis and correction (16-Nov-2026)
+
+The first PR-head runtime execution reported 62/63 passing; the new two-client test returned HTTP 503 from the second shadow Worker. The failing assertion was at the second client's response check. Existing regression workflows passed.
+
+Forensic inspection found that both synthetic provider responses reused the same fixed `x-github-request-id`, even though the clients represented distinct provider requests. This violated the evidence identity invariant and could cause duplicate telemetry provenance to be treated as a conflict. This was the leading code-level cause; the original Worker intentionally returned a generic fail-closed response, so the old run did not expose a definitive internal error.
+
+Correction on the PR branch:
+- Generate a distinct deterministic fixture request ID from each validated stable request ID.
+- Add diagnostic assertion output to the test so any future 503 reports the sanitized JSON response body.
+- Keep external network requests at zero and retain the shared installation-scope test fixture.
+
+The PR was reopened against the corrected head to trigger a fresh PR validation cycle. The new exact-head run is queued/pending at the latest observation; **the correction is not yet CI-verified**. Do not merge until the Cloudflare Workers runtime test and all required regression workflows pass on the same exact head.
+
+Latest corrected branch head: `54c81037de48747717259b84d1a2a3f37879c36b`.
+
+No deployment, live GitHub API request, inference, real installation credential or spend occurred.
