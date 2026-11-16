@@ -1222,12 +1222,13 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
     await seedBucket(stub,input,"core",100);
     const request = {...input,requestFingerprint:"d".repeat(64)};
     expect((await call(stub,"reserve",request)).status).toBe("RESERVED");
+    const retryAfterObservedAt = Math.floor(Date.now()/1000);
     const cooldown = await call(stub,"recordSecondaryLimit",{
       ...request,status:429,kind:"SECONDARY_LIMIT",retryAfterSeconds:120,
       resetAtEpoch:null,minimumWaitSeconds:0,reason:"RETRY_AFTER_HEADER"
     });
     expect(cooldown.status).toBe("SECONDARY_COOLDOWN_RECORDED");
-    expect(cooldown.cooldownUntilEpoch).toBeGreaterThanOrEqual(Math.floor(Date.now()/1000)+120);
+    expect(cooldown.cooldownUntilEpoch).toBeGreaterThanOrEqual(retryAfterObservedAt+120);
     expect((await call(stub,"settle",{...request,actualByBucket:{core:1}})).status).toBe("SETTLED");
     const blocked = await call(stub,"reserve",{
       ...input,reservationId:"secondary-retry-after-next",workerId:"secondary-retry-after-next-worker",
@@ -1432,7 +1433,7 @@ describe("Phase 59.43 lease renewal and uncertain reconciliation", () => {
 describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
   const shadowInput = {
     provider: "github",
-    credentialScope: "github-app-installation:shadow-test-45",
+    credentialScope: "github-app-installation:shadow-test-44",
     windowId: "github-rate-limit-ledger",
     controlPlaneProvider: "cloudflare",
     reservationId: "shadow-seed",
@@ -1459,7 +1460,7 @@ describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
       ...envelope,
       target: { owner: "attacker", repo: "other-repository" }
     };
-    const response = await env.SHADOW_WORKER.fetch(new Request(
+    const response = await env.PHASE_59_44_SHADOW_WORKER.fetch(new Request(
       "https://shadow-worker/shadow/research",
       {
         method: "POST",
@@ -1481,7 +1482,7 @@ describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
     });
     expect(seeded.reset_at_epoch).toBe(4102444800);
 
-    const invoke = () => env.SHADOW_WORKER.fetch(new Request(
+    const invoke = () => env.PHASE_59_44_SHADOW_WORKER.fetch(new Request(
       "https://shadow-worker/shadow/research",
       {
         method: "POST",
