@@ -3963,8 +3963,8 @@
   "updated_at": "2026-11-16",
   "current_task": "P59-003",
   "last_updated": "2026-11-16",
-  "sequence_note": "P59-003 remains sole active P0. Phase59.47 merged and reconciled. Phase59.48 candidate branch phase59-48-heartbeat-settlement-crash-window adds heartbeat expiry commit fencing and provider-response settlement transport-failure uncertainty handling; exact-head CI pending. P59-001 PAUSED; P59-002 BLOCKED. Canonical repository only; ₹0 spend; no paid fallback; production flags OFF; AI inference disabled.",
-  "last_reconciled_from_mission_state": "Phase59.47 PR #28 merged as e4683f10e49d61f8c61a6ae4567f64150fafd40a after exact tested head 3c2849462839768e3c464341ab2b21efb74d9e81 passed Workers/workerd runtime run 43831522426 and all 13/13 regression workflows. Mission state reconciled in commit bc4a96f538b4054f9323df3cde80b386188be9bb.",
+  "sequence_note": "P59-003 remains sole active P0. Phase59.46, 59.47 and 59.48 merged and reconciled. Phase59.48 PR #29 exact tested head b91d20d08cbc3c0a9a43e94df236a28985f506c passed all 13/13 workflows including Workers/workerd runtime run 43836432732 and PostgreSQL transactional store run 43836432412; merge 17f2de069868273eac8893a37f56dd860b8d36e0. Phase59.49 next: durable provider-response journal/idempotency and duplicate settlement fencing. P59-001 PAUSED; P59-002 BLOCKED. Canonical repository only; ₹0 spend; no paid fallback; production flags OFF; AI inference disabled.",
+  "last_reconciled_from_mission_state": "Phase59.48 PR #29 merged as 17f2de069868273eac8893a37f56dd860b8d36e0 after exact tested head b91d20d08cbc3c0a9a43e94df236a28985f506c passed 13/13 workflows; mission state reconciliation commit e15db71c6e684945b653ff9ee766af8cfa1fd83e.",
   "phase59_46": {
     "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
     "pr_number": 27,
@@ -4043,10 +4043,10 @@
       "not revenue evidence"
     ]
   },
-  "phase59_48_candidate": {
+  "phase59_48": {
     "report": "research/PHASE_59_48_HEARTBEAT_SETTLEMENT_CRASH_WINDOW_2026-11-16.md",
     "branch": "phase59-48-heartbeat-settlement-crash-window",
-    "status": "OPEN_CI_PENDING",
+    "status": "MERGED_CODE_ONLY_FEATURE_FLAG_OFF_NOT_DEPLOYED",
     "scope": "Stale heartbeat after lease expiry; duplicate/late settlement rejection; provider-response to settlement-RPC transport-loss accounting.",
     "finding": "Expired renewReservation previously rejected inside transaction without committing expiry; thrown settlement RPC transport errors after provider response escaped the explicit uncertain-accounting fallback.",
     "correction": "Sweep expiry inside heartbeat transaction and reject via post-commit sentinel; catch settlement transport failure and attempt markUncertain without replaying provider request.",
@@ -4063,7 +4063,27 @@
     "ai_inference": false,
     "spend_inr": 0,
     "external_network_requests": 0,
-    "pr_number": null,
-    "pr_state": "NOT_OPENED"
+    "pr_number": 29,
+    "pr_state": "MERGED",
+    "tested_head": "b91d20d08cbc3c0a9a43e94df236a28985f506c",
+    "head_sha": "b91d20d08cbc3c0a9a43e94df236a28985f506c",
+    "merge_commit": "17f2de069868273eac8893a37f56dd860b8d36e0",
+    "exact_head_ci": "SUCCESS",
+    "workers_runtime_run_id": 43836432732,
+    "workers_runtime_conclusion": "SUCCESS",
+    "regression_workflows_passed": 13,
+    "regression_workflows_total": 13,
+    "postgres_transactional_store_run_id": 43836432412,
+    "postgres_transactional_store_conclusion": "SUCCESS",
+    "evidence_scope": "Cloudflare workerd stale-heartbeat expiry commit fencing and settlement transport-loss uncertainty fallback using injected deterministic fixtures.",
+    "limitations": [
+      "not physical process termination at every instruction boundary",
+      "not deployed Cloudflare production",
+      "not live GitHub App installation",
+      "not live provider access",
+      "not AI inference",
+      "not revenue evidence"
+    ],
+    "next": "Phase59.49 durable provider-response journal/idempotency and duplicate settlement fencing."
   }
 }
