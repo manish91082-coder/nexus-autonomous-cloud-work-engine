@@ -81,7 +81,7 @@ async function createHarness() {
       dispatch_id: dispatchId, started_at: now - 1, completed_at: now,
       response_status: outcome === "response_received" ? 200 : null, outcome
     };
-    return { receipt: await signJws(gatewayKey.pair, "gateway-test-key", claims), fingerprint, dispatchId, responseEvidence };
+    return { receipt: await signJws(gatewayKey.pair, "gateway-test-key", claims), fingerprint, dispatchId, responseEvidence, outcome };
   }
 
   async function ledgerSettle({ lease, dispatch }) {
@@ -100,7 +100,7 @@ async function createHarness() {
       requestFingerprint: dispatch.fingerprint.fingerprint,
       requestBodySha256: dispatch.fingerprint.requestBodySha256,
       tokenSha256: claVerified.tokenSha256,
-      responseHeadersSha256: dispatch.responseEvidence.sha256, dispatchId: dispatch.dispatchId
+      responseHeadersSha256: dispatch.outcome === "response_received" ? dispatch.responseEvidence.sha256 : null, dispatchId: dispatch.dispatchId
     });
     // The ledger verifies signed CLA claims without receiving the broker token.
   // Token-to-CLA binding is enforced by the gateway before dispatch.
