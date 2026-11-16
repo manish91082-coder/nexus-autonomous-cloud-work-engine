@@ -3963,7 +3963,7 @@
   "updated_at": "2026-11-16",
   "current_task": "P59-003",
   "last_updated": "2026-11-16",
-  "sequence_note": "P59-003 remains sole active P0. Phase59.46, 59.47 and 59.48 merged and reconciled. Phase59.48 PR #29 exact tested head b91d20d08cbc3c0a9a43e94df236a28985f506c passed all 13/13 workflows including Workers/workerd runtime run 43836432732 and PostgreSQL transactional store run 43836432412; merge 17f2de069868273eac8893a37f56dd860b8d36e0. Phase59.49 next: durable provider-response journal/idempotency and duplicate settlement fencing. P59-001 PAUSED; P59-002 BLOCKED. Canonical repository only; ₹0 spend; no paid fallback; production flags OFF; AI inference disabled.",
+  "sequence_note": "P59-003 remains sole active P0. Phase59.48 merged and reconciled. Phase59.49 candidate branch phase59-49-response-journal-settlement-idempotency adds metadata-only durable provider response receipts and replay-safe settlement idempotency; exact-head CI pending. P59-001 PAUSED; P59-002 BLOCKED. Canonical repository only; ₹0 spend; no paid fallback; production flags OFF; AI inference disabled.",
   "last_reconciled_from_mission_state": "Phase59.48 PR #29 merged as 17f2de069868273eac8893a37f56dd860b8d36e0 after exact tested head b91d20d08cbc3c0a9a43e94df236a28985f506c passed 13/13 workflows; mission state reconciliation commit e15db71c6e684945b653ff9ee766af8cfa1fd83e.",
   "phase59_46": {
     "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
@@ -4085,5 +4085,34 @@
       "not revenue evidence"
     ],
     "next": "Phase59.49 durable provider-response journal/idempotency and duplicate settlement fencing."
+  },
+  "phase59_49_candidate": {
+    "report": "research/PHASE_59_49_RESPONSE_JOURNAL_SETTLEMENT_IDEMPOTENCY_2026-11-16.md",
+    "branch": "phase59-49-response-journal-settlement-idempotency",
+    "status": "OPEN_CI_PENDING",
+    "scope": "Reservation-level durable provider response receipt and idempotent duplicate settlement.",
+    "findings": [
+      "Identical settlement replay previously rejected generically instead of acknowledged idempotently.",
+      "Telemetry response observations existed, but no compact reservation-level provider response receipt existed."
+    ],
+    "changes": [
+      "SETTLEMENT_ALREADY_APPLIED for exact same actualByBucket replay, without counter mutation.",
+      "Conflicting settlement replay fails closed.",
+      "Concurrent identical settlement must charge once.",
+      "SQLite quota_provider_response_journal stores metadata-only provider response receipt in same transaction as response-header telemetry observation.",
+      "Snapshot exposes journal for audit."
+    ],
+    "evidence_boundary": [
+      "receipt is durable only after telemetry write commits",
+      "provider response and local SQLite cannot be one atomic transaction",
+      "hard termination before receipt commit remains covered by lease expiry and uncertain-budget retention",
+      "not production deployment or revenue evidence"
+    ],
+    "production_feature_flag": "OFF",
+    "ai_inference": false,
+    "spend_inr": 0,
+    "external_network_requests": 0,
+    "pr_number": null,
+    "pr_state": "NOT_OPENED"
   }
 }
