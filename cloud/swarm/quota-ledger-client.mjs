@@ -246,10 +246,27 @@ export async function executeQuotaGuardedGitHubRequest({
   // charge the full server-authorized reservation. Linked telemetry prevents
   // double subtraction for the bucket measured by this response.
   const actualByBucket = admission.body.reservedByBucket;
-  const settled = await ledgerCall(env, "settle", {
-    ...base,
-    actualByBucket
-  }, rpcOptions);
+  let settled;
+  try {
+    settled = await ledgerCall(env, "settle", {
+      ...base,
+      actualByBucket
+    }, rpcOptions);
+  } catch (error) {
+    // The provider response is already received. A lost ledger acknowledgement
+    // is not permission to replay the provider request or release its budget.
+    // Attempt an explicit uncertain transition; lease expiry remains the
+    // durable fallback if this Worker is terminated before that write commits.
+    const uncertain = await ledgerCall(env, "markUncertain", base, rpcOptions);
+    return {
+      status: "RESPONSE_RECEIVED_ACCOUNTING_UNCERTAIN",
+      reservationId,
+      error: String(error?.message || error),
+      telemetry: telemetryResult.body,
+      accounting: { settlement: null, uncertainty: uncertain.body },
+      response
+    };
+  }
   if (settled.httpStatus !== 200 || settled.body?.status !== "SETTLED") {
     const uncertain = await ledgerCall(env, "markUncertain", base, rpcOptions);
     return {
