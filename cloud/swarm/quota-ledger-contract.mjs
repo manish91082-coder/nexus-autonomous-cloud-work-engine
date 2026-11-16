@@ -18,6 +18,18 @@ export function integer(value, field, min = 0) {
   return value;
 }
 
+export function validateGitHubInstallationScope(provider, credentialScope) {
+  nonEmpty(provider, "provider");
+  nonEmpty(credentialScope, "credentialScope");
+  if (provider === "github"
+    && !/^github-app-installation:[1-9][0-9]{0,19}$/.test(credentialScope)) {
+    throw new QuotaLedgerError(
+      "GitHub quota scope must be the canonical github-app-installation:<numeric-installation-id>; token, repository, run and caller scopes are forbidden"
+    );
+  }
+  return true;
+}
+
 export function computeReservationLease({
   nowEpoch, createdAtEpoch, currentExpiresAtEpoch,
   extensionSeconds = 120, maxLifetimeSeconds = 1800
@@ -47,6 +59,7 @@ export function quotaLedgerObjectName(provider, credentialScope, windowId) {
   nonEmpty(provider, "provider");
   nonEmpty(credentialScope, "credentialScope");
   nonEmpty(windowId, "windowId");
+  validateGitHubInstallationScope(provider, credentialScope);
   return JSON.stringify([provider, credentialScope, windowId]);
 }
 
@@ -57,6 +70,7 @@ export function validateQuotaRequest(input) {
   nonEmpty(input.provider, "provider");
   nonEmpty(input.credentialScope, "credentialScope");
   nonEmpty(input.windowId, "windowId");
+  validateGitHubInstallationScope(input.provider, input.credentialScope);
   nonEmpty(input.controlPlaneProvider, "controlPlaneProvider");
   if (input.provider === input.controlPlaneProvider) {
     throw new QuotaLedgerError("quota ledger provider must differ from budgeted provider");
