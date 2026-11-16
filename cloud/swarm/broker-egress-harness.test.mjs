@@ -49,7 +49,7 @@ async function createHarness() {
     const verifiedCla = await verifyGitHubCredentialProvenance({
       assertion: lease.cla, bearerToken: token, publicKeys: publicBrokerKeys, nowEpoch: now,
       issuer: "https://broker.test.invalid", audience: "nexus-quota-ledger",
-      appId: "12345", repositoryId, credentialLane: lane,
+      appId: "12345", repositoryId: intent.repositoryId, credentialLane: lane,
       requiredPermissions: { metadata: "read" }
     });
     const fingerprint = await computeGitHubRequestFingerprint(intent);
@@ -124,10 +124,12 @@ test("synthetic broker -> gateway -> ledger flow verifies CLA, request fingerpri
 
 test("worker cannot choose a different installation scope or substitute token", async () => {
   const h = await createHarness();
-  await assert.rejects(() => h.gatewayDispatch({
+  const dispatch = await h.gatewayDispatch({
     lease: { ...h.lease, credentialScope: "github-app-installation:99999" },
     intent: validIntent()
-  }), /unknown lease/);
+  });
+  const settled = await h.ledgerSettle({ lease: h.lease, dispatch });
+  assert.equal(settled.installationId, "42113", "caller-supplied scope is ignored; signed CLA controls identity");
   // No token-taking public API exists; token substitution is independently rejected by CLA verifier.
   await assert.rejects(() => verifyGitHubCredentialProvenance({
     assertion: h.lease.cla, bearerToken: "SUBSTITUTED-SYNTHETIC-TOKEN",
@@ -141,7 +143,7 @@ test("gateway rejects repository/path/operation mismatch before emitting a recei
   const h = await createHarness();
   await assert.rejects(() => h.gatewayDispatch({
     lease: h.lease, intent: { ...validIntent(), repositoryId: "999" }
-  }));
+  }), /repository not authorized/);
   await assert.rejects(() => h.gatewayDispatch({
     lease: h.lease, intent: { ...validIntent(), url: "https://api.github.com/repos/octocat/Other" }
   }), /URL path does not match/);
