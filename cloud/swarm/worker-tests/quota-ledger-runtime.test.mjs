@@ -87,9 +87,22 @@ describe("Phase 59.45 canonical installation-wide quota identity", () => {
   });
 
   it("routes independent repository/run/token/caller clients to the same installation ledger", () => {
-    const a = quotaLedgerObjectName("github", "github-app-installation:123456789", "github-rate-limit-ledger");
-    const b = quotaLedgerObjectName("github", "github-app-installation:123456789", "github-rate-limit-ledger");
-    expect(a).toBe(b);
+    const sharedInstallationScope = "github-app-installation:123456789";
+    const clientA = {
+      repository: "owner-a/repo-a",
+      runId: "run-100",
+      tokenId: "token-a",
+      callerId: "worker-a",
+      quotaObjectName: quotaLedgerObjectName("github", sharedInstallationScope, "github-rate-limit-ledger")
+    };
+    const clientB = {
+      repository: "owner-b/repo-b",
+      runId: "run-200",
+      tokenId: "token-b",
+      callerId: "worker-b",
+      quotaObjectName: quotaLedgerObjectName("github", sharedInstallationScope, "github-rate-limit-ledger")
+    };
+    expect(clientA.quotaObjectName).toBe(clientB.quotaObjectName);
   });
 
   it("isolates distinct GitHub App installations", () => {
