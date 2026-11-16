@@ -149,8 +149,9 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     const denied = await stub.fetch(request);
     expect(denied.status).toBe(403);
     const primaryRequest = await createSignedRequest(callerEnv.primary, "snapshot", { taskId: task.taskId }, { nonce: crypto.randomUUID() });
+    const replayRequest = primaryRequest.clone();
     expect((await stub.fetch(primaryRequest)).status).toBe(200);
-    const replay = await stub.fetch(primaryRequest.clone());
+    const replay = await stub.fetch(replayRequest);
     expect(replay.status).toBe(409);
     expect((await replay.json()).reason).toBe("AUTH_REPLAY_DETECTED");
   });
