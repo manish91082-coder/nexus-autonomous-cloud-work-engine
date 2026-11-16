@@ -27,7 +27,8 @@ export default defineConfig({
         serviceBindings: {
           SECOND_CALLER: "p10cr-secondary-caller",
           SHADOW_WORKER: "p10cr-read-only-shadow-worker",
-          SECOND_SHADOW_WORKER: "p10cr-read-only-shadow-worker-secondary"
+          SECOND_SHADOW_WORKER: "p10cr-read-only-shadow-worker-secondary",
+          PHASE_59_44_SHADOW_WORKER: "p10cr-read-only-shadow-worker-phase-59-44"
         },
         workers: [
           {
@@ -118,6 +119,31 @@ export default defineConfig({
               NEXUS_QUOTA_CALLER_SECRET: shadowWorkerTestSecret,
               NEXUS_QUOTA_CREDENTIAL_SCOPE: "github-app-installation:shadow-test-45a",
               NEXUS_SWARM_WORKER_ID: "p10cr-read-only-shadow-worker-primary",
+              NEXUS_SWARM_MODE: "SHADOW",
+              NEXUS_SWARM_SHADOW_RESET_AT: "4102444800",
+              NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE: "2"
+            },
+            durableObjects: {
+              QUOTA_LEDGER: sharedQuotaNamespace
+            }
+          },
+          {
+            name: "p10cr-read-only-shadow-worker-phase-59-44",
+            rootPath: "../",
+            modules: [
+              { type: "ESModule", path: "./read-only-swarm-worker.mjs" },
+              { type: "ESModule", path: "./quota-ledger-client.mjs" },
+              { type: "ESModule", path: "./quota-ledger-contract.mjs" },
+              { type: "ESModule", path: "./github-quota-telemetry.mjs" },
+              { type: "ESModule", path: "./github-operation-registry.mjs" },
+              { type: "ESModule", path: "./github-secondary-rate-limit.mjs" }
+            ],
+            bindings: {
+              NEXUS_QUOTA_STORE_ENABLED: "true",
+              NEXUS_QUOTA_CALLER_ID: "shadow",
+              NEXUS_QUOTA_CALLER_SECRET: shadowWorkerTestSecret,
+              NEXUS_QUOTA_CREDENTIAL_SCOPE: "github-app-installation:shadow-test-44",
+              NEXUS_SWARM_WORKER_ID: "p10cr-read-only-shadow-worker-phase-59-44",
               NEXUS_SWARM_MODE: "SHADOW",
               NEXUS_SWARM_SHADOW_RESET_AT: "4102444800",
               NEXUS_GITHUB_REST_ENDPOINT_POINTS_PER_MINUTE: "2"
