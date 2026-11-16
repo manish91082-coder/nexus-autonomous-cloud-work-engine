@@ -1,0 +1,8 @@
+import { SwarmRunDO } from "./swarm-run-ledger-do.mjs";
+export { SwarmRunDO };
+
+export default {
+  async fetch() {
+    return new Response("Not Found", { status: 404 });
+  }
+};
