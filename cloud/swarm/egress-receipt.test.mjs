@@ -70,7 +70,9 @@ test("accepts uncertain outcomes only without a response status", async () => {
 test("requires a signed response-header digest for received responses", async () => {
   const missing={...claims()};
   delete missing.response_headers_sha256;
-  await assert.rejects(()=>verifyEgressDispatchReceipt({receipt:await sign(missing),...base()}),/schema mismatch/);
+  const missingReceipt = await sign(missing);
+  await assert.rejects(()=>verifyEgressDispatchReceipt({receipt:missingReceipt,...base()}),/schema mismatch/);
   const invalid={...claims(),response_headers_sha256:"not-a-digest"};
-  await assert.rejects(()=>verifyEgressDispatchReceipt({receipt:await sign(invalid),...base()}),/response header evidence digest required/);
+  const invalidReceipt = await sign(invalid);
+  await assert.rejects(()=>verifyEgressDispatchReceipt({receipt:invalidReceipt,...base()}),/response header evidence digest required/);
 });
