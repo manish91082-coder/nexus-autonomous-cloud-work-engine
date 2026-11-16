@@ -276,7 +276,7 @@ export class SwarmRunDO extends DurableObject {
     const now = Math.floor(Date.now() / 1000);
     this.#assertLease(taskId, workerId, fencingToken, runId, now, this.#lease(taskId));
     const current = this.#checkpointRow(taskId);
-    if (current && checkpointSeq === current.checkpoint_seq && checkpointHash === current.checkpoint_hash && current.fencing_token === fencingToken) return { status: "DUPLICATE_CHECKPOINT", taskId, checkpointSeq, checkpointHash };
+    if (current && checkpointSeq === current.checkpoint_seq && checkpointHash === current.checkpoint_hash && current.fencing_token === fencingToken && current.run_id === runId) return { status: "DUPLICATE_CHECKPOINT", taskId, checkpointSeq, checkpointHash };
     if (checkpointSeq !== (current?.checkpoint_seq ?? 0) + 1) throw new Error("CHECKPOINT_SEQUENCE_CONFLICT");
     return this.#commitEvent(taskId, "TASK_CHECKPOINTED", { workerId, runId, fencingToken, checkpointSeq, checkpointHash }, () => {
       this.#assertLease(taskId, workerId, fencingToken, runId, Math.floor(Date.now() / 1000), this.#lease(taskId));
