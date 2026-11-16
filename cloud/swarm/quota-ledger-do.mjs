@@ -724,7 +724,12 @@ export class QuotaLedgerDO extends DurableObject {
       // not a second counter mutation. A changed amount is a hard conflict.
       if (rec.status === "SETTLED") {
         const priorActual = JSON.parse(rec.actual_by_bucket_json || "{}");
-        if (JSON.stringify(priorActual) === JSON.stringify(input.actualByBucket)) {
+        const priorKeys = Object.keys(priorActual).sort();
+        const incomingKeys = Object.keys(input.actualByBucket).sort();
+        const sameSettlement = priorKeys.length === incomingKeys.length
+          && priorKeys.every((key,index) => key === incomingKeys[index]
+            && priorActual[key] === input.actualByBucket[key]);
+        if (sameSettlement) {
           return {reservationId:input.reservationId,status:"SETTLEMENT_ALREADY_APPLIED",
             actualByBucket:priorActual};
         }
