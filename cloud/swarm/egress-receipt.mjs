@@ -63,7 +63,8 @@ function validateClaims(c, now, expected) {
     if (typeof c[key] !== "string" || !DIGEST.test(c[key])) fail(`invalid ${key}`);
   }
   if (!Number.isSafeInteger(c.started_at) || !Number.isSafeInteger(c.completed_at)
-    || c.started_at > now + 5 || c.completed_at < c.started_at
+    || c.started_at < now - MAX_WINDOW_SECONDS || c.started_at > now + 5
+    || c.completed_at < c.started_at || c.completed_at > now + 5
     || c.completed_at - c.started_at > MAX_WINDOW_SECONDS) fail("receipt time window invalid");
   if (typeof c.outcome !== "string" || !OUTCOMES.has(c.outcome)) fail("invalid outcome");
   if (c.outcome === "response_received") {
