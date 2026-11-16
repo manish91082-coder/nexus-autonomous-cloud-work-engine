@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
   "last_verified_head": "58352e68fe71abdb71e8dae68580b0d96601ba14",
-  "current_focus": "P59-003 swarm foundation. Phase59.45A merged and reconciled. Phase59.46 PR #27 open with a 16-request concurrent burst test across two independent shadow Worker clients sharing one fixture installation quota partition. Exact-head CI pending. Production flags OFF, inference disabled, spend ₹0.",
+  "current_focus": "P59-003 swarm foundation. Phase59.45A merged. Phase59.46 PR #27: first CI had 63/64 runtime tests pass; sole failure was an invalid fairness assertion, not quota oversubscription. Corrected head cca2e16f6c377ade5b07a153ecd9b7ec618dc94d pushed; exact-head CI pending. Do not merge until green.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -136,7 +136,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Complete Phase59.46 exact-head CI and inspect runtime logs; then Phase59.47 crash/restart, lease expiry and stale fencing rejection.",
+  "next_focus": "Verify corrected Phase59.46 exact-head CI, merge only after all required checks pass, reconcile master; then Phase59.47 crash/restart, lease expiry and stale fencing rejection.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -1903,7 +1903,7 @@
     "pr_number": 27,
     "pr_state": "OPEN_CI_PENDING",
     "branch": "phase59-46-global-installation-contention-v2",
-    "head_sha": "cb7a10b50b09013c94c90b01c7bce1ba19fb0736",
+    "head_sha": "cca2e16f6c377ade5b07a153ecd9b7ec618dc94d",
     "scope": "16 concurrent requests across two independent shadow Worker clients, shared installation-scope Durable Object fixture",
     "assertions": [
       "2-request endpoint budget not oversubscribed",
@@ -1916,6 +1916,15 @@
     "production_feature_flag": "OFF",
     "ai_inference": false,
     "spend_inr": 0,
-    "next": "Wait for exact-head Workers/workerd and regression CI; inspect failure logs if any. Do not merge before all required checks pass."
+    "next": "Wait for exact-head Workers/workerd and regression CI; inspect failure logs if any. Do not merge before all required checks pass.",
+    "ci_status": "CORRECTED_HEAD_AWAITING_CI",
+    "first_run": {
+      "run_id": 43816005067,
+      "workers_runtime": "FAILURE",
+      "tests_passed": 63,
+      "tests_total": 64,
+      "diagnosis": "The only failure was an invalid fairness assertion: both admitted requests were attributed to primary worker; shared cap of 2 was respected, 14 excess requests rejected, both reservations settled. Current contract does not promise fair scheduling."
+    },
+    "correction": "Removed uncontracted requirement that both worker identities must win admission in one concurrent burst; retained no-oversubscription, valid worker attribution, settlement and zero residual budget assertions."
   }
 }
