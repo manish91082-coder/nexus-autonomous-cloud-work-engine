@@ -84,6 +84,7 @@ Required claims:
 - `canonical_url_sha256`
 - `request_body_sha256` (hash of empty bytes for GET)
 - `token_sha256`
+- `response_headers_sha256`: SHA-256 digest of the versioned canonical allowlist of response headers consumed by quota/rate-limit parsing; null only for non-response outcomes
 - `dispatch_id`: unique, replay-protected ID
 - `started_at`, `completed_at`
 - `response_status`
