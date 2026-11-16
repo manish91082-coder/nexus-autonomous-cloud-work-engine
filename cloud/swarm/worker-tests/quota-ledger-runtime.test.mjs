@@ -1535,3 +1535,82 @@ describe("Phase 59.44 read-only swarm Worker shadow integration", () => {
     expect(snapshot.buckets.find(item => item.bucket_id === "core").committed_units).toBe(1);
   });
 });
+
+
+describe("Phase 59.45 installation-wide quota identity across independent P10CR clients", () => {
+  const baseEnvelope = {
+    schemaVersion: "1.0",
+    mode: "SHADOW",
+    projectId: "P10CR",
+    taskId: "P59-003",
+    taskType: "READ_ONLY_REPOSITORY_METADATA",
+    operation: "github.rest.repositories.get.v1",
+    target: {
+      owner: "manish91082-coder",
+      repo: "nexus-autonomous-cloud-work-engine"
+    }
+  };
+
+  it("shares one installation quota partition across separate workflow runs and worker clients", async () => {
+    const input = {
+      provider: "github",
+      credentialScope: "github-app-installation:shadow-test-42",
+      windowId: "github-rate-limit-ledger",
+      controlPlaneProvider: "cloudflare",
+      reservationId: "phase59-45-seed",
+      workerId: "phase59-45-seed-worker",
+      operation: "github.rest.repositories.get.v1"
+    };
+    const stub = stubFor(input);
+    await seedBucket(stub, input, "core", 100, {resetAtEpoch: 4102444800});
+
+    const firstEnvelope = {
+      ...baseEnvelope,
+      runId: "phase59-45-run-primary",
+      requestId: "p10cr-shadow:phase59-45-run-primary:metadata"
+    };
+    const secondEnvelope = {
+      ...baseEnvelope,
+      runId: "phase59-45-run-secondary",
+      requestId: "p10cr-shadow:phase59-45-run-secondary:metadata"
+    };
+    const invoke = (binding, value) => binding.fetch(new Request(
+      "https://shadow-worker/shadow/research",
+      {
+        method: "POST",
+        headers: {"content-type": "application/json"},
+        body: JSON.stringify(value)
+      }
+    ));
+
+    const firstResponse = await invoke(env.SHADOW_WORKER, firstEnvelope);
+    const secondResponse = await invoke(env.SECOND_SHADOW_WORKER, secondEnvelope);
+    expect(firstResponse.status).toBe(200);
+    expect(secondResponse.status).toBe(200);
+    expect(await firstResponse.json()).toMatchObject({
+      status: "SHADOW_COMPLETED",
+      runId: firstEnvelope.runId,
+      providerRequestIssued: true,
+      externalNetworkRequests: 0
+    });
+    expect(await secondResponse.json()).toMatchObject({
+      status: "SHADOW_COMPLETED",
+      runId: secondEnvelope.runId,
+      providerRequestIssued: true,
+      externalNetworkRequests: 0
+    });
+
+    const snapshot = await call(stub, "snapshot", input);
+    const reservations = snapshot.reservations.filter(item =>
+      item.reservation_id === "p10cr:" + firstEnvelope.requestId
+      || item.reservation_id === "p10cr:" + secondEnvelope.requestId
+    );
+    expect(reservations).toHaveLength(2);
+    expect(new Set(reservations.map(item => item.worker_id))).toEqual(new Set([
+      "p10cr-read-only-shadow-worker-primary",
+      "p10cr-read-only-shadow-worker-secondary"
+    ]));
+    expect(snapshot.buckets.find(item => item.bucket_id === "core").committed_units).toBe(2);
+    expect(snapshot.buckets.find(item => item.bucket_id === "core").reserved_units).toBe(0);
+  });
+});
