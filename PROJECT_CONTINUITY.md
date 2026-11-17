@@ -20,7 +20,7 @@ This checkpoint is being prepared on draft PR #40 branch `phase59-54-determinist
 - Workers/workerd runtime run [#44008145599](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44008145599): **74/74 PASS**.
 - The adapter now resumes from the durable checkpoint read after Durable Object eviction/reconstruction. It validates event chain, lease identity, fencing token, checkpoint hash and task payload/policy identity; it then writes checkpoint 2, completes once and suppresses duplicate delivery.
 - Three earlier runtime attempts failed because the test fixture could not evict a Durable Object with active references. The final correction isolates the integration test under a dedicated deterministic Durable Object ID; no production quota policy or namespace was weakened.
-- PR #40 remains a **draft and unmerged**. The tested code head `a15e921f` passed 13/13 regression and 74/74 workerd on the prior branch. The same eight-file checkpoint is now on draft PR #40, created from current master baseline `8856bf90`; PR #40 exact-head CI is pending. Do not treat branch state as active master state until owner-controlled merge.
+- PR #40 remains a **draft and unmerged**. The tested code head `a15e921f` passed 13/13 regression and 74/74 workerd on the prior branch. The same eight-file checkpoint is now on draft PR #40, created from current master baseline `8856bf90`; PR #40 exact-head CI passed 13/13 regression workflows and 74/74 Workers/workerd tests on head `3100ea2d`; the branch Mission Continuity Guard passed 111 checks. Do not treat branch state as active master state until owner-controlled merge.
 
 ## Phase 59.55 — current-head inventory complete
 
@@ -37,6 +37,13 @@ Inventory baseline: master `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
 - Phase59.45A/46 proved shared installation-scope quota behavior inside workerd (two clients; then 16 concurrent requests, 2 admitted/14 fail-closed). This is not physical multi-host, hosted cross-run/cross-repository, real GitHub App or production deployment proof.
 
 Full inventory: [Phase59.55 report](research/PHASE_59_55_CURRENT_HEAD_SWARM_SECURITY_INVENTORY_2026-11-17.md).
+
+## Rebased draft PR #40 verification
+
+- PR #40 exact tested head `3100ea2dfc698087299c4fe114df5a08a73de354`, based on master `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
+- Exact-head regression: 13/13 SUCCESS; Workers/workerd run #44009258395: 74/74 PASS.
+- Mission Continuity Guard #44009214414: 111 checks PASS, zero errors.
+- PR #39 is closed unmerged; PR #40 remains draft/unmerged.
 
 ## Current verified master workflows
 
