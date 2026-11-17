@@ -1,3 +1,4 @@
+// Phase59.54: exact-head CI revalidation on the current-master draft PR branch.
 import { describe, it, expect } from "vitest";
 import { env } from "cloudflare:workers";
 import { evictDurableObject } from "cloudflare:test";
@@ -9,14 +10,14 @@ const callerEnv = {
   primary: { NEXUS_QUOTA_CALLER_ID: "primary", NEXUS_QUOTA_CALLER_SECRET: PRIMARY },
   secondary: { NEXUS_QUOTA_CALLER_ID: "secondary", NEXUS_QUOTA_CALLER_SECRET: SECONDARY }
 };
-const taskId = label => `phase59-53-${label}-${crypto.randomUUID()}`;
+const taskId = label => `phase59-54-${label}-${crypto.randomUUID()}`;
 async function digest(value) {
   const bytes = new TextEncoder().encode(value);
   const hash = await crypto.subtle.digest("SHA-256", bytes);
   return Array.from(new Uint8Array(hash), x => x.toString(16).padStart(2, "0")).join("");
 }
-function stubFor() {
-  return env.SWARM_RUNS.get(env.SWARM_RUNS.idFromName("P10CR-project-cell"));
+function stubFor(name = "P10CR-project-cell") {
+  return env.SWARM_RUNS.get(env.SWARM_RUNS.idFromName(name));
 }
 async function rpc(stub, action, input, caller = "primary") {
   const request = await createSignedRequest(callerEnv[caller], action, input, { nonce: crypto.randomUUID() });
@@ -178,5 +179,58 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     const replay = await stub.fetch(replayRequest);
     expect(replay.status).toBe(409);
     expect((await replay.json()).reason).toBe("AUTH_REPLAY_DETECTED");
+  });
+  
+  it("resumes a deterministic non-provider shadow task from durable checkpoint after eviction and suppresses duplicate delivery", async () => {
+    const { prepareDeterministicShadowTask, resumeDeterministicShadowTask } = await import("./deterministic-shadow-task.mjs");
+    const stub = stubFor("P10CR-phase59-54-integrated-shadow");
+    const task = await register(stub, "phase59-54-integrated-shadow");
+
+    // Match the proven eviction pattern: one stub for the entire test. The RPC
+    // callback is scoped to preparation and is no longer retained at eviction.
+    const prepared = await (async () => {
+      const rpcCall = (action, input, caller) => rpc(stub, action, input, caller);
+      return prepareDeterministicShadowTask({
+        rpc: rpcCall,
+        task,
+        workerId: "phase59-54-shadow-worker"
+      });
+    })();
+    expect(prepared.status).toBe("CHECKPOINTED");
+    expect(prepared.output).toBeUndefined();
+
+    // Reconstruct the Durable Object. Resume receives only the lease identity
+    // and must reload/verify the persisted checkpoint rather than memory output.
+    await evictDurableObject(stub);
+
+    const first = await resumeDeterministicShadowTask({
+      rpc: (action, input, caller) => rpc(stub, action, input, caller),
+      taskId: prepared.taskId,
+      workerId: prepared.workerId,
+      runId: prepared.runId,
+      fencingToken: prepared.fencingToken
+    });
+    expect(first.status).toBe("COMPLETED");
+    expect(first.output.outcome).toBe("DETERMINISTIC_SHADOW_VERIFIED");
+    expect(first.output.fixtureVersion).toBe("p59.54-v2");
+    expect(first.eventChainValid).toBe(true);
+
+    const replay = await prepareDeterministicShadowTask({
+      rpc: (action, input, caller) => rpc(stub, action, input, caller),
+      task,
+      workerId: "phase59-54-shadow-worker"
+    });
+    expect(replay.status).toBe("ALREADY_COMPLETED");
+    expect(replay.resultHash).toBe(first.resultHash);
+
+    const final = await rpc(stub, "snapshot", { taskId: task.taskId });
+    expect(final.tasks[0].status).toBe("COMPLETED");
+    expect(final.tasks[0].result_hash).toBe(first.resultHash);
+    expect(final.tasks[0].result_run_id).toBe(first.runId);
+    expect(final.leases).toHaveLength(0);
+    expect(final.checkpoints).toHaveLength(1);
+    expect(final.checkpoints[0].checkpoint_seq).toBe(2);
+    expect(final.checkpoints[0].checkpoint_json).toContain("recoveredFromCheckpointSeq");
+    expect(final.eventChainValid).toBe(true);
   });
 });
