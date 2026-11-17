@@ -31,7 +31,7 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. PR #40 carries Phase59.54/55 as a draft unmerged dependency. Phase59.56 synthetic cross-repository installation quota proof is implemented on a stacked draft branch; second CI reached workerd; 74 existing tests passed and two new tests failed. Diagnostics added, reset test waits for reset, and mock response/seed reset timestamps aligned; retry pending. P59-001 PAUSED; P59-002 BLOCKED. Other project repositories remain untouched/read-only.",
+      "status": "P59-003 IN_PROGRESS; Phase59.56 synthetic Workers/workerd quota proof PASS 76/76 at code SHA cabdd9d2. Hosted cross-workflow-run, independent physical-host and live Durable Object proof remain pending. P59-001 PAUSED; P59-002 BLOCKED. Other project repositories untouched/read-only.",
       "last_observed_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
@@ -252,7 +252,7 @@
         "base_branch": "phase59-54-deterministic-shadow-ledger-path-master-sync",
         "base_sha": "e2b7fe6fc9be2c68628d1b4fd072fc3fa86d8d6d",
         "parent_pr": 40,
-        "status": "ACCOUNTING_DIAGNOSTIC_PENDING",
+        "status": "SYNTHETIC_WORKER_RUNTIME_PASS_HOSTED_CROSS_RUN_PENDING",
         "synthetic_repository_identities": 2,
         "synthetic_run_envelopes": 4,
         "concurrent_attempts": 16,
@@ -270,7 +270,31 @@
           44012088385,
           44012093514
         ],
-        "correction": "Shared quota gate blocked excess requests; two admitted responses became accounting-uncertain. Added bounded diagnostic fields; successful settlement not yet proven."
+        "correction": "Shared quota gate blocked excess requests; two admitted responses became accounting-uncertain. Added bounded diagnostic fields; successful settlement not yet proven.",
+        "code_commit": "cabdd9d2bfbb993f0e68093c9ce5130d9f70b810",
+        "exact_head_ci": {
+          "push_run": 44012476170,
+          "pull_request_run": 44012482615,
+          "tests": "76/76",
+          "status": "SUCCESS"
+        },
+        "results": {
+          "synthetic_repository_identities": 2,
+          "distinct_run_envelopes": 4,
+          "concurrent_attempts": 16,
+          "admitted_and_settled": 2,
+          "rejected_before_provider": 14,
+          "mock_provider_calls": 2,
+          "external_provider_requests": 0,
+          "residual_reserved_units": 0,
+          "residual_uncertain_units": 0,
+          "later_run_duplicate_suppressed": 1,
+          "duplicate_extra_provider_calls": 0,
+          "provider_reset_windows_accounted": 2
+        },
+        "hosted_cross_run_proven": false,
+        "independent_hosts_proven": false,
+        "next": "Phase59.57 compute/publisher separation"
       }
     },
     {

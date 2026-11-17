@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "P59-003 only. Phase59.56 synthetic cross-repository installation-quota proof implemented on stacked draft branch phase59-56-synthetic-global-quota-proof, based on PR #40 branch head e2b7fe6f. Two synthetic repository/project identities and four run envelopes share one installation-scope quota DO; 16-way burst and cross-run replay/reset-window assertions are pending exact-head CI. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. P59-001 PAUSED; P59-002 BLOCKED. No real secondary repository, provider, deployment, AI inference or spend. First Phase59.56 CI attempt failed at workerd startup because of an incorrect relative module import; corrected to ./quota-ledger-client.mjs. Retry pending; no test pass claimed. Second CI attempt reached workerd: 74 existing tests passed, 2 new tests failed. Added bounded diagnostics; corrected provider-window test to wait until the previous reset actually elapses. Exact-head retry pending. Diagnostic review found the first test's mock response resetAt was later than its seeded telemetry window; aligned both to 4102444800 so same-window response telemetry is accepted. Exact-head retry pending. Phase59.56 third run: 75 tests passed; cross-repo burst proved fail-closed shared concurrency but two admitted mock requests became RESPONSE_RECEIVED_ACCOUNTING_UNCERTAIN and held the in-flight gate. Added telemetry/settlement/uncertainty diagnostics; not accepted yet.",
+  "current_focus": "P59-003 only. Phase59.56 synthetic cross-repository installation-quota proof implemented on stacked draft branch phase59-56-synthetic-global-quota-proof, based on PR #40 branch head e2b7fe6f. Two synthetic repository/project identities and four run envelopes share one installation-scope quota DO; 16-way burst and cross-run replay/reset-window assertions are pending exact-head CI. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. P59-001 PAUSED; P59-002 BLOCKED. No real secondary repository, provider, deployment, AI inference or spend. First Phase59.56 CI attempt failed at workerd startup because of an incorrect relative module import; corrected to ./quota-ledger-client.mjs. Retry pending; no test pass claimed. Second CI attempt reached workerd: 74 existing tests passed, 2 new tests failed. Added bounded diagnostics; corrected provider-window test to wait until the previous reset actually elapses. Exact-head retry pending. Diagnostic review found the first test's mock response resetAt was later than its seeded telemetry window; aligned both to 4102444800 so same-window response telemetry is accepted. Exact-head retry pending. Phase59.56 third run: 75 tests passed; cross-repo burst proved fail-closed shared concurrency but two admitted mock requests became RESPONSE_RECEIVED_ACCOUNTING_UNCERTAIN and held the in-flight gate. Added telemetry/settlement/uncertainty diagnostics; not accepted yet. Phase59.56 synthetic workerd quota proof passed 76/76 at code SHA cabdd9d2; two synthetic repo identities/four run envelopes/16 attempts yielded 2 settled and 14 fail-closed, zero residual reserved/uncertain, one later-run duplicate suppressed. This is not hosted cross-workflow or independent-host proof. Next Phase59.57 compute/publisher separation; P59-001 stays PAUSED and P59-002 BLOCKED.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -2281,7 +2281,7 @@
     "base_branch": "phase59-54-deterministic-shadow-ledger-path-master-sync",
     "base_sha": "e2b7fe6fc9be2c68628d1b4fd072fc3fa86d8d6d",
     "parent_pr": 40,
-    "status": "ACCOUNTING_DIAGNOSTIC_PENDING",
+    "status": "SYNTHETIC_WORKER_RUNTIME_PASS_HOSTED_CROSS_RUN_PENDING",
     "test_file": "cloud/swarm/worker-tests/phase59-56-cross-repository-global-quota.test.mjs",
     "worker_file": "cloud/swarm/cross-repository-quota-worker.mjs",
     "schema": "schemas/phase59-56-cross-repository-quota-envelope-v1.schema.json",
@@ -2298,7 +2298,7 @@
     "production_feature_flag": "OFF",
     "spend_inr": 0,
     "verified_realized_net_receipts_inr": 0,
-    "exact_head_ci": "RETRY_PENDING",
+    "exact_head_ci": "SUCCESS",
     "failure_history": [
       {
         "run_id": 44011529268,
@@ -2343,6 +2343,24 @@
         "cause": "same code head; exact run result to be checked"
       }
     ],
-    "correction": "Added response-accounting diagnostics for telemetry, settlement and uncertainty. Shared concurrency gate is evidenced; successful settlement and zero residual reservation/uncertainty are not yet proven."
+    "correction": "Added response-accounting diagnostics for telemetry, settlement and uncertainty. Shared concurrency gate is evidenced; successful settlement and zero residual reservation/uncertainty are not yet proven.",
+    "code_commit": "cabdd9d2bfbb993f0e68093c9ce5130d9f70b810",
+    "results": {
+      "synthetic_repository_identities": 2,
+      "distinct_run_envelopes": 4,
+      "concurrent_attempts": 16,
+      "admitted_and_settled": 2,
+      "rejected_before_provider": 14,
+      "mock_provider_calls": 2,
+      "external_provider_requests": 0,
+      "residual_reserved_units": 0,
+      "residual_uncertain_units": 0,
+      "later_run_duplicate_suppressed": 1,
+      "duplicate_extra_provider_calls": 0,
+      "provider_reset_windows_accounted": 2
+    },
+    "hosted_cross_run_proven": false,
+    "independent_physical_hosts_proven": false,
+    "live_deployment": false
   }
 }
