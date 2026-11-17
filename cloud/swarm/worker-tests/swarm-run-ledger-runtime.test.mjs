@@ -182,14 +182,15 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
   
   it("resumes a deterministic non-provider shadow task from durable checkpoint after eviction and suppresses duplicate delivery", async () => {
     const { prepareDeterministicShadowTask, resumeDeterministicShadowTask } = await import("./deterministic-shadow-task.mjs");
-    const task = await register(stubFor(), "phase59-54-integrated-shadow");
+    const stub = stubFor();
+    const task = await register(stub, "phase59-54-integrated-shadow");
 
-    // Keep each RPC stub inside a completed helper scope so the eviction helper
-    // sees no live request callback or active service reference.
+    // Match the proven eviction pattern: one stub for the entire test. The RPC
+    // callback is scoped to preparation and is no longer retained at eviction.
     const prepared = await (async () => {
-      const preparationStub = stubFor();
+      const rpcCall = (action, input, caller) => rpc(stub, action, input, caller);
       return prepareDeterministicShadowTask({
-        rpc: (action, input, caller) => rpc(preparationStub, action, input, caller),
+        rpc: rpcCall,
         task,
         workerId: "phase59-54-shadow-worker"
       });
@@ -197,37 +198,31 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     expect(prepared.status).toBe("CHECKPOINTED");
     expect(prepared.output).toBeUndefined();
 
-    // Reconstruct the Durable Object after the initial checkpoint. The resume
-    // helper receives only lease identity and must reload the actual checkpoint.
-    await evictDurableObject(stubFor());
+    // Reconstruct the Durable Object. Resume receives only the lease identity
+    // and must reload/verify the persisted checkpoint rather than memory output.
+    await evictDurableObject(stub);
 
-    const first = await (async () => {
-      const resumedStub = stubFor();
-      return resumeDeterministicShadowTask({
-        rpc: (action, input, caller) => rpc(resumedStub, action, input, caller),
-        taskId: prepared.taskId,
-        workerId: prepared.workerId,
-        runId: prepared.runId,
-        fencingToken: prepared.fencingToken
-      });
-    })();
+    const first = await resumeDeterministicShadowTask({
+      rpc: (action, input, caller) => rpc(stub, action, input, caller),
+      taskId: prepared.taskId,
+      workerId: prepared.workerId,
+      runId: prepared.runId,
+      fencingToken: prepared.fencingToken
+    });
     expect(first.status).toBe("COMPLETED");
     expect(first.output.outcome).toBe("DETERMINISTIC_SHADOW_VERIFIED");
     expect(first.output.fixtureVersion).toBe("p59.54-v2");
     expect(first.eventChainValid).toBe(true);
 
-    const replay = await (async () => {
-      const replayStub = stubFor();
-      return prepareDeterministicShadowTask({
-        rpc: (action, input, caller) => rpc(replayStub, action, input, caller),
-        task,
-        workerId: "phase59-54-shadow-worker"
-      });
-    })();
+    const replay = await prepareDeterministicShadowTask({
+      rpc: (action, input, caller) => rpc(stub, action, input, caller),
+      task,
+      workerId: "phase59-54-shadow-worker"
+    });
     expect(replay.status).toBe("ALREADY_COMPLETED");
     expect(replay.resultHash).toBe(first.resultHash);
 
-    const final = await rpc(stubFor(), "snapshot", { taskId: task.taskId });
+    const final = await rpc(stub, "snapshot", { taskId: task.taskId });
     expect(final.tasks[0].status).toBe("COMPLETED");
     expect(final.tasks[0].result_hash).toBe(first.resultHash);
     expect(final.tasks[0].result_run_id).toBe(first.runId);
