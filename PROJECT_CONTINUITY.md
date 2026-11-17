@@ -4628,3 +4628,9 @@ Date: 2026-11-16
 - P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Master remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`. PR #40 remains draft/unmerged; Phase59.56 is stacked behind it.
 - Spend ₹0; AI inference disabled; production flags OFF; verified receipts ₹0.
 - Next after exact-head verification: Phase59.57 compute/publisher separation. Hosted cross-run and independent physical-host proof remain unverified and owner-gated.
+
+
+### Phase59.56 first CI failure and correction
+- Push run #44011529268 and PR run #44011562986 both failed before tests due workerd resolving the service worker at `cloud/swarm/` while the module imported `../quota-ledger-client.mjs`.
+- Corrected import to `./quota-ledger-client.mjs`; no policy or permission was weakened.
+- Exact-head retry pending. Do not claim Phase59.56 acceptance until the Workers/workerd suite and regression checks pass.

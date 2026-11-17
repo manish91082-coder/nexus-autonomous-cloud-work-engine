@@ -31,7 +31,7 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. PR #40 carries Phase59.54/55 as a draft unmerged dependency. Phase59.56 synthetic cross-repository installation quota proof is implemented on a stacked draft branch; exact-head CI pending. P59-001 PAUSED; P59-002 BLOCKED. Other project repositories remain untouched/read-only.",
+      "status": "P59-003 IN_PROGRESS; master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. PR #40 carries Phase59.54/55 as a draft unmerged dependency. Phase59.56 synthetic cross-repository installation quota proof is implemented on a stacked draft branch; initial CI failed at worker startup; import corrected, retry pending. P59-001 PAUSED; P59-002 BLOCKED. Other project repositories remain untouched/read-only.",
       "last_observed_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
@@ -252,7 +252,7 @@
         "base_branch": "phase59-54-deterministic-shadow-ledger-path-master-sync",
         "base_sha": "e2b7fe6fc9be2c68628d1b4fd072fc3fa86d8d6d",
         "parent_pr": 40,
-        "status": "IMPLEMENTED_CI_PENDING",
+        "status": "IMPLEMENTATION_CORRECTED_CI_PENDING",
         "synthetic_repository_identities": 2,
         "synthetic_run_envelopes": 4,
         "concurrent_attempts": 16,
@@ -261,7 +261,12 @@
         "external_provider_requests": 0,
         "production_enabled": false,
         "ai_inference": false,
-        "spend_inr": 0
+        "spend_inr": 0,
+        "failure_runs": [
+          44011529268,
+          44011562986
+        ],
+        "correction": "Corrected test worker relative import after workerd startup failure; exact-head CI retry pending."
       }
     },
     {

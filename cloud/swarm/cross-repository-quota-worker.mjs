@@ -5,7 +5,7 @@
  * response is injected. This module has no global fetch, publisher, model,
  * billing, account, or write capability.
  */
-import { executeQuotaGuardedGitHubRequest } from "../quota-ledger-client.mjs";
+import { executeQuotaGuardedGitHubRequest } from "./quota-ledger-client.mjs";
 
 const OPERATION = "github.rest.repositories.get.v1";
 const MAX_BODY_BYTES = 4096;

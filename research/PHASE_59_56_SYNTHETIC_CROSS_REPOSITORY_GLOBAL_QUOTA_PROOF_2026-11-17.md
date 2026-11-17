@@ -3,7 +3,7 @@
 **Mission:** P10CR / P59-003 only  
 **Branch:** `phase59-56-synthetic-global-quota-proof`  
 **Base:** PR #40 branch `phase59-54-deterministic-shadow-ledger-path-master-sync` at `e2b7fe6fc9be2c68628d1b4fd072fc3fa86d8d6d`  
-**Status:** implementation committed to isolated branch; exact-head CI pending  
+**Status:** implementation corrected after first CI failure; exact-head CI retry pending  
 **Spend:** ₹0  
 **AI inference:** disabled  
 **Live provider calls:** 0  
@@ -47,3 +47,12 @@ This is a synthetic workerd/service-binding proof in one CI runtime. It is **not
 ## Next
 
 After exact-head CI and continuity guard verification, proceed to Phase59.57: separate read-only compute workers from one constrained, deterministic publisher. The publisher may prepare an allowlisted PR only; it must never merge. Do not activate production or resume P59-001.
+
+
+## Initial CI failure and correction
+
+- Push workflow run [#44011529268](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44011529268) failed before tests started.
+- PR workflow run [#44011562986](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44011562986) failed for the same module-resolution error.
+- Exact failure: workerd rejected `../quota-ledger-client.mjs` from the test worker module because the service worker `rootPath: "../"` resolves `cross-repository-quota-worker.mjs` at the `cloud/swarm/` root.
+- Correction: import changed to `./quota-ledger-client.mjs`, matching the resolved worker module root. No quota policy, namespace, permissions or production flag was changed.
+- Retry status: pending; the previous failure remains preserved as evidence.
