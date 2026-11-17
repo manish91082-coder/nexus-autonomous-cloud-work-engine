@@ -1,0 +1,90 @@
+name: P10CR Constrained Artifact Publisher (owner-gated, draft PR only)
+
+on:
+  workflow_run:
+    workflows:
+      - Mission Autonomous AI Worker (bounded, fail-closed)
+    types: [completed]
+    branches: [master]
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: p10cr-single-constrained-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish-draft:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'master' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout canonical publisher policy
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: master
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+
+      - name: Download source worker artifact with read-only token
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          mkdir -p publisher-input
+          gh run download "$SOURCE_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "mission-autonomous-worker-$SOURCE_RUN_ID" --dir publisher-input
+
+      - name: Validate source run and sanitized P59-003 draft
+        id: validation
+        run: |
+          python3 scripts/constrained_publisher.py validate \
+            --event-file "$GITHUB_EVENT_PATH" \
+            --artifact-dir publisher-input \
+            --repo "$GITHUB_REPOSITORY" \
+            --plan-file publisher-plan.json
+
+      - name: Check owner-installed Publisher App configuration without exposing secrets
+        id: owner_gate
+        env:
+          CLIENT_ID: ${{ secrets.NEXUS_PUBLISHER_APP_CLIENT_ID }}
+          PRIVATE_KEY: ${{ secrets.NEXUS_PUBLISHER_APP_PRIVATE_KEY }}
+        run: |
+          if [[ -n "$CLIENT_ID" && -n "$PRIVATE_KEY" ]]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "Owner Publisher App configuration is absent; no write token will be minted."
+          fi
+
+      - name: Mint one-repository, narrowly scoped Publisher App token
+        id: app_token
+        if: steps.validation.outputs.publishable == 'true' && steps.owner_gate.outputs.configured == 'true'
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ secrets.NEXUS_PUBLISHER_APP_CLIENT_ID }}
+          private-key: ${{ secrets.NEXUS_PUBLISHER_APP_PRIVATE_KEY }}
+          owner: manish91082-coder
+          repositories: nexus-autonomous-cloud-work-engine
+          permission-metadata: read
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Create or reuse allowlisted draft PR only
+        if: steps.validation.outputs.publishable == 'true' && steps.owner_gate.outputs.configured == 'true'
+        env:
+          NEXUS_PUBLISHER_TOKEN: ${{ steps.app_token.outputs.token }}
+        run: |
+          python3 scripts/constrained_publisher.py publish \
+            --event-file "$GITHUB_EVENT_PATH" \
+            --artifact-dir publisher-input \
+            --repo "$GITHUB_REPOSITORY" \
+            --plan-file publisher-plan.json

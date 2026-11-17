@@ -1,0 +1,47 @@
+name: Phase 59.57 Constrained Publisher Separation Tests
+
+on:
+  push:
+    branches: [phase59-57-constrained-publisher-separation]
+    paths:
+      - 'scripts/constrained_publisher.py'
+      - 'tests/test_constrained_publisher.py'
+      - '.github/workflows/mission-autonomous-worker.yml'
+      - '.github/workflows/p10cr-constrained-publisher.yml'
+      - '.github/workflows/phase59-57-publisher-separation.yml'
+  pull_request:
+    branches: [phase59-56-synthetic-global-quota-proof]
+    paths:
+      - 'scripts/constrained_publisher.py'
+      - 'tests/test_constrained_publisher.py'
+      - '.github/workflows/mission-autonomous-worker.yml'
+      - '.github/workflows/p10cr-constrained-publisher.yml'
+      - '.github/workflows/phase59-57-publisher-separation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-57-publisher-separation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publisher-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Compile constrained publisher
+        run: python3 -m py_compile scripts/constrained_publisher.py
+      - name: Run publisher gate and fake-API tests
+        run: python3 -m unittest discover -s tests -p 'test_constrained_publisher.py' -v
+      - name: Verify CLI is offline by default
+        run: python3 scripts/constrained_publisher.py --help

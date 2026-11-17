@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_59_56_SYNTHETIC_CROSS_REPOSITORY_GLOBAL_QUOTA_PROOF",
+  "phase": "PHASE_59_57_CONSTRAINED_PUBLISHER_SEPARATION",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "P59-003 only. Phase59.56 synthetic cross-repository installation-quota proof implemented on stacked draft branch phase59-56-synthetic-global-quota-proof, based on PR #40 branch head e2b7fe6f. Two synthetic repository/project identities and four run envelopes share one installation-scope quota DO; 16-way burst and cross-run replay/reset-window assertions are pending exact-head CI. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. P59-001 PAUSED; P59-002 BLOCKED. No real secondary repository, provider, deployment, AI inference or spend. First Phase59.56 CI attempt failed at workerd startup because of an incorrect relative module import; corrected to ./quota-ledger-client.mjs. Retry pending; no test pass claimed. Second CI attempt reached workerd: 74 existing tests passed, 2 new tests failed. Added bounded diagnostics; corrected provider-window test to wait until the previous reset actually elapses. Exact-head retry pending. Diagnostic review found the first test's mock response resetAt was later than its seeded telemetry window; aligned both to 4102444800 so same-window response telemetry is accepted. Exact-head retry pending. Phase59.56 third run: 75 tests passed; cross-repo burst proved fail-closed shared concurrency but two admitted mock requests became RESPONSE_RECEIVED_ACCOUNTING_UNCERTAIN and held the in-flight gate. Added telemetry/settlement/uncertainty diagnostics; not accepted yet. Phase59.56 synthetic workerd quota proof passed 76/76 at code SHA cabdd9d2; two synthetic repo identities/four run envelopes/16 attempts yielded 2 settled and 14 fail-closed, zero residual reserved/uncertain, one later-run duplicate suppressed. This is not hosted cross-workflow or independent-host proof. Next Phase59.57 compute/publisher separation; P59-001 stays PAUSED and P59-002 BLOCKED.",
+  "current_focus": "P59-003 only. Phase59.57 exact tested candidate checkpoint 17584db552c559cdb9d44d46aee004303ccdec25 passed PR CI #44015588892 (23/23), Mission Continuity Guard #44015583857 (111 checks) and bounded Mission Worker #44015583881 (SUCCESS, P59-003 selected, no inference). Compute workflow candidate has contents:read, no persisted checkout credentials, no git push and AI hard-disabled. Separate publisher is owner-gated and can create sanitized draft PRs only; no merge code. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. PR #40 draft, #41 open/stacked, #42 draft/stacked; none merged.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -136,7 +136,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.56: prove global installation quota across synthetic repository identities and distinct run envelopes using one shared Durable Object namespace and partition; keep all non-P10CR projects untouched/read-only. Then Phase59.57 constrained publisher, Phase59.58 durable dispatcher plus deterministic specialist graph, and Phase59.59 owner-approved independent-host tests followed by 7/30-day soak.",
+  "next_focus": "Phase59.58: integrate SwarmRunDO durable task/run ledger and deterministic specialist graph into P10CR mission dispatcher behind disabled shadow-only flags. Preserve separate provider quota ledger, atomic leases/fencing/idempotency/checkpoints, project isolation and read-only compute. Owner App, branch ruleset, hosted cross-run/independent-host validation and 7/30-day soak remain gates. No AI inference and no P59-001 resume.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -2125,17 +2125,18 @@
     "next": "Phase59.51 post-commit journal restart/readback and reservation/receipt identity consistency."
   },
   "latest_phase_ci_run": {
-    "phase": "PHASE_59_52",
-    "pr_number": 35,
-    "run_id": 43921266473,
+    "phase": "PHASE_59_57",
+    "pr_number": 42,
+    "run_id": 44015588892,
     "conclusion": "success",
-    "checks_passed": 13,
-    "checks_total": 13,
-    "workers_runtime_tests_passed": 68,
-    "workers_runtime_tests_total": 68,
-    "tested_head": "eed6c1dafb77bc4f0afc7256d7b4734566307af4",
-    "merge_commit": "076104d6cfbedb1555ccba83d07139336e0ed2a3",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43921266473"
+    "checks_passed": 1,
+    "checks_total": 1,
+    "tests_passed": 23,
+    "tests_total": 23,
+    "tested_head": "17584db552c559cdb9d44d46aee004303ccdec25",
+    "code_commit": "4d419d4c260a21a653e05bce1b94e90e7cccf4f8",
+    "merge_commit": null,
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015588892"
   },
   "phase59_51": {
     "report": "research/PHASE_59_51_PROVIDER_RESPONSE_JOURNAL_RESTART_READBACK_2026-11-16.md",
@@ -2362,5 +2363,67 @@
     "hosted_cross_run_proven": false,
     "independent_physical_hosts_proven": false,
     "live_deployment": false
-  }
+  },
+  "candidate_branch": "phase59-57-constrained-publisher-separation",
+  "phase59_57": {
+    "report": "research/PHASE_59_57_CONSTRAINED_PUBLISHER_SEPARATION_2026-11-17.md",
+    "branch": "phase59-57-constrained-publisher-separation",
+    "parent_pr": 41,
+    "pr_number": 42,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "code_commit": "4d419d4c260a21a653e05bce1b94e90e7cccf4f8",
+    "push_ci_run_id": 44015009269,
+    "pull_request_ci_run_id": 44015026065,
+    "test_count": 23,
+    "tests_passed": 23,
+    "ci_status": "SUCCESS_EXACT_HEAD",
+    "mission_worker_run_id": 44015583881,
+    "mission_worker_status": "SUCCESS",
+    "selected_task": "P59-003",
+    "ai_inference_enabled": false,
+    "compute_github_token_permissions": {
+      "contents": "read"
+    },
+    "compute_checkout_persist_credentials": false,
+    "compute_git_push": false,
+    "publisher_github_token_permissions": {
+      "actions": "read",
+      "contents": "read"
+    },
+    "publisher_app_token_permissions": {
+      "metadata": "read",
+      "contents": "write",
+      "pull_requests": "write"
+    },
+    "publisher_app_secret_names": [
+      "NEXUS_PUBLISHER_APP_CLIENT_ID",
+      "NEXUS_PUBLISHER_APP_PRIVATE_KEY"
+    ],
+    "publisher_app_installed": false,
+    "publisher_live_token_test": false,
+    "publisher_branch_prefix": "automation/p10cr/worker-run-*",
+    "publisher_path_pattern": "research/worker-drafts/ai-run-<run>-attempt-<attempt>.json",
+    "raw_model_output_committed": false,
+    "publisher_only_draft_pr": true,
+    "merge_capability_in_code": false,
+    "branch_ruleset_status": "UNVERIFIED_OWNER_ACTION_REQUIRED",
+    "production_integrated": false,
+    "production_feature_flag": "OFF",
+    "live_provider_calls": 0,
+    "external_network_requests_in_tests": 0,
+    "spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "acceptance_boundary": "Code-level compute/publisher separation and fake-API contract tests pass; owner App, branch ruleset, stacked parent review/merge, hosted cross-run and independent-host acceptance remain pending.",
+    "exact_head_ci_run_id": 44015588892,
+    "exact_head_ci_status": "SUCCESS_23_OF_23",
+    "exact_head_ci_tested_sha": "17584db552c559cdb9d44d46aee004303ccdec25",
+    "continuity_guard_run_id": 44015583857,
+    "continuity_guard_status": "SUCCESS_111_CHECKS",
+    "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "control_checkpoint_commit": "17584db552c559cdb9d44d46aee004303ccdec25",
+    "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
+  },
+  "last_updated": "2026-11-17",
+  "candidate_code_head": "4d419d4c260a21a653e05bce1b94e90e7cccf4f8",
+  "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
 }

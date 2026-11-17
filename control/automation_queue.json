@@ -15,8 +15,8 @@
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
-    "last_reconciled_from_mission_state": "2026-11-17: Phase59.56 synthetic Workers/workerd proof passed 76/76 at code SHA cabdd9d2; push #44012476170 and PR #44012482615 success. Hosted cross-run, independent hosts and live DO remain pending.",
-    "reconciliation_note": "P59-003 remains the sole active P0. P59-001 PAUSED; P59-002 BLOCKED. Phase59.56 synthetic shared installation quota proof PASS: 2 synthetic repository identities, 4 run envelopes, 16 attempts, 2 settled, 14 fail-closed, 0 residual reserved/uncertain, 1 later-run replay suppressed. Do not claim hosted cross-run or multi-host acceptance. Next Phase59.57 compute/publisher separation. Production flags OFF, AI inference disabled, spend ₹0."
+    "last_reconciled_from_mission_state": "2026-11-17: Phase59.57 candidate checkpoint 17584db552c559cdb9d44d46aee004303ccdec25 passed PR CI #44015588892 (23/23); Mission Guard #44015583857 (111 checks) and Mission Worker #44015583881 succeeded; P59-003 selected, no inference. Master unchanged.",
+    "reconciliation_note": "P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Phase59.57 exact tested checkpoint 17584db552c559cdb9d44d46aee004303ccdec25 passed PR CI #44015588892 23/23; Guard #44015583857 111 checks; Worker #44015583881 selected P59-003, no inference. Compute is read-only, AI hard-disabled; Publisher App not installed; PR #42 draft stacked on #41/#40. Next Phase59.58 durable dispatcher/specialist graph integration."
   },
   "tasks": [
     {
@@ -3337,7 +3337,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Phase59.56: test installation-wide quota sharing across synthetic repository identities and distinct run envelopes; no real other-repository access, no deployment, no provider calls, no spend.",
+        "next": "Phase59.58: wire SwarmRunDO durable task/run ledger and the deterministic specialist graph into the P10CR mission dispatcher behind disabled shadow-only flags. Keep provider quota ledger separate, compute read-only, publisher owner-gated and no AI inference. Hosted cross-run/physical-host quota and 7/30-day soak remain acceptance gates.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -4105,9 +4105,67 @@
           },
           "hosted_cross_run_proven": false,
           "independent_hosts_proven": false
+        },
+        "phase59_57": {
+          "report": "research/PHASE_59_57_CONSTRAINED_PUBLISHER_SEPARATION_2026-11-17.md",
+          "branch": "phase59-57-constrained-publisher-separation",
+          "parent_pr": 41,
+          "pr_number": 42,
+          "pr_state": "DRAFT_OPEN_UNMERGED",
+          "code_commit": "4d419d4c260a21a653e05bce1b94e90e7cccf4f8",
+          "push_ci_run_id": 44015009269,
+          "pull_request_ci_run_id": 44015026065,
+          "test_count": 23,
+          "tests_passed": 23,
+          "ci_status": "SUCCESS_EXACT_HEAD",
+          "mission_worker_run_id": 44015583881,
+          "mission_worker_status": "SUCCESS",
+          "selected_task": "P59-003",
+          "ai_inference_enabled": false,
+          "compute_github_token_permissions": {
+            "contents": "read"
+          },
+          "compute_checkout_persist_credentials": false,
+          "compute_git_push": false,
+          "publisher_github_token_permissions": {
+            "actions": "read",
+            "contents": "read"
+          },
+          "publisher_app_token_permissions": {
+            "metadata": "read",
+            "contents": "write",
+            "pull_requests": "write"
+          },
+          "publisher_app_secret_names": [
+            "NEXUS_PUBLISHER_APP_CLIENT_ID",
+            "NEXUS_PUBLISHER_APP_PRIVATE_KEY"
+          ],
+          "publisher_app_installed": false,
+          "publisher_live_token_test": false,
+          "publisher_branch_prefix": "automation/p10cr/worker-run-*",
+          "publisher_path_pattern": "research/worker-drafts/ai-run-<run>-attempt-<attempt>.json",
+          "raw_model_output_committed": false,
+          "publisher_only_draft_pr": true,
+          "merge_capability_in_code": false,
+          "branch_ruleset_status": "UNVERIFIED_OWNER_ACTION_REQUIRED",
+          "production_integrated": false,
+          "production_feature_flag": "OFF",
+          "live_provider_calls": 0,
+          "external_network_requests_in_tests": 0,
+          "spend_inr": 0,
+          "verified_realized_net_receipts_inr": 0,
+          "acceptance_boundary": "Code-level compute/publisher separation and fake-API contract tests pass; owner App, branch ruleset, stacked parent review/merge, hosted cross-run and independent-host acceptance remain pending.",
+          "exact_head_ci_run_id": 44015588892,
+          "exact_head_ci_status": "SUCCESS_23_OF_23",
+          "exact_head_ci_tested_sha": "17584db552c559cdb9d44d46aee004303ccdec25",
+          "continuity_guard_run_id": 44015583857,
+          "continuity_guard_status": "SUCCESS_111_CHECKS",
+          "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+          "control_checkpoint_commit": "17584db552c559cdb9d44d46aee004303ccdec25",
+          "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
         }
       },
-      "blocker": "Remaining production-enablement gates: branch ruleset, owner-approved least-privilege GitHub App, cross-run/cross-repository global Actions/API quota arbiter, P10CR worker client, read-only Flash Loan client, independent multi-host validation, and 7/30-day soak. Phase59.25 proved only eight worker threads on one GitHub-hosted runner; Phase59.26 specialist handlers are deterministic and provider-neutral, not live LLM inference. Keep all production clients disabled.",
+      "blocker": "Remaining P59-003 acceptance gates: owner review/merge of stacked PR #40, #41 and #42; branch ruleset and required-review configuration; owner-approved Publisher App creation/installation and scoped-token test; hosted cross-workflow-run Durable Object proof; independent physical-host atomicity; durable dispatcher/specialist graph integration; and 7/30-day soak. Keep all production flags OFF and AI inference disabled.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task.",
       "phase59_25_evidence": {
         "report": "research/PHASE_59_25_GITHUB_CLOUD_OPERATIONAL_SOAK_2026-11-15.md",
@@ -4155,9 +4213,9 @@
   "dead_letter": [],
   "updated_at": "2026-11-17",
   "current_task": "P59-003",
-  "last_updated": "2026-11-16",
-  "sequence_note": "P59-003 remains sole active P0. P59-001 remains PAUSED; P59-002 remains BLOCKED. Phases59.49–59.52 are merged and exact-head CI verified. Phase59.52 confirmed the missing cloud-durable task/run ledger as the highest-risk gap. Next Phase59.53: build a separate P10CR project-cell SwarmRunDO in workerd; keep quota ledger separate, deterministic mock only, no provider calls, inference, production deployment, external network or spend.",
-  "last_reconciled_from_mission_state": "2026-11-16 Phase59.52 merged and CI verified; see control/mission_state.json and research/PHASE_59_52_END_TO_END_DURABLE_SWARM_INTEGRATION_AUDIT_2026-11-16.md.",
+  "last_updated": "2026-11-17",
+  "sequence_note": "P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Phase59.57 exact tested checkpoint 17584db552c559cdb9d44d46aee004303ccdec25 passed PR CI #44015588892 23/23; Guard #44015583857 111 checks; Worker #44015583881 selected P59-003, no inference. Compute is read-only, AI hard-disabled; Publisher App not installed; PR #42 draft stacked on #41/#40. Next Phase59.58 durable dispatcher/specialist graph integration.",
+  "last_reconciled_from_mission_state": "2026-11-17: Phase59.57 candidate checkpoint 17584db552c559cdb9d44d46aee004303ccdec25 passed PR CI #44015588892 (23/23); Mission Guard #44015583857 (111 checks) and Mission Worker #44015583881 succeeded; P59-003 selected, no inference. Master unchanged.",
   "phase59_46": {
     "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
     "pr_number": 27,
@@ -4325,5 +4383,63 @@
     "workers_runtime_tests_passed": 68,
     "workers_runtime_tests_total": 68,
     "decision": "Implement separate project-cell SwarmRunDO in workerd; keep quota ledger separate; mock shadow path only."
+  },
+  "phase59_57": {
+    "report": "research/PHASE_59_57_CONSTRAINED_PUBLISHER_SEPARATION_2026-11-17.md",
+    "branch": "phase59-57-constrained-publisher-separation",
+    "parent_pr": 41,
+    "pr_number": 42,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "code_commit": "4d419d4c260a21a653e05bce1b94e90e7cccf4f8",
+    "push_ci_run_id": 44015009269,
+    "pull_request_ci_run_id": 44015026065,
+    "test_count": 23,
+    "tests_passed": 23,
+    "ci_status": "SUCCESS_EXACT_HEAD",
+    "mission_worker_run_id": 44015583881,
+    "mission_worker_status": "SUCCESS",
+    "selected_task": "P59-003",
+    "ai_inference_enabled": false,
+    "compute_github_token_permissions": {
+      "contents": "read"
+    },
+    "compute_checkout_persist_credentials": false,
+    "compute_git_push": false,
+    "publisher_github_token_permissions": {
+      "actions": "read",
+      "contents": "read"
+    },
+    "publisher_app_token_permissions": {
+      "metadata": "read",
+      "contents": "write",
+      "pull_requests": "write"
+    },
+    "publisher_app_secret_names": [
+      "NEXUS_PUBLISHER_APP_CLIENT_ID",
+      "NEXUS_PUBLISHER_APP_PRIVATE_KEY"
+    ],
+    "publisher_app_installed": false,
+    "publisher_live_token_test": false,
+    "publisher_branch_prefix": "automation/p10cr/worker-run-*",
+    "publisher_path_pattern": "research/worker-drafts/ai-run-<run>-attempt-<attempt>.json",
+    "raw_model_output_committed": false,
+    "publisher_only_draft_pr": true,
+    "merge_capability_in_code": false,
+    "branch_ruleset_status": "UNVERIFIED_OWNER_ACTION_REQUIRED",
+    "production_integrated": false,
+    "production_feature_flag": "OFF",
+    "live_provider_calls": 0,
+    "external_network_requests_in_tests": 0,
+    "spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "acceptance_boundary": "Code-level compute/publisher separation and fake-API contract tests pass; owner App, branch ruleset, stacked parent review/merge, hosted cross-run and independent-host acceptance remain pending.",
+    "exact_head_ci_run_id": 44015588892,
+    "exact_head_ci_status": "SUCCESS_23_OF_23",
+    "exact_head_ci_tested_sha": "17584db552c559cdb9d44d46aee004303ccdec25",
+    "continuity_guard_run_id": 44015583857,
+    "continuity_guard_status": "SUCCESS_111_CHECKS",
+    "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "control_checkpoint_commit": "17584db552c559cdb9d44d46aee004303ccdec25",
+    "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
   }
 }
