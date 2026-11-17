@@ -180,3 +180,96 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     expect((await replay.json()).reason).toBe("AUTH_REPLAY_DETECTED");
   });
 });
+
+
+describe("Phase 59.54 deterministic shadow-runner integration", () => {
+  it("executes a deterministic fixture through the durable run ledger and suppresses duplicate delivery", async () => {
+    const { runDeterministicShadowTask } = await import("../deterministic-shadow-runner.mjs");
+    const stub = stubFor();
+    const id = taskId("phase59-54-integrated");
+    const task = {
+      taskId: id,
+      projectId: "P10CR",
+      taskType: "DETERMINISTIC_SHADOW_FIXTURE",
+      idempotencyKey: `idem:${id}`,
+      payloadHash: await digest(JSON.stringify({ source: "fixed-fixture", value: 21 })),
+      policyHash: await digest("phase59-54-policy"),
+      ownerGate: false,
+      fixtureInput: { source: "fixed-fixture", value: 21 }
+    };
+    let fixtureCalls = 0;
+    const call = (action, input) => rpc(stub, action, input, action === "register" ? "primary" : "secondary");
+    const fixture = async input => {
+      fixtureCalls += 1;
+      return { source: input.source, doubled: input.value * 2 };
+    };
+
+    const result = await runDeterministicShadowTask({
+      call, task, workerId: "phase59-54-shadow-worker", fixture
+    });
+    expect(result.status).toBe("COMPLETED");
+    expect(result.fixtureResult).toEqual({ source: "fixed-fixture", doubled: 42 });
+    expect(result.eventChainValid).toBe(true);
+    expect(fixtureCalls).toBe(1);
+
+    const duplicate = await runDeterministicShadowTask({
+      call, task, workerId: "phase59-54-shadow-worker", fixture
+    });
+    expect(duplicate.status).toBe("ALREADY_COMPLETED");
+    expect(fixtureCalls).toBe(1);
+    const final = await rpc(stub, "snapshot", { taskId: id });
+    expect(final.tasks[0].status).toBe("COMPLETED");
+    expect(final.eventChainValid).toBe(true);
+  });
+
+  it("reconstructs after Durable Object eviction from a persisted claim checkpoint without repeating completed fixture work", async () => {
+    const { runDeterministicShadowTask } = await import("../deterministic-shadow-runner.mjs");
+    const stub = stubFor();
+    const id = taskId("phase59-54-restart");
+    const task = {
+      taskId: id,
+      projectId: "P10CR",
+      taskType: "DETERMINISTIC_SHADOW_FIXTURE",
+      idempotencyKey: `idem:${id}`,
+      payloadHash: await digest(JSON.stringify({ value: 7 })),
+      policyHash: await digest("phase59-54-restart-policy"),
+      ownerGate: false,
+      fixtureInput: { value: 7 }
+    };
+    const registered = await rpc(stub, "register", {
+      taskId: task.taskId, projectId: task.projectId, taskType: task.taskType,
+      idempotencyKey: task.idempotencyKey, payloadHash: task.payloadHash,
+      policyHash: task.policyHash, ownerGate: false, maxAttempts: 3
+    });
+    expect(registered.status).toBe("REGISTERED");
+    const workerId = "phase59-54-restart-worker";
+    const claim = await rpc(stub, "claim", { taskId: id, workerId, leaseSeconds: 120 }, "secondary");
+    expect(claim.status).toBe("CLAIMED");
+    const firstCheckpoint = await rpc(stub, "checkpoint", {
+      taskId: id, workerId, runId: claim.runId, fencingToken: claim.fencingToken,
+      checkpointSeq: 1, checkpoint: { stage: "CLAIMED", taskId: id, runId: claim.runId }
+    }, "secondary");
+    expect(firstCheckpoint.status).toBe("CHECKPOINT_SAVED");
+
+    await evictDurableObject(stub);
+    let fixtureCalls = 0;
+    const resumed = await runDeterministicShadowTask({
+      call: (action, input) => rpc(stub, action, input, action === "register" ? "primary" : "secondary"),
+      task,
+      workerId,
+      fixture: async input => {
+        fixtureCalls += 1;
+        return { resumedValue: input.value + 1 };
+      }
+    });
+    expect(resumed.status).toBe("COMPLETED");
+    expect(resumed.resumed).toBe(true);
+    expect(resumed.runId).toBe(claim.runId);
+    expect(resumed.fencingToken).toBe(claim.fencingToken);
+    expect(fixtureCalls).toBe(1);
+    const snapshot = await rpc(stub, "snapshot", { taskId: id });
+    expect(snapshot.tasks[0].status).toBe("COMPLETED");
+    expect(snapshot.checkpoints[0].checkpoint_seq).toBe(2);
+    expect(snapshot.eventChainValid).toBe(true);
+  });
+});
