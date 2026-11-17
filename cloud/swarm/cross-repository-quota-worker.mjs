@@ -185,6 +185,11 @@ export default {
           quotaStatus: result.status,
           quotaAdmissionStatus: result.admission?.status ?? null,
           quotaAdmissionReason: result.admission?.reason ?? null,
+          reason: result.error ? String(result.error).slice(0, 180) : null,
+          telemetryStatus: result.telemetry?.status ?? null,
+          telemetryDecision: result.telemetry?.decision ?? null,
+          settlementStatus: result.settlement?.status ?? null,
+          uncertaintyStatus: result.accounting?.status ?? result.accounting?.uncertainty?.status ?? null,
           providerRequestIssued: mockProviderCalls > 0,
           mockProviderCalls,
           externalNetworkRequests: 0

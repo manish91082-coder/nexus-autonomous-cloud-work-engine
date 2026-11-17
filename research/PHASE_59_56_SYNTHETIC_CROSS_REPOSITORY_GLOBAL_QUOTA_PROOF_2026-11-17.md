@@ -69,3 +69,11 @@ After exact-head CI and continuity guard verification, proceed to Phase59.57: se
 ## Third test-model correction
 
 The second CI log showed the cross-repository workers were receiving a synthetic response reset timestamp (4102444800) later than the seeded authoritative telemetry window. The ledger correctly retained the current provider window and did not accept that future-window response before reset. The cross-repository test now seeds the same synthetic reset timestamp as the injected provider response, so response telemetry remains in the same provider window. The independent reset-rollover test still verifies that a genuinely new window is accepted only after the old reset elapses. Exact-head retry pending.
+
+
+## Third CI diagnostic evidence
+
+- Run [#44012088385](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44012088385) reached the test assertions. Seventy-five tests passed; the one cross-repository test failed because the two admitted requests returned `RESPONSE_RECEIVED_ACCOUNTING_UNCERTAIN` and the remaining requests saw `SECONDARY_CONCURRENCY_LIMIT`.
+- This proves the shared installation-scope concurrency gate is active, but does **not** yet prove successful response settlement or budget release. The worker now surfaces bounded telemetry/settlement/uncertainty status and a non-secret error reason to identify the exact accounting transition.
+- The reset-window rollover test passed after the elapsed-window correction.
+- Do not accept the quota proof until two admitted mock requests settle, residual reserved/uncertain units are zero, and a later-run replay is suppressed.

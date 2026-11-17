@@ -252,7 +252,7 @@
         "base_branch": "phase59-54-deterministic-shadow-ledger-path-master-sync",
         "base_sha": "e2b7fe6fc9be2c68628d1b4fd072fc3fa86d8d6d",
         "parent_pr": 40,
-        "status": "SYNTHETIC_RESPONSE_WINDOW_ALIGNED_CI_PENDING",
+        "status": "ACCOUNTING_DIAGNOSTIC_PENDING",
         "synthetic_repository_identities": 2,
         "synthetic_run_envelopes": 4,
         "concurrent_attempts": 16,
@@ -266,9 +266,11 @@
           44011529268,
           44011562986,
           44011679218,
-          44011686715
+          44011686715,
+          44012088385,
+          44012093514
         ],
-        "correction": "Second CI run: 74 existing tests passed, two new tests failed; safe diagnostics added and reset-window test corrected to respect the actual reset boundary. Aligned synthetic seed/reset response timestamps; ledger policy unchanged; exact-head retry pending."
+        "correction": "Shared quota gate blocked excess requests; two admitted responses became accounting-uncertain. Added bounded diagnostic fields; successful settlement not yet proven."
       }
     },
     {

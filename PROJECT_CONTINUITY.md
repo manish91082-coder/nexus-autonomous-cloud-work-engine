@@ -4647,3 +4647,9 @@ Date: 2026-11-16
 - Review of run #44011679218 logs showed the mock provider response used resetAt 4102444800 while the seed telemetry used a near-term reset. The ledger correctly refused to accept a future provider window before the current window elapsed.
 - The cross-repository test now seeds the same 4102444800 resetAt as the synthetic response. The separate reset-rollover test still waits for the previous window to expire before recording the next.
 - No ledger policy changed. Exact-head retry pending.
+
+
+### Phase59.56 accounting diagnostic checkpoint
+- Run #44012088385: 75 tests passed; the new cross-repository burst failed its settlement assertion. Two admitted mock responses returned `RESPONSE_RECEIVED_ACCOUNTING_UNCERTAIN`; excess requests were fail-closed with `SECONDARY_CONCURRENCY_LIMIT`.
+- This is partial evidence only: the shared in-flight limiter worked, but the admitted request lifecycle did not settle and residual in-flight state prevented further admission. Do not accept this phase yet.
+- Added bounded non-secret fields for telemetry, settlement and uncertainty status. Next step is to inspect the exact accounting error and correct the fixture/lifecycle without relaxing the quota guard.
