@@ -15,8 +15,8 @@
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
-    "last_reconciled_from_mission_state": "2026-11-17: P59-003 Phase59.57 candidate head 4d419d4c260a21a653e05bce1b94e90e7cccf4f8; PR #42 draft stacked on PR #41 and PR #40; exact-head CI 23/23, mission worker success; master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c.",
-    "reconciliation_note": "P59-003 remains the sole active P0. P59-001 remains PAUSED; P59-002 remains BLOCKED. Phase59.56 synthetic shared installation-scope quota proof passed 76/76 in workerd but does not prove hosted cross-run or independent-host behavior. Phase59.57 compute/publisher separation candidate is on draft PR #42 stacked on PR #41/#40; exact-head push and PR CI passed 23/23, mission worker passed and selected P59-003. Compute uses contents:read, no push, no provider secrets and AI hard-disabled. One isolated App-token publisher can create sanitized draft PRs only after owner setup; no merge path. Next Phase59.58 durable dispatcher/specialist integration. No product/source research."
+    "last_reconciled_from_mission_state": "2026-11-17: Phase59.57 final evidence checkpoint 6e8bd1d9887339cb9a8ea1575d3ca1f2dc46a8f3; exact-head PR CI #44015226158 SUCCESS, 23/23; Mission Continuity Guard #44015220245 SUCCESS; bounded worker #44015220167 SUCCESS, P59-003 selected, no inference. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c.",
+    "reconciliation_note": "P59-003 remains the sole active P0. P59-001 PAUSED; P59-002 BLOCKED. Phase59.56 synthetic quota proof passed 76/76 in workerd but hosted cross-run/physical-host proof remains pending. Phase59.57 compute/publisher separation is code-level tested on exact final checkpoint 6e8bd1d9887339cb9a8ea1575d3ca1f2dc46a8f3: PR CI #44015226158 passed 23/23; Mission Guard #44015220245 and Worker #44015220167 succeeded. Compute is read-only, AI hard-disabled; Publisher App is not installed and PR #42 remains draft/unmerged, stacked on #41/#40. Next Phase59.58 durable dispatcher/specialist graph integration. No product/source research."
   },
   "tasks": [
     {
@@ -4112,14 +4112,14 @@
           "parent_pr": 41,
           "pr_number": 42,
           "pr_state": "DRAFT_OPEN_UNMERGED",
-          "candidate_head": "4d419d4c260a21a653e05bce1b94e90e7cccf4f8",
+          "candidate_head": "6e8bd1d9887339cb9a8ea1575d3ca1f2dc46a8f3",
           "code_commit": "4d419d4c260a21a653e05bce1b94e90e7cccf4f8",
           "push_ci_run_id": 44015009269,
           "pull_request_ci_run_id": 44015026065,
           "test_count": 23,
           "tests_passed": 23,
           "ci_status": "SUCCESS_EXACT_HEAD",
-          "mission_worker_run_id": 44015009217,
+          "mission_worker_run_id": 44015220167,
           "mission_worker_status": "SUCCESS",
           "selected_task": "P59-003",
           "ai_inference_enabled": false,
@@ -4155,7 +4155,14 @@
           "external_network_requests_in_tests": 0,
           "spend_inr": 0,
           "verified_realized_net_receipts_inr": 0,
-          "acceptance_boundary": "Code-level compute/publisher separation and fake-API contract tests pass; owner App, branch ruleset, stacked parent review/merge, hosted cross-run and independent-host acceptance remain pending."
+          "acceptance_boundary": "Code-level compute/publisher separation and fake-API contract tests pass; owner App, branch ruleset, stacked parent review/merge, hosted cross-run and independent-host acceptance remain pending.",
+          "exact_head_ci_run_id": 44015226158,
+          "exact_head_ci_status": "SUCCESS_23_OF_23",
+          "exact_head_ci_tested_sha": "6e8bd1d9887339cb9a8ea1575d3ca1f2dc46a8f3",
+          "continuity_guard_run_id": 44015220245,
+          "continuity_guard_status": "SUCCESS",
+          "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+          "control_checkpoint_commit": "6e8bd1d9887339cb9a8ea1575d3ca1f2dc46a8f3"
         }
       },
       "blocker": "Remaining P59-003 acceptance gates: owner review/merge of stacked PR #40, #41 and #42; branch ruleset and required-review configuration; owner-approved Publisher App creation/installation and scoped-token test; hosted cross-workflow-run Durable Object proof; independent physical-host atomicity; durable dispatcher/specialist graph integration; and 7/30-day soak. Keep all production flags OFF and AI inference disabled.",
@@ -4207,8 +4214,8 @@
   "updated_at": "2026-11-17",
   "current_task": "P59-003",
   "last_updated": "2026-11-17",
-  "sequence_note": "P59-003 remains the sole active P0. P59-001 remains PAUSED; P59-002 remains BLOCKED. Phase59.56 synthetic shared installation-scope quota proof passed 76/76 in workerd but does not prove hosted cross-run or independent-host behavior. Phase59.57 compute/publisher separation candidate is on draft PR #42 stacked on PR #41/#40; exact-head push and PR CI passed 23/23, mission worker passed and selected P59-003. Compute uses contents:read, no push, no provider secrets and AI hard-disabled. One isolated App-token publisher can create sanitized draft PRs only after owner setup; no merge path. Next Phase59.58 durable dispatcher/specialist integration. No product/source research.",
-  "last_reconciled_from_mission_state": "2026-11-17: P59-003 Phase59.57 candidate head 4d419d4c260a21a653e05bce1b94e90e7cccf4f8; PR #42 draft stacked on PR #41 and PR #40; exact-head CI 23/23, mission worker success; master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c.",
+  "sequence_note": "P59-003 remains the sole active P0. P59-001 PAUSED; P59-002 BLOCKED. Phase59.56 synthetic quota proof passed 76/76 in workerd but hosted cross-run/physical-host proof remains pending. Phase59.57 compute/publisher separation is code-level tested on exact final checkpoint 6e8bd1d9887339cb9a8ea1575d3ca1f2dc46a8f3: PR CI #44015226158 passed 23/23; Mission Guard #44015220245 and Worker #44015220167 succeeded. Compute is read-only, AI hard-disabled; Publisher App is not installed and PR #42 remains draft/unmerged, stacked on #41/#40. Next Phase59.58 durable dispatcher/specialist graph integration. No product/source research.",
+  "last_reconciled_from_mission_state": "2026-11-17: Phase59.57 final evidence checkpoint 6e8bd1d9887339cb9a8ea1575d3ca1f2dc46a8f3; exact-head PR CI #44015226158 SUCCESS, 23/23; Mission Continuity Guard #44015220245 SUCCESS; bounded worker #44015220167 SUCCESS, P59-003 selected, no inference. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c.",
   "phase59_46": {
     "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
     "pr_number": 27,
@@ -4383,14 +4390,14 @@
     "parent_pr": 41,
     "pr_number": 42,
     "pr_state": "DRAFT_OPEN_UNMERGED",
-    "candidate_head": "4d419d4c260a21a653e05bce1b94e90e7cccf4f8",
+    "candidate_head": "6e8bd1d9887339cb9a8ea1575d3ca1f2dc46a8f3",
     "code_commit": "4d419d4c260a21a653e05bce1b94e90e7cccf4f8",
     "push_ci_run_id": 44015009269,
     "pull_request_ci_run_id": 44015026065,
     "test_count": 23,
     "tests_passed": 23,
     "ci_status": "SUCCESS_EXACT_HEAD",
-    "mission_worker_run_id": 44015009217,
+    "mission_worker_run_id": 44015220167,
     "mission_worker_status": "SUCCESS",
     "selected_task": "P59-003",
     "ai_inference_enabled": false,
@@ -4426,6 +4433,13 @@
     "external_network_requests_in_tests": 0,
     "spend_inr": 0,
     "verified_realized_net_receipts_inr": 0,
-    "acceptance_boundary": "Code-level compute/publisher separation and fake-API contract tests pass; owner App, branch ruleset, stacked parent review/merge, hosted cross-run and independent-host acceptance remain pending."
+    "acceptance_boundary": "Code-level compute/publisher separation and fake-API contract tests pass; owner App, branch ruleset, stacked parent review/merge, hosted cross-run and independent-host acceptance remain pending.",
+    "exact_head_ci_run_id": 44015226158,
+    "exact_head_ci_status": "SUCCESS_23_OF_23",
+    "exact_head_ci_tested_sha": "6e8bd1d9887339cb9a8ea1575d3ca1f2dc46a8f3",
+    "continuity_guard_run_id": 44015220245,
+    "continuity_guard_status": "SUCCESS",
+    "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "control_checkpoint_commit": "6e8bd1d9887339cb9a8ea1575d3ca1f2dc46a8f3"
   }
 }
