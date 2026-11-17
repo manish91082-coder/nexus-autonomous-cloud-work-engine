@@ -121,3 +121,12 @@ No production deployment, live provider call, external network request in tests,
 - Mission Continuity Guard [#44015490505](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015490505): SUCCESS, 111 checks, zero errors.
 - Mission Worker [#44015490552](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015490552): SUCCESS; POLL_OK; selected P59-003; AI inference remained disabled.
 - The final evidence/control-only commit follows this tested checkpoint; no publisher/runtime code changed after the tested checkpoint.
+
+
+## Final observed CI checkpoint
+
+- Tested candidate checkpoint: \`17584db552c559cdb9d44d46aee004303ccdec25\`.
+- PR workflow [#44015588892](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015588892): SUCCESS, 23/23 tests.
+- Mission Continuity Guard [#44015583857](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015583857): SUCCESS, 111 checks, zero errors.
+- Mission Worker [#44015583881](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015583881): SUCCESS; POLL_OK; selected P59-003; AI inference remained disabled.
+- No code changes occurred after the tested publisher implementation commit \`4d419d4c260a21a653e05bce1b94e90e7cccf4f8\`; later commits only reconcile report/control/continuity evidence.

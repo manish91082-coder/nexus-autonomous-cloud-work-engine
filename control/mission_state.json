@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "P59-003 only. Phase59.57 exact tested candidate checkpoint 6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad passed PR CI #44015496926 (23/23), Mission Continuity Guard #44015490505 (111 checks) and bounded Mission Worker #44015490552 (SUCCESS, P59-003 selected, no inference). Compute workflow candidate has contents:read, no persisted checkout credentials, no git push and AI hard-disabled. Publisher is owner-gated and can create sanitized draft PRs only; no merge code. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. PR #40 draft, #41 open/stacked, #42 draft/stacked; none merged.",
+  "current_focus": "P59-003 only. Phase59.57 exact tested candidate checkpoint 17584db552c559cdb9d44d46aee004303ccdec25 passed PR CI #44015588892 (23/23), Mission Continuity Guard #44015583857 (111 checks) and bounded Mission Worker #44015583881 (SUCCESS, P59-003 selected, no inference). Compute workflow candidate has contents:read, no persisted checkout credentials, no git push and AI hard-disabled. Separate publisher is owner-gated and can create sanitized draft PRs only; no merge code. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. PR #40 draft, #41 open/stacked, #42 draft/stacked; none merged.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -2127,16 +2127,16 @@
   "latest_phase_ci_run": {
     "phase": "PHASE_59_57",
     "pr_number": 42,
-    "run_id": 44015496926,
+    "run_id": 44015588892,
     "conclusion": "success",
     "checks_passed": 1,
     "checks_total": 1,
     "tests_passed": 23,
     "tests_total": 23,
-    "tested_head": "6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad",
+    "tested_head": "17584db552c559cdb9d44d46aee004303ccdec25",
     "code_commit": "4d419d4c260a21a653e05bce1b94e90e7cccf4f8",
     "merge_commit": null,
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015496926"
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015588892"
   },
   "phase59_51": {
     "report": "research/PHASE_59_51_PROVIDER_RESPONSE_JOURNAL_RESTART_READBACK_2026-11-16.md",
@@ -2377,7 +2377,7 @@
     "test_count": 23,
     "tests_passed": 23,
     "ci_status": "SUCCESS_EXACT_HEAD",
-    "mission_worker_run_id": 44015490552,
+    "mission_worker_run_id": 44015583881,
     "mission_worker_status": "SUCCESS",
     "selected_task": "P59-003",
     "ai_inference_enabled": false,
@@ -2414,16 +2414,16 @@
     "spend_inr": 0,
     "verified_realized_net_receipts_inr": 0,
     "acceptance_boundary": "Code-level compute/publisher separation and fake-API contract tests pass; owner App, branch ruleset, stacked parent review/merge, hosted cross-run and independent-host acceptance remain pending.",
-    "exact_head_ci_run_id": 44015496926,
+    "exact_head_ci_run_id": 44015588892,
     "exact_head_ci_status": "SUCCESS_23_OF_23",
-    "exact_head_ci_tested_sha": "6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad",
-    "continuity_guard_run_id": 44015490505,
+    "exact_head_ci_tested_sha": "17584db552c559cdb9d44d46aee004303ccdec25",
+    "continuity_guard_run_id": 44015583857,
     "continuity_guard_status": "SUCCESS_111_CHECKS",
     "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-    "control_checkpoint_commit": "6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad",
-    "candidate_tested_head": "6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad"
+    "control_checkpoint_commit": "17584db552c559cdb9d44d46aee004303ccdec25",
+    "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
   },
   "last_updated": "2026-11-17",
   "candidate_code_head": "4d419d4c260a21a653e05bce1b94e90e7cccf4f8",
-  "candidate_tested_head": "6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad"
+  "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
 }

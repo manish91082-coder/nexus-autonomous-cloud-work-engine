@@ -15,8 +15,8 @@
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
-    "last_reconciled_from_mission_state": "2026-11-17: Phase59.57 exact tested candidate checkpoint 6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad passed PR CI #44015496926 (23/23); Mission Guard #44015490505 (111 checks) and Mission Worker #44015490552 succeeded, selected P59-003, no inference. Master unchanged.",
-    "reconciliation_note": "P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Phase59.57 exact tested checkpoint 6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad passed PR CI #44015496926 23/23; Guard #44015490505 111 checks; Worker #44015490552 selected P59-003, no inference. Compute is read-only, AI hard-disabled; Publisher App not installed; PR #42 draft stacked on #41/#40. Next Phase59.58 durable dispatcher/specialist graph integration."
+    "last_reconciled_from_mission_state": "2026-11-17: Phase59.57 candidate checkpoint 17584db552c559cdb9d44d46aee004303ccdec25 passed PR CI #44015588892 (23/23); Mission Guard #44015583857 (111 checks) and Mission Worker #44015583881 succeeded; P59-003 selected, no inference. Master unchanged.",
+    "reconciliation_note": "P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Phase59.57 exact tested checkpoint 17584db552c559cdb9d44d46aee004303ccdec25 passed PR CI #44015588892 23/23; Guard #44015583857 111 checks; Worker #44015583881 selected P59-003, no inference. Compute is read-only, AI hard-disabled; Publisher App not installed; PR #42 draft stacked on #41/#40. Next Phase59.58 durable dispatcher/specialist graph integration."
   },
   "tasks": [
     {
@@ -4118,7 +4118,7 @@
           "test_count": 23,
           "tests_passed": 23,
           "ci_status": "SUCCESS_EXACT_HEAD",
-          "mission_worker_run_id": 44015490552,
+          "mission_worker_run_id": 44015583881,
           "mission_worker_status": "SUCCESS",
           "selected_task": "P59-003",
           "ai_inference_enabled": false,
@@ -4155,14 +4155,14 @@
           "spend_inr": 0,
           "verified_realized_net_receipts_inr": 0,
           "acceptance_boundary": "Code-level compute/publisher separation and fake-API contract tests pass; owner App, branch ruleset, stacked parent review/merge, hosted cross-run and independent-host acceptance remain pending.",
-          "exact_head_ci_run_id": 44015496926,
+          "exact_head_ci_run_id": 44015588892,
           "exact_head_ci_status": "SUCCESS_23_OF_23",
-          "exact_head_ci_tested_sha": "6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad",
-          "continuity_guard_run_id": 44015490505,
+          "exact_head_ci_tested_sha": "17584db552c559cdb9d44d46aee004303ccdec25",
+          "continuity_guard_run_id": 44015583857,
           "continuity_guard_status": "SUCCESS_111_CHECKS",
           "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-          "control_checkpoint_commit": "6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad",
-          "candidate_tested_head": "6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad"
+          "control_checkpoint_commit": "17584db552c559cdb9d44d46aee004303ccdec25",
+          "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
         }
       },
       "blocker": "Remaining P59-003 acceptance gates: owner review/merge of stacked PR #40, #41 and #42; branch ruleset and required-review configuration; owner-approved Publisher App creation/installation and scoped-token test; hosted cross-workflow-run Durable Object proof; independent physical-host atomicity; durable dispatcher/specialist graph integration; and 7/30-day soak. Keep all production flags OFF and AI inference disabled.",
@@ -4214,8 +4214,8 @@
   "updated_at": "2026-11-17",
   "current_task": "P59-003",
   "last_updated": "2026-11-17",
-  "sequence_note": "P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Phase59.57 exact tested checkpoint 6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad passed PR CI #44015496926 23/23; Guard #44015490505 111 checks; Worker #44015490552 selected P59-003, no inference. Compute is read-only, AI hard-disabled; Publisher App not installed; PR #42 draft stacked on #41/#40. Next Phase59.58 durable dispatcher/specialist graph integration.",
-  "last_reconciled_from_mission_state": "2026-11-17: Phase59.57 exact tested candidate checkpoint 6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad passed PR CI #44015496926 (23/23); Mission Guard #44015490505 (111 checks) and Mission Worker #44015490552 succeeded, selected P59-003, no inference. Master unchanged.",
+  "sequence_note": "P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Phase59.57 exact tested checkpoint 17584db552c559cdb9d44d46aee004303ccdec25 passed PR CI #44015588892 23/23; Guard #44015583857 111 checks; Worker #44015583881 selected P59-003, no inference. Compute is read-only, AI hard-disabled; Publisher App not installed; PR #42 draft stacked on #41/#40. Next Phase59.58 durable dispatcher/specialist graph integration.",
+  "last_reconciled_from_mission_state": "2026-11-17: Phase59.57 candidate checkpoint 17584db552c559cdb9d44d46aee004303ccdec25 passed PR CI #44015588892 (23/23); Mission Guard #44015583857 (111 checks) and Mission Worker #44015583881 succeeded; P59-003 selected, no inference. Master unchanged.",
   "phase59_46": {
     "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
     "pr_number": 27,
@@ -4396,7 +4396,7 @@
     "test_count": 23,
     "tests_passed": 23,
     "ci_status": "SUCCESS_EXACT_HEAD",
-    "mission_worker_run_id": 44015490552,
+    "mission_worker_run_id": 44015583881,
     "mission_worker_status": "SUCCESS",
     "selected_task": "P59-003",
     "ai_inference_enabled": false,
@@ -4433,13 +4433,13 @@
     "spend_inr": 0,
     "verified_realized_net_receipts_inr": 0,
     "acceptance_boundary": "Code-level compute/publisher separation and fake-API contract tests pass; owner App, branch ruleset, stacked parent review/merge, hosted cross-run and independent-host acceptance remain pending.",
-    "exact_head_ci_run_id": 44015496926,
+    "exact_head_ci_run_id": 44015588892,
     "exact_head_ci_status": "SUCCESS_23_OF_23",
-    "exact_head_ci_tested_sha": "6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad",
-    "continuity_guard_run_id": 44015490505,
+    "exact_head_ci_tested_sha": "17584db552c559cdb9d44d46aee004303ccdec25",
+    "continuity_guard_run_id": 44015583857,
     "continuity_guard_status": "SUCCESS_111_CHECKS",
     "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-    "control_checkpoint_commit": "6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad",
-    "candidate_tested_head": "6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad"
+    "control_checkpoint_commit": "17584db552c559cdb9d44d46aee004303ccdec25",
+    "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
   }
 }
