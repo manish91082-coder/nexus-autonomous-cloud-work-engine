@@ -18,11 +18,11 @@ Connect the project-cell SwarmRunDO to one deterministic, provider-free shadow t
 
 - Added `cloud/swarm/deterministic-shadow-runner.mjs`.
 - Runner accepts an injected authenticated RPC function and a deterministic fixture callback.
-- It validates the P10CR task identity, idempotency key, payload/policy SHA-256 fingerprints and worker identity.
+- It validates the P10CR task identity, idempotency key, policy SHA-256 fingerprint and worker identity. It independently recomputes SHA-256 over the canonical JSON fixture input and rejects any mismatch with the registered payload hash.
 - It registers idempotently, reads the durable snapshot, verifies the event chain, claims or resumes the same worker's unexpired lease, checkpoints the claimed state, runs the fixture, checkpoints the deterministic result and completes against the exact run ID and fencing token.
 - It performs a final snapshot and rejects completion unless the event chain is valid and the task is COMPLETED.
 - It has no network, provider, model, publisher, wallet or payment capability.
-- Added workerd integration tests for complete lifecycle, duplicate delivery and Durable Object eviction/reconstruction after the claim checkpoint.
+- Added workerd integration tests for complete lifecycle, duplicate delivery, payload-hash binding and Durable Object eviction/reconstruction after the claim checkpoint.
 
 ## Test intent
 
