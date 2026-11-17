@@ -4641,3 +4641,9 @@ Date: 2026-11-16
 - Failure 1: the synthetic worker's catch path hid the admission/error reason, so the test showed zero completed calls without explaining why. Added a bounded non-secret reason and quota admission fields; assertions now include all response summaries.
 - Failure 2: the test attempted to move to a future provider reset window before the prior reset elapsed. The ledger correctly retains the current window until its reset; the test now uses a five-second window and waits through it before recording the next observation.
 - No production policy was relaxed. Exact-head retry pending.
+
+
+### Phase59.56 third test-model correction
+- Review of run #44011679218 logs showed the mock provider response used resetAt 4102444800 while the seed telemetry used a near-term reset. The ledger correctly refused to accept a future provider window before the current window elapsed.
+- The cross-repository test now seeds the same 4102444800 resetAt as the synthetic response. The separate reset-rollover test still waits for the previous window to expire before recording the next.
+- No ledger policy changed. Exact-head retry pending.

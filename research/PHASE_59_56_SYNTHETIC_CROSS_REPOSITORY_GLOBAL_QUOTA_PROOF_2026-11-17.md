@@ -64,3 +64,8 @@ After exact-head CI and continuity guard verification, proceed to Phase59.57: se
 - First assertion failure: no request was classified as `SHADOW_COMPLETED`; the test did not expose the worker's safe rejection/admission reason. The worker now emits a bounded, non-secret diagnostic reason and quota admission status in the synthetic fixture, and the assertion includes response summaries.
 - Second assertion failure was a test-model error, not a production ledger defect: the ledger intentionally refuses to accept a future provider reset window until the current reset time has elapsed. The test now uses a five-second synthetic window and waits for that reset before recording the next window.
 - No production quota policy or fail-closed control was weakened. Exact-head retry pending.
+
+
+## Third test-model correction
+
+The second CI log showed the cross-repository workers were receiving a synthetic response reset timestamp (4102444800) later than the seeded authoritative telemetry window. The ledger correctly retained the current provider window and did not accept that future-window response before reset. The cross-repository test now seeds the same synthetic reset timestamp as the injected provider response, so response telemetry remains in the same provider window. The independent reset-rollover test still verifies that a genuinely new window is accepted only after the old reset elapses. Exact-head retry pending.

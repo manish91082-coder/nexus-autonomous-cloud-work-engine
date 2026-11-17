@@ -80,7 +80,7 @@ async function invoke(project, value) {
 describe("Phase 59.56 synthetic cross-repository installation quota", () => {
   it("shares one installation partition across two repository clients and distinct run envelopes", async () => {
     const stub = ledgerStub(INSTALL_SCOPE);
-    await recordCoreTelemetry(stub, INSTALL_SCOPE);
+    await recordCoreTelemetry(stub, INSTALL_SCOPE, { resetAtEpoch: 4102444800 });
 
     // Both callers are separate Worker identities and separate synthetic
     // repository/project envelopes. They share only the installation quota
