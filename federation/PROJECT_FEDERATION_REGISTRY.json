@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "federation_id": "MANISH-AI-PROJECT-FEDERATION-2026",
-  "updated_at": "2026-11-16",
+  "updated_at": "2026-11-17",
   "purpose": "Cross-project coordination only; never merge missions, budgets, data, revenue ledgers or safety boundaries.",
   "authority": {
     "federation_controller": "manish91082-coder/nexus-autonomous-cloud-work-engine",
@@ -32,7 +32,7 @@
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
       "status": "P59-003 IN_PROGRESS; Phase59.44 merged and verified. Exact master HEAD 9cdc16a28e9bd958cb5eec78548e464988123e10 passed Mission Continuity Guard #244 (111/111) and bounded Mission Autonomous AI Worker #444 (POLL_OK selected P59-003; AI inference disabled). Read-only shadow Worker remains mocked only. P59-001 PAUSED; P59-002 BLOCKED.",
-      "last_observed_head": "9cdc16a28e9bd958cb5eec78548e464988123e10",
+      "last_observed_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
       "phase59_14_report": "research/PHASE_59_14_B4_CRASH_RECOVERY_AND_WORKFLOW_INVENTORY_2026-11-15.md",
@@ -114,7 +114,125 @@
       "phase59_44_production_integrated": false,
       "phase59_44_next": "Phase59.45 global installation-wide cross-run/cross-repository quota validation and independent-host failure harness",
       "phase59_44_post_checkpoint_worker_run_id": 43797448076,
-      "phase59_44_post_checkpoint_guard_run_id": 43797448153
+      "phase59_44_post_checkpoint_guard_run_id": 43797448153,
+      "phase59_45A": {
+        "report": "research/PHASE_59_45A_INSTALLATION_WIDE_QUOTA_IDENTITY_2026-11-16.md",
+        "pr_number": 25,
+        "pr_status": "MERGED",
+        "merge_commit": "58352e68fe71abdb71e8dae68580b0d96601ba14",
+        "tested_head": "8a8dfa08bad91bccce25b31c89b4220d1afe34af",
+        "ci_checks": "13/13",
+        "workers_runtime_run_id": 43814337444,
+        "evidence": "two authenticated read-only shadow Worker clients share one synthetic installation-scope DO partition in workerd",
+        "limits": [
+          "not physical multi-host",
+          "not hosted cross-run",
+          "not real GitHub App installation",
+          "not deployed"
+        ],
+        "production_flag": "OFF",
+        "spend_inr": 0
+      },
+      "phase59_46": {
+        "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
+        "pr_number": 27,
+        "pr_status": "MERGED",
+        "merge_commit": "ea8d785691b9e92ae8034cec2dafab70573ad249",
+        "tested_head": "4bf26dccd50ddf3b0887e310c3ad6f3d74386273",
+        "ci_checks": "13/13",
+        "workers_runtime_run_id": 43830209099,
+        "evidence": {
+          "concurrent_requests": 16,
+          "admitted": 2,
+          "fail_closed": 14,
+          "committed_units": 2,
+          "reserved_units": 0,
+          "uncertain_units": 0,
+          "external_network_requests": 0
+        },
+        "limits": [
+          "not physical multi-host",
+          "not hosted cross-run or cross-repository production proof",
+          "not real GitHub App installation",
+          "not deployed"
+        ],
+        "production_flag": "OFF",
+        "spend_inr": 0
+      },
+      "phase59_47_51_summary": {
+        "reports": [
+          "research/PHASE_59_47_CRASH_RESTART_LEASE_FENCING_2026-11-16.md",
+          "research/PHASE_59_48_HEARTBEAT_SETTLEMENT_CRASH_WINDOW_2026-11-16.md",
+          "research/PHASE_59_49_RESPONSE_JOURNAL_SETTLEMENT_IDEMPOTENCY_2026-11-16.md",
+          "research/PHASE_59_50_PROVIDER_RESPONSE_CRASH_WINDOW_RECOVERY_2026-11-16.md",
+          "research/PHASE_59_51_PROVIDER_RESPONSE_JOURNAL_RESTART_READBACK_2026-11-16.md"
+        ],
+        "status": "MERGED_CODE; WORKERD_TESTED; PRODUCTION_OFF",
+        "verified": "eviction/restart persistence, stale lease/heartbeat fencing, uncertain quota retention, response journal idempotency and conflict rejection",
+        "limits": [
+          "not physical host failure proof",
+          "not deployed production",
+          "no live provider calls",
+          "no revenue"
+        ]
+      },
+      "phase59_52": {
+        "report": "research/PHASE_59_52_END_TO_END_DURABLE_SWARM_INTEGRATION_AUDIT_2026-11-16.md",
+        "pr_number": 35,
+        "pr_status": "MERGED",
+        "merge_commit": "076104d6cfbedb1555ccba83d07139336e0ed2a3",
+        "tested_head": "eed6c1dafb77bc4f0afc7256d7b4734566307af4",
+        "ci_checks": "13/13",
+        "workers_runtime_tests": "68/68",
+        "decision": "separate project-cell SwarmRunDO; quota ledger remains separate; deterministic mock only"
+      },
+      "phase59_53": {
+        "report": "research/PHASE_59_53_PROJECT_CELL_DURABLE_SWARM_RUN_LEDGER_2026-11-16.md",
+        "pr_number": 37,
+        "pr_status": "MERGED",
+        "merge_commit": "d6d78ed5cd9d377433c79bd8d213d66098e54f12",
+        "tested_head": "86e1fe604f211f77ecd46c79deec26e7b8d5ce45",
+        "status": "CODE_MERGED; INITIAL_EXACT_HEAD_CI_EVIDENCE_NOT_LOCATED; RUN_LEDGER_COVERED_BY_PHASE59_54_74_OF_74"
+      },
+      "phase59_54": {
+        "report": "research/PHASE_59_54_DETERMINISTIC_SHADOW_TASK_PATH_2026-11-16.md",
+        "pr_number": 39,
+        "pr_status": "DRAFT_NOT_MERGED",
+        "branch": "phase59-54-deterministic-shadow-ledger-path",
+        "tested_head": "a15e921f5029b7ff7d01ae3ed1ae42e02a65f958",
+        "exact_head_ci_checks": "13/13",
+        "workers_runtime_run_id": 44008145599,
+        "workers_runtime_tests": "74/74",
+        "production_integrated": false,
+        "ai_inference": false,
+        "external_network_requests": 0,
+        "spend_inr": 0,
+        "owner_merge_approval_required": true
+      },
+      "phase59_55": {
+        "report": "research/PHASE_59_55_CURRENT_HEAD_SWARM_SECURITY_INVENTORY_2026-11-17.md",
+        "baseline_master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+        "status": "COMPLETE",
+        "workflows": 29,
+        "python_modules": 17,
+        "cloud_js_modules": 18,
+        "package_manifests": 1,
+        "lockfiles": 0,
+        "mutable_action_workflows": 6,
+        "contents_write_workflows": 3,
+        "missing_timeout_workflows": 2,
+        "findings": [
+          "compute/publisher separation incomplete",
+          "dependency lock absent",
+          "branch protection unverified",
+          "cross-run/cross-repository hosted quota proof incomplete"
+        ]
+      },
+      "next": "Phase59.56 global installation-scope quota proof across synthetic repository identities and distinct run envelopes; preserve all non-P10CR projects read-only/untouched. Then constrained publisher, dispatcher integration and independent-host soak.",
+      "production_integrated": false,
+      "ai_inference_enabled": false,
+      "authorized_spend_inr": 0,
+      "verified_realized_net_receipts_inr": 0
     },
     {
       "project_id": "FLASHLOAN-RESEARCH",
