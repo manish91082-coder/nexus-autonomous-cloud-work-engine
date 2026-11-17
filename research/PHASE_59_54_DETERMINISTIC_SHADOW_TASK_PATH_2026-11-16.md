@@ -3,7 +3,7 @@
 **Mission:** P10CR / P59-003 AI agentic swarm foundation  
 **Base:** master at 8856bf908f93e265cefd5c739f7f46b3dd995b3c  
 **Branch:** phase59-54-deterministic-shadow-ledger-path  
-**Status:** exact-head CI verified; PR #39 remains draft and unmerged pending owner-controlled master protection/approval  
+**Status:** prior code head CI verified; rebased PR #40 is draft and awaiting its own exact-head CI and owner-controlled master approval  
 **Spend:** ₹0  
 **External network:** 0 by design  
 **Live provider calls:** 0  
@@ -77,4 +77,9 @@ Duplicate delivery returns the existing completed result and does not create a s
 
 ### Merge and deployment boundary
 
-PR #39 remains a draft and is not merged. The tested code is available on its branch; master remains at the previously verified head until owner-controlled approval. No production Wrangler deployment, hosted Durable Object, scheduled mission-worker integration, publisher capability, provider call, model inference, account action, billing, payment or money movement was enabled.
+PR #40 remains a draft and is not merged. The tested code is available on its branch; master remains at the previously verified head until owner-controlled approval. No production Wrangler deployment, hosted Durable Object, scheduled mission-worker integration, publisher capability, provider call, model inference, account action, billing, payment or money movement was enabled.
+
+
+## Rebase onto current master
+
+The prior draft PR #39 was left open temporarily for evidence preservation but its base was stale/dirty. The same eight-file checkpoint was copied onto branch `phase59-54-deterministic-shadow-ledger-path-master-sync`, created directly from master baseline `8856bf908f93e265cefd5c739f7f46b3dd995b3c`, and opened as draft PR #40. The code content is identical to previously tested head `a15e921f5029b7ff7d01ae3ed1ae42e02a65f958`; PR #40 exact-head CI is pending and must be rechecked before any owner merge decision. No master write occurred.
