@@ -2002,3 +2002,98 @@ describe("Phase 59.51 provider-response journal restart/readback", () => {
   });
 });
 
+
+describe("Phase 59.56 installation-global cross-repository and cross-run quota arbitration", () => {
+  it("shares one installation budget across synthetic repositories, workers and workflow runs while isolating other installations", async () => {
+    const makeInstallationIdentity = ({ installationId, repositoryId, runId, requestSuffix }) => ({
+      provider: "github",
+      credentialScope: `github-app-installation:${installationId}`,
+      windowId: "github-rate-limit-ledger",
+      controlPlaneProvider: "cloudflare",
+      reservationId: `p59-56:${repositoryId}:${runId}:${requestSuffix}`,
+      workerId: `p59-56-worker:${repositoryId}:${runId}`,
+      operation: "core5"
+    });
+
+    const repoA = makeInstallationIdentity({
+      installationId: "4242",
+      repositoryId: "synthetic-repository-1001",
+      runId: "actions-run-10001",
+      requestSuffix: "request-a"
+    });
+    const repoB = makeInstallationIdentity({
+      installationId: "4242",
+      repositoryId: "synthetic-repository-2002",
+      runId: "actions-run-20002",
+      requestSuffix: "request-b"
+    });
+    const repoASecondRun = makeInstallationIdentity({
+      installationId: "4242",
+      repositoryId: "synthetic-repository-1001",
+      runId: "actions-run-10003",
+      requestSuffix: "request-c"
+    });
+
+    // Repository and workflow-run identities must not enter the shared quota
+    // partition key. Only provider + installation credential scope + ledger window.
+    const sharedObjectNameA = quotaLedgerObjectName(repoA.provider, repoA.credentialScope, repoA.windowId);
+    const sharedObjectNameB = quotaLedgerObjectName(repoB.provider, repoB.credentialScope, repoB.windowId);
+    const sharedObjectNameASecondRun = quotaLedgerObjectName(
+      repoASecondRun.provider, repoASecondRun.credentialScope, repoASecondRun.windowId
+    );
+    expect(sharedObjectNameA).toBe(sharedObjectNameB);
+    expect(sharedObjectNameA).toBe(sharedObjectNameASecondRun);
+
+    const repoAStub = stubFor(repoA);
+    const repoBStub = stubFor(repoB);
+    await seedBucket(repoAStub, repoA, "core", 20, { limitUnits: 20 });
+
+    // Two separately authenticated caller identities and three independent
+    // repository/run envelopes contend for the same installation budget.
+    const attempts = await Promise.all([
+      call(repoAStub, "reserve", repoA),
+      call(repoBStub, "reserve", repoB, {
+        callerId: "secondary",
+        secret: "secondary-test-secret-0123456789abcdef"
+      }),
+      call(repoAStub, "reserve", repoASecondRun)
+    ]);
+    const statuses = attempts.map(result => result.status).sort();
+    expect(statuses).toEqual(["RESERVED", "RESERVED", "WAITING_FOR_QUOTA"]);
+
+    // Read through the other repository's stub: all callers see one ledger.
+    const sharedSnapshot = await call(repoBStub, "snapshot", repoB);
+    expect(sharedSnapshot.buckets).toHaveLength(1);
+    expect(sharedSnapshot.buckets[0].reserved_units).toBe(10);
+    expect(sharedSnapshot.buckets[0].committed_units).toBe(0);
+    expect(sharedSnapshot.buckets[0].uncertain_units).toBe(0);
+    expect(sharedSnapshot.reservations.filter(item => item.status === "RESERVED")).toHaveLength(2);
+
+    // A retry of the same repository/run request is idempotent and cannot
+    // consume another five units from the installation-wide budget.
+    const duplicate = await call(repoAStub, "reserve", repoA);
+    expect(duplicate.status).toBe("DUPLICATE_RESERVATION");
+    const afterDuplicate = await call(repoBStub, "snapshot", repoB);
+    expect(afterDuplicate.buckets[0].reserved_units).toBe(10);
+    expect(afterDuplicate.reservations.filter(item => item.status === "RESERVED")).toHaveLength(2);
+
+    // A different GitHub App installation has an independent quota partition.
+    const otherInstallation = makeInstallationIdentity({
+      installationId: "4343",
+      repositoryId: "synthetic-repository-3003",
+      runId: "actions-run-30003",
+      requestSuffix: "request-d"
+    });
+    expect(quotaLedgerObjectName(
+      otherInstallation.provider, otherInstallation.credentialScope, otherInstallation.windowId
+    )).not.toBe(sharedObjectNameA);
+    const otherStub = stubFor(otherInstallation);
+    await seedBucket(otherStub, otherInstallation, "core", 20, { limitUnits: 20 });
+    expect((await call(otherStub, "reserve", otherInstallation)).status).toBe("RESERVED");
+    const isolatedSnapshot = await call(otherStub, "snapshot", otherInstallation);
+    expect(isolatedSnapshot.buckets[0].reserved_units).toBe(5);
+
+    // No live GitHub repository is addressed: repository IDs and run IDs above
+    // are synthetic labels used only to prove the shared Durable Object key.
+  });
+});
