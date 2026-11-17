@@ -1,3 +1,4 @@
+// Phase59.54: exact-head CI revalidation on the current-master draft PR branch.
 import { describe, it, expect } from "vitest";
 import { env } from "cloudflare:workers";
 import { evictDurableObject } from "cloudflare:test";
