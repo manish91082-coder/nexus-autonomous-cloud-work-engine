@@ -28,7 +28,7 @@ on:
     - cron: "3-59/5 * * * *"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: mission-autonomous-worker
@@ -41,6 +41,8 @@ jobs:
     steps:
       - name: Checkout canonical mission state
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 (Node 24)
+        with:
+          persist-credentials: false
       - name: Set up Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0 (Node 24)
         with:
@@ -59,26 +61,11 @@ jobs:
         run: python3 -m unittest discover -s tests -p 'test_recruitment_revenue_assurance.py' -v
       - name: Poll queue and write deterministic heartbeat
         run: python3 scripts/worker_tick.py
-      - name: Execute one bounded AI work packet (fails closed without owner secrets)
+      - name: Execute one bounded AI work packet (hard-disabled until durable quota and owner gates pass)
         env:
-          MISSION_AI_ENABLED: ${{ secrets.MISSION_AI_ENABLED }}
-          MISSION_AI_ZERO_BILLING_CONFIRMED: ${{ secrets.MISSION_AI_ZERO_BILLING_CONFIRMED }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_AI_MODEL: ${{ secrets.CLOUDFLARE_AI_MODEL }}
+          MISSION_AI_ENABLED: "false"
+          MISSION_AI_ZERO_BILLING_CONFIRMED: "false"
         run: python3 scripts/ai_task_executor.py
-      - name: Commit only productive AI work packet and quota state
-        if: success()
-        run: |
-          if [ -f ai_worker_report.json ] && grep -q '"status": "DRAFT_READY_FOR_EVIDENCE_REVIEW"' ai_worker_report.json; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add ai_worker_report.json control/ai_usage_state.json
-            if ! git diff --cached --quiet; then
-              git commit -m "Record bounded AI mission work packet"
-              git push
-            fi
-          fi
       - name: Preserve machine-readable worker evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2 (Node 24)
