@@ -122,3 +122,8 @@ P59-003 remains the sole active P0. P59-001 remains PAUSED and P59-002 remains B
 ## 8. Evidence boundary
 
 This report is a source/configuration inventory and test-evidence reconciliation. It does not claim a deployed swarm, physical multi-host proof, 24×7 SLA, live LLM agent swarm, production publisher or revenue. Spend and verified realized net receipts remain ₹0.
+
+
+## Rebased PR #40 verification addendum
+
+The inventory/control checkpoint is carried on draft PR #40, branch `phase59-54-deterministic-shadow-ledger-path-master-sync`, based on master `8856bf908f93e265cefd5c739f7f46b3dd995b3c`. The exact branch head `3100ea2dfc698087299c4fe114df5a08a73de354` passed all 13 regression workflows. The separate mission continuity guard run `44009214414` passed 111 checks with zero errors. The Phase59.54 Workers/workerd run `44009258395` passed 74/74. PR #39 is closed unmerged; PR #40 remains draft.
