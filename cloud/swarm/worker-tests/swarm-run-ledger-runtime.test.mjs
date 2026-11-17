@@ -15,8 +15,8 @@ async function digest(value) {
   const hash = await crypto.subtle.digest("SHA-256", bytes);
   return Array.from(new Uint8Array(hash), x => x.toString(16).padStart(2, "0")).join("");
 }
-function stubFor() {
-  return env.SWARM_RUNS.get(env.SWARM_RUNS.idFromName("P10CR-project-cell"));
+function stubFor(name = "P10CR-project-cell") {
+  return env.SWARM_RUNS.get(env.SWARM_RUNS.idFromName(name));
 }
 async function rpc(stub, action, input, caller = "primary") {
   const request = await createSignedRequest(callerEnv[caller], action, input, { nonce: crypto.randomUUID() });
@@ -182,7 +182,7 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
   
   it("resumes a deterministic non-provider shadow task from durable checkpoint after eviction and suppresses duplicate delivery", async () => {
     const { prepareDeterministicShadowTask, resumeDeterministicShadowTask } = await import("./deterministic-shadow-task.mjs");
-    const stub = stubFor();
+    const stub = stubFor("P10CR-phase59-54-integrated-shadow");
     const task = await register(stub, "phase59-54-integrated-shadow");
 
     // Match the proven eviction pattern: one stub for the entire test. The RPC
