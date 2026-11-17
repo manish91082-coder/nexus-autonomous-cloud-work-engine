@@ -198,7 +198,7 @@ describe("Phase 59.54 deterministic shadow-runner integration", () => {
       fixtureInput: { source: "fixed-fixture", value: 21 }
     };
     let fixtureCalls = 0;
-    const call = (action, input) => rpc(stub, action, input, "secondary");
+    const call = (action, input) => rpc(stub, action, input, action === "register" ? "primary" : "secondary");
     const fixture = async input => {
       fixtureCalls += 1;
       return { source: input.source, doubled: input.value * 2 };
@@ -254,7 +254,7 @@ describe("Phase 59.54 deterministic shadow-runner integration", () => {
     await evictDurableObject(stub);
     let fixtureCalls = 0;
     const resumed = await runDeterministicShadowTask({
-      call: (action, input) => rpc(stub, action, input, "secondary"),
+      call: (action, input) => rpc(stub, action, input, action === "register" ? "primary" : "secondary"),
       task,
       workerId,
       fixture: async input => {
