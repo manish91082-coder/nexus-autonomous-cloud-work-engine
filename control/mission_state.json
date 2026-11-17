@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "P59-003 only. Phase59.54 deterministic shadow task adapter is exact-head CI verified on PR #39 branch a15e921f: 13/13 regression workflows and 74/74 Workers/workerd tests. PR remains draft/unmerged; master is still 8856bf90. Phase59.55 current-head inventory is complete: 29 workflows, 17 Python modules, 18 cloud JS modules, one unpinned package manifest/no lockfile, three contents:write workflows, six mutable-tag workflows and two missing timeouts. Production swarm remains not deployed; inference and flags OFF.",
+  "current_focus": "P59-003 only. Phase59.54 code passed 13/13 regression and 74/74 workerd on original code head a15e921f. To resolve stale-base conflict, identical code and Phase59.55 evidence were copied onto current master base 8856bf90 in draft PR #40; new exact-head CI is pending. Phase59.55 inventory complete. No master merge or protected-state mutation.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -62,7 +62,7 @@
     "CREATOR_IP_ROYALTIES_STOCK_ASSETS",
     "GAMES_SPONSORSHIP_AFFILIATE_ADVERTISING"
   ],
-  "last_exact_head_ci_status": "Phase59.54 PR #39 draft branch exact tested head a15e921f5029b7ff7d01ae3ed1ae42e02a65f958: 13/13 regression workflows SUCCESS; Workers/workerd run 44008145599 passed 74/74 tests. Earlier eviction attempts failed on shared test Durable Object identity; final dedicated fixture ID passed. PR not merged; master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. Master Mission Worker #485 and Continuity Guard #288 both SUCCESS on exact master HEAD. No provider calls, external network in tests 0, AI inference disabled, production flags OFF, spend ₹0.",
+  "last_exact_head_ci_status": "Phase59.54 PR #39 draft branch exact tested head a15e921f5029b7ff7d01ae3ed1ae42e02a65f958: 13/13 regression workflows SUCCESS; Workers/workerd run 44008145599 passed 74/74 tests. Earlier eviction attempts failed on shared test Durable Object identity; final dedicated fixture ID passed. PR not merged; master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. Master Mission Worker #485 and Continuity Guard #288 both SUCCESS on exact master HEAD. No provider calls, external network in tests 0, AI inference disabled, production flags OFF, spend ₹0. Rebased draft PR #40 head 8a9643b0709e31f8e1a9a0ffb6e115fdf2d83b71 carries identical code; exact-head CI pending, do not merge until rerun.",
   "phase46_control_commits": [
     "72230902a478552d007d94d330e216238c9b2982",
     "ae552163e2b1e65590fc98454d8f7817bc73fa92",
@@ -136,7 +136,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.56: prove the global quota arbiter across synthetic repository identities and distinct run envelopes while all non-P10CR projects remain untouched/read-only. Reuse one installation-scope Durable Object partition; test cross-run replay, contention, reset-window accounting, no oversubscription and zero residual reserved/uncertain budget. No real other-repository access, hosted deployment, real GitHub App credential or spend. Then Phase59.57 isolate read-only compute from one constrained publisher; Phase59.58 wire SwarmRunDO and deterministic specialist graph into the mission dispatcher; Phase59.59 owner-approved independent-host tests and 7/30-day soak.",
+  "next_focus": "After PR40 exact-head CI and branch continuity guard pass, Phase59.56 synthetic cross-repository/global installation quota proof; then Phase59.57 constrained publisher, Phase59.58 dispatcher/specialist integration, Phase59.59 owner-approved multi-host and 7/30-day soak.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -2218,9 +2218,9 @@
   },
   "phase59_54": {
     "report": "research/PHASE_59_54_DETERMINISTIC_SHADOW_TASK_PATH_2026-11-16.md",
-    "pr_number": 39,
-    "pr_state": "DRAFT_NOT_MERGED",
-    "branch": "phase59-54-deterministic-shadow-ledger-path",
+    "pr_number": 40,
+    "pr_state": "DRAFT_REBASED_CI_PENDING",
+    "branch": "phase59-54-deterministic-shadow-ledger-path-master-sync",
     "tested_head": "a15e921f5029b7ff7d01ae3ed1ae42e02a65f958",
     "latest_branch_head_before_state_checkpoint": "a12a0f0d7118e944abfbb532eb0d9353de2c3a57",
     "regression_checks_passed": 13,
@@ -2235,12 +2235,18 @@
     "external_network_requests": 0,
     "live_provider_calls": 0,
     "spend_inr": 0,
-    "owner_merge_approval_required": true
+    "owner_merge_approval_required": true,
+    "tested_code_head": "a15e921f5029b7ff7d01ae3ed1ae42e02a65f958",
+    "new_pr_head": "8a9643b0709e31f8e1a9a0ffb6e115fdf2d83b71",
+    "previous_branch_regression_checks": "13/13",
+    "previous_branch_workers_runtime": "74/74",
+    "new_pr_exact_head_ci": "PENDING",
+    "supersedes_pr_number": 39
   },
   "phase59_55": {
     "report": "research/PHASE_59_55_CURRENT_HEAD_SWARM_SECURITY_INVENTORY_2026-11-17.md",
     "inventory_master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-    "status": "COMPLETE_READ_ONLY_INVENTORY",
+    "status": "COMPLETE_READ_ONLY_INVENTORY_CI_PENDING_ON_REBASED_DRAFT",
     "workflow_count": 29,
     "python_module_count": 17,
     "cloud_javascript_module_count": 18,
@@ -2259,6 +2265,8 @@
       "cross-run/cross-repository and independent-host quota proof remains incomplete"
     ],
     "production_integrated": false,
-    "spend_inr": 0
+    "spend_inr": 0,
+    "pr_number": 40,
+    "branch": "phase59-54-deterministic-shadow-ledger-path-master-sync"
   }
 }
