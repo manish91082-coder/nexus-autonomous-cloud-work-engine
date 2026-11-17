@@ -4664,3 +4664,21 @@ Date: 2026-11-16
 - Cloudflare official Free-tier limits were added to the report. Live deployment remains owner-gated: verify Workers Free, SQLite DO, no Paid plan/add-ons, and usage/spending controls before any deployment. Workers Paid minimum is $5/month and is prohibited without explicit approval.
 - P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Next Phase59.57: compute/publisher separation. Master remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`; PR #41 remains open and stacked on PR #40; no master merge.
 - ₹0 spend; AI inference disabled; production flags OFF; receipts ₹0.
+
+
+## PHASE 59.57 UPDATE — READ-ONLY COMPUTE / CONSTRAINED PUBLISHER SEPARATION
+Date: 2026-11-17
+
+- Candidate branch: \`phase59-57-constrained-publisher-separation\`; exact head \`4d419d4c260a21a653e05bce1b94e90e7cccf4f8\`; draft PR #42 is stacked on PR #41, itself stacked on draft PR #40. No master merge or protected-state mutation occurred.
+- Current master HEAD remains \`8856bf908f93e265cefd5c739f7f46b3dd995b3c\`. Latest master worker run #43998553989 SUCCESS at that exact SHA.
+- Changed mission worker candidate to Contents:read, disabled checkout credential persistence, removed its git commit/push step, removed provider secrets from the AI executor environment and explicitly hard-disabled inference.
+- Added one isolated publisher workflow with read-only GITHUB_TOKEN. Only after source-run/artifact validation and owner App secrets exist can it mint a one-repository token (Metadata:read, Contents:write, Pull requests:write).
+- Added deterministic publisher gate. It accepts only P59-003 draft reports, validates source workflow/repository/master/event/conclusion/run identity, rejects secret-like/oversized/duplicate/malformed input, hashes raw model output but never commits it, and creates/reuses only an allowlisted branch and DRAFT PR. No merge endpoint exists in publisher code.
+- Official token action is pinned to \`64ab729a6294000f5aa4a4bc0b73d1f32bc45510\` (v3.3.0).
+- Push CI [#44015009269](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015009269) SUCCESS; exact PR CI [#44015026065](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015026065) SUCCESS; **23/23 tests** passed on exact candidate head.
+- Mission worker [#44015009217](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015009217) SUCCESS; queue poll POLL_OK selected P59-003; AI executor WAITING_FOR_OWNER_CONFIGURATION; inference requests 0.
+- Phase59.56 PR #41 run [#44012765651](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44012765651) SUCCESS; synthetic workerd 76/76, but hosted cross-run and independent physical-host proof remain unverified.
+- PR #40 remains draft, PR #41 open/stacked, PR #42 draft. None merged. Publisher App not created/installed; no token minted; branch protection UNVERIFIED.
+- No other project repository was read or modified. No KYC, legal acceptance, provider call, deployment, billing, public product release, payment, signing, money movement or spend.
+- P59-003 remains the sole active P0; P59-001 PAUSED; P59-002 BLOCKED. PCNE / verified receipts ₹0; authorized spend ₹0.
+- Next: Phase59.58 durable mission-dispatcher integration with SwarmRunDO and deterministic specialist graph, shadow-only, no inference. Hosted global quota, independent-host, owner App/ruleset and 7/30-day soak gates remain open.

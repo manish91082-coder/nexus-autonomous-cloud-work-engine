@@ -95,3 +95,32 @@ Official ruleset documentation:
 ## Approval boundary
 
 This packet does not authorize App creation, installation, private-key generation, secret storage, KYC, legal acceptance, billing, public release, payments, repository-wide write access for compute workers or activation of production clients. Those actions remain owner-gated.
+
+
+## Phase59.57 — implemented compute/publisher separation (candidate PR #42, 17-Nov-2026)
+
+The implementation is committed on draft PR #42, stacked on PR #41 and draft PR #40. It is not merged to master.
+
+### Compute worker
+- Candidate mission-autonomous-worker workflow uses GITHUB_TOKEN Contents:read only.
+- Checkout credential persistence is disabled.
+- The worker no longer stages, commits or pushes any file.
+- Provider secrets are not passed to the AI executor; MISSION_AI_ENABLED and MISSION_AI_ZERO_BILLING_CONFIRMED are explicitly false.
+- The worker writes run-local reports and uploads artifacts only.
+
+### Single constrained Publisher workflow
+- Trigger: completed successful Mission Autonomous AI Worker run from canonical master only.
+- GITHUB_TOKEN permissions: Actions:read and Contents:read.
+- App token is minted only after source artifact validation and the two owner secrets below are present.
+- Official token action is SHA-pinned: actions/create-github-app-token commit 64ab729a6294000f5aa4a4bc0b73d1f32bc45510 (v3.3.0).
+- Required owner-only secrets, if and when approved: NEXUS_PUBLISHER_APP_CLIENT_ID and NEXUS_PUBLISHER_APP_PRIVATE_KEY. Never place private keys in chat, files, artifacts or commits.
+- Token scope: only this repository; Metadata:read, Contents:write, Pull requests:write. No Actions, Workflows, Administration, Secrets, Deployments, Packages, organization or account permissions.
+- Deterministic output branch prefix: automation/p10cr/worker-run-*.
+- Deterministic file path: research/worker-drafts/ai-run-<run>-attempt-<attempt>.json.
+- Only P59-003 reports marked DRAFT_READY_FOR_EVIDENCE_REVIEW with all safety assertions are eligible. Raw model output is never committed; only a sanitized summary with output SHA-256 and byte count is prepared.
+- The publisher creates/reuses a draft PR only. Its source code has no merge, force-push, delete, release, deployment, KYC, payment or money-movement operation.
+
+### Critical permission caveat and owner gates
+GitHub's Pull requests:write permission is technically powerful and may permit merge operations at the API level. The publisher code does not call a merge endpoint, but code-level intent is not a substitute for repository enforcement. Before App installation or token use, the owner must configure and verify a ruleset that requires PRs, required CI checks and at least one human approval; denies force-push/deletion; and does not list either App as a bypass actor. Branch protection is currently UNVERIFIED. PR #42 must remain draft/unmerged until the stacked PRs and owner approval are reviewed.
+
+This packet does not authorize App creation, installation, secret creation, AI inference, deployment, publication or any financial/account action. The compute worker remains hard-disabled for inference.

@@ -3,7 +3,7 @@
 **Mission:** P10CR / P59-003 only  
 **Baseline master HEAD:** 8856bf908f93e265cefd5c739f7f46b3dd995b3c  
 **Stacked parent:** Phase59.56 branch phase59-56-synthetic-global-quota-proof at 290e2601a430d46bb5027675b5774aea37da6104  
-**Status:** implementation candidate committed; exact-head CI pending  
+**Status:** CODE-LEVEL SEPARATION PASS; OWNER APP / RULESET / STACKED MERGE PENDING  
 **Spend:** ₹0  
 **AI inference:** hard-disabled in compute workflow  
 **Production deployment:** OFF  
@@ -73,3 +73,24 @@ The dedicated Python test suite uses only the standard library and a fake GitHub
 This phase can be accepted as code-level separation after exact-head CI. It does not prove the App is installed, the publisher has operated against a real owner-approved token, protected branch rules are configured, hosted cross-workflow runs share a deployed Durable Object, or independent physical hosts are atomic.
 
 P59-003 remains the sole active P0. P59-001 remains PAUSED and P59-002 remains BLOCKED. Next engineering task after this phase's CI is Phase59.58 durable mission-dispatcher integration with the project-cell SwarmRunDO and deterministic specialist graph. Keep inference and all production flags OFF.
+
+
+## Exact-head CI and control-plane checkpoint (17-Nov-2026)
+
+- Candidate branch head: \`4d419d4c260a21a653e05bce1b94e90e7cccf4f8\`; draft PR #42 is stacked on PR #41, which is stacked on draft PR #40. PR #42 is open, draft and unmerged. Master remains \`8856bf908f93e265cefd5c739f7f46b3dd995b3c\`.
+- Dedicated push CI [#44015009269](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015009269): SUCCESS. Python compile, **23/23 unit tests**, offline CLI check all passed.
+- Exact PR-head CI [#44015026065](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015026065): SUCCESS, same 23/23 tests.
+- Bounded mission worker [#44015009217](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015009217): SUCCESS; queue poll POLL_OK selected P59-003; AI executor returned WAITING_FOR_OWNER_CONFIGURATION; no inference request. The candidate workflow has no contents-write permission and no commit/push step.
+- The PR #41 Phase59.56 exact-head run [#44012765651](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44012765651) remains SUCCESS; synthetic workerd quota result is 76/76, not hosted multi-run or physical-host proof.
+- Latest master worker [#43998553989](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43998553989) remains SUCCESS on master HEAD \`8856bf908f93e265cefd5c739f7f46b3dd995b3c\`. No master write occurred in this phase.
+- PR #40 remains draft; PR #41 remains open and stacked; PR #42 remains draft. No PR was merged.
+
+### Acceptance and residual gates
+
+Code-level separation is tested. The Publisher App is not created/installed; no App token was minted or used. Branch protection remains UNVERIFIED. The publisher workflow is inert until a valid P59-003 draft artifact and owner-installed App secrets exist. AI inference is hard-disabled in the candidate compute workflow, so even configured secrets cannot activate inference through this path.
+
+The publisher token is restricted to one repository with Metadata:read, Contents:write and Pull requests:write. The code has no merge endpoint and only opens draft PRs, but Pull requests:write is technically powerful; an owner-configured ruleset requiring review/checks and denying bypass remains mandatory before App installation or token use.
+
+No production deployment, live provider call, external network request in tests, KYC, legal acceptance, billing, public product release, payment, signing, money movement or spend occurred. PCNE / verified realized net receipts ₹0; authorized spend ₹0. P59-003 remains the sole active P0; P59-001 PAUSED; P59-002 BLOCKED.
+
+**Next engineering task:** Phase59.58 durable mission-dispatcher integration with SwarmRunDO and the deterministic specialist graph, still shadow-only and with AI inference disabled.
