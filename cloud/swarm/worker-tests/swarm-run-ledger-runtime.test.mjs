@@ -192,7 +192,7 @@ describe("Phase 59.54 deterministic shadow-runner integration", () => {
       projectId: "P10CR",
       taskType: "DETERMINISTIC_SHADOW_FIXTURE",
       idempotencyKey: `idem:${id}`,
-      payloadHash: await digest("phase59-54-payload"),
+      payloadHash: await digest(JSON.stringify({ source: "fixed-fixture", value: 21 })),
       policyHash: await digest("phase59-54-policy"),
       ownerGate: false,
       fixtureInput: { source: "fixed-fixture", value: 21 }
@@ -231,7 +231,7 @@ describe("Phase 59.54 deterministic shadow-runner integration", () => {
       projectId: "P10CR",
       taskType: "DETERMINISTIC_SHADOW_FIXTURE",
       idempotencyKey: `idem:${id}`,
-      payloadHash: await digest("phase59-54-restart-payload"),
+      payloadHash: await digest(JSON.stringify({ value: 7 })),
       policyHash: await digest("phase59-54-restart-policy"),
       ownerGate: false,
       fixtureInput: { value: 7 }
