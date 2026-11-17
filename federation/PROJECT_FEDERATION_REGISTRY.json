@@ -196,9 +196,9 @@
       },
       "phase59_54": {
         "report": "research/PHASE_59_54_DETERMINISTIC_SHADOW_TASK_PATH_2026-11-16.md",
-        "pr_number": 39,
-        "pr_status": "DRAFT_NOT_MERGED",
-        "branch": "phase59-54-deterministic-shadow-ledger-path",
+        "pr_number": 40,
+        "pr_status": "DRAFT_REBASED_CI_PENDING",
+        "branch": "phase59-54-deterministic-shadow-ledger-path-master-sync",
         "tested_head": "a15e921f5029b7ff7d01ae3ed1ae42e02a65f958",
         "exact_head_ci_checks": "13/13",
         "workers_runtime_run_id": 44008145599,
@@ -207,12 +207,17 @@
         "ai_inference": false,
         "external_network_requests": 0,
         "spend_inr": 0,
-        "owner_merge_approval_required": true
+        "owner_merge_approval_required": true,
+        "tested_code_head": "a15e921f5029b7ff7d01ae3ed1ae42e02a65f958",
+        "new_pr_head": "8a9643b0709e31f8e1a9a0ffb6e115fdf2d83b71",
+        "previous_ci": "13/13 regression; 74/74 workerd",
+        "new_pr_exact_head_ci": "PENDING",
+        "supersedes_pr_number": 39
       },
       "phase59_55": {
         "report": "research/PHASE_59_55_CURRENT_HEAD_SWARM_SECURITY_INVENTORY_2026-11-17.md",
         "baseline_master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-        "status": "COMPLETE",
+        "status": "COMPLETE_READ_ONLY_INVENTORY_CI_PENDING_ON_REBASED_DRAFT",
         "workflows": 29,
         "python_modules": 17,
         "cloud_js_modules": 18,
@@ -226,9 +231,11 @@
           "dependency lock absent",
           "branch protection unverified",
           "cross-run/cross-repository hosted quota proof incomplete"
-        ]
+        ],
+        "pr_number": 40,
+        "branch": "phase59-54-deterministic-shadow-ledger-path-master-sync"
       },
-      "next": "Phase59.56 global installation-scope quota proof across synthetic repository identities and distinct run envelopes; preserve all non-P10CR projects read-only/untouched. Then constrained publisher, dispatcher integration and independent-host soak.",
+      "next": "After PR40 exact-head CI and branch guard pass: Phase59.56 synthetic cross-repository/global installation quota proof; then constrained publisher, dispatcher integration and owner-approved independent-host soak.",
       "production_integrated": false,
       "ai_inference_enabled": false,
       "authorized_spend_inr": 0,
