@@ -28,7 +28,7 @@ function validateTask(task) {
   }
 }
 
-function validateFixtureResult(value) {
+async function sha256(value) {\n  const bytes = new TextEncoder().encode(value);\n  const hash = await crypto.subtle.digest("SHA-256", bytes);\n  return Array.from(new Uint8Array(hash), x => x.toString(16).padStart(2, "0")).join("");\n}\n\nfunction validateFixtureResult(value) {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     throw new TypeError("FIXTURE_RESULT_MUST_BE_OBJECT");
   }
@@ -120,7 +120,7 @@ export async function runDeterministicShadowTask({
       throw new Error("CHECKPOINT_RUN_FENCE_MISMATCH");
     }
 
-    fixtureResult = validateFixtureResult(await fixture(task.fixtureInput ?? null));
+    fixtureResult = validateFixtureResult(await fixture(fixtureInput));
     requireOk(await call("checkpoint", {
       ...run,
       checkpointSeq: checkpointSeq + 1,
