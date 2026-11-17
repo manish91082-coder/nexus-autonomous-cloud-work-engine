@@ -9,7 +9,7 @@ const callerEnv = {
   primary: { NEXUS_QUOTA_CALLER_ID: "primary", NEXUS_QUOTA_CALLER_SECRET: PRIMARY },
   secondary: { NEXUS_QUOTA_CALLER_ID: "secondary", NEXUS_QUOTA_CALLER_SECRET: SECONDARY }
 };
-const taskId = label => `phase59-53-${label}-${crypto.randomUUID()}`;
+const taskId = label => `phase59-54-${label}-${crypto.randomUUID()}`;
 async function digest(value) {
   const bytes = new TextEncoder().encode(value);
   const hash = await crypto.subtle.digest("SHA-256", bytes);
@@ -180,42 +180,61 @@ describe("Phase 59.53 project-cell durable swarm run ledger", () => {
     expect((await replay.json()).reason).toBe("AUTH_REPLAY_DETECTED");
   });
   
-  it("runs a deterministic non-provider shadow task through the durable ledger and survives eviction plus duplicate delivery", async () => {
+  it("resumes a deterministic non-provider shadow task from durable checkpoint after eviction and suppresses duplicate delivery", async () => {
     const { prepareDeterministicShadowTask, resumeDeterministicShadowTask } = await import("./deterministic-shadow-task.mjs");
-    const stub = stubFor();
-    const task = await register(stub, "phase59-54-integrated-shadow");
-    const rpcCall = (action, input, caller) => rpc(stub, action, input, caller);
-    const prepared = await prepareDeterministicShadowTask({
-      rpc: rpcCall,
-      task,
-      workerId: "phase59-54-shadow-worker"
-    });
+    const task = await register(stubFor(), "phase59-54-integrated-shadow");
+
+    // Keep each RPC stub inside a completed helper scope so the eviction helper
+    // sees no live request callback or active service reference.
+    const prepared = await (async () => {
+      const preparationStub = stubFor();
+      return prepareDeterministicShadowTask({
+        rpc: (action, input, caller) => rpc(preparationStub, action, input, caller),
+        task,
+        workerId: "phase59-54-shadow-worker"
+      });
+    })();
     expect(prepared.status).toBe("CHECKPOINTED");
+    expect(prepared.output).toBeUndefined();
 
-    // Eviction is performed by the test after all request/helper frames return,
-    // matching the already-proven Phase 59.53 workerd restart test pattern.
-    await evictDurableObject(stub);
+    // Reconstruct the Durable Object after the initial checkpoint. The resume
+    // helper receives only lease identity and must reload the actual checkpoint.
+    await evictDurableObject(stubFor());
 
-    const first = await resumeDeterministicShadowTask({ rpc: rpcCall, prepared });
+    const first = await (async () => {
+      const resumedStub = stubFor();
+      return resumeDeterministicShadowTask({
+        rpc: (action, input, caller) => rpc(resumedStub, action, input, caller),
+        taskId: prepared.taskId,
+        workerId: prepared.workerId,
+        runId: prepared.runId,
+        fencingToken: prepared.fencingToken
+      });
+    })();
     expect(first.status).toBe("COMPLETED");
     expect(first.output.outcome).toBe("DETERMINISTIC_SHADOW_VERIFIED");
+    expect(first.output.fixtureVersion).toBe("p59.54-v2");
     expect(first.eventChainValid).toBe(true);
 
-    const replay = await prepareDeterministicShadowTask({
-      rpc: rpcCall,
-      task,
-      workerId: "phase59-54-shadow-worker"
-    });
+    const replay = await (async () => {
+      const replayStub = stubFor();
+      return prepareDeterministicShadowTask({
+        rpc: (action, input, caller) => rpc(replayStub, action, input, caller),
+        task,
+        workerId: "phase59-54-shadow-worker"
+      });
+    })();
     expect(replay.status).toBe("ALREADY_COMPLETED");
     expect(replay.resultHash).toBe(first.resultHash);
 
-    const final = await rpc(stub, "snapshot", { taskId: task.taskId });
+    const final = await rpc(stubFor(), "snapshot", { taskId: task.taskId });
     expect(final.tasks[0].status).toBe("COMPLETED");
     expect(final.tasks[0].result_hash).toBe(first.resultHash);
     expect(final.tasks[0].result_run_id).toBe(first.runId);
     expect(final.leases).toHaveLength(0);
     expect(final.checkpoints).toHaveLength(1);
     expect(final.checkpoints[0].checkpoint_seq).toBe(2);
+    expect(final.checkpoints[0].checkpoint_json).toContain("recoveredFromCheckpointSeq");
     expect(final.eventChainValid).toBe(true);
   });
 });
