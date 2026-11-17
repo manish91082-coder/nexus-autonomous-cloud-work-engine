@@ -9,9 +9,9 @@
   "verified_realized_net_receipts_inr": 0,
   "authorized_spend_inr": 0,
   "active_build_limit": 1,
-  "execution_mode": "REVENUE_FIRST; ONE_PRODUCT_AT_A_TIME; PLATFORM_WALLET_FIRST; GROUND_EVIDENCE_REQUIRED; ZERO_SPEND_DEFAULT; OWNER_GATES_FAIL_CLOSED; GITHUB_ACTIONS_BOUNDED_WORKER; AI_PROVIDER_NOT_CONFIGURED",
+  "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "P59-003 only. Phase59.56 synthetic cross-repository installation-quota proof implemented on stacked draft branch phase59-56-synthetic-global-quota-proof, based on PR #40 branch head e2b7fe6f. Two synthetic repository/project identities and four run envelopes share one installation-scope quota DO; 16-way burst and cross-run replay/reset-window assertions are pending exact-head CI. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. P59-001 PAUSED; P59-002 BLOCKED. No real secondary repository, provider, deployment, AI inference or spend. First Phase59.56 CI attempt failed at workerd startup because of an incorrect relative module import; corrected to ./quota-ledger-client.mjs. Retry pending; no test pass claimed.",
+  "current_focus": "P59-003 only. Phase59.56 synthetic cross-repository installation-quota proof implemented on stacked draft branch phase59-56-synthetic-global-quota-proof, based on PR #40 branch head e2b7fe6f. Two synthetic repository/project identities and four run envelopes share one installation-scope quota DO; 16-way burst and cross-run replay/reset-window assertions are pending exact-head CI. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. P59-001 PAUSED; P59-002 BLOCKED. No real secondary repository, provider, deployment, AI inference or spend. First Phase59.56 CI attempt failed at workerd startup because of an incorrect relative module import; corrected to ./quota-ledger-client.mjs. Retry pending; no test pass claimed. Second CI attempt reached workerd: 74 existing tests passed, 2 new tests failed. Added bounded diagnostics; corrected provider-window test to wait until the previous reset actually elapses. Exact-head retry pending.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -2281,7 +2281,7 @@
     "base_branch": "phase59-54-deterministic-shadow-ledger-path-master-sync",
     "base_sha": "e2b7fe6fc9be2c68628d1b4fd072fc3fa86d8d6d",
     "parent_pr": 40,
-    "status": "IMPLEMENTATION_CORRECTED_CI_PENDING",
+    "status": "DIAGNOSTICS_AND_RESET_WINDOW_TEST_CORRECTED_CI_PENDING",
     "test_file": "cloud/swarm/worker-tests/phase59-56-cross-repository-global-quota.test.mjs",
     "worker_file": "cloud/swarm/cross-repository-quota-worker.mjs",
     "schema": "schemas/phase59-56-cross-repository-quota-envelope-v1.schema.json",
@@ -2311,8 +2311,20 @@
         "event": "pull_request",
         "conclusion": "failure",
         "cause": "same module-resolution failure before tests"
+      },
+      {
+        "run_id": 44011679218,
+        "event": "push",
+        "conclusion": "failure",
+        "cause": "both new tests failed; 74 existing runtime tests passed; worker admission result was not SHADOW_COMPLETED; reset-window test attempted a future window before prior reset elapsed"
+      },
+      {
+        "run_id": 44011686715,
+        "event": "pull_request",
+        "conclusion": "failure",
+        "cause": "same test assertion failures on PR merge ref"
       }
     ],
-    "correction": "Changed cross-repository-quota-worker.mjs import to ./quota-ledger-client.mjs; no policy or permission changes."
+    "correction": "Added bounded safe worker diagnostics and assertion response summaries; reset-window test now waits until the prior five-second provider reset has elapsed before observing the next window."
   }
 }

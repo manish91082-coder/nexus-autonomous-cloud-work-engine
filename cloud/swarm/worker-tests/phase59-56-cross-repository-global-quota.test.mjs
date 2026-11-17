@@ -98,8 +98,8 @@ describe("Phase 59.56 synthetic cross-repository installation quota", () => {
     const denied = results.filter(item => item.body.status === "WAITING_FOR_QUOTA");
     expect(new Set(attempts.map(item => item.envelope.repository)).size).toBe(2);
     expect(new Set(attempts.map(item => item.envelope.workflowRunId)).size).toBe(4);
-    expect(admitted).toHaveLength(2);
-    expect(denied).toHaveLength(14);
+    expect(admitted, JSON.stringify(results.map(item => item.body))).toHaveLength(2);
+    expect(denied, JSON.stringify(results.map(item => item.body))).toHaveLength(14);
     expect(admitted.every(item => item.body.settlementStatus === "SETTLED")).toBe(true);
     expect(results.every(item => item.body.externalNetworkRequests === 0)).toBe(true);
     expect(results.every(item => item.body.providerRequestIssued === (item.body.status === "SHADOW_COMPLETED"))).toBe(true);
@@ -142,7 +142,7 @@ describe("Phase 59.56 synthetic cross-repository installation quota", () => {
     const now = Math.floor(Date.now() / 1000);
     await recordCoreTelemetry(stub, scope, {
       observedAtEpoch: now,
-      resetAtEpoch: now + 3600,
+      resetAtEpoch: now + 5,
       remaining: 100
     });
 
@@ -163,9 +163,13 @@ describe("Phase 59.56 synthetic cross-repository installation quota", () => {
     });
     expect(firstSettlement.body.status).toBe("SETTLED");
 
+    // The ledger accepts a later provider window only after the prior reset
+    // has actually elapsed. Wait through the synthetic five-second window.
+    await new Promise(resolve => setTimeout(resolve, 5200));
+    const nextObservedAt = Math.floor(Date.now() / 1000);
     await recordCoreTelemetry(stub, scope, {
-      observedAtEpoch: now + 2,
-      resetAtEpoch: now + 7200,
+      observedAtEpoch: nextObservedAt,
+      resetAtEpoch: nextObservedAt + 3600,
       remaining: 100
     });
     const secondInput = {

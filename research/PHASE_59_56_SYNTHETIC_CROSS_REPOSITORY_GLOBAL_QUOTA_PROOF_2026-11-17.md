@@ -56,3 +56,11 @@ After exact-head CI and continuity guard verification, proceed to Phase59.57: se
 - Exact failure: workerd rejected `../quota-ledger-client.mjs` from the test worker module because the service worker `rootPath: "../"` resolves `cross-repository-quota-worker.mjs` at the `cloud/swarm/` root.
 - Correction: import changed to `./quota-ledger-client.mjs`, matching the resolved worker module root. No quota policy, namespace, permissions or production flag was changed.
 - Retry status: pending; the previous failure remains preserved as evidence.
+
+
+## Second CI failure and diagnostic correction
+
+- Push run [#44011679218](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44011679218) and PR run [#44011686715](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44011686715) started workerd successfully; existing 74 tests passed, while both new Phase59.56 tests failed.
+- First assertion failure: no request was classified as `SHADOW_COMPLETED`; the test did not expose the worker's safe rejection/admission reason. The worker now emits a bounded, non-secret diagnostic reason and quota admission status in the synthetic fixture, and the assertion includes response summaries.
+- Second assertion failure was a test-model error, not a production ledger defect: the ledger intentionally refuses to accept a future provider reset window until the current reset time has elapsed. The test now uses a five-second synthetic window and waits for that reset before recording the next window.
+- No production quota policy or fail-closed control was weakened. Exact-head retry pending.

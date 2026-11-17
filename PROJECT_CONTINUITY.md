@@ -4634,3 +4634,10 @@ Date: 2026-11-16
 - Push run #44011529268 and PR run #44011562986 both failed before tests due workerd resolving the service worker at `cloud/swarm/` while the module imported `../quota-ledger-client.mjs`.
 - Corrected import to `./quota-ledger-client.mjs`; no policy or permission was weakened.
 - Exact-head retry pending. Do not claim Phase59.56 acceptance until the Workers/workerd suite and regression checks pass.
+
+
+### Phase59.56 second CI failure and test correction
+- Runs #44011679218 (push) and #44011686715 (PR) reached workerd. Existing suite: 74 passed; the two new tests failed.
+- Failure 1: the synthetic worker's catch path hid the admission/error reason, so the test showed zero completed calls without explaining why. Added a bounded non-secret reason and quota admission fields; assertions now include all response summaries.
+- Failure 2: the test attempted to move to a future provider reset window before the prior reset elapsed. The ledger correctly retains the current window until its reset; the test now uses a five-second window and waits through it before recording the next observation.
+- No production policy was relaxed. Exact-head retry pending.

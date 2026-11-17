@@ -183,6 +183,8 @@ export default {
         return json(503, {
           status: "SHADOW_EXECUTION_NOT_CONFIRMED",
           quotaStatus: result.status,
+          quotaAdmissionStatus: result.admission?.status ?? null,
+          quotaAdmissionReason: result.admission?.reason ?? null,
           providerRequestIssued: mockProviderCalls > 0,
           mockProviderCalls,
           externalNetworkRequests: 0
@@ -207,9 +209,10 @@ export default {
           private: body.private
         }
       });
-    } catch {
+    } catch (error) {
       return json(503, {
         status: "SHADOW_EXECUTION_REJECTED",
+        reason: String(error?.message || error).slice(0, 180),
         providerRequestIssued: mockProviderCalls > 0,
         mockProviderCalls,
         externalNetworkRequests: 0
