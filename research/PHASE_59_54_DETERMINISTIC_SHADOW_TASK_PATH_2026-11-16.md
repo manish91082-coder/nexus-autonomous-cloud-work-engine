@@ -54,7 +54,7 @@ Only after exact-head CI and state reconciliation pass, select the next bounded 
 
 ### Failure and correction history
 
-The first PR-head runtime run [43927197282](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43927197282) reported 73/74 passing. The new integration test timed out in `evictDurableObject` with `it still has active references`. Two subsequent exact-head attempts reproduced the active-reference failure:
+The first PR-head runtime run [43927197282](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43927197282) reported 73/74 passing. The new integration test timed out in `evictDurableObject` with `it still has active references`. Three subsequent exact-head attempts reproduced the active-reference failure:
 - `8ca6c719b73ceadb95c3c53ed23406d65defbed5`: helper-only checkpoint-recovery change; the prior test still retained the old adapter call shape.
 - `3ff0fdde4d07a24c9723a44f556f126317bfb330`: adapter now resumed from the durable snapshot, but the test still shared the default project-cell Durable Object identity with other runtime fixtures.
 - `bb120c9de5a009e792468909642ffd74360d0b77`: single-stub scoping alone did not isolate the test cell.
@@ -94,3 +94,12 @@ The prior draft PR #39 was left open temporarily for evidence preservation but i
 - Mission Continuity Guard on the rebased state checkpoint [#44009214414](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44009214414): **111 checks PASS**, zero errors.
 - Prior draft PR #39 was closed unmerged as stale/dirty; PR #40 is the clean draft based directly on current master.
 - PR #40 remains draft and unmerged. This CI evidence does not authorize a protected-master merge or production activation.
+
+
+## Final PR #40 branch-head verification
+
+- Final branch head: `c1def7f15a3b82b8f1d0f8ab50759adaa4aeb396`.
+- All 13 regression workflows plus the Mission Continuity Guard: **14/14 SUCCESS**.
+- Workers/workerd run [#44009572342](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44009572342): **74/74 PASS**.
+- Mission Continuity Guard [#44009565672](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44009565672): **111 checks PASS**, zero errors.
+- PR #40 remains draft and unmerged; master remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`. PR #39 is closed unmerged.
