@@ -18,6 +18,29 @@ function fromBase64(value) {
   const binary = atob(value);
   return Uint8Array.from(binary, char => char.charCodeAt(0));
 }
+async function readBounded(request, maximum) {
+  const reader = request.body?.getReader();
+  if (!reader) throw new Error("BODY_UNAVAILABLE");
+  const chunks = [];
+  let total = 0;
+  while (true) {
+    const part = await reader.read();
+    if (part.done) break;
+    total += part.value.byteLength;
+    if (total > maximum) {
+      try { await reader.cancel(); } catch {}
+      throw new Error("BODY_SIZE_INVALID");
+    }
+    chunks.push(part.value);
+  }
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return bytes;
+}
 async function verifyIngress(request, bytes, env) {
   const timestampText = request.headers.get("x-nexus-dispatcher-timestamp") || "";
   const nonce = request.headers.get("x-nexus-dispatcher-nonce") || "";
@@ -53,8 +76,11 @@ export default {
     const length = Number(request.headers.get("content-length") || 0);
     if (Number.isFinite(length) && length > MAX_BODY_BYTES) return response(413, { status: "REJECTED", reason: "ENVELOPE_TOO_LARGE" });
     let bytes;
-    try { bytes = new Uint8Array(await request.arrayBuffer()); } catch { return response(400, { status: "REJECTED", reason: "BODY_UNAVAILABLE" }); }
-    if (bytes.byteLength < 1 || bytes.byteLength > MAX_BODY_BYTES) return response(413, { status: "REJECTED", reason: "ENVELOPE_SIZE_INVALID" });
+    try { bytes = await readBounded(request, MAX_BODY_BYTES); } catch (error) {
+      const reason = String(error?.message || "BODY_UNAVAILABLE");
+      return response(reason === "BODY_SIZE_INVALID" ? 413 : 400, { status: "REJECTED", reason });
+    }
+    if (bytes.byteLength < 1) return response(400, { status: "REJECTED", reason: "ENVELOPE_SIZE_INVALID" });
     const auth = await verifyIngress(request, bytes, env);
     if (!auth.ok) return response(auth.status, { status: "REJECTED", reason: auth.reason });
     let body;
