@@ -1,13 +1,43 @@
 /**
  * Internal, disabled-by-default P10CR shadow dispatcher service.
- * No public route, publisher, quota, provider or model binding is configured.
+ * HMAC ingress + service binding only; no publisher, quota, provider or model binding.
  */
 import { createSwarmRunRpc } from "./swarm-run-rpc-client.mjs";
 import { dispatchMissionShadow } from "./mission-dispatcher-shadow.mjs";
 const MAX_BODY_BYTES = 8192;
 const SAFE_ID = /^[A-Za-z0-9._:-]{1,128}$/;
+const encoder = new TextEncoder();
 function response(status, body) {
   return Response.json(body, { status, headers: { "cache-control": "no-store" } });
+}
+function hex(bytes) {
+  return Array.from(new Uint8Array(bytes), value => value.toString(16).padStart(2, "0")).join("");
+}
+function fromBase64(value) {
+  if (typeof value !== "string" || value.length < 16 || value.length > 256) throw new TypeError("INVALID_INGRESS_SIGNATURE");
+  const binary = atob(value);
+  return Uint8Array.from(binary, char => char.charCodeAt(0));
+}
+async function verifyIngress(request, bytes, env) {
+  const timestampText = request.headers.get("x-nexus-dispatcher-timestamp") || "";
+  const nonce = request.headers.get("x-nexus-dispatcher-nonce") || "";
+  const signatureText = request.headers.get("x-nexus-dispatcher-signature") || "";
+  const secret = env?.NEXUS_DISPATCHER_INGRESS_SECRET;
+  if (typeof secret !== "string" || secret.length < 32) return { ok: false, status: 503, reason: "INGRESS_CREDENTIALS_UNAVAILABLE" };
+  if (!/^\d{1,12}$/.test(timestampText) || !/^[A-Za-z0-9._:-]{16,128}$/.test(nonce)) {
+    return { ok: false, status: 401, reason: "INGRESS_HEADERS_INVALID" };
+  }
+  const timestamp = Number(timestampText);
+  if (!Number.isSafeInteger(timestamp) || Math.abs(Math.floor(Date.now() / 1000) - timestamp) > 30) {
+    return { ok: false, status: 401, reason: "INGRESS_TIMESTAMP_OUT_OF_RANGE" };
+  }
+  let supplied;
+  try { supplied = fromBase64(signatureText); } catch { return { ok: false, status: 401, reason: "INGRESS_SIGNATURE_INVALID" }; }
+  const bodyHash = hex(await crypto.subtle.digest("SHA-256", bytes));
+  const canonical = [timestampText, nonce, "POST", "/internal/shadow-dispatch", bodyHash].join("\n");
+  const key = await crypto.subtle.importKey("raw", encoder.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["verify"]);
+  const valid = await crypto.subtle.verify("HMAC", key, supplied, encoder.encode(canonical));
+  return valid ? { ok: true } : { ok: false, status: 401, reason: "INGRESS_SIGNATURE_MISMATCH" };
 }
 export default {
   async fetch(request, env) {
@@ -16,25 +46,24 @@ export default {
     if (env?.NEXUS_MISSION_SHADOW_ENABLED !== "true") {
       return response(503, { status: "WAITING_FOR_OWNER_CONFIGURATION", reason: "SHADOW_DISPATCH_DISABLED" });
     }
+    if (!env?.SWARM_RUNS || env.NEXUS_SWARM_RUN_CALLER_ID !== "dispatcher"
+      || typeof env.NEXUS_SWARM_RUN_CALLER_SECRET !== "string" || env.NEXUS_SWARM_RUN_CALLER_SECRET.length < 32) {
+      return response(503, { status: "WAITING_FOR_OWNER_CONFIGURATION", reason: "DURABLE_RUN_STORE_NOT_CONFIGURED" });
+    }
     const length = Number(request.headers.get("content-length") || 0);
     if (Number.isFinite(length) && length > MAX_BODY_BYTES) return response(413, { status: "REJECTED", reason: "ENVELOPE_TOO_LARGE" });
+    let bytes;
+    try { bytes = new Uint8Array(await request.arrayBuffer()); } catch { return response(400, { status: "REJECTED", reason: "BODY_UNAVAILABLE" }); }
+    if (bytes.byteLength < 1 || bytes.byteLength > MAX_BODY_BYTES) return response(413, { status: "REJECTED", reason: "ENVELOPE_SIZE_INVALID" });
+    const auth = await verifyIngress(request, bytes, env);
+    if (!auth.ok) return response(auth.status, { status: "REJECTED", reason: auth.reason });
     let body;
-    try {
-      const bytes = new Uint8Array(await request.arrayBuffer());
-      if (bytes.byteLength < 1 || bytes.byteLength > MAX_BODY_BYTES) return response(413, { status: "REJECTED", reason: "ENVELOPE_SIZE_INVALID" });
-      body = JSON.parse(new TextDecoder().decode(bytes));
-    } catch {
-      return response(400, { status: "REJECTED", reason: "INVALID_JSON" });
-    }
+    try { body = JSON.parse(new TextDecoder().decode(bytes)); } catch { return response(400, { status: "REJECTED", reason: "INVALID_JSON" }); }
     if (!body || typeof body !== "object" || Array.isArray(body)
       || body.projectId !== "P10CR" || body.taskType !== "P59_003_SHADOW_DISPATCH"
       || typeof body.taskId !== "string" || !SAFE_ID.test(body.taskId)
       || !body.payload || typeof body.payload !== "object" || Array.isArray(body.payload)) {
       return response(403, { status: "REJECTED", reason: "SHADOW_ENVELOPE_NOT_AUTHORIZED" });
-    }
-    if (!env?.SWARM_RUNS || env.NEXUS_SWARM_RUN_CALLER_ID !== "dispatcher"
-      || typeof env.NEXUS_SWARM_RUN_CALLER_SECRET !== "string" || env.NEXUS_SWARM_RUN_CALLER_SECRET.length < 32) {
-      return response(503, { status: "WAITING_FOR_OWNER_CONFIGURATION", reason: "DURABLE_RUN_STORE_NOT_CONFIGURED" });
     }
     try {
       const rpc = createSwarmRunRpc(env.SWARM_RUNS, env);
