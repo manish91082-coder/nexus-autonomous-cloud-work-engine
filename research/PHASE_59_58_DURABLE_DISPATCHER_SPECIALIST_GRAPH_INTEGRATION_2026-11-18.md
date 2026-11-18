@@ -44,8 +44,30 @@ Connect the P10CR mission dispatcher to the existing project-cell SwarmRunDO and
 
 ## Evidence boundary
 
-Workerd CI can prove the Durable Object/service-binding path inside the test runtime. It does not prove a deployed Cloudflare Worker, independent physical-host atomicity, separate GitHub Actions workflow runs sharing a hosted namespace, live AI inference, production publisher operation, 24×7 SLA or revenue. Hosted setup remains owner-gated because Cloudflare Paid starts at $5/month and this mission authorizes ₹0 spend by default.
+Workerd CI can prove the Durable Object/service-binding path inside the test runtime. It does not prove a deployed Cloudflare Worker, independent physical-host atomicity, separate GitHub Actions workflow runs sharing a hosted namespace, live AI inference, production publisher operation, 24×7 SLA or revenue. Hosted setup remains owner-gated; account plan, free-tier eligibility, quotas, billing settings and zero-cost operation are not verified. No paid deployment is authorized.
 
 ## Next
 
 After exact-head CI, proceed to Phase59.59: owner-approved independent-host tests, first bounded failure/contender tests, then 7-day and 30-day soak with explicit stop conditions and evidence export. Keep production flags OFF and P59-001 PAUSED until all P59-003 acceptance gates pass.
+
+
+## Exact-head CI result — 18-Nov-2026
+
+**Phase59.58 dedicated Workers/workerd workflow:** run [#44228723312](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44228723312) SUCCESS. Exact tested code head: `e3c7786c85c561c5c10c345e2826481e24aa3b34`. Four test files passed, 82/82 tests. The new `mission-dispatcher-runtime.test.mjs` contributed 6/6 tests.
+
+**Phase59.35 full Workers/workerd regression:** run [#44228723269](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44228723269) SUCCESS, 82/82 tests. All 13 listed regression workflows for this PR head completed SUCCESS; the additional PostgreSQL transaction contract run [#44228723172](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44228723172) also completed SUCCESS. The 13 regression run IDs are 44228723231, 44228723114, 44228723031, 44228723069, 44228723319, 44228723337, 44228723126, 44228723206, 44228723271, 44228723122, 44228723075, 44228723172 and 44228723269.
+
+The 6 new dispatcher tests prove: ten-role deterministic graph completion with all roles HOLD; duplicate completed delivery suppression without a new event; result-checkpoint reuse after Durable Object eviction and lease expiry; higher fencing token on reclaim; stale old-run checkpoint rejection; dispatcher cannot approve owner-gated work; unsigned ingress, oversized body and cross-project envelopes are rejected before registration. The total suite is 82/82.
+
+The PR branch later received control/continuity-only commits. Final PR head is `758cbfa21b83ac7c2cc30db77ddb4d34ba945da0`; executable source/test files were unchanged after tested code head `e3c7786c85c561c5c10c345e2826481e24aa3b34`. Canonical master remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`; PR #44 is draft and unmerged.
+
+**Master control-plane evidence:** Mission Worker #485 / run [#43998553989](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43998553989) SUCCESS on master HEAD 8856bf90; Mission Continuity Guard #288 / run [#43927317601](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43927317601) SUCCESS with 111 checks and zero errors on the same master HEAD.
+
+## Acceptance boundary after CI
+
+- Phase59.58 workerd shadow integration: PASS.
+- Phase59.35 regression suite: PASS.
+- Dispatcher and specialist graph are still shadow/test-only; the scheduled Python mission worker is not yet connected to a deployed Worker endpoint.
+- No physical independent-host proof, hosted cross-run/cross-repository Durable Object proof, 7-day soak or 30-day soak.
+- No Cloudflare deployment, GitHub App installation, publisher activation, AI inference, external provider call, public release, KYC, legal acceptance, billing or payment.
+- P59-003 remains IN_PROGRESS and the sole active P0. P59-001 remains PAUSED; P59-002 remains BLOCKED.
