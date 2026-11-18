@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_59_58_DURABLE_DISPATCHER_SPECIALIST_GRAPH_INTEGRATION",
+  "phase": "PHASE_59_59_ZERO_COST_HOSTING_AND_INDEPENDENT_HOST_PLAN",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "P59-003 only. Phase59.58 exact code head e3c7786c85c561c5c10c345e2826481e24aa3b34 passed dedicated Workers/workerd CI #44228723312 (82/82) and full Phase59.35 regression #44228723269 (82/82); 13/13 regression workflows succeeded. Final PR #44 remains draft/unmerged. Master 8856bf908f93e265cefd5c739f7f46b3dd995b3c; P59-001 PAUSED; P59-002 BLOCKED. Shadow-only, no inference/provider/network/deployment.",
+  "current_focus": "P59-003 only. Phase59.58 shadow dispatcher passed 82/82 and 13/13 regression workflows. Phase59.59 official Cloudflare Workers Free/Durable Objects and GitHub Actions billing audit is complete; owner packet prepared. Account plan/usage are not verified; no deployment or hosted endpoint. Master 8856bf908f93e265cefd5c739f7f46b3dd995b3c; P59-001 PAUSED; P59-002 BLOCKED.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -136,7 +136,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.59: prepare owner-gated independent-host test design, verify zero-cost hosting eligibility and quotas, then run bounded multi-host contention/failure tests and 7/30-day soak only after explicit owner approval. Do not resume P59-001 until every P59-003 acceptance gate passes.",
+  "next_focus": "Phase59.60: implement a separate account-scope platform budget Durable Object and synthetic cross-run/cross-repository atomicity tests. Only after that passes and the owner verifies an existing Workers Free account/aggregate usage may independent-host tests begin. Then 7-day and 30-day soak. Do not resume P59-001 until every P59-003 gate passes.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -2472,5 +2472,56 @@
     "next": "Phase59.59 owner-gated independent-host proof, then bounded 7-day and 30-day soak; no production deployment until zero-billing eligibility and owner approval."
   },
   "phase59_58_status": "WORKERD_AND_REGRESSION_CI_PASS_HOSTED_INDEPENDENT_HOST_PENDING",
-  "phase59_58_latest_report": "research/PHASE_59_58_DURABLE_DISPATCHER_SPECIALIST_GRAPH_INTEGRATION_2026-11-18.md"
+  "phase59_58_latest_report": "research/PHASE_59_58_DURABLE_DISPATCHER_SPECIALIST_GRAPH_INTEGRATION_2026-11-18.md",
+  "phase59_59": {
+    "report": "research/PHASE_59_59_ZERO_COST_HOSTING_AND_INDEPENDENT_HOST_PLAN_2026-11-18.md",
+    "owner_packet": "governance/P59-003_CLOUDFLARE_WORKERS_FREE_PLAN_OWNER_ACTION_PACKET_2026-11-18.md",
+    "status": "RESEARCH_COMPLETE_OWNER_PACKET_PREPARED_DEPLOYMENT_BLOCKED",
+    "official_sources": [
+      "https://developers.cloudflare.com/workers/platform/pricing/",
+      "https://developers.cloudflare.com/durable-objects/platform/pricing/",
+      "https://docs.github.com/en/billing/concepts/product-billing/github-actions"
+    ],
+    "workers_free": {
+      "requests_per_day": 100000,
+      "cpu_ms_per_invocation": 10
+    },
+    "durable_objects_free": {
+      "sqlite_only": true,
+      "requests_per_day": 100000,
+      "duration_gb_seconds_per_day": 13000,
+      "sqlite_rows_read_per_day": 5000000,
+      "sqlite_rows_written_per_day": 100000,
+      "sqlite_storage_gb": 5,
+      "daily_reset_utc": "00:00",
+      "over_limit_behavior": "FURTHER_OPERATIONS_FAIL_CLOSED"
+    },
+    "github_actions_public_runners": "STANDARD_RUNNERS_FREE; LARGER_RUNNERS_BILLED; ARTIFACT_CACHE_STORAGE_SEPARATE",
+    "internal_caps_percent_of_free": 5,
+    "internal_caps": {
+      "worker_requests_per_day": 5000,
+      "do_requests_per_day": 5000,
+      "do_duration_gb_seconds_per_day": 650,
+      "sqlite_rows_read_per_day": 250000,
+      "sqlite_rows_written_per_day": 5000,
+      "sqlite_storage_mb": 250,
+      "shadow_dispatches_per_day": 100
+    },
+    "account_plan_verified": false,
+    "account_usage_scope_verified": false,
+    "account_scope_budget_implemented": false,
+    "independent_host_tests_started": false,
+    "soak_7d_started": false,
+    "soak_30d_started": false,
+    "owner_action_required": true,
+    "paid_fallback_authorized": false,
+    "account_rotation_allowed": false,
+    "spend_inr": 0,
+    "ai_inference_enabled": false,
+    "production_feature_flag": "OFF",
+    "next": "Phase59.60: implement a separate account-scope platform budget DO and synthetic cross-run/cross-repository atomicity tests before any hosted deployment."
+  },
+  "phase59_59_status": "RESEARCH_COMPLETE_OWNER_PACKET_PREPARED_DEPLOYMENT_BLOCKED",
+  "phase59_59_latest_report": "research/PHASE_59_59_ZERO_COST_HOSTING_AND_INDEPENDENT_HOST_PLAN_2026-11-18.md",
+  "phase59_59_owner_packet": "governance/P59-003_CLOUDFLARE_WORKERS_FREE_PLAN_OWNER_ACTION_PACKET_2026-11-18.md"
 }
