@@ -178,6 +178,20 @@ describe("Phase 59.58 durable mission dispatcher + specialist graph", () => {
     expect(snapshot.eventChainValid).toBe(true);
   });
 
+  it("bounds the ingress body before JSON parsing or durable registration", async () => {
+    const id = taskId("oversized-envelope");
+    const response = await env.P10CR_MISSION_DISPATCHER.fetch(new Request(
+      "https://p10cr-mission-dispatcher.internal/internal/shadow-dispatch",
+      { method: "POST", headers: { "content-type": "application/json" }, body: "x".repeat(9000) }
+    ));
+    expect(response.status).toBe(413);
+    const denied = await response.json();
+    expect(denied.status).toBe("REJECTED");
+    const snapshot = await rpc(runStub(), "snapshot", { taskId: id });
+    expect(snapshot.tasks).toHaveLength(0);
+    expect(snapshot.eventChainValid).toBe(true);
+  });
+
   it("rejects a cross-project or unsupported task envelope before registration", async () => {
     const id = taskId("hostile-envelope");
     const denied = await dispatchThroughService({
