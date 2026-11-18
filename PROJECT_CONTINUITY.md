@@ -4726,3 +4726,14 @@ Date: 2026-11-17
 - No public route, deployment, provider request, external network, generated-code execution, publisher invocation, KYC, legal acceptance, billing, payment, signing, money movement or spend. Production flags OFF; AI inference disabled; spend ₹0; PCNE ₹0.
 - P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Other projects remain untouched/read-only.
 - Next: finish exact-head CI and control-plane guard; then Phase59.59 owner-gated independent-host tests and 7/30-day soak. P59-001 cannot resume before P59-003 acceptance gates pass.
+
+
+## PHASE 59.58 — EXACT-HEAD CI ACCEPTANCE (18-Nov-2026)
+
+- Dedicated Workers/workerd workflow #44228723312 SUCCESS: 4 test files, 82/82 tests on code head e3c7786c85c561c5c10c345e2826481e24aa3b34.
+- Full Phase59.35 Workers/workerd regression #44228723269 SUCCESS: 82/82 tests. All 13 regression workflows on this PR head completed SUCCESS; PostgreSQL transactional contract #44228723172 also SUCCESS.
+- Six new dispatcher tests passed: ten-role graph with HOLD outputs; duplicate suppression; result-checkpoint reuse after Durable Object eviction/lease expiry; higher fencing token; stale write rejection; no owner-approval capability; unsigned ingress, oversized request and cross-project envelope rejection.
+- Master control-plane checks remain verified on exact master HEAD 8856bf908f93e265cefd5c739f7f46b3dd995b3c: Mission Worker #485 / run #43998553989 SUCCESS; Mission Continuity Guard #288 / run #43927317601 SUCCESS, 111 checks, zero errors.
+- Candidate branch carries CI evidence and control/continuity checkpoint; executable code/test head remains e3c7786c85c561c5c10c345e2826481e24aa3b34. Later commits are control/report/continuity only. PR #44 remains draft/unmerged; master is unchanged.
+- Acceptance remains partial: dispatcher is shadow/test-only and is not connected to the scheduled Python worker through a deployed endpoint. No physical multi-host proof or 7/30-day soak. No AI inference, external network/provider call, deployment, publisher, public release, account action, billing or money movement. Spend ₹0; PCNE ₹0.
+- Next Phase59.59: verify zero-cost hosting eligibility/quotas, prepare owner-only deployment approval packet, then independent-host contention/failure tests and bounded 7/30-day soak. P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.
