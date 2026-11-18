@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "federation_id": "MANISH-AI-PROJECT-FEDERATION-2026",
-  "updated_at": "2026-11-17",
+  "updated_at": "2026-11-18",
   "purpose": "Cross-project coordination only; never merge missions, budgets, data, revenue ledgers or safety boundaries.",
   "authority": {
     "federation_controller": "manish91082-coder/nexus-autonomous-cloud-work-engine",
@@ -31,7 +31,7 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase59.57 exact tested checkpoint 17584db552c559cdb9d44d46aee004303ccdec25 passed PR CI #44015588892 (23/23), Mission Guard #44015583857 (111 checks) and Mission Worker #44015583881 (SUCCESS, P59-003 selected, no inference). Publisher App not installed; PR #42 draft stacked on #41/#40. Master unchanged; P59-001 PAUSED; P59-002 BLOCKED; other projects untouched/read-only.",
+      "status": "P59-003 IN_PROGRESS; Phase59.58 candidate on draft PR #44 at e3c7786c85c561c5c10c345e2826481e24aa3b34; exact-head Workers/workerd and regression CI pending. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c; P59-001 PAUSED; P59-002 BLOCKED. Compute/publisher separation remains code-level only; publisher App not installed. Other projects untouched/read-only.",
       "last_observed_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
@@ -353,6 +353,35 @@
         "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
         "control_checkpoint_commit": "17584db552c559cdb9d44d46aee004303ccdec25",
         "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
+      },
+      "phase59_58": {
+        "report": "research/PHASE_59_58_DURABLE_DISPATCHER_SPECIALIST_GRAPH_INTEGRATION_2026-11-18.md",
+        "branch": "phase59-58-durable-dispatcher-shadow-integration",
+        "pr_number": 44,
+        "pr_state": "DRAFT_OPEN_UNMERGED",
+        "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+        "candidate_head": "e3c7786c85c561c5c10c345e2826481e24aa3b34",
+        "workers_runtime_run_id": 44228723312,
+        "workers_runtime_status": "PENDING",
+        "regression_runtime_run_id": 44228723269,
+        "regression_runtime_status": "PENDING",
+        "roles": 10,
+        "role_execution_mode": "DETERMINISTIC_SHADOW_NO_INFERENCE",
+        "role_decision": "HOLD_ALL_UNTRUSTED_INPUTS",
+        "durable_store": "P10CR-project-cell SwarmRunDO",
+        "provider_quota_store_separate": true,
+        "hmac_ingress": true,
+        "dispatcher_approve_permission": false,
+        "checkpoint_eviction_recovery": "TEST_PENDING",
+        "duplicate_delivery_suppression": "IMPLEMENTED_TEST_PENDING",
+        "stale_fencing_rejection": "IMPLEMENTED_TEST_PENDING",
+        "external_network_requests": 0,
+        "live_provider_calls": 0,
+        "ai_inference_enabled": false,
+        "production_feature_flag": "OFF",
+        "production_integrated": false,
+        "authorized_spend_inr": 0,
+        "verified_realized_net_receipts_inr": 0
       }
     },
     {
