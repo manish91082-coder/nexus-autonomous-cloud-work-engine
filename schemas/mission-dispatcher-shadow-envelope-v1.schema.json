@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus.invalid/schemas/mission-dispatcher-shadow-envelope-v1.schema.json",
+  "title": "P10CR Mission Dispatcher Shadow Envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["projectId", "taskType", "taskId", "payload"],
+  "properties": {
+    "projectId": { "const": "P10CR" },
+    "taskType": { "const": "P59_003_SHADOW_DISPATCH" },
+    "taskId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]+$" },
+    "payload": { "type": "object", "maxProperties": 64 }
+  }
+}
