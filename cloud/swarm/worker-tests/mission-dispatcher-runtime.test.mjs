@@ -35,7 +35,7 @@ async function dispatchThroughService(input, corruptSignature = false) {
   const timestamp = String(Math.floor(Date.now() / 1000));
   const nonce = crypto.randomUUID();
   const bodyHash = toHex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(body)));
-  const canonical = [timestamp, nonce, "POST", "/internal/shadow-dispatch", bodyHash].join("\\n");
+  const canonical = [timestamp, nonce, "POST", "/internal/shadow-dispatch", bodyHash].join("\n");
   const key = await crypto.subtle.importKey(
     "raw", new TextEncoder().encode(dispatcherIngressSecret),
     { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
