@@ -1,0 +1,47 @@
+name: Phase 59.58 Durable Mission Dispatcher Shadow Runtime
+
+on:
+  push:
+    branches: [phase59-58-durable-dispatcher-shadow-integration]
+    paths:
+      - 'cloud/swarm/mission-dispatcher-shadow-worker.mjs'
+      - 'cloud/swarm/mission-dispatcher-shadow.mjs'
+      - 'cloud/swarm/specialist-graph.mjs'
+      - 'cloud/swarm/swarm-run-rpc-client.mjs'
+      - 'cloud/swarm/swarm-run-do.mjs'
+      - 'cloud/swarm/worker-tests/**'
+      - 'schemas/mission-dispatcher-shadow-envelope-v1.schema.json'
+      - '.github/workflows/phase59-58-durable-dispatcher-shadow.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'cloud/swarm/mission-dispatcher-shadow-worker.mjs'
+      - 'cloud/swarm/mission-dispatcher-shadow.mjs'
+      - 'cloud/swarm/specialist-graph.mjs'
+      - 'cloud/swarm/swarm-run-rpc-client.mjs'
+      - 'cloud/swarm/swarm-run-do.mjs'
+      - 'cloud/swarm/worker-tests/**'
+      - 'schemas/mission-dispatcher-shadow-envelope-v1.schema.json'
+      - '.github/workflows/phase59-58-durable-dispatcher-shadow.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-58-durable-dispatcher-shadow
+  cancel-in-progress: false
+
+jobs:
+  workers-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: cloud/swarm/worker-tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install isolated test dependencies
+        run: npm install --no-audit --no-fund
+      - name: Run complete Workers/workerd suite
+        run: npm test
