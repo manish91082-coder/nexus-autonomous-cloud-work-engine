@@ -59,7 +59,7 @@ After exact-head CI, proceed to Phase59.59: owner-approved independent-host test
 
 The 6 new dispatcher tests prove: ten-role deterministic graph completion with all roles HOLD; duplicate completed delivery suppression without a new event; result-checkpoint reuse after Durable Object eviction and lease expiry; higher fencing token on reclaim; stale old-run checkpoint rejection; dispatcher cannot approve owner-gated work; unsigned ingress, oversized body and cross-project envelopes are rejected before registration. The total suite is 82/82.
 
-The PR branch later received control/continuity-only commits. Final PR head is `758cbfa21b83ac7c2cc30db77ddb4d34ba945da0`; executable source/test files were unchanged after tested code head `e3c7786c85c561c5c10c345e2826481e24aa3b34`. Canonical master remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`; PR #44 is draft and unmerged.
+The PR branch later received only control/registry/report/continuity commits after tested code head `e3c7786c85c561c5c10c345e2826481e24aa3b34`; no executable source or test changes were made after that tested head. Canonical master remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`; PR #44 is draft and unmerged.
 
 **Master control-plane evidence:** Mission Worker #485 / run [#43998553989](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43998553989) SUCCESS on master HEAD 8856bf90; Mission Continuity Guard #288 / run [#43927317601](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43927317601) SUCCESS with 111 checks and zero errors on the same master HEAD.
 
