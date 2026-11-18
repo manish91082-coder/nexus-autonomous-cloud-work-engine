@@ -58,3 +58,8 @@ No account creation, KYC, legal acceptance, payment method change, paid upgrade,
 - GitHub Actions billing: https://docs.github.com/en/billing/concepts/product-billing/github-actions
 
 The owner should verify the current account dashboard and official terms at the time of action. This packet is a technical instruction, not a financial or tax declaration.
+
+
+## Additional prerequisite before any deployment
+
+The current Phase59.56 quota ledger is scoped to a GitHub App installation and is not the Cloudflare account-wide Free-plan usage arbiter. Phase59.60 must first implement and test a separate account-scope platform budget object for P10CR. The 5% caps in this packet are proposed internal guardrails only until that implementation passes. Do not deploy the Worker or begin the soak before the account-scope budget is committed, tested and wired into every P10CR worker path.
