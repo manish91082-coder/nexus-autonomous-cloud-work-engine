@@ -4713,3 +4713,16 @@ Date: 2026-11-17
 - Mission Worker #44015583881 SUCCESS; POLL_OK selected P59-003; no inference request.
 - Runtime code remains the tested implementation commit \`4d419d4c260a21a653e05bce1b94e90e7cccf4f8\`; subsequent commits are evidence/control-only.
 - Master remains \`8856bf908f93e265cefd5c739f7f46b3dd995b3c\`; PR #42 remains draft/unmerged.
+
+
+## PHASE 59.58 — DURABLE MISSION DISPATCHER + SPECIALIST GRAPH (18-Nov-2026)
+
+- Candidate branch: phase59-58-durable-dispatcher-shadow-integration; draft integration PR #44; candidate head e3c7786c85c561c5c10c345e2826481e24aa3b34; canonical master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. PR #44 is draft/unmerged; no protected master write or merge occurred.
+- Added HMAC-authenticated internal dispatcher ingress with an 8 KiB bounded body reader, strict P10CR/P59-003 envelope, and a dispatcher HMAC identity. The identity can register, claim, checkpoint, complete and read tasks but cannot approve owner-gated work.
+- Connected the dispatcher through a Cloudflare Workers service binding to the P10CR project-cell SwarmRunDO. Payload/policy hashes are computed inside the dispatcher; atomic claim, fencing, idempotency, durable checkpoints, final readback and event-chain validation are used.
+- Added ten deterministic specialist roles: evidence collection, research, red-team, payout eligibility, unit economics, rights/policy, engineering, QA, distribution readiness and revenue reconciliation. All remain HOLD because no trusted collector/owner attestation is wired; PCNE stays ₹0. No model inference or external provider access.
+- Added duplicate suppression, eviction/reclaim checkpoint reuse, higher fencing token and stale-run rejection tests; unsigned ingress, oversized bodies, cross-project envelopes and dispatcher owner-approval attempts are rejected.
+- Dedicated Workers/workerd run #44228723312 and Phase59.35 regression run #44228723269 were pending at this checkpoint. Do not claim Phase59.58 acceptance until exact-head CI finishes.
+- No public route, deployment, provider request, external network, generated-code execution, publisher invocation, KYC, legal acceptance, billing, payment, signing, money movement or spend. Production flags OFF; AI inference disabled; spend ₹0; PCNE ₹0.
+- P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Other projects remain untouched/read-only.
+- Next: finish exact-head CI and control-plane guard; then Phase59.59 owner-gated independent-host tests and 7/30-day soak. P59-001 cannot resume before P59-003 acceptance gates pass.
