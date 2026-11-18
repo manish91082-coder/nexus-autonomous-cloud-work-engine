@@ -7,6 +7,7 @@ const shadowWorkerTestSecret = "shadow-worker-test-secret-0123456789abcdef";
 const shadowWorkerSecondaryTestSecret = "shadow-secondary-test-secret-0123456789abcdef";
 const swarmPrimaryTestSecret = "swarm-primary-test-secret-0123456789abcdef";
 const swarmSecondaryTestSecret = "swarm-secondary-test-secret-0123456789abcdef";
+const swarmDispatcherSecret = "swarm-dispatcher-test-secret-0123456789abcdef";
 const phase59_56ProjectASecret = "p59-56-project-a-test-secret-0123456789abcdef";
 const phase59_56ProjectBSecret = "p59-56-project-b-test-secret-0123456789abcdef";
 const sharedQuotaNamespace = {
@@ -45,7 +46,8 @@ export default defineConfig({
           PHASE_59_46_PRIMARY: "p10cr-read-only-shadow-worker-phase-59-46-primary",
           PHASE_59_46_SECONDARY: "p10cr-read-only-shadow-worker-phase-59-46-secondary",
           PHASE_59_56_PROJECT_A: "p10cr-phase59-56-project-a",
-          PHASE_59_56_PROJECT_B: "p10cr-phase59-56-project-b"
+          PHASE_59_56_PROJECT_B: "p10cr-phase59-56-project-b",
+          P10CR_MISSION_DISPATCHER: "p10cr-mission-dispatcher-shadow"
         },
         workers: [
           {
@@ -59,11 +61,13 @@ export default defineConfig({
               NEXUS_SWARM_RUN_ENABLED: "true",
               NEXUS_SWARM_RUN_CALLER_KEYS: JSON.stringify({
                 primary: swarmPrimaryTestSecret,
-                secondary: swarmSecondaryTestSecret
+                secondary: swarmSecondaryTestSecret,
+                dispatcher: swarmDispatcherSecret
               }),
               NEXUS_SWARM_RUN_CALLER_POLICIES: JSON.stringify({
                 primary: ["register", "approve", "claim", "heartbeat", "checkpoint", "complete", "fail", "recover", "snapshot"],
-                secondary: ["claim", "heartbeat", "checkpoint", "complete", "fail", "snapshot"]
+                secondary: ["claim", "heartbeat", "checkpoint", "complete", "fail", "snapshot"],
+                dispatcher: ["register", "claim", "heartbeat", "checkpoint", "complete", "fail", "snapshot"]
               })
             },
             durableObjects: {
@@ -317,12 +321,29 @@ export default defineConfig({
             },
             durableObjects: { QUOTA_LEDGER: sharedQuotaNamespace }
           },
+          {
+            name: "p10cr-mission-dispatcher-shadow",
+            rootPath: "../",
+            modules: [
+              { type: "ESModule", path: "./mission-dispatcher-shadow-worker.mjs" },
+              { type: "ESModule", path: "./mission-dispatcher-shadow.mjs" },
+              { type: "ESModule", path: "./specialist-graph.mjs" },
+              { type: "ESModule", path: "./swarm-run-rpc-client.mjs" }
+            ],
+            bindings: {
+              NEXUS_MISSION_SHADOW_ENABLED: "true",
+              NEXUS_SWARM_RUN_CALLER_ID: "dispatcher",
+              NEXUS_SWARM_RUN_CALLER_SECRET: swarmDispatcherSecret,
+              NEXUS_SHADOW_WORKER_ID: "p10cr-mission-dispatcher"
+            },
+            durableObjects: { SWARM_RUNS: sharedSwarmRunNamespace }
+          },
         ]
       }
     })
   ],
   test: {
-    include: ["./quota-ledger-runtime.test.mjs", "./swarm-run-ledger-runtime.test.mjs", "./phase59-56-cross-repository-global-quota.test.mjs"],
+    include: ["./quota-ledger-runtime.test.mjs", "./swarm-run-ledger-runtime.test.mjs", "./phase59-56-cross-repository-global-quota.test.mjs", "./mission-dispatcher-runtime.test.mjs"],
     testTimeout: 60000,
     hookTimeout: 60000
   }
