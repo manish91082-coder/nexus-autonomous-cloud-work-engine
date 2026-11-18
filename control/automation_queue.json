@@ -10,13 +10,13 @@
     ],
     "retry_policy": "bounded_exponential_backoff",
     "owner_gates_pause_only_affected_task": true,
-    "sequence_mode": "V5 PORTFOLIO AGGREGATION; PARALLEL SOURCE RESEARCH; ONE NEW PRODUCT BUILD AT A TIME; FIRST REPEATABLE MONETIZATION LOOP FIRST; THEN STACK NEXT HIGHEST-RANKED SOURCE; PRODUCT NO-GO DOES NOT CLOSE PARENT SOURCE.",
+    "sequence_mode": "P59-003 SWARM FOUNDATION FIRST; P59-003 IS THE SOLE ACTIVE P0; P59-001 PAUSED; P59-002 BLOCKED; NO REVENUE-SOURCE RANKING, PRODUCT DISCOVERY OR UNRELATED ASSET WORK WHILE P59-003 ACCEPTANCE GATES ARE OPEN.",
     "revenue_priority_order_file": "REVENUE_OPPORTUNITY_RANKING_2026-11-13.md",
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
     "last_reconciled_from_mission_state": "2026-11-18: Phase59.58 candidate e3c7786c85c561c5c10c345e2826481e24aa3b34 on draft PR #44; dedicated Workers/workerd run #44228723312 and regression runtime #44228723269 pending.",
-    "reconciliation_note": "P59-003 remains sole active P0. P59-001 PAUSED; P59-002 BLOCKED. Phases59.54–59.57 remain draft/unmerged with recorded CI evidence. Phase59.58 connects the P10CR mission dispatcher to SwarmRunDO and ten deterministic no-inference specialist roles; exact-head CI pending. No master merge, deployment, owner action, AI inference or spend."
+    "reconciliation_note": "P59-003 remains sole active P0. P59-001 PAUSED; P59-002 BLOCKED. Phases59.54–59.57 remain draft/unmerged with recorded CI evidence. Phase59.58 connects the P10CR mission dispatcher to SwarmRunDO and ten deterministic no-inference specialist roles; exact-head CI pending. No master merge, deployment, owner action, AI inference or spend. No product/source ranking is authorized while P59-003 is active."
   },
   "tasks": [
     {
