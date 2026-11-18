@@ -7,6 +7,7 @@ import { runDeterministicSpecialistGraph } from "../specialist-graph.mjs";
 
 const dispatcherSecret = "swarm-dispatcher-test-secret-0123456789abcdef";
 const primarySecret = "swarm-primary-test-secret-0123456789abcdef";
+const dispatcherIngressSecret = "dispatcher-ingress-test-secret-0123456789abcdef";
 const callerEnv = {
   dispatcher: { NEXUS_QUOTA_CALLER_ID: "dispatcher", NEXUS_QUOTA_CALLER_SECRET: dispatcherSecret },
   primary: { NEXUS_QUOTA_CALLER_ID: "primary", NEXUS_QUOTA_CALLER_SECRET: primarySecret }
@@ -21,10 +22,37 @@ function taskId(label) { return "p59-58-" + label + "-" + crypto.randomUUID(); }
 function envelope(id, payload = {}) {
   return { projectId: "P10CR", taskType: "P59_003_SHADOW_DISPATCH", taskId: id, payload };
 }
-async function dispatchThroughService(input) {
+function toHex(bytes) {
+  return Array.from(new Uint8Array(bytes), value => value.toString(16).padStart(2, "0")).join("");
+}
+function toBase64(bytes) {
+  let binary = "";
+  for (const value of new Uint8Array(bytes)) binary += String.fromCharCode(value);
+  return btoa(binary);
+}
+async function dispatchThroughService(input, corruptSignature = false) {
+  const body = JSON.stringify(input);
+  const timestamp = String(Math.floor(Date.now() / 1000));
+  const nonce = crypto.randomUUID();
+  const bodyHash = toHex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(body)));
+  const canonical = [timestamp, nonce, "POST", "/internal/shadow-dispatch", bodyHash].join("\\n");
+  const key = await crypto.subtle.importKey(
+    "raw", new TextEncoder().encode(dispatcherIngressSecret),
+    { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(canonical));
   const response = await env.P10CR_MISSION_DISPATCHER.fetch(new Request(
     "https://p10cr-mission-dispatcher.internal/internal/shadow-dispatch",
-    { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(input) }
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-nexus-dispatcher-timestamp": timestamp,
+        "x-nexus-dispatcher-nonce": nonce,
+        "x-nexus-dispatcher-signature": corruptSignature ? "AAAAAAAAAAAAAAAAAAAAAA==" : toBase64(signature)
+      },
+      body
+    }
   ));
   return { httpStatus: response.status, ...(await response.json()) };
 }
@@ -137,6 +165,17 @@ describe("Phase 59.58 durable mission dispatcher + specialist graph", () => {
     expect(snapshot.tasks[0].owner_approved_at).toBeNull();
     expect(snapshot.tasks[0].status).toBe("READY");
     expect(snapshot.leases).toHaveLength(0);
+  });
+
+
+  it("rejects unsigned dispatcher ingress before any durable task registration", async () => {
+    const id = taskId("unsigned-ingress");
+    const denied = await dispatchThroughService(envelope(id, {}), true);
+    expect(denied.httpStatus).toBe(401);
+    expect(denied.reason).toBe("INGRESS_SIGNATURE_MISMATCH");
+    const snapshot = await rpc(runStub(), "snapshot", { taskId: id });
+    expect(snapshot.tasks).toHaveLength(0);
+    expect(snapshot.eventChainValid).toBe(true);
   });
 
   it("rejects a cross-project or unsupported task envelope before registration", async () => {
