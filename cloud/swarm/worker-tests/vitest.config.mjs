@@ -8,6 +8,7 @@ const shadowWorkerSecondaryTestSecret = "shadow-secondary-test-secret-0123456789
 const swarmPrimaryTestSecret = "swarm-primary-test-secret-0123456789abcdef";
 const swarmSecondaryTestSecret = "swarm-secondary-test-secret-0123456789abcdef";
 const swarmDispatcherSecret = "swarm-dispatcher-test-secret-0123456789abcdef";
+const dispatcherIngressSecret = "dispatcher-ingress-test-secret-0123456789abcdef";
 const phase59_56ProjectASecret = "p59-56-project-a-test-secret-0123456789abcdef";
 const phase59_56ProjectBSecret = "p59-56-project-b-test-secret-0123456789abcdef";
 const sharedQuotaNamespace = {
@@ -332,6 +333,7 @@ export default defineConfig({
             ],
             bindings: {
               NEXUS_MISSION_SHADOW_ENABLED: "true",
+              NEXUS_DISPATCHER_INGRESS_SECRET: dispatcherIngressSecret,
               NEXUS_SWARM_RUN_CALLER_ID: "dispatcher",
               NEXUS_SWARM_RUN_CALLER_SECRET: swarmDispatcherSecret,
               NEXUS_SHADOW_WORKER_ID: "p10cr-mission-dispatcher"
