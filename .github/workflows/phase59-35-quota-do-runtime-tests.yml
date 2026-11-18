@@ -23,7 +23,7 @@ on:
       - 'cloud/swarm/worker-tests/**'
       - '.github/workflows/phase59-35-quota-do-runtime-tests.yml'
   pull_request:
-    branches: [master]
+    branches: [master, phase59-57-constrained-publisher-separation]
   workflow_dispatch:
 
 permissions:
