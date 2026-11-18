@@ -1,48 +1,87 @@
-# LIVE CONTINUITY — PHASE 59.53 PROJECT-CELL DURABLE SWARM RUN LEDGER (16-Nov-2026)
+# LIVE CONTINUITY — PHASE 59.55 CURRENT-HEAD SWARM SECURITY INVENTORY (17-Nov-2026)
 
 **Mission:** ₹10 Cr Autonomous Revenue Ecosystem (P10CR), AI agentic swarm foundation  
 **Canonical repository:** manish91082-coder/nexus-autonomous-cloud-work-engine  
 **Canonical branch:** master  
-**Current task:** P59-003, IN_PROGRESS  
+**Verified master HEAD:** 8856bf908f93e265cefd5c739f7f46b3dd995b3c  
+**Current task:** P59-003, IN_PROGRESS (sole active P0)  
 **Paused:** P59-001; **Blocked:** P59-002  
-**Master HEAD:** d6d78ed5cd9d377433c79bd8d213d66098e54f12  
-**Spend:** ₹0; **verified net receipts:** ₹0; **AI inference:** disabled  
+**Spend:** ₹0; **verified realized net receipts:** ₹0; **AI inference:** disabled  
 **Production feature flags:** OFF; **live provider calls:** 0; **external network in tests:** 0
 
-## Current verified checkpoint
+## Current execution boundary
 
-### Phase 59.49 — merged
-- PR #30; 15/15 exact-head checks passed; replay-safe settlement and metadata-only response journal.
+This checkpoint is being prepared on draft PR #40 branch `phase59-54-deterministic-shadow-ledger-path-master-sync`. It is **not merged**. Master remains at `8856bf908f93e265cefd5c739f7f46b3dd995b3c`. The owner approval packet remains the required path for any protected-master merge or production publisher activation. No owner-only action was performed.
 
-### Phase 59.50 — merged
-- PR #31; 13/13 exact-head checks and 67/67 Workers/workerd tests passed; response-to-receipt crash-window transport-loss and conservative lease recovery.
+## Phase 59.54 — deterministic durable shadow task path
 
-### Phase 59.51 — merged
-- PR #33; 13/13 exact-head checks and 68/68 Workers/workerd tests passed; response journal survives eviction/reconstruction, identical telemetry preserves one receipt, five conflicting metadata variants fail closed.
+- PR #40, branch head tested: `a15e921f5029b7ff7d01ae3ed1ae42e02a65f958`.
+- Exact-head regression workflows: **13/13 SUCCESS**.
+- Workers/workerd runtime run [#44008145599](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44008145599): **74/74 PASS**.
+- The adapter now resumes from the durable checkpoint read after Durable Object eviction/reconstruction. It validates event chain, lease identity, fencing token, checkpoint hash and task payload/policy identity; it then writes checkpoint 2, completes once and suppresses duplicate delivery.
+- Three earlier runtime attempts failed because the test fixture could not evict a Durable Object with active references. The final correction isolates the integration test under a dedicated deterministic Durable Object ID; no production quota policy or namespace was weakened.
+- PR #40 remains a **draft and unmerged**. The tested code head `a15e921f` passed 13/13 regression and 74/74 workerd on the prior branch. The same eight-file checkpoint is now on draft PR #40, created from current master baseline `8856bf90`; PR #40 exact-head CI passed 13/13 regression workflows and 74/74 Workers/workerd tests on head `3100ea2d`; the branch Mission Continuity Guard passed 111 checks. Do not treat branch state as active master state until owner-controlled merge.
 
-### Phase 59.52 — merged
-- PR #35; exact-head CI 13/13; Workers/workerd 68/68; merge 076104d6cfbedb1555ccba83d07139336e0ed2a3.
-- Audit found the worker only selected tasks; it did not claim/lease/checkpoint/execute. The Python SQLite store was standalone; specialist graph disconnected; shadow Worker test-only; quota DO was not task state; no production Wrangler deployment or isolated publisher.
+## Phase 59.55 — current-head inventory complete
 
-### Phase 59.53 — merged
-- PR #37; exact tested head 86e1fe604f211f77ecd46c79deec26e7b8d5ce45; merge d6d78ed5cd9d377433c79bd8d213d66098e54f12.
-- Exact-head CI: 13/13 checks passed. Cloudflare Workers/workerd run 43924444452: 2 test files, 73/73 tests passed.
-- Added separate SQLite-backed P10CR project-cell SwarmRunDO. Provider quota ledger remains independent.
-- Durable lifecycle includes idempotent registration, primary-caller approval event, atomic claim, immutable run ID per attempt, persistent monotonic fencing token, run-bound heartbeat/checkpoint/completion/failure, retry/backoff, dead-letter, expired-lease recovery and SHA-256 append-only event chain.
-- HMAC-authenticated caller RPC, per-caller action allowlists and durable nonce replay protection.
-- Tests cover two-client contention, project-cell identity, owner-gate enforcement, checkpoint eviction/reconstruction, checkpoint idempotency/conflict, stale run/fencing rejection, completion replay, retry/dead-letter, authentication replay and event-chain verification.
+Inventory baseline: master `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
 
-## Evidence boundary and deployment truth
+- 29 workflows, 17 Python runtime modules and 18 cloud/swarm JavaScript modules inspected.
+- One JS package manifest; no lockfile. `@cloudflare/vitest-plugin` is `latest` and `vitest` is `^4.1.0`.
+- Six workflows still use mutable action tags.
+- Three workflows have `contents:write`; the mission worker is still a write-capable compute workflow despite its narrow staged-file list.
+- Two workflows lack explicit timeouts.
+- All 29 have per-workflow concurrency controls; this is not a global cross-run quota arbiter.
+- Branch protection is **UNVERIFIED**: visible ruleset list empty and branch-protection API read returned 403. Do not infer absent or present.
+- The specialist graph remains deterministic and disconnected from the scheduled mission dispatcher. The Python SQLite store remains a local prototype. SwarmRunDO is workerd-tested but not yet wired into the scheduled worker.
+- Phase59.45A/46 proved shared installation-scope quota behavior inside workerd (two clients; then 16 concurrent requests, 2 admitted/14 fail-closed). This is not physical multi-host, hosted cross-run/cross-repository, real GitHub App or production deployment proof.
 
-Phase59.53 is Cloudflare workerd runtime evidence only. It is not a hosted production deployment, independent physical-host proof, live provider integration, a 24×7 SLA or revenue evidence. The durable run ledger is not yet connected to the scheduled mission worker or read-only shadow Worker. The primary-caller approval event is a privileged service-side record, not yet an end-user human-consent ceremony; production key custody and explicit owner-consent integration remain hard gates. Production flags remain OFF, AI inference is disabled, live provider calls are zero, external network in tests is zero, and verified realized net receipts remain ₹0.
+Full inventory: [Phase59.55 report](research/PHASE_59_55_CURRENT_HEAD_SWARM_SECURITY_INVENTORY_2026-11-17.md).
 
-## Next sequential phase — Phase 59.54
+## Rebased draft PR #40 verification
 
-Build a separate deterministic shadow-runner adapter using SwarmRunDO for: register → claim → checkpoint → deterministic fixture → checkpoint → complete. Keep the quota ledger independent and do not call it for this no-provider fixture. Prove duplicate delivery creates one canonical task/run outcome; Durable Object eviction/reconstruction resumes from persisted checkpoint; stale run/fencing tokens fail; and the event chain remains valid. Add exact-head workerd tests and regression CI. No LLM inference, live provider fetches, publication, account actions, payments, production deployment, external network or spend.
+- PR #40 exact tested head `3100ea2dfc698087299c4fe114df5a08a73de354`, based on master `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
+- Exact-head regression: 13/13 SUCCESS; Workers/workerd run #44009258395: 74/74 PASS.
+- Mission Continuity Guard #44009214414: 111 checks PASS, zero errors.
+- PR #39 is closed unmerged; PR #40 remains draft/unmerged.
 
-## Revenue and autonomy truth
+## Current verified master workflows
 
-The five-minute GitHub Actions schedule is a bounded wake-up, not a persistent daemon or 24×7 SLA. No production Cloudflare Worker/Workflow deployment is evidenced. The mission remains staged and shadow/test-only. Verified realized net receipts remain ₹0. CI success is infrastructure evidence, not revenue. Preserve owner gates for OAuth/GitHub App installation, KYC, platform terms, billing, public release, signing, wallet access and money movement. Do not use a local laptop/desktop as a production runtime.
+- Mission Autonomous AI Worker run [#485 / #43998553989](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43998553989): SUCCESS on master HEAD `8856bf90`; queue poll selected P59-003; AI executor failed closed with no inference.
+- Mission Continuity Guard run [#288 / #43927317601](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43927317601): SUCCESS, 111 checks, zero errors on the same master HEAD.
+
+## Branch checkpoint commits
+
+- Phase59.54 final code/test head: `a15e921f5029b7ff7d01ae3ed1ae42e02a65f958`.
+- Phase59.55 inventory report: `7a1a221ae15583c633609facd0bddd97ba1e2c0f`.
+- Phase59.54 CI evidence report update: `a12a0f0d7118e944abfbb532eb0d9353de2c3a57`.
+- Mission-state reconciliation: `3ff363908ac84498dfaecc5da5e448cb7a58c6a8`.
+- Queue reconciliation: `f160662c91975d57a143c419d22f320cd0041d51`.
+- Federation registry reconciliation: `a792cb826ed7a959a339a4162e6d97756f7b3e82`.
+
+## Next engineering sequence
+
+1. **Phase59.56:** prove installation-wide quota sharing across synthetic repository identities and distinct run envelopes, with one shared Durable Object partition, no oversubscription, replay suppression, reset-window accounting and zero residual reserved/uncertain units. Other project repositories remain untouched/read-only.
+2. **Phase59.57:** split read-only compute from one constrained publisher; only deterministic, schema-validated, digested, allowlisted artifacts may be proposed on a dedicated branch. Publisher opens PR only; it never merges.
+3. **Phase59.58:** wire SwarmRunDO, deterministic specialist graph and evidence checkpoints into the mission dispatcher.
+4. **Phase59.59:** after owner-approved hosted setup, run independent-host contention/failure tests, then 7-day and 30-day soak with stop conditions and evidence export.
+
+## Safety and revenue truth
+
+No GitHub App was created/installed; no private key or owner credential was accessed; no KYC, legal terms, billing, public release, payment, wallet, signing or fund movement occurred. No other project was accessed or modified. No local laptop runtime or paid fallback was introduced. AI inference and production flags remain OFF. Verified realized net receipts: ₹0; authorized spend: ₹0. CI is infrastructure evidence, not revenue.
+
+
+
+## Final PR #40 verification checkpoint (17-Nov-2026)
+
+- PR #40 is open, draft, mergeable/clean, based on master `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
+- Code/control verification head: `c1def7f15a3b82b8f1d0f8ab50759adaa4aeb396`.
+- Exact-head workflows: **14/14 SUCCESS** (13 regression workflows plus Mission Continuity Guard).
+- Workers/workerd run [#44009572342](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44009572342): **74/74 PASS**.
+- Mission Continuity Guard [#44009565672](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44009565672): **111 checks PASS**, zero errors.
+- Latest branch head before this continuity append: `37d83e459c00540dec13d8769223e766173e72bd`, a report-only correction to Phase59.54; no code/control/runtime behavior changed after the tested head.
+- PR #39 is closed unmerged; PR #40 remains draft/unmerged. Master has not been changed.
+- No provider calls, AI inference, deployment, billing, KYC, legal acceptance, publication, payments or money movement. Spend ₹0; verified receipts ₹0.
 
 ---
 ## Historical continuity archive — Phase 59.51 response-journal restart/readback (16-Nov-2026)
@@ -4577,3 +4616,135 @@ Date: 2026-11-16
 - Mission Autonomous AI Worker #444: [run 43797448076](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43797448076) SUCCESS; queue poll POLL_OK selected P59-003; AI executor WAITING_FOR_OWNER_CONFIGURATION; no inference request.
 - The worker did not publish or move funds. No account access, KYC, legal acceptance, deployment, provider call or spend occurred.
 - P59-003 remains IN_PROGRESS and the only active P0. P59-001 remains PAUSED; P59-002 remains BLOCKED.
+
+
+## PHASE 59.56 — SYNTHETIC CROSS-REPOSITORY INSTALLATION QUOTA PROOF (17-Nov-2026)
+
+- New stacked branch: `phase59-56-synthetic-global-quota-proof`, based on PR #40 branch head `e2b7fe6fc9be2c68628d1b4fd072fc3fa86d8d6d`; no master write.
+- Added a test-only quota worker with two distinct HMAC caller identities, two fixed synthetic repository/project identities and one shared installation-scoped quota Durable Object namespace.
+- Added a 16-attempt burst over four distinct workflow-run envelopes, stable repository/task idempotency keys, replay suppression and provider reset-window accounting tests.
+- All provider responses are injected. No global fetch, real GitHub repository access, other-project repository access, model inference, publisher, deployment, billing, payment or money movement is enabled.
+- CI status at this checkpoint: PENDING. Do not claim quota proof passed until exact-head Workers/workerd and regression workflows finish.
+- P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Master remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`. PR #40 remains draft/unmerged; Phase59.56 is stacked behind it.
+- Spend ₹0; AI inference disabled; production flags OFF; verified receipts ₹0.
+- Next after exact-head verification: Phase59.57 compute/publisher separation. Hosted cross-run and independent physical-host proof remain unverified and owner-gated.
+
+
+### Phase59.56 first CI failure and correction
+- Push run #44011529268 and PR run #44011562986 both failed before tests due workerd resolving the service worker at `cloud/swarm/` while the module imported `../quota-ledger-client.mjs`.
+- Corrected import to `./quota-ledger-client.mjs`; no policy or permission was weakened.
+- Exact-head retry pending. Do not claim Phase59.56 acceptance until the Workers/workerd suite and regression checks pass.
+
+
+### Phase59.56 second CI failure and test correction
+- Runs #44011679218 (push) and #44011686715 (PR) reached workerd. Existing suite: 74 passed; the two new tests failed.
+- Failure 1: the synthetic worker's catch path hid the admission/error reason, so the test showed zero completed calls without explaining why. Added a bounded non-secret reason and quota admission fields; assertions now include all response summaries.
+- Failure 2: the test attempted to move to a future provider reset window before the prior reset elapsed. The ledger correctly retains the current window until its reset; the test now uses a five-second window and waits through it before recording the next observation.
+- No production policy was relaxed. Exact-head retry pending.
+
+
+### Phase59.56 third test-model correction
+- Review of run #44011679218 logs showed the mock provider response used resetAt 4102444800 while the seed telemetry used a near-term reset. The ledger correctly refused to accept a future provider window before the current window elapsed.
+- The cross-repository test now seeds the same 4102444800 resetAt as the synthetic response. The separate reset-rollover test still waits for the previous window to expire before recording the next.
+- No ledger policy changed. Exact-head retry pending.
+
+
+### Phase59.56 accounting diagnostic checkpoint
+- Run #44012088385: 75 tests passed; the new cross-repository burst failed its settlement assertion. Two admitted mock responses returned `RESPONSE_RECEIVED_ACCOUNTING_UNCERTAIN`; excess requests were fail-closed with `SECONDARY_CONCURRENCY_LIMIT`.
+- This is partial evidence only: the shared in-flight limiter worked, but the admitted request lifecycle did not settle and residual in-flight state prevented further admission. Do not accept this phase yet.
+- Added bounded non-secret fields for telemetry, settlement and uncertainty status. Next step is to inspect the exact accounting error and correct the fixture/lifecycle without relaxing the quota guard.
+
+
+### PHASE 59.56 SYNTHETIC WORKER QUOTA PROOF — ACCEPTED SUB-PHASE (17-Nov-2026)
+- Tested code SHA: `cabdd9d2bfbb993f0e68093c9ce5130d9f70b810`.
+- Workers/workerd push CI #44012476170 and PR CI #44012482615: SUCCESS; 3 test files, 76/76 tests passed; Phase59.56 tests 2/2.
+- Mission Continuity Guard #44012476152: SUCCESS. Mission Worker #44012476114: SUCCESS; selected P59-003; AI executor `WAITING_FOR_OWNER_CONFIGURATION`; inference requests 0.
+- Synthetic quota result: 2 repository/project identities, 4 run envelopes, 16 attempts; 2 admitted and settled, 14 rejected before provider fixture; 2 mock provider calls; 0 residual reserved units; 0 residual uncertain units; one later-run duplicate suppressed without another provider call; two provider reset windows accounted.
+- This proves the shared installation partition within one workerd runtime and service-isolated Worker identities. It does **not** prove separate GitHub Actions processes, independent physical hosts, a live Cloudflare deployment or production GitHub App installation.
+- Cloudflare official Free-tier limits were added to the report. Live deployment remains owner-gated: verify Workers Free, SQLite DO, no Paid plan/add-ons, and usage/spending controls before any deployment. Workers Paid minimum is $5/month and is prohibited without explicit approval.
+- P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Next Phase59.57: compute/publisher separation. Master remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`; PR #41 remains open and stacked on PR #40; no master merge.
+- ₹0 spend; AI inference disabled; production flags OFF; receipts ₹0.
+
+
+## PHASE 59.57 UPDATE — READ-ONLY COMPUTE / CONSTRAINED PUBLISHER SEPARATION
+Date: 2026-11-17
+
+- Candidate branch: \`phase59-57-constrained-publisher-separation\`; exact head \`4d419d4c260a21a653e05bce1b94e90e7cccf4f8\`; draft PR #42 is stacked on PR #41, itself stacked on draft PR #40. No master merge or protected-state mutation occurred.
+- Current master HEAD remains \`8856bf908f93e265cefd5c739f7f46b3dd995b3c\`. Latest master worker run #43998553989 SUCCESS at that exact SHA.
+- Changed mission worker candidate to Contents:read, disabled checkout credential persistence, removed its git commit/push step, removed provider secrets from the AI executor environment and explicitly hard-disabled inference.
+- Added one isolated publisher workflow with read-only GITHUB_TOKEN. Only after source-run/artifact validation and owner App secrets exist can it mint a one-repository token (Metadata:read, Contents:write, Pull requests:write).
+- Added deterministic publisher gate. It accepts only P59-003 draft reports, validates source workflow/repository/master/event/conclusion/run identity, rejects secret-like/oversized/duplicate/malformed input, hashes raw model output but never commits it, and creates/reuses only an allowlisted branch and DRAFT PR. No merge endpoint exists in publisher code.
+- Official token action is pinned to \`64ab729a6294000f5aa4a4bc0b73d1f32bc45510\` (v3.3.0).
+- Push CI [#44015009269](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015009269) SUCCESS; exact PR CI [#44015026065](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015026065) SUCCESS; **23/23 tests** passed on exact candidate head.
+- Mission worker [#44015009217](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44015009217) SUCCESS; queue poll POLL_OK selected P59-003; AI executor WAITING_FOR_OWNER_CONFIGURATION; inference requests 0.
+- Phase59.56 PR #41 run [#44012765651](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44012765651) SUCCESS; synthetic workerd 76/76, but hosted cross-run and independent physical-host proof remain unverified.
+- PR #40 remains draft, PR #41 open/stacked, PR #42 draft. None merged. Publisher App not created/installed; no token minted; branch protection UNVERIFIED.
+- No other project repository was read or modified. No KYC, legal acceptance, provider call, deployment, billing, public product release, payment, signing, money movement or spend.
+- P59-003 remains the sole active P0; P59-001 PAUSED; P59-002 BLOCKED. PCNE / verified receipts ₹0; authorized spend ₹0.
+- Next: Phase59.58 durable mission-dispatcher integration with SwarmRunDO and deterministic specialist graph, shadow-only, no inference. Hosted global quota, independent-host, owner App/ruleset and 7/30-day soak gates remain open.
+
+
+### Phase59.57 final exact-head checkpoint
+- Candidate branch checkpoint \`6e8bd1d9887339cb9a8ea1575d3ca1f2dc46a8f3\`; code implementation commit \`4d419d4c260a21a653e05bce1b94e90e7cccf4f8\`. PR #42 remains draft and stacked on PR #41/#40; master remains \`8856bf908f93e265cefd5c739f7f46b3dd995b3c\`.
+- Exact PR CI #44015226158 SUCCESS, 23/23; Mission Continuity Guard #44015220245 SUCCESS; bounded Mission Worker #44015220167 SUCCESS. The worker selected P59-003 and made no inference request.
+- Queue/state/federation/report/owner packet were fetched back and blob SHAs matched the committed writes.
+- P59-003 remains the sole active P0. P59-001 PAUSED; P59-002 BLOCKED. No master merge or owner-only action occurred.
+
+
+### Phase59.57 latest exact-head workflow evidence
+- Candidate branch head \`fbd5891b446986f5dc4ae8ce5e47a15e3b24708e\`; PR #42 remains draft/unmerged and stacked on PR #41/#40.
+- PR CI #44015349599 SUCCESS, 23/23 tests on the exact head.
+- Mission Continuity Guard #44015344336 SUCCESS, 111 checks and zero errors.
+- Mission Worker #44015344354 SUCCESS; POLL_OK selected P59-003; AI inference remained disabled and no request was made.
+- Master HEAD remains \`8856bf908f93e265cefd5c739f7f46b3dd995b3c\`. No master write or merge occurred.
+
+
+### Latest Phase59.57 verification
+- Exact tested candidate checkpoint \`6b1bffeed4ad04e22fcf8227b4d081b3c18bc2ad\`: PR CI #44015496926 SUCCESS, 23/23 tests.
+- Mission Continuity Guard #44015490505 SUCCESS, 111 checks, zero errors.
+- Mission Worker #44015490552 SUCCESS; P59-003 selected; no inference request.
+- The final evidence/control-only reconciliation commit does not change publisher or compute runtime code.
+- Master remains \`8856bf908f93e265cefd5c739f7f46b3dd995b3c\`; PR #42 is still draft/unmerged.
+
+
+### Final observed Phase59.57 CI checkpoint
+- Exact tested candidate checkpoint \`17584db552c559cdb9d44d46aee004303ccdec25\`: PR CI #44015588892 SUCCESS, 23/23 tests.
+- Mission Continuity Guard #44015583857 SUCCESS, 111 checks, zero errors.
+- Mission Worker #44015583881 SUCCESS; POLL_OK selected P59-003; no inference request.
+- Runtime code remains the tested implementation commit \`4d419d4c260a21a653e05bce1b94e90e7cccf4f8\`; subsequent commits are evidence/control-only.
+- Master remains \`8856bf908f93e265cefd5c739f7f46b3dd995b3c\`; PR #42 remains draft/unmerged.
+
+
+## PHASE 59.58 — DURABLE MISSION DISPATCHER + SPECIALIST GRAPH (18-Nov-2026)
+
+- Candidate branch: phase59-58-durable-dispatcher-shadow-integration; draft integration PR #44; candidate head e3c7786c85c561c5c10c345e2826481e24aa3b34; canonical master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. PR #44 is draft/unmerged; no protected master write or merge occurred.
+- Added HMAC-authenticated internal dispatcher ingress with an 8 KiB bounded body reader, strict P10CR/P59-003 envelope, and a dispatcher HMAC identity. The identity can register, claim, checkpoint, complete and read tasks but cannot approve owner-gated work.
+- Connected the dispatcher through a Cloudflare Workers service binding to the P10CR project-cell SwarmRunDO. Payload/policy hashes are computed inside the dispatcher; atomic claim, fencing, idempotency, durable checkpoints, final readback and event-chain validation are used.
+- Added ten deterministic specialist roles: evidence collection, research, red-team, payout eligibility, unit economics, rights/policy, engineering, QA, distribution readiness and revenue reconciliation. All remain HOLD because no trusted collector/owner attestation is wired; PCNE stays ₹0. No model inference or external provider access.
+- Added duplicate suppression, eviction/reclaim checkpoint reuse, higher fencing token and stale-run rejection tests; unsigned ingress, oversized bodies, cross-project envelopes and dispatcher owner-approval attempts are rejected.
+- Dedicated Workers/workerd run #44228723312 and Phase59.35 regression run #44228723269 were pending at this checkpoint. Do not claim Phase59.58 acceptance until exact-head CI finishes.
+- No public route, deployment, provider request, external network, generated-code execution, publisher invocation, KYC, legal acceptance, billing, payment, signing, money movement or spend. Production flags OFF; AI inference disabled; spend ₹0; PCNE ₹0.
+- P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Other projects remain untouched/read-only.
+- Next: finish exact-head CI and control-plane guard; then Phase59.59 owner-gated independent-host tests and 7/30-day soak. P59-001 cannot resume before P59-003 acceptance gates pass.
+
+
+## PHASE 59.58 — EXACT-HEAD CI ACCEPTANCE (18-Nov-2026)
+
+- Dedicated Workers/workerd workflow #44228723312 SUCCESS: 4 test files, 82/82 tests on code head e3c7786c85c561c5c10c345e2826481e24aa3b34.
+- Full Phase59.35 Workers/workerd regression #44228723269 SUCCESS: 82/82 tests. All 13 regression workflows on this PR head completed SUCCESS; PostgreSQL transactional contract #44228723172 also SUCCESS.
+- Six new dispatcher tests passed: ten-role graph with HOLD outputs; duplicate suppression; result-checkpoint reuse after Durable Object eviction/lease expiry; higher fencing token; stale write rejection; no owner-approval capability; unsigned ingress, oversized request and cross-project envelope rejection.
+- Master control-plane checks remain verified on exact master HEAD 8856bf908f93e265cefd5c739f7f46b3dd995b3c: Mission Worker #485 / run #43998553989 SUCCESS; Mission Continuity Guard #288 / run #43927317601 SUCCESS, 111 checks, zero errors.
+- Candidate branch carries CI evidence and control/continuity checkpoint; executable code/test head remains e3c7786c85c561c5c10c345e2826481e24aa3b34. Later commits are control/report/continuity only. PR #44 remains draft/unmerged; master is unchanged.
+- Acceptance remains partial: dispatcher is shadow/test-only and is not connected to the scheduled Python worker through a deployed endpoint. No physical multi-host proof or 7/30-day soak. No AI inference, external network/provider call, deployment, publisher, public release, account action, billing or money movement. Spend ₹0; PCNE ₹0.
+- Next Phase59.59: verify zero-cost hosting eligibility/quotas, prepare owner-only deployment approval packet, then independent-host contention/failure tests and bounded 7/30-day soak. P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.
+
+
+## PHASE 59.59 — ZERO-COST HOSTING AUDIT + OWNER PACKET (18-Nov-2026)
+
+- Official Cloudflare Workers pricing confirms Workers Free: 100,000 inbound requests/day and 10 ms CPU per invocation. Official Durable Objects pricing confirms SQLite-backed DO on Free: 100,000 DO requests/day, 13,000 GB-s/day, 5 million SQLite rows read/day, 100,000 rows written/day and 5 GB storage; daily reset 00:00 UTC; exceeding Free limits fails further operations rather than silently upgrading. Official GitHub billing confirms standard hosted runners in public repositories are free; larger runners are billed and artifact/cache storage is separate.
+- Sources and full limits: research/PHASE_59_59_ZERO_COST_HOSTING_AND_INDEPENDENT_HOST_PLAN_2026-11-18.md. Exact owner-only steps: governance/P59-003_CLOUDFLARE_WORKERS_FREE_PLAN_OWNER_ACTION_PACKET_2026-11-18.md.
+- Proposed internal caps are 5% of published Free limits and stop at 80% of those internal caps. They are guardrails, not provider entitlements and not yet enforced by an account-scope arbiter.
+- Critical gap: Phase59.56 proved GitHub App installation-scope sharing across two synthetic repositories/four run IDs (16 attempts, 2 admitted/settled, 14 fail-closed). It did not prove physical-host contention or Cloudflare account-wide platform usage. The current GitHub quota ledger is GitHub-operation-specific; a separate account-scope platform budget DO is required before any hosted deployment.
+- No Cloudflare account plan/aggregate usage verification, account creation, terms acceptance, KYC, deployment, endpoint activation, secrets setup, paid upgrade, billing, provider call or money movement. No alternate-account rotation. Spend ₹0; inference OFF; production OFF.
+- Phase59.58 remains PASS (82/82 dedicated workerd tests, 82/82 Phase59.35 regression, 13/13 regression workflows). P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Other projects remain read-only.
+- Next Phase59.60: implement and test account-scope platform budget DO and synthetic multi-run/repository atomicity. Only after that and owner verification of an existing Workers Free account may independent-host tests and then 7/30-day soak begin.

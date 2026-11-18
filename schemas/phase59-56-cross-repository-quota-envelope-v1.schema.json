@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus.local/schemas/phase59-56-cross-repository-quota-envelope-v1.schema.json",
+  "title": "Phase 59.56 Synthetic Cross-Repository Quota Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "projectId",
+    "repository",
+    "workflowRunId",
+    "taskId",
+    "requestId",
+    "operation"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "projectId": {
+      "enum": [
+        "P10CR",
+        "SYNTHETIC-READONLY"
+      ]
+    },
+    "repository": {
+      "enum": [
+        "synthetic-org/p10cr-shadow-repo",
+        "synthetic-org/isolated-project-shadow-repo"
+      ]
+    },
+    "workflowRunId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "taskId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^p59-56:[A-Za-z0-9._:-]+$"
+    },
+    "operation": {
+      "const": "github.rest.repositories.get.v1"
+    }
+  }
+}
