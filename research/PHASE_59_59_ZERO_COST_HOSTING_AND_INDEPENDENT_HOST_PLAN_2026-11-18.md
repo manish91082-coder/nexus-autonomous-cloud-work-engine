@@ -103,3 +103,10 @@ Immediately disable the test flag and stop new reservations if:
 ## Next
 
 Owner reviews the exact action packet. Only after explicit approval may a separate Phase59.60 deployment/test task be opened. P59-003 remains the sole active P0; P59-001 remains PAUSED and P59-002 BLOCKED.
+
+
+## Important quota-scope gap before deployment
+
+Phase59.56 proves that two synthetic repository identities and four run envelopes share one GitHub App installation quota partition in the existing quota Durable Object (16 attempts: 2 admitted/settled, 14 fail-closed). That is not a physical-host test and it is not the Cloudflare account-wide Workers Free budget.
+
+Cloudflare's Free limits are account-wide. The current GitHub API quota ledger is installation-scoped and its operation registry is GitHub-specific. It does not yet enforce the Cloudflare account's Worker requests, Durable Object requests, SQLite usage or stored-data budget. Phase59.60 must implement and workerd-test a separate account-scope platform budget arbiter before any hosted deployment. The internal caps in this report are proposed guardrails, not yet enforced quotas. No account-scope claim is considered proven until the same budget object is shared across all P10CR worker/run/repository identities and tested for atomic oversubscription.
