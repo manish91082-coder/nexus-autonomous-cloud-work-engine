@@ -8,7 +8,7 @@ on:
       - 'cloud/swarm/platform-budget-rpc-client.mjs'
       - 'cloud/swarm/mission-dispatcher-shadow.mjs'
       - 'cloud/swarm/mission-dispatcher-shadow-worker.mjs'
-      - 'cloud/swarm/worker-tests/mission-dispatcher-budget-*'
+      - 'cloud/swarm/worker-tests/mission-dispatcher-budget*'
       - '.github/workflows/phase59-61-budget-dispatcher-integration.yml'
   pull_request:
     branches: [phase59-60-account-scope-platform-budget]
@@ -17,7 +17,7 @@ on:
       - 'cloud/swarm/platform-budget-rpc-client.mjs'
       - 'cloud/swarm/mission-dispatcher-shadow.mjs'
       - 'cloud/swarm/mission-dispatcher-shadow-worker.mjs'
-      - 'cloud/swarm/worker-tests/mission-dispatcher-budget-*'
+      - 'cloud/swarm/worker-tests/mission-dispatcher-budget*'
       - '.github/workflows/phase59-61-budget-dispatcher-integration.yml'
 
 permissions:
