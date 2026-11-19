@@ -1,0 +1,45 @@
+name: Phase 59.61 Budget-Dispatcher Integration Runtime Tests
+
+on:
+  push:
+    branches: [phase59-61-budget-dispatcher-integration]
+    paths:
+      - 'cloud/swarm/platform-budget-do.mjs'
+      - 'cloud/swarm/platform-budget-rpc-client.mjs'
+      - 'cloud/swarm/mission-dispatcher-shadow.mjs'
+      - 'cloud/swarm/mission-dispatcher-shadow-worker.mjs'
+      - 'cloud/swarm/worker-tests/mission-dispatcher-budget-*'
+      - '.github/workflows/phase59-61-budget-dispatcher-integration.yml'
+  pull_request:
+    branches: [phase59-60-account-scope-platform-budget]
+    paths:
+      - 'cloud/swarm/platform-budget-do.mjs'
+      - 'cloud/swarm/platform-budget-rpc-client.mjs'
+      - 'cloud/swarm/mission-dispatcher-shadow.mjs'
+      - 'cloud/swarm/mission-dispatcher-shadow-worker.mjs'
+      - 'cloud/swarm/worker-tests/mission-dispatcher-budget-*'
+      - '.github/workflows/phase59-61-budget-dispatcher-integration.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-61-budget-dispatcher-integration
+  cancel-in-progress: false
+
+jobs:
+  budget-dispatcher-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: cloud/swarm/worker-tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install isolated test dependencies
+        run: npm install --no-audit --no-fund
+      - name: Run Phase59.61 integration tests
+        run: npx vitest run --config mission-dispatcher-budget.vitest.config.mjs mission-dispatcher-budget-integration.test.mjs
