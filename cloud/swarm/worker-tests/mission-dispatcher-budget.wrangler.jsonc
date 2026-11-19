@@ -1,0 +1,19 @@
+{
+  "name": "p10cr-mission-dispatcher-budget-tests",
+  "main": "./main-caller.mjs",
+  "compatibility_date": "2026-11-18",
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "SWARM_RUNS",
+        "class_name": "SwarmRunDO",
+        "script_name": "p10cr-swarm-run-host"
+      },
+      {
+        "name": "PLATFORM_BUDGET",
+        "class_name": "PlatformBudgetDO",
+        "script_name": "p10cr-platform-budget-host"
+      }
+    ]
+  }
+}
