@@ -59,7 +59,8 @@ export default defineConfig({
                 secondary: ["claim", "heartbeat", "checkpoint", "complete", "fail", "snapshot"],
                 dispatcher: ["register", "claim", "heartbeat", "checkpoint", "complete", "fail", "snapshot"]
               })
-            }
+            },
+            durableObjects: { SWARM_RUNS: sharedSwarmRunNamespace }
           },
           {
             name: "p10cr-platform-budget-host",
@@ -80,7 +81,8 @@ export default defineConfig({
                 primary: ["reserve", "heartbeat", "settle", "snapshot", "testReset", "testExpire"],
                 dispatcher: ["reserve", "heartbeat", "settle", "snapshot"]
               })
-            }
+            },
+            durableObjects: { PLATFORM_BUDGET: sharedPlatformBudgetNamespace }
           },
           {
             name: "p10cr-mission-dispatcher-budget-shadow",
