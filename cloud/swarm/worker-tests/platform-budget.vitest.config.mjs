@@ -24,6 +24,7 @@ const testCaps = {
 };
 
 export default defineConfig({
+  test: { include: ["platform-budget.test.mjs"] },
   plugins: [
     cloudflareTest({
       wrangler: { configPath: "./platform-budget.wrangler.jsonc" },

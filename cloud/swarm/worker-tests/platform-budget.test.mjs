@@ -24,7 +24,7 @@ async function call(binding, action, input) {
 }
 async function reset() {
   const result = await call(bindingA(), "testReset", {});
-  expect(result.status).toBe("TEST_RESET");
+  if (result.status !== "TEST_RESET") throw new Error("TEST_RESET_FAILED:" + JSON.stringify(result));
 }
 async function snapshot() {
   return await call(bindingA(), "snapshot", {});
