@@ -4760,3 +4760,11 @@ Date: 2026-11-17
 - Scope limitation: this is one fixed DO identity shared by Workers bound to the same namespace. The two repository identities/four run IDs are synthetic Workerd clients, not independent physical hosts or different Cloudflare accounts. Live account plan/aggregate usage, dispatcher integration, independent-host tests and 7/30-day soak remain unverified.
 - Production OFF; AI inference OFF; live provider calls 0; external test network requests 0; spend ₹0; verified receipts ₹0. No KYC, legal acceptance, public release, billing, payment, signing, money movement or other-project mutation.
 - P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Next Phase59.61 integrates the platform-budget RPC into the shadow dispatcher: reserve before dispatch, settle only after durable checkpoint/readback, retain UNCERTAIN on ambiguous outcomes; then owner-gated independent-host proof and 7/30-day soak.
+
+
+## PHASE 59.60.1 - AI INFERENCE FAIL-CLOSED GATE (19-Nov-2026)
+
+- Added control/ai_inference_approval.json in DISABLED state, strict provider/model/data/zero-billing/quota/gateway evidence validation, explicit owner approval fields and dispatcher-issued reservation/fencing requirements in scripts/ai_task_executor.py. Two code-level gates remain hard false: GLOBAL_QUOTA_ADAPTER_READY and PROVIDER_GATEWAY_ADAPTER_READY. The legacy direct Cloudflare adapter is unreachable.
+- Mission workflow now explicitly sets all AI approval flags false and watches the approval manifest/owner packet. AI safety tests passed 5/5 in Mission Worker #520/run 44451293770 on candidate SHA c2ef92ae6b7695d349d7f8b385caec1b874e38eb. Phase59.60 budget runtime passed 6/6 in run 44451300718 on the same SHA.
+- Owner packet: governance/P59-003_AI_INFERENCE_OWNER_APPROVAL_PACKET_2026-11-19.md. No credentials requested or stored. No provider calls, inference, billing, KYC, legal acceptance or money movement.
+- P59-003 remains sole active P0. P59-001 PAUSED; P59-002 BLOCKED. Next Phase59.61 integrates account-scope reservation/settlement into the shadow dispatcher, then provider-neutral gateway only after verified terms, zero-billing, quota and owner approval. Independent-host tests and 7/30-day soak remain pending.

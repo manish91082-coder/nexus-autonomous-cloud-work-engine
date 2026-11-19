@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "P59-003 only. Phase59.60 account-scope platform budget Durable Object passes exact-head Workerd CI 6/6 (run 44450335146, tested SHA 06599b22f61a37d6cf09df6a234a2dfc32209736). Synthetic 100-way shared quota test admitted 8 and rejected 92; cross-run idempotency, fencing, heartbeat, expiry-to-uncertain and event-chain checks pass. PR #45 remains draft/unmerged; master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. No live Cloudflare account verification/deployment or dispatcher budget integration.",
+  "current_focus": "P59-003 only. Phase59.60 account-scope platform budget runtime passes 6/6 on candidate SHA c2ef92ae6b7695d349d7f8b385caec1b874e38eb (run 44451300718). AI inference fail-closed hardening passes 5/5 in Mission Worker #520/run 44451293770 on the same SHA. Approval manifest remains DISABLED; code-level global quota/provider gateway gates remain false; all AI workflow flags are false. No inference, provider calls, deployment or spend.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -136,7 +136,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.61: integrate the account-scope budget RPC into the P59-003 shadow dispatcher with reserve-before-dispatch and settle-after-durable-checkpoint; preserve UNCERTAIN on ambiguous outcome. Then owner-verified independent-host tests and 7/30-day soak. P59-001 stays PAUSED; P59-002 stays BLOCKED.",
+  "next_focus": "Phase59.61: integrate account-scope budget reservation/settlement into the P59-003 shadow dispatcher. Reserve before dispatch; settle only after durable result checkpoint/readback; retain UNCERTAIN on ambiguous outcomes. Then provider-neutral gateway integration after terms/zero-billing/quota evidence and owner approval. Independent-host proof and 7/30-day soak remain pending. P59-001 PAUSED; P59-002 BLOCKED.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -2426,8 +2426,8 @@
     "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
   },
   "last_updated": "2026-11-19",
-  "candidate_code_head": "06599b22f61a37d6cf09df6a234a2dfc32209736",
-  "candidate_tested_head": "06599b22f61a37d6cf09df6a234a2dfc32209736",
+  "candidate_code_head": "c2ef92ae6b7695d349d7f8b385caec1b874e38eb",
+  "candidate_tested_head": "c2ef92ae6b7695d349d7f8b385caec1b874e38eb",
   "phase59_58": {
     "report": "research/PHASE_59_58_DURABLE_DISPATCHER_SPECIALIST_GRAPH_INTEGRATION_2026-11-18.md",
     "branch": "phase59-58-durable-dispatcher-shadow-integration",
@@ -2530,8 +2530,8 @@
     "pr_number": 45,
     "pr_state": "DRAFT_OPEN_UNMERGED",
     "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-    "tested_code_head": "06599b22f61a37d6cf09df6a234a2dfc32209736",
-    "ci_run_id": 44450335146,
+    "tested_code_head": "c2ef92ae6b7695d349d7f8b385caec1b874e38eb",
+    "ci_run_id": 44451300718,
     "ci_status": "SUCCESS_6_OF_6",
     "push_run_id": 44450328625,
     "push_run_status": "CANCELLED_BY_PR_CONCURRENCY",
@@ -2594,8 +2594,18 @@
     "external_network_requests_in_tests": 0,
     "authorized_spend_inr": 0,
     "verified_realized_net_receipts_inr": 0,
-    "next": "Phase59.61: integrate this budget RPC into the P59-003 shadow mission dispatcher (reserve before task dispatch, settle only after durable result checkpoint, retain UNCERTAIN on ambiguous outcome); add cross-run replay and fail-closed tests. Keep production OFF. Then owner-verified independent-host proof and 7/30-day soak."
+    "next": "Phase59.61: integrate account-scope budget reservation/settlement into the P59-003 shadow dispatcher, then wire the provider-neutral gateway only after owner-reviewed terms, zero-billing evidence and quotas are verified. Keep both AI code gates false until those integrations pass.",
+    "ai_safety_workflow_run_id": 44451293770,
+    "ai_safety_workflow_status": "SUCCESS",
+    "ai_safety_tests_passed": 5,
+    "ai_inference_approval_manifest_status": "DISABLED",
+    "ai_global_quota_adapter_ready": false,
+    "ai_provider_gateway_adapter_ready": false,
+    "ai_workflow_flags_all_false": true,
+    "ai_provider_calls": 0,
+    "ai_owner_packet": "governance/P59-003_AI_INFERENCE_OWNER_APPROVAL_PACKET_2026-11-19.md",
+    "ai_setup": "AI_WORKER_SETUP.md"
   },
-  "phase59_60_status": "SYNTHETIC_WORKER_RUNTIME_PASS_6_OF_6; DISPATCHER_INTEGRATION_AND_LIVE_ACCOUNT_SCOPE_PENDING",
+  "phase59_60_status": "SYNTHETIC_WORKER_RUNTIME_PASS_6_OF_6; AI_FAIL_CLOSED_GATE_PASS_5_OF_5; DISPATCHER_AND_PROVIDER_GATEWAY_INTEGRATION_PENDING",
   "phase59_60_latest_report": "research/PHASE_59_60_ACCOUNT_SCOPE_PLATFORM_BUDGET_ARBITER_2026-11-19.md"
 }

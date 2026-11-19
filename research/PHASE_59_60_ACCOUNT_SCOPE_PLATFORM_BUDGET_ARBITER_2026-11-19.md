@@ -172,3 +172,59 @@ Phase59.61:
 7. Then use the existing owner packet for account verification and independent-host tests; only after those gates start bounded 7/30-day soak.
 
 P59-001 must not resume until every P59-003 acceptance gate passes.
+
+
+## 11. Phase 59.60.1 - AI inference fail-closed hardening
+Date: 2026-11-19
+Status: IMPLEMENTED AND TESTED; INFERENCE REMAINS HARD-DISABLED
+
+New/updated files:
+- scripts/ai_task_executor.py
+- tests/test_ai_task_executor.py
+- control/ai_inference_approval.json
+- governance/P59-003_AI_INFERENCE_OWNER_APPROVAL_PACKET_2026-11-19.md
+- AI_WORKER_SETUP.md
+- .github/workflows/mission-autonomous-worker.yml
+
+The executor now requires:
+- explicit owner flags for provider terms, model/data terms, zero billing, global quota and owner approval;
+- a schema-versioned approval manifest with HTTPS evidence URLs, SHA-256 digests and verification timestamps for provider terms, model/data terms, zero-billing evidence, global quota and gateway;
+- exact provider/model match;
+- a P10CR account-global quota scope, bounded daily calls, minimum interval, output-token cap, hard stop on paid/unknown and no paid fallback;
+- owner approval reference and timestamp;
+- dispatcher-issued reservation ID, fencing token and lease version.
+
+Two code-level gates remain hard false and cannot be enabled by environment variables:
+- GLOBAL_QUOTA_ADAPTER_READY = False
+- PROVIDER_GATEWAY_ADAPTER_READY = False
+
+This is intentional. The account-scope budget arbiter is not yet wired into the mission dispatcher or AI executor, and the provider-neutral gateway is not implemented. The legacy direct Cloudflare adapter is therefore unreachable. The mission workflow explicitly sets all AI flags to false. The canonical approval manifest remains DISABLED.
+
+Verification:
+- Mission Autonomous AI Worker #520 / run 44451293770 SUCCESS on SHA c2ef92ae6b7695d349d7f8b385caec1b874e38eb.
+- AI-specific tests: 5/5 PASS.
+- Phase59.60 account-scope budget runtime #18 / run 44451300718 SUCCESS on the same SHA, 6/6 PASS.
+- Tests prove default-disabled behavior, evidence-manifest validation, rejection of paid fallback, inability of environment flags to bypass the global-quota code gate, and inability to bypass the provider-gateway code gate.
+- No provider request was made. Test-only placeholder credentials were never sent to a provider.
+
+Owner packet: governance/P59-003_AI_INFERENCE_OWNER_APPROVAL_PACKET_2026-11-19.md.
+The packet requests no password, OTP, cookie, recovery code, private key or account credential. Any eventual credentials belong only in GitHub Actions Secrets after all gates and owner approvals pass.
+
+## 12. Updated acceptance boundary
+Passed:
+- Synthetic shared-namespace cross-run/cross-repository budget contention.
+- Atomic multi-resource admission, idempotency, fencing, heartbeat, expiry-to-UNCERTAIN and event-chain verification.
+- Exact-head Phase59.60 CI 6/6.
+- AI fail-closed gate tests 5/5.
+
+Still pending:
+- Account-global budget RPC integrated into the mission dispatcher.
+- Provider-neutral zero-cost gateway implementation and verification.
+- Official provider/model/data terms and zero-billing evidence, plus explicit owner approval.
+- Dependency pinning and lockfile.
+- Live Cloudflare account/aggregate usage verification.
+- Independent physical-host tests.
+- GitHub App installation/ruleset owner approval.
+- 7-day and 30-day soak.
+
+Production OFF. AI inference OFF. P59-001 PAUSED. P59-002 BLOCKED. P59-003 sole active P0.
