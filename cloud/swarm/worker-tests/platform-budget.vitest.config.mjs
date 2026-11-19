@@ -58,8 +58,9 @@ export default defineConfig({
           },
           {
             name: "p10cr-platform-budget-caller-a",
+            rootPath: "../",
             modules: [
-              { type: "ESModule", path: "./platform-budget-test-worker.mjs" },
+              { type: "ESModule", path: "./worker-tests/platform-budget-test-worker.mjs" },
               { type: "ESModule", path: "./platform-budget-rpc-client.mjs" }
             ],
             bindings: {
@@ -71,8 +72,9 @@ export default defineConfig({
           },
           {
             name: "p10cr-platform-budget-caller-b",
+            rootPath: "../",
             modules: [
-              { type: "ESModule", path: "./platform-budget-test-worker.mjs" },
+              { type: "ESModule", path: "./worker-tests/platform-budget-test-worker.mjs" },
               { type: "ESModule", path: "./platform-budget-rpc-client.mjs" }
             ],
             bindings: {
