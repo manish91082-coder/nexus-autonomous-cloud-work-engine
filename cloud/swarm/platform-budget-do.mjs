@@ -329,7 +329,14 @@ export class PlatformBudgetDO extends DurableObject {
 
   async #reserve(input, callerId, day) {
     const identity = this.#validateEnvelope(input);
-    const fingerprint = await sha256(canonical(identity));
+    const fingerprint = await sha256(canonical({
+      projectId: identity.projectId,
+      repository: identity.repository,
+      taskId: identity.taskId,
+      phaseId: identity.phaseId,
+      executionId: identity.executionId,
+      operationId: identity.operationId
+    }));
     const existing = this.sql.exec(
       "SELECT * FROM platform_budget_reservations WHERE idempotency_key=?",
       identity.idempotencyKey
