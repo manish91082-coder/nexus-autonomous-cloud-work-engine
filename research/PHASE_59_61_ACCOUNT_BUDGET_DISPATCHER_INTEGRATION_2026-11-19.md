@@ -171,3 +171,15 @@ The final candidate branch head before this fetch-back append was `21d21b7da5492
 - owner packet update: `fd2be94c5e0dea350a24600a55838e42242d25cb`
 
 Queue invariant rechecked after fetch-back: exactly one active P0 (`P59-003`); `P59-001=PAUSED`; `P59-002=BLOCKED`. Mission state and federation registry both point to the tested code head and preserve master HEAD `8856bf908f93e265cefd5c739f7f46b3dd995b3c`. No revenue ledger or payout/opportunity registry mutation occurred.
+
+
+## 11. Final state/registry write IDs
+
+The second fetch-back pass recorded the final owner packet and report references in all three canonical control registries:
+- queue final evidence link commit: `2322986d5ef0bd4f21ce45dc203566de2627b92b`
+- mission-state final evidence link commit: `ef31797ad975449144d69850162ae8f1e31cd720`
+- federation final evidence link commit: `d5bdaead4003b62e0a36341cced712a5c7b48a1a`
+- owner packet final evidence commit: `1845767ee1f2b092f41b00ab9d0cbae0e1f4224f`
+- report evidence append commit: `5c988a1d90a3b58340ff73665b08203eb8b36198`
+
+The candidate branch head immediately before this final report/continuity append was `d5bdaead4003b62e0a36341cced712a5c7b48a1a`. The tested executable/test head remains `bd39391cab62eb69b24d5cf5ffc76248d625225d`; later changes are documentation and canonical control-record updates only. The PR remains draft and unmerged.
