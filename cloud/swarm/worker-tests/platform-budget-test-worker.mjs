@@ -1,4 +1,4 @@
-import { createPlatformBudgetRpc } from "./platform-budget-rpc-client.mjs";
+import { createPlatformBudgetRpc } from "../platform-budget-rpc-client.mjs";
 export default {
   async fetch(request, env) {
     if (request.method !== "POST" || new URL(request.url).pathname !== "/rpc") {
