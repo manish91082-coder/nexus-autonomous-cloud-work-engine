@@ -31,7 +31,7 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS. Phase59.60 account-scope platform budget runtime passes 6/6 and Phase59.60.1 AI fail-closed safety tests pass 5/5 on candidate SHA c2ef92ae6b7695d349d7f8b385caec1b874e38eb. AI approval manifest remains DISABLED; code-level global quota and provider gateway gates false; no inference/provider calls. PR #45 draft/unmerged; master unchanged. Dispatcher integration, live account verification, independent-host tests and 7/30-day soak pending. P59-001 PAUSED; P59-002 BLOCKED.",
+      "status": "P59-003 IN_PROGRESS. Phase59.61 budget-gated shadow dispatcher integration passed dedicated Workerd tests 4/4 and full swarm runtime regression 82/82 on PR merge ref f0f97364 (PR head bd39391). Budget reservation precedes durable task registration/claim; settlement follows durable completion readback; duplicate and ambiguous settlement paths are idempotent; budget exhaustion blocks registration. PR #46 draft/unmerged, stacked on #45/#44; master remains unchanged. Production OFF, AI inference OFF, no provider calls or spend. P59-001 PAUSED; P59-002 BLOCKED. Owner verification of Workers Free account/aggregate usage, GitHub App, branch ruleset, dependency pinning, independent-host proof and 7/30-day soak remain pending.",
       "last_observed_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
@@ -241,7 +241,7 @@
         "continuity_guard_run_id": 44009214414,
         "continuity_guard_checks": 111
       },
-      "next": "Phase59.56: prove global installation-scope quota across synthetic repository identities and distinct run envelopes; keep other projects untouched/read-only. Then single constrained publisher, dispatcher/specialist integration, owner-approved independent-host tests and 7/30-day soak.",
+      "next": "Phase59.62: prepare the independent-host test harness and owner preflight; in parallel pin the Cloudflare/Vitest test dependencies and add a lockfile. Keep live endpoint tests disabled until the owner verifies an existing Workers Free account, account-wide usage and the shared P10CR Durable Object namespace. Then run four independent standard GitHub-hosted runners, prove shared lease/quota/fencing behavior, and only after that start the bounded 7-day and 30-day soak.",
       "production_integrated": false,
       "ai_inference_enabled": false,
       "authorized_spend_inr": 0,
@@ -445,8 +445,8 @@
         "production_feature_flag": "OFF",
         "next": "Phase59.60: implement a separate account-scope platform budget DO and synthetic cross-run/cross-repository atomicity tests before any hosted deployment."
       },
-      "candidate_branch": "phase59-60-account-scope-platform-budget",
-      "candidate_head": "c2ef92ae6b7695d349d7f8b385caec1b874e38eb",
+      "candidate_branch": "phase59-61-budget-dispatcher-integration",
+      "candidate_head": "529beadf8f5a907a0197653fc0ceb06406d48654",
       "phase59_60": {
         "report": "research/PHASE_59_60_ACCOUNT_SCOPE_PLATFORM_BUDGET_ARBITER_2026-11-19.md",
         "branch": "phase59-60-account-scope-platform-budget",
@@ -508,7 +508,7 @@
         "cloudflare_account_plan_verified": false,
         "account_aggregate_usage_verified": false,
         "production_deployed": false,
-        "dispatcher_budget_integration": false,
+        "dispatcher_budget_integration": true,
         "independent_host_tests_started": false,
         "soak_7d_started": false,
         "soak_30d_started": false,
@@ -517,7 +517,7 @@
         "external_network_requests_in_tests": 0,
         "authorized_spend_inr": 0,
         "verified_realized_net_receipts_inr": 0,
-        "next": "Phase59.61: integrate account-scope budget reservation/settlement into the P59-003 shadow dispatcher, then wire the provider-neutral gateway only after owner-reviewed terms, zero-billing evidence and quotas are verified. Keep both AI code gates false until those integrations pass.",
+        "next": "Phase59.62: prepare the independent-host test harness and owner preflight; in parallel pin the Cloudflare/Vitest test dependencies and add a lockfile. Keep live endpoint tests disabled until the owner verifies an existing Workers Free account, account-wide usage and the shared P10CR Durable Object namespace. Then run four independent standard GitHub-hosted runners, prove shared lease/quota/fencing behavior, and only after that start the bounded 7-day and 30-day soak.",
         "ai_safety_workflow_run_id": 44451293770,
         "ai_safety_workflow_status": "SUCCESS",
         "ai_safety_tests_passed": 5,
@@ -528,6 +528,29 @@
         "ai_provider_calls": 0,
         "ai_owner_packet": "governance/P59-003_AI_INFERENCE_OWNER_APPROVAL_PACKET_2026-11-19.md",
         "ai_setup": "AI_WORKER_SETUP.md"
+      },
+      "phase59_61": {
+        "report": "research/PHASE_59_61_ACCOUNT_BUDGET_DISPATCHER_INTEGRATION_2026-11-19.md",
+        "branch": "phase59-61-budget-dispatcher-integration",
+        "pr_number": 46,
+        "pr_state": "DRAFT_OPEN_UNMERGED",
+        "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+        "code_head_tested": "bd39391cab62eb69b24d5cf5ffc76248d625225d",
+        "workflow_merge_ref_tested": "f0f97364a454a66fbf79fa3e49b73f07572d8e95",
+        "ci_run_id": 44453046636,
+        "ci_status": "SUCCESS_4_OF_4_DEDICATED_AND_82_OF_82_FULL_REGRESSION",
+        "reserve_before_registration": true,
+        "settle_after_final_readback": true,
+        "ambiguous_settlement_idempotent": true,
+        "uncertain_never_released": true,
+        "budget_exhaustion_blocks_registration": true,
+        "checkpoint_recovery": true,
+        "physical_multi_host_proven": false,
+        "production_deployed": false,
+        "ai_inference_enabled": false,
+        "authorized_spend_inr": 0,
+        "verified_realized_net_receipts_inr": 0,
+        "next": "Phase59.62: prepare the independent-host test harness and owner preflight; in parallel pin the Cloudflare/Vitest test dependencies and add a lockfile. Keep live endpoint tests disabled until the owner verifies an existing Workers Free account, account-wide usage and the shared P10CR Durable Object namespace. Then run four independent standard GitHub-hosted runners, prove shared lease/quota/fencing behavior, and only after that start the bounded 7-day and 30-day soak."
       }
     },
     {
@@ -650,7 +673,7 @@
     "This registry is a coordination contract, not proof other repos currently enforce locks."
   ],
   "next_actions": [
-    "Phase59.61: integrate the account-scope platform budget RPC into the P59-003 shadow mission dispatcher; reserve before dispatch, settle only after durable checkpoint, retain UNCERTAIN on ambiguous outcome.",
+    "Phase59.62: prepare the independent-host test harness and owner preflight; in parallel pin the Cloudflare/Vitest test dependencies and add a lockfile. Keep live endpoint tests disabled until the owner verifies an existing Workers Free account, account-wide usage and the shared P10CR Durable Object namespace. Then run four independent standard GitHub-hosted runners, prove shared lease/quota/fencing behavior, and only after that start the bounded 7-day and 30-day soak.",
     "Protect federation-locks branch from force push and deletion with a GitHub ruleset; verify bypass actors and recovery.",
     "Prepare least-privilege GitHub App scoped to the Nexus controller repository; owner installs/approves through official GitHub UI.",
     "Implement shared GitHub Actions/API quota reservations and fairness; unknown capacity remains fail-closed.",
