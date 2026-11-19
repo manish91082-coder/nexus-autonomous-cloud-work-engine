@@ -1,8 +1,9 @@
 /**
  * Internal, disabled-by-default P10CR shadow dispatcher service.
- * HMAC ingress + service binding only; no publisher, quota, provider or model binding.
+ * HMAC ingress + durable run/budget service bindings only; no publisher, provider or model binding.
  */
 import { createSwarmRunRpc } from "./swarm-run-rpc-client.mjs";
+import { createPlatformBudgetRpc } from "./platform-budget-rpc-client.mjs";
 import { dispatchMissionShadow } from "./mission-dispatcher-shadow.mjs";
 const MAX_BODY_BYTES = 8192;
 const SAFE_ID = /^[A-Za-z0-9._:-]{1,128}$/;
@@ -73,6 +74,12 @@ export default {
       || typeof env.NEXUS_SWARM_RUN_CALLER_SECRET !== "string" || env.NEXUS_SWARM_RUN_CALLER_SECRET.length < 32) {
       return response(503, { status: "WAITING_FOR_OWNER_CONFIGURATION", reason: "DURABLE_RUN_STORE_NOT_CONFIGURED" });
     }
+    if (!env?.PLATFORM_BUDGET || env.NEXUS_PLATFORM_BUDGET_ENABLED !== "true"
+      || env.NEXUS_PLATFORM_BUDGET_CALLER_ID !== "dispatcher"
+      || typeof env.NEXUS_PLATFORM_BUDGET_CALLER_SECRET !== "string"
+      || env.NEXUS_PLATFORM_BUDGET_CALLER_SECRET.length < 32) {
+      return response(503, { status: "WAITING_FOR_OWNER_CONFIGURATION", reason: "ACCOUNT_BUDGET_NOT_CONFIGURED" });
+    }
     const length = Number(request.headers.get("content-length") || 0);
     if (Number.isFinite(length) && length > MAX_BODY_BYTES) return response(413, { status: "REJECTED", reason: "ENVELOPE_TOO_LARGE" });
     let bytes;
@@ -93,12 +100,17 @@ export default {
     }
     try {
       const rpc = createSwarmRunRpc(env.SWARM_RUNS, env);
+      const budgetRpc = createPlatformBudgetRpc(env.PLATFORM_BUDGET, env);
       const prefix = typeof env.NEXUS_SHADOW_WORKER_ID === "string" ? env.NEXUS_SHADOW_WORKER_ID : "p10cr-shadow-dispatcher";
       const result = await dispatchMissionShadow({
-        rpc, taskId: body.taskId, workerId: prefix + "-" + crypto.randomUUID(),
+        rpc, budgetRpc, taskId: body.taskId, workerId: prefix + "-" + crypto.randomUUID(),
+        workflowRunId: env.NEXUS_WORKFLOW_RUN_ID || crypto.randomUUID(),
         payload: body.payload, leaseSeconds: 60
       });
-      return response(200, result);
+      const statusCode = result.status === "WAITING_FOR_BUDGET" ? 429
+        : result.status === "OWNER_APPROVAL_REQUIRED" ? 403
+        : ["BUSY", "BUDGET_UNCERTAIN", "BUDGET_RESERVATION_OUTCOME_UNKNOWN"].includes(result.status) ? 409 : 200;
+      return response(statusCode, result);
     } catch (error) {
       const reason = String(error?.message || "DISPATCH_FAILED").slice(0, 128);
       return response(409, { status: "REJECTED", reason });
