@@ -158,3 +158,16 @@ No inference/provider calls, external network calls in the Workerd tests, KYC, l
 Phase59.62 should prepare the independent-host test harness and exact owner preflight, while closing the dependency-lockfile/action-pinning gap. The live four-runner test must remain disabled until the owner verifies an existing Workers Free account, account-wide usage and the shared P10CR Durable Object namespace. After that, perform the bounded independent-host lease/quota/fencing test, then begin the 7-day soak. The 30-day soak remains a separate acceptance gate.
 
 Do not resume P59-001 or P59-002 until the complete P59-003 swarm acceptance gates pass.
+
+
+## 10. Final fetch-back reconciliation
+
+The final candidate branch head before this fetch-back append was `21d21b7da549257e7e40cfb635ed92a68a33f100`. All state/report writes were fetched back from the candidate branch and verified:
+- report commit: `529beadf8f5a907a0197653fc0ceb06406d48654`
+- queue commit: `71419aa5ce094396e77b31db972a2b9e54b47793`
+- mission-state commit: `c10c5c46e80bbd3139b2a13fe77c27e8aab5a41b`
+- federation commit: `a911a16ec87f08710bbfd8bfe49fcc7f4f43c7eb`
+- continuity commit before this append: `21d21b7da549257e7e40cfb635ed92a68a33f100`
+- owner packet update: `fd2be94c5e0dea350a24600a55838e42242d25cb`
+
+Queue invariant rechecked after fetch-back: exactly one active P0 (`P59-003`); `P59-001=PAUSED`; `P59-002=BLOCKED`. Mission state and federation registry both point to the tested code head and preserve master HEAD `8856bf908f93e265cefd5c739f7f46b3dd995b3c`. No revenue ledger or payout/opportunity registry mutation occurred.
