@@ -1,6 +1,6 @@
 {
   "name": "p10cr-platform-budget-runtime-tests",
-  "main": "./platform-budget-host.mjs",
+  "main": "../platform-budget-host.mjs",
   "compatibility_date": "2026-11-18",
   "durable_objects": {
     "bindings": [

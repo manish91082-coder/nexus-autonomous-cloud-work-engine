@@ -106,7 +106,7 @@ export class PlatformBudgetDO extends DurableObject {
     this.ctx = ctx;
     this.env = env;
     this.sql = ctx.storage.sql;
-    this.sql.exec(\`CREATE TABLE IF NOT EXISTS platform_budget_daily (
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS platform_budget_daily (
       utc_day TEXT PRIMARY KEY,
       reserved_json TEXT NOT NULL,
       committed_json TEXT NOT NULL,
@@ -114,10 +114,10 @@ export class PlatformBudgetDO extends DurableObject {
       control_json TEXT NOT NULL,
       next_fencing_token INTEGER NOT NULL DEFAULT 0,
       last_event_seq INTEGER NOT NULL DEFAULT 0,
-      last_event_hash TEXT NOT NULL DEFAULT '\${ZERO_HASH}',
+      last_event_hash TEXT NOT NULL DEFAULT '${ZERO_HASH}',
       updated_at_epoch INTEGER NOT NULL
-    )\`);
-    this.sql.exec(\`CREATE TABLE IF NOT EXISTS platform_budget_reservations (
+    )`);
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS platform_budget_reservations (
       reservation_id TEXT PRIMARY KEY,
       utc_day TEXT NOT NULL,
       idempotency_key TEXT NOT NULL UNIQUE,
@@ -140,10 +140,10 @@ export class PlatformBudgetDO extends DurableObject {
       outcome TEXT,
       evidence_hash TEXT,
       settled_at_epoch INTEGER
-    )\`);
-    this.sql.exec(\`CREATE INDEX IF NOT EXISTS platform_budget_reservations_day
-      ON platform_budget_reservations(utc_day, created_at_epoch)\`);
-    this.sql.exec(\`CREATE TABLE IF NOT EXISTS platform_budget_events (
+    )`);
+    this.sql.exec(`CREATE INDEX IF NOT EXISTS platform_budget_reservations_day
+      ON platform_budget_reservations(utc_day, created_at_epoch)`);
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS platform_budget_events (
       utc_day TEXT NOT NULL,
       sequence INTEGER NOT NULL,
       event_type TEXT NOT NULL,
@@ -152,13 +152,13 @@ export class PlatformBudgetDO extends DurableObject {
       event_hash TEXT NOT NULL,
       created_at_epoch INTEGER NOT NULL,
       PRIMARY KEY (utc_day, sequence)
-    )\`);
-    this.sql.exec(\`CREATE TABLE IF NOT EXISTS platform_budget_nonces (
+    )`);
+    this.sql.exec(`CREATE TABLE IF NOT EXISTS platform_budget_nonces (
       caller_id TEXT NOT NULL,
       nonce TEXT NOT NULL,
       expires_at_epoch INTEGER NOT NULL,
       PRIMARY KEY (caller_id, nonce)
-    )\`);
+    )`);
   }
 
   #testMode() { return this.env?.NEXUS_PLATFORM_BUDGET_TEST_MODE === "true"; }
@@ -377,12 +377,12 @@ export class PlatformBudgetDO extends DurableObject {
         json(reserved), fencingToken, day
       );
       this.sql.exec(
-        \`INSERT INTO platform_budget_reservations (
+        `INSERT INTO platform_budget_reservations (
           reservation_id,utc_day,idempotency_key,request_fingerprint,caller_id,
           project_id,repository,workflow_run_id,task_id,phase_id,execution_id,
           operation_id,costs_json,status,created_at_epoch,expires_at_epoch,
           hard_deadline_epoch,fencing_token,lease_version
-        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)\`,
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         reservationId, day, identity.idempotencyKey, fingerprint, callerId,
         identity.projectId, identity.repository, identity.workflowRunId,
         identity.taskId, identity.phaseId, identity.executionId, identity.operationId,
