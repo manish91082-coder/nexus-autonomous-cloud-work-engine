@@ -9,6 +9,7 @@ const swarmPrimaryTestSecret = "swarm-primary-test-secret-0123456789abcdef";
 const swarmSecondaryTestSecret = "swarm-secondary-test-secret-0123456789abcdef";
 const swarmDispatcherSecret = "swarm-dispatcher-test-secret-0123456789abcdef";
 const dispatcherIngressSecret = "dispatcher-ingress-test-secret-0123456789abcdef";
+const platformDispatcherSecret = "platform-dispatcher-test-secret-0123456789abcdef";
 const phase59_56ProjectASecret = "p59-56-project-a-test-secret-0123456789abcdef";
 const phase59_56ProjectBSecret = "p59-56-project-b-test-secret-0123456789abcdef";
 const sharedQuotaNamespace = {
@@ -19,6 +20,11 @@ const sharedQuotaNamespace = {
 const sharedSwarmRunNamespace = {
   className: "SwarmRunDO",
   scriptName: "p10cr-swarm-run-host",
+  useSQLite: true
+};
+const sharedPlatformBudgetNamespace = {
+  className: "PlatformBudgetDO",
+  scriptName: "p10cr-platform-budget-host",
   useSQLite: true
 };
 
@@ -33,11 +39,15 @@ export default defineConfig({
           NEXUS_QUOTA_CALLER_SECRET: primaryTestSecret,
           NEXUS_SWARM_RUN_ENABLED: "true",
           NEXUS_SWARM_RUN_CALLER_ID: "primary",
-          NEXUS_SWARM_RUN_CALLER_SECRET: swarmPrimaryTestSecret
+          NEXUS_SWARM_RUN_CALLER_SECRET: swarmPrimaryTestSecret,
+          NEXUS_PLATFORM_BUDGET_ENABLED: "true",
+          NEXUS_PLATFORM_BUDGET_CALLER_ID: "dispatcher",
+          NEXUS_PLATFORM_BUDGET_CALLER_SECRET: platformDispatcherSecret
         },
         durableObjects: {
           QUOTA_LEDGER: sharedQuotaNamespace,
-          SWARM_RUNS: sharedSwarmRunNamespace
+          SWARM_RUNS: sharedSwarmRunNamespace,
+          PLATFORM_BUDGET: sharedPlatformBudgetNamespace
         },
         serviceBindings: {
           SECOND_CALLER: "p10cr-secondary-caller",
@@ -323,22 +333,41 @@ export default defineConfig({
             durableObjects: { QUOTA_LEDGER: sharedQuotaNamespace }
           },
           {
+            name: "p10cr-platform-budget-host",
+            rootPath: "../",
+            modules: [
+              { type: "ESModule", path: "./platform-budget-host.mjs" },
+              { type: "ESModule", path: "./platform-budget-do.mjs" }
+            ],
+            bindings: {
+              NEXUS_PLATFORM_BUDGET_ENABLED: "true",
+              NEXUS_PLATFORM_BUDGET_TEST_MODE: "true",
+              NEXUS_PLATFORM_BUDGET_CALLER_KEYS: JSON.stringify({ dispatcher: platformDispatcherSecret }),
+              NEXUS_PLATFORM_BUDGET_CALLER_POLICIES: JSON.stringify({ dispatcher: ["reserve", "heartbeat", "settle", "snapshot"] })
+            },
+            durableObjects: { PLATFORM_BUDGET: sharedPlatformBudgetNamespace }
+          },
+          {
             name: "p10cr-mission-dispatcher-shadow",
             rootPath: "../",
             modules: [
               { type: "ESModule", path: "./mission-dispatcher-shadow-worker.mjs" },
               { type: "ESModule", path: "./mission-dispatcher-shadow.mjs" },
               { type: "ESModule", path: "./specialist-graph.mjs" },
-              { type: "ESModule", path: "./swarm-run-rpc-client.mjs" }
+              { type: "ESModule", path: "./swarm-run-rpc-client.mjs" },
+              { type: "ESModule", path: "./platform-budget-rpc-client.mjs" }
             ],
             bindings: {
               NEXUS_MISSION_SHADOW_ENABLED: "true",
               NEXUS_DISPATCHER_INGRESS_SECRET: dispatcherIngressSecret,
               NEXUS_SWARM_RUN_CALLER_ID: "dispatcher",
               NEXUS_SWARM_RUN_CALLER_SECRET: swarmDispatcherSecret,
+              NEXUS_PLATFORM_BUDGET_ENABLED: "true",
+              NEXUS_PLATFORM_BUDGET_CALLER_ID: "dispatcher",
+              NEXUS_PLATFORM_BUDGET_CALLER_SECRET: platformDispatcherSecret,
               NEXUS_SHADOW_WORKER_ID: "p10cr-mission-dispatcher"
             },
-            durableObjects: { SWARM_RUNS: sharedSwarmRunNamespace }
+            durableObjects: { SWARM_RUNS: sharedSwarmRunNamespace, PLATFORM_BUDGET: sharedPlatformBudgetNamespace }
           },
         ]
       }
