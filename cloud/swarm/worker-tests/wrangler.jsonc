@@ -13,6 +13,11 @@
         "name": "SWARM_RUNS",
         "class_name": "SwarmRunDO",
         "script_name": "p10cr-swarm-run-host"
+      },
+      {
+        "name": "PLATFORM_BUDGET",
+        "class_name": "PlatformBudgetDO",
+        "script_name": "p10cr-platform-budget-host"
       }
     ]
   }

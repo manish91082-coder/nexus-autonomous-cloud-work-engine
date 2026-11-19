@@ -3,6 +3,7 @@ import { env } from "cloudflare:workers";
 import { evictDurableObject } from "cloudflare:test";
 import { createSignedRequest } from "./quota-auth-test-helper.mjs";
 import { dispatchMissionShadow } from "../mission-dispatcher-shadow.mjs";
+import { createPlatformBudgetRpc } from "../platform-budget-rpc-client.mjs";
 import { runDeterministicSpecialistGraph } from "../specialist-graph.mjs";
 
 const dispatcherSecret = "swarm-dispatcher-test-secret-0123456789abcdef";
@@ -13,6 +14,7 @@ const callerEnv = {
   primary: { NEXUS_QUOTA_CALLER_ID: "primary", NEXUS_QUOTA_CALLER_SECRET: primarySecret }
 };
 function runStub() { return env.SWARM_RUNS.get(env.SWARM_RUNS.idFromName("P10CR-project-cell")); }
+function budgetRpc() { return createPlatformBudgetRpc(env.PLATFORM_BUDGET, env); }
 async function rpc(stub, action, input, caller = "dispatcher") {
   const request = await createSignedRequest(callerEnv[caller], action, input, { nonce: crypto.randomUUID() });
   const response = await stub.fetch(request);
@@ -104,7 +106,7 @@ describe("Phase 59.58 durable mission dispatcher + specialist graph", () => {
     let oldRun = null;
     let firstGraphCalls = 0;
     await expect(dispatchMissionShadow({
-      rpc: (action, input) => rpc(stub, action, input),
+      rpc: (action, input) => rpc(stub, action, input), budgetRpc: budgetRpc(),
       taskId: id, workerId: "p59-58-old-worker", payload, leaseSeconds: 1,
       specialistGraph: input => {
         firstGraphCalls += 1;
@@ -113,7 +115,9 @@ describe("Phase 59.58 durable mission dispatcher + specialist graph", () => {
       testHooks: {
         afterGraphCheckpoint: async identity => {
           oldRun = identity;
-          throw new Error("SIMULATED_PROCESS_TERMINATION_AFTER_CHECKPOINT");
+          const error = new Error("SIMULATED_PROCESS_TERMINATION_AFTER_CHECKPOINT");
+          error.simulatedProcessCrash = true;
+          throw error;
         }
       }
     })).rejects.toThrow("SIMULATED_PROCESS_TERMINATION_AFTER_CHECKPOINT");
@@ -123,7 +127,7 @@ describe("Phase 59.58 durable mission dispatcher + specialist graph", () => {
     await new Promise(resolve => setTimeout(resolve, 1200));
     let resumedGraphCalls = 0;
     const resumed = await dispatchMissionShadow({
-      rpc: (action, input) => rpc(stub, action, input),
+      rpc: (action, input) => rpc(stub, action, input), budgetRpc: budgetRpc(),
       taskId: id, workerId: "p59-58-recovery-worker", payload, leaseSeconds: 60,
       specialistGraph: input => {
         resumedGraphCalls += 1;

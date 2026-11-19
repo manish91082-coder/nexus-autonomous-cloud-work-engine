@@ -63,3 +63,29 @@ The owner should verify the current account dashboard and official terms at the 
 ## Additional prerequisite before any deployment
 
 The current Phase59.56 quota ledger is scoped to a GitHub App installation and is not the Cloudflare account-wide Free-plan usage arbiter. Phase59.60 must first implement and test a separate account-scope platform budget object for P10CR. The 5% caps in this packet are proposed internal guardrails only until that implementation passes. Do not deploy the Worker or begin the soak before the account-scope budget is committed, tested and wired into every P10CR worker path.
+
+
+## Phase59.61 — dispatcher budget binding and settlement prerequisite (19-Nov-2026)
+
+The P59-003 shadow dispatcher now requires a separate `PLATFORM_BUDGET` Durable Object namespace in addition to `SWARM_RUNS`. A missing/disabled budget binding returns `WAITING_FOR_OWNER_CONFIGURATION`; the dispatcher does not register or claim work without a budget reservation.
+
+The tested shadow path:
+1. reserves the server-owned resource vector for `P10CR/P59-003/P59.61` before task registration or claim;
+2. derives a stable execution identity from the task ID, payload hash and policy hash so retries across workflow runs reuse the same reservation;
+3. renews the budget lease before the durable claim;
+4. writes the specialist result checkpoint and durable completion;
+5. reads back the final task record and event-chain validity;
+6. settles the budget reservation only after that readback;
+7. reconciles an ambiguous settlement acknowledgement by re-reading the idempotent reservation; uncertain execution is never released or automatically retried.
+
+The dispatcher identity is restricted to reserve, heartbeat, settle and snapshot. It cannot approve owner gates, write repository contents, publish, execute generated code, call an AI provider or move funds. The compute Worker has no publisher binding.
+
+Candidate evidence: draft PR #46, branch `phase59-61-budget-dispatcher-integration`. Final dedicated Workerd integration tests passed 4/4 and full swarm runtime regression passed 82/82 in run 44453046636. The tested PR head is `bd39391cab62eb69b24d5cf5ffc76248d625225d` and the Actions merge ref is `f0f97364a454a66fbf79fa3e49b73f07572d8e95`. No live Cloudflare account test or production deployment is implied.
+
+### Updated owner setup boundary
+
+After the owner independently verifies Workers Free eligibility and aggregate account usage, the owner may configure the existing SQLite-backed `P10CR-account-platform-budget-v1` namespace and bind it as `PLATFORM_BUDGET` to the P10CR dispatcher. The owner must set the budget RPC caller identity/secret directly in Cloudflare's secret store and preserve the dispatcher-only action allowlist. Do not copy secrets into GitHub source, Actions logs, artifacts or chat.
+
+The owner must verify that the budget namespace and every P10CR dispatcher instance use the same account-scope Durable Object namespace. If the account contains unaccounted workloads, if the plan is not Free, or if namespace sharing cannot be proven, stop. No paid fallback or account rotation.
+
+**No deployment, secret configuration, endpoint activation, terms acceptance, account change or spend has been performed.** The internal 5% resource caps and 80% stop thresholds remain proposed guardrails pending live owner dashboard verification.

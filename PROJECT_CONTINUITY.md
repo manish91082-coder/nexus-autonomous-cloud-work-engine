@@ -4768,3 +4768,41 @@ Date: 2026-11-17
 - Mission workflow now explicitly sets all AI approval flags false and watches the approval manifest/owner packet. AI safety tests passed 5/5 in Mission Worker #520/run 44451293770 on candidate SHA c2ef92ae6b7695d349d7f8b385caec1b874e38eb. Phase59.60 budget runtime passed 6/6 in run 44451300718 on the same SHA.
 - Owner packet: governance/P59-003_AI_INFERENCE_OWNER_APPROVAL_PACKET_2026-11-19.md. No credentials requested or stored. No provider calls, inference, billing, KYC, legal acceptance or money movement.
 - P59-003 remains sole active P0. P59-001 PAUSED; P59-002 BLOCKED. Next Phase59.61 integrates account-scope reservation/settlement into the shadow dispatcher, then provider-neutral gateway only after verified terms, zero-billing, quota and owner approval. Independent-host tests and 7/30-day soak remain pending.
+
+
+## PHASE 59.61 — ACCOUNT-SCOPE BUDGET INTEGRATED INTO DURABLE DISPATCHER (19-Nov-2026)
+
+- Canonical master remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`. Candidate branch `phase59-61-budget-dispatcher-integration`, draft PR #46 stacked on draft PR #45, which is stacked on draft PR #44. No merge or master write. PR #46 final tested code head `bd39391cab62eb69b24d5cf5ffc76248d625225d`; GitHub Actions PR merge ref tested `f0f97364a454a66fbf79fa3e49b73f07572d8e95`.
+- Mission priority remains P59-003 only. P59-003 is the sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No portfolio/source ranking, product discovery or unrelated project work.
+- Dispatcher now requires both `SWARM_RUNS` and `PLATFORM_BUDGET`. It reserves the fixed server-owned P10CR/P59-003/P59.61 resource vector before task registration/claim, derives a stable execution ID from task/payload/policy hashes, renews the budget lease before claim, and settles only after durable specialist checkpoint, completion and final event-chain/readback verification.
+- Duplicate deliveries reuse the same budget reservation and durable task identity. Ambiguous settlement acknowledgement is reconciled by idempotent reservation readback. Ambiguous execution outcomes are retained as UNCERTAIN and never automatically released. Budget exhaustion/unavailable budget blocks task registration.
+- Dispatcher budget identity is limited to reserve, heartbeat, settle and snapshot. It cannot approve owner gates. No publisher binding, repository write, generated-code execution, model inference, external provider, publication or payment capability is present.
+- Dedicated Phase59.61 CI run **44453046636** SUCCESS: 4/4 integration tests and 82/82 full swarm runtime regression. Exact tested PR merge ref `f0f97364a454a66fbf79fa3e49b73f07572d8e95`, based on PR head `bd39391cab62eb69b24d5cf5ffc76248d625225d`. The four dedicated cases cover reserve-before-register and exhaustion, checkpoint recovery after simulated process death, ambiguous settlement acknowledgement, and budget denial with no task registration.
+- Full regression breakdown: quota ledger 68/68; swarm-run ledger 6/6; Phase59.56 cross-repository quota 2/2; mission dispatcher 6/6. The legacy recovery test was updated to mark simulated hard process death explicitly; final exact PR run passes.
+- Failure history is retained in `research/PHASE_59_61_ACCOUNT_BUDGET_DISPATCHER_INTEGRATION_2026-11-19.md`: initial test namespace setup errors, dispatcher caller identity mismatch, and a legacy simulated-crash marker mismatch were corrected; no failure is counted as a pass.
+- Material code/test commits include `36c4fb5`, `db5c399`, `7a507e1`, `45d58ee`, `e56a953`, `fd94dd2`, `4d021a2`, `69efe52`, `c20d279`, `4f79db3`, `23d008f`, `8399e47`, `14ce8d6`, `bd39391`; owner packet update `fd2be94`; technical report `529bead`. PR #46 remains draft/unmerged.
+- Current master Worker #518 run 44421599703 and Guard #324 run 44287999809 are SUCCESS on master HEAD. Phase59.60 budget run 44451450193 is SUCCESS 6/6; candidate Worker #521 and Guard #326 are SUCCESS on Phase59.60 branch head.
+- Remaining limits: Workerd shared namespace is not physical independent-host proof; Cloudflare account plan and aggregate usage are owner-unverified; no live deployment; GitHub App not installed; branch ruleset unverified; dependency lockfile/exact pins outstanding; 7/30-day soak not started. npm CI emitted install-script warnings for esbuild and workerd and there is still no lockfile. Keep this as a pre-production supply-chain blocker.
+- No KYC, legal acceptance, public release, billing, payment, signing, private-key access, money movement or other-project mutation. AI inference disabled; production OFF; spend ₹0; verified receipts ₹0; revenue ledger unchanged.
+- Next Phase59.62: prepare the independent-host test harness and owner preflight; pin the Cloudflare/Vitest test dependencies and add a lockfile. Keep live endpoint tests disabled until the owner verifies an existing Workers Free account, aggregate usage and the shared P10CR Durable Object namespace. Then run four independent standard GitHub-hosted runners, prove shared lease/quota/fencing behavior, and only after that start the bounded 7-day and 30-day soak. P59-001 remains PAUSED and P59-002 BLOCKED until all P59-003 acceptance gates pass.
+
+
+## PHASE 59.61 FINAL FETCH-BACK — CONTROL REGISTRY LINKS AND BRANCH STATE (19-Nov-2026)
+
+- Final Phase59.61 report: `research/PHASE_59_61_ACCOUNT_BUDGET_DISPATCHER_INTEGRATION_2026-11-19.md`; final owner packet: `governance/P59-003_CLOUDFLARE_WORKERS_FREE_PLAN_OWNER_ACTION_PACKET_2026-11-18.md`.
+- Final owner packet commit `1845767ee1f2b092f41b00ab9d0cbae0e1f4224f`; report reconciliation append `5c988a1d90a3b58340ff73665b08203eb8b36198`; final queue evidence-link commit `2322986d5ef0bd4f21ce45dc203566de2627b92b`; final mission-state evidence-link commit `ef31797ad975449144d69850162ae8f1e31cd720`; final federation evidence-link commit `d5bdaead4003b62e0a36341cced712a5c7b48a1a`.
+- Branch head before this continuity append: `d5bdaead4003b62e0a36341cced712a5c7b48a1a`. PR #46 head was updated by documentation/control commits only; executable/test code remains tested at `bd39391cab62eb69b24d5cf5ffc76248d625225d`, exact Actions merge ref `f0f97364a454a66fbf79fa3e49b73f07572d8e95`.
+- Fetch-back confirms `P59-003=IN_PROGRESS` and is the only active P0; `P59-001=PAUSED`; `P59-002=BLOCKED`. Master HEAD remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`. No merge, master write or other-project mutation.
+- PR #46 remains draft/unmerged, base `phase59-60-account-scope-platform-budget`; PR #45 and #44 remain unmerged parents. Production OFF, AI inference OFF, spend ₹0, verified receipts ₹0.
+- Next engineering task is Phase59.62: independent-host harness plus owner preflight and dependency lockfile/exact pins. Live endpoint testing remains disabled until owner verifies the existing Workers Free plan, aggregate account usage and shared P10CR namespace.
+
+
+## PHASE 59.61 FINAL CANDIDATE-HEAD CI + WORKER PROOF (19-Nov-2026)
+
+- Final candidate branch head before this append: `f5a10cf443622541bfab02c201a2963125845613`. Phase59.61 workflow run #44453766375 SUCCESS on exact PR merge ref `d50d8731f24d961878cb0856c8faef10809669ef`, built from branch head `7c2bea47e82ec5ecfcd769ff1eec996e51563cc2` and base `3a57698702ed173831d82ea78f3972f2c08b32c2`.
+- Final candidate CI: dedicated integration 4/4 PASS; full swarm runtime regression 82/82 PASS.
+- Mission Worker #525 / run 44453729640 SUCCESS: `POLL_OK`, selected P59-003, deterministic tests passed, AI executor remained `WAITING_FOR_OWNER_CONFIGURATION`; no inference request.
+- Continuity Guard #332 / run 44453762554 SUCCESS.
+- Master remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`; master Worker #518 / run 44421599703 and Guard #324 / run 44287999809 remain SUCCESS.
+- Final control commits: queue `c59eeb069383c911089eedb47d3c9b82ea92e647`; mission state `7978896c4581353cdcc479ee235888350e6ebe6c`; federation `f5a10cf443622541bfab02c201a2963125845613`.
+- This is still candidate-branch Workerd CI, not independent physical-host or live Cloudflare proof. No deployment, owner account verification, AI inference, paid service, KYC, terms acceptance, publication or money movement. P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.
