@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "status": "DISABLED",
+  "provider": null,
+  "model_id": null,
+  "provider_terms": {
+    "status": "UNVERIFIED",
+    "url": null,
+    "sha256": null,
+    "verified_at_utc": null
+  },
+  "model_data_terms": {
+    "status": "UNVERIFIED",
+    "url": null,
+    "sha256": null,
+    "verified_at_utc": null,
+    "training_use_policy": null
+  },
+  "zero_billing": {
+    "status": "UNVERIFIED",
+    "url": null,
+    "sha256": null,
+    "verified_at_utc": null,
+    "billing_mode": null,
+    "paid_fallback": false,
+    "hard_stop_on_paid_or_unknown": true
+  },
+  "quota": {
+    "status": "UNVERIFIED",
+    "scope": null,
+    "arbiter_integration": "NOT_INTEGRATED",
+    "url": null,
+    "sha256": null,
+    "verified_at_utc": null,
+    "daily_call_cap": 0,
+    "min_interval_seconds": 1800,
+    "max_output_tokens": 0,
+    "hard_stop_on_paid_or_unknown": true,
+    "paid_fallback": false
+  },
+  "gateway": {
+    "status": "UNVERIFIED",
+    "endpoint": null,
+    "url": null,
+    "sha256": null,
+    "verified_at_utc": null,
+    "provider_allowlist": [],
+    "paid_fallback": false
+  },
+  "owner_approval": {
+    "approved": false,
+    "approved_at_utc": null,
+    "approval_reference": null
+  },
+  "note": "No provider/model is approved. Keep DISABLED until P59-003 dispatcher/global-quota and provider-neutral gateway gates pass."
+}
