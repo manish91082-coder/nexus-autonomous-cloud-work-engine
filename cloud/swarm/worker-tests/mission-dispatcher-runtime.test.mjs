@@ -115,7 +115,9 @@ describe("Phase 59.58 durable mission dispatcher + specialist graph", () => {
       testHooks: {
         afterGraphCheckpoint: async identity => {
           oldRun = identity;
-          throw new Error("SIMULATED_PROCESS_TERMINATION_AFTER_CHECKPOINT");
+          const error = new Error("SIMULATED_PROCESS_TERMINATION_AFTER_CHECKPOINT");
+          error.simulatedProcessCrash = true;
+          throw error;
         }
       }
     })).rejects.toThrow("SIMULATED_PROCESS_TERMINATION_AFTER_CHECKPOINT");
