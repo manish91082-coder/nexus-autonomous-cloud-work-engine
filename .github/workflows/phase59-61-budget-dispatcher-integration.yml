@@ -12,9 +12,6 @@ on:
       - 'cloud/swarm/worker-tests/vitest.config.mjs'
       - 'cloud/swarm/worker-tests/wrangler.jsonc'
       - 'cloud/swarm/worker-tests/mission-dispatcher-runtime.test.mjs'
-      - 'cloud/swarm/worker-tests/vitest.config.mjs'
-      - 'cloud/swarm/worker-tests/wrangler.jsonc'
-      - 'cloud/swarm/worker-tests/mission-dispatcher-runtime.test.mjs'
       - '.github/workflows/phase59-61-budget-dispatcher-integration.yml'
   pull_request:
     branches: [phase59-60-account-scope-platform-budget]
@@ -24,6 +21,9 @@ on:
       - 'cloud/swarm/mission-dispatcher-shadow.mjs'
       - 'cloud/swarm/mission-dispatcher-shadow-worker.mjs'
       - 'cloud/swarm/worker-tests/mission-dispatcher-budget*'
+      - 'cloud/swarm/worker-tests/vitest.config.mjs'
+      - 'cloud/swarm/worker-tests/wrangler.jsonc'
+      - 'cloud/swarm/worker-tests/mission-dispatcher-runtime.test.mjs'
       - '.github/workflows/phase59-61-budget-dispatcher-integration.yml'
 
 permissions:
