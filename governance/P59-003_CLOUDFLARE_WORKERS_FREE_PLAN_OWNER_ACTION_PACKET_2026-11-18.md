@@ -80,7 +80,7 @@ The tested shadow path:
 
 The dispatcher identity is restricted to reserve, heartbeat, settle and snapshot. It cannot approve owner gates, write repository contents, publish, execute generated code, call an AI provider or move funds. The compute Worker has no publisher binding.
 
-Candidate evidence: draft PR #46, branch `phase59-61-budget-dispatcher-integration`. Dedicated Workerd integration tests passed 4/4 on code head `69efe52f7ae16403c2ae28efb5f2da285b2e9ee8` (run 44452863378). Full regression on the final branch head is a separate required check; no live Cloudflare account test or production deployment is implied.
+Candidate evidence: draft PR #46, branch `phase59-61-budget-dispatcher-integration`. Final dedicated Workerd integration tests passed 4/4 and full swarm runtime regression passed 82/82 in run 44453046636. The tested PR head is `bd39391cab62eb69b24d5cf5ffc76248d625225d` and the Actions merge ref is `f0f97364a454a66fbf79fa3e49b73f07572d8e95`. No live Cloudflare account test or production deployment is implied.
 
 ### Updated owner setup boundary
 
