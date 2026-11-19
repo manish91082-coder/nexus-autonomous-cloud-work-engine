@@ -1,0 +1,17 @@
+{
+  "name": "p10cr-platform-budget-runtime-tests",
+  "main": "./platform-budget-host.mjs",
+  "compatibility_date": "2026-11-18",
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "PLATFORM_BUDGET",
+        "class_name": "PlatformBudgetDO",
+        "script_name": "p10cr-platform-budget-host"
+      }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["PlatformBudgetDO"] }
+  ]
+}

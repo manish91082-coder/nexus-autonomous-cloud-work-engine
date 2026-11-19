@@ -1,0 +1,41 @@
+name: Phase 59.60 Account-Scope Platform Budget Runtime Tests
+
+on:
+  push:
+    branches: [phase59-60-account-scope-platform-budget]
+    paths:
+      - 'cloud/swarm/platform-budget-do.mjs'
+      - 'cloud/swarm/platform-budget-host.mjs'
+      - 'cloud/swarm/platform-budget-rpc-client.mjs'
+      - 'cloud/swarm/worker-tests/platform-budget-*'
+      - '.github/workflows/phase59-60-account-scope-platform-budget.yml'
+  pull_request:
+    branches: [phase59-58-durable-dispatcher-shadow-integration]
+    paths:
+      - 'cloud/swarm/platform-budget-do.mjs'
+      - 'cloud/swarm/platform-budget-host.mjs'
+      - 'cloud/swarm/platform-budget-rpc-client.mjs'
+      - 'cloud/swarm/worker-tests/platform-budget-*'
+      - '.github/workflows/phase59-60-account-scope-platform-budget.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-60-account-scope-platform-budget
+  cancel-in-progress: false
+
+jobs:
+  account-budget-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: cloud/swarm/worker-tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install isolated test dependencies
+        run: npm install --no-audit --no-fund
+      - name: Run account-scope platform budget tests
+        run: npx vitest run --config platform-budget.vitest.config.mjs
