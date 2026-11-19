@@ -44,7 +44,7 @@ export default defineConfig({
               NEXUS_PLATFORM_BUDGET_ENABLED: "true",
               NEXUS_PLATFORM_BUDGET_TEST_MODE: "true",
               NEXUS_PLATFORM_BUDGET_TEST_CAPS: JSON.stringify(testCaps),
-              NEXUS_PLATFORM_BUDGET_TEST_LEASE_SECONDS: "120",
+              NEXUS_PLATFORM_BUDGET_TEST_LEASE_SECONDS: "60",
               NEXUS_PLATFORM_BUDGET_CALLER_KEYS: JSON.stringify({
                 caller_a: callerASecret,
                 caller_b: callerBSecret

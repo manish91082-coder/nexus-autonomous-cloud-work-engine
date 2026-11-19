@@ -359,8 +359,8 @@ export class PlatformBudgetDO extends DurableObject {
     const fencingToken = current.next_fencing_token + 1;
     const now = Math.floor(Date.now() / 1000);
     const leaseSeconds = this.#testMode()
-      ? safeInteger(Number(this.env?.NEXUS_PLATFORM_BUDGET_TEST_LEASE_SECONDS || 120), "test_lease_seconds", 1, 120)
-      : 120;
+      ? safeInteger(Number(this.env?.NEXUS_PLATFORM_BUDGET_TEST_LEASE_SECONDS || 60), "test_lease_seconds", 1, 60)
+      : 60;
     const expiresAt = now + leaseSeconds;
     const hardDeadline = now + 300;
 
@@ -420,7 +420,11 @@ export class PlatformBudgetDO extends DurableObject {
     const fencingToken = safeInteger(input?.fencingToken, "fencing_token", 1);
     const leaseVersion = safeInteger(input?.leaseVersion, "lease_version", 1);
     const row = this.sql.exec("SELECT * FROM platform_budget_reservations WHERE reservation_id=?", reservationId).toArray()[0];
-    if (!row || row.utc_day !== day || row.caller_id !== callerId) return { status: "RESERVATION_NOT_FOUND" };
+    if (!row || row.caller_id !== callerId) return { status: "RESERVATION_NOT_FOUND" };
+    if (row.utc_day !== day) {
+      if (row.status === "RESERVED") return await this.#markExpired(row, row.utc_day, now);
+      return { status: "RESERVATION_NOT_ACTIVE", reservationStatus: row.status };
+    }
     if (row.status !== "RESERVED") return { status: "RESERVATION_NOT_ACTIVE", reservationStatus: row.status };
     if (row.fencing_token !== fencingToken || row.lease_version !== leaseVersion) return { status: "STALE_FENCE_REJECTED" };
     if (row.expires_at_epoch <= now) return await this.#markExpired(row, day, now);
@@ -448,7 +452,11 @@ export class PlatformBudgetDO extends DurableObject {
     if (!["COMPLETED", "FAILED", "UNCERTAIN"].includes(outcome)) throw new TypeError("SETTLEMENT_OUTCOME_INVALID");
     if (typeof evidenceHash !== "string" || !HASH.test(evidenceHash)) throw new TypeError("SETTLEMENT_EVIDENCE_HASH_INVALID");
     const row = this.sql.exec("SELECT * FROM platform_budget_reservations WHERE reservation_id=?", reservationId).toArray()[0];
-    if (!row || row.utc_day !== day || row.caller_id !== callerId) return { status: "RESERVATION_NOT_FOUND" };
+    if (!row || row.caller_id !== callerId) return { status: "RESERVATION_NOT_FOUND" };
+    if (row.utc_day !== day) {
+      if (row.status === "RESERVED") return await this.#markExpired(row, row.utc_day, now);
+      return { status: "RESERVATION_NOT_ACTIVE", reservationStatus: row.status };
+    }
     if (row.status === "SETTLED" || row.status === "UNCERTAIN") {
       if (row.outcome === outcome && row.evidence_hash === evidenceHash) {
         return { status: "SETTLEMENT_ALREADY_APPLIED", reservationId, reservationStatus: row.status };
@@ -501,11 +509,18 @@ export class PlatformBudgetDO extends DurableObject {
     }
     if (input?.action === "expire") {
       const reservationId = validId(input.reservationId, "reservation_id");
-      this.sql.exec(
-        "UPDATE platform_budget_reservations SET expires_at_epoch=? WHERE reservation_id=? AND utc_day=? AND status='RESERVED'",
-        now - 1, reservationId, day
-      );
-      return { status: "TEST_EXPIRED", reservationId };
+      const row = this.sql.exec(
+        "SELECT * FROM platform_budget_reservations WHERE reservation_id=? AND utc_day=? AND status='RESERVED'",
+        reservationId, day
+      ).toArray()[0];
+      if (!row) return { status: "TEST_RESERVATION_NOT_FOUND" };
+      return await this.#commitEvent(day, "TEST_RESERVATION_EXPIRED", { reservationId }, () => {
+        this.sql.exec(
+          "UPDATE platform_budget_reservations SET expires_at_epoch=? WHERE reservation_id=? AND utc_day=? AND status='RESERVED'",
+          now - 1, reservationId, day
+        );
+        return { status: "TEST_EXPIRED", reservationId };
+      });
     }
     return { status: "REJECTED", reason: "TEST_ACTION_UNKNOWN" };
   }
