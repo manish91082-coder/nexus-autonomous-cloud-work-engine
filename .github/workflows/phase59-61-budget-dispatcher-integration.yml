@@ -9,6 +9,12 @@ on:
       - 'cloud/swarm/mission-dispatcher-shadow.mjs'
       - 'cloud/swarm/mission-dispatcher-shadow-worker.mjs'
       - 'cloud/swarm/worker-tests/mission-dispatcher-budget*'
+      - 'cloud/swarm/worker-tests/vitest.config.mjs'
+      - 'cloud/swarm/worker-tests/wrangler.jsonc'
+      - 'cloud/swarm/worker-tests/mission-dispatcher-runtime.test.mjs'
+      - 'cloud/swarm/worker-tests/vitest.config.mjs'
+      - 'cloud/swarm/worker-tests/wrangler.jsonc'
+      - 'cloud/swarm/worker-tests/mission-dispatcher-runtime.test.mjs'
       - '.github/workflows/phase59-61-budget-dispatcher-integration.yml'
   pull_request:
     branches: [phase59-60-account-scope-platform-budget]
@@ -43,3 +49,5 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Run Phase59.61 integration tests
         run: npx vitest run --config mission-dispatcher-budget.vitest.config.mjs mission-dispatcher-budget-integration.test.mjs
+      - name: Run full swarm runtime regression
+        run: npx vitest run --config vitest.config.mjs
