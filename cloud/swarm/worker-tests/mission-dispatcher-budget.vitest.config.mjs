@@ -26,8 +26,8 @@ export default defineConfig({
       miniflare: {
         bindings: {
           NEXUS_SWARM_RUN_ENABLED: "true",
-          NEXUS_SWARM_RUN_CALLER_ID: "primary",
-          NEXUS_SWARM_RUN_CALLER_SECRET: swarmPrimarySecret,
+          NEXUS_SWARM_RUN_CALLER_ID: "dispatcher",
+          NEXUS_SWARM_RUN_CALLER_SECRET: swarmDispatcherSecret,
           NEXUS_PLATFORM_BUDGET_ENABLED: "true",
           NEXUS_PLATFORM_BUDGET_CALLER_ID: "primary",
           NEXUS_PLATFORM_BUDGET_CALLER_SECRET: platformPrimarySecret
