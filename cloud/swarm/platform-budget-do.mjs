@@ -211,8 +211,7 @@ export class PlatformBudgetDO extends DurableObject {
     const previousHash = before.last_event_hash || ZERO_HASH;
     const eventHash = await sha256(previousHash + "\n" + eventJson);
     const now = Math.floor(Date.now() / 1000);
-    this.sql.exec("BEGIN IMMEDIATE");
-    try {
+    return this.ctx.storage.transactionSync(() => {
       const current = this.#readDay(day);
       if (current.last_event_seq !== before.last_event_seq || current.last_event_hash !== previousHash) {
         throw new Error("BUDGET_EVENT_TAIL_CHANGED");
@@ -226,12 +225,8 @@ export class PlatformBudgetDO extends DurableObject {
         "UPDATE platform_budget_daily SET last_event_seq=?,last_event_hash=?,updated_at_epoch=? WHERE utc_day=?",
         sequence, eventHash, now, day
       );
-      this.sql.exec("COMMIT");
       return result;
-    } catch (error) {
-      try { this.sql.exec("ROLLBACK"); } catch {}
-      throw error;
-    }
+    });
   }
 
   async #chargeControl(day, callerId, action) {
@@ -287,16 +282,18 @@ export class PlatformBudgetDO extends DurableObject {
   }
 
   #consumeNonce(callerId, nonce, now) {
-    this.sql.exec("DELETE FROM platform_budget_nonces WHERE expires_at_epoch < ?", now);
-    try {
-      this.sql.exec(
-        "INSERT INTO platform_budget_nonces (caller_id,nonce,expires_at_epoch) VALUES (?,?,?)",
-        callerId, nonce, now + 120
-      );
-      return true;
-    } catch {
-      return false;
-    }
+    return this.ctx.storage.transactionSync(() => {
+      this.sql.exec("DELETE FROM platform_budget_nonces WHERE expires_at_epoch < ?", now);
+      try {
+        this.sql.exec(
+          "INSERT INTO platform_budget_nonces (caller_id,nonce,expires_at_epoch) VALUES (?,?,?)",
+          callerId, nonce, now + 120
+        );
+        return true;
+      } catch {
+        return false;
+      }
+    });
   }
 
   #validateEnvelope(input) {
@@ -493,17 +490,12 @@ export class PlatformBudgetDO extends DurableObject {
   async #testAction(input, day, now) {
     if (!this.#testMode()) return { status: "REJECTED", reason: "TEST_ACTION_DISABLED" };
     if (input?.action === "reset") {
-      this.sql.exec("BEGIN IMMEDIATE");
-      try {
+      this.ctx.storage.transactionSync(() => {
         this.sql.exec("DELETE FROM platform_budget_reservations");
         this.sql.exec("DELETE FROM platform_budget_events");
         this.sql.exec("DELETE FROM platform_budget_nonces");
         this.sql.exec("DELETE FROM platform_budget_daily");
-        this.sql.exec("COMMIT");
-      } catch (error) {
-        try { this.sql.exec("ROLLBACK"); } catch {}
-        throw error;
-      }
+      });
       this.#ensureDay(day);
       return { status: "TEST_RESET" };
     }
