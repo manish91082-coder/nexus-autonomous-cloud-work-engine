@@ -21,6 +21,8 @@ on:
       - 'control/automation_queue.json'
       - 'control/mission_state.json'
       - 'AI_WORKER_SETUP.md'
+      - 'control/ai_inference_approval.json'
+      - 'governance/P59-003_AI_INFERENCE_OWNER_APPROVAL_PACKET_2026-11-19.md'
       - '.github/workflows/mission-autonomous-worker.yml'
   workflow_dispatch:
   schedule:
@@ -65,6 +67,11 @@ jobs:
         env:
           MISSION_AI_ENABLED: "false"
           MISSION_AI_ZERO_BILLING_CONFIRMED: "false"
+          MISSION_AI_PROVIDER_TERMS_REVIEWED: "false"
+          MISSION_AI_MODEL_DATA_TERMS_REVIEWED: "false"
+          MISSION_AI_GLOBAL_QUOTA_VERIFIED: "false"
+          MISSION_AI_OWNER_APPROVED: "false"
+          MISSION_AI_GLOBAL_QUOTA_DISPATCHER_VERIFIED: "false"
         run: python3 scripts/ai_task_executor.py
       - name: Preserve machine-readable worker evidence
         if: always()
