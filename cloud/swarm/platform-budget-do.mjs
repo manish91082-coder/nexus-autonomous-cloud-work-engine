@@ -298,7 +298,7 @@ export class PlatformBudgetDO extends DurableObject {
 
   #validateEnvelope(input) {
     if (!input || typeof input !== "object" || Array.isArray(input)) throw new TypeError("INPUT_OBJECT_REQUIRED");
-    if (input.projectId !== "P10CR" || input.taskId !== "P59-003" || input.phaseId !== "P59.60") {
+    if (input.projectId !== "P10CR" || input.taskId !== "P59-003" || !["P59.60", "P59.61"].includes(input.phaseId)) {
       throw new TypeError("PROJECT_TASK_PHASE_NOT_AUTHORIZED");
     }
     validId(input.workflowRunId, "workflow_run_id");
