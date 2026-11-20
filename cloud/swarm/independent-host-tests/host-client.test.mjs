@@ -119,7 +119,7 @@ test("classifier accepts only settled, read-back-verified deterministic outcomes
 
 test("runner name identity is non-empty, bounded and control-free", () => {
   assert.equal(validateRunnerName(" GitHub Actions 42 "), "GitHub Actions 42");
-  for (const value of ["", "   ", "x".repeat(257), "runner\\nname", null]) {
+  for (const value of ["", "   ", "x".repeat(257), "runner" + String.fromCharCode(10) + "name", null]) {
     assert.throws(() => validateRunnerName(value));
   }
 });
