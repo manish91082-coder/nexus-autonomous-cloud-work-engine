@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import { createHash, createHmac } from "node:crypto";
 import { buildHostTaskPayload, buildSignedRequest, classifyBudgetSnapshot, classifyDispatch, readBoundedResponseText, validateEndpoint, validateRunnerName } from "./host-client.mjs";
 
@@ -156,4 +157,15 @@ test("host task payload binds the validated runner name and bounded attempt inde
 test("response body reader enforces a streaming byte ceiling", async () => {
   assert.equal(await readBoundedResponseText(new Response("ok"), 2), "ok");
   await assert.rejects(() => readBoundedResponseText(new Response("x".repeat(17)), 16), /RESPONSE_TOO_LARGE/);
+});
+
+
+test("owner-gated workflow enforces Cloudflare host and job-scoped identity contract", () => {
+  const workflowUrl = new URL("../../../.github/workflows/phase59-62-independent-host-test.yml", import.meta.url);
+  const workflow = fs.readFileSync(workflowUrl, "utf8");
+  assert.match(workflow, /url\.hostname\.toLowerCase\(\)\.endsWith\("\.workers\.dev"\)/);
+  assert.match(workflow, /P59_62_RUNNER_NAME: \$\{\{ runner\.name \}\}/);
+  assert.match(workflow, /distinctJobScopedRunIdentities: 4/);
+  assert.match(workflow, /GLOBAL_CROSS_JOB_CROSS_HOST_QUOTA_PROOF=PASS/);
+  assert.doesNotMatch(workflow, /distinctWorkflowRunIdentities|runner\.id|\\\$\{\{/);
 });
