@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash, createHmac } from "node:crypto";
-import { buildSignedRequest, classifyDispatch, validateEndpoint } from "./host-client.mjs";
+import { buildSignedRequest, classifyBudgetSnapshot, classifyDispatch, validateEndpoint } from "./host-client.mjs";
 
 const endpoint = "https://p59-62-test.example.workers.dev/internal/shadow-dispatch";
 const secret = "p59-62-unit-test-ingress-secret-0123456789abcdef";
@@ -37,6 +37,46 @@ test("signed envelope binds task, payload and distinct workflow-run identity", (
   const expected = createHmac("sha256", secret).update(canonical).digest("base64");
   assert.equal(request.headers["x-nexus-dispatcher-signature"], expected);
   assert.equal(request.body.includes(secret), false);
+});
+
+test("snapshot endpoint is separately path-bound and HMAC signed", () => {
+  const snapshotPath = "/internal/shadow-budget-snapshot";
+  const snapshotEndpoint = "https://p59-62-test.example.workers.dev" + snapshotPath;
+  const request = buildSignedRequest({
+    endpoint: snapshotEndpoint, secret, taskId: "p59-62-snapshot",
+    taskType: "P59_003_BUDGET_SNAPSHOT", path: snapshotPath,
+    workflowRunId: "12345:aggregate", payload: {},
+    now: 1_800_000_000_000, nonce: "snapshot-nonce-123456789"
+  });
+  const body = JSON.parse(request.body);
+  assert.equal(body.taskType, "P59_003_BUDGET_SNAPSHOT");
+  const bodyHash = createHash("sha256").update(request.body).digest("hex");
+  const canonical = [
+    request.headers["x-nexus-dispatcher-timestamp"],
+    request.headers["x-nexus-dispatcher-nonce"],
+    "POST", snapshotPath, bodyHash
+  ].join("\\n");
+  const expected = createHmac("sha256", secret).update(canonical).digest("base64");
+  assert.equal(request.headers["x-nexus-dispatcher-signature"], expected);
+});
+
+test("budget snapshot classifier requires exact cap, no residual reservations and a valid event chain", () => {
+  const valid = {
+    httpStatus: 200,
+    body: {
+      status: "BUDGET_SNAPSHOT", committedDispatches: 8,
+      reservedDispatches: 0, uncertainDispatches: 0,
+      controlBudgetRpcRequests: 145, eventChainValid: true,
+      eventCount: 400, lastEventHash: "b".repeat(64)
+    }
+  };
+  assert.equal(classifyBudgetSnapshot(valid), "pass");
+  assert.equal(classifyBudgetSnapshot({
+    ...valid, body: { ...valid.body, uncertainDispatches: 1 }
+  }), "unexpected");
+  assert.equal(classifyBudgetSnapshot({
+    ...valid, body: { ...valid.body, eventChainValid: false }
+  }), "unexpected");
 });
 
 test("signed request rejects oversized payloads and unsafe run identities", () => {
