@@ -9,8 +9,9 @@
     "@cloudflare/vitest-plugin": "1.7.0",
     "vitest": "4.1.12"
   },
-  "packageManager": "npm@10.9.2",
+  "packageManager": "npm@11.6.3",
   "engines": {
-    "node": "22.16.x"
+    "node": "22.16.x",
+    "npm": "11.6.3"
   }
 }
