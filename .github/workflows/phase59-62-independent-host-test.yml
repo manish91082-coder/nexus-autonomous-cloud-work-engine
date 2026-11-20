@@ -1,0 +1,281 @@
+name: Phase 59.62 Independent-host global quota proof (owner gated)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_live_test:
+        description: "Confirm the owner packet is complete and the endpoint is test-only"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: p59-62-independent-host-proof
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      enabled: ${{ steps.gate.outputs.enabled }}
+    steps:
+      - name: Set up exact Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22.16.0
+      - id: gate
+        name: Verify owner gates without network access
+        env:
+          CONFIRM_LIVE_TEST: ${{ inputs.confirm_live_test }}
+          FREE_VERIFIED: ${{ vars.P59_003_CLOUDFLARE_FREE_VERIFIED }}
+          LIVE_TEST_APPROVED: ${{ vars.P59_003_LIVE_TEST_APPROVED }}
+          TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
+          TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
+        run: |
+          node --input-type=module <<'NODE'
+          const endpoint = process.env.TEST_ENDPOINT || "";
+          let validEndpoint = false;
+          try {
+            const url = new URL(endpoint);
+            validEndpoint = url.protocol === "https:" &&
+              !url.username && !url.password && !url.search && !url.hash &&
+              url.pathname === "/internal/shadow-dispatch";
+          } catch {}
+          const enabled = process.env.CONFIRM_LIVE_TEST === "true" &&
+            process.env.FREE_VERIFIED === "true" &&
+            process.env.LIVE_TEST_APPROVED === "true" &&
+            validEndpoint &&
+            (process.env.TEST_INGRESS_SECRET || "").length >= 32;
+          console.log("OWNER_GATE=" + (enabled ? "SATISFIED" : "NOT_SATISFIED"));
+          console.log("LIVE_NETWORK_CALLS=" + (enabled ? "DEFERRED_TO_FOUR_HOST_JOBS" : "ZERO"));
+          console.log("enabled=" + String(enabled));
+          require("node:fs").appendFileSync(process.env.GITHUB_OUTPUT, "enabled=" + String(enabled) + "\n");
+          NODE
+
+  seed:
+    needs: preflight
+    if: needs.preflight.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      seed_completed: ${{ steps.seed.outputs.seed_completed }}
+      seed_workflow_run_identity: ${{ steps.seed.outputs.seed_workflow_run_identity }}
+    steps:
+      - name: Checkout without persistent credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up exact Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22.16.0
+      - id: seed
+        name: Create one deterministic idempotency sentinel
+        env:
+          P59_62_MODE: seed
+          NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
+          NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
+        run: node cloud/swarm/independent-host-tests/host-client.mjs
+
+  host1:
+    needs: [preflight, seed]
+    if: needs.preflight.outputs.enabled == 'true' && needs.seed.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      completed: ${{ steps.host.outputs.completed }}
+      denied: ${{ steps.host.outputs.denied }}
+      duplicates: ${{ steps.host.outputs.duplicates }}
+      unexpected: ${{ steps.host.outputs.unexpected }}
+      runner_id: ${{ steps.host.outputs.runner_id }}
+      workflow_run_identity: ${{ steps.host.outputs.workflow_run_identity }}
+    steps:
+      - name: Checkout without persistent credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up exact Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22.16.0
+      - name: Verify host-client unit tests
+        run: node --test cloud/swarm/independent-host-tests/host-client.test.mjs
+      - id: host
+        name: Execute host 1 burst
+        env:
+          P59_62_MODE: host
+          P59_62_HOST_ID: runner1
+          P59_62_ATTEMPTS: "25"
+          NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
+          NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
+        run: node cloud/swarm/independent-host-tests/host-client.mjs
+
+  host2:
+    needs: [preflight, seed]
+    if: needs.preflight.outputs.enabled == 'true' && needs.seed.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      completed: ${{ steps.host.outputs.completed }}
+      denied: ${{ steps.host.outputs.denied }}
+      duplicates: ${{ steps.host.outputs.duplicates }}
+      unexpected: ${{ steps.host.outputs.unexpected }}
+      runner_id: ${{ steps.host.outputs.runner_id }}
+      workflow_run_identity: ${{ steps.host.outputs.workflow_run_identity }}
+    steps:
+      - name: Checkout without persistent credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up exact Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22.16.0
+      - name: Verify host-client unit tests
+        run: node --test cloud/swarm/independent-host-tests/host-client.test.mjs
+      - id: host
+        name: Execute host 2 burst
+        env:
+          P59_62_MODE: host
+          P59_62_HOST_ID: runner2
+          P59_62_ATTEMPTS: "25"
+          NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
+          NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
+        run: node cloud/swarm/independent-host-tests/host-client.mjs
+
+  host3:
+    needs: [preflight, seed]
+    if: needs.preflight.outputs.enabled == 'true' && needs.seed.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      completed: ${{ steps.host.outputs.completed }}
+      denied: ${{ steps.host.outputs.denied }}
+      duplicates: ${{ steps.host.outputs.duplicates }}
+      unexpected: ${{ steps.host.outputs.unexpected }}
+      runner_id: ${{ steps.host.outputs.runner_id }}
+      workflow_run_identity: ${{ steps.host.outputs.workflow_run_identity }}
+    steps:
+      - name: Checkout without persistent credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up exact Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22.16.0
+      - name: Verify host-client unit tests
+        run: node --test cloud/swarm/independent-host-tests/host-client.test.mjs
+      - id: host
+        name: Execute host 3 burst
+        env:
+          P59_62_MODE: host
+          P59_62_HOST_ID: runner3
+          P59_62_ATTEMPTS: "25"
+          NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
+          NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
+        run: node cloud/swarm/independent-host-tests/host-client.mjs
+
+  host4:
+    needs: [preflight, seed]
+    if: needs.preflight.outputs.enabled == 'true' && needs.seed.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      completed: ${{ steps.host.outputs.completed }}
+      denied: ${{ steps.host.outputs.denied }}
+      duplicates: ${{ steps.host.outputs.duplicates }}
+      unexpected: ${{ steps.host.outputs.unexpected }}
+      runner_id: ${{ steps.host.outputs.runner_id }}
+      workflow_run_identity: ${{ steps.host.outputs.workflow_run_identity }}
+    steps:
+      - name: Checkout without persistent credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up exact Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22.16.0
+      - name: Verify host-client unit tests
+        run: node --test cloud/swarm/independent-host-tests/host-client.test.mjs
+      - id: host
+        name: Execute host 4 burst
+        env:
+          P59_62_MODE: host
+          P59_62_HOST_ID: runner4
+          P59_62_ATTEMPTS: "25"
+          NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
+          NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
+        run: node cloud/swarm/independent-host-tests/host-client.mjs
+
+  aggregate:
+    needs: [preflight, seed, host1, host2, host3, host4]
+    if: always() && needs.preflight.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify cross-run global quota and independent runner outcomes
+        env:
+          SEED_RESULT: ${{ needs.seed.result }}
+          SEED_COMPLETED: ${{ needs.seed.outputs.seed_completed }}
+          H1_RESULT: ${{ needs.host1.result }}
+          H1_COMPLETED: ${{ needs.host1.outputs.completed }}
+          H1_DENIED: ${{ needs.host1.outputs.denied }}
+          H1_DUPLICATES: ${{ needs.host1.outputs.duplicates }}
+          H1_UNEXPECTED: ${{ needs.host1.outputs.unexpected }}
+          H1_RUNNER: ${{ needs.host1.outputs.runner_id }}
+          H1_RUN_IDENTITY: ${{ needs.host1.outputs.workflow_run_identity }}
+          H2_RESULT: ${{ needs.host2.result }}
+          H2_COMPLETED: ${{ needs.host2.outputs.completed }}
+          H2_DENIED: ${{ needs.host2.outputs.denied }}
+          H2_DUPLICATES: ${{ needs.host2.outputs.duplicates }}
+          H2_UNEXPECTED: ${{ needs.host2.outputs.unexpected }}
+          H2_RUNNER: ${{ needs.host2.outputs.runner_id }}
+          H2_RUN_IDENTITY: ${{ needs.host2.outputs.workflow_run_identity }}
+          H3_RESULT: ${{ needs.host3.result }}
+          H3_COMPLETED: ${{ needs.host3.outputs.completed }}
+          H3_DENIED: ${{ needs.host3.outputs.denied }}
+          H3_DUPLICATES: ${{ needs.host3.outputs.duplicates }}
+          H3_UNEXPECTED: ${{ needs.host3.outputs.unexpected }}
+          H3_RUNNER: ${{ needs.host3.outputs.runner_id }}
+          H3_RUN_IDENTITY: ${{ needs.host3.outputs.workflow_run_identity }}
+          H4_RESULT: ${{ needs.host4.result }}
+          H4_COMPLETED: ${{ needs.host4.outputs.completed }}
+          H4_DENIED: ${{ needs.host4.outputs.denied }}
+          H4_DUPLICATES: ${{ needs.host4.outputs.duplicates }}
+          H4_UNEXPECTED: ${{ needs.host4.outputs.unexpected }}
+          H4_RUNNER: ${{ needs.host4.outputs.runner_id }}
+          H4_RUN_IDENTITY: ${{ needs.host4.outputs.workflow_run_identity }}
+        run: |
+          node --input-type=module <<'NODE'
+          const e = process.env;
+          const result = (name) => e[name + "_RESULT"] === "success";
+          const hosts = ["H1","H2","H3","H4"];
+          if (e.SEED_RESULT !== "success" || e.SEED_COMPLETED !== "1") throw new Error("SEED_GATE_FAILED");
+          if (!hosts.every(result)) throw new Error("ONE_OR_MORE_HOST_JOBS_FAILED");
+          const sum = key => hosts.reduce((n, host) => n + Number(e[host + "_" + key] || 0), 0);
+          const runners = hosts.map(host => e[host + "_RUNNER"]);
+          const runIds = hosts.map(host => e[host + "_RUN_IDENTITY"]);
+          const actual = {
+            uniqueCompleted: sum("COMPLETED"),
+            uniqueDenied: sum("DENIED"),
+            duplicateSuppressed: sum("DUPLICATES"),
+            unexpected: sum("UNEXPECTED"),
+            distinctRunnerIds: new Set(runners).size,
+            distinctWorkflowRunIdentities: new Set(runIds).size
+          };
+          const expected = {
+            uniqueCompleted: 7, uniqueDenied: 93, duplicateSuppressed: 4,
+            unexpected: 0, distinctRunnerIds: 4, distinctWorkflowRunIdentities: 4
+          };
+          console.log("P59_62_GLOBAL_PROOF " + JSON.stringify({ actual, expected }));
+          for (const [key, value] of Object.entries(expected)) {
+            if (actual[key] !== value) throw new Error("GLOBAL_PROOF_MISMATCH:" + key);
+          }
+          console.log("GLOBAL_CROSS_RUN_CROSS_HOST_QUOTA_PROOF=PASS");
+          NODE
