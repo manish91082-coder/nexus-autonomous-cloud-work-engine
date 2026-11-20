@@ -285,7 +285,7 @@ jobs:
           };
           const expected = {
             uniqueCompleted: 7, uniqueDenied: 93, duplicateSuppressed: 4,
-            unexpected: 0, distinctRunnerNames: 4, distinctWorkflowRunIdentities: 4
+            unexpected: 0, distinctRunnerNames: 4, distinctJobScopedRunIdentities: 4
           };
           console.log("P59_62_GLOBAL_PROOF " + JSON.stringify({ actual, expected }));
           for (const [key, value] of Object.entries(expected)) {
