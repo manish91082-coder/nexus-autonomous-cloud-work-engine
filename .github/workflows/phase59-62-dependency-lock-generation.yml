@@ -37,7 +37,14 @@ jobs:
         run: |
           test "$(node --version)" = "v22.16.0"
           test "$(npm --version)" = "10.9.2"
-          npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+          npm install --package-lock-only --ignore-scripts --no-audit --no-fund --legacy-peer-deps
+
+      - name: Show lockfile generation diagnostic on failure
+        if: failure()
+        run: |
+          for file in /home/runner/.npm/_logs/*debug-0.log; do
+            if [ -f "$file" ]; then tail -n 120 "$file"; fi
+          done
 
       - name: Validate lockfile and emit bounded readback
         run: |
