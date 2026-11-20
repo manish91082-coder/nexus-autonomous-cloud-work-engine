@@ -210,3 +210,36 @@ The latest bounded Mission Autonomous AI Worker [run #535](https://github.com/ma
 - no inference request.
 
 The final continuity Guard run is the latest control-plane validation. Later Phase59.35/59.60/59.62 workflow runs on the documentation-only final head were pending at report closure; executable code/test acceptance remains the exact code/test SHA `dc82af59ff9fcb7ab00d219796c15be901a86fb8`, already covered by successful runs #341 and #42 above.
+
+
+## 11. Final live-path audit corrections and exact-head regression
+
+A second source-level audit of the owner-gated host execution path found defects that the earlier offline classifier tests did not execute:
+
+1. The host request builder referenced the removed `runnerId` variable after the identity migration. This would have failed when a live host attempted to build its task payload. It is now constructed through `buildHostTaskPayload`, which binds the validated `runnerName` and bounds the attempt index.
+2. Dispatch and snapshot responses previously called `response.text()` before checking length. Both now use a streaming reader with a strict 16 KiB byte ceiling and cancel the stream when exceeded.
+3. The owner workflow's inline preflight did not yet enforce the same `*.workers.dev` host allowlist as the client. The workflow preflight now independently enforces HTTPS, hostname suffix, no custom port, no credentials, no query/fragment and exact path.
+4. The aggregate expected object still used the old `distinctWorkflowRunIdentities` key after the actual object was renamed. Both now use `distinctJobScopedRunIdentities`; the success label is `GLOBAL_CROSS_JOB_CROSS_HOST_QUOTA_PROOF`, not a claim of four separate workflow runs.
+5. A static workflow-contract test now checks the endpoint allowlist, documented runner context, job-scoped identity key and absence of escaped expressions or undocumented runner IDs.
+
+### Final code/test head
+
+`7d0003ca4e8b3587db687ff7acd44013ef7f6413`
+
+- Phase59.35 Workers runtime [run #358](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44668866363): **SUCCESS**.
+  - Lockfile validation: 165 packages.
+  - Offline independent-host client/static workflow tests: **11/11 PASS**.
+  - YAML syntax: **YAML_SYNTAX_PASS**.
+  - Full Workers/workerd regression: **83/83 PASS**, four test files.
+- Phase59.62 dispatcher integration [run #56](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44668896223): **SUCCESS**.
+  - Dedicated dispatcher integration: **4/4 PASS**.
+  - Full swarm runtime regression: **83/83 PASS**.
+- Phase59.60 account-scope platform budget [run #47](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44668894692): **SUCCESS**.
+- Phase59.56 synthetic cross-repository installation quota [run #23](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44668863252): **SUCCESS**.
+- Phase59.60 run #46 and Phase59.56 run #23 also passed on code/test head `7d0003ca`; the Phase59.62 run #56 and Phase59.60 run #47 ran on the subsequent owner-packet-only candidate `e5d398ff`, with no executable code changes after `7d0003ca`.
+
+### Proof boundary and next phase
+
+The Workerd synthetic tests prove shared quota across two synthetic repository identities and four distinct workflow-run identity values. The owner-gated host workflow proves four separate hosted runner jobs with distinct job-scoped identities, but they are in one Actions workflow run and currently target the canonical repository. These are complementary proofs, not yet a single physical-host test that simultaneously spans four distinct GitHub Actions run IDs and two repository identities.
+
+Phase59.63 must close that gap with a manual-only, owner-gated seed/host/snapshot protocol: one seed run, four separately dispatched host workflow runs with their actual `GITHUB_RUN_ID` values, two fixed synthetic P10CR test repository aliases, one shared test-only Durable Object namespace, and one read-only aggregate snapshot. Compute workflows remain contents:read; no Actions write token or automated run dispatch is permitted. No live endpoint call occurs until the owner configures the test-only Worker and explicitly approves the run.
