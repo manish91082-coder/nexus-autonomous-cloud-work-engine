@@ -110,6 +110,7 @@ jobs:
         env:
           P59_62_MODE: host
           P59_62_HOST_ID: runner1
+          P59_62_RUNNER_ID: ${{ runner.id }}
           P59_62_ATTEMPTS: "25"
           NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
           NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
@@ -143,6 +144,7 @@ jobs:
         env:
           P59_62_MODE: host
           P59_62_HOST_ID: runner2
+          P59_62_RUNNER_ID: ${{ runner.id }}
           P59_62_ATTEMPTS: "25"
           NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
           NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
@@ -176,6 +178,7 @@ jobs:
         env:
           P59_62_MODE: host
           P59_62_HOST_ID: runner3
+          P59_62_RUNNER_ID: ${{ runner.id }}
           P59_62_ATTEMPTS: "25"
           NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
           NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
@@ -209,6 +212,7 @@ jobs:
         env:
           P59_62_MODE: host
           P59_62_HOST_ID: runner4
+          P59_62_RUNNER_ID: ${{ runner.id }}
           P59_62_ATTEMPTS: "25"
           NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
           NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
