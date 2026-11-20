@@ -180,3 +180,20 @@ No account, Worker, Durable Object namespace, GitHub variable or secret was chan
 5. Only after independent-host acceptance, begin the bounded 7-day soak, then the 30-day soak with daily resource reconciliation and automatic fail-closed stops.
 
 P59-001 must remain PAUSED until every P59-003 swarm acceptance gate passes and the owner-approved transition is recorded in the canonical queue, mission state, federation registry and continuity file.
+
+
+## 9. Post-reconciliation control-plane verification
+
+After the report, mission state, queue and federation registry were committed and fetched back:
+
+- Mission Autonomous AI Worker [run #533](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44668440802): SUCCESS on candidate control-plane SHA `3ec8444500c8ce1fb01465e96d1dd55c78ea08b0`.
+  - Queue poll: `POLL_OK`.
+  - Selected task: `P59-003`.
+  - AI executor: `WAITING_FOR_OWNER_CONFIGURATION`.
+  - Reason: `MISSION_AI_ENABLED` is not true; no inference request was made.
+- Mission Continuity Guard [run #340](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44668482610): SUCCESS on continuity SHA `c4ef2d757ba0e728e3d730756fdb6dfc1b34b10a`.
+  - 111 checks.
+  - Zero errors.
+- All five Phase59.62 report/control/continuity files were fetched back and their returned blob SHAs recorded.
+- P59-001 remains PAUSED; P59-002 remains BLOCKED; P59-003 remains IN_PROGRESS.
+- Revenue ledger remains empty; authorized spend and verified realized net receipts remain ₹0.
