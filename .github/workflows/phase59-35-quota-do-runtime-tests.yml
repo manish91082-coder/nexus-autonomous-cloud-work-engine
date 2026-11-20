@@ -43,6 +43,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Set up exact Node runtime
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
@@ -54,45 +56,24 @@ jobs:
           test "$(node --version)" = "v22.16.0"
           test "$(npm --version)" = "11.6.3"
 
-      - name: Generate lockfile only when absent
+      - name: Require committed lockfile and verify exact digest
         run: |
-          if [ ! -f package-lock.json ]; then
-            npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-          fi
           test -f package-lock.json
-
-      - name: Install from exact lockfile with lifecycle scripts disabled
-        run: npm ci --ignore-scripts --no-audit --no-fund
-
-      - name: Validate and emit lockfile evidence for first commit
-        run: |
+          test "$(sha256sum package-lock.json | cut -d' ' -f1)" = "9c2f655c6230decf204b65fd6278e1ac45d0851f3ed0544bcbc16ab94694d914"
           node --input-type=module <<'NODE'
           import fs from "node:fs";
-          import crypto from "node:crypto";
-          const raw = fs.readFileSync("package-lock.json");
-          const lock = JSON.parse(raw.toString("utf8"));
-          const root = lock.packages?.[""];
-          const expected = { "@cloudflare/vitest-plugin": "1.7.0", "vitest": "4.1.12" };
+          const lock = JSON.parse(fs.readFileSync("package-lock.json", "utf8"));
           if (lock.lockfileVersion !== 3) throw new Error("LOCKFILE_VERSION_NOT_3");
-          for (const [name, version] of Object.entries(expected)) {
-            if (root?.devDependencies?.[name] !== version) throw new Error("ROOT_PIN_MISMATCH:" + name);
-            if (lock.packages["node_modules/" + name]?.version !== version) throw new Error("RESOLVED_VERSION_MISMATCH:" + name);
-          }
-          const entries = Object.entries(lock.packages || {}).filter(([name]) => name.startsWith("node_modules/"));
-          const missingIntegrity = entries.filter(([, value]) => value.resolved && !value.integrity);
-          if (missingIntegrity.length) throw new Error("MISSING_INTEGRITY:" + missingIntegrity.slice(0, 5).map(([name]) => name).join(","));
-          const nonRegistry = entries.filter(([, value]) => value.resolved && !value.resolved.startsWith("https://registry.npmjs.org/"));
-          if (nonRegistry.length) throw new Error("NON_NPM_REGISTRY_RESOLUTION:" + nonRegistry.slice(0, 5).map(([name]) => name).join(","));
-          const digest = crypto.createHash("sha256").update(raw).digest("hex");
-          const encoded = raw.toString("base64");
-          if (encoded.length > 700000) throw new Error("LOCKFILE_LOG_PAYLOAD_TOO_LARGE");
-          console.log("LOCKFILE_VERSION=" + lock.lockfileVersion);
-          console.log("LOCKFILE_PACKAGE_COUNT=" + entries.length);
-          console.log("LOCKFILE_SHA256=" + digest);
-          console.log("LOCKFILE_BASE64_BEGIN");
-          console.log(encoded);
-          console.log("LOCKFILE_BASE64_END");
+          if (lock.packages["node_modules/@cloudflare/vitest-plugin"]?.version !== "1.7.0") throw new Error("PLUGIN_PIN_MISMATCH");
+          if (lock.packages["node_modules/vitest"]?.version !== "4.1.12") throw new Error("VITEST_PIN_MISMATCH");
+          const entries = Object.entries(lock.packages).filter(([name]) => name.startsWith("node_modules/"));
+          if (entries.some(([, value]) => value.resolved && !value.integrity)) throw new Error("LOCKFILE_INTEGRITY_MISSING");
+          if (entries.some(([, value]) => value.resolved && !value.resolved.startsWith("https://registry.npmjs.org/"))) throw new Error("LOCKFILE_NON_REGISTRY_SOURCE");
+          console.log("LOCKFILE_VALID packages=" + entries.length);
           NODE
+
+      - name: Install exact dependencies with lifecycle scripts disabled
+        run: npm ci --ignore-scripts --no-audit --no-fund
 
       - name: Run Cloudflare Workers runtime tests
         run: npm test
