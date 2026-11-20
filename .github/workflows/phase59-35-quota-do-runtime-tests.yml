@@ -14,13 +14,13 @@ on:
       - 'schemas/mission-dispatcher-shadow-envelope-v1.schema.json'
       - 'schemas/swarm-run-ledger-v1.schema.json'
       - 'cloud/swarm/quota-ledger-contract.mjs'
-      - 'cloud/swarm/quota-ledger-contract.mjs'
       - 'cloud/swarm/github-quota-telemetry.mjs'
       - 'cloud/swarm/github-operation-registry.mjs'
       - 'cloud/swarm/quota-ledger-client.mjs'
       - 'cloud/swarm/read-only-swarm-worker.mjs'
       - 'cloud/swarm/github-secondary-rate-limit.mjs'
       - 'cloud/swarm/worker-tests/**'
+      - 'cloud/swarm/independent-host-tests/**'
       - '.github/workflows/phase59-35-quota-do-runtime-tests.yml'
   pull_request:
     branches: [master, phase59-57-constrained-publisher-separation, phase59-61-budget-dispatcher-integration, phase59-62-dependency-hardening]
@@ -74,6 +74,9 @@ jobs:
 
       - name: Install exact dependencies with lifecycle scripts disabled
         run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Run independent-host client offline tests
+        run: node --test ../independent-host-tests/host-client.test.mjs
 
       - name: Run Cloudflare Workers runtime tests
         run: npm test
