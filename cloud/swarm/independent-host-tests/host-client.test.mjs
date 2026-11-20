@@ -126,3 +126,11 @@ test("runner name identity is non-empty, bounded and control-free", () => {
     assert.throws(() => validateRunnerName(value));
   }
 });
+
+
+test("endpoint host allowlist rejects non-Cloudflare and deceptive suffix hosts", () => {
+  assert.equal(validateEndpoint(endpoint).hostname, "p59-62-test.example.workers.dev");
+  assert.throws(() => validateEndpoint("https://workers.dev/internal/shadow-dispatch"));
+  assert.throws(() => validateEndpoint("https://workers.dev.attacker.example/internal/shadow-dispatch"));
+  assert.throws(() => validateEndpoint("https://custom.example/internal/shadow-dispatch"));
+});
