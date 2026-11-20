@@ -98,9 +98,10 @@ export default {
     if (url.pathname === snapshotPath) {
       if (!body || typeof body !== "object" || Array.isArray(body)
         || body.projectId !== "P10CR" || body.taskType !== "P59_003_BUDGET_SNAPSHOT"
-        || typeof body.taskId !== "string" || !SAFE_ID.test(body.taskId)
+        || body.taskId !== "p59-62-budget-snapshot-readback"
         || typeof body.workflowRunId !== "string" || !SAFE_ID.test(body.workflowRunId)
-        || !body.payload || typeof body.payload !== "object" || Array.isArray(body.payload)) {
+        || !body.payload || typeof body.payload !== "object" || Array.isArray(body.payload)
+        || Object.keys(body.payload).length !== 0) {
         return response(403, { status: "REJECTED", reason: "BUDGET_SNAPSHOT_ENVELOPE_NOT_AUTHORIZED" });
       }
       try {
