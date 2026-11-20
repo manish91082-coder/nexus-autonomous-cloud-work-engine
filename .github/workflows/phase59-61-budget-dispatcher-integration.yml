@@ -2,7 +2,7 @@ name: Phase 59.61 Budget-Dispatcher Integration Runtime Tests
 
 on:
   push:
-    branches: [phase59-61-budget-dispatcher-integration]
+    branches: [phase59-61-budget-dispatcher-integration, phase59-62-dependency-hardening]
     paths:
       - 'cloud/swarm/platform-budget-do.mjs'
       - 'cloud/swarm/platform-budget-rpc-client.mjs'
@@ -12,9 +12,12 @@ on:
       - 'cloud/swarm/worker-tests/vitest.config.mjs'
       - 'cloud/swarm/worker-tests/wrangler.jsonc'
       - 'cloud/swarm/worker-tests/mission-dispatcher-runtime.test.mjs'
+      - 'cloud/swarm/worker-tests/package.json'
+      - 'cloud/swarm/worker-tests/package-lock.json'
+      - 'schemas/mission-dispatcher-shadow-envelope-v1.schema.json'
       - '.github/workflows/phase59-61-budget-dispatcher-integration.yml'
   pull_request:
-    branches: [phase59-60-account-scope-platform-budget]
+    branches: [phase59-60-account-scope-platform-budget, phase59-61-budget-dispatcher-integration, phase59-62-dependency-hardening]
     paths:
       - 'cloud/swarm/platform-budget-do.mjs'
       - 'cloud/swarm/platform-budget-rpc-client.mjs'
@@ -45,8 +48,20 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Install isolated test dependencies
-        run: npm install --no-audit --no-fund
+      - name: Set up exact Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22.16.0
+      - name: Pin npm CLI without lifecycle scripts
+        run: |
+          npm install --global npm@11.6.3 --ignore-scripts --no-audit --no-fund
+          test "$(node --version)" = "v22.16.0"
+          test "$(npm --version)" = "11.6.3"
+      - name: Require committed lockfile and install exact dependencies
+        run: |
+          test -f package-lock.json
+          test "$(sha256sum package-lock.json | cut -d' ' -f1)" = "9c2f655c6230decf204b65fd6278e1ac45d0851f3ed0544bcbc16ab94694d914"
+          npm ci --ignore-scripts --no-audit --no-fund
       - name: Run Phase59.61 integration tests
         run: npx vitest run --config mission-dispatcher-budget.vitest.config.mjs mission-dispatcher-budget-integration.test.mjs
       - name: Run full swarm runtime regression
