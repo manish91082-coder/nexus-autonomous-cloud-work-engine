@@ -1,5 +1,7 @@
 import { createHash, createHmac, randomUUID } from "node:crypto";
 import fs from "node:fs";
+import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 
 const PATH = "/internal/shadow-dispatch";
 const SAFE_ID = /^[A-Za-z0-9._:-]{1,128}$/;
@@ -166,7 +168,7 @@ export async function runHostClient(env = process.env) {
   return outputs;
 }
 
-if (process.argv[1] && new URL(import.meta.url).pathname === new URL("file://" + process.argv[1]).pathname) {
+if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   runHostClient().then(result => {
     console.log("P59_62_HOST_RESULT " + JSON.stringify(result));
   }).catch(error => {
