@@ -74,7 +74,12 @@ function validCompletedBody(body) {
 export function validateRunnerName(value) {
   if (typeof value !== "string") throw new TypeError("RUNNER_NAME_INVALID");
   const name = value.trim();
-  const hasControlCharacter = [...name].some(character => {\n    const code = character.charCodeAt(0);\n    return code < 32 || code === 127;\n  });\n  if (!name || name.length > 256 || hasControlCharacter) {\n    throw new TypeError("RUNNER_NAME_INVALID");
+  const hasControlCharacter = [...name].some(character => {
+    const code = character.charCodeAt(0);
+    return code < 32 || code === 127;
+  });
+  if (!name || name.length > 256 || hasControlCharacter) {
+    throw new TypeError("RUNNER_NAME_INVALID");
   }
   return name;
 }
