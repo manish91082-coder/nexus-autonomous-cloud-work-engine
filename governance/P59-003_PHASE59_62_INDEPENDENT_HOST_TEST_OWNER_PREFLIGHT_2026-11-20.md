@@ -143,7 +143,7 @@ Never put secret values in issues, commits, logs, reports, or chat. Do not send 
 6. Manually dispatch **Phase 59.62 Independent-host global quota proof** with `confirm_live_test=true`.
 7. The workflow runs one seed job and four independent standard GitHub-hosted runner jobs. Each host job uses a distinct signed `workflowRunId` formed from the workflow run ID and job identity.
 8. The four host jobs each submit one replay of the already-completed sentinel and 25 unique tasks. The four hosts must share the same test-only DO namespaces.
-9. The final job checks the four runner IDs, four distinct signed run identities, exact response totals, and a read-only budget snapshot.
+9. The final job checks the four runner names, four distinct signed run identities, exact response totals, and a read-only budget snapshot.
 
 ### Expected result
 
@@ -153,7 +153,7 @@ Never put secret values in issues, commits, logs, reports, or chat. Do not send 
 - Unique tasks admitted: exactly 7.
 - Unique tasks rejected for exhausted budget: exactly 93.
 - Unexpected responses: 0.
-- Distinct GitHub-hosted runner IDs: 4.
+- Distinct GitHub-hosted runner names: 4.
 - Distinct signed workflow-run identities: 4.
 - Final PlatformBudgetDO snapshot: committed dispatches 8, reserved dispatches 0, uncertain dispatches 0, valid event chain, control RPC count no greater than 500.
 
@@ -170,3 +170,8 @@ The four host jobs are separate GitHub-hosted runner instances with distinct sig
 ## Current owner gate
 
 No Cloudflare account, Worker, Durable Object namespace, GitHub variable, GitHub secret, or live endpoint has been modified. No live network request has been made by this test harness.
+
+
+## Runner identity correction
+
+The four independent GitHub-hosted jobs record the documented `runner.name` context as their host identity. The harness does not rely on an undocumented `runner.id` context property. These remain four runner jobs within one workflow run; they are not four separate GitHub Actions workflow-run IDs.
