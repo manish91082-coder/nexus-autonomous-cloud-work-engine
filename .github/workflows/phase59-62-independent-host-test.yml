@@ -220,45 +220,52 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: Checkout without persistent credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up exact Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22.16.0
       - name: Verify cross-run global quota and independent runner outcomes
         env:
-          SEED_RESULT: ${{ needs.seed.result }}
-          SEED_COMPLETED: ${{ needs.seed.outputs.seed_completed }}
-          H1_RESULT: ${{ needs.host1.result }}
-          H1_COMPLETED: ${{ needs.host1.outputs.completed }}
-          H1_DENIED: ${{ needs.host1.outputs.denied }}
-          H1_DUPLICATES: ${{ needs.host1.outputs.duplicates }}
-          H1_UNEXPECTED: ${{ needs.host1.outputs.unexpected }}
-          H1_RUNNER: ${{ needs.host1.outputs.runner_id }}
-          H1_RUN_IDENTITY: ${{ needs.host1.outputs.workflow_run_identity }}
-          H2_RESULT: ${{ needs.host2.result }}
-          H2_COMPLETED: ${{ needs.host2.outputs.completed }}
-          H2_DENIED: ${{ needs.host2.outputs.denied }}
-          H2_DUPLICATES: ${{ needs.host2.outputs.duplicates }}
-          H2_UNEXPECTED: ${{ needs.host2.outputs.unexpected }}
-          H2_RUNNER: ${{ needs.host2.outputs.runner_id }}
-          H2_RUN_IDENTITY: ${{ needs.host2.outputs.workflow_run_identity }}
-          H3_RESULT: ${{ needs.host3.result }}
-          H3_COMPLETED: ${{ needs.host3.outputs.completed }}
-          H3_DENIED: ${{ needs.host3.outputs.denied }}
-          H3_DUPLICATES: ${{ needs.host3.outputs.duplicates }}
-          H3_UNEXPECTED: ${{ needs.host3.outputs.unexpected }}
-          H3_RUNNER: ${{ needs.host3.outputs.runner_id }}
-          H3_RUN_IDENTITY: ${{ needs.host3.outputs.workflow_run_identity }}
-          H4_RESULT: ${{ needs.host4.result }}
-          H4_COMPLETED: ${{ needs.host4.outputs.completed }}
-          H4_DENIED: ${{ needs.host4.outputs.denied }}
-          H4_DUPLICATES: ${{ needs.host4.outputs.duplicates }}
-          H4_UNEXPECTED: ${{ needs.host4.outputs.unexpected }}
-          H4_RUNNER: ${{ needs.host4.outputs.runner_id }}
-          H4_RUN_IDENTITY: ${{ needs.host4.outputs.workflow_run_identity }}
+          SEED_RESULT: \${{ needs.seed.result }}
+          SEED_COMPLETED: \${{ needs.seed.outputs.seed_completed }}
+          H1_RESULT: \${{ needs.host1.result }}
+          H1_COMPLETED: \${{ needs.host1.outputs.completed }}
+          H1_DENIED: \${{ needs.host1.outputs.denied }}
+          H1_DUPLICATES: \${{ needs.host1.outputs.duplicates }}
+          H1_UNEXPECTED: \${{ needs.host1.outputs.unexpected }}
+          H1_RUNNER: \${{ needs.host1.outputs.runner_id }}
+          H1_RUN_IDENTITY: \${{ needs.host1.outputs.workflow_run_identity }}
+          H2_RESULT: \${{ needs.host2.result }}
+          H2_COMPLETED: \${{ needs.host2.outputs.completed }}
+          H2_DENIED: \${{ needs.host2.outputs.denied }}
+          H2_DUPLICATES: \${{ needs.host2.outputs.duplicates }}
+          H2_UNEXPECTED: \${{ needs.host2.outputs.unexpected }}
+          H2_RUNNER: \${{ needs.host2.outputs.runner_id }}
+          H2_RUN_IDENTITY: \${{ needs.host2.outputs.workflow_run_identity }}
+          H3_RESULT: \${{ needs.host3.result }}
+          H3_COMPLETED: \${{ needs.host3.outputs.completed }}
+          H3_DENIED: \${{ needs.host3.outputs.denied }}
+          H3_DUPLICATES: \${{ needs.host3.outputs.duplicates }}
+          H3_UNEXPECTED: \${{ needs.host3.outputs.unexpected }}
+          H3_RUNNER: \${{ needs.host3.outputs.runner_id }}
+          H3_RUN_IDENTITY: \${{ needs.host3.outputs.workflow_run_identity }}
+          H4_RESULT: \${{ needs.host4.result }}
+          H4_COMPLETED: \${{ needs.host4.outputs.completed }}
+          H4_DENIED: \${{ needs.host4.outputs.denied }}
+          H4_DUPLICATES: \${{ needs.host4.outputs.duplicates }}
+          H4_UNEXPECTED: \${{ needs.host4.outputs.unexpected }}
+          H4_RUNNER: \${{ needs.host4.outputs.runner_id }}
+          H4_RUN_IDENTITY: \${{ needs.host4.outputs.workflow_run_identity }}
         run: |
           node --input-type=module <<'NODE'
           const e = process.env;
-          const result = (name) => e[name + "_RESULT"] === "success";
           const hosts = ["H1","H2","H3","H4"];
           if (e.SEED_RESULT !== "success" || e.SEED_COMPLETED !== "1") throw new Error("SEED_GATE_FAILED");
-          if (!hosts.every(result)) throw new Error("ONE_OR_MORE_HOST_JOBS_FAILED");
+          if (!hosts.every(host => e[host + "_RESULT"] === "success")) throw new Error("ONE_OR_MORE_HOST_JOBS_FAILED");
           const sum = key => hosts.reduce((n, host) => n + Number(e[host + "_" + key] || 0), 0);
           const runners = hosts.map(host => e[host + "_RUNNER"]);
           const runIds = hosts.map(host => e[host + "_RUN_IDENTITY"]);
@@ -280,3 +287,9 @@ jobs:
           }
           console.log("GLOBAL_CROSS_RUN_CROSS_HOST_QUOTA_PROOF=PASS");
           NODE
+      - name: Read back shared Durable Object global budget snapshot
+        env:
+          P59_62_MODE: snapshot
+          NEXUS_TEST_ENDPOINT: \${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
+          NEXUS_TEST_INGRESS_SECRET: \${{ secrets.P59_003_TEST_INGRESS_SECRET }}
+        run: node cloud/swarm/independent-host-tests/host-client.mjs
