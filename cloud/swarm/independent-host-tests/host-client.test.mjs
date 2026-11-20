@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash, createHmac } from "node:crypto";
-import { buildSignedRequest, classifyBudgetSnapshot, classifyDispatch, validateEndpoint } from "./host-client.mjs";
+import { buildSignedRequest, classifyBudgetSnapshot, classifyDispatch, validateEndpoint, validateRunnerName } from "./host-client.mjs";
 
 const endpoint = "https://p59-62-test.example.workers.dev/internal/shadow-dispatch";
 const secret = "p59-62-unit-test-ingress-secret-0123456789abcdef";
@@ -114,4 +114,12 @@ test("classifier accepts only settled, read-back-verified deterministic outcomes
   assert.equal(classifyDispatch({ httpStatus: 429, body: { status: "WAITING_FOR_BUDGET" } }), "denied");
   assert.equal(classifyDispatch({ httpStatus: 200, body: { status: "COMPLETED", budgetStatus: "RESERVED" } }), "unexpected");
   assert.equal(classifyDispatch({ httpStatus: 200, body: { status: "COMPLETED", budgetStatus: "SETTLED", eventChainValid: true, graphDecision: "ALLOW" } }), "unexpected");
+});
+
+
+test("runner name identity is non-empty, bounded and control-free", () => {
+  assert.equal(validateRunnerName(" GitHub Actions 42 "), "GitHub Actions 42");
+  for (const value of ["", "   ", "x".repeat(257), "runner\\nname", null]) {
+    assert.throws(() => validateRunnerName(value));
+  }
 });
