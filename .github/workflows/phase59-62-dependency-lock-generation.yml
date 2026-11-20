@@ -1,0 +1,84 @@
+name: Phase 59.62 Read-only npm lockfile generation
+
+on:
+  push:
+    branches: [phase59-62-dependency-hardening]
+    paths:
+      - "cloud/swarm/worker-tests/package.json"
+      - ".github/workflows/phase59-62-dependency-lock-generation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase59-62-lock-generation
+  cancel-in-progress: false
+
+jobs:
+  generate-lock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: cloud/swarm/worker-tests
+    steps:
+      - name: Checkout without persistent credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up exact Node and npm toolchain
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22.16.0
+
+      - name: Verify toolchain and generate lockfile without lifecycle scripts
+        run: |
+          test "$(node --version)" = "v22.16.0"
+          test "$(npm --version)" = "10.9.2"
+          npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+
+      - name: Validate lockfile and emit bounded readback
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          import crypto from "node:crypto";
+
+          const path = "package-lock.json";
+          const raw = fs.readFileSync(path);
+          const lock = JSON.parse(raw.toString("utf8"));
+          const root = lock.packages?.[""];
+          const expected = {
+            "@cloudflare/vitest-plugin": "1.7.0",
+            "vitest": "4.1.12"
+          };
+
+          if (lock.lockfileVersion !== 3) throw new Error("LOCKFILE_VERSION_NOT_3");
+          if (!root?.devDependencies) throw new Error("ROOT_DEV_DEPENDENCIES_MISSING");
+          for (const [name, version] of Object.entries(expected)) {
+            if (root.devDependencies[name] !== version) throw new Error("ROOT_PIN_MISMATCH:" + name);
+            const installed = lock.packages["node_modules/" + name]?.version;
+            if (installed !== version) throw new Error("RESOLVED_VERSION_MISMATCH:" + name + ":" + installed);
+          }
+
+          const entries = Object.entries(lock.packages || {}).filter(([name]) => name.startsWith("node_modules/"));
+          const missingIntegrity = entries.filter(([, value]) => value.resolved && !value.integrity);
+          if (missingIntegrity.length) throw new Error("MISSING_INTEGRITY:" + missingIntegrity.slice(0, 5).map(([name]) => name).join(","));
+
+          const nonRegistry = entries.filter(([, value]) =>
+            value.resolved && !value.resolved.startsWith("https://registry.npmjs.org/")
+          );
+          if (nonRegistry.length) throw new Error("NON_NPM_REGISTRY_RESOLUTION:" + nonRegistry.slice(0, 5).map(([name]) => name).join(","));
+
+          const digest = crypto.createHash("sha256").update(raw).digest("hex");
+          const encoded = raw.toString("base64");
+          if (encoded.length > 700000) throw new Error("LOCKFILE_LOG_PAYLOAD_TOO_LARGE");
+
+          console.log("LOCKFILE_VERSION=" + lock.lockfileVersion);
+          console.log("LOCKFILE_PACKAGE_COUNT=" + entries.length);
+          console.log("LOCKFILE_SHA256=" + digest);
+          console.log("LOCKFILE_BASE64_BEGIN");
+          console.log(encoded);
+          console.log("LOCKFILE_BASE64_END");
+          NODE
