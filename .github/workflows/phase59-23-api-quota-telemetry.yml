@@ -28,6 +28,8 @@ jobs:
     steps:
       - name: Checkout phase branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Compile quota guard and store
         run: python3 -m py_compile scripts/github_api_quota_guard.py scripts/federation_git_ref_store.py
       - name: Run API quota telemetry tests
