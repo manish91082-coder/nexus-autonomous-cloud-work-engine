@@ -17,7 +17,7 @@ const SENTINEL_PAYLOAD = Object.freeze({
 export function validateEndpoint(value, expectedPath = PATH) {
   let url;
   try { url = new URL(value); } catch { throw new TypeError("TEST_ENDPOINT_INVALID_URL"); }
-  if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash || url.pathname !== expectedPath) {
+  if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash || url.port || !url.hostname.toLowerCase().endsWith(".workers.dev") || url.hostname.toLowerCase() === "workers.dev" || url.pathname !== expectedPath) {
     throw new TypeError("TEST_ENDPOINT_MUST_BE_HTTPS_INTERNAL_PATH_WITHOUT_CREDENTIALS_QUERY_OR_FRAGMENT");
   }
   return url;
