@@ -259,3 +259,30 @@ After the final Phase59.62 state, queue, federation and continuity updates:
   - Zero errors.
 
 The report, mission state, queue, federation registry and continuity file were fetched back after their writes. P59-001 remains PAUSED, P59-002 BLOCKED, and P59-003 IN_PROGRESS.
+
+
+## 13. Exact Phase59.62 commit ledger
+
+### Host-client, workflow and test changes
+
+- `fbdaa44d5301bbe6ab0164c27addc6cf6a7cfd6a` — fix host payload identity and add bounded response reads.
+- `1e0950cf544463ca22d980a3a27b57d79c4178b3` — test payload binding and bounded response reads.
+- `cb3b0fde8fbea811838089771c2a3e7c36b03032` — enforce the owner-preflight `workers.dev` allowlist and job-scoped proof label.
+- `1da3d091d41cab2f193bc9373527ad4c706d4693` — align aggregate expected identity key.
+- `7d0003ca4e8b3587db687ff7acd44013ef7f6413` — add static workflow security and aggregate identity contract test; this is the final executable code/test head.
+- Earlier supporting corrections: `cc4563d7a2a0ba0b2ffc51817d15b587bcc77085` (client endpoint allowlist), `dce258b22700ca3fc8aeae3856fab6411d9c13d9` (endpoint tests), `471cffc8a1efe54f60cad21f7c36cc01d90a43a0` (workflow preflight), `85e0c8385cd46b6c26f654bad98b0606c672b9dd` (GitHub expression interpolation), `ad8bd67c7acfbacc4699ffc043ad235e1ea2ce92` and `dc82af59ff9fcb7ab00d219796c15be901a86fb8` (runner-name validator correction).
+
+### Evidence and control-plane updates
+
+- `e5d398ffa4d8ce9086783643b5854a7e2880fe34` — owner packet clarifies job-scoped identities and hardening.
+- `bfbc4aeb0b3e275d54f4dd746ebaf456ad221633` — final exact-head test and live-path audit report.
+- `cfea7ecd0c97203568fbbf0c6d220dc4fa1d5e3b` — mission-state reconciliation.
+- `87133480cb7d9c94f4624b2089e007ef903b81d6` — queue and Phase59.63 next gate.
+- `e4d98f5e6e53a9d785afe573a32c2a2d1d4052c0` — P10CR federation checkpoint.
+- `db9afa792caee345d1ae5da211a04d9135d52525` — final continuity update; Guard #346 passed on this SHA.
+- `592cdf772cca1d4cc35d0f6ffe5ef81453db70a0` — final report update with Worker #537 and Guard #346 evidence; final candidate branch HEAD.
+
+Final repository refs:
+- Master: `8856bf908f93e265cefd5c739f7f46b3dd995b3c`, unchanged.
+- Candidate branch: `phase59-62-dependency-hardening`, HEAD `592cdf772cca1d4cc35d0f6ffe5ef81453db70a0`.
+- PR #47: draft, open, unmerged, based on `phase59-61-budget-dispatcher-integration`.
