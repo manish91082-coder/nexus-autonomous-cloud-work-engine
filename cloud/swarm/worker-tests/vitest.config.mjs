@@ -359,6 +359,7 @@ export default defineConfig({
             ],
             bindings: {
               NEXUS_MISSION_SHADOW_ENABLED: "true",
+              NEXUS_SHADOW_TEST_MODE: "true",
               NEXUS_DISPATCHER_INGRESS_SECRET: dispatcherIngressSecret,
               NEXUS_SWARM_RUN_CALLER_ID: "dispatcher",
               NEXUS_SWARM_RUN_CALLER_SECRET: swarmDispatcherSecret,
