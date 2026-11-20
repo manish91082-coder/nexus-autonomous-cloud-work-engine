@@ -169,7 +169,7 @@ export async function runHostClient(env = process.env) {
   const duplicateClass = classifyDispatch(duplicateResult);
   if (duplicateClass !== "duplicate") throw new Error("CROSS_RUN_DUPLICATE_NOT_SUPPRESSED");
 
-  const runnerId = String(env.RUNNER_ID || "");
+  const runnerId = String(env.P59_62_RUNNER_ID || env.RUNNER_ID || "");
   if (!SAFE_ID.test(runnerId)) throw new Error("RUNNER_ID_INVALID");
   const requests = Array.from({ length: attempts }, (_, index) => postDispatch({
     endpoint,
