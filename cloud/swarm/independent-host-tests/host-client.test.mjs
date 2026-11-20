@@ -12,7 +12,10 @@ test("endpoint accepts only an HTTPS test dispatch path without URL credentials"
     "http://p59-62-test.example.workers.dev/internal/shadow-dispatch",
     "https://user:pass@p59-62-test.example.workers.dev/internal/shadow-dispatch",
     "https://p59-62-test.example.workers.dev/internal/shadow-dispatch?token=x",
-    "https://p59-62-test.example.workers.dev/other"
+    "https://p59-62-test.example.workers.dev/other",
+    "https://attacker.example/internal/shadow-dispatch",
+    "https://p59-62-test.example.workers.dev.attacker.example/internal/shadow-dispatch",
+    "https://p59-62-test.example.workers.dev:444/internal/shadow-dispatch"
   ]) assert.throws(() => validateEndpoint(value));
 });
 
