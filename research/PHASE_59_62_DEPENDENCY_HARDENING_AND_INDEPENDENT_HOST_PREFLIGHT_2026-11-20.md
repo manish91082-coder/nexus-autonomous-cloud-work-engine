@@ -284,5 +284,5 @@ The report, mission state, queue, federation registry and continuity file were f
 
 Final repository refs:
 - Master: `8856bf908f93e265cefd5c739f7f46b3dd995b3c`, unchanged.
-- Candidate branch: `phase59-62-dependency-hardening`, HEAD `592cdf772cca1d4cc35d0f6ffe5ef81453db70a0`.
+- Candidate branch: `phase59-62-dependency-hardening`, HEAD `503ca86df0a2a4fdfd984ba864b55668c65b167f`. The eight commits after executable code/test head `7d0003ca` changed only governance, owner packet, report, mission state, queue, federation and continuity; compare confirmed no executable files changed.
 - PR #47: draft, open, unmerged, based on `phase59-61-budget-dispatcher-integration`.
