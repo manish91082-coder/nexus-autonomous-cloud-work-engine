@@ -18,6 +18,8 @@ on:
       - 'cloud/swarm/platform-budget-host.mjs'
       - 'cloud/swarm/platform-budget-rpc-client.mjs'
       - 'cloud/swarm/worker-tests/platform-budget-*'
+      - 'cloud/swarm/worker-tests/package.json'
+      - 'cloud/swarm/worker-tests/package-lock.json'
       - '.github/workflows/phase59-60-account-scope-platform-budget.yml'
 
 permissions:
