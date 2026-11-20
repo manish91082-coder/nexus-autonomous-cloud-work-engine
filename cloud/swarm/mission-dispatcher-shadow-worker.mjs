@@ -95,6 +95,7 @@ export default {
     if (!body || typeof body !== "object" || Array.isArray(body)
       || body.projectId !== "P10CR" || body.taskType !== "P59_003_SHADOW_DISPATCH"
       || typeof body.taskId !== "string" || !SAFE_ID.test(body.taskId)
+      || (body.workflowRunId !== undefined && (typeof body.workflowRunId !== "string" || !SAFE_ID.test(body.workflowRunId)))
       || !body.payload || typeof body.payload !== "object" || Array.isArray(body.payload)) {
       return response(403, { status: "REJECTED", reason: "SHADOW_ENVELOPE_NOT_AUTHORIZED" });
     }
@@ -104,7 +105,7 @@ export default {
       const prefix = typeof env.NEXUS_SHADOW_WORKER_ID === "string" ? env.NEXUS_SHADOW_WORKER_ID : "p10cr-shadow-dispatcher";
       const result = await dispatchMissionShadow({
         rpc, budgetRpc, taskId: body.taskId, workerId: prefix + "-" + crypto.randomUUID(),
-        workflowRunId: env.NEXUS_WORKFLOW_RUN_ID || crypto.randomUUID(),
+        workflowRunId: body.workflowRunId || env.NEXUS_WORKFLOW_RUN_ID || crypto.randomUUID(),
         payload: body.payload, leaseSeconds: 60
       });
       const statusCode = result.status === "WAITING_FOR_BUDGET" ? 429
