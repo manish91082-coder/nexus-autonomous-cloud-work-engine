@@ -1,4 +1,4 @@
-name: Phase 59.61 Budget-Dispatcher Integration Runtime Tests
+name: Phase 59.62 Budget-Dispatcher Integration Runtime Tests
 
 on:
   push:
@@ -27,6 +27,9 @@ on:
       - 'cloud/swarm/worker-tests/vitest.config.mjs'
       - 'cloud/swarm/worker-tests/wrangler.jsonc'
       - 'cloud/swarm/worker-tests/mission-dispatcher-runtime.test.mjs'
+      - 'cloud/swarm/worker-tests/package.json'
+      - 'cloud/swarm/worker-tests/package-lock.json'
+      - 'schemas/mission-dispatcher-shadow-envelope-v1.schema.json'
       - '.github/workflows/phase59-61-budget-dispatcher-integration.yml'
 
 permissions:
@@ -62,7 +65,7 @@ jobs:
           test -f package-lock.json
           test "$(sha256sum package-lock.json | cut -d' ' -f1)" = "9c2f655c6230decf204b65fd6278e1ac45d0851f3ed0544bcbc16ab94694d914"
           npm ci --ignore-scripts --no-audit --no-fund
-      - name: Run Phase59.61 integration tests
+      - name: Run Phase59.62 integration tests
         run: npx vitest run --config mission-dispatcher-budget.vitest.config.mjs mission-dispatcher-budget-integration.test.mjs
       - name: Run full swarm runtime regression
         run: npx vitest run --config vitest.config.mjs
