@@ -23,8 +23,8 @@ export function validateEndpoint(value, expectedPath = PATH) {
   return url;
 }
 
-export function buildSignedRequest({ endpoint, secret, taskId, payload, workflowRunId, now = Date.now(), nonce = randomUUID() }) {
-  const url = validateEndpoint(endpoint);
+export function buildSignedRequest({ endpoint, secret, taskId, payload, workflowRunId, taskType = "P59_003_SHADOW_DISPATCH", path = PATH, now = Date.now(), nonce = randomUUID() }) {
+  const url = validateEndpoint(endpoint, path);
   if (typeof secret !== "string" || secret.length < 32) throw new TypeError("TEST_INGRESS_SECRET_INVALID");
   if (typeof taskId !== "string" || !SAFE_ID.test(taskId)) throw new TypeError("TASK_ID_INVALID");
   if (typeof workflowRunId !== "string" || !SAFE_ID.test(workflowRunId)) throw new TypeError("WORKFLOW_RUN_ID_INVALID");
@@ -41,7 +41,7 @@ export function buildSignedRequest({ endpoint, secret, taskId, payload, workflow
   if (bodyBytes.byteLength < 1 || bodyBytes.byteLength > 8192) throw new TypeError("ENVELOPE_SIZE_INVALID");
   const timestamp = String(Math.floor(now / 1000));
   const bodyHash = createHash("sha256").update(bodyBytes).digest("hex");
-  const canonical = [timestamp, nonce, "POST", PATH, bodyHash].join("\n");
+  const canonical = [timestamp, nonce, "POST", path, bodyHash].join("\n");
   const signature = createHmac("sha256", secret).update(canonical).digest("base64");
   return {
     url: url.toString(),
