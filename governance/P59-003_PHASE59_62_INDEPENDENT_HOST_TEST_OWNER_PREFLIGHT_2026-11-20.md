@@ -143,12 +143,12 @@ Never put secret values in issues, commits, logs, reports, or chat. Do not send 
 6. Manually dispatch **Phase 59.62 Independent-host global quota proof** with `confirm_live_test=true`.
 7. The workflow runs one seed job and four independent standard GitHub-hosted runner jobs. Each host job uses a distinct signed `workflowRunId` formed from the workflow run ID and job identity.
 8. The four host jobs each submit one replay of the already-completed sentinel and 25 unique tasks. The four hosts must share the same test-only DO namespaces.
-9. The final job checks the four runner names, four distinct signed run identities, exact response totals, and a read-only budget snapshot.
+9. The final job checks the four runner names, four distinct job-scoped signed identities, exact response totals, and a read-only budget snapshot.
 
 ### Expected result
 
 - Seed task: 1 completed and settled.
-- Cross-run sentinel replays: 4 duplicate suppressions, with no new reservation.
+- Cross-job signed-identity sentinel replays: 4 duplicate suppressions, with no new reservation.
 - Unique attempts: 100.
 - Unique tasks admitted: exactly 7.
 - Unique tasks rejected for exhausted budget: exactly 93.
@@ -157,7 +157,7 @@ Never put secret values in issues, commits, logs, reports, or chat. Do not send 
 - Distinct signed workflow-run identities: 4.
 - Final PlatformBudgetDO snapshot: committed dispatches 8, reserved dispatches 0, uncertain dispatches 0, valid event chain, control RPC count no greater than 500.
 
-The four host jobs are separate GitHub-hosted runner instances with distinct signed workflow-run identities, but they are jobs within one GitHub Actions workflow run. This proves cross-host and cross-run-identity contention. It does not claim four separate GitHub Actions workflow-run IDs.
+The four host jobs are separate GitHub-hosted runner instances with distinct signed workflow-run identities, but they are jobs within one GitHub Actions workflow run. This proves cross-host and cross-job-identity contention. It does not claim four separate GitHub Actions workflow-run IDs.
 
 ## After the test
 
@@ -175,3 +175,8 @@ No Cloudflare account, Worker, Durable Object namespace, GitHub variable, GitHub
 ## Runner identity correction
 
 The four independent GitHub-hosted jobs record the documented `runner.name` context as their host identity. The harness does not rely on an undocumented `runner.id` context property. These remain four runner jobs within one workflow run; they are not four separate GitHub Actions workflow-run IDs.
+
+
+## Phase59.62 host-client hardening addendum
+
+The candidate host client now constructs each attempt payload through a typed helper that includes the validated `runnerName`; this avoids an undefined legacy runner identifier. Dispatch and snapshot response bodies are read through a streaming byte ceiling (16 KiB) before JSON parsing. The manual workflow preflight now independently enforces the same HTTPS `*.workers.dev` host allowlist as the client. Its aggregate proof label is `GLOBAL_CROSS_JOB_CROSS_HOST_QUOTA_PROOF`; it does not claim four distinct GitHub Actions workflow-run IDs.
