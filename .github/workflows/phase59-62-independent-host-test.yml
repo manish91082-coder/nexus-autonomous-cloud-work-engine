@@ -37,6 +37,7 @@ jobs:
           TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
         run: |
           node --input-type=module <<'NODE'
+          import fs from "node:fs";
           const endpoint = process.env.TEST_ENDPOINT || "";
           let validEndpoint = false;
           try {
