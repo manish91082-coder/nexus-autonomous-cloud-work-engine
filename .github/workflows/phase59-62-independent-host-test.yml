@@ -54,7 +54,7 @@ jobs:
           console.log("OWNER_GATE=" + (enabled ? "SATISFIED" : "NOT_SATISFIED"));
           console.log("LIVE_NETWORK_CALLS=" + (enabled ? "DEFERRED_TO_FOUR_HOST_JOBS" : "ZERO"));
           console.log("enabled=" + String(enabled));
-          require("node:fs").appendFileSync(process.env.GITHUB_OUTPUT, "enabled=" + String(enabled) + "\n");
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, "enabled=" + String(enabled) + "\n");
           NODE
 
   seed:
