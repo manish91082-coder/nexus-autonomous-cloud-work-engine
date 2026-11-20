@@ -56,29 +56,27 @@ jobs:
           test "$(node --version)" = "v22.16.0"
           test "$(npm --version)" = "11.6.3"
 
-      - name: Generate candidate lockfile without lifecycle scripts
+      - name: Verify committed lockfile and dependency integrity
         run: |
-          npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+          test -f package-lock.json
+          test "$(sha256sum package-lock.json | cut -d' ' -f1)" = "0e711759dcccb19798a1fe76473a4a665741a91a84747bf4ecda18aaed73d48f"
           node --input-type=module <<'NODE'
           import fs from "node:fs";
-          import crypto from "node:crypto";
-          const raw = fs.readFileSync("package-lock.json");
-          const lock = JSON.parse(raw.toString("utf8"));
+          const lock = JSON.parse(fs.readFileSync("package-lock.json", "utf8"));
           if (lock.lockfileVersion !== 3) throw new Error("LOCKFILE_VERSION_NOT_3");
-          if (lock.packages["node_modules/@cloudflare/vitest-plugin"]?.version !== "1.8.3") throw new Error("PLUGIN_PIN_MISMATCH");
-          if (lock.packages["node_modules/vitest"]?.version !== "4.1.12") throw new Error("VITEST_PIN_MISMATCH");
+          const expected = {
+            "@cloudflare/vitest-plugin": "1.8.3",
+            "vitest": "4.1.12",
+            "workerd": "1.20261116.1",
+            "miniflare": "5.20261116.0-beta"
+          };
+          for (const [name, version] of Object.entries(expected)) {
+            if (lock.packages["node_modules/" + name]?.version !== version) throw new Error("LOCKFILE_PIN_MISMATCH:" + name);
+          }
           const entries = Object.entries(lock.packages).filter(([name]) => name.startsWith("node_modules/"));
           if (entries.some(([, value]) => value.resolved && !value.integrity)) throw new Error("LOCKFILE_INTEGRITY_MISSING");
           if (entries.some(([, value]) => value.resolved && !value.resolved.startsWith("https://registry.npmjs.org/"))) throw new Error("LOCKFILE_NON_REGISTRY_SOURCE");
-          const digest = crypto.createHash("sha256").update(raw).digest("hex");
-          console.log("LOCKFILE_VERSION=" + lock.lockfileVersion);
-          console.log("LOCKFILE_PACKAGE_COUNT=" + entries.length);
-          console.log("LOCKFILE_SHA256=" + digest);
-          console.log("LOCKFILE_WORKERD_VERSION=" + (lock.packages["node_modules/workerd"]?.version || "MISSING"));
-          console.log("LOCKFILE_MINIFLARE_VERSION=" + (lock.packages["node_modules/miniflare"]?.version || "MISSING"));
-          console.log("LOCKFILE_BASE64_BEGIN");
-          console.log(raw.toString("base64"));
-          console.log("LOCKFILE_BASE64_END");
+          console.log("LOCKFILE_VALID packages=" + entries.length);
           NODE
 
       - name: Install exact dependencies with lifecycle scripts disabled
