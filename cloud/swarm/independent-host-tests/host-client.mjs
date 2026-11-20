@@ -71,6 +71,15 @@ function validCompletedBody(body) {
     && summary?.rolesHeld === 10;
 }
 
+export function validateRunnerName(value) {
+  if (typeof value !== "string") throw new TypeError("RUNNER_NAME_INVALID");
+  const name = value.trim();
+  if (!name || name.length > 256 || /[\\u0000-\\u001f\\u007f]/.test(name)) {
+    throw new TypeError("RUNNER_NAME_INVALID");
+  }
+  return name;
+}
+
 export function classifyDispatch(result) {
   const body = result?.body;
   if (result?.httpStatus === 429 && body?.status === "WAITING_FOR_BUDGET") return "denied";
@@ -186,8 +195,7 @@ export async function runHostClient(env = process.env) {
   const duplicateClass = classifyDispatch(duplicateResult);
   if (duplicateClass !== "duplicate") throw new Error("CROSS_RUN_DUPLICATE_NOT_SUPPRESSED");
 
-  const runnerId = String(env.P59_62_RUNNER_ID || env.RUNNER_ID || "");
-  if (!SAFE_ID.test(runnerId)) throw new Error("RUNNER_ID_INVALID");
+  const runnerName = validateRunnerName(env.P59_62_RUNNER_NAME || env.RUNNER_NAME || "");
   const requests = Array.from({ length: attempts }, (_, index) => postDispatch({
     endpoint,
     secret,
@@ -211,7 +219,7 @@ export async function runHostClient(env = process.env) {
   }
   const outputs = {
     ...counts,
-    runner_id: runnerId,
+    runner_name: runnerName,
     workflow_run_identity: workflowRunIdentity
   };
   appendOutputs(outputs);
