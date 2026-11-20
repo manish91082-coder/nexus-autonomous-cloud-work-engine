@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash, createHmac } from "node:crypto";
-import { buildSignedRequest, classifyBudgetSnapshot, classifyDispatch, validateEndpoint, validateRunnerName } from "./host-client.mjs";
+import { buildHostTaskPayload, buildSignedRequest, classifyBudgetSnapshot, classifyDispatch, readBoundedResponseText, validateEndpoint, validateRunnerName } from "./host-client.mjs";
 
 const endpoint = "https://p59-62-test.example.workers.dev/internal/shadow-dispatch";
 const secret = "p59-62-unit-test-ingress-secret-0123456789abcdef";
@@ -133,4 +133,27 @@ test("endpoint host allowlist rejects non-Cloudflare and deceptive suffix hosts"
   assert.throws(() => validateEndpoint("https://workers.dev/internal/shadow-dispatch"));
   assert.throws(() => validateEndpoint("https://workers.dev.attacker.example/internal/shadow-dispatch"));
   assert.throws(() => validateEndpoint("https://custom.example/internal/shadow-dispatch"));
+});
+
+
+test("host task payload binds the validated runner name and bounded attempt index", () => {
+  assert.deepEqual(buildHostTaskPayload({
+    hostId: "runner1",
+    runnerName: "GitHub Actions 42",
+    attemptIndex: 1
+  }), {
+    testSuite: "P59.62",
+    hostId: "runner1",
+    runnerName: "GitHub Actions 42",
+    attemptIndex: 1,
+    evidence_proposals: [],
+    claims: []
+  });
+  assert.throws(() => buildHostTaskPayload({ hostId: "runner1", runnerName: "", attemptIndex: 1 }));
+  assert.throws(() => buildHostTaskPayload({ hostId: "runner1", runnerName: "runner", attemptIndex: 26 }));
+});
+
+test("response body reader enforces a streaming byte ceiling", async () => {
+  assert.equal(await readBoundedResponseText(new Response("ok"), 2), "ok");
+  await assert.rejects(() => readBoundedResponseText(new Response("x".repeat(17)), 16), /RESPONSE_TOO_LARGE/);
 });
