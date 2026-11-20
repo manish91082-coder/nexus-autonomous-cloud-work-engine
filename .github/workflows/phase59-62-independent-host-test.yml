@@ -92,7 +92,7 @@ jobs:
       denied: ${{ steps.host.outputs.denied }}
       duplicates: ${{ steps.host.outputs.duplicates }}
       unexpected: ${{ steps.host.outputs.unexpected }}
-      runner_id: ${{ steps.host.outputs.runner_id }}
+      runner_name: ${{ steps.host.outputs.runner_name }}
       workflow_run_identity: ${{ steps.host.outputs.workflow_run_identity }}
     steps:
       - name: Checkout without persistent credentials
@@ -110,7 +110,7 @@ jobs:
         env:
           P59_62_MODE: host
           P59_62_HOST_ID: runner1
-          P59_62_RUNNER_ID: ${{ runner.id }}
+          P59_62_RUNNER_NAME: ${{ runner.name }}
           P59_62_ATTEMPTS: "25"
           NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
           NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
@@ -126,7 +126,7 @@ jobs:
       denied: ${{ steps.host.outputs.denied }}
       duplicates: ${{ steps.host.outputs.duplicates }}
       unexpected: ${{ steps.host.outputs.unexpected }}
-      runner_id: ${{ steps.host.outputs.runner_id }}
+      runner_name: ${{ steps.host.outputs.runner_name }}
       workflow_run_identity: ${{ steps.host.outputs.workflow_run_identity }}
     steps:
       - name: Checkout without persistent credentials
@@ -144,7 +144,7 @@ jobs:
         env:
           P59_62_MODE: host
           P59_62_HOST_ID: runner2
-          P59_62_RUNNER_ID: ${{ runner.id }}
+          P59_62_RUNNER_NAME: ${{ runner.name }}
           P59_62_ATTEMPTS: "25"
           NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
           NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
@@ -160,7 +160,7 @@ jobs:
       denied: ${{ steps.host.outputs.denied }}
       duplicates: ${{ steps.host.outputs.duplicates }}
       unexpected: ${{ steps.host.outputs.unexpected }}
-      runner_id: ${{ steps.host.outputs.runner_id }}
+      runner_name: ${{ steps.host.outputs.runner_name }}
       workflow_run_identity: ${{ steps.host.outputs.workflow_run_identity }}
     steps:
       - name: Checkout without persistent credentials
@@ -178,7 +178,7 @@ jobs:
         env:
           P59_62_MODE: host
           P59_62_HOST_ID: runner3
-          P59_62_RUNNER_ID: ${{ runner.id }}
+          P59_62_RUNNER_NAME: ${{ runner.name }}
           P59_62_ATTEMPTS: "25"
           NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
           NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
@@ -194,7 +194,7 @@ jobs:
       denied: ${{ steps.host.outputs.denied }}
       duplicates: ${{ steps.host.outputs.duplicates }}
       unexpected: ${{ steps.host.outputs.unexpected }}
-      runner_id: ${{ steps.host.outputs.runner_id }}
+      runner_name: ${{ steps.host.outputs.runner_name }}
       workflow_run_identity: ${{ steps.host.outputs.workflow_run_identity }}
     steps:
       - name: Checkout without persistent credentials
@@ -212,7 +212,7 @@ jobs:
         env:
           P59_62_MODE: host
           P59_62_HOST_ID: runner4
-          P59_62_RUNNER_ID: ${{ runner.id }}
+          P59_62_RUNNER_NAME: ${{ runner.name }}
           P59_62_ATTEMPTS: "25"
           NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
           NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
@@ -241,28 +241,28 @@ jobs:
           H1_DENIED: \${{ needs.host1.outputs.denied }}
           H1_DUPLICATES: \${{ needs.host1.outputs.duplicates }}
           H1_UNEXPECTED: \${{ needs.host1.outputs.unexpected }}
-          H1_RUNNER: \${{ needs.host1.outputs.runner_id }}
+          H1_RUNNER_NAME: \${{ needs.host1.outputs.runner_name }}
           H1_RUN_IDENTITY: \${{ needs.host1.outputs.workflow_run_identity }}
           H2_RESULT: \${{ needs.host2.result }}
           H2_COMPLETED: \${{ needs.host2.outputs.completed }}
           H2_DENIED: \${{ needs.host2.outputs.denied }}
           H2_DUPLICATES: \${{ needs.host2.outputs.duplicates }}
           H2_UNEXPECTED: \${{ needs.host2.outputs.unexpected }}
-          H2_RUNNER: \${{ needs.host2.outputs.runner_id }}
+          H2_RUNNER_NAME: \${{ needs.host2.outputs.runner_name }}
           H2_RUN_IDENTITY: \${{ needs.host2.outputs.workflow_run_identity }}
           H3_RESULT: \${{ needs.host3.result }}
           H3_COMPLETED: \${{ needs.host3.outputs.completed }}
           H3_DENIED: \${{ needs.host3.outputs.denied }}
           H3_DUPLICATES: \${{ needs.host3.outputs.duplicates }}
           H3_UNEXPECTED: \${{ needs.host3.outputs.unexpected }}
-          H3_RUNNER: \${{ needs.host3.outputs.runner_id }}
+          H3_RUNNER_NAME: \${{ needs.host3.outputs.runner_name }}
           H3_RUN_IDENTITY: \${{ needs.host3.outputs.workflow_run_identity }}
           H4_RESULT: \${{ needs.host4.result }}
           H4_COMPLETED: \${{ needs.host4.outputs.completed }}
           H4_DENIED: \${{ needs.host4.outputs.denied }}
           H4_DUPLICATES: \${{ needs.host4.outputs.duplicates }}
           H4_UNEXPECTED: \${{ needs.host4.outputs.unexpected }}
-          H4_RUNNER: \${{ needs.host4.outputs.runner_id }}
+          H4_RUNNER_NAME: \${{ needs.host4.outputs.runner_name }}
           H4_RUN_IDENTITY: \${{ needs.host4.outputs.workflow_run_identity }}
         run: |
           node --input-type=module <<'NODE'
@@ -271,19 +271,19 @@ jobs:
           if (e.SEED_RESULT !== "success" || e.SEED_COMPLETED !== "1") throw new Error("SEED_GATE_FAILED");
           if (!hosts.every(host => e[host + "_RESULT"] === "success")) throw new Error("ONE_OR_MORE_HOST_JOBS_FAILED");
           const sum = key => hosts.reduce((n, host) => n + Number(e[host + "_" + key] || 0), 0);
-          const runners = hosts.map(host => e[host + "_RUNNER"]);
+          const runnerNames = hosts.map(host => e[host + "_RUNNER_NAME"]);
           const runIds = hosts.map(host => e[host + "_RUN_IDENTITY"]);
           const actual = {
             uniqueCompleted: sum("COMPLETED"),
             uniqueDenied: sum("DENIED"),
             duplicateSuppressed: sum("DUPLICATES"),
             unexpected: sum("UNEXPECTED"),
-            distinctRunnerIds: new Set(runners).size,
+            distinctRunnerNames: new Set(runnerNames).size,
             distinctWorkflowRunIdentities: new Set(runIds).size
           };
           const expected = {
             uniqueCompleted: 7, uniqueDenied: 93, duplicateSuppressed: 4,
-            unexpected: 0, distinctRunnerIds: 4, distinctWorkflowRunIdentities: 4
+            unexpected: 0, distinctRunnerNames: 4, distinctWorkflowRunIdentities: 4
           };
           console.log("P59_62_GLOBAL_PROOF " + JSON.stringify({ actual, expected }));
           for (const [key, value] of Object.entries(expected)) {
