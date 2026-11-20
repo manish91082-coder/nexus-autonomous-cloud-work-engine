@@ -32,19 +32,19 @@ function toBase64(bytes) {
   for (const value of new Uint8Array(bytes)) binary += String.fromCharCode(value);
   return btoa(binary);
 }
-async function dispatchThroughService(input, corruptSignature = false) {
+async function dispatchThroughService(input, corruptSignature = false, path = "/internal/shadow-dispatch") {
   const body = JSON.stringify(input);
   const timestamp = String(Math.floor(Date.now() / 1000));
   const nonce = crypto.randomUUID();
   const bodyHash = toHex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(body)));
-  const canonical = [timestamp, nonce, "POST", "/internal/shadow-dispatch", bodyHash].join("\n");
+  const canonical = [timestamp, nonce, "POST", path, bodyHash].join("\n");
   const key = await crypto.subtle.importKey(
     "raw", new TextEncoder().encode(dispatcherIngressSecret),
     { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
   );
   const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(canonical));
   const response = await env.P10CR_MISSION_DISPATCHER.fetch(new Request(
-    "https://p10cr-mission-dispatcher.internal/internal/shadow-dispatch",
+    "https://p10cr-mission-dispatcher.internal" + path,
     {
       method: "POST",
       headers: {
@@ -151,6 +151,35 @@ describe("Phase 59.58 durable mission dispatcher + specialist graph", () => {
     expect(final.tasks[0].result_run_id).toBe(resumed.runId);
     expect(final.checkpoints[0].checkpoint_seq).toBe(2);
     expect(final.eventChainValid).toBe(true);
+  });
+
+  it("exposes only a read-only aggregate budget snapshot in explicit test mode", async () => {
+    const taskId = "p59-62-budget-snapshot-readback";
+    const before = await rpc(runStub(), "snapshot", { taskId });
+    const result = await dispatchThroughService({
+      projectId: "P10CR",
+      taskType: "P59_003_BUDGET_SNAPSHOT",
+      taskId,
+      workflowRunId: "p59-62-snapshot-run",
+      payload: {}
+    }, false, "/internal/shadow-budget-snapshot");
+    expect(result.httpStatus).toBe(200);
+    expect(result.status).toBe("BUDGET_SNAPSHOT");
+    expect(result.eventChainValid).toBe(true);
+    expect(result.reservedDispatches).toBe(0);
+    expect(result.uncertainDispatches).toBe(0);
+    expect(result.committedDispatches).toBeGreaterThanOrEqual(0);
+    expect(result.controlBudgetRpcRequests).toBeGreaterThan(0);
+    expect(result.eventCount).toBeGreaterThan(0);
+    expect(result.lastEventHash).toMatch(/^[a-f0-9]{64}$/);
+    expect(Object.keys(result).sort()).toEqual([
+      "committedDispatches","controlBudgetRpcRequests","eventChainValid","eventCount",
+      "httpStatus","lastEventHash","reservedDispatches","status","uncertainDispatches"
+    ].sort());
+    const after = await rpc(runStub(), "snapshot", { taskId });
+    expect(after.tasks.some(task => task.task_id === taskId)).toBe(false);
+    expect(after.tasks.length).toBe(before.tasks.length);
+    expect(after.eventChainValid).toBe(true);
   });
 
   it("does not grant owner approval to the compute dispatcher identity", async () => {

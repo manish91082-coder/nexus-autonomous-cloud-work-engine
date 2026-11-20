@@ -3317,7 +3317,7 @@
       "depends_on": [],
       "idempotency_key": "phase59-autonomous-swarm-foundation-v1",
       "owner_gate": false,
-      "last_updated": "2026-11-19",
+      "last_updated": "2026-11-20",
       "acceptance": [
         "Complete source-level inventory of every .github/workflows file, mission runtime script, dependencies, triggers, permissions, secrets references and state writes before editing existing automation.",
         "Map existing deterministic worker, continuity guard, queue poller, AI executor stub and all current workflow run outcomes; verify exact HEAD and no-regression boundary.",
@@ -3332,13 +3332,13 @@
         "Integrate the account-scope budget into the P59-003 shadow dispatcher: reserve before task registration/claim, settle only after durable completion readback, preserve UNCERTAIN on ambiguous outcomes, and reject budget exhaustion before task registration."
       ],
       "evidence": {
-        "report": "research/PHASE_59_8_ZERO_COST_AUTONOMOUS_MULTI_AGENT_SWARM_FEASIBILITY_2026-11-14.md",
+        "report": "research/PHASE_59_62_DEPENDENCY_HARDENING_AND_INDEPENDENT_HOST_PREFLIGHT_2026-11-20.md",
         "decision": "GO_STAGED_ZERO_COST_FIRST_HYBRID_SWARM_ARCHITECTURE",
         "architecture": "DETERMINISTIC_ORCHESTRATOR_PLUS_SPECIALIST_LLM_WORKERS_PLUS_EVIDENCE_CRITIC_PLUS_HUMAN_GATES",
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Phase59.62: prepare the independent-host test harness and owner preflight; pin the Cloudflare/Vitest test dependencies and add a lockfile. Keep live endpoint tests disabled until the owner verifies an existing Workers Free account, account-wide usage and the shared P10CR Durable Object namespace. Then run four independent standard GitHub-hosted runners, prove shared lease/quota/fencing behavior, and only after that start the bounded 7-day and 30-day soak.",
+        "next": "Phase59.63 code-only: build and test the separate-workflow-run plus cross-repository manual harness, then prepare owner packet. Live execution remains owner-gated. Only after live proof begin 7-day and 30-day soak.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -4293,7 +4293,31 @@
           "ambiguous_settlement_idempotent": true,
           "checkpoint_recovery": true,
           "physical_multi_host_proven": false
-        }
+        },
+        "owner_packet": "governance/P59-003_PHASE59_62_INDEPENDENT_HOST_TEST_OWNER_PREFLIGHT_2026-11-20.md",
+        "candidate_branch": "phase59-62-dependency-hardening",
+        "candidate_code_head": "7d0003ca4e8b3587db687ff7acd44013ef7f6413",
+        "pr_number": 47,
+        "pr_state": "DRAFT_OPEN_UNMERGED",
+        "exact_head_ci": {
+          "phase59_35_run_id": 44668866363,
+          "phase59_35_status": "SUCCESS_11_OF_11_OFFLINE_AND_STATIC_WORKFLOW_TESTS_YAML_PASS_83_OF_83_WORKERS_RUNTIME",
+          "phase59_62_run_id": 44668896223,
+          "phase59_62_status": "SUCCESS_4_OF_4_DEDICATED_AND_83_OF_83_FULL_REGRESSION",
+          "phase59_60_run_id": 44668894692,
+          "phase59_60_status": "SUCCESS",
+          "phase59_56_run_id": 44668863252,
+          "phase59_56_status": "SUCCESS"
+        },
+        "mission_worker_run_id": 44668440802,
+        "mission_worker_status": "SUCCESS_POLL_OK_SELECTED_P59_003_AI_WAITING_FOR_OWNER_CONFIGURATION_NO_INFERENCE",
+        "continuity_guard_run_id": 44668482610,
+        "continuity_guard_status": "SUCCESS_111_CHECKS_ZERO_ERRORS",
+        "live_host_payload_builder": "buildHostTaskPayload; runnerName included; attempt index bounded",
+        "response_body_limit_bytes": 16384,
+        "workflow_preflight": "HTTPS *.workers.dev allowlist; no port, credentials, query or fragment; exact path",
+        "workflow_aggregate_identity": "distinctJobScopedRunIdentities; four jobs in one run, not four Actions run IDs",
+        "phase59_63_next": "Implement a manual-only owner-gated seed/host/snapshot protocol: one seed run, four separately dispatched host runs using actual GITHUB_RUN_ID values, two fixed synthetic P10CR repository aliases, one shared test-only Durable Object namespace, one read-only snapshot run. No Actions write token or automated dispatch."
       },
       "blocker": "Remaining P59-003 acceptance gates: owner review/merge of stacked PR #44, #45 and #46; branch ruleset and required-review configuration; owner-approved least-privilege GitHub App creation/installation and scoped-token test; owner verification of existing Cloudflare Workers Free plan and aggregate account usage; independent physical-host atomicity; dependency lockfile/exact package pins and mutable action SHA hardening; 7-day and 30-day soak. Phase59.61 dispatcher budget integration passed final candidate CI but remains shadow-only and undeployed. Keep production flags OFF and AI inference disabled.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task.",
@@ -4341,11 +4365,11 @@
     }
   ],
   "dead_letter": [],
-  "updated_at": "2026-11-19",
+  "updated_at": "2026-11-20",
   "current_task": "P59-003",
-  "last_updated": "2026-11-19",
-  "sequence_note": "Phase59.62: prepare the independent-host test harness and owner preflight; pin the Cloudflare/Vitest test dependencies and add a lockfile. Keep live endpoint tests disabled until the owner verifies an existing Workers Free account, account-wide usage and the shared P10CR Durable Object namespace. Then run four independent standard GitHub-hosted runners, prove shared lease/quota/fencing behavior, and only after that start the bounded 7-day and 30-day soak.",
-  "last_reconciled_from_mission_state": "2026-11-19: Master HEAD 8856bf908f93e265cefd5c739f7f46b3dd995b3c. Candidate code head c2ef92ae6b7695d349d7f8b385caec1b874e38eb. Phase59.60 runtime CI #44451300718 SUCCESS 6/6; AI safety Mission Worker #520/#44451293770 SUCCESS, 5/5 AI tests. P59-003 sole active P0.",
+  "last_updated": "2026-11-20",
+  "sequence_note": "Phase59.62 final code/test head 7d0003ca PASS: 11/11 offline host-client/static workflow tests; YAML syntax PASS; lockfile valid (165 packages); 83/83 Workers runtime; 4/4 dispatcher integration; 83/83 full regression; Phase59.60 and Phase59.56 exact-head workflows PASS. Source audit fixed undefined runnerId payload, added streaming 16 KiB response bound, enforced workers.dev preflight allowlist and aligned aggregate identity keys. Live host test remains owner-gated. Next Phase59.63: manual-only one seed run + four separately dispatched host workflow runs using actual GITHUB_RUN_ID values + two synthetic P10CR repository aliases + one shared test-only DO + one read-only snapshot. No Actions write token or automated dispatch. Keep P59-001 PAUSED and P59-002 BLOCKED; no revenue research.",
+  "last_reconciled_from_mission_state": "cfea7ecd0c97203568fbbf0c6d220dc4fa1d5e3b",
   "phase59_46": {
     "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
     "pr_number": 27,
@@ -4790,5 +4814,36 @@
     "budget_exhaustion_blocks_registration": true,
     "checkpoint_recovery": true,
     "physical_multi_host_proven": false
+  },
+  "phase59_62": {
+    "report": "research/PHASE_59_62_DEPENDENCY_HARDENING_AND_INDEPENDENT_HOST_PREFLIGHT_2026-11-20.md",
+    "status": "CODE_AND_OFFLINE_TESTS_PASS_OWNER_GATED_LIVE_MULTI_RUN_CROSS_REPO_PENDING",
+    "branch": "phase59-62-dependency-hardening",
+    "candidate_code_head": "7d0003ca4e8b3587db687ff7acd44013ef7f6413",
+    "pr_number": 47,
+    "tests": {
+      "host_client_and_workflow_contract": "11/11",
+      "workflow_yaml": "PASS",
+      "lockfile_packages": 165,
+      "workers_runtime": "83/83",
+      "dispatcher_integration": "4/4",
+      "full_regression": "83/83",
+      "phase59_60": "PASS",
+      "phase59_56": "PASS"
+    },
+    "live_test_started": false,
+    "owner_gate_required": true,
+    "physical_multi_host_proven": false,
+    "seven_day_soak_started": false,
+    "thirty_day_soak_started": false,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0
+  },
+  "phase59_63": {
+    "status": "PLANNED_NOT_STARTED",
+    "objective": "True separate Actions workflow-run ID and cross-repository hosted test with one seed, four host runs, two synthetic repository aliases, one shared test-only Durable Object and one read-only snapshot",
+    "owner_gate_required": true,
+    "actions_write_token": false,
+    "automated_dispatch": false
   }
 }

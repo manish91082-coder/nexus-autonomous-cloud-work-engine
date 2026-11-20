@@ -190,3 +190,17 @@ Repository organisation and classifications are recorded in `REPOSITORY_SCOPE_AN
 7. Do not count unverified revenue, projected MRR, GMV, gross sales before deductions, downloads, users, free credits, self-purchases, grants or promotional credits as PCNE. Existing V4 revenue-recognition and compliance rules remain unchanged.
 8. Constraints remain in force: zero new spend by default; explicit owner approval for spend, accounts, KYC, legal terms and public releases; no employment/manual gig bidding, cold outreach, spam, fake traffic, unauthorized data use, recurring manual fulfilment or policy evasion.
 9. The portfolio source ranking is a living artifact. Refresh it after material evidence, actual sales, platform policy changes or a source-level NO-GO. Record concentration risk and do not overstate diversification where streams depend on the same buyer, platform or acquisition channel.
+
+
+---
+
+## Owner execution directive — 2026-11-20
+
+This dated owner directive supersedes only any stale current-execution pointer elsewhere in this plan. It does not change the ₹10 Cr mission objective, zero-spend default, evidence requirements, or safety boundaries.
+
+- **P59-003 is the sole active P0** until every swarm-foundation acceptance gate is independently verified.
+- **P59-001 remains PAUSED.**
+- **P59-002 remains BLOCKED.**
+- No revenue-source ranking, product discovery, unrelated asset discovery, or commercial activation may be restarted while P59-003 is active.
+- P59-001 may resume only after P59-003 acceptance gates pass and the owner-approved transition is recorded in the canonical queue, mission state, federation registry, and continuity file.
+- Cloud-only execution, ₹0 spend by default, AI inference disabled, read-only compute, constrained publisher, durable leases/fencing/checkpoints, and owner-only protected actions remain mandatory.

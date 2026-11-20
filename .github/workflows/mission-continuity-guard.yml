@@ -33,6 +33,8 @@ jobs:
     steps:
       - name: Checkout canonical state
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 (Node 24)
+        with:
+          persist-credentials: false
       - name: Validate mission state and queue
         run: python3 scripts/mission_guard.py
       - name: Preserve machine-readable run report

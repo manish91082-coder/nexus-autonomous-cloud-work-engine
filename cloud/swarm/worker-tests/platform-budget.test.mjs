@@ -88,6 +88,25 @@ describe("Phase 59.60 account-scope platform budget", () => {
     expect(state.reserved.dispatches).toBe(1);
   });
 
+  it("accepts P59.62 and suppresses a retry across distinct workflow runs", async () => {
+    const first = await call(bindingA(), "reserve", base(
+      "synthetic-org/p10cr-shadow-repo-a", "phase59-62-cross-run-execution", "phase59-62-run-a",
+      { phaseId: "P59.62" }
+    ));
+    expect(first.status).toBe("RESERVED");
+    const retry = await call(bindingB(), "reserve", base(
+      "synthetic-org/p10cr-shadow-repo-a", "phase59-62-cross-run-execution", "phase59-62-run-b",
+      { phaseId: "P59.62" }
+    ));
+    expect(retry.status).toBe("DUPLICATE_RESERVATION");
+    expect(retry.reservationId).toBe(first.reservationId);
+    const state = await snapshot();
+    expect(state.reservations).toHaveLength(1);
+    expect(state.reservations[0].workflowRunId).toBe("phase59-62-run-a");
+    expect(state.reserved.dispatches).toBe(1);
+    expect(state.eventChainValid).toBe(true);
+  });
+
   it("enforces fencing and lease-version progression before settlement", async () => {
     const created = await call(bindingA(), "reserve", base(
       "synthetic-org/p10cr-shadow-repo-a", "fenced-execution", "workflow-run-fence"
@@ -163,7 +182,7 @@ describe("Phase 59.60 account-scope platform budget", () => {
     const cases = [
       base("synthetic-org/p10cr-shadow-repo-a", "bad-project", "run-a", { projectId: "OTHER" }),
       base("synthetic-org/p10cr-shadow-repo-a", "bad-task", "run-b", { taskId: "P59-001" }),
-      base("synthetic-org/p10cr-shadow-repo-a", "bad-phase", "run-c", { phaseId: "P59.61" }),
+      base("synthetic-org/p10cr-shadow-repo-a", "bad-phase", "run-c", { phaseId: "P59.63" }),
       base("synthetic-org/p10cr-shadow-repo-a", "bad-operation", "run-d", { operationId: "unknown" })
     ];
     for (const input of cases) {

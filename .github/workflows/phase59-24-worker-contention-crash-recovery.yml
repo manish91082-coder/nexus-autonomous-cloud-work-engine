@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: Checkout phase branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Compile control-plane modules
         run: python3 -m py_compile scripts/federation_git_ref_store.py scripts/federation_quota_arbiter.py scripts/github_api_quota_guard.py
       - name: Run 8-worker contention, duplicate-delivery and crash-recovery tests
