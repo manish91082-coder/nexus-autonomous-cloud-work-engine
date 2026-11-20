@@ -43,7 +43,9 @@ jobs:
           try {
             const url = new URL(endpoint);
             validEndpoint = url.protocol === "https:" &&
-              !url.username && !url.password && !url.search && !url.hash &&
+              !url.username && !url.password && !url.search && !url.hash && !url.port &&
+              url.hostname.toLowerCase().endsWith(".workers.dev") &&
+              url.hostname.toLowerCase() !== "workers.dev" &&
               url.pathname === "/internal/shadow-dispatch";
           } catch {}
           const enabled = process.env.CONFIRM_LIVE_TEST === "true" &&
@@ -232,7 +234,7 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22.16.0
-      - name: Verify cross-run global quota and independent runner outcomes
+      - name: Verify cross-job global quota and independent runner outcomes
         env:
           SEED_RESULT: ${{ needs.seed.result }}
           SEED_COMPLETED: ${{ needs.seed.outputs.seed_completed }}
@@ -279,7 +281,7 @@ jobs:
             duplicateSuppressed: sum("DUPLICATES"),
             unexpected: sum("UNEXPECTED"),
             distinctRunnerNames: new Set(runnerNames).size,
-            distinctWorkflowRunIdentities: new Set(runIds).size
+            distinctJobScopedRunIdentities: new Set(runIds).size
           };
           const expected = {
             uniqueCompleted: 7, uniqueDenied: 93, duplicateSuppressed: 4,
@@ -289,7 +291,7 @@ jobs:
           for (const [key, value] of Object.entries(expected)) {
             if (actual[key] !== value) throw new Error("GLOBAL_PROOF_MISMATCH:" + key);
           }
-          console.log("GLOBAL_CROSS_RUN_CROSS_HOST_QUOTA_PROOF=PASS");
+          console.log("GLOBAL_CROSS_JOB_CROSS_HOST_QUOTA_PROOF=PASS");
           NODE
       - name: Read back shared Durable Object global budget snapshot
         env:
