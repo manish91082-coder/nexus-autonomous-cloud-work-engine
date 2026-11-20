@@ -2,7 +2,7 @@ name: Phase 59.35 Cloudflare Workers SQLite Durable Object Runtime Tests
 
 on:
   push:
-    branches: [master, phase59-35-quota-do-runtime-tests, phase59-36-cross-worker-caller, phase59-37-internal-caller-auth, phase59-39-transactional-telemetry-ingestion, phase59-40-telemetry-driven-admission, phase59-41-quota-client-lifecycle, phase59-42-secondary-rate-limit-controller, phase59-43-lease-renewal-uncertain-reconciliation, phase59-44-read-only-shadow-worker, phase59-53-project-cell-durable-swarm-ledger, phase59-58-durable-dispatcher-shadow-integration]
+    branches: [master, phase59-35-quota-do-runtime-tests, phase59-36-cross-worker-caller, phase59-37-internal-caller-auth, phase59-39-transactional-telemetry-ingestion, phase59-40-telemetry-driven-admission, phase59-41-quota-client-lifecycle, phase59-42-secondary-rate-limit-controller, phase59-43-lease-renewal-uncertain-reconciliation, phase59-44-read-only-shadow-worker, phase59-53-project-cell-durable-swarm-ledger, phase59-58-durable-dispatcher-shadow-integration, phase59-61-budget-dispatcher-integration, phase59-62-dependency-hardening]
     paths:
       - 'cloud/swarm/quota-ledger-do.mjs'
       - 'cloud/swarm/swarm-run-do.mjs'
@@ -23,7 +23,7 @@ on:
       - 'cloud/swarm/worker-tests/**'
       - '.github/workflows/phase59-35-quota-do-runtime-tests.yml'
   pull_request:
-    branches: [master, phase59-57-constrained-publisher-separation]
+    branches: [master, phase59-57-constrained-publisher-separation, phase59-61-budget-dispatcher-integration, phase59-62-dependency-hardening]
   workflow_dispatch:
 
 permissions:
@@ -43,7 +43,56 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Install isolated test dependencies
-        run: npm install --no-audit --no-fund
+      - name: Set up exact Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22.16.0
+
+      - name: Pin npm CLI without running lifecycle scripts
+        run: |
+          npm install --global npm@11.6.3 --ignore-scripts --no-audit --no-fund
+          test "$(node --version)" = "v22.16.0"
+          test "$(npm --version)" = "11.6.3"
+
+      - name: Generate lockfile only when absent
+        run: |
+          if [ ! -f package-lock.json ]; then
+            npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+          fi
+          test -f package-lock.json
+
+      - name: Install from exact lockfile with lifecycle scripts disabled
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Validate and emit lockfile evidence for first commit
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          import crypto from "node:crypto";
+          const raw = fs.readFileSync("package-lock.json");
+          const lock = JSON.parse(raw.toString("utf8"));
+          const root = lock.packages?.[""];
+          const expected = { "@cloudflare/vitest-plugin": "1.7.0", "vitest": "4.1.12" };
+          if (lock.lockfileVersion !== 3) throw new Error("LOCKFILE_VERSION_NOT_3");
+          for (const [name, version] of Object.entries(expected)) {
+            if (root?.devDependencies?.[name] !== version) throw new Error("ROOT_PIN_MISMATCH:" + name);
+            if (lock.packages["node_modules/" + name]?.version !== version) throw new Error("RESOLVED_VERSION_MISMATCH:" + name);
+          }
+          const entries = Object.entries(lock.packages || {}).filter(([name]) => name.startsWith("node_modules/"));
+          const missingIntegrity = entries.filter(([, value]) => value.resolved && !value.integrity);
+          if (missingIntegrity.length) throw new Error("MISSING_INTEGRITY:" + missingIntegrity.slice(0, 5).map(([name]) => name).join(","));
+          const nonRegistry = entries.filter(([, value]) => value.resolved && !value.resolved.startsWith("https://registry.npmjs.org/"));
+          if (nonRegistry.length) throw new Error("NON_NPM_REGISTRY_RESOLUTION:" + nonRegistry.slice(0, 5).map(([name]) => name).join(","));
+          const digest = crypto.createHash("sha256").update(raw).digest("hex");
+          const encoded = raw.toString("base64");
+          if (encoded.length > 700000) throw new Error("LOCKFILE_LOG_PAYLOAD_TOO_LARGE");
+          console.log("LOCKFILE_VERSION=" + lock.lockfileVersion);
+          console.log("LOCKFILE_PACKAGE_COUNT=" + entries.length);
+          console.log("LOCKFILE_SHA256=" + digest);
+          console.log("LOCKFILE_BASE64_BEGIN");
+          console.log(encoded);
+          console.log("LOCKFILE_BASE64_END");
+          NODE
+
       - name: Run Cloudflare Workers runtime tests
         run: npm test
