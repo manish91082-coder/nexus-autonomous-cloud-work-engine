@@ -53,7 +53,7 @@ jobs:
       - name: Require committed lockfile and install exact dependencies
         run: |
           test -f package-lock.json
-          test "$(sha256sum package-lock.json | cut -d' ' -f1)" = "9c2f655c6230decf204b65fd6278e1ac45d0851f3ed0544bcbc16ab94694d914"
+          test "$(sha256sum package-lock.json | cut -d' ' -f1)" = "0e711759dcccb19798a1fe76473a4a665741a91a84747bf4ecda18aaed73d48f"
           npm ci --ignore-scripts --no-audit --no-fund
       - name: Run account-scope platform budget tests
         run: npx vitest run --config platform-budget.vitest.config.mjs
