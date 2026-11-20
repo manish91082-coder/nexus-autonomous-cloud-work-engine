@@ -128,7 +128,7 @@ Only after the Cloudflare test Worker and both test-only namespaces have been in
 
 And these repository secrets:
 
-- `P59_003_TEST_DISPATCH_ENDPOINT`: full HTTPS URL ending exactly in `/internal/shadow-dispatch`.
+- `P59_003_TEST_DISPATCH_ENDPOINT`: full HTTPS URL on the exact `*.workers.dev` hostname family, without a custom port, credentials, query or fragment, ending exactly in `/internal/shadow-dispatch`.
 - `P59_003_TEST_INGRESS_SECRET`: same value as the test dispatcher's `NEXUS_DISPATCHER_INGRESS_SECRET`.
 
 Never put secret values in issues, commits, logs, reports, or chat. Do not send passwords, OTPs, cookies, recovery codes, or private keys.
