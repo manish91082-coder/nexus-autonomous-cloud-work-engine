@@ -174,7 +174,7 @@ describe("Phase 59.58 durable mission dispatcher + specialist graph", () => {
     expect(result.lastEventHash).toMatch(/^[a-f0-9]{64}$/);
     expect(Object.keys(result).sort()).toEqual([
       "committedDispatches","controlBudgetRpcRequests","eventChainValid","eventCount",
-      "lastEventHash","reservedDispatches","status","uncertainDispatches"
+      "httpStatus","lastEventHash","reservedDispatches","status","uncertainDispatches"
     ].sort());
     const after = await rpc(runStub(), "snapshot", { taskId });
     expect(after.tasks.some(task => task.task_id === taskId)).toBe(false);
