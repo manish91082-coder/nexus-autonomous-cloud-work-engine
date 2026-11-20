@@ -42,7 +42,7 @@ async function readBounded(request, maximum) {
   }
   return bytes;
 }
-async function verifyIngress(request, bytes, env) {
+async function verifyIngress(request, bytes, env, path) {
   const timestampText = request.headers.get("x-nexus-dispatcher-timestamp") || "";
   const nonce = request.headers.get("x-nexus-dispatcher-nonce") || "";
   const signatureText = request.headers.get("x-nexus-dispatcher-signature") || "";
@@ -58,7 +58,7 @@ async function verifyIngress(request, bytes, env) {
   let supplied;
   try { supplied = fromBase64(signatureText); } catch { return { ok: false, status: 401, reason: "INGRESS_SIGNATURE_INVALID" }; }
   const bodyHash = hex(await crypto.subtle.digest("SHA-256", bytes));
-  const canonical = [timestampText, nonce, "POST", "/internal/shadow-dispatch", bodyHash].join("\n");
+  const canonical = [timestampText, nonce, "POST", path, bodyHash].join("\n");
   const key = await crypto.subtle.importKey("raw", encoder.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["verify"]);
   const valid = await crypto.subtle.verify("HMAC", key, supplied, encoder.encode(canonical));
   return valid ? { ok: true } : { ok: false, status: 401, reason: "INGRESS_SIGNATURE_MISMATCH" };
@@ -66,7 +66,10 @@ async function verifyIngress(request, bytes, env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (request.method !== "POST" || url.pathname !== "/internal/shadow-dispatch") return response(404, { status: "NOT_FOUND" });
+    const dispatchPath = "/internal/shadow-dispatch";
+    const snapshotPath = "/internal/shadow-budget-snapshot";
+    if (request.method !== "POST" || ![dispatchPath, snapshotPath].includes(url.pathname)) return response(404, { status: "NOT_FOUND" });
+    if (url.pathname === snapshotPath && env?.NEXUS_SHADOW_TEST_MODE !== "true") return response(404, { status: "NOT_FOUND" });
     if (env?.NEXUS_MISSION_SHADOW_ENABLED !== "true") {
       return response(503, { status: "WAITING_FOR_OWNER_CONFIGURATION", reason: "SHADOW_DISPATCH_DISABLED" });
     }
@@ -88,10 +91,38 @@ export default {
       return response(reason === "BODY_SIZE_INVALID" ? 413 : 400, { status: "REJECTED", reason });
     }
     if (bytes.byteLength < 1) return response(400, { status: "REJECTED", reason: "ENVELOPE_SIZE_INVALID" });
-    const auth = await verifyIngress(request, bytes, env);
+    const auth = await verifyIngress(request, bytes, env, url.pathname);
     if (!auth.ok) return response(auth.status, { status: "REJECTED", reason: auth.reason });
     let body;
     try { body = JSON.parse(new TextDecoder().decode(bytes)); } catch { return response(400, { status: "REJECTED", reason: "INVALID_JSON" }); }
+    if (url.pathname === snapshotPath) {
+      if (!body || typeof body !== "object" || Array.isArray(body)
+        || body.projectId !== "P10CR" || body.taskType !== "P59_003_BUDGET_SNAPSHOT"
+        || typeof body.taskId !== "string" || !SAFE_ID.test(body.taskId)
+        || typeof body.workflowRunId !== "string" || !SAFE_ID.test(body.workflowRunId)
+        || !body.payload || typeof body.payload !== "object" || Array.isArray(body.payload)) {
+        return response(403, { status: "REJECTED", reason: "BUDGET_SNAPSHOT_ENVELOPE_NOT_AUTHORIZED" });
+      }
+      try {
+        const budgetRpc = createPlatformBudgetRpc(env.PLATFORM_BUDGET, env);
+        const snapshot = await budgetRpc("snapshot", {});
+        if (snapshot.httpStatus !== 200 || snapshot.status !== "SNAPSHOT") {
+          return response(409, { status: "BUDGET_SNAPSHOT_UNVERIFIED" });
+        }
+        return response(200, {
+          status: "BUDGET_SNAPSHOT",
+          committedDispatches: snapshot.committed?.dispatches ?? 0,
+          reservedDispatches: snapshot.reserved?.dispatches ?? 0,
+          uncertainDispatches: snapshot.uncertain?.dispatches ?? 0,
+          controlBudgetRpcRequests: snapshot.control?.budget_rpc_requests ?? 0,
+          eventChainValid: snapshot.eventChainValid === true,
+          eventCount: snapshot.eventCount ?? 0,
+          lastEventHash: snapshot.lastEventHash ?? null
+        });
+      } catch (error) {
+        return response(409, { status: "BUDGET_SNAPSHOT_UNVERIFIED", reason: String(error?.message || "SNAPSHOT_FAILED").slice(0, 128) });
+      }
+    }
     if (!body || typeof body !== "object" || Array.isArray(body)
       || body.projectId !== "P10CR" || body.taskType !== "P59_003_SHADOW_DISPATCH"
       || typeof body.taskId !== "string" || !SAFE_ID.test(body.taskId)
