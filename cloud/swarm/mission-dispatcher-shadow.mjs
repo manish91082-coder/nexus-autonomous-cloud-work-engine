@@ -5,11 +5,11 @@
 import { runDeterministicSpecialistGraph } from "./specialist-graph.mjs";
 const encoder = new TextEncoder();
 const TASK_TYPE = "P59_003_SHADOW_DISPATCH";
-const BUDGET_PHASE = "P59.62";
+const BUDGET_PHASE = "P59.61";
 const BUDGET_OPERATION = "p10cr.shadow.dispatch.v1";
 const CANONICAL_REPOSITORY = "manish91082-coder/nexus-autonomous-cloud-work-engine";
 const POLICY = {
-  policyVersion: "P59.62-DISPATCH-POLICY-1", projectId: "P10CR", taskType: TASK_TYPE,
+  policyVersion: "P59.61-DISPATCH-POLICY-1", projectId: "P10CR", taskType: TASK_TYPE,
   specialistGraph: "P59.58.SPECIALIST_GRAPH_V1", modelInference: false,
   externalNetwork: false, codeExecution: false, repositoryWrite: false,
   publication: false, payments: false, ownerApproval: false
