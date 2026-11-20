@@ -55,7 +55,7 @@ test("snapshot endpoint is separately path-bound and HMAC signed", () => {
     request.headers["x-nexus-dispatcher-timestamp"],
     request.headers["x-nexus-dispatcher-nonce"],
     "POST", snapshotPath, bodyHash
-  ].join("\\n");
+  ].join("\n");
   const expected = createHmac("sha256", secret).update(canonical).digest("base64");
   assert.equal(request.headers["x-nexus-dispatcher-signature"], expected);
 });
