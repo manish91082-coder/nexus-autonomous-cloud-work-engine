@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
 
 const PATH = "/internal/shadow-dispatch";
+const SNAPSHOT_PATH = "/internal/shadow-budget-snapshot";
 const SAFE_ID = /^[A-Za-z0-9._:-]{1,128}$/;
 const SENTINEL_TASK_ID = "p59-62-global-idempotency-sentinel";
 const SENTINEL_PAYLOAD = Object.freeze({
@@ -13,10 +14,10 @@ const SENTINEL_PAYLOAD = Object.freeze({
   claims: []
 });
 
-export function validateEndpoint(value) {
+export function validateEndpoint(value, expectedPath = PATH) {
   let url;
   try { url = new URL(value); } catch { throw new TypeError("TEST_ENDPOINT_INVALID_URL"); }
-  if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash || url.pathname !== PATH) {
+  if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash || url.pathname !== expectedPath) {
     throw new TypeError("TEST_ENDPOINT_MUST_BE_HTTPS_INTERNAL_PATH_WITHOUT_CREDENTIALS_QUERY_OR_FRAGMENT");
   }
   return url;
@@ -31,7 +32,7 @@ export function buildSignedRequest({ endpoint, secret, taskId, payload, workflow
 
   const body = JSON.stringify({
     projectId: "P10CR",
-    taskType: "P59_003_SHADOW_DISPATCH",
+    taskType,
     taskId,
     workflowRunId,
     payload
@@ -97,6 +98,38 @@ async function postDispatch({ endpoint, secret, taskId, payload, workflowRunId }
   return { httpStatus: response.status, body };
 }
 
+async function postSnapshot({ endpoint, secret, workflowRunId }) {
+  const signed = buildSignedRequest({
+    endpoint, secret, taskId: "p59-62-budget-snapshot-readback",
+    taskType: "P59_003_BUDGET_SNAPSHOT", path: SNAPSHOT_PATH,
+    payload: {}, workflowRunId
+  });
+  const response = await fetch(signed.url, {
+    method: "POST", headers: signed.headers, body: signed.body,
+    signal: AbortSignal.timeout(30000)
+  });
+  const raw = await response.text();
+  if (raw.length > 16384) throw new Error("SNAPSHOT_RESPONSE_TOO_LARGE");
+  let body;
+  try { body = JSON.parse(raw); } catch { throw new Error("SNAPSHOT_RESPONSE_NOT_JSON"); }
+  return { httpStatus: response.status, body };
+}
+
+export function classifyBudgetSnapshot(result) {
+  const body = result?.body;
+  return result?.httpStatus === 200
+    && body?.status === "BUDGET_SNAPSHOT"
+    && body?.committedDispatches === 8
+    && body?.reservedDispatches === 0
+    && body?.uncertainDispatches === 0
+    && body?.eventChainValid === true
+    && Number.isInteger(body?.eventCount) && body.eventCount > 0
+    && Number.isInteger(body?.controlBudgetRpcRequests)
+    && body.controlBudgetRpcRequests > 0 && body.controlBudgetRpcRequests <= 500
+    && /^[a-f0-9]{64}$/.test(body?.lastEventHash || "")
+    ? "pass" : "unexpected";
+}
+
 function appendOutputs(values) {
   const target = process.env.GITHUB_OUTPUT;
   if (!target) return;
@@ -112,7 +145,7 @@ export async function runHostClient(env = process.env) {
   const workflowRunIdentity = String(env.GITHUB_RUN_ID || "") + ":" + String(env.GITHUB_JOB || "");
   if (!SAFE_ID.test(workflowRunIdentity)) throw new Error("WORKFLOW_RUN_IDENTITY_INVALID");
 
-  if (mode === "seed") {
+  if (mode === "snapshot") {\n    const snapshotUrl = new URL(endpoint);\n    snapshotUrl.pathname = SNAPSHOT_PATH;\n    const result = await postSnapshot({ endpoint: snapshotUrl.toString(), secret, workflowRunId: workflowRunIdentity });\n    if (classifyBudgetSnapshot(result) !== "pass") throw new Error("GLOBAL_BUDGET_SNAPSHOT_RECONCILIATION_FAILED");\n    const outputs = { snapshot_committed_dispatches: result.body.committedDispatches, snapshot_reserved_dispatches: result.body.reservedDispatches, snapshot_uncertain_dispatches: result.body.uncertainDispatches, snapshot_event_count: result.body.eventCount, snapshot_event_chain_valid: result.body.eventChainValid, snapshot_control_rpc_requests: result.body.controlBudgetRpcRequests };\n    appendOutputs(outputs);\n    return outputs;\n  }\n\n  if (mode === "seed") {
     const result = await postDispatch({
       endpoint, secret, taskId: SENTINEL_TASK_ID,
       payload: SENTINEL_PAYLOAD, workflowRunId: workflowRunIdentity
