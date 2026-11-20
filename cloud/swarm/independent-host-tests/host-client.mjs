@@ -84,6 +84,53 @@ export function validateRunnerName(value) {
   return name;
 }
 
+export function buildHostTaskPayload({ hostId, runnerName, attemptIndex }) {
+  if (typeof hostId !== "string" || !SAFE_ID.test(hostId)) throw new TypeError("HOST_ID_INVALID");
+  const safeRunnerName = validateRunnerName(runnerName);
+  if (!Number.isSafeInteger(attemptIndex) || attemptIndex < 1 || attemptIndex > 25) {
+    throw new TypeError("ATTEMPT_INDEX_INVALID");
+  }
+  return {
+    testSuite: "P59.62",
+    hostId,
+    runnerName: safeRunnerName,
+    attemptIndex,
+    evidence_proposals: [],
+    claims: []
+  };
+}
+
+export async function readBoundedResponseText(response, maxBytes = 16384) {
+  if (!Number.isSafeInteger(maxBytes) || maxBytes < 1 || maxBytes > 65536) {
+    throw new TypeError("RESPONSE_LIMIT_INVALID");
+  }
+  const reader = response?.body?.getReader?.();
+  if (!reader) {
+    const raw = await response.text();
+    if (new TextEncoder().encode(raw).byteLength > maxBytes) throw new Error("RESPONSE_TOO_LARGE");
+    return raw;
+  }
+  const chunks = [];
+  let total = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > maxBytes) {
+      try { await reader.cancel(); } catch {}
+      throw new Error("RESPONSE_TOO_LARGE");
+    }
+    chunks.push(value);
+  }
+  const joined = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    joined.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return new TextDecoder().decode(joined);
+}
+
 export function classifyDispatch(result) {
   const body = result?.body;
   if (result?.httpStatus === 429 && body?.status === "WAITING_FOR_BUDGET") return "denied";
@@ -104,8 +151,7 @@ async function postDispatch({ endpoint, secret, taskId, payload, workflowRunId }
     body: signed.body,
     signal: AbortSignal.timeout(30000)
   });
-  const raw = await response.text();
-  if (raw.length > 16384) throw new Error("DISPATCH_RESPONSE_TOO_LARGE");
+  const raw = await readBoundedResponseText(response, 16384);
   let body;
   try { body = JSON.parse(raw); } catch { throw new Error("DISPATCH_RESPONSE_NOT_JSON"); }
   return { httpStatus: response.status, body };
@@ -121,8 +167,7 @@ async function postSnapshot({ endpoint, secret, workflowRunId }) {
     method: "POST", headers: signed.headers, body: signed.body,
     signal: AbortSignal.timeout(30000)
   });
-  const raw = await response.text();
-  if (raw.length > 16384) throw new Error("SNAPSHOT_RESPONSE_TOO_LARGE");
+  const raw = await readBoundedResponseText(response, 16384);
   let body;
   try { body = JSON.parse(raw); } catch { throw new Error("SNAPSHOT_RESPONSE_NOT_JSON"); }
   return { httpStatus: response.status, body };
@@ -205,14 +250,7 @@ export async function runHostClient(env = process.env) {
     secret,
     taskId: "p59-62-" + hostId + "-" + String(index + 1).padStart(2, "0"),
     workflowRunId: workflowRunIdentity,
-    payload: {
-      testSuite: "P59.62",
-      hostId,
-      runnerId,
-      attemptIndex: index + 1,
-      evidence_proposals: [],
-      claims: []
-    }
+    payload: buildHostTaskPayload({ hostId, runnerName, attemptIndex: index + 1 })
   }));
   const results = await Promise.all(requests);
   const counts = { completed: 0, denied: 0, duplicates: 1, unexpected: 0 };
