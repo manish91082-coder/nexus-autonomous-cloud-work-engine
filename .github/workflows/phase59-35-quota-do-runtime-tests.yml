@@ -85,5 +85,8 @@ jobs:
       - name: Run independent-host client offline tests
         run: node --test ../independent-host-tests/host-client.test.mjs
 
+      - name: Validate owner-gated independent-host workflow YAML syntax
+        run: ruby -e 'require "yaml"; YAML.parse_file("../../../.github/workflows/phase59-62-independent-host-test.yml"); puts "YAML_SYNTAX_PASS"'
+
       - name: Run Cloudflare Workers runtime tests
         run: npm test
