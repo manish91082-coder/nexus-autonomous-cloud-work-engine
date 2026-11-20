@@ -8,9 +8,12 @@ import { runDeterministicSpecialistGraph } from "../specialist-graph.mjs";
 const dispatcherIngressSecret = "dispatcher-ingress-test-secret-0123456789abcdef";
 function budgetRpc() { return createPlatformBudgetRpc(env.PLATFORM_BUDGET, env); }
 function swarmRpc() { return createSwarmRunRpc(env.SWARM_RUNS, env); }
-function taskId(label) { return "p59-61-" + label + "-" + crypto.randomUUID(); }
-function envelope(id, payload = {}) {
-  return { projectId: "P10CR", taskType: "P59_003_SHADOW_DISPATCH", taskId: id, payload };
+function taskId(label) { return "p59-62-" + label + "-" + crypto.randomUUID(); }
+function envelope(id, payload = {}, workflowRunId) {
+  return {
+    projectId: "P10CR", taskType: "P59_003_SHADOW_DISPATCH", taskId: id, payload,
+    ...(workflowRunId ? { workflowRunId } : {})
+  };
 }
 function toHex(bytes) {
   return Array.from(new Uint8Array(bytes), value => value.toString(16).padStart(2, "0")).join("");
@@ -57,11 +60,11 @@ async function budgetSnapshot() {
   return budgetRpc()("snapshot", {});
 }
 
-describe("Phase 59.61 account-budget + durable mission dispatcher integration", () => {
+describe("Phase 59.62 account-budget + durable mission dispatcher integration", () => {
   it("reserves before registration, settles after durable readback, suppresses duplicate delivery and fails closed on exhaustion", async () => {
     await resetBudget();
     const id = taskId("single-admission");
-    const first = await dispatchThroughService(envelope(id, { candidate: "synthetic-only", claims: [] }));
+    const first = await dispatchThroughService(envelope(id, { candidate: "synthetic-only", claims: [] }, "phase59-62-run-a"));
     expect(first.httpStatus).toBe(200);
     expect(first.status).toBe("COMPLETED");
     expect(first.budgetStatus).toBe("SETTLED");
@@ -78,12 +81,13 @@ describe("Phase 59.61 account-budget + durable mission dispatcher integration", 
     expect(budgetAfterFirst.reserved.dispatches).toBe(0);
     expect(budgetAfterFirst.uncertain.dispatches).toBe(0);
 
-    const duplicate = await dispatchThroughService(envelope(id, { candidate: "synthetic-only", claims: [] }));
+    const duplicate = await dispatchThroughService(envelope(id, { candidate: "synthetic-only", claims: [] }, "phase59-62-run-b"));
     expect(duplicate.httpStatus).toBe(200);
     expect(duplicate.status).toBe("DUPLICATE_SUPPRESSED");
     expect(duplicate.runId).toBe(first.runId);
     const budgetAfterDuplicate = await budgetSnapshot();
     expect(budgetAfterDuplicate.reservations).toHaveLength(1);
+    expect(budgetAfterDuplicate.reservations[0].workflowRunId).toBe("phase59-62-run-a");
     expect(budgetAfterDuplicate.eventChainValid).toBe(true);
 
     const deniedId = taskId("budget-exhausted");
