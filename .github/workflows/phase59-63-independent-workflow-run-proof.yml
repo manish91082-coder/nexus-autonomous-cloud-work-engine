@@ -11,7 +11,6 @@ on:
         description: "One unique identifier reused unchanged across all six runs."
         required: true
         type: string
-        default: "p59-63-manual-01"
       confirm_live_test:
         description: "Confirm owner preflight is complete and endpoint is a fresh test-only namespace."
         required: true
@@ -68,6 +67,7 @@ jobs:
           NAMESPACE_VERIFIED: ${{ vars.P59_003_PHASE63_NAMESPACE_VERIFIED }}
           LIVE_TEST_APPROVED: ${{ vars.P59_003_PHASE63_LIVE_TEST_APPROVED }}
           ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
+          ENDPOINT_HOST: ${{ vars.P59_003_TEST_ENDPOINT_HOST }}
           INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
           CURRENT_RUN_ID: ${{ github.run_id }}
           SEED_RUN_ID: ${{ inputs.seed_workflow_run_id }}
@@ -78,7 +78,9 @@ jobs:
         run: |
           node --input-type=module <<'NODE'
           const e=process.env,safeId=v=>/^[A-Za-z0-9._:-]{1,64}$/.test(v||""),safeRun=v=>/^[0-9]{1,20}$/.test(v||"");
-          let endpointValid=false;try{const u=new URL(e.ENDPOINT||"");endpointValid=u.protocol==="https:"&&!u.username&&!u.password&&!u.search&&!u.hash&&!u.port&&u.hostname.toLowerCase().endsWith(".workers.dev")&&u.hostname.toLowerCase()!=="workers.dev"&&u.pathname==="/internal/shadow-dispatch";}catch{}
+          const pinned=(e.ENDPOINT_HOST||"");
+          const validPinnedHost=/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+workers\.dev$/.test(pinned);
+          let endpointValid=false;try{const u=new URL(e.ENDPOINT||"");endpointValid=u.protocol==="https:"&&!u.username&&!u.password&&!u.search&&!u.hash&&!u.port&&validPinnedHost&&u.hostname.toLowerCase()===pinned&&u.pathname==="/internal/shadow-dispatch";}catch{}
           if(!safeId(e.TEST_ID))throw new Error("TEST_ID_INVALID");
           if(!(e.CONFIRM_LIVE_TEST==="true"&&e.FREE_VERIFIED==="true"&&e.NAMESPACE_VERIFIED==="true"&&e.LIVE_TEST_APPROVED==="true"&&endpointValid&&(e.INGRESS_SECRET||"").length>=32))throw new Error("OWNER_PREFLIGHT_NOT_SATISFIED; no live request made");
           if(!safeRun(e.CURRENT_RUN_ID))throw new Error("CURRENT_GITHUB_RUN_ID_INVALID");
@@ -100,6 +102,7 @@ jobs:
           P59_63_HOST3_WORKFLOW_RUN_ID: ${{ inputs.host3_workflow_run_id }}
           P59_63_HOST4_WORKFLOW_RUN_ID: ${{ inputs.host4_workflow_run_id }}
           P59_63_RUNNER_NAME: ${{ runner.name }}
+          P59_63_TEST_ENDPOINT_HOST: ${{ vars.P59_003_TEST_ENDPOINT_HOST }}
           GITHUB_RUN_ID: ${{ github.run_id }}
           NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
           NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
