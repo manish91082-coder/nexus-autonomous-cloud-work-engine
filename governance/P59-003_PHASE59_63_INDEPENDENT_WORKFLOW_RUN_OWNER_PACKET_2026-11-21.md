@@ -5,7 +5,7 @@
 
 ## Proof boundary
 
-One seed workflow run, four separately dispatched host workflow runs and one separate snapshot workflow run use their actual GitHub Actions `GITHUB_RUN_ID` values. All six calls share one fresh test-only SQLite Durable Object namespace. Four standard GitHub-hosted runners use two fixed synthetic repository aliases:
+One seed workflow run, four separately dispatched host workflow runs and one separate snapshot workflow run use their actual GitHub Actions `GITHUB_RUN_ID` values. All six calls use the same test-only SQLite namespace pair: one shared SwarmRunDO namespace and one shared PlatformBudgetDO namespace. Four standard GitHub-hosted runners use two fixed synthetic repository aliases:
 
 - host1 and host3: `synthetic-org/p10cr-shadow-repo-a`
 - host2 and host4: `synthetic-org/p10cr-shadow-repo-b`
@@ -25,6 +25,12 @@ No real secondary repository is accessed or mutated. Aliases are accepted only i
 9. Confirm no public route, publisher, production namespace, AI provider, payment provider or external account binding exists.
 
 If Free eligibility, aggregate headroom, namespace isolation or owner approval cannot be verified, stop. No paid fallback.
+
+## Default-branch workflow visibility prerequisite
+
+GitHub only exposes `workflow_dispatch` for a workflow file that exists on the repository's default branch. The Phase59.63 workflow is currently only in draft PR #48, based on `phase59-62-dependency-hardening`; parent PRs #44, #45, #46 and #47 are also open, draft and unmerged. Therefore the six-run workflow cannot yet be manually dispatched from the default branch.
+
+Owner review/merge sequence, without bypassing branch rulesets: PR #44 to `master`, then #45, #46, #47 and #48 in order. Do not merge automatically or use a direct master write. After the complete stack is on `master`, verify the workflow appears in Actions, configure the required-reviewer environment, and only then begin the six separate manual runs.
 
 ## Six separate workflow runs
 
