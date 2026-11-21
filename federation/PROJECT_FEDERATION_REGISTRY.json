@@ -709,7 +709,45 @@
         "external_network_requests": 0,
         "authorized_spend_inr": 0,
         "verified_realized_net_receipts_inr": 0,
-        "next": "Owner review/merge PR stack #44→#45→#46→#47→#48 in order; verify existing Workers Free account/aggregate usage; configure exact endpoint-host pin, required-reviewer environment and test-only namespace; then manually execute six separate workflow runs. Start 7-day soak only after exact snapshot acceptance, then 30-day soak."
+        "next": "Owner review/merge PR stack #44→#45→#46→#47→#48 in order; verify existing Workers Free account/aggregate usage; configure exact endpoint-host pin, required-reviewer environment and test-only namespace; then manually execute six separate workflow runs. Start 7-day soak only after exact snapshot acceptance, then 30-day soak.",
+        "candidate_control_plane_runs": {
+          "candidate_worker": {
+            "run_id": 44861996471,
+            "run_number": 543,
+            "status": "SUCCESS",
+            "head_sha": "7c9d9cd17b98f2f00626d83c624f448761d3f01a",
+            "selected_task": "P59-003",
+            "queue_result": "POLL_OK",
+            "ai_status": "WAITING_FOR_OWNER_CONFIGURATION",
+            "inference_requests": 0
+          },
+          "candidate_guard": {
+            "run_id": 44861996479,
+            "run_number": 350,
+            "status": "SUCCESS",
+            "head_sha": "7c9d9cd17b98f2f00626d83c624f448761d3f01a",
+            "checks": 111,
+            "errors": 0
+          },
+          "master_worker": {
+            "run_id": 44843009588,
+            "run_number": 540,
+            "status": "SUCCESS",
+            "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+            "selected_task": "P59-003",
+            "queue_result": "POLL_OK",
+            "ai_status": "WAITING_FOR_OWNER_CONFIGURATION",
+            "inference_requests": 0
+          },
+          "master_guard": {
+            "run_id": 44719480010,
+            "run_number": 347,
+            "status": "SUCCESS",
+            "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+            "checks": 111,
+            "errors": 0
+          }
+        }
       }
     },
     {
