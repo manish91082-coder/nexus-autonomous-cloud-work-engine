@@ -34,6 +34,7 @@ export function validateSnapshot(result,{testId,seedRunId,hostRunIds,snapshotRun
 }
 export async function runCrossRunClient(env=process.env){
  const expectedHostname=env.P59_63_TEST_ENDPOINT_HOST;
+ if(typeof expectedHostname!=="string"||!expectedHostname)throw new Error("OWNER_TEST_ENDPOINT_HOST_PIN_REQUIRED");
  const endpoint=validateEndpoint(env.NEXUS_TEST_ENDPOINT,DISPATCH_PATH,expectedHostname).toString(),secret=env.NEXUS_TEST_INGRESS_SECRET;
  if(typeof secret!=="string"||secret.length<32)throw new Error("OWNER_TEST_SECRET_MISSING");
  const mode=env.P59_63_MODE,testId=requireTestId(env.P59_63_TEST_ID),workflowRunId=requireRunId(String(env.GITHUB_RUN_ID||""),"CURRENT_WORKFLOW_RUN_ID");
