@@ -9,14 +9,14 @@ function requireRunId(value,field){if(typeof value!=="string"||!SAFE_RUN_ID.test
 function requireTestId(value){if(typeof value!=="string"||!SAFE_ID.test(value)||value.length>64)throw new TypeError("TEST_ID_INVALID");return value;}
 function sentinelPayload(testId){return{testSuite:"P59.63",testId,testRepositoryAlias:REPO_A,sentinel:"GLOBAL_CROSS_RUN_SENTINEL",evidence_proposals:[],claims:[]};}
 async function readJson(response,label){const raw=await readBoundedResponseText(response,16384);try{return{httpStatus:response.status,body:JSON.parse(raw)};}catch{throw new Error(label+"_RESPONSE_NOT_JSON");}}
-async function dispatch({endpoint,secret,taskId,payload,workflowRunId}){
- const signed=buildSignedRequest({endpoint,secret,taskId,payload,workflowRunId,path:DISPATCH_PATH});
+async function dispatch({endpoint,secret,taskId,payload,workflowRunId,expectedHostname}){
+ const signed=buildSignedRequest({endpoint,secret,taskId,payload,workflowRunId,path:DISPATCH_PATH,expectedHostname});
  return await readJson(await fetch(signed.url,{method:"POST",headers:signed.headers,body:signed.body,signal:AbortSignal.timeout(30000)}),"DISPATCH");
 }
-async function readSnapshot({endpoint,secret,testId,seedRunId,hostRunIds,workflowRunId}){
+async function readSnapshot({endpoint,secret,testId,seedRunId,hostRunIds,workflowRunId,expectedHostname}){
  const url=new URL(endpoint);url.pathname=SNAPSHOT_PATH;
  const signed=buildSignedRequest({endpoint:url.toString(),secret,taskId:"p59-63-budget-snapshot-readback",taskType:"P59_003_BUDGET_SNAPSHOT",path:SNAPSHOT_PATH,workflowRunId,
-  payload:{testId,seedWorkflowRunId:seedRunId,hostWorkflowRunIds:hostRunIds}});
+  payload:{testId,seedWorkflowRunId:seedRunId,hostWorkflowRunIds:hostRunIds},expectedHostname});
  return await readJson(await fetch(signed.url,{method:"POST",headers:signed.headers,body:signed.body,signal:AbortSignal.timeout(30000)}),"SNAPSHOT");
 }
 export function validateSnapshot(result,{testId,seedRunId,hostRunIds,snapshotRunId}){
@@ -33,11 +33,12 @@ export function validateSnapshot(result,{testId,seedRunId,hostRunIds,snapshotRun
   &&body.controlBudgetRpcRequests>0&&body.controlBudgetRpcRequests<=500&&/^[a-f0-9]{64}$/.test(body?.lastEventHash||"");
 }
 export async function runCrossRunClient(env=process.env){
- const endpoint=validateEndpoint(env.NEXUS_TEST_ENDPOINT).toString(),secret=env.NEXUS_TEST_INGRESS_SECRET;
+ const expectedHostname=env.P59_63_TEST_ENDPOINT_HOST;
+ const endpoint=validateEndpoint(env.NEXUS_TEST_ENDPOINT,DISPATCH_PATH,expectedHostname).toString(),secret=env.NEXUS_TEST_INGRESS_SECRET;
  if(typeof secret!=="string"||secret.length<32)throw new Error("OWNER_TEST_SECRET_MISSING");
  const mode=env.P59_63_MODE,testId=requireTestId(env.P59_63_TEST_ID),workflowRunId=requireRunId(String(env.GITHUB_RUN_ID||""),"CURRENT_WORKFLOW_RUN_ID");
  if(mode==="seed"){
-  const result=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-seed",payload:sentinelPayload(testId),workflowRunId});
+  const result=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-seed",payload:sentinelPayload(testId),workflowRunId,expectedHostname});
   if(classifyDispatch(result)!=="completed")throw new Error("P59_63_SEED_NOT_COMPLETED");
   const output={mode,testId,seedWorkflowRunId:workflowRunId,status:result.body.status};console.log("P59_63_SEED_RESULT "+JSON.stringify(output));return output;
  }
@@ -46,9 +47,9 @@ export async function runCrossRunClient(env=process.env){
   if(seedRunId===workflowRunId)throw new Error("SEED_AND_HOST_RUN_IDS_MUST_DIFFER");
   const hostSlot=env.P59_63_HOST_SLOT,host=HOSTS[hostSlot];if(!host)throw new Error("HOST_SLOT_INVALID");
   const runnerName=validateRunnerName(env.P59_63_RUNNER_NAME||"");
-  const duplicate=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-seed",payload:sentinelPayload(testId),workflowRunId});
+  const duplicate=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-seed",payload:sentinelPayload(testId),workflowRunId,expectedHostname});
   if(classifyDispatch(duplicate)!=="duplicate")throw new Error("P59_63_CROSS_RUN_SENTINEL_NOT_SUPPRESSED");
-  const result=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-"+hostSlot+"-01",workflowRunId,
+  const result=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-"+hostSlot+"-01",workflowRunId,expectedHostname,
    payload:{testSuite:"P59.63",testId,testRepositoryAlias:host.repository,hostId:host.expectedHostId,runnerName,attemptIndex:1,evidence_proposals:[],claims:[]}});
   if(classifyDispatch(result)!=="completed")throw new Error("P59_63_HOST_TASK_NOT_COMPLETED");
   const output={mode,testId,hostSlot,repositoryAlias:host.repository,workflowRunId,runnerName,sentinelDuplicateSuppressed:true,uniqueTasksCompleted:1,uniqueTasksDenied:0};
@@ -61,12 +62,12 @@ export async function runCrossRunClient(env=process.env){
   const overflow=[];
   for(let i=1;i<=4;i++){
    const repository=i%2===1?REPO_A:REPO_B;
-   const result=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-overflow-"+i,workflowRunId,
+   const result=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-overflow-"+i,workflowRunId,expectedHostname,
     payload:{testSuite:"P59.63",testId,testRepositoryAlias:repository,hostId:"snapshot",runnerName:"snapshot",attemptIndex:i,evidence_proposals:[],claims:[]}});
    overflow.push(classifyDispatch(result));
   }
   if(JSON.stringify(overflow)!==JSON.stringify(["completed","completed","completed","denied"]))throw new Error("P59_63_OVERFLOW_CONTRACT_FAILED:"+JSON.stringify(overflow));
-  const result=await readSnapshot({endpoint,secret,testId,seedRunId,hostRunIds,workflowRunId});
+  const result=await readSnapshot({endpoint,secret,testId,seedRunId,hostRunIds,workflowRunId,expectedHostname});
   if(!validateSnapshot(result,{testId,seedRunId,hostRunIds,snapshotRunId:workflowRunId}))throw new Error("P59_63_FINAL_SNAPSHOT_MISMATCH:"+JSON.stringify(result.body));
   const output={mode,testId,workflowRunId,distinctHostWorkflowRunIds:4,distinctRepositoryAliases:2,overflowAdmitted:3,overflowDenied:1,reservationsSettled:8,reserved:0,uncertain:0,eventChainValid:true};
   console.log("P59_63_SNAPSHOT_RESULT "+JSON.stringify(output));return output;
