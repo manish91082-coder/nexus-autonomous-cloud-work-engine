@@ -110,8 +110,8 @@ describe("Phase 59.60 account-scope platform budget", () => {
   it("partitions P59.63 test reservations by two fixed repository aliases across distinct workflow runs", async () => {
     const repoA = "synthetic-org/p10cr-shadow-repo-a";
     const repoB = "synthetic-org/p10cr-shadow-repo-b";
-    const first = await call(bindingA(), "reserve", base(repoA, "phase63-shared-execution", "phase63-run-1", { phaseId: "P59.63" }));
-    const second = await call(bindingB(), "reserve", base(repoB, "phase63-shared-execution", "phase63-run-2", { phaseId: "P59.63" }));
+    const first = await call(bindingA(), "reserve", base(repoA, "p59-63-phase63-shared-seed", "phase63-run-1", { phaseId: "P59.63" }));
+    const second = await call(bindingB(), "reserve", base(repoB, "p59-63-phase63-shared-host1-01", "phase63-run-2", { phaseId: "P59.63" }));
     expect(first.status).toBe("RESERVED");
     expect(second.status).toBe("RESERVED");
     const state = await snapshot();
