@@ -29,3 +29,13 @@ test("workflow has four host slots and uses actual GITHUB_RUN_ID",()=>{
  const workflow=fs.readFileSync(path,"utf8");for(const slot of ["host1","host2","host3","host4"])assert.match(workflow,new RegExp(slot));
  assert.match(workflow,/GITHUB_RUN_ID/);for(const key of ["host1_workflow_run_id","host2_workflow_run_id","host3_workflow_run_id","host4_workflow_run_id"])assert.match(workflow,new RegExp(key));
 });
+
+
+test("manual workflow pins the exact endpoint host and requires a fresh operator-supplied test ID",()=>{
+ const path=fileURLToPath(new URL("../../../.github/workflows/phase59-63-independent-workflow-run-proof.yml",import.meta.url));
+ const workflow=fs.readFileSync(path,"utf8");
+ assert.match(workflow,/P59_003_TEST_ENDPOINT_HOST/);
+ assert.match(workflow,/ENDPOINT_HOST/);
+ assert.match(workflow,/u\.hostname\.toLowerCase\(\)===pinned/);
+ assert.doesNotMatch(workflow,/default:\s*["']p59-63-manual-01["']/);
+});
