@@ -14,17 +14,24 @@ const SENTINEL_PAYLOAD = Object.freeze({
   claims: []
 });
 
-export function validateEndpoint(value, expectedPath = PATH) {
+export function validateEndpoint(value, expectedPath = PATH, expectedHostname) {
   let url;
   try { url = new URL(value); } catch { throw new TypeError("TEST_ENDPOINT_INVALID_URL"); }
-  if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash || url.port || !url.hostname.toLowerCase().endsWith(".workers.dev") || url.hostname.toLowerCase() === "workers.dev" || url.pathname !== expectedPath) {
+  const hostname = url.hostname.toLowerCase();
+  if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash || url.port
+    || !hostname.endsWith(".workers.dev") || hostname === "workers.dev" || url.pathname !== expectedPath) {
     throw new TypeError("TEST_ENDPOINT_MUST_BE_HTTPS_INTERNAL_PATH_WITHOUT_CREDENTIALS_QUERY_OR_FRAGMENT");
+  }
+  if (expectedHostname !== undefined) {
+    const pinned = typeof expectedHostname === "string" ? expectedHostname : "";
+    const validPinnedHost = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+workers\.dev$/.test(pinned);
+    if (!validPinnedHost || pinned !== hostname) throw new TypeError("TEST_ENDPOINT_HOST_PIN_MISMATCH");
   }
   return url;
 }
 
-export function buildSignedRequest({ endpoint, secret, taskId, payload, workflowRunId, taskType = "P59_003_SHADOW_DISPATCH", path = PATH, now = Date.now(), nonce = randomUUID() }) {
-  const url = validateEndpoint(endpoint, path);
+export function buildSignedRequest({ endpoint, secret, taskId, payload, workflowRunId, taskType = "P59_003_SHADOW_DISPATCH", path = PATH, expectedHostname, now = Date.now(), nonce = randomUUID() }) {
+  const url = validateEndpoint(endpoint, path, expectedHostname);
   if (typeof secret !== "string" || secret.length < 32) throw new TypeError("TEST_INGRESS_SECRET_INVALID");
   if (typeof taskId !== "string" || !SAFE_ID.test(taskId)) throw new TypeError("TASK_ID_INVALID");
   if (typeof workflowRunId !== "string" || !SAFE_ID.test(workflowRunId)) throw new TypeError("WORKFLOW_RUN_ID_INVALID");
