@@ -172,7 +172,7 @@ export default {
         if (alias !== P59_63_REPOSITORIES[0] || body.payload.sentinel !== "GLOBAL_CROSS_RUN_SENTINEL")
           return response(403, { status: "REJECTED", reason: "P59_63_SEED_NOT_AUTHORIZED" });
       } else {
-        const hostMatch = /^host([1-4])-01$/.exec(suffix), overflowMatch = /^overflow-([1-3])$/.exec(suffix);
+        const hostMatch = /^host([1-4])-01$/.exec(suffix), overflowMatch = /^overflow-([1-4])$/.exec(suffix);
         if (hostMatch) {
           const slot = Number(hostMatch[1]), expectedRepo = slot % 2 === 1 ? P59_63_REPOSITORIES[0] : P59_63_REPOSITORIES[1];
           if (alias !== expectedRepo || body.payload.hostId !== "host" + slot || body.payload.attemptIndex !== 1
