@@ -21,7 +21,7 @@ No real secondary repository is accessed or mutated. Aliases are accepted only i
 5. Set `NEXUS_SHADOW_TEST_MODE=true` and `NEXUS_CROSS_RUN_PROOF_ENABLED=true` only on the test Worker. Do not attach a publisher, GitHub App write token, model/provider, payment provider or production data.
 6. Create GitHub environment `p10cr-independent-host-owner-approved` with required owner reviewers for every run.
 7. Set environment variables: `P59_003_CLOUDFLARE_FREE_VERIFIED=true`, `P59_003_PHASE63_NAMESPACE_VERIFIED=true`, `P59_003_PHASE63_LIVE_TEST_APPROVED=true`.
-8. Set environment secrets directly in GitHub, never in chat/code: `P59_003_TEST_DISPATCH_ENDPOINT` (HTTPS `*.workers.dev/internal/shadow-dispatch`) and `P59_003_TEST_INGRESS_SECRET` (high entropy, at least 32 characters).
+8. Set environment variable `P59_003_TEST_ENDPOINT_HOST` to the exact lower-case Worker hostname only (no scheme, path, port, wildcard or trailing dot). Set environment secrets directly in GitHub, never in chat/code: `P59_003_TEST_DISPATCH_ENDPOINT` (HTTPS `https://<exact-host>/internal/shadow-dispatch`, whose hostname must equal the separately configured variable) and `P59_003_TEST_INGRESS_SECRET` (high entropy, at least 32 characters). The workflow and client compare the endpoint hostname to the independent pin before any HMAC-signed request; a mismatch fails closed.
 9. Confirm no public route, publisher, production namespace, AI provider, payment provider or external account binding exists.
 
 If Free eligibility, aggregate headroom, namespace isolation or owner approval cannot be verified, stop. No paid fallback.
@@ -34,7 +34,7 @@ Owner review/merge sequence, without bypassing branch rulesets: PR #44 to `maste
 
 ## Six separate workflow runs
 
-Use one unique test ID unchanged across all runs, e.g. `p59-63-20261121-01`. Run all stages within one UTC day.
+Supply a fresh unique test ID manually for each new proof and reuse it unchanged across all six runs, e.g. `p59-63-20261121-01`. The workflow has no reusable default. Never restart a partial proof with the same test ID; abandon it and use a new ID after owner-approved namespace cleanup. Run all stages within one UTC day.
 
 1. Manually dispatch mode `seed`; record the actual run ID printed in `P59_63_SEED_RESULT`.
 2. Manually dispatch a new run for host1, mode `host`, and enter the seed run ID.
