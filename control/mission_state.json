@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "PHASE_59_62_DEPENDENCY_HARDENING_AND_INDEPENDENT_HOST_PREFLIGHT",
+  "phase": "P59.63.1_ENDPOINT_HOST_PIN_HARDENING",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "P59-003 only. Final code/test head 7d0003ca passed 11/11 offline host-client/static workflow tests, workflow YAML syntax, lockfile validation (165 packages), 83/83 Workers runtime, 4/4 dispatcher integration, 83/83 full regression, Phase59.60 account-scope budget and Phase59.56 synthetic cross-repository quota. Live host workflow remains owner-gated. Source audit also fixed an undefined runnerId payload reference, added a streaming 16 KiB response ceiling, enforced the workers.dev preflight allowlist and aligned aggregate job-scoped identity keys. P59-001 PAUSED; P59-002 BLOCKED. PR #47 draft/unmerged; master unchanged. No inference, live provider calls, spend or receipts.",
+  "current_focus": "Endpoint destination pin hardened; complete owner-gated six separate workflow-run proof against one test-only namespace pair, then 7-day and 30-day soak only after acceptance.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -23,23 +23,20 @@
     "spend",
     "AI_provider_account_and_secret_setup"
   ],
-  "updated_at": "2026-11-19",
+  "updated_at": "2026-11-21",
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
-    "run_number": 485,
-    "run_id": 43998553989,
+    "run_number": 543,
+    "run_id": 44861996471,
     "conclusion": "success",
-    "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43998553989",
-    "completed_at": "2026-11-17T01:50:24Z",
-    "trigger": "schedule",
+    "head_sha": "7c9d9cd17b98f2f00626d83c624f448761d3f01a",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44861996471",
+    "completed_at": "2026-11-21T03:36:47Z",
+    "trigger": "push",
     "checks": [
-      "Mission state validation PASS",
-      "swarm runtime/coordinator tests PASS",
-      "AI worker safety PASS",
-      "product smoke tests PASS",
-      "queue poll POLL_OK selected P59-003",
-      "AI executor WAITING_FOR_OWNER_CONFIGURATION; no inference request"
+      "POLL_OK selected P59-003",
+      "AI WAITING_FOR_OWNER_CONFIGURATION; no inference request",
+      "zero errors"
     ]
   },
   "verified_platform_credited_net_earnings_inr": 0,
@@ -532,17 +529,13 @@
     "US_BUILDING_PERMIT_CONTRACTOR_LEAD_SCRAPING"
   ],
   "latest_verified_continuity_guard": {
-    "name": "Mission Continuity Guard",
-    "run_number": 288,
-    "run_id": 43927317601,
+    "run_number": 350,
+    "run_id": 44861996479,
     "conclusion": "success",
-    "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43927317601",
-    "completed_at": "2026-11-16T18:18:11Z",
-    "checks": [
-      "111 checks PASS",
-      "errors []"
-    ]
+    "head_sha": "7c9d9cd17b98f2f00626d83c624f448761d3f01a",
+    "checks": 111,
+    "errors": 0,
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44861996479"
   },
   "automation_schedule_audit": {
     "checked_at": "2026-11-14T19:34:00+05:30",
@@ -2366,7 +2359,7 @@
     "independent_physical_hosts_proven": false,
     "live_deployment": false
   },
-  "candidate_branch": "phase59-62-dependency-hardening",
+  "candidate_branch": "phase59-63-independent-workflow-run-proof",
   "phase59_57": {
     "report": "research/PHASE_59_57_CONSTRAINED_PUBLISHER_SEPARATION_2026-11-17.md",
     "branch": "phase59-57-constrained-publisher-separation",
@@ -2751,7 +2744,7 @@
     "external_network_requests_in_live_test": 0,
     "authorized_spend_inr": 0,
     "verified_realized_net_receipts_inr": 0,
-    "next": "After owner verifies the existing Workers Free account, aggregate usage and test-only namespaces and explicitly enables the test-only variables/secrets, run the manual four-host proof. Then prove separate Actions workflow-run IDs if required, and only after independent-host acceptance begin 7-day then 30-day soak.",
+    "next": "Phase59.63 Workerd proof and manual six-run hosted proof harness; no live endpoint until owner verifies the existing Workers Free account, aggregate usage, namespace pair and default-branch workflow availability.",
     "mission_worker_run_id": 44668440802,
     "mission_worker_status": "SUCCESS_POLL_OK_SELECTED_P59_003_AI_WAITING_FOR_OWNER_CONFIGURATION_NO_INFERENCE",
     "mission_worker_tested_sha": "3ec8444500c8ce1fb01465e96d1dd55c78ea08b0",
@@ -2762,23 +2755,227 @@
     "cross_repository_physical_proven": false
   },
   "phase59_63": {
-    "status": "PLANNED_NOT_STARTED",
-    "objective": "Manual-only owner-gated seed/host/snapshot harness using one seed run, four separate workflow_dispatch host runs with actual GITHUB_RUN_ID values, two fixed synthetic P10CR test repository aliases and one shared test-only Durable Object namespace",
-    "restrictions": [
-      "contents:read compute only",
-      "no Actions write token",
-      "no automated workflow dispatch",
-      "no production namespace",
-      "no live endpoint until owner approval",
-      "no AI inference",
-      "₹0 spend"
-    ],
-    "acceptance": {
-      "distinct_github_actions_run_ids": 4,
-      "synthetic_repositories": 2,
-      "shared_test_do_namespace": 1,
-      "owner_gate_required": true
+    "report": "research/PHASE_59_63_INDEPENDENT_WORKFLOW_RUN_PROOF_2026-11-21.md",
+    "owner_packet": "governance/P59-003_PHASE59_63_INDEPENDENT_WORKFLOW_RUN_OWNER_PACKET_2026-11-21.md",
+    "branch": "phase59-63-independent-workflow-run-proof",
+    "pr_number": 48,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "base_branch": "phase59-62-dependency-hardening",
+    "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "candidate_head": "3111486d15a9a1c6dd58dc3dd4412b4e396430f6",
+    "tested_code_head": "a04e836816ea008ed92f23449b30a5e13ec1ff38",
+    "workflow_inventory_baseline": "Phase59.62 complete; 36 workflows, 18 Python scripts, 36 cloud/swarm JS modules, 1 package manifest, 1 lockfile",
+    "proof_design": {
+      "separate_workflow_runs": 6,
+      "seed_runs": 1,
+      "host_runs": 4,
+      "snapshot_runs": 1,
+      "synthetic_repository_aliases": 2,
+      "shared_test_namespace_pair": [
+        "SwarmRunDO",
+        "PlatformBudgetDO"
+      ],
+      "dispatch_cap": 8,
+      "duplicate_sentinel_replays": 4,
+      "overflow_admitted": 3,
+      "overflow_denied": 1
     },
-    "next": "Implement and test Phase59.63 cross-run/cross-repository manual harness; then prepare owner packet. Only after owner-approved live proof start 7-day and 30-day soak."
+    "workerd_proof": {
+      "status": "PASS",
+      "synthetic_run_ids": [
+        "810001",
+        "810011",
+        "810012",
+        "810013",
+        "810014",
+        "810099"
+      ],
+      "distinct_run_ids": 6,
+      "distinct_repositories": 2,
+      "reservations": 8,
+      "settled": 8,
+      "reserved": 0,
+      "uncertain": 0,
+      "event_chain_valid": true,
+      "external_network_requests": 0,
+      "physical_hosts_proven": false
+    },
+    "exact_head_ci": {
+      "tested_head": "3111486d15a9a1c6dd58dc3dd4412b4e396430f6",
+      "phase59_35": {
+        "run_id": 44860704152,
+        "status": "SUCCESS",
+        "offline_client_tests": "14/14",
+        "yaml_syntax": "PASS",
+        "workers_runtime": "83/83",
+        "phase59_63_workerd": "1/1"
+      },
+      "phase59_56": {
+        "run_id": 44860704147,
+        "status": "SUCCESS",
+        "synthetic_global_quota_tests": "2/2",
+        "workers_runtime": "83/83"
+      },
+      "phase59_58": {
+        "run_id": 44860704218,
+        "status": "SUCCESS",
+        "workers_runtime": "83/83"
+      },
+      "phase59_60": {
+        "run_id": 44860704296,
+        "status": "SUCCESS",
+        "platform_budget_tests": "8/8"
+      },
+      "phase59_62": {
+        "run_id": 44860704193,
+        "status": "SUCCESS",
+        "dispatcher_integration": "4/4",
+        "workers_runtime": "83/83"
+      }
+    },
+    "failures_and_corrections": [
+      {
+        "run_id": 44860032961,
+        "issue": "workflow contract test expected a different run-ID field",
+        "correction": "assert the four explicit host1-host4 workflow_dispatch inputs"
+      },
+      {
+        "run_id": 44860099870,
+        "issue": "fourth overflow probe rejected by worker allowlist before reaching budget gate",
+        "correction": "allow overflow-4 in test-only route so shared quota returns 429"
+      },
+      {
+        "run_id": 44860275970,
+        "issue": "snapshot filter found no per-task reservation rows because test reservations used generic P59-003 task ID",
+        "correction": "use actual task ID only in explicit test scope and expose task/phase/operation in bounded snapshot"
+      },
+      {
+        "run_id": 44860456236,
+        "issue": "PlatformBudgetDO rejected per-task synthetic IDs",
+        "correction": "allow strict P59.63 task-ID pattern only when test mode is enabled"
+      }
+    ],
+    "live_hosted_test_started": false,
+    "cloudflare_deployed": false,
+    "owner_environment_configured": false,
+    "github_app_installed": false,
+    "workflow_dispatch_available_on_default_branch": false,
+    "reason": "workflow is only in draft PR #48; parent PRs #44-47 are also open/unmerged",
+    "owner_gate_status": "PENDING_OWNER_REVIEW_AND_MERGE_OF_PR_STACK_PLUS_EXISTING_CLOUDFLARE_FREE_ACCOUNT_AND_AGGREGATE_USAGE_VERIFICATION",
+    "branch_ruleset_status": "UNVERIFIED_OWNER_ACTION_REQUIRED",
+    "soak_7d_started": false,
+    "soak_30d_started": false,
+    "ai_inference_enabled": false,
+    "live_provider_calls": 0,
+    "external_network_requests": 0,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "next": "Owner reviews and merges PRs #44→#45→#46→#47→#48 in order; configures the existing Cloudflare Free test-only namespace pair and required GitHub environment approval; then manually executes six separate workflow runs. Only after exact snapshot acceptance start 7-day soak, then 30-day soak."
+  },
+  "candidate_head": "3111486d15a9a1c6dd58dc3dd4412b4e396430f6",
+  "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+  "next": "Owner reviews and merges PRs #44→#45→#46→#47→#48 in order; configures the existing Cloudflare Free test-only namespace pair and required GitHub environment approval; then manually executes six separate workflow runs. Only after exact snapshot acceptance start 7-day soak, then 30-day soak.",
+  "ai_inference_enabled": false,
+  "phase59_63_1": {
+    "phase": "P59.63.1_ENDPOINT_HOST_PIN_HARDENING",
+    "branch": "phase59-63-independent-workflow-run-proof",
+    "pr_number": 48,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "code_test_head": "12c58b8acc07953defd91c35cdcb97eced47a8ba",
+    "endpoint_host_pin": {
+      "environment_variable": "P59_003_TEST_ENDPOINT_HOST",
+      "exact_match_required": true,
+      "preflight_and_client_enforced": true,
+      "missing_or_mismatched_pin": "FAIL_CLOSED_BEFORE_NETWORK",
+      "test_id_default_removed": true
+    },
+    "exact_head_ci": {
+      "tested_head": "12c58b8acc07953defd91c35cdcb97eced47a8ba",
+      "phase59_35": {
+        "run_id": 44861739865,
+        "status": "SUCCESS",
+        "offline_client_tests": "17/17",
+        "yaml_syntax": "PASS",
+        "workers_runtime": "83/83",
+        "phase59_63_workerd": "1/1"
+      },
+      "phase59_56": {
+        "run_id": 44861739923,
+        "status": "SUCCESS",
+        "synthetic_global_quota_tests": "2/2",
+        "workers_runtime": "83/83"
+      },
+      "phase59_58": {
+        "run_id": 44861739854,
+        "status": "SUCCESS",
+        "workers_runtime": "83/83"
+      },
+      "phase59_60": {
+        "run_id": 44861739859,
+        "status": "SUCCESS",
+        "platform_budget_tests": "8/8"
+      },
+      "phase59_62": {
+        "run_id": 44861739868,
+        "status": "SUCCESS",
+        "dispatcher_integration": "4/4",
+        "full_swarm_regression": "83/83"
+      }
+    },
+    "owner_gates": {
+      "live_six_run_proof_started": false,
+      "cloudflare_deployed": false,
+      "owner_environment_configured": false,
+      "github_app_installed": false,
+      "branch_ruleset_status": "UNVERIFIED_OWNER_ACTION_REQUIRED",
+      "workflow_dispatch_available_on_default_branch": false
+    },
+    "soak_7d_started": false,
+    "soak_30d_started": false,
+    "ai_inference_enabled": false,
+    "live_provider_calls": 0,
+    "external_network_requests": 0,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "next": "Owner review/merge PR stack #44→#45→#46→#47→#48 in order; verify existing Workers Free account/aggregate usage; configure exact endpoint-host pin, required-reviewer environment and test-only namespace; then manually execute six separate workflow runs. Start 7-day soak only after exact snapshot acceptance, then 30-day soak.",
+    "candidate_control_plane_runs": {
+      "candidate_worker": {
+        "run_id": 44861996471,
+        "run_number": 543,
+        "status": "SUCCESS",
+        "head_sha": "7c9d9cd17b98f2f00626d83c624f448761d3f01a",
+        "selected_task": "P59-003",
+        "queue_result": "POLL_OK",
+        "ai_status": "WAITING_FOR_OWNER_CONFIGURATION",
+        "inference_requests": 0
+      },
+      "candidate_guard": {
+        "run_id": 44861996479,
+        "run_number": 350,
+        "status": "SUCCESS",
+        "head_sha": "7c9d9cd17b98f2f00626d83c624f448761d3f01a",
+        "checks": 111,
+        "errors": 0
+      },
+      "master_worker": {
+        "run_id": 44843009588,
+        "run_number": 540,
+        "status": "SUCCESS",
+        "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+        "selected_task": "P59-003",
+        "queue_result": "POLL_OK",
+        "ai_status": "WAITING_FOR_OWNER_CONFIGURATION",
+        "inference_requests": 0
+      },
+      "master_guard": {
+        "run_id": 44719480010,
+        "run_number": 347,
+        "status": "SUCCESS",
+        "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+        "checks": 111,
+        "errors": 0
+      }
+    }
   }
 }

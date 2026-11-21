@@ -1,0 +1,109 @@
+name: Phase 59.63 independent workflow-run cross-repository proof (owner gated)
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Dispatch seed, four host runs, then snapshot as six separate workflow runs."
+        required: true
+        type: choice
+        options: [seed, host, snapshot]
+      test_id:
+        description: "One unique identifier reused unchanged across all six runs."
+        required: true
+        type: string
+      confirm_live_test:
+        description: "Confirm owner preflight is complete and endpoint is a fresh test-only namespace."
+        required: true
+        type: boolean
+        default: false
+      host_slot:
+        description: "For mode=host only."
+        required: false
+        type: choice
+        options: [host1, host2, host3, host4]
+        default: host1
+      seed_workflow_run_id:
+        description: "Actual GITHUB_RUN_ID printed by the separate seed run."
+        required: false
+        type: string
+      host1_workflow_run_id:
+        description: "Actual GITHUB_RUN_ID printed by host1."
+        required: false
+        type: string
+      host2_workflow_run_id:
+        description: "Actual GITHUB_RUN_ID printed by host2."
+        required: false
+        type: string
+      host3_workflow_run_id:
+        description: "Actual GITHUB_RUN_ID printed by host3."
+        required: false
+        type: string
+      host4_workflow_run_id:
+        description: "Actual GITHUB_RUN_ID printed by host4."
+        required: false
+        type: string
+permissions:
+  contents: read
+jobs:
+  owner-gated-cross-run-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: p10cr-independent-host-owner-approved
+    steps:
+      - name: Checkout without persistent credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up exact Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22.16.0
+      - name: Validate owner approval, endpoint and stage inputs without network access
+        env:
+          MODE: ${{ inputs.mode }}
+          TEST_ID: ${{ inputs.test_id }}
+          CONFIRM_LIVE_TEST: ${{ inputs.confirm_live_test }}
+          FREE_VERIFIED: ${{ vars.P59_003_CLOUDFLARE_FREE_VERIFIED }}
+          NAMESPACE_VERIFIED: ${{ vars.P59_003_PHASE63_NAMESPACE_VERIFIED }}
+          LIVE_TEST_APPROVED: ${{ vars.P59_003_PHASE63_LIVE_TEST_APPROVED }}
+          ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
+          ENDPOINT_HOST: ${{ vars.P59_003_TEST_ENDPOINT_HOST }}
+          INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
+          CURRENT_RUN_ID: ${{ github.run_id }}
+          SEED_RUN_ID: ${{ inputs.seed_workflow_run_id }}
+          HOST1_RUN_ID: ${{ inputs.host1_workflow_run_id }}
+          HOST2_RUN_ID: ${{ inputs.host2_workflow_run_id }}
+          HOST3_RUN_ID: ${{ inputs.host3_workflow_run_id }}
+          HOST4_RUN_ID: ${{ inputs.host4_workflow_run_id }}
+        run: |
+          node --input-type=module <<'NODE'
+          const e=process.env,safeId=v=>/^[A-Za-z0-9._:-]{1,64}$/.test(v||""),safeRun=v=>/^[0-9]{1,20}$/.test(v||"");
+          const pinned=(e.ENDPOINT_HOST||"");
+          const validPinnedHost=/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+workers\.dev$/.test(pinned);
+          let endpointValid=false;try{const u=new URL(e.ENDPOINT||"");endpointValid=u.protocol==="https:"&&!u.username&&!u.password&&!u.search&&!u.hash&&!u.port&&validPinnedHost&&u.hostname.toLowerCase()===pinned&&u.pathname==="/internal/shadow-dispatch";}catch{}
+          if(!safeId(e.TEST_ID))throw new Error("TEST_ID_INVALID");
+          if(!(e.CONFIRM_LIVE_TEST==="true"&&e.FREE_VERIFIED==="true"&&e.NAMESPACE_VERIFIED==="true"&&e.LIVE_TEST_APPROVED==="true"&&endpointValid&&(e.INGRESS_SECRET||"").length>=32))throw new Error("OWNER_PREFLIGHT_NOT_SATISFIED; no live request made");
+          if(!safeRun(e.CURRENT_RUN_ID))throw new Error("CURRENT_GITHUB_RUN_ID_INVALID");
+          if(e.MODE==="host"&&(!safeRun(e.SEED_RUN_ID)||e.SEED_RUN_ID===e.CURRENT_RUN_ID))throw new Error("SEED_RUN_ID_REQUIRED_AND_DISTINCT");
+          if(e.MODE==="snapshot"){const ids=[e.SEED_RUN_ID,e.HOST1_RUN_ID,e.HOST2_RUN_ID,e.HOST3_RUN_ID,e.HOST4_RUN_ID,e.CURRENT_RUN_ID];if(!ids.every(safeRun)||new Set(ids).size!==6)throw new Error("SIX_DISTINCT_WORKFLOW_RUN_IDS_REQUIRED");}
+          if(!["seed","host","snapshot"].includes(e.MODE))throw new Error("MODE_INVALID");
+          console.log("P59_63_OWNER_PREFLIGHT=SATISFIED");console.log("P59_63_MODE="+e.MODE);console.log("CURRENT_GITHUB_RUN_ID="+e.CURRENT_RUN_ID);console.log("LIVE_CALLS_BEGIN_ONLY_AFTER_THIS_GATE=true");
+          NODE
+      - name: Run offline client contract tests
+        run: node --test cloud/swarm/independent-host-tests/cross-run-client.test.mjs
+      - name: Execute one owner-approved protocol stage
+        env:
+          P59_63_MODE: ${{ inputs.mode }}
+          P59_63_TEST_ID: ${{ inputs.test_id }}
+          P59_63_HOST_SLOT: ${{ inputs.host_slot }}
+          P59_63_SEED_WORKFLOW_RUN_ID: ${{ inputs.seed_workflow_run_id }}
+          P59_63_HOST1_WORKFLOW_RUN_ID: ${{ inputs.host1_workflow_run_id }}
+          P59_63_HOST2_WORKFLOW_RUN_ID: ${{ inputs.host2_workflow_run_id }}
+          P59_63_HOST3_WORKFLOW_RUN_ID: ${{ inputs.host3_workflow_run_id }}
+          P59_63_HOST4_WORKFLOW_RUN_ID: ${{ inputs.host4_workflow_run_id }}
+          P59_63_RUNNER_NAME: ${{ runner.name }}
+          P59_63_TEST_ENDPOINT_HOST: ${{ vars.P59_003_TEST_ENDPOINT_HOST }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          NEXUS_TEST_ENDPOINT: ${{ secrets.P59_003_TEST_DISPATCH_ENDPOINT }}
+          NEXUS_TEST_INGRESS_SECRET: ${{ secrets.P59_003_TEST_INGRESS_SECRET }}
+        run: node cloud/swarm/independent-host-tests/cross-run-client.mjs

@@ -107,6 +107,21 @@ describe("Phase 59.60 account-scope platform budget", () => {
     expect(state.eventChainValid).toBe(true);
   });
 
+  it("partitions P59.63 test reservations by two fixed repository aliases across distinct workflow runs", async () => {
+    const repoA = "synthetic-org/p10cr-shadow-repo-a";
+    const repoB = "synthetic-org/p10cr-shadow-repo-b";
+    const first = await call(bindingA(), "reserve", base(repoA, "p59-63-phase63-shared-seed", "phase63-run-1", { phaseId: "P59.63" }));
+    const second = await call(bindingB(), "reserve", base(repoB, "p59-63-phase63-shared-host1-01", "phase63-run-2", { phaseId: "P59.63" }));
+    expect(first.status).toBe("RESERVED");
+    expect(second.status).toBe("RESERVED");
+    const state = await snapshot();
+    expect(state.reservations).toHaveLength(2);
+    expect(state.reservations.map(row => row.phaseId)).toEqual(["P59.63", "P59.63"]);
+    expect(new Set(state.reservations.map(row => row.repository))).toEqual(new Set([repoA, repoB]));
+    expect(new Set(state.reservations.map(row => row.workflowRunId))).toEqual(new Set(["phase63-run-1", "phase63-run-2"]));
+    expect(state.eventChainValid).toBe(true);
+  });
+
   it("enforces fencing and lease-version progression before settlement", async () => {
     const created = await call(bindingA(), "reserve", base(
       "synthetic-org/p10cr-shadow-repo-a", "fenced-execution", "workflow-run-fence"
@@ -182,7 +197,7 @@ describe("Phase 59.60 account-scope platform budget", () => {
     const cases = [
       base("synthetic-org/p10cr-shadow-repo-a", "bad-project", "run-a", { projectId: "OTHER" }),
       base("synthetic-org/p10cr-shadow-repo-a", "bad-task", "run-b", { taskId: "P59-001" }),
-      base("synthetic-org/p10cr-shadow-repo-a", "bad-phase", "run-c", { phaseId: "P59.63" }),
+      base("synthetic-org/p10cr-shadow-repo-a", "bad-phase", "run-c", { phaseId: "P59.64" }),
       base("synthetic-org/p10cr-shadow-repo-a", "bad-operation", "run-d", { operationId: "unknown" })
     ];
     for (const input of cases) {

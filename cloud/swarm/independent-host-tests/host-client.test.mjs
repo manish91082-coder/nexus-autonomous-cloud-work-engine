@@ -169,3 +169,12 @@ test("owner-gated workflow enforces Cloudflare host and job-scoped identity cont
   assert.match(workflow, /GLOBAL_CROSS_JOB_CROSS_HOST_QUOTA_PROOF=PASS/);
   assert.doesNotMatch(workflow, /distinctWorkflowRunIdentities|runner\.id|\\\$\{\{/);
 });
+
+
+test("Phase59.63 endpoint requires an exact independently approved hostname pin", () => {
+  const pinned = "p59-62-test.example.workers.dev";
+  assert.equal(validateEndpoint(endpoint, "/internal/shadow-dispatch", pinned).hostname, pinned);
+  assert.throws(() => validateEndpoint(endpoint, "/internal/shadow-dispatch", "other.example.workers.dev"), /TEST_ENDPOINT_HOST_PIN_MISMATCH/);
+  assert.throws(() => validateEndpoint(endpoint, "/internal/shadow-dispatch", ""), /TEST_ENDPOINT_HOST_PIN_MISMATCH/);
+  assert.throws(() => validateEndpoint(endpoint, "/internal/shadow-dispatch", "https://p59-62-test.example.workers.dev"), /TEST_ENDPOINT_HOST_PIN_MISMATCH/);
+});

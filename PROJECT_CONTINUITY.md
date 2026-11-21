@@ -1,3 +1,79 @@
+# LATEST CONTINUITY UPDATE — PHASE 59.63.1 ENDPOINT HOST PIN HARDENING (21-Nov-2026)
+
+**Canonical master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
+**Candidate branch:** `phase59-63-independent-workflow-run-proof`  
+**Candidate head before this continuity commit:** `8f743ec17cde66e6f83e07c77af05215ae75ab63`  
+**Executable/test head verified by exact-head CI:** `12c58b8acc07953defd91c35cdcb97eced47a8ba`  
+**PR #48:** draft/open/unmerged; base `phase59-62-dependency-hardening`  
+**P59-003:** IN_PROGRESS, sole active P0  
+**P59-001:** PAUSED  
+**P59-002:** BLOCKED  
+**Spend:** ₹0; **verified realized net receipts:** ₹0; **AI inference:** DISABLED; **production:** OFF
+
+## Phase59.63.1 finding and correction
+
+A current-head review found that the Phase59.63 manual workflow/client accepted any hostname ending in `.workers.dev`. That suffix check did not bind the HMAC ingress request to the exact owner-approved Worker hostname. No live request or disclosure occurred; the workflow remained owner-gated.
+
+Corrected before live use:
+- Added independent environment variable `P59_003_TEST_ENDPOINT_HOST`.
+- Workflow preflight validates a strict lower-case Workers hostname and requires exact equality with the endpoint URL hostname.
+- Cross-run client independently requires the host pin and fails closed if missing or mismatched.
+- Every dispatch and snapshot signature path passes the same expected hostname into request validation.
+- Removed the fixed default test ID. Every new proof now requires a fresh operator-supplied ID.
+- Updated the owner packet with exact host and unique-ID requirements.
+
+## Exact-head CI — code/test SHA 12c58b8
+
+- Phase59.35 run [#44861739865](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44861739865): 17/17 offline client tests, workflow YAML syntax PASS, 83/83 Workers runtime, Phase59.63 Workerd 1/1.
+- Phase59.56 run [#44861739923](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44861739923): 2/2 synthetic global quota tests and 83/83 Workers runtime.
+- Phase59.58 run [#44861739854](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44861739854): 83/83 Workers runtime.
+- Phase59.60 run [#44861739859](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44861739859): 8/8 platform-budget tests.
+- Phase59.62 run [#44861739868](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44861739868): 4/4 dedicated dispatcher integration and 83/83 full swarm regression.
+
+All five workflows passed on the same code/test SHA. This remains Workerd/synthetic proof, not the six separate live hosted workflow-run proof.
+
+## Control-plane verification and fetch-back
+
+- Master Worker #540 / run [44843009588](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44843009588): SUCCESS on master HEAD; `POLL_OK`, selected P59-003, no inference.
+- Master Guard #347 / run [44719480010](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44719480010): SUCCESS on master HEAD; 111 checks, zero errors.
+- Candidate Worker #543 / run [44861996471](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44861996471): SUCCESS on candidate control commit `7c9d9cd`; `POLL_OK`, selected P59-003, AI `WAITING_FOR_OWNER_CONFIGURATION`, inference requests 0, errors 0.
+- Candidate Guard #350 / run [44861996479](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44861996479): SUCCESS on candidate control commit `7c9d9cd`; 111 checks, zero errors.
+
+Control/evidence commits:
+- Mission state: `1fc217f`, then latest control-plane run evidence `39dae09`.
+- Automation queue: `7c9d9cd`.
+- Federation registry: `2446508`, then candidate control-plane evidence `8f743ec`.
+- Phase59.63.1 report: `6cb25a1`.
+- Owner packet exact-host and fresh-ID update: `b553080`.
+
+Fetch-back confirms:
+- P59-003 = IN_PROGRESS, sole active P0.
+- P59-001 = PAUSED.
+- P59-002 = BLOCKED.
+- Master HEAD unchanged.
+- Revenue ledger unchanged: ₹0 verified receipts.
+- No other project was mutated.
+
+## Remaining owner gates
+
+PRs #44 → #45 → #46 → #47 → #48 remain a stacked draft/open/unmerged sequence. The Phase59.63 workflow is manual-only and is not available for `workflow_dispatch` until it exists on default branch. No direct master write or ruleset bypass was attempted.
+
+Still unverified:
+- Existing Cloudflare Workers Free plan and account-wide aggregate usage.
+- Owner-created fresh test-only SwarmRunDO/PlatformBudgetDO namespace pair.
+- Required-reviewer GitHub environment and endpoint-host variable/secrets.
+- GitHub App installation and scoped-token proof.
+- Branch protection: visible rulesets endpoint returned []; branch-protection API returned HTTP 403, so actual protection remains UNVERIFIED.
+- Six separate actual hosted workflow runs, physical multi-host atomicity, 7-day soak and 30-day soak.
+
+No Cloudflare deployment, GitHub App installation, live endpoint request, AI inference, provider call, billing, KYC, legal acceptance, public release, payment, signing, private-key access or money movement occurred.
+
+## Next step
+
+Continue P59-003 only. Owner must review/merge the stacked PRs in order, verify the existing Free account and aggregate usage, configure the exact endpoint host pin and test-only namespace/environment, then manually run seed + four host + snapshot as six separate workflow runs. Accept only the exact snapshot contract. Begin 7-day soak only after acceptance; 30-day soak follows. Keep P59-001 PAUSED and P59-002 BLOCKED until every P59-003 acceptance gate passes.
+
+---
+
 # LATEST CONTINUITY UPDATE — PHASE 59.62 FINAL HOST-CLIENT HARDENING (20-Nov-2026)
 
 **Master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
@@ -4942,3 +5018,16 @@ Date: 2026-11-17
 - Master remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`; master Worker #518 / run 44421599703 and Guard #324 / run 44287999809 remain SUCCESS.
 - Final control commits: queue `c59eeb069383c911089eedb47d3c9b82ea92e647`; mission state `7978896c4581353cdcc479ee235888350e6ebe6c`; federation `f5a10cf443622541bfab02c201a2963125845613`.
 - This is still candidate-branch Workerd CI, not independent physical-host or live Cloudflare proof. No deployment, owner account verification, AI inference, paid service, KYC, terms acceptance, publication or money movement. P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.
+
+
+## Phase59.63 — Independent workflow-run / cross-repository proof harness (2026-11-21)
+
+- Master HEAD remained `8856bf908f93e265cefd5c739f7f46b3dd995b3c`; all work is on `phase59-63-independent-workflow-run-proof`, PR #48, draft/open/unmerged, based on `phase59-62-dependency-hardening`.
+- Candidate PR head `3111486d15a9a1c6dd58dc3dd4412b4e396430f6`; executable/test integration head `a04e836816ea008ed92f23449b30a5e13ec1ff38`.
+- Added a strict test-only P59.63 repository-alias scope, per-task reservation identity, read-only aggregate budget snapshot, isolated Workerd test configuration and a manual six-run hosted proof workflow.
+- Synthetic Workerd proof: one seed + four distinct host-run identities + one snapshot, two fixed synthetic repository aliases, four duplicate sentinel replays suppressed, three overflow admitted and one denied; exactly eight settled, zero reserved/uncertain and valid event chain. This is not physical-host proof.
+- Exact-head CI PASS on `3111486d...`: Phase59.35 #44860704152 (14/14 Node tests, YAML syntax, 83/83 runtime, Phase59.63 1/1); Phase59.56 #44860704147 (83/83 and 2/2); Phase59.58 #44860704218 (83/83); Phase59.60 #44860704296 (8/8); Phase59.62 #44860704193 (4/4 and 83/83).
+- Failed attempts and corrections are documented in `research/PHASE_59_63_INDEPENDENT_WORKFLOW_RUN_PROOF_2026-11-21.md`; failures were workflow input assertion, overflow probe allowlist, task-ID snapshot filter and test-mode task-ID validation. All final exact-head runs passed.
+- PR #48 and parent PRs #44-#47 are all draft/open/unmerged. Since default branch is master and the manual workflow is only in PR #48, workflow_dispatch is not yet available. Owner must review/merge the stack in order; no direct master write or ruleset bypass.
+- Owner still must verify the existing Workers Free account and aggregate usage, create the test-only SwarmRunDO/PlatformBudgetDO namespace pair, configure required environment reviewers and set secrets/variables directly in GitHub. No deployment or live hosted test has started.
+- P59-003 remains the sole active P0; P59-001 PAUSED; P59-002 BLOCKED. AI inference disabled; production OFF; spend ₹0; verified receipts ₹0. Next: owner-gated six separate workflow runs, then 7-day and 30-day soak only after acceptance.
