@@ -4339,9 +4339,18 @@
           "spend_inr": 0,
           "receipts_inr": 0,
           "owner_blocker": "PR stack #44-#48 must be reviewed/merged to default master before workflow_dispatch is available; verify existing Cloudflare Free account, aggregate usage, namespace pair and environment reviewers."
+        },
+        "phase59_63_1_report": "research/PHASE_59_63_1_ENDPOINT_HOST_PIN_HARDENING_2026-11-21.md",
+        "code_test_head": "12c58b8acc07953defd91c35cdcb97eced47a8ba",
+        "ci_runs": {
+          "phase59_35": 44861739865,
+          "phase59_56": 44861739923,
+          "phase59_58": 44861739854,
+          "phase59_60": 44861739859,
+          "phase59_62": 44861739868
         }
       },
-      "blocker": "Remaining P59-003 acceptance gates: owner review/merge of stacked PR #44, #45 and #46; branch ruleset and required-review configuration; owner-approved least-privilege GitHub App creation/installation and scoped-token test; owner verification of existing Cloudflare Workers Free plan and aggregate account usage; independent physical-host atomicity; dependency lockfile/exact package pins and mutable action SHA hardening; 7-day and 30-day soak. Phase59.61 dispatcher budget integration passed final candidate CI but remains shadow-only and undeployed. Keep production flags OFF and AI inference disabled.",
+      "blocker": "Owner review/merge of stacked PRs #44→#45→#46→#47→#48; verify existing Cloudflare Workers Free account and aggregate usage; configure required-reviewer GitHub environment, exact P59_003_TEST_ENDPOINT_HOST pin and test-only namespace/secrets; verify branch protection through owner UI; then run six distinct workflow_dispatch runs. Physical multi-host proof and 7/30-day soak remain pending. Keep production OFF, AI inference DISABLED, spend ₹0.",
       "dependency_note": "Forensic audit and swarm foundation are prerequisite work that must execute before P59-001 resumes; do not depend on the paused portfolio task.",
       "phase59_25_evidence": {
         "report": "research/PHASE_59_25_GITHUB_CLOUD_OPERATIONAL_SOAK_2026-11-15.md",
@@ -4979,5 +4988,69 @@
     "verified_realized_net_receipts_inr": 0,
     "next": "Owner reviews and merges PRs #44→#45→#46→#47→#48 in order; configures the existing Cloudflare Free test-only namespace pair and required GitHub environment approval; then manually executes six separate workflow runs. Only after exact snapshot acceptance start 7-day soak, then 30-day soak."
   },
-  "p0_execution_invariant": "P59-003 is the sole active P0; P59-001 remains PAUSED; P59-002 remains BLOCKED."
+  "p0_execution_invariant": "P59-003 is the sole active P0; P59-001 remains PAUSED; P59-002 remains BLOCKED.",
+  "phase59_63_1": {
+    "phase": "P59.63.1_ENDPOINT_HOST_PIN_HARDENING",
+    "branch": "phase59-63-independent-workflow-run-proof",
+    "pr_number": 48,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "code_test_head": "12c58b8acc07953defd91c35cdcb97eced47a8ba",
+    "endpoint_host_pin": {
+      "environment_variable": "P59_003_TEST_ENDPOINT_HOST",
+      "exact_match_required": true,
+      "preflight_and_client_enforced": true,
+      "missing_or_mismatched_pin": "FAIL_CLOSED_BEFORE_NETWORK",
+      "test_id_default_removed": true
+    },
+    "exact_head_ci": {
+      "tested_head": "12c58b8acc07953defd91c35cdcb97eced47a8ba",
+      "phase59_35": {
+        "run_id": 44861739865,
+        "status": "SUCCESS",
+        "offline_client_tests": "17/17",
+        "yaml_syntax": "PASS",
+        "workers_runtime": "83/83",
+        "phase59_63_workerd": "1/1"
+      },
+      "phase59_56": {
+        "run_id": 44861739923,
+        "status": "SUCCESS",
+        "synthetic_global_quota_tests": "2/2",
+        "workers_runtime": "83/83"
+      },
+      "phase59_58": {
+        "run_id": 44861739854,
+        "status": "SUCCESS",
+        "workers_runtime": "83/83"
+      },
+      "phase59_60": {
+        "run_id": 44861739859,
+        "status": "SUCCESS",
+        "platform_budget_tests": "8/8"
+      },
+      "phase59_62": {
+        "run_id": 44861739868,
+        "status": "SUCCESS",
+        "dispatcher_integration": "4/4",
+        "full_swarm_regression": "83/83"
+      }
+    },
+    "owner_gates": {
+      "live_six_run_proof_started": false,
+      "cloudflare_deployed": false,
+      "owner_environment_configured": false,
+      "github_app_installed": false,
+      "branch_ruleset_status": "UNVERIFIED_OWNER_ACTION_REQUIRED",
+      "workflow_dispatch_available_on_default_branch": false
+    },
+    "soak_7d_started": false,
+    "soak_30d_started": false,
+    "ai_inference_enabled": false,
+    "live_provider_calls": 0,
+    "external_network_requests": 0,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "next": "Owner review/merge PR stack #44→#45→#46→#47→#48 in order; verify existing Workers Free account/aggregate usage; configure exact endpoint-host pin, required-reviewer environment and test-only namespace; then manually execute six separate workflow runs. Start 7-day soak only after exact snapshot acceptance, then 30-day soak."
+  }
 }
