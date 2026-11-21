@@ -129,7 +129,7 @@ export async function dispatchMissionShadow({
   try {
     reservationResult = await budgetRpc("reserve", {
       projectId: "P10CR", repository: resolvedBudgetScope.repository,
-      taskId: "P59-003", phaseId: resolvedBudgetScope.phaseId, workflowRunId,
+      taskId: resolvedBudgetScope.testOnly ? taskId : "P59-003", phaseId: resolvedBudgetScope.phaseId, workflowRunId,
       executionId, operationId: BUDGET_OPERATION
     });
   } catch {
