@@ -27,5 +27,5 @@ test("workflow is manual-only, read-only and owner-gated",()=>{
 test("workflow has four host slots and uses actual GITHUB_RUN_ID",()=>{
  const path=fileURLToPath(new URL("../../../.github/workflows/phase59-63-independent-workflow-run-proof.yml",import.meta.url));
  const workflow=fs.readFileSync(path,"utf8");for(const slot of ["host1","host2","host3","host4"])assert.match(workflow,new RegExp(slot));
- assert.match(workflow,/GITHUB_RUN_ID/);assert.match(workflow,/hostWorkflowRunIds/);
+ assert.match(workflow,/GITHUB_RUN_ID/);for(const key of ["host1_workflow_run_id","host2_workflow_run_id","host3_workflow_run_id","host4_workflow_run_id"])assert.match(workflow,new RegExp(key));
 });
