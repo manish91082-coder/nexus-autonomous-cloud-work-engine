@@ -194,7 +194,7 @@ export async function dispatchMissionShadow({
       }, resolvedBudgetScope)));
       settlementAttempted = true;
       const budgetResult = await settleBudget({ budgetRpc, budgetLease, outcome: "FAILED",
-        evidence: budgetEvidence("DURABLE_DEAD_LETTER_READBACK", { taskId, executionId, payloadHash, policyHash, taskStatus: task.status, evidenceHash }) });
+        evidence: budgetEvidence("DURABLE_DEAD_LETTER_READBACK", { taskId, executionId, payloadHash, policyHash, taskStatus: task.status, evidenceHash }, resolvedBudgetScope) });
       return { status: "DEAD_LETTER", taskId, budgetReservationId: budgetResult.reservationId, budgetStatus: budgetResult.status };
     }
     if (task.owner_gate && task.owner_approved_at === null) {
