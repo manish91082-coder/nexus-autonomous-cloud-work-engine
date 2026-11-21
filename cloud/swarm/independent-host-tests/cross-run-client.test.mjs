@@ -1,4 +1,4 @@
-import test from "node:test";import assert from "node:assert/strict";import fs from "node:fs";import {fileURLToPath} from "node:url";import {validateSnapshot} from "./cross-run-client.mjs";
+import test from "node:test";import assert from "node:assert/strict";import fs from "node:fs";import {fileURLToPath} from "node:url";import {runCrossRunClient,validateSnapshot} from "./cross-run-client.mjs";
 const testId="phase63-unit",seed="810001",hosts=["810011","810012","810013","810014"],snapshotRun="810099";
 const repoA="synthetic-org/p10cr-shadow-repo-a",repoB="synthetic-org/p10cr-shadow-repo-b";
 test("snapshot validator requires six distinct workflow-run IDs and two fixed repository aliases",()=>{
@@ -38,4 +38,13 @@ test("manual workflow pins the exact endpoint host and requires a fresh operator
  assert.match(workflow,/ENDPOINT_HOST/);
  assert.match(workflow,/u\.hostname\.toLowerCase\(\)===pinned/);
  assert.doesNotMatch(workflow,/default:\s*["']p59-63-manual-01["']/);
+});
+
+
+test("cross-run client refuses missing or mismatched endpoint host pin before any network call",async()=>{
+ const base={NEXUS_TEST_ENDPOINT:"https://p59-62-test.example.workers.dev/internal/shadow-dispatch",
+  NEXUS_TEST_INGRESS_SECRET:"phase63-unit-test-ingress-secret-0123456789abcdef",P59_63_MODE:"seed",
+  P59_63_TEST_ID:"phase63-pin-test",GITHUB_RUN_ID:"810001"};
+ await assert.rejects(()=>runCrossRunClient({...base,P59_63_TEST_ENDPOINT_HOST:undefined}),/OWNER_TEST_ENDPOINT_HOST_PIN_REQUIRED/);
+ await assert.rejects(()=>runCrossRunClient({...base,P59_63_TEST_ENDPOINT_HOST:"other.example.workers.dev"}),/TEST_ENDPOINT_HOST_PIN_MISMATCH/);
 });
