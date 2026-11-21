@@ -26,20 +26,17 @@
   "updated_at": "2026-11-21",
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
-    "run_number": 485,
-    "run_id": 43998553989,
+    "run_number": 543,
+    "run_id": 44861996471,
     "conclusion": "success",
-    "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43998553989",
-    "completed_at": "2026-11-17T01:50:24Z",
-    "trigger": "schedule",
+    "head_sha": "7c9d9cd17b98f2f00626d83c624f448761d3f01a",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44861996471",
+    "completed_at": "2026-11-21T03:36:47Z",
+    "trigger": "push",
     "checks": [
-      "Mission state validation PASS",
-      "swarm runtime/coordinator tests PASS",
-      "AI worker safety PASS",
-      "product smoke tests PASS",
-      "queue poll POLL_OK selected P59-003",
-      "AI executor WAITING_FOR_OWNER_CONFIGURATION; no inference request"
+      "POLL_OK selected P59-003",
+      "AI WAITING_FOR_OWNER_CONFIGURATION; no inference request",
+      "zero errors"
     ]
   },
   "verified_platform_credited_net_earnings_inr": 0,
@@ -532,17 +529,13 @@
     "US_BUILDING_PERMIT_CONTRACTOR_LEAD_SCRAPING"
   ],
   "latest_verified_continuity_guard": {
-    "name": "Mission Continuity Guard",
-    "run_number": 288,
-    "run_id": 43927317601,
+    "run_number": 350,
+    "run_id": 44861996479,
     "conclusion": "success",
-    "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/43927317601",
-    "completed_at": "2026-11-16T18:18:11Z",
-    "checks": [
-      "111 checks PASS",
-      "errors []"
-    ]
+    "head_sha": "7c9d9cd17b98f2f00626d83c624f448761d3f01a",
+    "checks": 111,
+    "errors": 0,
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44861996479"
   },
   "automation_schedule_audit": {
     "checked_at": "2026-11-14T19:34:00+05:30",
@@ -2945,6 +2938,44 @@
     "external_network_requests": 0,
     "authorized_spend_inr": 0,
     "verified_realized_net_receipts_inr": 0,
-    "next": "Owner review/merge PR stack #44→#45→#46→#47→#48 in order; verify existing Workers Free account/aggregate usage; configure exact endpoint-host pin, required-reviewer environment and test-only namespace; then manually execute six separate workflow runs. Start 7-day soak only after exact snapshot acceptance, then 30-day soak."
+    "next": "Owner review/merge PR stack #44→#45→#46→#47→#48 in order; verify existing Workers Free account/aggregate usage; configure exact endpoint-host pin, required-reviewer environment and test-only namespace; then manually execute six separate workflow runs. Start 7-day soak only after exact snapshot acceptance, then 30-day soak.",
+    "candidate_control_plane_runs": {
+      "candidate_worker": {
+        "run_id": 44861996471,
+        "run_number": 543,
+        "status": "SUCCESS",
+        "head_sha": "7c9d9cd17b98f2f00626d83c624f448761d3f01a",
+        "selected_task": "P59-003",
+        "queue_result": "POLL_OK",
+        "ai_status": "WAITING_FOR_OWNER_CONFIGURATION",
+        "inference_requests": 0
+      },
+      "candidate_guard": {
+        "run_id": 44861996479,
+        "run_number": 350,
+        "status": "SUCCESS",
+        "head_sha": "7c9d9cd17b98f2f00626d83c624f448761d3f01a",
+        "checks": 111,
+        "errors": 0
+      },
+      "master_worker": {
+        "run_id": 44843009588,
+        "run_number": 540,
+        "status": "SUCCESS",
+        "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+        "selected_task": "P59-003",
+        "queue_result": "POLL_OK",
+        "ai_status": "WAITING_FOR_OWNER_CONFIGURATION",
+        "inference_requests": 0
+      },
+      "master_guard": {
+        "run_id": 44719480010,
+        "run_number": 347,
+        "status": "SUCCESS",
+        "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+        "checks": 111,
+        "errors": 0
+      }
+    }
   }
 }
