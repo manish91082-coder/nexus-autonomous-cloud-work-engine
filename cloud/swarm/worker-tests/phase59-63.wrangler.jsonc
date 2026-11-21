@@ -1,0 +1,11 @@
+{
+  "name": "p10cr-phase59-63-cross-run-runtime-tests",
+  "main": "../mission-dispatcher-shadow-worker.mjs",
+  "compatibility_date": "2026-11-20",
+  "durable_objects": {
+    "bindings": [
+      { "name": "SWARM_RUNS", "class_name": "SwarmRunDO", "script_name": "p10cr-phase63-swarm-run-host" },
+      { "name": "PLATFORM_BUDGET", "class_name": "PlatformBudgetDO", "script_name": "p10cr-phase63-platform-budget-host" }
+    ]
+  }
+}

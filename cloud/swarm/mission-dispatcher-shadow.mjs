@@ -57,8 +57,15 @@ async function readCheckpoint(row, taskId, payloadHash, policyHash) {
   }
   return checkpoint;
 }
-function budgetEvidence(kind, details) {
-  return { kind, phase: BUDGET_PHASE, projectId: "P10CR", repository: CANONICAL_REPOSITORY, ...details };
+const PHASE_59_63_TEST_REPOSITORIES = Object.freeze(["synthetic-org/p10cr-shadow-repo-a","synthetic-org/p10cr-shadow-repo-b"]);
+function resolveBudgetScope(value) {
+  if (value === null || value === undefined) return { phaseId: BUDGET_PHASE, repository: CANONICAL_REPOSITORY, testOnly: false };
+  if (!value || value.testOnly !== true || value.phaseId !== "P59.63" || !PHASE_59_63_TEST_REPOSITORIES.includes(value.repository))
+    throw new TypeError("BUDGET_TEST_SCOPE_NOT_AUTHORIZED");
+  return { phaseId: "P59.63", repository: value.repository, testOnly: true };
+}
+function budgetEvidence(kind, details, scope = { phaseId: BUDGET_PHASE, repository: CANONICAL_REPOSITORY }) {
+  return { kind, phase: scope.phaseId, projectId: "P10CR", repository: scope.repository, ...details };
 }
 async function readBudgetSnapshot(budgetRpc, reservationId) {
   const snapshot = requireStatus(await budgetRpc("snapshot", {}), ["SNAPSHOT"], "budget_snapshot");
@@ -84,7 +91,7 @@ async function settleBudget({ budgetRpc, budgetLease, outcome, evidence }) {
   if (readback.reservation.status !== expected) throw new Error("DISPATCH_BUDGET_SETTLEMENT_READBACK_MISMATCH");
   return { reservationId: budgetLease.reservationId, status: readback.reservation.status, evidenceHash };
 }
-async function completedEvidence({ taskId, executionId, payloadHash, policyHash, task }) {
+async function completedEvidence({ taskId, executionId, payloadHash, policyHash, task, budgetScope }) {
   if (task?.status !== "COMPLETED" || typeof task.result_hash !== "string" ||
       !/^[a-f0-9]{64}$/.test(task.result_hash) || typeof task.result_run_id !== "string") {
     throw new Error("DISPATCH_COMPLETION_EVIDENCE_INVALID");
@@ -93,12 +100,12 @@ async function completedEvidence({ taskId, executionId, payloadHash, policyHash,
     taskId, executionId, payloadHash, policyHash,
     resultRunId: task.result_run_id, resultHash: task.result_hash,
     taskStatus: task.status, eventChainValid: true
-  });
+  }, budgetScope);
 }
 export async function dispatchMissionShadow({
   rpc, budgetRpc, taskId, workerId, payload, leaseSeconds = 60,
   workflowRunId = crypto.randomUUID(),
-  specialistGraph = runDeterministicSpecialistGraph, testHooks = null
+  specialistGraph = runDeterministicSpecialistGraph, testHooks = null, budgetScope = null
 }) {
   if (typeof rpc !== "function" || typeof budgetRpc !== "function" || typeof specialistGraph !== "function") {
     throw new TypeError("DISPATCH_DEPENDENCIES_REQUIRED");
@@ -108,11 +115,12 @@ export async function dispatchMissionShadow({
   if (typeof workflowRunId !== "string" || !/^[A-Za-z0-9._:-]{1,128}$/.test(workflowRunId)) throw new TypeError("INVALID_WORKFLOW_RUN_ID");
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) throw new TypeError("TASK_PAYLOAD_OBJECT_REQUIRED");
   if (!Number.isSafeInteger(leaseSeconds) || leaseSeconds < 1 || leaseSeconds > 300) throw new TypeError("INVALID_LEASE_SECONDS");
+  const resolvedBudgetScope = resolveBudgetScope(budgetScope);
 
   const payloadJson = canonical(payload);
   if (encoder.encode(payloadJson).byteLength > 8192) throw new TypeError("TASK_PAYLOAD_TOO_LARGE");
   const payloadHash = await sha256(payloadJson);
-  const policyHash = await sha256(canonical(POLICY));
+  const policyHash = await sha256(canonical(resolvedBudgetScope.testOnly ? { ...POLICY, budgetScope: { phaseId: resolvedBudgetScope.phaseId, repository: resolvedBudgetScope.repository } } : POLICY));
   const executionId = await sha256(canonical({ taskId, payloadHash, policyHash }));
   const idempotencyKey = "p10cr:p59-003-shadow:" + taskId;
 
@@ -120,8 +128,8 @@ export async function dispatchMissionShadow({
   let reservationResult;
   try {
     reservationResult = await budgetRpc("reserve", {
-      projectId: "P10CR", repository: CANONICAL_REPOSITORY,
-      taskId: "P59-003", phaseId: BUDGET_PHASE, workflowRunId,
+      projectId: "P10CR", repository: resolvedBudgetScope.repository,
+      taskId: "P59-003", phaseId: resolvedBudgetScope.phaseId, workflowRunId,
       executionId, operationId: BUDGET_OPERATION
     });
   } catch {
@@ -174,7 +182,7 @@ export async function dispatchMissionShadow({
     if (!task) throw new Error("DISPATCH_TASK_MISSING");
 
     if (task.status === "COMPLETED") {
-      const evidence = await completedEvidence({ taskId, executionId, payloadHash, policyHash, task });
+      const evidence = await completedEvidence({ taskId, executionId, payloadHash, policyHash, task, budgetScope: resolvedBudgetScope });
       settlementAttempted = true;
       const budgetResult = await settleBudget({ budgetRpc, budgetLease, outcome: "COMPLETED", evidence });
       return { status: "DUPLICATE_SUPPRESSED", taskId, runId: task.result_run_id, resultHash: task.result_hash,
@@ -183,7 +191,7 @@ export async function dispatchMissionShadow({
     if (task.status === "DEAD_LETTER") {
       const evidenceHash = await sha256(canonical(budgetEvidence("DURABLE_DEAD_LETTER_READBACK", {
         taskId, executionId, payloadHash, policyHash, taskStatus: task.status, eventChainValid: true
-      })));
+      }, resolvedBudgetScope)));
       settlementAttempted = true;
       const budgetResult = await settleBudget({ budgetRpc, budgetLease, outcome: "FAILED",
         evidence: budgetEvidence("DURABLE_DEAD_LETTER_READBACK", { taskId, executionId, payloadHash, policyHash, taskStatus: task.status, evidenceHash }) });
@@ -192,7 +200,7 @@ export async function dispatchMissionShadow({
     if (task.owner_gate && task.owner_approved_at === null) {
       settlementAttempted = true;
       const budgetResult = await settleBudget({ budgetRpc, budgetLease, outcome: "FAILED",
-        evidence: budgetEvidence("OWNER_GATE_BLOCKED_BEFORE_CLAIM", { taskId, executionId, payloadHash, policyHash }) });
+        evidence: budgetEvidence("OWNER_GATE_BLOCKED_BEFORE_CLAIM", { taskId, executionId, payloadHash, policyHash }, resolvedBudgetScope) });
       return { status: "OWNER_APPROVAL_REQUIRED", taskId, budgetReservationId: budgetResult.reservationId };
     }
 
@@ -298,7 +306,7 @@ export async function dispatchMissionShadow({
           evidence: budgetEvidence("DISPATCH_ABORTED_OR_AMBIGUOUS", {
             taskId, executionId, payloadHash, policyHash,
             reason: String(error?.message || "UNKNOWN_FAILURE").slice(0, 128)
-          })
+          }, resolvedBudgetScope)
         });
       } catch { /* retain the reservation; expiry/readback remains fail-closed */ }
     }

@@ -7,6 +7,8 @@ import { createPlatformBudgetRpc } from "./platform-budget-rpc-client.mjs";
 import { dispatchMissionShadow } from "./mission-dispatcher-shadow.mjs";
 const MAX_BODY_BYTES = 8192;
 const SAFE_ID = /^[A-Za-z0-9._:-]{1,128}$/;
+const SAFE_RUN_ID = /^[0-9]{1,20}$/;
+const P59_63_REPOSITORIES = Object.freeze(["synthetic-org/p10cr-shadow-repo-a","synthetic-org/p10cr-shadow-repo-b"]);
 const encoder = new TextEncoder();
 function response(status, body) {
   return Response.json(body, { status, headers: { "cache-control": "no-store" } });
@@ -96,29 +98,54 @@ export default {
     let body;
     try { body = JSON.parse(new TextDecoder().decode(bytes)); } catch { return response(400, { status: "REJECTED", reason: "INVALID_JSON" }); }
     if (url.pathname === snapshotPath) {
-      if (!body || typeof body !== "object" || Array.isArray(body)
-        || body.projectId !== "P10CR" || body.taskType !== "P59_003_BUDGET_SNAPSHOT"
-        || body.taskId !== "p59-62-budget-snapshot-readback"
-        || typeof body.workflowRunId !== "string" || !SAFE_ID.test(body.workflowRunId)
-        || !body.payload || typeof body.payload !== "object" || Array.isArray(body.payload)
-        || Object.keys(body.payload).length !== 0) {
+      const phase63Snapshot = body?.taskId === "p59-63-budget-snapshot-readback";
+      const payload = body?.payload, hostRunIds = payload?.hostWorkflowRunIds;
+      const phase63Valid = phase63Snapshot && env?.NEXUS_CROSS_RUN_PROOF_ENABLED === "true"
+        && typeof payload?.testId === "string" && SAFE_ID.test(payload.testId)
+        && SAFE_RUN_ID.test(body?.workflowRunId || "") && SAFE_RUN_ID.test(payload?.seedWorkflowRunId || "")
+        && Array.isArray(hostRunIds) && hostRunIds.length === 4
+        && hostRunIds.every(value => typeof value === "string" && SAFE_RUN_ID.test(value))
+        && new Set(hostRunIds).size === 4
+        && new Set([payload.seedWorkflowRunId, ...hostRunIds, body.workflowRunId]).size === 6
+        && Object.keys(payload).sort().join(",") === "hostWorkflowRunIds,seedWorkflowRunId,testId";
+      const phase62Valid = !phase63Snapshot && body?.taskId === "p59-62-budget-snapshot-readback"
+        && typeof body?.workflowRunId === "string" && SAFE_ID.test(body.workflowRunId)
+        && payload && typeof payload === "object" && !Array.isArray(payload) && Object.keys(payload).length === 0;
+      if (!body || typeof body !== "object" || Array.isArray(body) || body.projectId !== "P10CR"
+        || body.taskType !== "P59_003_BUDGET_SNAPSHOT" || (!phase62Valid && !phase63Valid)) {
         return response(403, { status: "REJECTED", reason: "BUDGET_SNAPSHOT_ENVELOPE_NOT_AUTHORIZED" });
       }
       try {
         const budgetRpc = createPlatformBudgetRpc(env.PLATFORM_BUDGET, env);
         const snapshot = await budgetRpc("snapshot", {});
-        if (snapshot.httpStatus !== 200 || snapshot.status !== "SNAPSHOT") {
-          return response(409, { status: "BUDGET_SNAPSHOT_UNVERIFIED" });
-        }
+        if (snapshot.httpStatus !== 200 || snapshot.status !== "SNAPSHOT") return response(409, { status: "BUDGET_SNAPSHOT_UNVERIFIED" });
+        const summary = {
+          status: "BUDGET_SNAPSHOT", committedDispatches: snapshot.committed?.dispatches ?? 0,
+          reservedDispatches: snapshot.reserved?.dispatches ?? 0, uncertainDispatches: snapshot.uncertain?.dispatches ?? 0,
+          controlBudgetRpcRequests: snapshot.control?.budget_rpc_requests ?? 0, eventChainValid: snapshot.eventChainValid === true,
+          eventCount: snapshot.eventCount ?? 0, lastEventHash: snapshot.lastEventHash ?? null
+        };
+        if (!phase63Snapshot) return response(200, summary);
+        const rows = snapshot.reservations || [];
+        if (rows.length > 32) return response(409, { status: "BUDGET_SNAPSHOT_UNVERIFIED", reason: "P59_63_RESERVATION_LIMIT_EXCEEDED" });
+        const prefix = "p59-63-" + payload.testId + "-";
+        const scoped = rows.filter(row => row.phaseId === "P59.63" && row.taskId?.startsWith(prefix));
+        const suffixOf = row => String(row.taskId || "").slice(prefix.length);
+        const runIds = [...new Set(scoped.map(row => row.workflowRunId))].sort();
+        const repositories = [...new Set(scoped.map(row => row.repository))].sort();
+        const expectedRunIds = [payload.seedWorkflowRunId, ...hostRunIds, body.workflowRunId].sort();
+        const seedCount = scoped.filter(row => suffixOf(row) === "seed").length;
+        const hostCount = scoped.filter(row => /^host[1-4]-01$/.test(suffixOf(row))).length;
+        const overflowCount = scoped.filter(row => /^overflow-[1-3]$/.test(suffixOf(row))).length;
+        const settledCount = scoped.filter(row => row.status === "SETTLED").length;
         return response(200, {
-          status: "BUDGET_SNAPSHOT",
-          committedDispatches: snapshot.committed?.dispatches ?? 0,
-          reservedDispatches: snapshot.reserved?.dispatches ?? 0,
-          uncertainDispatches: snapshot.uncertain?.dispatches ?? 0,
-          controlBudgetRpcRequests: snapshot.control?.budget_rpc_requests ?? 0,
-          eventChainValid: snapshot.eventChainValid === true,
-          eventCount: snapshot.eventCount ?? 0,
-          lastEventHash: snapshot.lastEventHash ?? null
+          ...summary, testId: payload.testId, reservationCount: scoped.length,
+          settledReservations: settledCount, nonSettledReservations: scoped.length - settledCount,
+          seedReservationCount: seedCount, hostReservationCount: hostCount, overflowReservationCount: overflowCount,
+          distinctWorkflowRunIds: runIds, distinctRepositories: repositories,
+          expectedWorkflowRunIdsMatch: runIds.length === expectedRunIds.length && runIds.every((value, index) => value === expectedRunIds[index]),
+          expectedRepositoriesMatch: repositories.length === 2 && repositories[0] === P59_63_REPOSITORIES[0] && repositories[1] === P59_63_REPOSITORIES[1],
+          allReservationsPhase59_63: rows.length === scoped.length
         });
       } catch (error) {
         return response(409, { status: "BUDGET_SNAPSHOT_UNVERIFIED", reason: String(error?.message || "SNAPSHOT_FAILED").slice(0, 128) });
@@ -131,6 +158,36 @@ export default {
       || !body.payload || typeof body.payload !== "object" || Array.isArray(body.payload)) {
       return response(403, { status: "REJECTED", reason: "SHADOW_ENVELOPE_NOT_AUTHORIZED" });
     }
+    let budgetScope = null;
+    const alias = body.payload?.testRepositoryAlias;
+    if (alias !== undefined) {
+      if (env?.NEXUS_SHADOW_TEST_MODE !== "true" || env?.NEXUS_CROSS_RUN_PROOF_ENABLED !== "true"
+        || body.payload?.testSuite !== "P59.63" || !P59_63_REPOSITORIES.includes(alias)
+        || typeof body.payload?.testId !== "string" || !SAFE_ID.test(body.payload.testId)
+        || !SAFE_RUN_ID.test(body.workflowRunId || "") || !body.taskId.startsWith("p59-63-" + body.payload.testId + "-")) {
+        return response(403, { status: "REJECTED", reason: "P59_63_TEST_SCOPE_NOT_AUTHORIZED" });
+      }
+      const suffix = body.taskId.slice(("p59-63-" + body.payload.testId + "-").length);
+      if (suffix === "seed") {
+        if (alias !== P59_63_REPOSITORIES[0] || body.payload.sentinel !== "GLOBAL_CROSS_RUN_SENTINEL")
+          return response(403, { status: "REJECTED", reason: "P59_63_SEED_NOT_AUTHORIZED" });
+      } else {
+        const hostMatch = /^host([1-4])-01$/.exec(suffix), overflowMatch = /^overflow-([1-3])$/.exec(suffix);
+        if (hostMatch) {
+          const slot = Number(hostMatch[1]), expectedRepo = slot % 2 === 1 ? P59_63_REPOSITORIES[0] : P59_63_REPOSITORIES[1];
+          if (alias !== expectedRepo || body.payload.hostId !== "host" + slot || body.payload.attemptIndex !== 1
+            || typeof body.payload.runnerName !== "string" || body.payload.runnerName.length < 1 || body.payload.runnerName.length > 256)
+            return response(403, { status: "REJECTED", reason: "P59_63_HOST_ENVELOPE_NOT_AUTHORIZED" });
+        } else if (overflowMatch) {
+          const index = Number(overflowMatch[1]), expectedRepo = index % 2 === 1 ? P59_63_REPOSITORIES[0] : P59_63_REPOSITORIES[1];
+          if (alias !== expectedRepo || body.payload.hostId !== "snapshot" || body.payload.attemptIndex !== index || body.payload.runnerName !== "snapshot")
+            return response(403, { status: "REJECTED", reason: "P59_63_OVERFLOW_ENVELOPE_NOT_AUTHORIZED" });
+        } else return response(403, { status: "REJECTED", reason: "P59_63_TASK_ID_NOT_AUTHORIZED" });
+      }
+      budgetScope = { testOnly: true, phaseId: "P59.63", repository: alias };
+    } else if (body.payload?.testSuite === "P59.63") {
+      return response(403, { status: "REJECTED", reason: "P59_63_REPOSITORY_ALIAS_REQUIRED" });
+    }
     try {
       const rpc = createSwarmRunRpc(env.SWARM_RUNS, env);
       const budgetRpc = createPlatformBudgetRpc(env.PLATFORM_BUDGET, env);
@@ -138,7 +195,7 @@ export default {
       const result = await dispatchMissionShadow({
         rpc, budgetRpc, taskId: body.taskId, workerId: prefix + "-" + crypto.randomUUID(),
         workflowRunId: body.workflowRunId || env.NEXUS_WORKFLOW_RUN_ID || crypto.randomUUID(),
-        payload: body.payload, leaseSeconds: 60
+        payload: body.payload, leaseSeconds: 60, budgetScope
       });
       const statusCode = result.status === "WAITING_FOR_BUDGET" ? 429
         : result.status === "OWNER_APPROVAL_REQUIRED" ? 403
