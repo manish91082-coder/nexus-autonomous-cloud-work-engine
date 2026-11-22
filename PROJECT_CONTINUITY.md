@@ -2,13 +2,15 @@
 
 **Canonical master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
 **Candidate branch:** `phase59-64-default-branch-execution-guard`  
-**Candidate checkpoint head before this continuity commit:** `1e022f6a32419a0ad0384380adb719795a4f0413`  
+**Candidate checkpoint head before this continuity commit:** `596ecbd7bafaa424fce54550cdf273afb8004601`  
 **Executable/test head:** `a3402ee892b22b946910cb17fc30283a92e6838a`  
 **PR #49:** draft/open/unmerged/mergeable; stacked on PR #48  
 **Parent PR stack:** #44 → #45 → #46 → #47 → #48 remains draft/open/unmerged  
 **P59-003:** IN_PROGRESS, sole active P0  
 **P59-001:** PAUSED  
 **P59-002:** BLOCKED  
+
+**V5 sequencing reconciliation:** V5 §11 still contains an adoption-time snapshot naming P59-001. The current explicit owner instruction overrides that snapshot for task sequencing only: P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. This override is stored in `control/mission_state.json` and `control/automation_queue.json`. All V5 revenue-recognition, evidence, rights, zero-spend and owner-approval rules remain in force.  
 **Spend:** ₹0; **verified realized net receipts:** ₹0; **AI inference:** DISABLED; **production:** OFF
 
 ## Phase59.63.2 — canonical default-branch preflight
