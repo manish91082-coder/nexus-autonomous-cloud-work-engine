@@ -2,7 +2,7 @@
 
 **Canonical master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
 **Candidate branch:** `phase59-64-default-branch-execution-guard`  
-**Candidate checkpoint head before this continuity commit:** `596ecbd7bafaa424fce54550cdf273afb8004601`  
+**Candidate checkpoint head before this continuity commit:** `fe5cc60a537678aac38b86a58a51967943db3eaf`  
 **Executable/test head:** `a3402ee892b22b946910cb17fc30283a92e6838a`  
 **PR #49:** draft/open/unmerged/mergeable; stacked on PR #48  
 **Parent PR stack:** #44 → #45 → #46 → #47 → #48 remains draft/open/unmerged  
@@ -17,7 +17,7 @@
 
 A code review found that the Phase59.63 manual proof workflow did not explicitly bind execution to the canonical repository, default branch and manual event. The owner environment was still unconfigured and no live request occurred.
 
-Added `cloud/swarm/independent-host-tests/owner-preflight.mjs` and 11 deterministic tests. Before the live client step, the workflow now requires:
+Added `cloud/swarm/independent-host-tests/owner-preflight.mjs` and 12 deterministic tests. Before the live client step, the workflow now requires:
 - Canonical repository `manish91082-coder/nexus-autonomous-cloud-work-engine`.
 - Exact ref `refs/heads/master`.
 - Event `workflow_dispatch`.
