@@ -93,14 +93,3 @@ test("workflow binds canonical repository/ref/event context to the preflight hel
   assert.ok(workflow.includes("validateOwnerPreflight"));
   assert.ok(helper.includes('const CANONICAL_REF = "refs/heads/master";'));
 });
-test("workflow binds canonical repository/ref/event context to the preflight helper", () => {
-  const workflowPath = fileURLToPath(new URL("../../../.github/workflows/phase59-63-independent-workflow-run-proof.yml", import.meta.url));
-  const helperPath = fileURLToPath(new URL("./owner-preflight.mjs", import.meta.url));
-  const workflow = fs.readFileSync(workflowPath, "utf8");
-  const helper = fs.readFileSync(helperPath, "utf8");
-  assert.match(workflow, /REPOSITORY:\\s*\\$\\{\\{\\s*github\\.repository\\s*\\}\\}/);
-  assert.match(workflow, /REF:\\s*\\$\\{\\{\\s*github\\.ref\\s*\\}\\}/);
-  assert.match(workflow, /EVENT_NAME:\\s*\\$\\{\\{\\s*github\\.event_name\\s*\\}\\}/);
-  assert.match(workflow, /validateOwnerPreflight/);
-  assert.match(helper, /CANONICAL_REF = "refs\\/heads\\/master"/);
-});
