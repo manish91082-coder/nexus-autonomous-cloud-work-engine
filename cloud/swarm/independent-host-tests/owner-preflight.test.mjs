@@ -82,12 +82,14 @@ test("rejects an unknown protocol mode", () => {
   assert.throws(() => validateOwnerPreflight({ ...base, MODE: "publish" }), /MODE_INVALID/);
 });
 
-test("workflow binds repository, ref and event context and runs the tested preflight module", () => {
-  const path = fileURLToPath(new URL("../../../.github/workflows/phase59-63-independent-workflow-run-proof.yml", import.meta.url));
-  const workflow = fs.readFileSync(path, "utf8");
-  assert.match(workflow, /REPOSITORY:\s*\$\{\{\s*github\.repository\s*\}\}/);
-  assert.match(workflow, /REF:\s*\$\{\{\s*github\.ref\s*\}\}/);
-  assert.match(workflow, /EVENT_NAME:\s*\$\{\{\s*github\.event_name\s*\}\}/);
+test("workflow binds canonical repository/ref/event context to the preflight helper", () => {
+  const workflowPath = fileURLToPath(new URL("../../../.github/workflows/phase59-63-independent-workflow-run-proof.yml", import.meta.url));
+  const helperPath = fileURLToPath(new URL("./owner-preflight.mjs", import.meta.url));
+  const workflow = fs.readFileSync(workflowPath, "utf8");
+  const helper = fs.readFileSync(helperPath, "utf8");
+  assert.match(workflow, /REPOSITORY:\\s*\\$\\{\\{\\s*github\\.repository\\s*\\}\\}/);
+  assert.match(workflow, /REF:\\s*\\$\\{\\{\\s*github\\.ref\\s*\\}\\}/);
+  assert.match(workflow, /EVENT_NAME:\\s*\\$\\{\\{\\s*github\\.event_name\\s*\\}\\}/);
   assert.match(workflow, /validateOwnerPreflight/);
-  assert.match(workflow, /refs\/heads\/master/);
+  assert.match(helper, /CANONICAL_REF = "refs\\/heads\\/master"/);
 });
