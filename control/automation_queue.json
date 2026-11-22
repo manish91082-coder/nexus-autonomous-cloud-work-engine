@@ -15,8 +15,8 @@
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
-    "last_reconciled_from_mission_state": "2026-11-19: Phase59.61 budget-gated dispatcher integration passed 4/4 dedicated tests and 82/82 full swarm runtime regression on PR merge ref f0f9736; P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.",
-    "reconciliation_note": "Phase59.61 integrates the account-scope budget into the P59-003 shadow dispatcher. Budget reservation precedes durable registration/claim; settlement follows durable completion/readback; ambiguous outcomes remain idempotent/UNCERTAIN; exhaustion creates no task. PR #46 is draft/unmerged and stacked on #45/#44. No production deployment or AI inference. No revenue-source ranking while P59-003 is active."
+    "last_reconciled_from_mission_state": "2026-11-22: Phase59.63.2 adds canonical repository, refs/heads/master and workflow_dispatch preflight before any live endpoint request. PR #49 is draft/unmerged and stacked on PR #48. Exact-head CI #44978842862 is running; no live test or owner action occurred.",
+    "reconciliation_note": "Phase59.61 integrates the account-scope budget into the P59-003 shadow dispatcher. Budget reservation precedes durable registration/claim; settlement follows durable completion/readback; ambiguous outcomes remain idempotent/UNCERTAIN; exhaustion creates no task. PR #46 is draft/unmerged and stacked on #45/#44. No production deployment or AI inference. No revenue-source ranking while P59-003 is active. Phase59.63.2: P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. New preflight rejects non-canonical repo/ref/event before network. Spend ₹0; inference disabled; live proof remains owner-gated."
   },
   "tasks": [
     {
@@ -3317,7 +3317,7 @@
       "depends_on": [],
       "idempotency_key": "phase59-autonomous-swarm-foundation-v1",
       "owner_gate": false,
-      "last_updated": "2026-11-21",
+      "last_updated": "2026-11-22",
       "acceptance": [
         "Complete source-level inventory of every .github/workflows file, mission runtime script, dependencies, triggers, permissions, secrets references and state writes before editing existing automation.",
         "Map existing deterministic worker, continuity guard, queue poller, AI executor stub and all current workflow run outcomes; verify exact HEAD and no-regression boundary.",
@@ -4396,9 +4396,9 @@
     }
   ],
   "dead_letter": [],
-  "updated_at": "2026-11-21",
+  "updated_at": "2026-11-22",
   "current_task": "P59-003",
-  "last_updated": "2026-11-20",
+  "last_updated": "2026-11-22",
   "sequence_note": "Phase59.62 final code/test head 7d0003ca PASS: 11/11 offline host-client/static workflow tests; YAML syntax PASS; lockfile valid (165 packages); 83/83 Workers runtime; 4/4 dispatcher integration; 83/83 full regression; Phase59.60 and Phase59.56 exact-head workflows PASS. Source audit fixed undefined runnerId payload, added streaming 16 KiB response bound, enforced workers.dev preflight allowlist and aligned aggregate identity keys. Live host test remains owner-gated. Next Phase59.63: manual-only one seed run + four separately dispatched host workflow runs using actual GITHUB_RUN_ID values + two synthetic P10CR repository aliases + one shared test-only DO + one read-only snapshot. No Actions write token or automated dispatch. Keep P59-001 PAUSED and P59-002 BLOCKED; no revenue research.",
   "last_reconciled_from_mission_state": "cfea7ecd0c97203568fbbf0c6d220dc4fa1d5e3b",
   "phase59_46": {
@@ -5052,5 +5052,16 @@
     "authorized_spend_inr": 0,
     "verified_realized_net_receipts_inr": 0,
     "next": "Owner review/merge PR stack #44→#45→#46→#47→#48 in order; verify existing Workers Free account/aggregate usage; configure exact endpoint-host pin, required-reviewer environment and test-only namespace; then manually execute six separate workflow runs. Start 7-day soak only after exact snapshot acceptance, then 30-day soak."
+  },
+  "phase59_63_2": {
+    "status": "CODE_COMMITTED_EXACT_HEAD_CI_IN_PROGRESS",
+    "branch": "phase59-64-default-branch-execution-guard",
+    "pr_number": 49,
+    "candidate_head": "35d848b059052865e21054b219cbdd5cbce1b1e5",
+    "code_test_head": "a3402ee892b22b946910cb17fc30283a92e6838a",
+    "ci_run_id": 44978842862,
+    "ci_status": "IN_PROGRESS",
+    "report": "research/PHASE_59_63_2_CANONICAL_DEFAULT_BRANCH_OWNER_PREFLIGHT_2026-11-22.md",
+    "next": "Phase59.64 owner-gated six independent workflow-run proof after parent PR stack and account/namespace approval."
   }
 }
