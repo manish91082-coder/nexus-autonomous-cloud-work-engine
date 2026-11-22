@@ -48,13 +48,20 @@ Added 11 deterministic owner-preflight tests covering canonical repository, defa
 
 An initial exact-head run #44978703280 failed 6 of 29 offline tests (23 passed). The failures exposed two test/code integration defects: the hostname regex was over-escaped in the first helper commit, and an older static test still expected endpoint validation to remain inline in YAML. The helper regex was corrected and the static tests now assert the extracted helper contract. A separate duplicate assertion in the new test file was removed before the current run.
 
-The current exact-head CI run is #44978842862 on code/test head `a3402ee892b22b946910cb17fc30283a92e6838a`. At report creation:
-- Lockfile integrity and exact dependency install: PASS.
-- Offline host-client and owner-preflight test step: PASS.
-- Workflow YAML syntax step: PASS.
-- Workers runtime and isolated Workerd steps: still running.
+The exact-head CI run [#44978842862](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44978842862) completed SUCCESS on code/test head `a3402ee892b22b946910cb17fc30283a92e6838a`.
 
-Do not treat this phase as accepted until run #44978842862 finishes successfully and its final logs are inspected.
+Verified final job evidence:
+- npm lockfile integrity: PASS; 165 package entries.
+- Exact dependency install with lifecycle scripts disabled: PASS.
+- Offline host-client + owner-preflight tests: **29/29 PASS**.
+- Owner-gated workflow YAML syntax: PASS (`YAML_SYNTAX_PASS`).
+- Cloudflare Workers runtime: **83/83 PASS across 4 test files**.
+- Isolated Phase59.63 Workerd integration: **1/1 PASS**.
+- All 13 job steps, including setup and cleanup, completed successfully.
+
+Non-failing warnings remain: Node 20 action-runtime deprecation notice (the pinned setup-node action was forced to Node 24 by the runner) and Node's `punycode` deprecation warning. No test or workflow step failed.
+
+The earlier run #44978703280 remains recorded as a failed initial attempt (23/29); the corrected exact-head run above is the acceptance result.
 
 ## 5. Material code commits
 
@@ -85,7 +92,7 @@ No Cloudflare deployment, GitHub App installation, environment/secret configurat
 
 ## 8. Next step
 
-After exact-head CI passes, continue P59-003 with the owner-gated six-separate-workflow-run proof: one seed run, four independent host workflow runs and one snapshot run against the same fresh test-only namespace pair. Require six actual distinct GitHub run IDs, two synthetic repository aliases, eight settled reservations, zero reserved/uncertain capacity, four duplicate sentinels suppressed, one overflow denial and a valid event chain. Only after owner-approved proof may the seven-day soak start, followed by the 30-day soak.
+With exact-head CI accepted, continue P59-003 with the owner-gated six-separate-workflow-run proof: one seed run, four independent host workflow runs and one snapshot run against the same fresh test-only namespace pair. Require six actual distinct GitHub run IDs, two synthetic repository aliases, eight settled reservations, zero reserved/uncertain capacity, four duplicate sentinels suppressed, one overflow denial and a valid event chain. Only after owner-approved proof may the seven-day soak start, followed by the 30-day soak.
 
 P59-003 remains the sole active P0. Do not resume P59-001 until every P59-003 acceptance gate passes.
 
