@@ -1,15 +1,53 @@
-# LATEST CONTINUITY UPDATE — PHASE 59.63.1 ENDPOINT HOST PIN HARDENING (21-Nov-2026)
+# LATEST CONTINUITY UPDATE — PHASE 59.63.2 DEFAULT-BRANCH OWNER-PREFLIGHT GUARD (22-Nov-2026)
 
 **Canonical master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
-**Candidate branch:** `phase59-63-independent-workflow-run-proof`  
-**Candidate head before this continuity commit:** `8f743ec17cde66e6f83e07c77af05215ae75ab63`  
-**Executable/test head verified by exact-head CI:** `12c58b8acc07953defd91c35cdcb97eced47a8ba`  
-**PR #48:** draft/open/unmerged; base `phase59-62-dependency-hardening`  
+**Candidate branch:** `phase59-64-default-branch-execution-guard`  
+**Candidate checkpoint head before this continuity commit:** `1dd4c2ffab4b383303c09381bbc5643d0c59fbc9`  
+**Executable/test head:** `a3402ee892b22b946910cb17fc30283a92e6838a`  
+**PR #49:** draft/open/unmerged; stacked on PR #48  
+**Parent PR stack:** #44 → #45 → #46 → #47 → #48 remains draft/open/unmerged  
 **P59-003:** IN_PROGRESS, sole active P0  
 **P59-001:** PAUSED  
 **P59-002:** BLOCKED  
 **Spend:** ₹0; **verified realized net receipts:** ₹0; **AI inference:** DISABLED; **production:** OFF
 
+## Phase59.63.2 — canonical default-branch preflight
+
+A code review found that the Phase59.63 manual proof workflow did not explicitly bind execution to the canonical repository, default branch and manual event. The owner environment was still unconfigured and no live request occurred.
+
+Added `cloud/swarm/independent-host-tests/owner-preflight.mjs` and 11 deterministic tests. Before the live client step, the workflow now requires:
+- Canonical repository `manish91082-coder/nexus-autonomous-cloud-work-engine`.
+- Exact ref `refs/heads/master`.
+- Event `workflow_dispatch`.
+- Existing owner/free-plan/namespace approvals.
+- Exact owner-pinned Worker hostname, HTTPS internal path and HMAC secret length.
+- Valid numeric workflow-run IDs, host slot and six-run uniqueness.
+
+The helper returns only non-secret context. The manual workflow remains read-only and manually dispatched. Phase59.35 CI now includes the new test file and the Phase59.63.2 branch.
+
+## Exact-head CI status
+
+Run [#44978842862](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44978842862), code/test SHA `a3402ee892b22b946910cb17fc30283a92e6838a`:
+- Lockfile integrity and exact dependency installation: PASS.
+- Offline host-client and owner-preflight tests: PASS.
+- Owner-gated workflow YAML syntax: PASS.
+- Workers runtime and isolated Phase59.63 Workerd test: pending at the time of this checkpoint.
+
+Earlier run [#44978703280](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44978703280) failed 6/29 tests on the initial implementation. The over-escaped host regex and stale inline-YAML assertions were corrected; the current run is the acceptance rerun. Do not declare Phase59.63.2 accepted until #44978842862 concludes SUCCESS.
+
+## Current owner gates and next step
+
+- PR #44 → #45 → #46 → #47 → #48 → #49 require owner review/merge in order; no merge or branch-rule bypass performed.
+- Existing Cloudflare Workers Free account and aggregate usage remain unverified.
+- Test-only Durable Object namespace pair and GitHub required-reviewer environment remain unconfigured.
+- Branch protection/ruleset status remains UNVERIFIED through the integration.
+- No live six-run proof, deployment, inference, provider call, billing, KYC, legal acceptance, publication, payment, signing or money movement.
+
+Next: finish exact-head CI, then Phase59.64 owner-gated seed + four separate host runs + snapshot. Start 7-day soak only after exact snapshot acceptance; 30-day soak follows 7-day acceptance. Keep P59-001 PAUSED and P59-002 BLOCKED.
+
+---
+
+## Previous checkpoint: Phase59.63.1
 ## Phase59.63.1 finding and correction
 
 A current-head review found that the Phase59.63 manual workflow/client accepted any hostname ending in `.workers.dev`. That suffix check did not bind the HMAC ingress request to the exact owner-approved Worker hostname. No live request or disclosure occurred; the workflow remained owner-gated.
@@ -5031,3 +5069,19 @@ Date: 2026-11-17
 - PR #48 and parent PRs #44-#47 are all draft/open/unmerged. Since default branch is master and the manual workflow is only in PR #48, workflow_dispatch is not yet available. Owner must review/merge the stack in order; no direct master write or ruleset bypass.
 - Owner still must verify the existing Workers Free account and aggregate usage, create the test-only SwarmRunDO/PlatformBudgetDO namespace pair, configure required environment reviewers and set secrets/variables directly in GitHub. No deployment or live hosted test has started.
 - P59-003 remains the sole active P0; P59-001 PAUSED; P59-002 BLOCKED. AI inference disabled; production OFF; spend ₹0; verified receipts ₹0. Next: owner-gated six separate workflow runs, then 7-day and 30-day soak only after acceptance.
+
+
+## PHASE 59.63.2 — CANONICAL DEFAULT-BRANCH OWNER-PREFLIGHT GUARD
+
+- Report: `research/PHASE_59_63_2_CANONICAL_DEFAULT_BRANCH_OWNER_PREFLIGHT_2026-11-22.md`.
+- Owner packet updated: `governance/P59-003_PHASE59_63_INDEPENDENT_WORKFLOW_RUN_OWNER_PACKET_2026-11-21.md`.
+- Code/test head: `a3402ee892b22b946910cb17fc30283a92e6838a`.
+- PR #49: draft/open/unmerged, base `phase59-63-independent-workflow-run-proof`; no master write.
+- Added canonical repository, `refs/heads/master` and `workflow_dispatch` validation before any live endpoint request.
+- Added 11 owner-preflight tests; added them to Phase59.35 and the manual proof workflow.
+- Current exact-head CI: [run #44978842862](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44978842862). Offline tests and YAML syntax passed; runtime and Workerd were pending at this checkpoint.
+- Initial run #44978703280 failed 6/29 tests; regex and static-test assumptions were corrected before the current acceptance run.
+- P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.
+- Spend ₹0; inference disabled; production OFF; no live endpoint request or owner-only action.
+- Next: complete CI, then owner-gated six separate workflow runs and 7/30-day soak.
+
