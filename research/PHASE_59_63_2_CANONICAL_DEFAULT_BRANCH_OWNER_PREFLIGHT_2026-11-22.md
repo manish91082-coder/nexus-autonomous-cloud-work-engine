@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-22  
 **Scope:** P59-003 only. No revenue-source ranking, product discovery or unrelated project work.  
-**Status:** Code committed; exact-head CI run #44978842862 in progress at report creation.  
+**Status:** Exact-head CI PASS; hosted six-run proof remains owner-gated.  
 **Spend:** ₹0. **AI inference:** DISABLED. **Production:** OFF.
 
 ## 1. Mission and repository state
@@ -88,3 +88,10 @@ No Cloudflare deployment, GitHub App installation, environment/secret configurat
 After exact-head CI passes, continue P59-003 with the owner-gated six-separate-workflow-run proof: one seed run, four independent host workflow runs and one snapshot run against the same fresh test-only namespace pair. Require six actual distinct GitHub run IDs, two synthetic repository aliases, eight settled reservations, zero reserved/uncertain capacity, four duplicate sentinels suppressed, one overflow denial and a valid event chain. Only after owner-approved proof may the seven-day soak start, followed by the 30-day soak.
 
 P59-003 remains the sole active P0. Do not resume P59-001 until every P59-003 acceptance gate passes.
+
+
+## 9. Final exact-head acceptance
+
+- PR #49 is draft/open/unmerged and mergeable; its current head contains the report and control-plane reconciliation after the executable/test SHA.
+- Code/test SHA `a3402ee892b22b946910cb17fc30283a92e6838a` passed run #44978842862 with 29/29 offline tests, YAML syntax, 165-package lockfile integrity, 83/83 Workers runtime and 1/1 Phase59.63 Workerd test.
+- The manual hosted proof remains unavailable until the PR stack is owner-reviewed and merged to default master and the owner configures the existing Free account, isolated namespace pair and required-reviewer environment.
