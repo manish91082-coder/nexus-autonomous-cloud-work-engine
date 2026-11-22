@@ -36,12 +36,12 @@ test("manual workflow delegates exact endpoint pinning to the tested preflight m
  const helperPath=fileURLToPath(new URL("./owner-preflight.mjs",import.meta.url));
  const workflow=fs.readFileSync(workflowPath,"utf8");
  const helper=fs.readFileSync(helperPath,"utf8");
- assert.match(workflow,/P59_003_TEST_ENDPOINT_HOST/);
- assert.match(workflow,/validateOwnerPreflight/);
- assert.match(helper,/SAFE_WORKER_HOST/);
- assert.match(helper,/endpoint\\.hostname === pinned/);
- assert.match(helper,/refs\\/heads\\/master/);
- assert.doesNotMatch(workflow,/default:\\s*["']p59-63-manual-01["']/);
+ assert.ok(workflow.includes("P59_003_TEST_ENDPOINT_HOST"));
+ assert.ok(workflow.includes("validateOwnerPreflight"));
+ assert.ok(helper.includes("SAFE_WORKER_HOST"));
+ assert.ok(helper.includes("endpoint.hostname === pinned"));
+ assert.ok(helper.includes('const CANONICAL_REF = "refs/heads/master";'));
+ assert.ok(!workflow.includes('default: "p59-63-manual-01"'));
 });
 
 test("cross-run client refuses missing or mismatched endpoint host pin before any network call",async()=>{
