@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "P59.63.1_ENDPOINT_HOST_PIN_HARDENING",
+  "phase": "P59.63.2_DEFAULT_BRANCH_OWNER_PREFLIGHT",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "Endpoint destination pin hardened; complete owner-gated six separate workflow-run proof against one test-only namespace pair, then 7-day and 30-day soak only after acceptance.",
+  "current_focus": "Canonical master-only manual workflow-dispatch guard implemented; exact-head Phase59.35 CI is running. After CI acceptance, proceed to owner-gated six-separate-workflow-run proof; no revenue/product research while P59-003 is active.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -23,7 +23,7 @@
     "spend",
     "AI_provider_account_and_secret_setup"
   ],
-  "updated_at": "2026-11-21",
+  "updated_at": "2026-11-22",
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
     "run_number": 543,
@@ -2359,7 +2359,7 @@
     "independent_physical_hosts_proven": false,
     "live_deployment": false
   },
-  "candidate_branch": "phase59-63-independent-workflow-run-proof",
+  "candidate_branch": "phase59-64-default-branch-execution-guard",
   "phase59_57": {
     "report": "research/PHASE_59_57_CONSTRAINED_PUBLISHER_SEPARATION_2026-11-17.md",
     "branch": "phase59-57-constrained-publisher-separation",
@@ -2418,8 +2418,8 @@
     "control_checkpoint_commit": "17584db552c559cdb9d44d46aee004303ccdec25",
     "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
   },
-  "last_updated": "2026-11-20",
-  "candidate_code_head": "7d0003ca4e8b3587db687ff7acd44013ef7f6413",
+  "last_updated": "2026-11-22",
+  "candidate_code_head": "a3402ee892b22b946910cb17fc30283a92e6838a",
   "candidate_tested_head": "7d0003ca4e8b3587db687ff7acd44013ef7f6413",
   "phase59_58": {
     "report": "research/PHASE_59_58_DURABLE_DISPATCHER_SPECIALIST_GRAPH_INTEGRATION_2026-11-18.md",
@@ -2872,9 +2872,9 @@
     "verified_realized_net_receipts_inr": 0,
     "next": "Owner reviews and merges PRs #44→#45→#46→#47→#48 in order; configures the existing Cloudflare Free test-only namespace pair and required GitHub environment approval; then manually executes six separate workflow runs. Only after exact snapshot acceptance start 7-day soak, then 30-day soak."
   },
-  "candidate_head": "3111486d15a9a1c6dd58dc3dd4412b4e396430f6",
+  "candidate_head": "35d848b059052865e21054b219cbdd5cbce1b1e5",
   "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "next": "Owner reviews and merges PRs #44→#45→#46→#47→#48 in order; configures the existing Cloudflare Free test-only namespace pair and required GitHub environment approval; then manually executes six separate workflow runs. Only after exact snapshot acceptance start 7-day soak, then 30-day soak.",
+  "next": "Phase59.64: after owner review/merge of the PR stack and verified Workers Free/test namespace approval, manually run six distinct workflow_dispatch stages. No live request before owner gates.",
   "ai_inference_enabled": false,
   "phase59_63_1": {
     "phase": "P59.63.1_ENDPOINT_HOST_PIN_HARDENING",
@@ -2977,5 +2977,70 @@
         "errors": 0
       }
     }
+  },
+  "phase59_63_2": {
+    "status": "CODE_COMMITTED_EXACT_HEAD_CI_IN_PROGRESS",
+    "branch": "phase59-64-default-branch-execution-guard",
+    "pr_number": 49,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "base_pr_number": 48,
+    "base_branch": "phase59-63-independent-workflow-run-proof",
+    "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "candidate_head": "35d848b059052865e21054b219cbdd5cbce1b1e5",
+    "code_test_head": "a3402ee892b22b946910cb17fc30283a92e6838a",
+    "report": "research/PHASE_59_63_2_CANONICAL_DEFAULT_BRANCH_OWNER_PREFLIGHT_2026-11-22.md",
+    "owner_packet": "governance/P59-003_PHASE59_63_INDEPENDENT_WORKFLOW_RUN_OWNER_PACKET_2026-11-21.md",
+    "changes": [
+      "Require canonical repository identity before live test request",
+      "Require refs/heads/master and workflow_dispatch before live test request",
+      "Extract deterministic owner preflight into tested module",
+      "Validate owner flags, exact endpoint hostname, HMAC secret length, test ID, host slot and actual run ID uniqueness",
+      "Add 11 offline owner-preflight tests",
+      "Include owner-preflight tests in Phase59.35 and manual Phase59.63 workflow",
+      "Add Phase59.63.2 branch to Phase59.35 push filter"
+    ],
+    "ci": {
+      "run_id": 44978842862,
+      "status": "IN_PROGRESS",
+      "offline_client_tests": "PASS",
+      "workflow_yaml": "PASS",
+      "lockfile_integrity": "PASS",
+      "exact_dependency_install": "PASS",
+      "workers_runtime": "IN_PROGRESS",
+      "phase59_63_workerd": "PENDING"
+    },
+    "prior_failure": {
+      "run_id": 44978703280,
+      "tested_head": "f9d28c1ed92028cfe7f0b7fe566291a92d9428f0",
+      "status": "FAILURE",
+      "tests_passed": 23,
+      "tests_total": 29,
+      "causes": [
+        "Initial helper hostname regex was over-escaped",
+        "Legacy static test expected inline endpoint validation after validation was extracted",
+        "One workflow-context test asserted the master ref in YAML instead of the helper"
+      ],
+      "correction_commits": [
+        "0db2f1b910940fda6a4e35c0514aac4d4d1d528e",
+        "5f02db40174f42c93d3313b2bdcab630bea42dc8",
+        "a3402ee892b22b946910cb17fc30283a92e6838a"
+      ]
+    },
+    "owner_gates": {
+      "cloudflare_free_account_verified": false,
+      "aggregate_usage_verified": false,
+      "test_namespace_pair_configured": false,
+      "github_environment_required_reviewers_verified": false,
+      "exact_endpoint_host_pin_configured": false,
+      "github_app_installed": false,
+      "branch_ruleset_status": "UNVERIFIED_OWNER_ACTION_REQUIRED",
+      "live_six_run_proof_started": false
+    },
+    "ai_inference_enabled": false,
+    "live_provider_calls": 0,
+    "external_network_requests": 0,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "next": "After exact-head CI passes, Phase59.64 owner-gated six separate workflow runs: seed, four independent host runs, snapshot; then 7-day and 30-day soak only after acceptance."
   }
 }
