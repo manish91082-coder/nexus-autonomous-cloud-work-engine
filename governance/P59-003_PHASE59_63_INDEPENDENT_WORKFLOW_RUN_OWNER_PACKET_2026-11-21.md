@@ -32,6 +32,18 @@ GitHub only exposes `workflow_dispatch` for a workflow file that exists on the r
 
 Owner review/merge sequence, without bypassing branch rulesets: PR #44 to `master`, then #45, #46, #47 and #48 in order. Do not merge automatically or use a direct master write. After the complete stack is on `master`, verify the workflow appears in Actions, configure the required-reviewer environment, and only then begin the six separate manual runs.
 
+## Phase59.63.2 default-branch execution guard
+
+The workflow's first executable step imports the tested `owner-preflight.mjs` module and fails closed unless all three GitHub context values are exact:
+
+- Repository: `manish91082-coder/nexus-autonomous-cloud-work-engine`
+- Ref: `refs/heads/master`
+- Event: `workflow_dispatch`
+
+The same preflight validates the exact pinned Worker hostname, HTTPS internal dispatch path, owner approval variables, test-only namespace assertion, HMAC secret length, numeric run IDs, host slot and six-run uniqueness before the client is allowed to make a network request. It returns only non-secret context. A dispatch from a PR/feature branch or any non-manual event must stop before network access.
+
+This code guard supplements, and does not replace, GitHub Environment required reviewers and owner verification of branch/ruleset protections. The live endpoint, namespace, environment and secrets remain unconfigured until the owner completes the approval packet.
+
 ## Six separate workflow runs
 
 Supply a fresh unique test ID manually for each new proof and reuse it unchanged across all six runs, e.g. `p59-63-20261121-01`. The workflow has no reusable default. Never restart a partial proof with the same test ID; abandon it and use a new ID after owner-approved namespace cleanup. Run all stages within one UTC day.

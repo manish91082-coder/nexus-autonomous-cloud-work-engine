@@ -31,15 +31,18 @@ test("workflow has four host slots and uses actual GITHUB_RUN_ID",()=>{
 });
 
 
-test("manual workflow pins the exact endpoint host and requires a fresh operator-supplied test ID",()=>{
- const path=fileURLToPath(new URL("../../../.github/workflows/phase59-63-independent-workflow-run-proof.yml",import.meta.url));
- const workflow=fs.readFileSync(path,"utf8");
- assert.match(workflow,/P59_003_TEST_ENDPOINT_HOST/);
- assert.match(workflow,/ENDPOINT_HOST/);
- assert.match(workflow,/u\.hostname\.toLowerCase\(\)===pinned/);
- assert.doesNotMatch(workflow,/default:\s*["']p59-63-manual-01["']/);
+test("manual workflow delegates exact endpoint pinning to the tested preflight module and requires a fresh operator-supplied test ID",()=>{
+ const workflowPath=fileURLToPath(new URL("../../../.github/workflows/phase59-63-independent-workflow-run-proof.yml",import.meta.url));
+ const helperPath=fileURLToPath(new URL("./owner-preflight.mjs",import.meta.url));
+ const workflow=fs.readFileSync(workflowPath,"utf8");
+ const helper=fs.readFileSync(helperPath,"utf8");
+ assert.ok(workflow.includes("P59_003_TEST_ENDPOINT_HOST"));
+ assert.ok(workflow.includes("validateOwnerPreflight"));
+ assert.ok(helper.includes("SAFE_WORKER_HOST"));
+ assert.ok(helper.includes("endpoint.hostname === pinned"));
+ assert.ok(helper.includes('const CANONICAL_REF = "refs/heads/master";'));
+ assert.ok(!workflow.includes('default: "p59-63-manual-01"'));
 });
-
 
 test("cross-run client refuses missing or mismatched endpoint host pin before any network call",async()=>{
  const base={NEXUS_TEST_ENDPOINT:"https://p59-62-test.example.workers.dev/internal/shadow-dispatch",

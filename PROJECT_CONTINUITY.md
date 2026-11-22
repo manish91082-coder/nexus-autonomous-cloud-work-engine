@@ -1,15 +1,53 @@
-# LATEST CONTINUITY UPDATE — PHASE 59.63.1 ENDPOINT HOST PIN HARDENING (21-Nov-2026)
+# LATEST CONTINUITY UPDATE — PHASE 59.63.2 DEFAULT-BRANCH OWNER-PREFLIGHT GUARD (22-Nov-2026)
 
 **Canonical master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
-**Candidate branch:** `phase59-63-independent-workflow-run-proof`  
-**Candidate head before this continuity commit:** `8f743ec17cde66e6f83e07c77af05215ae75ab63`  
-**Executable/test head verified by exact-head CI:** `12c58b8acc07953defd91c35cdcb97eced47a8ba`  
-**PR #48:** draft/open/unmerged; base `phase59-62-dependency-hardening`  
+**Candidate branch:** `phase59-64-default-branch-execution-guard`  
+**Candidate checkpoint head before this continuity commit:** `fe5cc60a537678aac38b86a58a51967943db3eaf`  
+**Executable/test head:** `a3402ee892b22b946910cb17fc30283a92e6838a`  
+**PR #49:** draft/open/unmerged/mergeable; stacked on PR #48  
+**Parent PR stack:** #44 → #45 → #46 → #47 → #48 remains draft/open/unmerged  
 **P59-003:** IN_PROGRESS, sole active P0  
 **P59-001:** PAUSED  
 **P59-002:** BLOCKED  
+
+**V5 sequencing reconciliation:** V5 §11 still contains an adoption-time snapshot naming P59-001. The current explicit owner instruction overrides that snapshot for task sequencing only: P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. This override is stored in `control/mission_state.json` and `control/automation_queue.json`. All V5 revenue-recognition, evidence, rights, zero-spend and owner-approval rules remain in force.  
 **Spend:** ₹0; **verified realized net receipts:** ₹0; **AI inference:** DISABLED; **production:** OFF
 
+## Phase59.63.2 — canonical default-branch preflight
+
+A code review found that the Phase59.63 manual proof workflow did not explicitly bind execution to the canonical repository, default branch and manual event. The owner environment was still unconfigured and no live request occurred.
+
+Added `cloud/swarm/independent-host-tests/owner-preflight.mjs` and 12 deterministic tests. Before the live client step, the workflow now requires:
+- Canonical repository `manish91082-coder/nexus-autonomous-cloud-work-engine`.
+- Exact ref `refs/heads/master`.
+- Event `workflow_dispatch`.
+- Explicit owner/free-plan/namespace approvals.
+- Exact owner-pinned Worker hostname, HTTPS internal path and HMAC secret length.
+- Valid numeric workflow-run IDs, host slot and six-run uniqueness.
+
+The helper returns only non-secret context. The manual workflow remains read-only and manually dispatched. Phase59.35 CI now includes the new test file and the Phase59.63.2 branch.
+
+## Exact-head CI — PASS
+
+- Phase59.35 run [#44978842862](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44978842862), code/test SHA `a3402ee892b22b946910cb17fc30283a92e6838a`: **29/29 offline tests**, YAML syntax PASS, lockfile integrity PASS (165 packages), exact dependency install with lifecycle scripts disabled PASS, **83/83 Workers runtime tests across 4 files**, **1/1 Phase59.63 Workerd integration**. All 13 job steps succeeded.
+- Non-failing warnings: pinned setup-node action emitted Node 20 deprecation notice and Node emitted a `punycode` deprecation warning.
+- Initial run [#44978703280](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44978703280) failed 6/29 on the first implementation; the over-escaped regex and stale inline-YAML assertions were corrected before #44978842862.
+
+## Control-plane and owner gates
+
+- Mission Worker #544: [run #44862083316](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44862083316) SUCCESS; queue poll `POLL_OK`, selected P59-003; AI executor `WAITING_FOR_OWNER_CONFIGURATION`; no inference request.
+- Continuity Guard #352: [run #44862105398](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44862105398) SUCCESS; 111 checks, zero errors.
+- PR #44 → #45 → #46 → #47 → #48 → #49 require owner review/merge in order; no merge or branch-rule bypass performed.
+- Existing Cloudflare Workers Free account and aggregate usage remain unverified.
+- Test-only Durable Object namespace pair and GitHub required-reviewer environment remain unconfigured.
+- Branch protection/ruleset status remains UNVERIFIED through the integration.
+- No live six-run proof, deployment, inference, provider call, billing, KYC, legal acceptance, publication, payment, signing or money movement.
+
+Next: Phase59.64 owner-gated seed + four separate host runs + snapshot. Start 7-day soak only after exact snapshot acceptance; 30-day soak follows 7-day acceptance. Keep P59-001 PAUSED and P59-002 BLOCKED.
+
+---
+
+## Previous checkpoint: Phase59.63.1
 ## Phase59.63.1 finding and correction
 
 A current-head review found that the Phase59.63 manual workflow/client accepted any hostname ending in `.workers.dev`. That suffix check did not bind the HMAC ingress request to the exact owner-approved Worker hostname. No live request or disclosure occurred; the workflow remained owner-gated.
@@ -5031,3 +5069,32 @@ Date: 2026-11-17
 - PR #48 and parent PRs #44-#47 are all draft/open/unmerged. Since default branch is master and the manual workflow is only in PR #48, workflow_dispatch is not yet available. Owner must review/merge the stack in order; no direct master write or ruleset bypass.
 - Owner still must verify the existing Workers Free account and aggregate usage, create the test-only SwarmRunDO/PlatformBudgetDO namespace pair, configure required environment reviewers and set secrets/variables directly in GitHub. No deployment or live hosted test has started.
 - P59-003 remains the sole active P0; P59-001 PAUSED; P59-002 BLOCKED. AI inference disabled; production OFF; spend ₹0; verified receipts ₹0. Next: owner-gated six separate workflow runs, then 7-day and 30-day soak only after acceptance.
+
+
+## PHASE 59.63.2 — CANONICAL DEFAULT-BRANCH OWNER-PREFLIGHT GUARD
+
+- Report: `research/PHASE_59_63_2_CANONICAL_DEFAULT_BRANCH_OWNER_PREFLIGHT_2026-11-22.md`.
+- Owner packet updated: `governance/P59-003_PHASE59_63_INDEPENDENT_WORKFLOW_RUN_OWNER_PACKET_2026-11-21.md`.
+- Code/test head: `a3402ee892b22b946910cb17fc30283a92e6838a`.
+- PR #49: draft/open/unmerged, base `phase59-63-independent-workflow-run-proof`; no master write.
+- Added canonical repository, `refs/heads/master` and `workflow_dispatch` validation before any live endpoint request.
+- Added 11 owner-preflight tests; added them to Phase59.35 and the manual proof workflow.
+- Current exact-head CI: [run #44978842862](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44978842862). Offline tests and YAML syntax passed; runtime and Workerd were pending at this checkpoint.
+- Initial run #44978703280 failed 6/29 tests; regex and static-test assumptions were corrected before the current acceptance run.
+- P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.
+- Spend ₹0; inference disabled; production OFF; no live endpoint request or owner-only action.
+- Next: complete CI, then owner-gated six separate workflow runs and 7/30-day soak.
+
+
+
+## PHASE 59.63.2 FINAL ACCEPTANCE — 22-Nov-2026
+
+- Report: `research/PHASE_59_63_2_CANONICAL_DEFAULT_BRANCH_OWNER_PREFLIGHT_2026-11-22.md`.
+- Owner packet update: `governance/P59-003_PHASE59_63_INDEPENDENT_WORKFLOW_RUN_OWNER_PACKET_2026-11-21.md`.
+- Code/test SHA `a3402ee892b22b946910cb17fc30283a92e6838a` passed [Phase59.35 run #44978842862](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44978842862): 29/29 offline tests, YAML PASS, 165-package lockfile integrity, 83/83 Workers runtime, 1/1 Workerd.
+- All writes to mission state, queue, federation and this continuity file were fetched back.
+- Candidate PR #49 remains draft/open/unmerged; master HEAD remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
+- No live hosted proof, deployment, inference, spend or receipts.
+- P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.
+- Next engineering/owner step: Phase59.64 six separate workflow-run proof, then 7/30-day soak after acceptance.
+

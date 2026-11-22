@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "P59.63.1_ENDPOINT_HOST_PIN_HARDENING",
+  "phase": "P59.63.2_DEFAULT_BRANCH_OWNER_PREFLIGHT",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "Endpoint destination pin hardened; complete owner-gated six separate workflow-run proof against one test-only namespace pair, then 7-day and 30-day soak only after acceptance.",
+  "current_focus": "Canonical master-only manual workflow-dispatch guard passed exact-head CI: 29/29 offline tests, YAML PASS, 83/83 Workers runtime and 1/1 Phase59.63 Workerd. Next is owner-gated six-run proof; no revenue/product research while P59-003 is active.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -23,7 +23,7 @@
     "spend",
     "AI_provider_account_and_secret_setup"
   ],
-  "updated_at": "2026-11-21",
+  "updated_at": "2026-11-22",
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
     "run_number": 543,
@@ -2359,7 +2359,7 @@
     "independent_physical_hosts_proven": false,
     "live_deployment": false
   },
-  "candidate_branch": "phase59-63-independent-workflow-run-proof",
+  "candidate_branch": "phase59-64-default-branch-execution-guard",
   "phase59_57": {
     "report": "research/PHASE_59_57_CONSTRAINED_PUBLISHER_SEPARATION_2026-11-17.md",
     "branch": "phase59-57-constrained-publisher-separation",
@@ -2418,9 +2418,9 @@
     "control_checkpoint_commit": "17584db552c559cdb9d44d46aee004303ccdec25",
     "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
   },
-  "last_updated": "2026-11-20",
-  "candidate_code_head": "7d0003ca4e8b3587db687ff7acd44013ef7f6413",
-  "candidate_tested_head": "7d0003ca4e8b3587db687ff7acd44013ef7f6413",
+  "last_updated": "2026-11-22",
+  "candidate_code_head": "a3402ee892b22b946910cb17fc30283a92e6838a",
+  "candidate_tested_head": "a3402ee892b22b946910cb17fc30283a92e6838a",
   "phase59_58": {
     "report": "research/PHASE_59_58_DURABLE_DISPATCHER_SPECIALIST_GRAPH_INTEGRATION_2026-11-18.md",
     "branch": "phase59-58-durable-dispatcher-shadow-integration",
@@ -2872,9 +2872,9 @@
     "verified_realized_net_receipts_inr": 0,
     "next": "Owner reviews and merges PRs #44→#45→#46→#47→#48 in order; configures the existing Cloudflare Free test-only namespace pair and required GitHub environment approval; then manually executes six separate workflow runs. Only after exact snapshot acceptance start 7-day soak, then 30-day soak."
   },
-  "candidate_head": "3111486d15a9a1c6dd58dc3dd4412b4e396430f6",
+  "candidate_head": "08674e74b40cee06505dedbe39c46dd81bbf47bd",
   "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "next": "Owner reviews and merges PRs #44→#45→#46→#47→#48 in order; configures the existing Cloudflare Free test-only namespace pair and required GitHub environment approval; then manually executes six separate workflow runs. Only after exact snapshot acceptance start 7-day soak, then 30-day soak.",
+  "next": "Phase59.64: owner-gated six separate workflow runs (seed, host1-4, snapshot) against one fresh test-only namespace pair. Only after exact snapshot acceptance start 7-day soak, then 30-day soak.",
   "ai_inference_enabled": false,
   "phase59_63_1": {
     "phase": "P59.63.1_ENDPOINT_HOST_PIN_HARDENING",
@@ -2977,5 +2977,104 @@
         "errors": 0
       }
     }
+  },
+  "phase59_63_2": {
+    "status": "EXACT_HEAD_CI_PASS_OWNER_GATES_PENDING",
+    "branch": "phase59-64-default-branch-execution-guard",
+    "pr_number": 49,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "pr_mergeable": true,
+    "base_pr_number": 48,
+    "base_branch": "phase59-63-independent-workflow-run-proof",
+    "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "candidate_head_before_control_reconciliation": "08674e74b40cee06505dedbe39c46dd81bbf47bd",
+    "code_test_head": "a3402ee892b22b946910cb17fc30283a92e6838a",
+    "report": "research/PHASE_59_63_2_CANONICAL_DEFAULT_BRANCH_OWNER_PREFLIGHT_2026-11-22.md",
+    "report_commit": "d3e7cc44732a79b6692d493e81d2246d4577f0b0",
+    "owner_packet": "governance/P59-003_PHASE59_63_INDEPENDENT_WORKFLOW_RUN_OWNER_PACKET_2026-11-21.md",
+    "code_commits": [
+      "2bf51d508fca815dc1d59b6531e5b48d49821d49",
+      "bdde0c2ac9518cdc101405e6975eb1f2511fccac",
+      "11a7cf0b48cef717dd2aa3148086fcd68eb2a84d",
+      "f9d28c1ed92028cfe7f0b7fe566291a92d9428f0",
+      "0db2f1b910940fda6a4e35c0514aac4d4d1d528e",
+      "5f02db40174f42c93d3313b2bdcab630bea42dc8",
+      "039a874c2e84c6c5fd0bde0126470809f0a5368b",
+      "ef61e13061313b1e5db684ec74065c2b94db3fa4",
+      "a3402ee892b22b946910cb17fc30283a92e6838a"
+    ],
+    "ci": {
+      "run_id": 44978842862,
+      "run_number": 407,
+      "status": "SUCCESS",
+      "tested_head": "a3402ee892b22b946910cb17fc30283a92e6838a",
+      "offline_host_client_and_preflight_tests": "29/29",
+      "yaml_syntax": "PASS",
+      "lockfile_packages": 165,
+      "lockfile_integrity": "PASS",
+      "dependency_install": "PASS_IGNORE_SCRIPTS",
+      "workers_runtime": "83/83",
+      "workers_test_files": 4,
+      "phase59_63_workerd": "1/1",
+      "failed_steps": 0,
+      "warnings": [
+        "Node 20 action runtime deprecation notice; pinned setup-node action was forced to Node 24 by GitHub runner",
+        "Node punycode deprecation warning"
+      ]
+    },
+    "prior_failure": {
+      "run_id": 44978703280,
+      "tested_head": "f9d28c1ed92028cfe7f0b7fe566291a92d9428f0",
+      "status": "FAILURE",
+      "tests_passed": 23,
+      "tests_total": 29,
+      "causes": [
+        "Initial helper hostname regex was over-escaped",
+        "Legacy static test expected inline endpoint validation after validation was extracted",
+        "One workflow-context test asserted the master ref in YAML instead of the helper"
+      ],
+      "corrected": true
+    },
+    "owner_gates": {
+      "cloudflare_free_account_verified": false,
+      "aggregate_usage_verified": false,
+      "test_namespace_pair_configured": false,
+      "github_environment_required_reviewers_verified": false,
+      "exact_endpoint_host_pin_configured": false,
+      "github_app_installed": false,
+      "branch_ruleset_status": "UNVERIFIED_OWNER_ACTION_REQUIRED",
+      "live_six_run_proof_started": false
+    },
+    "ai_inference_enabled": false,
+    "live_provider_calls": 0,
+    "external_network_requests": 0,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "next": "Owner reviews/merges PR stack #44→#45→#46→#47→#48→#49 in order; verifies existing Workers Free account and aggregate usage; configures test-only namespace and required-reviewer environment; then manually executes six separate workflow runs. Start 7-day soak only after exact snapshot acceptance; 30-day soak follows.",
+    "v5_execution_override_recorded": true,
+    "owner_preflight_test_cases": 12,
+    "implementation_summary": "Canonical repository + refs/heads/master + workflow_dispatch preflight; exact endpoint host pin; owner approval, run-ID and stage validation; fail-closed before network."
+  },
+  "owner_directed_execution_override": {
+    "recorded_at": "2026-11-22",
+    "authority": "Explicit current owner instruction in the active execution request",
+    "supersedes_v5_adoption_snapshot_section_11_for_current_task_sequencing_only": true,
+    "v5_section_11_snapshot": "P59-001 portfolio-wide revenue-source ranking",
+    "active_p0": "P59-003",
+    "P59_001": "PAUSED",
+    "P59_002": "BLOCKED",
+    "prohibited_while_p59_003_active": [
+      "Revenue-source ranking",
+      "Product discovery or implementation",
+      "Unrelated asset discovery",
+      "Other project mission execution"
+    ],
+    "preserved_v5_rules": [
+      "Revenue recognition and reconciliation",
+      "Zero-spend default",
+      "Evidence provenance and auditability",
+      "Rights, platform policy and payout eligibility gates",
+      "Owner approval for KYC, legal terms, billing, public release and money movement"
+    ]
   }
 }
