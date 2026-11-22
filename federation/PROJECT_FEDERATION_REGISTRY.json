@@ -751,7 +751,7 @@
       },
       "phase59_63_2": {
         "report": "research/PHASE_59_63_2_CANONICAL_DEFAULT_BRANCH_OWNER_PREFLIGHT_2026-11-22.md",
-        "report_commit": "30c69f6645cf095b80441d1f36028af1275b4fbc",
+        "report_commit": "d3e7cc44732a79b6692d493e81d2246d4577f0b0",
         "branch": "phase59-64-default-branch-execution-guard",
         "pr_number": 49,
         "pr_state": "DRAFT_OPEN_UNMERGED",
@@ -769,7 +769,8 @@
         "ai_inference_enabled": false,
         "authorized_spend_inr": 0,
         "verified_realized_net_receipts_inr": 0,
-        "v5_execution_override_recorded": true
+        "v5_execution_override_recorded": true,
+        "owner_preflight_test_cases": 12
       }
     },
     {
