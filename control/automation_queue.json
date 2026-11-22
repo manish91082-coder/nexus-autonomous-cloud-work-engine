@@ -5080,7 +5080,8 @@
     "workers_runtime": "83/83",
     "workerd": "1/1",
     "next": "Phase59.64 owner-gated six independent workflow-run proof; 7/30-day soak only after acceptance.",
-    "report_commit": "30c69f6645cf095b80441d1f36028af1275b4fbc"
+    "report_commit": "d3e7cc44732a79b6692d493e81d2246d4577f0b0",
+    "owner_preflight_test_cases": 12
   },
   "execution_override": {
     "date": "2026-11-22",
