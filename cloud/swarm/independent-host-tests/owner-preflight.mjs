@@ -3,7 +3,7 @@ const CANONICAL_REF = "refs/heads/master";
 const DISPATCH_PATH = "/internal/shadow-dispatch";
 const SAFE_TEST_ID = /^[A-Za-z0-9._:-]{1,64}$/;
 const SAFE_RUN_ID = /^[0-9]{1,20}$/;
-const SAFE_WORKER_HOST = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+workers\\.dev$/;
+const SAFE_WORKER_HOST = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+workers\.dev$/;
 const HOST_SLOTS = new Set(["host1", "host2", "host3", "host4"]);
 
 function requireRunId(value, field) {
