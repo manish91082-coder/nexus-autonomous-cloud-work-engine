@@ -15,6 +15,8 @@
 - PR #49 is draft/open/unmerged and stacked on PR #48.
 - P59-003 remains the sole active P0; P59-001 remains PAUSED; P59-002 remains BLOCKED.
 
+V5 §11 still contains an adoption-time snapshot naming P59-001 as current execution. The owner's current explicit instruction in this run overrides that sequencing snapshot only: P59-003 is the sole active P0, P59-001 is PAUSED and P59-002 is BLOCKED. V5 revenue-recognition, zero-spend, evidence, rights and owner-approval constraints remain in force. This override is recorded in the candidate mission state and queue so the scheduled worker does not drift back to portfolio ranking.
+
 The latest Phase59.31 forensic report was read from `research/PHASE_59_31_SWARM_FIRST_FORENSIC_AUDIT_AND_RECOVERY_2026-11-15.md`. It documented the original swarm fragmentation: the five-minute worker was a bounded wake-up rather than a daemon; durable execution and specialist coordination were not wired to the scheduled worker; the global quota and cross-project lock were not production-safe; the publisher boundary and independent-host proof were incomplete. Its 23-workflow/376-tree inventory is a historical 15-Nov snapshot, not a current inventory.
 
 ## 2. New security finding
