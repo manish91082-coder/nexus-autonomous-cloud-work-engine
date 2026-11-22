@@ -46,7 +46,7 @@ The Phase59.35 CI now runs the new owner-preflight tests and includes the Phase5
 
 ## 4. Tests and failure correction
 
-Added 11 deterministic owner-preflight tests covering canonical repository, default branch, manual event, owner flags, endpoint pin, run ID format, host slot, duplicate IDs, six-run uniqueness, invalid mode and workflow-context wiring.
+Added 12 deterministic owner-preflight tests covering canonical repository, default branch, manual event, owner flags, endpoint pin, run ID format, host slot, duplicate IDs, six-run uniqueness, invalid mode and workflow-context wiring.
 
 An initial exact-head run #44978703280 failed 6 of 29 offline tests (23 passed). The failures exposed two test/code integration defects: the hostname regex was over-escaped in the first helper commit, and an older static test still expected endpoint validation to remain inline in YAML. The helper regex was corrected and the static tests now assert the extracted helper contract. A separate duplicate assertion in the new test file was removed before the current run.
 
