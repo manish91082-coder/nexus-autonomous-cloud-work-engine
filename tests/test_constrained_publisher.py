@@ -412,8 +412,8 @@ class PublisherApiBoundaryTests(unittest.TestCase):
         with self.assertRaises(PublisherError):
             _validate_api_request("POST", self.ROOT + "/pulls", payload)
 
-    def test_rejects_pull_request_query_for_other_branch(self):
-        path = self.ROOT + "/pulls?state=open&head=manish91082-coder%3Aautomation%2Fp10cr%2Fworker-run-99999-attempt-1&base=master"
+    def test_rejects_pull_request_query_for_non_deterministic_branch(self):
+        path = self.ROOT + "/pulls?state=open&head=manish91082-coder%3Aautomation%2Fother-branch&base=master"
         with self.assertRaises(PublisherError):
             _validate_api_request("GET", path)
 
