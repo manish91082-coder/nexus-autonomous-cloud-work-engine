@@ -31,7 +31,7 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS. Phase59.62 candidate code/test head dc82af59 passed exact-head Phase59.35 (8/8 offline host tests, YAML syntax, lockfile 165 packages, 83/83 Workers runtime), Phase59.62 dispatcher integration (4/4 dedicated, 83/83 full regression), Phase59.60 and Phase59.56 workflows. Draft PR #47 remains unmerged; master unchanged at 8856bf90. Current candidate inventory: 36 workflows, 18 Python scripts, 36 cloud/swarm JS modules, one package manifest and one lockfile. Live independent-host test remains owner-gated; no Cloudflare resources or secrets changed. P59-001 PAUSED; P59-002 BLOCKED. Production OFF, AI inference DISABLED, no live provider calls, spend ₹0 and verified receipts ₹0. Mission Worker #533 selected P59-003 (POLL_OK), AI remained WAITING_FOR_OWNER_CONFIGURATION with no inference; Mission Continuity Guard #340 passed 111 checks with zero errors. All Phase59.62 report/control/continuity writes fetched back. Live owner-gated host proof not started; master unchanged. Phase59.62 final candidate code/test head 7d0003ca passed 11/11 host-client/static workflow tests, YAML syntax, 165-package lockfile, 83/83 Workers runtime, 4/4 dispatcher integration, 83/83 full regression, Phase59.60 and Phase59.56. Additional audit fixed undefined runnerId payload, added 16 KiB streaming response bounds, enforced workers.dev preflight allowlist and corrected job-scoped aggregate key. Live hosted proof remains owner-gated; current four-host workflow is four jobs in one run. Phase59.63 will add separate workflow-run IDs and two synthetic repo aliases via one seed, four host runs and one snapshot, no Actions write token. Phase59.63 exact-head Workerd and CI passed; live six-run hosted proof remains owner-gated because PR #48 and parent stack #44-#47 are unmerged and the workflow_dispatch file is not yet on default master. P59-001 PAUSED; P59-002 BLOCKED; P59-003 sole active P0. No deployment, inference, spend or receipts. Phase59.63.1 endpoint pin hardening: exact owner-approved hostname enforced independently in workflow preflight and client; fresh manual test ID required; exact code/test head 12c58b8 passed 17/17 client tests, YAML, 83/83 Workers runtime, Phase59.63 Workerd 1/1, Phase59.56 2/2, Phase59.58 83/83, Phase59.60 8/8 and Phase59.62 4/4 plus 83/83. PR #48 remains draft/unmerged; actual six hosted runs remain owner-gated. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED; no deployment/inference/spend/receipts. Phase59.63.2 (22-Nov-2026): canonical repository/master/workflow_dispatch preflight passed exact-head CI #44978842862 on code/test head a3402ee892b22b946910cb17fc30283a92e6838a (29/29 offline tests, YAML PASS, 83/83 Workers runtime, Workerd 1/1, 165-package lockfile integrity). PR #49 draft/open/unmerged/mergeable, stacked on PR #48. No live endpoint request, deployment, inference, spend or receipt. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. V5 §11 adoption snapshot still names P59-001; explicit current owner sequencing override is recorded in mission state/queue: P59-003 sole P0, P59-001 PAUSED, P59-002 BLOCKED. V5 safety and revenue-recognition rules remain in force. Phase59.64A (23-Nov-2026): PR #50 draft/unmerged; tested code head 99558b02 passed exact-head CI #45105764381 (31/31 offline, YAML PASS, 165-package lockfile, 83/83 Workers, Workerd 1/1). Server now verifies exact settled seed/prior-host reservation rows before host slot dispatch; forged, premature and swapped IDs rejected in Workerd; sequential host1-4 accepted. Master unchanged; physical hosts/live six-run proof and 7/30-day soak pending owner gates. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED; AI inference disabled; spend ₹0; receipts ₹0. Phase59.64B (23-Nov-2026): tested code head 3de92c7e passed push CI #45106578746 and PR CI #45106583941; 32/32 offline, YAML PASS, 165-package lockfile, 83/83 Workers, Workerd 1/1. Seed/replay idempotency payload is identical; server gates seed replay, ordered host slots and snapshot/overflow against durable settled reservation rows. Candidate inventory 500 entries, 37 workflows, 42 cloud/swarm modules, 87 Python files, 74 action refs (55 SHA-pinned/19 mutable). Two legacy branch-scoped write workflows remain uninvoked and require owner review. Master state/queue/federation/continuity remain stale pending sequential PR stack merge. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED; AI inference disabled; spend ₹0; receipts ₹0. Phase59.64C candidate (23-Nov-2026): concurrent host-slot and snapshot-run Workerd tests added at 9868b642; not accepted. Superseded run #45107478190 failed only on per-bucket counter assertion shape after one-winner host-slot assertions passed; corrected push #45107637216 cancelled by workflow concurrency; corrected PR run #45107642156 pending. No live host proof/deployment/inference/spend/receipts.",
+      "status": "P59-003 IN_PROGRESS. Phase59.62 candidate code/test head dc82af59 passed exact-head Phase59.35 (8/8 offline host tests, YAML syntax, lockfile 165 packages, 83/83 Workers runtime), Phase59.62 dispatcher integration (4/4 dedicated, 83/83 full regression), Phase59.60 and Phase59.56 workflows. Draft PR #47 remains unmerged; master unchanged at 8856bf90. Current candidate inventory: 36 workflows, 18 Python scripts, 36 cloud/swarm JS modules, one package manifest and one lockfile. Live independent-host test remains owner-gated; no Cloudflare resources or secrets changed. P59-001 PAUSED; P59-002 BLOCKED. Production OFF, AI inference DISABLED, no live provider calls, spend ₹0 and verified receipts ₹0. Mission Worker #533 selected P59-003 (POLL_OK), AI remained WAITING_FOR_OWNER_CONFIGURATION with no inference; Mission Continuity Guard #340 passed 111 checks with zero errors. All Phase59.62 report/control/continuity writes fetched back. Live owner-gated host proof not started; master unchanged. Phase59.62 final candidate code/test head 7d0003ca passed 11/11 host-client/static workflow tests, YAML syntax, 165-package lockfile, 83/83 Workers runtime, 4/4 dispatcher integration, 83/83 full regression, Phase59.60 and Phase59.56. Additional audit fixed undefined runnerId payload, added 16 KiB streaming response bounds, enforced workers.dev preflight allowlist and corrected job-scoped aggregate key. Live hosted proof remains owner-gated; current four-host workflow is four jobs in one run. Phase59.63 will add separate workflow-run IDs and two synthetic repo aliases via one seed, four host runs and one snapshot, no Actions write token. Phase59.63 exact-head Workerd and CI passed; live six-run hosted proof remains owner-gated because PR #48 and parent stack #44-#47 are unmerged and the workflow_dispatch file is not yet on default master. P59-001 PAUSED; P59-002 BLOCKED; P59-003 sole active P0. No deployment, inference, spend or receipts. Phase59.63.1 endpoint pin hardening: exact owner-approved hostname enforced independently in workflow preflight and client; fresh manual test ID required; exact code/test head 12c58b8 passed 17/17 client tests, YAML, 83/83 Workers runtime, Phase59.63 Workerd 1/1, Phase59.56 2/2, Phase59.58 83/83, Phase59.60 8/8 and Phase59.62 4/4 plus 83/83. PR #48 remains draft/unmerged; actual six hosted runs remain owner-gated. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED; no deployment/inference/spend/receipts. Phase59.63.2 (22-Nov-2026): canonical repository/master/workflow_dispatch preflight passed exact-head CI #44978842862 on code/test head a3402ee892b22b946910cb17fc30283a92e6838a (29/29 offline tests, YAML PASS, 83/83 Workers runtime, Workerd 1/1, 165-package lockfile integrity). PR #49 draft/open/unmerged/mergeable, stacked on PR #48. No live endpoint request, deployment, inference, spend or receipt. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. V5 §11 adoption snapshot still names P59-001; explicit current owner sequencing override is recorded in mission state/queue: P59-003 sole P0, P59-001 PAUSED, P59-002 BLOCKED. V5 safety and revenue-recognition rules remain in force. Phase59.64A (23-Nov-2026): PR #50 draft/unmerged; tested code head 99558b02 passed exact-head CI #45105764381 (31/31 offline, YAML PASS, 165-package lockfile, 83/83 Workers, Workerd 1/1). Server now verifies exact settled seed/prior-host reservation rows before host slot dispatch; forged, premature and swapped IDs rejected in Workerd; sequential host1-4 accepted. Master unchanged; physical hosts/live six-run proof and 7/30-day soak pending owner gates. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED; AI inference disabled; spend ₹0; receipts ₹0. Phase59.64B (23-Nov-2026): tested code head 3de92c7e passed push CI #45106578746 and PR CI #45106583941; 32/32 offline, YAML PASS, 165-package lockfile, 83/83 Workers, Workerd 1/1. Seed/replay idempotency payload is identical; server gates seed replay, ordered host slots and snapshot/overflow against durable settled reservation rows. Candidate inventory 500 entries, 37 workflows, 42 cloud/swarm modules, 87 Python files, 74 action refs (55 SHA-pinned/19 mutable). Two legacy branch-scoped write workflows remain uninvoked and require owner review. Master state/queue/federation/continuity remain stale pending sequential PR stack merge. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED; AI inference disabled; spend ₹0; receipts ₹0. Phase59.64C candidate (23-Nov-2026): concurrent host-slot and snapshot-run Workerd tests added at 9868b642; not accepted. Superseded run #45107478190 failed only on per-bucket counter assertion shape after one-winner host-slot assertions passed; corrected push #45107637216 cancelled by workflow concurrency; corrected PR run #45107642156 pending. No live host proof/deployment/inference/spend/receipts. Phase59.64C (23-Nov-2026): corrected Workerd race proof passed PR CI #45107642156 on code head 9868b642. Concurrent same-host-slot and competing snapshot-run claims each produced exactly one durable winner; losing snapshot run could not create overflow2; final snapshot 8 settled, 0 reserved, 0 uncertain, 6 run IDs, 2 repositories, valid event chain. Physical multi-host and live six-run proof remain owner-gated.",
       "last_observed_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
@@ -1070,49 +1070,144 @@
         "verified_realized_net_receipts_inr": 0
       },
       "phase59_64C_candidate": {
-        "status": "IN_PROGRESS_NOT_ACCEPTED_CI_PENDING",
+        "status": "ACCEPTED_SYNTHETIC_WORKERD_RACE_PROOF",
         "branch": "phase59-64-host-slot-run-identity-binding",
         "pr_number": 50,
-        "code_test_candidate_head": "9868b642a57caa697dd60f740d3664bcdab50087",
-        "changed_file": "cloud/swarm/worker-tests/phase59-63-cross-run-runtime.integration.mjs",
-        "tests_added": [
-          "concurrent same-host-slot claims must yield exactly one settled reservation and one winning workflow-run ID",
-          "competing snapshot-run overflow1 claims must yield exactly one durable snapshot-run winner",
-          "losing snapshot run must be unable to create overflow2 or split the overflow sequence"
+        "tested_code_head": "9868b642a57caa697dd60f740d3664bcdab50087",
+        "ci_run_id": 45107642156,
+        "ci_status": "SUCCESS",
+        "offline_tests": "32/32",
+        "workflow_yaml": "PASS",
+        "lockfile_packages": 165,
+        "workers_runtime": "83/83 across 4 files",
+        "workerd_integration": "1/1",
+        "concurrent_host_slot_race": {
+          "attempts": 2,
+          "distinct_workflow_run_ids": 2,
+          "settled_reservation_rows": 1,
+          "completed_responses": 1,
+          "winner_identity_bound": true
+        },
+        "competing_snapshot_run_race": {
+          "attempts": 2,
+          "settled_overflow1_rows": 1,
+          "completed_responses": 1,
+          "winner_identity_bound": true,
+          "losing_run_overflow2_rejected": true,
+          "no_split_snapshot": true
+        },
+        "ordered_host_slots": "host1->host2->host3->host4",
+        "overflow_results": {
+          "overflow1": "SETTLED",
+          "overflow2": "SETTLED",
+          "overflow3": "SETTLED",
+          "overflow4": "DENIED_BY_SHARED_CAP"
+        },
+        "final_synthetic_snapshot": {
+          "settled_reservations": 8,
+          "reserved": 0,
+          "uncertain": 0,
+          "distinct_workflow_run_ids": 6,
+          "distinct_repositories": 2,
+          "event_chain_valid": true
+        },
+        "superseded_failures": [
+          {
+            "run_id": 45107478190,
+            "reason": "per-bucket reserved/uncertain maps were asserted as scalar zeroes; prior one-winner host-slot assertions passed"
+          },
+          {
+            "run_id": 45107482767,
+            "reason": "same assertion-shape failure on superseded head"
+          }
         ],
-        "failed_run": {
-          "id": 45107478190,
-          "head": "2bafca9c8dc573e68c2157915e2d04f89bdffdef",
-          "conclusion": "FAILURE",
-          "reason": "test asserted per-bucket reserved/uncertain objects were scalar zeroes; earlier single-winner host-slot assertions had passed"
+        "cancelled_push_run": {
+          "run_id": 45107637216,
+          "reason": "workflow concurrency while superseded PR run was active; not a test failure"
         },
-        "superseded_pr_run": {
-          "id": 45107482767,
-          "head": "2bafca9c8dc573e68c2157915e2d04f89bdffdef",
-          "status": "IN_PROGRESS"
+        "final_pr_run": {
+          "run_id": 45107642156,
+          "status": "SUCCESS"
         },
-        "corrected_push_run": {
-          "id": 45107637216,
-          "head": "9868b642a57caa697dd60f740d3664bcdab50087",
-          "status": "CANCELLED_BY_WORKFLOW_CONCURRENCY"
-        },
-        "current_pr_run": {
-          "id": 45107642156,
-          "head": "9868b642a57caa697dd60f740d3664bcdab50087",
-          "status": "PENDING"
-        },
-        "correction": "assert every value in reserved and uncertain bucket maps is zero",
-        "host_race_result_from_failed_attempt": "one settled host1 row and exactly one COMPLETED response were observed before the counter-shape assertion failed",
-        "snapshot_race_result": "NOT_YET_VERIFIED",
         "physical_multi_host_proven": false,
-        "live_endpoint_called": false,
+        "live_six_workflow_run_proof_started": false,
         "cloudflare_deployed": false,
         "github_app_installed": false,
         "ai_inference_enabled": false,
         "external_provider_calls": 0,
         "authorized_spend_inr": 0,
         "verified_realized_net_receipts_inr": 0,
-        "next": "Wait for PR run #45107642156 on corrected head. If PASS, record Phase59.64C acceptance; if FAIL, inspect Workerd logs and correct before proceeding."
+        "next": "Phase59.64D: owner-gated six independent workflow-run proof after sequential PR stack merge, master control-plane reconciliation, branch-protection verification, legacy writer review, existing Workers Free account/aggregate usage verification, test-only namespace and required-reviewer environment approval; then 7-day and 30-day soak."
+      },
+      "phase59_64C": {
+        "status": "ACCEPTED_SYNTHETIC_WORKERD_RACE_PROOF",
+        "branch": "phase59-64-host-slot-run-identity-binding",
+        "pr_number": 50,
+        "tested_code_head": "9868b642a57caa697dd60f740d3664bcdab50087",
+        "ci_run_id": 45107642156,
+        "ci_status": "SUCCESS",
+        "offline_tests": "32/32",
+        "workflow_yaml": "PASS",
+        "lockfile_packages": 165,
+        "workers_runtime": "83/83 across 4 files",
+        "workerd_integration": "1/1",
+        "concurrent_host_slot_race": {
+          "attempts": 2,
+          "distinct_workflow_run_ids": 2,
+          "settled_reservation_rows": 1,
+          "completed_responses": 1,
+          "winner_identity_bound": true
+        },
+        "competing_snapshot_run_race": {
+          "attempts": 2,
+          "settled_overflow1_rows": 1,
+          "completed_responses": 1,
+          "winner_identity_bound": true,
+          "losing_run_overflow2_rejected": true,
+          "no_split_snapshot": true
+        },
+        "ordered_host_slots": "host1->host2->host3->host4",
+        "overflow_results": {
+          "overflow1": "SETTLED",
+          "overflow2": "SETTLED",
+          "overflow3": "SETTLED",
+          "overflow4": "DENIED_BY_SHARED_CAP"
+        },
+        "final_synthetic_snapshot": {
+          "settled_reservations": 8,
+          "reserved": 0,
+          "uncertain": 0,
+          "distinct_workflow_run_ids": 6,
+          "distinct_repositories": 2,
+          "event_chain_valid": true
+        },
+        "superseded_failures": [
+          {
+            "run_id": 45107478190,
+            "reason": "per-bucket reserved/uncertain maps were asserted as scalar zeroes; prior one-winner host-slot assertions passed"
+          },
+          {
+            "run_id": 45107482767,
+            "reason": "same assertion-shape failure on superseded head"
+          }
+        ],
+        "cancelled_push_run": {
+          "run_id": 45107637216,
+          "reason": "workflow concurrency while superseded PR run was active; not a test failure"
+        },
+        "final_pr_run": {
+          "run_id": 45107642156,
+          "status": "SUCCESS"
+        },
+        "physical_multi_host_proven": false,
+        "live_six_workflow_run_proof_started": false,
+        "cloudflare_deployed": false,
+        "github_app_installed": false,
+        "ai_inference_enabled": false,
+        "external_provider_calls": 0,
+        "authorized_spend_inr": 0,
+        "verified_realized_net_receipts_inr": 0,
+        "next": "Phase59.64D: owner-gated six independent workflow-run proof after sequential PR stack merge, master control-plane reconciliation, branch-protection verification, legacy writer review, existing Workers Free account/aggregate usage verification, test-only namespace and required-reviewer environment approval; then 7-day and 30-day soak."
       }
     },
     {

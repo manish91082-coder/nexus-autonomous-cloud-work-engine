@@ -98,3 +98,10 @@ The owner must verify that the budget namespace and every P10CR dispatcher insta
 - Synthetic Workerd rejects pre-seed replay, premature overflow, forged seed, premature host2/host3, swapped host IDs and swapped snapshot IDs; sequential host1–4 then settles, overflow1–3 settle and overflow4 is denied by the shared cap. Final readback: eight settled, zero reserved, zero uncertain, six run IDs, two repositories, valid event chain.
 - This remains Workerd synthetic evidence only. No Cloudflare account was accessed or verified, no namespace was created/bound, no Worker was deployed, no endpoint was called and no secret was configured.
 - Owner must still verify the existing Workers Free plan and aggregate account usage, prove one shared test-only Durable Object namespace across all workflow runs, configure the exact endpoint hostname and required-reviewer GitHub Environment, then approve the six separate manual workflow runs. No paid fallback, account rotation or hidden billing.
+
+
+## Phase59.64C synthetic concurrency acceptance (23-Nov-2026)
+
+- [PR CI #45107642156](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45107642156) passed on code head `9868b642a57caa697dd60f740d3664bcdab50087`: 32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1.
+- Workerd proved one winner for concurrent host-slot claims and one winner for competing snapshot runs; losing snapshot run could not split overflow. Final synthetic ledger readback: eight settled, zero reserved, zero uncertain, six run IDs, two repositories, valid event chain.
+- This remains synthetic evidence. No live Cloudflare account, deployment, endpoint request or namespace binding occurred. Owner must still verify the existing Workers Free plan and aggregate account usage, configure one shared test-only Durable Object namespace across the six runs, exact hostname pin and required-reviewer GitHub Environment before authorizing the six manual runs.

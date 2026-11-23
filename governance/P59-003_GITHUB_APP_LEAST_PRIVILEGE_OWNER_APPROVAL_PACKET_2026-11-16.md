@@ -153,3 +153,10 @@ The repository rulesets API returned an empty list and the branch-protection API
 5. Only then create/install the least-privilege GitHub App and store owner secrets directly in the GitHub Environment. Never paste private keys or tokens into chat.
 6. Keep AI inference disabled until provider/model/data terms, zero-billing and quota controls are verified and separately approved.
 7. Do not enable public release, KYC, legal acceptance, payments, wallet signing or money movement through this packet.
+
+
+## Phase59.64C synthetic concurrency acceptance (23-Nov-2026)
+
+- Corrected code head `9868b642a57caa697dd60f740d3664bcdab50087` passed [PR CI #45107642156](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45107642156): 32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1.
+- Two concurrent host1 workflow-run identities produced exactly one settled host1 reservation and one winner. Two competing snapshot workflow-run identities produced exactly one settled overflow1 reservation; the losing run could not create overflow2. Final synthetic snapshot: eight settled, zero reserved, zero uncertain, six distinct run IDs, two repositories, valid event chain.
+- This does not replace physical independent-host testing. The six separate workflow runs remain owner-gated until PR stack merge, branch protection, Cloudflare Free account/aggregate usage, required-reviewer environment and test-only shared namespace are verified.

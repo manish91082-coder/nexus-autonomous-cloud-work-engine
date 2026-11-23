@@ -5153,3 +5153,14 @@ Date: 2026-11-17
 - Corrected push run #45107637216 was cancelled by workflow concurrency while an older PR run was active. Superseded PR run #45107482767 remains in progress on old head 2bafca9. Corrected-head PR run #45107642156 is pending.
 - Phase59.64C is NOT ACCEPTED until #45107642156 (or a later corrected-head run) passes. Snapshot-run race remains unverified.
 - No live endpoint/deployment/App install/inference/provider call/spend/receipt. P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.
+
+
+## PHASE 59.64C — CONCURRENT HOST-SLOT AND SNAPSHOT-RUN SINGLE-WINNER PROOF (23-Nov-2026)
+
+- Corrected code/test head `9868b642a57caa697dd60f740d3664bcdab50087` passed [PR CI #45107642156](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45107642156): 32/32 offline tests, YAML PASS, 165-package lockfile, 83/83 Workers runtime, 1/1 Workerd integration.
+- Concurrent same-host-slot claims with two distinct workflow-run IDs produced exactly one settled host1 reservation, one winning run ID and one COMPLETED response. Per-bucket reserved/uncertain counters were all zero.
+- Competing snapshot-run overflow1 claims produced exactly one settled overflow1 row and one snapshot-run winner. The losing snapshot run was rejected when attempting overflow2, preventing split overflow. Winning run settled overflow1–3; overflow4 was denied by the shared cap.
+- Final synthetic readback: eight settled reservations, zero reserved, zero uncertain, six distinct workflow-run IDs, two synthetic repositories, valid event chain.
+- Failed superseded runs #45107478190 and #45107482767 were assertion-shape failures only: the test treated per-bucket maps as scalars. Earlier single-winner host-slot assertions passed. Corrected assertion now checks every bucket. Push #45107637216 was cancelled by workflow concurrency; corrected PR run #45107642156 passed.
+- This is synthetic Workerd evidence, not physical multi-host acceptance. No live endpoint, deployment, App installation, AI inference, external provider call, spend or receipt.
+- P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Next is owner-gated Phase59.64D six independent workflow-run proof after sequential PR stack merge, master control-plane reconciliation, branch-protection verification, legacy writer review and zero-cost account/namespace setup. 7-day and 30-day soak follow only after exact six-run acceptance.
