@@ -134,14 +134,27 @@ export default {
         const runIds = [...new Set(scoped.map(row => row.workflowRunId))].sort();
         const repositories = [...new Set(scoped.map(row => row.repository))].sort();
         const expectedRunIds = [payload.seedWorkflowRunId, ...hostRunIds, body.workflowRunId].sort();
-        const seedCount = scoped.filter(row => suffixOf(row) === "seed").length;
-        const hostCount = scoped.filter(row => /^host[1-4]-01$/.test(suffixOf(row))).length;
-        const overflowCount = scoped.filter(row => /^overflow-[1-3]$/.test(suffixOf(row))).length;
+        const seedRows = scoped.filter(row => suffixOf(row) === "seed");
+        const seedCount = seedRows.length;
+        const hostSlotWorkflowRunIds = Object.fromEntries([1, 2, 3, 4].map(slot => {
+          const matches = scoped.filter(row => suffixOf(row) === "host" + slot + "-01");
+          return ["host" + slot, matches.length === 1 ? matches[0].workflowRunId : null];
+        }));
+        const hostCount = Object.values(hostSlotWorkflowRunIds).filter(value => value !== null).length;
+        const overflowRows = scoped.filter(row => /^overflow-[1-3]$/.test(suffixOf(row)));
+        const overflowCount = overflowRows.length;
         const settledCount = scoped.filter(row => row.status === "SETTLED").length;
+        const expectedHostSlotWorkflowRunIdsMatch = [1, 2, 3, 4].every(slot =>
+          hostSlotWorkflowRunIds["host" + slot] === hostRunIds[slot - 1]);
+        const seedWorkflowRunIdMatch = seedRows.length === 1 && seedRows[0].workflowRunId === payload.seedWorkflowRunId;
+        const snapshotWorkflowRunIdMatch = overflowRows.length === 3
+          && overflowRows.every(row => row.workflowRunId === body.workflowRunId);
         return response(200, {
           ...summary, testId: payload.testId, reservationCount: scoped.length,
           settledReservations: settledCount, nonSettledReservations: scoped.length - settledCount,
           seedReservationCount: seedCount, hostReservationCount: hostCount, overflowReservationCount: overflowCount,
+          seedWorkflowRunIdMatch, snapshotWorkflowRunIdMatch,
+          hostSlotWorkflowRunIds, expectedHostSlotWorkflowRunIdsMatch,
           distinctWorkflowRunIds: runIds, distinctRepositories: repositories,
           expectedWorkflowRunIdsMatch: runIds.length === expectedRunIds.length && runIds.every((value, index) => value === expectedRunIds[index]),
           expectedRepositoriesMatch: repositories.length === 2 && repositories[0] === P59_63_REPOSITORIES[0] && repositories[1] === P59_63_REPOSITORIES[1],
