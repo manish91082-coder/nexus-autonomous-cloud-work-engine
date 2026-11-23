@@ -53,7 +53,6 @@ export async function runCrossRunClient(env=process.env){
   const hostSlot=env.P59_63_HOST_SLOT,host=HOSTS[hostSlot];if(!host)throw new Error("HOST_SLOT_INVALID");
   const runnerName=validateRunnerName(env.P59_63_RUNNER_NAME||"");
   const slotIndex=Object.keys(HOSTS).indexOf(hostSlot);
-  const seedRunId=requireRunId(env.P59_63_SEED_WORKFLOW_RUN_ID,"SEED_WORKFLOW_RUN_ID");
   const priorHostWorkflowRunIds=Object.keys(HOSTS).slice(0,slotIndex).map((slot,index)=>
    requireRunId(env["P59_63_"+slot.toUpperCase()+"_WORKFLOW_RUN_ID"],"PRIOR_HOST_"+(index+1)+"_WORKFLOW_RUN_ID"));
   for(const futureSlot of Object.keys(HOSTS).slice(slotIndex)){
