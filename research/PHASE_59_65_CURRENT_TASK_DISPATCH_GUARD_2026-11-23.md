@@ -7,7 +7,7 @@
 **Candidate branch:** `phase59-65-current-task-dispatch-guard`  
 **PR:** #51, draft/open/unmerged, stacked on PR #50  
 **Code/test workflow head:** `2e530e11a36574abb3f79a53b82fa9a291abfc1d`  
-**Exact-head CI:** pending; latest observed PR run #45109105198 on head `82e8714ccb08494ba1066c80ed81eb722390de2d`  
+**Exact-head CI:** pending; latest PR run #45109292533 on head `90d33b2308774468edd36a9398d9535eafe43066`  
 **Spend:** ₹0  
 **AI inference:** DISABLED  
 **Verified realized net receipts:** ₹0
@@ -42,7 +42,7 @@ The selector fails closed unless:
 
 The selector never searches for a substitute task. A mismatch returns a deterministic no-task result before a provider request. The bootstrap poller records the selection reason and treats authority/state-integrity mismatches as errors.
 
-The Mission Worker push-path filter now includes the shared guard module so future edits to this safety boundary trigger the worker workflow.
+The Mission Worker push-path filter now includes the shared guard module so future edits to this safety boundary trigger the worker workflow. Phase59.35 PR/push CI also now installs Python 3.12 and runs the AI/task-guard safety test file.
 
 ## 3. Tests
 
@@ -64,7 +64,7 @@ Added 15 deterministic tests in `tests/test_ai_task_executor.py` (20 test method
 - Bootstrap worker imports and calls the same shared guard.
 - Bootstrap worker no longer contains generic priority sorting.
 
-No test enables a real provider call. Earlier PR run #45108874419 completed successfully on superseded head `24e34d33b5c37a5e4fa8e0db2a16a7f31ef021e9`; it does not cover the shared-guard refactor and is not final acceptance.
+The isolated subprocess fixture now copies the shared guard module alongside the AI executor, so the disabled-by-default and adapter fail-closed subprocess tests exercise the refactored import path. No test enables a real provider call. Earlier PR run #45108874419 completed successfully on superseded head `24e34d33b5c37a5e4fa8e0db2a16a7f31ef021e9`; it does not cover the shared-guard refactor and is not final acceptance. Run #45109105198 was superseded by later code/workflow changes. Latest run #45109292533 is pending.
 
 ## 4. Read-only compute / constrained publisher boundary audit
 
