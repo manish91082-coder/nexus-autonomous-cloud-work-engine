@@ -6,10 +6,12 @@
 **Parent:** PR #51, `phase59-65-current-task-dispatch-guard`, tested Phase59.65 head `d970f0eb588f71b2590bb6565cbc798b79308a4d`  
 **Candidate branch:** `phase59-66-publisher-api-boundary`  
 **PR:** #52, draft/open/unmerged, stacked on PR #51  
-**Code commit:** `d8aa9b7fa5847c29dfcf02a7b51d9e98b2ef2fdc`  
-**Test commit:** `78534898c520c0e99e43fb4a3cc4934438fddae8`  
-**Workflow trigger commit:** `4e6cf2032e8b2c5b608434f89ef82eb9d4d15b56`  
-**Status:** IMPLEMENTED; exact-head CI pending  
+**Initial code commit:** `d8aa9b7fa5847c29dfcf02a7b51d9e98b2ef2fdc`  
+**Initial test commit:** `78534898c520c0e99e43fb4a3cc4934438fddae8`  
+**Final tested PR code/test head:** `734e281ccbcb6d6493fa4c24f296a4153672cf0e`  
+**Workflow trigger/YAML commit:** `813658b1e6830ef951ddb8c34b7d7d86f735730d`  
+**Final evidence branch checkpoint:** `b35510251a108eb789a280896ee22c394202b49b`  
+**Status:** ACCEPTED — exact-head CI PASS; owner gates pending  
 **Spend:** ₹0  
 **AI inference:** DISABLED  
 **Verified realized net receipts:** ₹0
@@ -40,7 +42,7 @@ Added `_RejectRedirectHandler`; `GitHubApi.request` now uses an opener with this
 
 ## 3. Tests
 
-Added nine deterministic tests in `tests/test_constrained_publisher.py` (33 test methods total at this checkpoint):
+Added nine deterministic tests in `tests/test_constrained_publisher.py` (33 test methods total at this checkpoint).
 
 1. All seven internal publisher routes are accepted.
 2. DELETE/PATCH and unknown routes rejected.
@@ -54,7 +56,11 @@ Added nine deterministic tests in `tests/test_constrained_publisher.py` (33 test
 
 No test makes a live GitHub API request or supplies a token.
 
-## 4. Existing Phase59.65 acceptance
+## 4. Failure history and correction
+
+Runs #45110017616 and #45110119498 failed in the new publisher API suite with two test errors caused by an undefined local `branch` in the GET `/pulls` route validator. The route validator was corrected to derive the owner-qualified branch from the exact query and require the deterministic `automation/p10cr/worker-run-{id}-attempt-{n}` pattern. The negative test now rejects a non-deterministic branch rather than a different valid run branch. No live API call or token was involved. The final run below passes the corrected implementation.
+
+## 5. Existing Phase59.65 acceptance
 
 Phase59.65 code and CI passed on PR #51:
 
@@ -62,13 +68,13 @@ Phase59.65 code and CI passed on PR #51:
 - Both worker paths use the shared P59-003-only current-task guard.
 - Publisher job requires the `p10cr-publisher` environment and explicit owner attestation marker before App token minting.
 
-## 5. CI wiring and safety
+## 6. CI wiring and safety
 
 Phase59.35 push and PR branch/path filters now include Phase59.66 and publisher source/tests/workflow. It runs the AI/current-task and publisher Python suites on Python 3.12.
 
 No Cloudflare deployment, live GitHub API request, GitHub App installation, token creation, secret access, KYC, legal acceptance, public release, billing, payment, signing or money movement occurred. AI inference remains disabled; provider/quota adapters remain hard-disabled. Other projects remain read-only. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Spend ₹0; receipts ₹0.
 
-## 6. Remaining owner gates
+## 7. Remaining owner gates
 
 - PR stack #44–#52 remains draft/unmerged; review/merge only in order after owner review.
 - Branch protection/ruleset remains UNVERIFIED.
@@ -77,6 +83,10 @@ No Cloudflare deployment, live GitHub API request, GitHub App installation, toke
 - Two legacy branch-scoped write workflows remain uninvoked and require owner review.
 - Workers Free/account-wide usage and test-only namespaces remain unverified.
 
-## 7. Next
+## 8. Exact-head Phase59.66 CI result
 
-After exact-head Phase59.66 CI, continue P59-003 with independent workflow-run proof only after the owner gates above are satisfied. The six-run proof must precede the 7-day soak; the 30-day soak follows 7-day acceptance. Do not resume P59-001 or P59-002.
+[Phase59.35 run #45110233131](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45110233131) completed SUCCESS on tested PR head `734e281ccbcb6d6493fa4c24f296a4153672cf0e`. Evidence: 32/32 offline host-client tests; Python AI/current-task suite 20/20; constrained-publisher suite 33/33; YAML syntax PASS across five workflow files; npm lockfile integrity PASS (165 packages); Workers runtime 83/83 across four files; isolated Workerd integration 1/1. All job steps succeeded. Non-failing warnings: Node 20 deprecation notice for pinned setup-node action (executed under Node 24) and Python/Node `punycode` deprecation notice.
+
+## 9. Next
+
+Phase59.66 code/CI is accepted. Continue P59-003 with Phase59.67 sanitized-summary schema enforcement at the publisher API boundary while the six-run physical proof remains owner-gated. The six-run proof must precede the 7-day soak; the 30-day soak follows 7-day acceptance. Do not resume P59-001 or P59-002.
