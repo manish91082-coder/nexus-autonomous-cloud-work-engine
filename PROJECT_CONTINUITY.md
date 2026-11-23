@@ -5144,3 +5144,12 @@ Date: 2026-11-17
 - Candidate Guard [#45106996788](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45106996788): SUCCESS, 111 checks, zero errors.
 - Latest verified master Worker #45097408304 selected P59-003 with no inference; latest master Guard #45011590613 passed 111 checks. Master queue sequence_mode and continuity remain stale until PR stack merge.
 - PRs #44–#50 all remain open, draft, mergeable and unmerged. No merge or owner action was performed.
+
+
+## PHASE 59.64C CONCURRENCY TEST CANDIDATE (23-Nov-2026, NOT ACCEPTED)
+
+- Candidate test commit `9868b642a57caa697dd60f740d3664bcdab50087` adds concurrent same-host-slot claims and competing snapshot-run overflow1 claims to the Workerd integration test.
+- Superseded push run #45107478190 failed because the test treated per-bucket reserved/uncertain maps as scalar zeroes. The preceding assertions had already observed one settled host1 reservation, one winning workflow-run ID and exactly one COMPLETED response. Corrected assertion checks every bucket value.
+- Corrected push run #45107637216 was cancelled by workflow concurrency while an older PR run was active. Superseded PR run #45107482767 remains in progress on old head 2bafca9. Corrected-head PR run #45107642156 is pending.
+- Phase59.64C is NOT ACCEPTED until #45107642156 (or a later corrected-head run) passes. Snapshot-run race remains unverified.
+- No live endpoint/deployment/App install/inference/provider call/spend/receipt. P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.

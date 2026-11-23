@@ -15,7 +15,7 @@
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
-    "last_reconciled_from_mission_state": "2026-11-23: Phase59.64B push #45106578746 and PR #45106583941 SUCCESS on code/test head 3de92c7e (32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1). Server gates seed replay, host slots and snapshot/overflow against durable settled reservation evidence. Candidate inventory 500 entries/37 workflows/42 cloud-swarm modules/87 Python files. Master remains stale until PR stack #44→#50 is reviewed/merged. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No live deployment/inference/spend/receipts. Post-checkpoint: final candidate head e872f34a passed #45107001561; candidate Worker #45106996804 selected P59-003 with no inference; candidate Guard #45106996788 passed 111 checks.",
+    "last_reconciled_from_mission_state": "2026-11-23: Phase59.64B push #45106578746 and PR #45106583941 SUCCESS on code/test head 3de92c7e (32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1). Server gates seed replay, host slots and snapshot/overflow against durable settled reservation evidence. Candidate inventory 500 entries/37 workflows/42 cloud-swarm modules/87 Python files. Master remains stale until PR stack #44→#50 is reviewed/merged. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No live deployment/inference/spend/receipts. Post-checkpoint: final candidate head e872f34a passed #45107001561; candidate Worker #45106996804 selected P59-003 with no inference; candidate Guard #45106996788 passed 111 checks. Phase59.64C candidate commit 9868b642 adds concurrent same-host-slot and competing snapshot-run tests. Superseded run #45107478190 failed only on per-bucket counter assertion shape after one-winner host-slot assertions passed; corrected push #45107637216 was cancelled by concurrency; corrected PR run #45107642156 is pending. Phase64C is not accepted.",
     "reconciliation_note": "Phase59.61 integrates the account-scope budget into the P59-003 shadow dispatcher. Budget reservation precedes durable registration/claim; settlement follows durable completion/readback; ambiguous outcomes remain idempotent/UNCERTAIN; exhaustion creates no task. PR #46 is draft/unmerged and stacked on #45/#44. No production deployment or AI inference. No revenue-source ranking while P59-003 is active. Phase59.63.2: P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. New preflight rejects non-canonical repo/ref/event before network. Spend ₹0; inference disabled; live proof remains owner-gated. Phase59.63.2 exact-head CI PASS. P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Canonical repository/master/workflow_dispatch guard now runs before live endpoint request. Spend ₹0; inference disabled; six-run hosted proof remains owner-gated. Phase59.64A (23-Nov-2026): server-side host-stage gate now checks actual settled seed and prior-host reservation rows against supplied workflow-run IDs and synthetic repository aliases; host client binds prior IDs; seed preflight rejects supplied run IDs. Exact-head CI #45105764381 SUCCESS: 31/31 offline, YAML PASS, 165 lockfile entries, 83/83 Workers, Workerd 1/1. PR #50 draft/unmerged. No live proof/deployment/inference/spend/receipts. Phase59.64B (23-Nov-2026): seed/replay now uses an identical idempotency payload and server-side durable seed-row inference; snapshot/overflow requires all four host slots settled under exact run IDs and repository aliases. Push #45106578746 and PR #45106583941 both SUCCESS: 32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1. Candidate current-head inventory: 500 entries, 37 workflows, 42 cloud/swarm modules, 87 Python files, 74 action references (55 SHA-pinned, 19 mutable). Two legacy branch-scoped write workflows remain uninvoked and require owner review. Master control-plane remains stale pending sequential PR stack merge.",
     "execution_override": {
       "date": "2026-11-22",
@@ -4679,7 +4679,7 @@
   "current_task": "P59-003",
   "last_updated": "2026-11-23",
   "sequence_note": "Phase59.62 final code/test head 7d0003ca PASS: 11/11 offline host-client/static workflow tests; YAML syntax PASS; lockfile valid (165 packages); 83/83 Workers runtime; 4/4 dispatcher integration; 83/83 full regression; Phase59.60 and Phase59.56 exact-head workflows PASS. Source audit fixed undefined runnerId payload, added streaming 16 KiB response bound, enforced workers.dev preflight allowlist and aligned aggregate identity keys. Live host test remains owner-gated. Next Phase59.63: manual-only one seed run + four separately dispatched host workflow runs using actual GITHUB_RUN_ID values + two synthetic P10CR repository aliases + one shared test-only DO + one read-only snapshot. No Actions write token or automated dispatch. Keep P59-001 PAUSED and P59-002 BLOCKED; no revenue research.",
-  "last_reconciled_from_mission_state": "2026-11-23: Phase59.64B push #45106578746 and PR #45106583941 SUCCESS on code/test head 3de92c7e (32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1). Server gates seed replay, host slots and snapshot/overflow against durable settled reservation evidence. Candidate inventory 500 entries/37 workflows/42 cloud-swarm modules/87 Python files. Master remains stale until PR stack #44→#50 is reviewed/merged. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No live deployment/inference/spend/receipts. Post-checkpoint: final candidate head e872f34a passed #45107001561; candidate Worker #45106996804 selected P59-003 with no inference; candidate Guard #45106996788 passed 111 checks.",
+  "last_reconciled_from_mission_state": "2026-11-23: Phase59.64B push #45106578746 and PR #45106583941 SUCCESS on code/test head 3de92c7e (32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1). Server gates seed replay, host slots and snapshot/overflow against durable settled reservation evidence. Candidate inventory 500 entries/37 workflows/42 cloud-swarm modules/87 Python files. Master remains stale until PR stack #44→#50 is reviewed/merged. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No live deployment/inference/spend/receipts. Post-checkpoint: final candidate head e872f34a passed #45107001561; candidate Worker #45106996804 selected P59-003 with no inference; candidate Guard #45106996788 passed 111 checks. Phase59.64C candidate commit 9868b642 adds concurrent same-host-slot and competing snapshot-run tests. Superseded run #45107478190 failed only on per-bucket counter assertion shape after one-winner host-slot assertions passed; corrected push #45107637216 was cancelled by concurrency; corrected PR run #45107642156 is pending. Phase64C is not accepted.",
   "phase59_46": {
     "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
     "pr_number": 27,
@@ -5658,5 +5658,50 @@
     "ai_inference_enabled": false,
     "authorized_spend_inr": 0,
     "verified_realized_net_receipts_inr": 0
+  },
+  "phase59_64C_candidate": {
+    "status": "IN_PROGRESS_NOT_ACCEPTED_CI_PENDING",
+    "branch": "phase59-64-host-slot-run-identity-binding",
+    "pr_number": 50,
+    "code_test_candidate_head": "9868b642a57caa697dd60f740d3664bcdab50087",
+    "changed_file": "cloud/swarm/worker-tests/phase59-63-cross-run-runtime.integration.mjs",
+    "tests_added": [
+      "concurrent same-host-slot claims must yield exactly one settled reservation and one winning workflow-run ID",
+      "competing snapshot-run overflow1 claims must yield exactly one durable snapshot-run winner",
+      "losing snapshot run must be unable to create overflow2 or split the overflow sequence"
+    ],
+    "failed_run": {
+      "id": 45107478190,
+      "head": "2bafca9c8dc573e68c2157915e2d04f89bdffdef",
+      "conclusion": "FAILURE",
+      "reason": "test asserted per-bucket reserved/uncertain objects were scalar zeroes; earlier single-winner host-slot assertions had passed"
+    },
+    "superseded_pr_run": {
+      "id": 45107482767,
+      "head": "2bafca9c8dc573e68c2157915e2d04f89bdffdef",
+      "status": "IN_PROGRESS"
+    },
+    "corrected_push_run": {
+      "id": 45107637216,
+      "head": "9868b642a57caa697dd60f740d3664bcdab50087",
+      "status": "CANCELLED_BY_WORKFLOW_CONCURRENCY"
+    },
+    "current_pr_run": {
+      "id": 45107642156,
+      "head": "9868b642a57caa697dd60f740d3664bcdab50087",
+      "status": "PENDING"
+    },
+    "correction": "assert every value in reserved and uncertain bucket maps is zero",
+    "host_race_result_from_failed_attempt": "one settled host1 row and exactly one COMPLETED response were observed before the counter-shape assertion failed",
+    "snapshot_race_result": "NOT_YET_VERIFIED",
+    "physical_multi_host_proven": false,
+    "live_endpoint_called": false,
+    "cloudflare_deployed": false,
+    "github_app_installed": false,
+    "ai_inference_enabled": false,
+    "external_provider_calls": 0,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "next": "Wait for PR run #45107642156 on corrected head. If PASS, record Phase59.64C acceptance; if FAIL, inspect Workerd logs and correct before proceeding."
   }
 }

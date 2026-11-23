@@ -133,7 +133,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.64C: concurrent same-slot and competing snapshot-run failure-injection tests; publisher and legacy branch-scoped writer boundary audit; then owner-gated six independent workflow runs.",
+  "next_focus": "Wait for PR run #45107642156 on corrected head. If PASS, record Phase59.64C acceptance; if FAIL, inspect Workerd logs and correct before proceeding.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -3374,5 +3374,50 @@
     "ai_inference_enabled": false,
     "authorized_spend_inr": 0,
     "verified_realized_net_receipts_inr": 0
+  },
+  "phase59_64C_candidate": {
+    "status": "IN_PROGRESS_NOT_ACCEPTED_CI_PENDING",
+    "branch": "phase59-64-host-slot-run-identity-binding",
+    "pr_number": 50,
+    "code_test_candidate_head": "9868b642a57caa697dd60f740d3664bcdab50087",
+    "changed_file": "cloud/swarm/worker-tests/phase59-63-cross-run-runtime.integration.mjs",
+    "tests_added": [
+      "concurrent same-host-slot claims must yield exactly one settled reservation and one winning workflow-run ID",
+      "competing snapshot-run overflow1 claims must yield exactly one durable snapshot-run winner",
+      "losing snapshot run must be unable to create overflow2 or split the overflow sequence"
+    ],
+    "failed_run": {
+      "id": 45107478190,
+      "head": "2bafca9c8dc573e68c2157915e2d04f89bdffdef",
+      "conclusion": "FAILURE",
+      "reason": "test asserted per-bucket reserved/uncertain objects were scalar zeroes; earlier single-winner host-slot assertions had passed"
+    },
+    "superseded_pr_run": {
+      "id": 45107482767,
+      "head": "2bafca9c8dc573e68c2157915e2d04f89bdffdef",
+      "status": "IN_PROGRESS"
+    },
+    "corrected_push_run": {
+      "id": 45107637216,
+      "head": "9868b642a57caa697dd60f740d3664bcdab50087",
+      "status": "CANCELLED_BY_WORKFLOW_CONCURRENCY"
+    },
+    "current_pr_run": {
+      "id": 45107642156,
+      "head": "9868b642a57caa697dd60f740d3664bcdab50087",
+      "status": "PENDING"
+    },
+    "correction": "assert every value in reserved and uncertain bucket maps is zero",
+    "host_race_result_from_failed_attempt": "one settled host1 row and exactly one COMPLETED response were observed before the counter-shape assertion failed",
+    "snapshot_race_result": "NOT_YET_VERIFIED",
+    "physical_multi_host_proven": false,
+    "live_endpoint_called": false,
+    "cloudflare_deployed": false,
+    "github_app_installed": false,
+    "ai_inference_enabled": false,
+    "external_provider_calls": 0,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "next": "Wait for PR run #45107642156 on corrected head. If PASS, record Phase59.64C acceptance; if FAIL, inspect Workerd logs and correct before proceeding."
   }
 }
