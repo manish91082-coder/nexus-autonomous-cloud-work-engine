@@ -5,30 +5,30 @@
 **Canonical master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
 **Parent candidate:** PR #50, `phase59-64-host-slot-run-identity-binding`, head `03fd68473cf42afdcae4938803ad22e3b7b99486`  
 **Candidate branch:** `phase59-65-current-task-dispatch-guard`  
-**Code commit:** `48af1d5c07b3fc5190cd5ae535861b5c43c49737`  
-**Test commit:** `ccaa47b8e51e84fda86d4c21feba2e17ec8e8b03`  
-**Status:** IMPLEMENTED; exact-head CI pending at report creation  
+**PR:** #51, draft/open/unmerged, stacked on PR #50  
+**Code/test workflow head:** `2e530e11a36574abb3f79a53b82fa9a291abfc1d`  
+**Exact-head CI:** PENDING  
 **Spend:** ₹0  
 **AI inference:** DISABLED  
 **Verified realized net receipts:** ₹0
 
 ## 1. Finding
 
-A source-level review of `scripts/ai_task_executor.py` found that its future inference task selector scanned every queue record in READY/IN_PROGRESS state, filtered by owner gate and dependencies, then selected the first item by priority and task ID.
+A source-level review found the same scope-drift defect in both `scripts/worker_tick.py` and `scripts/ai_task_executor.py`. Each previously scanned all READY/IN_PROGRESS queue records, filtered by owner gate and dependencies, then selected the first item by priority and task ID.
 
-That selector did not bind selection to all three authoritative current-task fields:
+Neither selector required agreement among all three authoritative current-task fields:
 
 - `mission_state.current_task`
 - `automation_queue.current_task`
 - `automation_queue.queue_policy.current_task`
 
-It also did not enforce the current mission invariants that P59-001 remains PAUSED and P59-002 remains BLOCKED. An unrelated READY P0 record could therefore be selected if one appeared in the queue. The publisher would later reject non-P59-003 output, but inference could still be wasted and task-scope drift could occur.
+Nor did the generic selection enforce P59-001 PAUSED and P59-002 BLOCKED. An unrelated READY P0 record could therefore be selected while P59-003 remained the sole active P0. The bootstrap worker only polls/reports, but its selection could misrepresent the active task; the future inference executor could waste quota or drift into unrelated work.
 
-This is a latent safety defect, not an observed provider call. It was not exploitable in the current configuration because inference is disabled, the approval manifest is DISABLED, and both provider/quota adapters are hard-coded false.
+This was a latent safety defect, not an observed provider call. It was not exploitable in the current configuration because AI inference is disabled, the approval manifest is DISABLED, and both provider/quota adapters are hard-coded false.
 
 ## 2. Correction
 
-Added `select_current_task(queue, mission)` and removed generic priority scanning.
+Added shared module `scripts/current_task_guard.py` and wired both the bootstrap worker and future AI executor to the same `select_current_task(queue, mission)` function. Generic priority scanning was removed from both paths.
 
 The selector fails closed unless:
 
@@ -38,13 +38,15 @@ The selector fails closed unless:
 4. P59-001 is PAUSED and P59-002 is BLOCKED.
 5. P59-003 is priority P0, READY or IN_PROGRESS, and has `owner_gate: false`.
 6. Every P59-003 dependency exists exactly once and is COMPLETED.
-7. Task records are well-formed.
+7. All task records are well-formed.
 
-The selector never searches for a substitute task. Any mismatch returns a deterministic no-task result before a provider request.
+The selector never searches for a substitute task. A mismatch returns a deterministic no-task result before a provider request. The bootstrap poller records the selection reason and treats authority/state-integrity mismatches as errors.
 
-## 3. Tests added
+The Mission Worker push-path filter now includes the shared guard module so future edits to this safety boundary trigger the worker workflow.
 
-Added 14 direct selector tests covering:
+## 3. Tests
+
+Added 15 deterministic tests in `tests/test_ai_task_executor.py` (20 test methods total including the five pre-existing tests):
 
 - P59-003 wins even when an unrelated READY P0 task is present.
 - Root queue mismatch.
@@ -59,8 +61,10 @@ Added 14 direct selector tests covering:
 - Non-executable status.
 - Incomplete dependency.
 - Malformed task record.
+- Bootstrap worker imports and calls the same shared guard.
+- Bootstrap worker no longer contains generic priority sorting.
 
-The existing AI safety tests remain in place. No test enables a real provider call.
+No test enables a real provider call.
 
 ## 4. Read-only compute / constrained publisher boundary audit
 
@@ -70,6 +74,7 @@ Read the candidate source and workflow files for:
 - `.github/workflows/p10cr-constrained-publisher.yml`
 - `scripts/constrained_publisher.py`
 - `scripts/ai_task_executor.py`
+- `scripts/worker_tick.py`
 
 Observed controls:
 
@@ -80,7 +85,7 @@ Observed controls:
 - Publisher writes only the deterministic `automation/p10cr/worker-run-*` branch and `research/worker-drafts/ai-run-*.json` path, containing a sanitized metadata/hash summary, then creates a draft PR.
 - Publisher code has no merge, release, deployment, delete or force-push call.
 
-Residual owner gates remain:
+Residual owner gates:
 
 - GitHub App PR-write permission is technically powerful; required-reviewer/ruleset enforcement is not verified.
 - `.github/workflows/phase59-25-cloud-operational-soak.yml` retains branch-scoped Contents:write for its disposable test-state branch.
