@@ -1229,13 +1229,16 @@
         "finding": "Both bootstrap poller and AI executor scanned all eligible tasks by priority without binding to the owner-directed current task.",
         "correction": "Shared P59-003-only fail-closed selector; enforces mission/root/nested current-task agreement, P59-001 PAUSED, P59-002 BLOCKED, P59-003 unique/P0/executable/owner_gate=false and completed dependencies.",
         "publisher_boundary_audit": "Compute contents:read; constrained publisher is only P10CR write path; two legacy branch-scoped writers remain owner-review gates.",
-        "exact_head_ci": "PENDING_RUN_45108874419_SUPERSEDED_BY_LATER_PUSHES",
+        "exact_head_ci": "PENDING_LATEST_PR_HEAD",
         "ai_inference_enabled": false,
         "provider_gateway_adapter_ready": false,
         "global_quota_adapter_ready": false,
         "authorized_spend_inr": 0,
         "verified_realized_net_receipts_inr": 0,
-        "next": "Verify latest-head PR CI and Mission Worker push run; then owner-gated Phase59.64D."
+        "next": "Verify latest-head PR CI and Mission Worker push run; then owner-gated Phase59.64D.",
+        "latest_observed_ci_run_id": 45109105198,
+        "latest_observed_ci_status": "PENDING",
+        "latest_observed_pr_head": "82e8714ccb08494ba1066c80ed81eb722390de2d"
       }
     },
     {
