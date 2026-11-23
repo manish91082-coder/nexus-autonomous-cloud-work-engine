@@ -65,6 +65,12 @@ export function validateOwnerPreflight(env) {
     throw new Error("OWNER_PREFLIGHT_NOT_SATISFIED");
   }
 
+  if (mode === "seed") {
+    const suppliedPriorRunIds = ["SEED_RUN_ID", ...HOST_SLOT_ORDER.map(slot => slot.toUpperCase() + "_RUN_ID")]
+      .some(key => env[key] !== undefined && env[key] !== null && env[key] !== "");
+    if (suppliedPriorRunIds) throw new Error("SEED_STAGE_MUST_NOT_INCLUDE_PRIOR_RUN_IDS");
+  }
+
   if (mode === "host") {
     const slotIndex = HOST_SLOT_ORDER.indexOf(env.HOST_SLOT);
     if (slotIndex < 0) throw new Error("HOST_SLOT_INVALID");

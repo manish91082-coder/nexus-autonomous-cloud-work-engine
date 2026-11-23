@@ -57,6 +57,13 @@ test("requires a valid test ID and actual numeric GitHub run ID", () => {
   assert.throws(() => validateOwnerPreflight({ ...base, CURRENT_RUN_ID: "run-1" }), /CURRENT_GITHUB_RUN_ID_INVALID/);
 });
 
+test("seed stage rejects any prior or future host-run IDs", () => {
+  assert.equal(validateOwnerPreflight(base).mode, "seed");
+  assert.throws(() => validateOwnerPreflight({ ...base, SEED_RUN_ID: "920000" }), /SEED_STAGE_MUST_NOT_INCLUDE_PRIOR_RUN_IDS/);
+  assert.throws(() => validateOwnerPreflight({ ...base, HOST1_RUN_ID: "920010" }), /SEED_STAGE_MUST_NOT_INCLUDE_PRIOR_RUN_IDS/);
+  assert.throws(() => validateOwnerPreflight({ ...base, HOST4_RUN_ID: "920014" }), /SEED_STAGE_MUST_NOT_INCLUDE_PRIOR_RUN_IDS/);
+});
+
 test("host stage requires a valid slot and all prior host-run IDs in order", () => {
   const host1 = { ...base, MODE: "host", HOST_SLOT: "host1", SEED_RUN_ID: "920000" };
   assert.equal(validateOwnerPreflight(host1).mode, "host");
@@ -92,14 +99,24 @@ test("rejects an unknown protocol mode", () => {
   assert.throws(() => validateOwnerPreflight({ ...base, MODE: "publish" }), /MODE_INVALID/);
 });
 
-test("workflow binds canonical repository/ref/event context to the preflight helper", () => {
+test("workflow binds canonical repository/ref/event, actual run IDs and ordered host inputs before network execution", () => {
   const workflowPath = fileURLToPath(new URL("../../../.github/workflows/phase59-63-independent-workflow-run-proof.yml", import.meta.url));
+  const ciWorkflowPath = fileURLToPath(new URL("../../../.github/workflows/phase59-35-quota-do-runtime-tests.yml", import.meta.url));
   const helperPath = fileURLToPath(new URL("./owner-preflight.mjs", import.meta.url));
   const workflow = fs.readFileSync(workflowPath, "utf8");
+  const ciWorkflow = fs.readFileSync(ciWorkflowPath, "utf8");
   const helper = fs.readFileSync(helperPath, "utf8");
   assert.ok(workflow.includes("REPOSITORY: ${{ github.repository }}"));
   assert.ok(workflow.includes("REF: ${{ github.ref }}"));
   assert.ok(workflow.includes("EVENT_NAME: ${{ github.event_name }}"));
+  assert.ok(workflow.includes("CURRENT_RUN_ID: ${{ github.run_id }}"));
+  assert.ok(workflow.includes("GITHUB_RUN_ID: ${{ github.run_id }}"));
+  for (const slot of [1, 2, 3, 4]) {
+    assert.ok(workflow.includes(`HOST${slot}_RUN_ID: ${{ inputs.host${slot}_workflow_run_id }}`));
+  }
+  assert.ok(workflow.indexOf("validateOwnerPreflight") < workflow.indexOf("Execute one owner-approved protocol stage"));
   assert.ok(workflow.includes("validateOwnerPreflight"));
   assert.ok(helper.includes('const CANONICAL_REF = "refs/heads/master";'));
+  assert.ok(ciWorkflow.includes("phase59-64-host-slot-run-identity-binding"));
+  assert.ok(ciWorkflow.includes("phase59-64-default-branch-execution-guard"));
 });
