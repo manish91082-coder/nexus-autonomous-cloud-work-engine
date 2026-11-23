@@ -6,8 +6,8 @@
 **Parent candidate:** PR #50, `phase59-64-host-slot-run-identity-binding`, head `03fd68473cf42afdcae4938803ad22e3b7b99486`  
 **Candidate branch:** `phase59-65-current-task-dispatch-guard`  
 **PR:** #51, draft/open/unmerged, stacked on PR #50  
-**Code/test workflow head:** `2e530e11a36574abb3f79a53b82fa9a291abfc1d`  
-**Exact-head CI:** pending; latest PR run #45109292533 on head `90d33b2308774468edd36a9398d9535eafe43066`  
+**Exact tested PR head:** `d970f0eb588f71b2590bb6565cbc798b79308a4d`  
+**Exact-head CI:** PASS — [Phase59.35 run #45109541094](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45109541094)  
 **Spend:** ₹0  
 **AI inference:** DISABLED  
 **Verified realized net receipts:** ₹0
@@ -42,11 +42,11 @@ The selector fails closed unless:
 
 The selector never searches for a substitute task. A mismatch returns a deterministic no-task result before a provider request. The bootstrap poller records the selection reason and treats authority/state-integrity mismatches as errors.
 
-The Mission Worker push-path filter now includes the shared guard module so future edits to this safety boundary trigger the worker workflow. Phase59.35 PR/push CI also now installs Python 3.12 and runs the AI/task-guard safety test file.
+The Mission Worker push-path filter now includes the shared guard module so future edits to this safety boundary trigger the worker workflow. Phase59.35 CI installs Python 3.12 and runs both the AI/task-guard and constrained-publisher test files.
 
 ## 3. Tests
 
-Added 15 deterministic tests in `tests/test_ai_task_executor.py` (20 test methods total including the five pre-existing tests):
+Added 15 deterministic tests in `tests/test_ai_task_executor.py` (20 test methods total including the five pre-existing tests) and one publisher workflow-gate test in `tests/test_constrained_publisher.py` (24 test methods total).
 
 - P59-003 wins even when an unrelated READY P0 task is present.
 - Root queue mismatch.
@@ -85,6 +85,20 @@ Observed controls:
 - Publisher writes only the deterministic `automation/p10cr/worker-run-*` branch and `research/worker-drafts/ai-run-*.json` path, containing a sanitized metadata/hash summary, then creates a draft PR.
 - Publisher code has no merge, release, deployment, delete or force-push call.
 
+
+
+### Publisher owner-approval hardening
+
+The publisher job previously had no job-level GitHub Environment. A missing environment can be auto-created without protection rules. Added:
+
+- Job-level `environment: p10cr-publisher`.
+- Required environment secret `P10CR_PUBLISHER_ENV_APPROVED` with exact attestation value `P59-003-PUBLISHER-OWNER-APPROVED`.
+- App token minting now requires both App credentials and the exact environment attestation after artifact validation.
+- Static regression test for the environment declaration and marker.
+- Owner packet requires the environment be pre-created, required reviewer(s), prevent self-review, master-only deployment branch, no bypass where supported, and App credentials/marker stored as environment secrets only.
+
+This is a code-level gate, not proof that the owner has configured the environment. No marker or App credential was created.
+
 Residual owner gates:
 
 - GitHub App PR-write permission is technically powerful; required-reviewer/ruleset enforcement is not verified.
@@ -113,6 +127,10 @@ This does not prove physical multi-host execution.
 - P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.
 - Authorized spend ₹0; verified realized net receipts ₹0.
 
-## 7. Next
+## 7. Exact-head CI result
 
-After exact-head CI, continue P59-003 with Phase59.64D only when its owner gates are satisfied: sequential review/merge of PRs #44–#50, master control-plane reconciliation, branch-protection verification, legacy writer review, existing Workers Free plan and aggregate-usage verification, owner-created test-only namespaces and required-reviewer environment. Then execute six distinct workflow runs. Start 7-day soak only after the exact six-run snapshot passes; 30-day soak follows 7-day acceptance.
+[Phase59.35 run #45109541094](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45109541094) completed SUCCESS on PR head `d970f0eb588f71b2590bb6565cbc798b79308a4d`. Results: 32/32 offline host-client tests; YAML PASS; lockfile integrity PASS (165 packages); Python AI/current-task suite 20/20; constrained-publisher suite 24/24; Workers runtime 83/83 across four files; isolated Workerd integration 1/1. All 13 job steps completed successfully. The earlier Phase59.65A run #45109349269 also passed 20/20 AI/task-guard tests and the runtime suite before the publisher environment-gate addition.
+
+## 8. Next
+
+Continue P59-003 with the next safe engineering task, Phase59.66 publisher API route/redirect hardening, while Phase59.64D remains owner-gated. Do not start the six-run live test until its owner gates are satisfied: sequential review/merge of PRs #44–#50, master control-plane reconciliation, branch-protection verification, legacy writer review, existing Workers Free plan and aggregate-usage verification, owner-created test-only namespaces and required-reviewer environment. Then execute six distinct workflow runs. Start 7-day soak only after the exact six-run snapshot passes; 30-day soak follows 7-day acceptance.
