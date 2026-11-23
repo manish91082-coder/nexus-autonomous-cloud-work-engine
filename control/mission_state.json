@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "P59.63.2_DEFAULT_BRANCH_OWNER_PREFLIGHT",
+  "phase": "P59.64A_ORDERED_HOST_RUN_PREREQUISITE_GUARD",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "Canonical master-only manual workflow-dispatch guard passed exact-head CI: 29/29 offline tests, YAML PASS, 83/83 Workers runtime and 1/1 Phase59.63 Workerd. Next is owner-gated six-run proof; no revenue/product research while P59-003 is active.",
+  "current_focus": "Phase59.64A server-side ordered host-run prerequisite guard passed exact-head CI #45105764381 on code/test head 99558b02: 31/31 offline tests, YAML PASS, 165-package lockfile integrity, 83/83 Workers runtime and 1/1 Workerd. Worker now verifies the seed and each prior host slot are durably SETTLED under the exact workflow-run ID and synthetic repository alias before accepting the next slot. No live endpoint, deployment, AI inference, spend or receipts.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -23,7 +23,7 @@
     "spend",
     "AI_provider_account_and_secret_setup"
   ],
-  "updated_at": "2026-11-22",
+  "updated_at": "2026-11-23",
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
     "run_number": 543,
@@ -59,7 +59,7 @@
     "CREATOR_IP_ROYALTIES_STOCK_ASSETS",
     "GAMES_SPONSORSHIP_AFFILIATE_ADVERTISING"
   ],
-  "last_exact_head_ci_status": "SUCCESS_FINAL_CANDIDATE_4_OF_4_DEDICATED_82_OF_82_FULL_REGRESSION",
+  "last_exact_head_ci_status": "Phase59.64A #45105764381 SUCCESS on 99558b02: 31/31 offline; YAML PASS; lockfile 165; Workers 83/83; Workerd 1/1.",
   "phase46_control_commits": [
     "72230902a478552d007d94d330e216238c9b2982",
     "ae552163e2b1e65590fc98454d8f7817bc73fa92",
@@ -133,7 +133,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.62: prepare the independent-host test harness and owner preflight; pin the Cloudflare/Vitest test dependencies and add a lockfile. Keep live endpoint tests disabled until the owner verifies an existing Workers Free account, account-wide usage and the shared P10CR Durable Object namespace. Then run four independent standard GitHub-hosted runners, prove shared lease/quota/fencing behavior, and only after that start the bounded 7-day and 30-day soak.",
+  "next_focus": "Phase59.64B: enforce server-side seed replay and snapshot/overflow prerequisites against durable settled reservation rows; then owner-gated six separate workflow runs.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -3076,5 +3076,49 @@
       "Rights, platform policy and payout eligibility gates",
       "Owner approval for KYC, legal terms, billing, public release and money movement"
     ]
+  },
+  "phase59_64A": {
+    "status": "EXACT_HEAD_CI_PASS_SYNTHETIC_ONLY_OWNER_GATES_PENDING",
+    "report": "research/PHASE_59_64A_ORDERED_HOST_RUN_PREREQUISITE_GUARD_2026-11-23.md",
+    "branch": "phase59-64-host-slot-run-identity-binding",
+    "pr_number": 50,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "base_branch": "phase59-64-default-branch-execution-guard",
+    "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "tested_code_head": "99558b02de68e973ff80f8506b7212e13e87d686",
+    "ci_run_id": 45105764381,
+    "ci_status": "SUCCESS",
+    "offline_tests": "31/31",
+    "workflow_yaml": "PASS",
+    "lockfile_packages": 165,
+    "workers_runtime": "83/83",
+    "workerd_integration": "1/1",
+    "server_checks_actual_settled_seed_and_prior_host_reservations": true,
+    "host_client_binds_prior_run_ids": true,
+    "rejects_forged_seed_premature_host_and_swapped_ids": true,
+    "sequential_host_slots": "host1->host2->host3->host4",
+    "physical_multi_host_proven": false,
+    "live_six_workflow_run_proof_started": false,
+    "cloudflare_deployed": false,
+    "github_app_installed": false,
+    "branch_ruleset_status": "UNVERIFIED_OWNER_ACTION_REQUIRED",
+    "ai_inference_enabled": false,
+    "live_provider_calls": 0,
+    "external_network_requests": 0,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "failures_corrected": [
+      {
+        "run_id": 45105477551,
+        "issue": "JavaScript template-literal syntax error in workflow input contract assertion",
+        "correction": "Use deterministic string concatenation"
+      },
+      {
+        "run_id": 45105696473,
+        "issue": "Duplicate seedRunId declaration in host client",
+        "correction": "Reuse validated binding"
+      }
+    ],
+    "next": "Phase59.64B: enforce server-side seed replay and snapshot/overflow prerequisites against durable settled reservation rows; then owner-gated six separate workflow runs."
   }
 }

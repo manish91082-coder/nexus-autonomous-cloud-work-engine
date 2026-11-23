@@ -71,3 +71,11 @@ Phase59.60's synthetic 100-attempt/cap-8 test remains the high-contention proof.
 Manual `workflow_dispatch` only; `GITHUB_TOKEN` is `contents:read`. No Actions write, contents write, PR write, publisher token or automated dispatch. Standard runners only; no cache, artifacts, larger runners or paid services. No inference, generated-code execution, public release, KYC, legal acceptance, billing, payments, signing or money movement. No passwords, OTPs, cookies, recovery codes or private keys.
 
 Stop on unexpected identities, non-HTTPS/non-`workers.dev` endpoint, missing approval, budget mismatch, uncertain reservation, invalid event chain or nonzero spend. Preserve evidence; never auto-release uncertain capacity.
+
+
+
+## Phase59.64A update — ordered host-run server gate (23-Nov-2026)
+
+Before each host slot is accepted, the Worker now reads the shared PlatformBudgetDO snapshot and verifies the seed reservation and every earlier host-slot reservation are durably SETTLED under the exact supplied workflow-run ID and expected synthetic repository alias. Future slots must be absent. The client sends the seed and ordered prior-host IDs in the HMAC-covered payload. Workerd tests reject forged seed IDs, premature host2/host3 and swapped prior IDs before sequential host1→host2→host3→host4 acceptance.
+
+Exact candidate code/test head: `99558b02de68e973ff80f8506b7212e13e87d686`. Exact CI: [#45105764381](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45105764381), SUCCESS: 31/31 offline tests, YAML PASS, 165 lockfile entries, 83/83 Workers runtime, Workerd 1/1. This remains synthetic Workerd evidence, not physical-host proof. No live endpoint request, deployment, AI inference, spend or receipt. PR #50 remains draft/unmerged.

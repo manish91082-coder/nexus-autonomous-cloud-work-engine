@@ -5098,3 +5098,21 @@ Date: 2026-11-17
 - P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.
 - Next engineering/owner step: Phase59.64 six separate workflow-run proof, then 7/30-day soak after acceptance.
 
+
+
+
+## PHASE 59.64A — ORDERED HOST-RUN PREREQUISITE GUARD (23-Nov-2026)
+
+- Candidate PR #50 remains draft/open/unmerged, based on PR #49 branch. Master HEAD remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
+- Code/test head `99558b02de68e973ff80f8506b7212e13e87d686` passed [Phase59.35 run #45105764381](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45105764381): 31/31 offline host/preflight tests, YAML syntax PASS, 165-package lockfile integrity, 83/83 Workers runtime and 1/1 isolated Phase59.63 Workerd integration.
+- Source audit found that the manual preflight required prior host-run IDs but the Worker did not independently verify those IDs against durable settled reservation rows. Added server-side snapshot gate: exact settled seed row, exact settled prior host slot rows, exact workflow-run IDs, expected synthetic repository aliases, no future host slot, and fail-closed snapshot/event-chain checks.
+- Host client now sends seed/prior host IDs inside the HMAC-covered payload and independently rejects missing, duplicate, invalid or future slot IDs. Seed stage rejects supplied seed/host IDs.
+- Workerd integration rejects forged seed ID, host2 before host1, host3 before host2, and swapped prior IDs; then sequential host1→host2→host3→host4 succeeds and final six-run/two-repository/eight-settlement snapshot remains valid.
+- CI trigger list now includes the Phase59.64A branch so candidate pushes actually execute the offline/runtime suite.
+- Failed attempts retained: #45105477551 had a JavaScript template-literal syntax error in the workflow contract test; #45105696473 had a duplicate `seedRunId` declaration. Both were corrected; final exact-head run #45105764381 passed.
+- Latest master Mission Worker #45097408304 SUCCESS: `POLL_OK`, selected P59-003, AI executor `WAITING_FOR_OWNER_CONFIGURATION`, no inference. Latest master Guard #45011590613 SUCCESS: 111 checks, zero errors. Master combined status API returned zero status contexts; workflow run results are tracked separately.
+- Repository rulesets API returned `[]`; branch-protection API returned HTTP 403 to the integration. Branch protection remains UNVERIFIED and requires owner UI confirmation.
+- Master mission state remains an older Phase59.53 snapshot and master continuity ends at Phase59.44; updated Phase59.64A state/queue/federation/continuity are on the unmerged candidate stack. Do not describe them as merged master state.
+- No live endpoint request, Cloudflare deployment, GitHub App installation, AI inference, external provider call, public release, KYC, legal acceptance, spend or fund movement. Spend ₹0; verified realized net receipts ₹0.
+- P59-003 remains the sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No product/source research or unrelated project work.
+- Next: Phase59.64B — server-side seed-replay and snapshot/overflow-stage prerequisites; then owner-gated six distinct workflow runs, followed only after exact acceptance by 7-day and 30-day soak.
