@@ -1,7 +1,7 @@
-# LATEST CONTINUITY UPDATE — PHASE 59.65 OWNER-DIRECTED CURRENT-TASK DISPATCH GUARD (23-Nov-2026)
+# LATEST CONTINUITY UPDATE — PHASE 59.66 PUBLISHER API BOUNDARY HARDENING (23-Nov-2026)
 
 **Canonical master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
-**Candidate branch:** `phase59-65-current-task-dispatch-guard`  
+**Candidate branch:** `phase59-66-publisher-api-boundary`  
 **Candidate checkpoint head before this continuity commit:** `fe5cc60a537678aac38b86a58a51967943db3eaf`  
 **Executable/test head:** `ccaa47b8e51e84fda86d4c21feba2e17ec8e8b03`  
 **PR #51:** draft/open/unmerged; stacked on PR #50 (Phase59.64C); exact-head CI pending  
@@ -5183,10 +5183,13 @@ Date: 2026-11-17
 ## PHASE 59.66 — CONSTRAINED PUBLISHER API ROUTE / REDIRECT GUARD (23-Nov-2026)
 
 - Report: `research/PHASE_59_66_PUBLISHER_API_ROUTE_ALLOWLIST_REDIRECT_GUARD_2026-11-23.md`.
-- Candidate branch `phase59-66-publisher-api-boundary`, draft PR #52 stacked on PR #51; master HEAD remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
-- Finding: `GitHubApi.request` accepted any method and any path under the canonical repository prefix and used the default urllib redirect-following opener. No live API call/token existed; this was a defense-in-depth finding.
-- Correction: exact GET/POST/PUT route/query/payload allowlist for master ref, deterministic worker ref, create ref, read/write sanitized draft file, list matching open PRs and create draft PR. Rejects noncanonical/absolute URLs, fragments, extra queries, mismatched run/attempt/branch, unexpected payloads, non-draft PRs and oversized content. `_RejectRedirectHandler` prevents following 3xx responses; they become fail-closed API errors.
-- Code commit `d8aa9b7fa5847c29dfcf02a7b51d9e98b2ef2fdc`; nine API boundary tests `78534898c520c0e99e43fb4a3cc4934438fddae8`; Phase59.35 branch/path wiring `4e6cf2032e8b2c5b608434f89ef82eb9d4d15b56`. Exact-head CI pending.
-- Phase59.65 remains accepted by exact-head CI #45109541094: offline 32/32; AI/task guard 20/20; publisher environment 24/24; YAML PASS; lockfile 165; Workers runtime 83/83; Workerd 1/1.
-- No live GitHub API request, token, App installation, environment marker, Cloudflare deployment, inference, KYC, legal acceptance, billing, publication, payment, signing or money movement. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED; spend ₹0; receipts ₹0.
-- Next: exact-head Phase59.66 CI. Physical six-run proof remains owner-gated on sequential PR #44–#52 review/merge, master state/queue/continuity reconciliation, branch protection, legacy writer review, Workers Free/account usage, test-only namespaces and required-reviewer publisher environment.
+- Owner packet: `governance/P59-003_STACKED_PR_TO_MASTER_MERGE_OWNER_ACTION_PACKET_2026-11-23.md`.
+- Candidate PR #52 remains draft/open/unmerged, stacked on PR #51; final evidence checkpoint before this continuity update was `b35510251a108eb789a280896ee22c394202b49b`. Master HEAD remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
+- Finding: `GitHubApi.request` accepted any method and any path under the canonical repository prefix and used the default urllib redirect-following opener. No live API call/token existed.
+- Correction: exact GET/POST/PUT route/query/payload allowlist for master ref, deterministic worker ref, create ref, read/write sanitized draft file, list matching open PRs and create draft PR. Rejects noncanonical/absolute URLs, fragments, extra queries, mismatched run/attempt/branch, unexpected payloads, non-draft PRs and oversized content. `_RejectRedirectHandler` prevents following 3xx responses.
+- Nine new API-boundary tests. Exact-head [Phase59.35 CI #45110233131](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45110233131) SUCCESS on tested code/test head `734e281ccbcb6d6493fa4c24f296a4153672cf0e`: offline client 32/32; AI/current-task 20/20; publisher 33/33; YAML 5/5; lockfile 165 packages; Workers runtime 83/83; Workerd 1/1.
+- Failure history: #45110017616 and #45110119498 failed with two test errors from an undefined branch variable in the GET /pulls validator. Corrected by deriving the owner-qualified branch from the query and validating the deterministic branch pattern; #45110233131 passed. Non-failing warnings: setup-node Node 20 deprecation notice and punycode deprecation.
+- Publisher remains draft-PR-only; no live GitHub API request, token, App installation, environment marker, Cloudflare deployment, inference, KYC, legal acceptance, billing, publication, payment, signing or money movement.
+- PR stack #44–#52 remains draft/open/unmerged. The owner packet explains why PRs #45–#52 must be retargeted to `master` after each parent PR merges; merging them into their current intermediate base would not land the full stack on master. No retarget or merge performed.
+- P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. AI inference disabled; production OFF; spend ₹0; receipts ₹0.
+- Next safe engineering: Phase59.67 sanitized-summary schema/provenance enforcement at the publisher API boundary. Physical six-run proof remains owner-gated on sequential PR retarget/merge, master reconciliation, branch protection, legacy writer review, Workers Free/account usage and test-only namespaces/environment.
