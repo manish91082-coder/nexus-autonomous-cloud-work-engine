@@ -5098,3 +5098,69 @@ Date: 2026-11-17
 - P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.
 - Next engineering/owner step: Phase59.64 six separate workflow-run proof, then 7/30-day soak after acceptance.
 
+
+
+
+## PHASE 59.64A — ORDERED HOST-RUN PREREQUISITE GUARD (23-Nov-2026)
+
+- Candidate PR #50 remains draft/open/unmerged, based on PR #49 branch. Master HEAD remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
+- Code/test head `99558b02de68e973ff80f8506b7212e13e87d686` passed [Phase59.35 run #45105764381](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45105764381): 31/31 offline host/preflight tests, YAML syntax PASS, 165-package lockfile integrity, 83/83 Workers runtime and 1/1 isolated Phase59.63 Workerd integration.
+- Source audit found that the manual preflight required prior host-run IDs but the Worker did not independently verify those IDs against durable settled reservation rows. Added server-side snapshot gate: exact settled seed row, exact settled prior host slot rows, exact workflow-run IDs, expected synthetic repository aliases, no future host slot, and fail-closed snapshot/event-chain checks.
+- Host client now sends seed/prior host IDs inside the HMAC-covered payload and independently rejects missing, duplicate, invalid or future slot IDs. Seed stage rejects supplied seed/host IDs.
+- Workerd integration rejects forged seed ID, host2 before host1, host3 before host2, and swapped prior IDs; then sequential host1→host2→host3→host4 succeeds and final six-run/two-repository/eight-settlement snapshot remains valid.
+- CI trigger list now includes the Phase59.64A branch so candidate pushes actually execute the offline/runtime suite.
+- Failed attempts retained: #45105477551 had a JavaScript template-literal syntax error in the workflow contract test; #45105696473 had a duplicate `seedRunId` declaration. Both were corrected; final exact-head run #45105764381 passed.
+- Latest master Mission Worker #45097408304 SUCCESS: `POLL_OK`, selected P59-003, AI executor `WAITING_FOR_OWNER_CONFIGURATION`, no inference. Latest master Guard #45011590613 SUCCESS: 111 checks, zero errors. Master combined status API returned zero status contexts; workflow run results are tracked separately.
+- Repository rulesets API returned `[]`; branch-protection API returned HTTP 403 to the integration. Branch protection remains UNVERIFIED and requires owner UI confirmation.
+- Master mission state remains an older Phase59.53 snapshot and master continuity ends at Phase59.44; updated Phase59.64A state/queue/federation/continuity are on the unmerged candidate stack. Do not describe them as merged master state.
+- No live endpoint request, Cloudflare deployment, GitHub App installation, AI inference, external provider call, public release, KYC, legal acceptance, spend or fund movement. Spend ₹0; verified realized net receipts ₹0.
+- P59-003 remains the sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No product/source research or unrelated project work.
+- Next: Phase59.64B — server-side seed-replay and snapshot/overflow-stage prerequisites; then owner-gated six distinct workflow runs, followed only after exact acceptance by 7-day and 30-day soak.
+
+
+## PHASE 59.64B — SEED REPLAY AND SNAPSHOT/OVERFLOW STAGE GATES (23-Nov-2026)
+
+- Candidate PR #50 remains draft/open/unmerged. Master HEAD `8856bf908f93e265cefd5c739f7f46b3dd995b3c` is unchanged.
+- Tested code head `3de92c7eb32ae594d3ea3f6da141a211a0ae6cb5` passed both [push CI #45106578746](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45106578746) and [PR CI #45106583941](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45106583941): 32/32 offline host/preflight tests, YAML PASS, 165-package lockfile integrity, 83/83 Workers runtime and 1/1 isolated Workerd integration.
+- Seed creation and cross-run replay now use the same idempotency payload. An initial replay flag changed the task fingerprint; failed runs #45106178146/#45106181930 exposed this and the flag was removed. The Worker infers initial creation versus replay from the durable seed reservation and exact workflow-run ID.
+- Snapshot/overflow requests now require one settled seed row and all four settled host-slot rows, each bound to the exact workflow-run ID and expected synthetic repository. Competing snapshot IDs, swapped host IDs, early overflow and unexpected prior overflow state fail closed.
+- Workerd sequence: pre-seed replay rejected; seed accepted; duplicate replay suppressed; premature overflow rejected; forged seed rejected; host2-before-host1 rejected; host3-before-host2 rejected; swapped host IDs rejected; sequential host1→host2→host3→host4 accepted; swapped snapshot IDs rejected; overflow1–3 settled; overflow4 denied by the shared cap; final readback verified eight settled reservations, zero reserved, zero uncertain, six distinct workflow-run IDs, two repositories and a valid event chain.
+- Current candidate recursive inventory (not truncated): 500 tree entries; 37 workflows; 42 cloud/swarm .mjs modules; 87 Python files (18 scripts, 21 cloud-work-engine runtime, 20 cloud-work-engine tests, 12 products, 16 tests); one package manifest, one lockfile (165 package entries), four Wrangler configs.
+- All 37 workflows were inspected. 74 action references: 55 full-SHA pinned, 19 mutable tags in six non-P10CR build/revenue/recruitment workflows. Five workflows reference secrets. No `pull_request_target` workflow found.
+- P10CR compute Worker and continuity Guard remain contents:read with no secret references. P10CR publisher uses read-only GITHUB_TOKEN and only after owner configuration mints a single-repository App token with contents:write and pull_requests:write; publisher script creates an allowlisted branch and draft PR only, with no merge/release/deploy path.
+- Two other branch-scoped write workflows remain uninvoked: legacy Phase59.25 disposable cloud-soak branch writer and separate federation-locks CAS workflow. They are not the P10CR publisher, but remain residual write-capable workflows requiring owner review before production.
+- Master control-plane drift is material: master mission state dated 2026-11-16 still says Phase59.53; master queue dated 2026-11-16 has correct task statuses but stale V5 portfolio sequence_mode; master federation last observed 9cdc16a2...; master continuity ends at Phase59.44. The Phase59.64A/64B override is only on the unmerged candidate PR stack. Latest master Worker #45097408304 selected P59-003 and made no inference; latest master Guard #45011590613 passed 111 checks. Do not describe candidate updates as merged master state.
+- Rulesets API returned []; branch-protection API HTTP 403. Branch protection remains UNVERIFIED.
+- No live endpoint, Cloudflare deployment, GitHub App installation, AI inference, external provider call, public release, KYC, legal acceptance, billing, payment, signing or money movement. No generated model code executed. Spend ₹0; verified realized net receipts ₹0.
+- P59-003 remains the sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Other project workflows were inspected read-only and not executed.
+- Next: Phase59.64C — concurrent same-slot and competing snapshot-run failure-injection tests, then publisher/legacy branch-writer boundary audit. Live six-run proof and 7/30-day soak remain owner-gated.
+
+
+
+## POST-PHASE59.64B CONTROL-PLANE VERIFICATION (23-Nov-2026)
+
+- Final candidate code/evidence checkpoint `e872f34afdbeae9350e84198d178fce63033bafd` passed [Phase59.35 CI #45107001561](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45107001561): 32/32 offline, YAML PASS, 165-package lockfile integrity, 83/83 Workers runtime and 1/1 Workerd.
+- Candidate Worker [#45106996804](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45106996804): SUCCESS, `POLL_OK`, selected P59-003, AI executor waiting for owner configuration, zero inference requests.
+- Candidate Guard [#45106996788](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45106996788): SUCCESS, 111 checks, zero errors.
+- Latest verified master Worker #45097408304 selected P59-003 with no inference; latest master Guard #45011590613 passed 111 checks. Master queue sequence_mode and continuity remain stale until PR stack merge.
+- PRs #44–#50 all remain open, draft, mergeable and unmerged. No merge or owner action was performed.
+
+
+## PHASE 59.64C CONCURRENCY TEST CANDIDATE (23-Nov-2026, NOT ACCEPTED)
+
+- Candidate test commit `9868b642a57caa697dd60f740d3664bcdab50087` adds concurrent same-host-slot claims and competing snapshot-run overflow1 claims to the Workerd integration test.
+- Superseded push run #45107478190 failed because the test treated per-bucket reserved/uncertain maps as scalar zeroes. The preceding assertions had already observed one settled host1 reservation, one winning workflow-run ID and exactly one COMPLETED response. Corrected assertion checks every bucket value.
+- Corrected push run #45107637216 was cancelled by workflow concurrency while an older PR run was active. Superseded PR run #45107482767 remains in progress on old head 2bafca9. Corrected-head PR run #45107642156 is pending.
+- Phase59.64C is NOT ACCEPTED until #45107642156 (or a later corrected-head run) passes. Snapshot-run race remains unverified.
+- No live endpoint/deployment/App install/inference/provider call/spend/receipt. P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.
+
+
+## PHASE 59.64C — CONCURRENT HOST-SLOT AND SNAPSHOT-RUN SINGLE-WINNER PROOF (23-Nov-2026)
+
+- Corrected code/test head `9868b642a57caa697dd60f740d3664bcdab50087` passed [PR CI #45107642156](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45107642156): 32/32 offline tests, YAML PASS, 165-package lockfile, 83/83 Workers runtime, 1/1 Workerd integration.
+- Concurrent same-host-slot claims with two distinct workflow-run IDs produced exactly one settled host1 reservation, one winning run ID and one COMPLETED response. Per-bucket reserved/uncertain counters were all zero.
+- Competing snapshot-run overflow1 claims produced exactly one settled overflow1 row and one snapshot-run winner. The losing snapshot run was rejected when attempting overflow2, preventing split overflow. Winning run settled overflow1–3; overflow4 was denied by the shared cap.
+- Final synthetic readback: eight settled reservations, zero reserved, zero uncertain, six distinct workflow-run IDs, two synthetic repositories, valid event chain.
+- Failed superseded runs #45107478190 and #45107482767 were assertion-shape failures only: the test treated per-bucket maps as scalars. Earlier single-winner host-slot assertions passed. Corrected assertion now checks every bucket. Push #45107637216 was cancelled by workflow concurrency; corrected PR run #45107642156 passed.
+- This is synthetic Workerd evidence, not physical multi-host acceptance. No live endpoint, deployment, App installation, AI inference, external provider call, spend or receipt.
+- P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Next is owner-gated Phase59.64D six independent workflow-run proof after sequential PR stack merge, master control-plane reconciliation, branch-protection verification, legacy writer review and zero-cost account/namespace setup. 7-day and 30-day soak follow only after exact six-run acceptance.

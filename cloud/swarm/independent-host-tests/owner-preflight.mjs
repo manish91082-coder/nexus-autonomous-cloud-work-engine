@@ -4,7 +4,7 @@ const DISPATCH_PATH = "/internal/shadow-dispatch";
 const SAFE_TEST_ID = /^[A-Za-z0-9._:-]{1,64}$/;
 const SAFE_RUN_ID = /^[0-9]{1,20}$/;
 const SAFE_WORKER_HOST = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+workers\.dev$/;
-const HOST_SLOTS = new Set(["host1", "host2", "host3", "host4"]);
+const HOST_SLOT_ORDER = Object.freeze(["host1", "host2", "host3", "host4"]);
 
 function requireRunId(value, field) {
   if (typeof value !== "string" || !SAFE_RUN_ID.test(value)) {
@@ -65,13 +65,28 @@ export function validateOwnerPreflight(env) {
     throw new Error("OWNER_PREFLIGHT_NOT_SATISFIED");
   }
 
+  if (mode === "seed") {
+    const suppliedPriorRunIds = ["SEED_RUN_ID", ...HOST_SLOT_ORDER.map(slot => slot.toUpperCase() + "_RUN_ID")]
+      .some(key => env[key] !== undefined && env[key] !== null && env[key] !== "");
+    if (suppliedPriorRunIds) throw new Error("SEED_STAGE_MUST_NOT_INCLUDE_PRIOR_RUN_IDS");
+  }
+
   if (mode === "host") {
-    if (!HOST_SLOTS.has(env.HOST_SLOT)) throw new Error("HOST_SLOT_INVALID");
+    const slotIndex = HOST_SLOT_ORDER.indexOf(env.HOST_SLOT);
+    if (slotIndex < 0) throw new Error("HOST_SLOT_INVALID");
     const seedRunId = requireRunId(env.SEED_RUN_ID, "SEED_WORKFLOW_RUN_ID");
-    if (seedRunId === currentRunId) throw new Error("SEED_AND_HOST_RUN_IDS_MUST_DIFFER");
-    const priorHostIds = [env.HOST1_RUN_ID, env.HOST2_RUN_ID, env.HOST3_RUN_ID, env.HOST4_RUN_ID]
-      .filter(value => value !== undefined && value !== null && value !== "");
-    const allIds = [seedRunId, currentRunId, ...priorHostIds.map((value, index) => requireRunId(value, "PRIOR_HOST_RUN_" + (index + 1)))];
+    const priorSlots = HOST_SLOT_ORDER.slice(0, slotIndex);
+    const notYetRunSlots = HOST_SLOT_ORDER.slice(slotIndex);
+    const priorHostIds = priorSlots.map(slot => requireRunId(
+      env[slot.toUpperCase() + "_RUN_ID"], slot.toUpperCase() + "_WORKFLOW_RUN_ID"
+    ));
+    for (const slot of notYetRunSlots) {
+      const value = env[slot.toUpperCase() + "_RUN_ID"];
+      if (value !== undefined && value !== null && value !== "") {
+        throw new Error("FUTURE_HOST_RUN_ID_NOT_ALLOWED");
+      }
+    }
+    const allIds = [seedRunId, ...priorHostIds, currentRunId];
     if (new Set(allIds).size !== allIds.length) throw new Error("HOST_RUN_IDS_MUST_BE_DISTINCT");
   }
 

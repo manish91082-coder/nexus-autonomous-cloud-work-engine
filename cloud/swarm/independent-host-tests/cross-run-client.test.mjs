@@ -1,10 +1,27 @@
 import test from "node:test";import assert from "node:assert/strict";import fs from "node:fs";import {fileURLToPath} from "node:url";import {runCrossRunClient,validateSnapshot} from "./cross-run-client.mjs";
 const testId="phase63-unit",seed="810001",hosts=["810011","810012","810013","810014"],snapshotRun="810099";
 const repoA="synthetic-org/p10cr-shadow-repo-a",repoB="synthetic-org/p10cr-shadow-repo-b";
+test("seed and snapshot stages carry explicit prerequisite identities",()=>{
+ const client=fs.readFileSync(fileURLToPath(new URL("./cross-run-client.mjs",import.meta.url)),"utf8");
+ assert.ok(client.includes("seedWorkflowRunId"));
+ assert.ok(client.includes("sentinelPayload(testId,workflowRunId)"));
+ assert.ok(client.includes("sentinelPayload(testId,seedRunId)"));
+ assert.ok(client.includes("hostWorkflowRunIds,evidence_proposals"));
+});
+test("host client binds only the exact prior run IDs for its ordered slot",()=>{
+ const client=fs.readFileSync(fileURLToPath(new URL("./cross-run-client.mjs",import.meta.url)),"utf8");
+ assert.ok(client.includes("priorHostWorkflowRunIds"));
+ assert.ok(client.includes("seedWorkflowRunId:seedRunId"));
+ assert.ok(client.includes("FUTURE_HOST_RUN_ID_NOT_ALLOWED"));
+ assert.ok(client.includes("HOST_STAGE_RUN_IDS_MUST_BE_DISTINCT"));
+});
+
 test("snapshot validator requires six distinct workflow-run IDs and two fixed repository aliases",()=>{
  const valid={httpStatus:200,body:{status:"BUDGET_SNAPSHOT",testId,committedDispatches:8,reservedDispatches:0,uncertainDispatches:0,reservationCount:8,
  settledReservations:8,nonSettledReservations:0,seedReservationCount:1,hostReservationCount:4,overflowReservationCount:3,
  distinctWorkflowRunIds:[seed,...hosts,snapshotRun].sort(),distinctRepositories:[repoA,repoB],expectedWorkflowRunIdsMatch:true,
+ seedWorkflowRunIdMatch:true,snapshotWorkflowRunIdMatch:true,
+ hostSlotWorkflowRunIds:{host1:hosts[0],host2:hosts[1],host3:hosts[2],host4:hosts[3]},expectedHostSlotWorkflowRunIdsMatch:true,
  expectedRepositoriesMatch:true,allReservationsPhase59_63:true,eventChainValid:true,eventCount:80,controlBudgetRpcRequests:40,lastEventHash:"a".repeat(64)}};
  assert.equal(validateSnapshot(valid,{testId,seedRunId:seed,hostRunIds:hosts,snapshotRunId:snapshotRun}),true);
  const duplicate=structuredClone(valid);duplicate.body.distinctWorkflowRunIds[0]=duplicate.body.distinctWorkflowRunIds[1];
@@ -13,6 +30,12 @@ test("snapshot validator requires six distinct workflow-run IDs and two fixed re
  assert.equal(validateSnapshot(oneRepo,{testId,seedRunId:seed,hostRunIds:hosts,snapshotRunId:snapshotRun}),false);
  const uncertain=structuredClone(valid);uncertain.body.uncertainDispatches=1;
  assert.equal(validateSnapshot(uncertain,{testId,seedRunId:seed,hostRunIds:hosts,snapshotRunId:snapshotRun}),false);
+ const swapped=structuredClone(valid);[swapped.body.hostSlotWorkflowRunIds.host1,swapped.body.hostSlotWorkflowRunIds.host2]=[swapped.body.hostSlotWorkflowRunIds.host2,swapped.body.hostSlotWorkflowRunIds.host1];
+ assert.equal(validateSnapshot(swapped,{testId,seedRunId:seed,hostRunIds:hosts,snapshotRunId:snapshotRun}),false);
+ const wrongSeed=structuredClone(valid);wrongSeed.body.seedWorkflowRunIdMatch=false;
+ assert.equal(validateSnapshot(wrongSeed,{testId,seedRunId:seed,hostRunIds:hosts,snapshotRunId:snapshotRun}),false);
+ const wrongSnapshot=structuredClone(valid);wrongSnapshot.body.snapshotWorkflowRunIdMatch=false;
+ assert.equal(validateSnapshot(wrongSnapshot,{testId,seedRunId:seed,hostRunIds:hosts,snapshotRunId:snapshotRun}),false);
 });
 test("workflow is manual-only, read-only and owner-gated",()=>{
  const path=fileURLToPath(new URL("../../../.github/workflows/phase59-63-independent-workflow-run-proof.yml",import.meta.url));

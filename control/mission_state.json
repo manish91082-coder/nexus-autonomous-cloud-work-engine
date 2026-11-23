@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "P59.63.2_DEFAULT_BRANCH_OWNER_PREFLIGHT",
+  "phase": "P59.64C_CONCURRENT_HOST_AND_SNAPSHOT_SINGLE_WINNER_PROOF",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "Canonical master-only manual workflow-dispatch guard passed exact-head CI: 29/29 offline tests, YAML PASS, 83/83 Workers runtime and 1/1 Phase59.63 Workerd. Next is owner-gated six-run proof; no revenue/product research while P59-003 is active.",
+  "current_focus": "Phase59.64C accepted: PR CI #45107642156 passed 32/32 offline, YAML, 165-package lockfile, 83/83 Workers runtime and 1/1 Workerd. Concurrent same-host-slot claims yielded exactly one settled reservation and one winning run ID; competing snapshot-run overflow1 claims yielded exactly one winner and the losing run could not create overflow2. Final synthetic snapshot: 8 settled, 0 reserved, 0 uncertain, 6 run IDs, 2 repositories, valid event chain. Physical multi-host/live six-run proof remains owner-gated.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -23,7 +23,7 @@
     "spend",
     "AI_provider_account_and_secret_setup"
   ],
-  "updated_at": "2026-11-22",
+  "updated_at": "2026-11-23",
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
     "run_number": 543,
@@ -59,7 +59,7 @@
     "CREATOR_IP_ROYALTIES_STOCK_ASSETS",
     "GAMES_SPONSORSHIP_AFFILIATE_ADVERTISING"
   ],
-  "last_exact_head_ci_status": "SUCCESS_FINAL_CANDIDATE_4_OF_4_DEDICATED_82_OF_82_FULL_REGRESSION",
+  "last_exact_head_ci_status": "Phase59.64C tested code head 9868b642a57caa697dd60f740d3664bcdab50087 passed PR CI #45107642156: 32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1. Concurrent host-slot and snapshot-run single-winner proofs PASS.",
   "phase46_control_commits": [
     "72230902a478552d007d94d330e216238c9b2982",
     "ae552163e2b1e65590fc98454d8f7817bc73fa92",
@@ -133,7 +133,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.62: prepare the independent-host test harness and owner preflight; pin the Cloudflare/Vitest test dependencies and add a lockfile. Keep live endpoint tests disabled until the owner verifies an existing Workers Free account, account-wide usage and the shared P10CR Durable Object namespace. Then run four independent standard GitHub-hosted runners, prove shared lease/quota/fencing behavior, and only after that start the bounded 7-day and 30-day soak.",
+  "next_focus": "Phase59.64D: owner-gated six independent workflow-run proof after sequential PR stack merge, master control-plane reconciliation, branch-protection verification, legacy writer review, existing Workers Free account/aggregate usage verification, test-only namespace and required-reviewer environment approval; then 7-day and 30-day soak.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -3076,5 +3076,443 @@
       "Rights, platform policy and payout eligibility gates",
       "Owner approval for KYC, legal terms, billing, public release and money movement"
     ]
+  },
+  "phase59_64A": {
+    "status": "EXACT_HEAD_CI_PASS_SYNTHETIC_ONLY_OWNER_GATES_PENDING",
+    "report": "research/PHASE_59_64A_ORDERED_HOST_RUN_PREREQUISITE_GUARD_2026-11-23.md",
+    "branch": "phase59-64-host-slot-run-identity-binding",
+    "pr_number": 50,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "base_branch": "phase59-64-default-branch-execution-guard",
+    "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "tested_code_head": "99558b02de68e973ff80f8506b7212e13e87d686",
+    "ci_run_id": 45105764381,
+    "ci_status": "SUCCESS",
+    "offline_tests": "31/31",
+    "workflow_yaml": "PASS",
+    "lockfile_packages": 165,
+    "workers_runtime": "83/83",
+    "workerd_integration": "1/1",
+    "server_checks_actual_settled_seed_and_prior_host_reservations": true,
+    "host_client_binds_prior_run_ids": true,
+    "rejects_forged_seed_premature_host_and_swapped_ids": true,
+    "sequential_host_slots": "host1->host2->host3->host4",
+    "physical_multi_host_proven": false,
+    "live_six_workflow_run_proof_started": false,
+    "cloudflare_deployed": false,
+    "github_app_installed": false,
+    "branch_ruleset_status": "UNVERIFIED_OWNER_ACTION_REQUIRED",
+    "ai_inference_enabled": false,
+    "live_provider_calls": 0,
+    "external_network_requests": 0,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "failures_corrected": [
+      {
+        "run_id": 45105477551,
+        "issue": "JavaScript template-literal syntax error in workflow input contract assertion",
+        "correction": "Use deterministic string concatenation"
+      },
+      {
+        "run_id": 45105696473,
+        "issue": "Duplicate seedRunId declaration in host client",
+        "correction": "Reuse validated binding"
+      }
+    ],
+    "next": "Phase59.64B: enforce server-side seed replay and snapshot/overflow prerequisites against durable settled reservation rows; then owner-gated six separate workflow runs."
+  },
+  "phase59_64B": {
+    "status": "EXACT_HEAD_CI_PASS_SYNTHETIC_ONLY_OWNER_GATES_PENDING",
+    "report": "research/PHASE_59_64B_SEED_REPLAY_SNAPSHOT_GATES_AND_CURRENT_HEAD_INVENTORY_2026-11-23.md",
+    "branch": "phase59-64-host-slot-run-identity-binding",
+    "pr_number": 50,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "base_branch": "phase59-64-default-branch-execution-guard",
+    "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "tested_code_head": "3de92c7eb32ae594d3ea3f6da141a211a0ae6cb5",
+    "push_run_id": 45106578746,
+    "push_status": "SUCCESS",
+    "pull_request_run_id": 45106583941,
+    "pull_request_status": "SUCCESS",
+    "offline_tests": "32/32",
+    "workflow_yaml": "PASS",
+    "lockfile_packages": 165,
+    "workers_runtime": "83/83",
+    "workerd_integration": "1/1",
+    "seed_replay_uses_identical_idempotency_payload": true,
+    "seed_replay_requires_settled_seed_row": true,
+    "host_slots_require_exact_prior_settled_rows": true,
+    "snapshot_overflow_requires_all_four_settled_host_rows": true,
+    "rejects_premature_seed_replay": true,
+    "rejects_premature_overflow": true,
+    "rejects_swapped_host_ids": true,
+    "sequential_host_slots": "host1->host2->host3->host4",
+    "final_synthetic_budget_snapshot": {
+      "settled_reservations": 8,
+      "reserved": 0,
+      "uncertain": 0,
+      "distinct_workflow_run_ids": 6,
+      "distinct_repositories": 2,
+      "event_chain_valid": true
+    },
+    "current_head_inventory": {
+      "candidate_branch": "phase59-64-host-slot-run-identity-binding",
+      "candidate_tree_entries": 500,
+      "workflow_files": 37,
+      "cloud_swarm_mjs_modules": 42,
+      "python_files_total": 87,
+      "python_breakdown": {
+        "scripts": 18,
+        "cloud_work_engine_runtime": 21,
+        "cloud_work_engine_tests": 20,
+        "products": 12,
+        "tests": 16
+      },
+      "package_manifests": 1,
+      "package_lockfiles": 1,
+      "npm_lockfile_package_entries": 165,
+      "wrangler_configs": 4,
+      "workflow_action_references": 74,
+      "action_refs_sha_pinned": 55,
+      "action_refs_mutable_tags": 19,
+      "mutable_action_workflows": [
+        ".github/workflows/build-ai-ops-starter.yml",
+        ".github/workflows/nexus-bounty-agent.yml",
+        ".github/workflows/nexus-funded-job-scan.yml",
+        ".github/workflows/nexus-jobbi-gigs.yml",
+        ".github/workflows/package-recruitment-product.yml",
+        ".github/workflows/recruitment-browser-qa.yml"
+      ],
+      "workflows_referencing_secrets": [
+        ".github/workflows/nexus-bounty-agent.yml",
+        ".github/workflows/nexus-funded-job-scan.yml",
+        ".github/workflows/p10cr-constrained-publisher.yml",
+        ".github/workflows/phase59-62-independent-host-test.yml",
+        ".github/workflows/phase59-63-independent-workflow-run-proof.yml"
+      ],
+      "pull_request_target_workflows": 0,
+      "write_capable_workflows": [
+        {
+          "path": ".github/workflows/p10cr-constrained-publisher.yml",
+          "scope": "single-repository GitHub App token; contents:write and pull_requests:write only after validation and owner configuration; deterministic automation/p10cr/worker-run-* branch; draft PR only; no merge/release/deploy"
+        },
+        {
+          "path": ".github/workflows/phase59-25-cloud-operational-soak.yml",
+          "scope": "legacy bounded test writer using GITHUB_TOKEN contents:write; push-only phase59-25-cloud-operational-soak branch; disposable phase59-25-cloud-soak-state branch created and deleted; not invoked by P59-003 current execution"
+        },
+        {
+          "path": ".github/workflows/federation-lock-store.yml",
+          "scope": "separate federation-locks branch only; job-level contents:write; not invoked by P59-003 and remains isolated"
+        }
+      ],
+      "p10cr_compute_worker_permissions": "contents:read; no secret references",
+      "p10cr_continuity_guard_permissions": "contents:read; no secret references",
+      "p10cr_publisher_mode": "single constrained draft-PR publisher; GitHub App not installed",
+      "current_candidate_ci": {
+        "code_test_head": "3de92c7eb32ae594d3ea3f6da141a211a0ae6cb5",
+        "push_run_id": 45106578746,
+        "push_conclusion": "success",
+        "pull_request_run_id": 45106583941,
+        "pull_request_conclusion": "success",
+        "offline_tests": "32/32",
+        "workflow_yaml": "PASS",
+        "workers_runtime": "83/83 across 4 files",
+        "workerd_integration": "1/1",
+        "lockfile_integrity": "PASS, 165 package entries",
+        "node": "22.16.0",
+        "npm": "11.6.3"
+      },
+      "branch_rulesets_api": "EMPTY_LIST",
+      "branch_protection_api": "HTTP_403_UNVERIFIED",
+      "other_project_workflows": "READ_ONLY_AUDIT_ONLY_NOT_EXECUTED",
+      "live_endpoint_requests": 0,
+      "physical_multi_host_proven": false,
+      "live_six_workflow_run_proof_started": false,
+      "ai_inference_enabled": false,
+      "authorized_spend_inr": 0,
+      "verified_realized_net_receipts_inr": 0
+    },
+    "physical_multi_host_proven": false,
+    "live_six_workflow_run_proof_started": false,
+    "cloudflare_deployed": false,
+    "github_app_installed": false,
+    "branch_ruleset_status": "UNVERIFIED_OWNER_ACTION_REQUIRED",
+    "master_control_plane_stale": true,
+    "master_queue_sequence_policy_stale": true,
+    "ai_inference_enabled": false,
+    "live_provider_calls": 0,
+    "external_network_requests": 0,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "failures_corrected": [
+      {
+        "run_ids": [
+          45106178146,
+          45106181930
+        ],
+        "issue": "seedReplay flag changed the task payload fingerprint and broke cross-run idempotent replay",
+        "correction": "remove replay flag; use identical seed payload and infer replay from durable seed reservation"
+      },
+      {
+        "run_ids": [
+          45105477551,
+          45105696473
+        ],
+        "issue": "earlier Phase59.64A workflow assertion syntax and duplicate seedRunId declaration",
+        "correction": "fixed before Phase59.64A exact-head CI #45105764381"
+      }
+    ],
+    "next": "Phase59.64C: concurrent same-slot and competing snapshot-run failure-injection tests; publisher and legacy branch-scoped writer boundary audit; then owner-gated six independent workflow runs.",
+    "final_candidate_ci": {
+      "run_id": 45107001561,
+      "status": "SUCCESS",
+      "head": "e872f34afdbeae9350e84198d178fce63033bafd"
+    },
+    "candidate_worker_run": {
+      "run_id": 45106996804,
+      "status": "SUCCESS",
+      "result": "POLL_OK",
+      "selected_task": "P59-003",
+      "ai_executor": "WAITING_FOR_OWNER_CONFIGURATION",
+      "inference_requests": 0
+    },
+    "candidate_guard_run": {
+      "run_id": 45106996788,
+      "status": "SUCCESS",
+      "checks": 111,
+      "errors": 0
+    },
+    "master_worker_run": {
+      "run_id": 45097408304,
+      "status": "SUCCESS",
+      "result": "POLL_OK",
+      "selected_task": "P59-003",
+      "ai_executor": "WAITING_FOR_OWNER_CONFIGURATION",
+      "inference_requests": 0
+    },
+    "master_guard_run": {
+      "run_id": 45011590613,
+      "status": "SUCCESS",
+      "checks": 111,
+      "errors": 0
+    },
+    "candidate_checkpoint_head_before_postrun_evidence": "e872f34afdbeae9350e84198d178fce63033bafd"
+  },
+  "current_head_inventory": {
+    "candidate_branch": "phase59-64-host-slot-run-identity-binding",
+    "candidate_tree_entries": 500,
+    "workflow_files": 37,
+    "cloud_swarm_mjs_modules": 42,
+    "python_files_total": 87,
+    "python_breakdown": {
+      "scripts": 18,
+      "cloud_work_engine_runtime": 21,
+      "cloud_work_engine_tests": 20,
+      "products": 12,
+      "tests": 16
+    },
+    "package_manifests": 1,
+    "package_lockfiles": 1,
+    "npm_lockfile_package_entries": 165,
+    "wrangler_configs": 4,
+    "workflow_action_references": 74,
+    "action_refs_sha_pinned": 55,
+    "action_refs_mutable_tags": 19,
+    "mutable_action_workflows": [
+      ".github/workflows/build-ai-ops-starter.yml",
+      ".github/workflows/nexus-bounty-agent.yml",
+      ".github/workflows/nexus-funded-job-scan.yml",
+      ".github/workflows/nexus-jobbi-gigs.yml",
+      ".github/workflows/package-recruitment-product.yml",
+      ".github/workflows/recruitment-browser-qa.yml"
+    ],
+    "workflows_referencing_secrets": [
+      ".github/workflows/nexus-bounty-agent.yml",
+      ".github/workflows/nexus-funded-job-scan.yml",
+      ".github/workflows/p10cr-constrained-publisher.yml",
+      ".github/workflows/phase59-62-independent-host-test.yml",
+      ".github/workflows/phase59-63-independent-workflow-run-proof.yml"
+    ],
+    "pull_request_target_workflows": 0,
+    "write_capable_workflows": [
+      {
+        "path": ".github/workflows/p10cr-constrained-publisher.yml",
+        "scope": "single-repository GitHub App token; contents:write and pull_requests:write only after validation and owner configuration; deterministic automation/p10cr/worker-run-* branch; draft PR only; no merge/release/deploy"
+      },
+      {
+        "path": ".github/workflows/phase59-25-cloud-operational-soak.yml",
+        "scope": "legacy bounded test writer using GITHUB_TOKEN contents:write; push-only phase59-25-cloud-operational-soak branch; disposable phase59-25-cloud-soak-state branch created and deleted; not invoked by P59-003 current execution"
+      },
+      {
+        "path": ".github/workflows/federation-lock-store.yml",
+        "scope": "separate federation-locks branch only; job-level contents:write; not invoked by P59-003 and remains isolated"
+      }
+    ],
+    "p10cr_compute_worker_permissions": "contents:read; no secret references",
+    "p10cr_continuity_guard_permissions": "contents:read; no secret references",
+    "p10cr_publisher_mode": "single constrained draft-PR publisher; GitHub App not installed",
+    "current_candidate_ci": {
+      "code_test_head": "3de92c7eb32ae594d3ea3f6da141a211a0ae6cb5",
+      "push_run_id": 45106578746,
+      "push_conclusion": "success",
+      "pull_request_run_id": 45106583941,
+      "pull_request_conclusion": "success",
+      "offline_tests": "32/32",
+      "workflow_yaml": "PASS",
+      "workers_runtime": "83/83 across 4 files",
+      "workerd_integration": "1/1",
+      "lockfile_integrity": "PASS, 165 package entries",
+      "node": "22.16.0",
+      "npm": "11.6.3"
+    },
+    "branch_rulesets_api": "EMPTY_LIST",
+    "branch_protection_api": "HTTP_403_UNVERIFIED",
+    "other_project_workflows": "READ_ONLY_AUDIT_ONLY_NOT_EXECUTED",
+    "live_endpoint_requests": 0,
+    "physical_multi_host_proven": false,
+    "live_six_workflow_run_proof_started": false,
+    "ai_inference_enabled": false,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0
+  },
+  "phase59_64C_candidate": {
+    "status": "ACCEPTED_SYNTHETIC_WORKERD_RACE_PROOF",
+    "branch": "phase59-64-host-slot-run-identity-binding",
+    "pr_number": 50,
+    "tested_code_head": "9868b642a57caa697dd60f740d3664bcdab50087",
+    "ci_run_id": 45107642156,
+    "ci_status": "SUCCESS",
+    "offline_tests": "32/32",
+    "workflow_yaml": "PASS",
+    "lockfile_packages": 165,
+    "workers_runtime": "83/83 across 4 files",
+    "workerd_integration": "1/1",
+    "concurrent_host_slot_race": {
+      "attempts": 2,
+      "distinct_workflow_run_ids": 2,
+      "settled_reservation_rows": 1,
+      "completed_responses": 1,
+      "winner_identity_bound": true
+    },
+    "competing_snapshot_run_race": {
+      "attempts": 2,
+      "settled_overflow1_rows": 1,
+      "completed_responses": 1,
+      "winner_identity_bound": true,
+      "losing_run_overflow2_rejected": true,
+      "no_split_snapshot": true
+    },
+    "ordered_host_slots": "host1->host2->host3->host4",
+    "overflow_results": {
+      "overflow1": "SETTLED",
+      "overflow2": "SETTLED",
+      "overflow3": "SETTLED",
+      "overflow4": "DENIED_BY_SHARED_CAP"
+    },
+    "final_synthetic_snapshot": {
+      "settled_reservations": 8,
+      "reserved": 0,
+      "uncertain": 0,
+      "distinct_workflow_run_ids": 6,
+      "distinct_repositories": 2,
+      "event_chain_valid": true
+    },
+    "superseded_failures": [
+      {
+        "run_id": 45107478190,
+        "reason": "per-bucket reserved/uncertain maps were asserted as scalar zeroes; prior one-winner host-slot assertions passed"
+      },
+      {
+        "run_id": 45107482767,
+        "reason": "same assertion-shape failure on superseded head"
+      }
+    ],
+    "cancelled_push_run": {
+      "run_id": 45107637216,
+      "reason": "workflow concurrency while superseded PR run was active; not a test failure"
+    },
+    "final_pr_run": {
+      "run_id": 45107642156,
+      "status": "SUCCESS"
+    },
+    "physical_multi_host_proven": false,
+    "live_six_workflow_run_proof_started": false,
+    "cloudflare_deployed": false,
+    "github_app_installed": false,
+    "ai_inference_enabled": false,
+    "external_provider_calls": 0,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "next": "Phase59.64D: owner-gated six independent workflow-run proof after sequential PR stack merge, master control-plane reconciliation, branch-protection verification, legacy writer review, existing Workers Free account/aggregate usage verification, test-only namespace and required-reviewer environment approval; then 7-day and 30-day soak."
+  },
+  "phase59_64C": {
+    "status": "ACCEPTED_SYNTHETIC_WORKERD_RACE_PROOF",
+    "branch": "phase59-64-host-slot-run-identity-binding",
+    "pr_number": 50,
+    "tested_code_head": "9868b642a57caa697dd60f740d3664bcdab50087",
+    "ci_run_id": 45107642156,
+    "ci_status": "SUCCESS",
+    "offline_tests": "32/32",
+    "workflow_yaml": "PASS",
+    "lockfile_packages": 165,
+    "workers_runtime": "83/83 across 4 files",
+    "workerd_integration": "1/1",
+    "concurrent_host_slot_race": {
+      "attempts": 2,
+      "distinct_workflow_run_ids": 2,
+      "settled_reservation_rows": 1,
+      "completed_responses": 1,
+      "winner_identity_bound": true
+    },
+    "competing_snapshot_run_race": {
+      "attempts": 2,
+      "settled_overflow1_rows": 1,
+      "completed_responses": 1,
+      "winner_identity_bound": true,
+      "losing_run_overflow2_rejected": true,
+      "no_split_snapshot": true
+    },
+    "ordered_host_slots": "host1->host2->host3->host4",
+    "overflow_results": {
+      "overflow1": "SETTLED",
+      "overflow2": "SETTLED",
+      "overflow3": "SETTLED",
+      "overflow4": "DENIED_BY_SHARED_CAP"
+    },
+    "final_synthetic_snapshot": {
+      "settled_reservations": 8,
+      "reserved": 0,
+      "uncertain": 0,
+      "distinct_workflow_run_ids": 6,
+      "distinct_repositories": 2,
+      "event_chain_valid": true
+    },
+    "superseded_failures": [
+      {
+        "run_id": 45107478190,
+        "reason": "per-bucket reserved/uncertain maps were asserted as scalar zeroes; prior one-winner host-slot assertions passed"
+      },
+      {
+        "run_id": 45107482767,
+        "reason": "same assertion-shape failure on superseded head"
+      }
+    ],
+    "cancelled_push_run": {
+      "run_id": 45107637216,
+      "reason": "workflow concurrency while superseded PR run was active; not a test failure"
+    },
+    "final_pr_run": {
+      "run_id": 45107642156,
+      "status": "SUCCESS"
+    },
+    "physical_multi_host_proven": false,
+    "live_six_workflow_run_proof_started": false,
+    "cloudflare_deployed": false,
+    "github_app_installed": false,
+    "ai_inference_enabled": false,
+    "external_provider_calls": 0,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "next": "Phase59.64D: owner-gated six independent workflow-run proof after sequential PR stack merge, master control-plane reconciliation, branch-protection verification, legacy writer review, existing Workers Free account/aggregate usage verification, test-only namespace and required-reviewer environment approval; then 7-day and 30-day soak."
   }
 }

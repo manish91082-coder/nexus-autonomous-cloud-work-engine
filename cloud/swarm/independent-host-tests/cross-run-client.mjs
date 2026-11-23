@@ -7,7 +7,7 @@ const SAFE_ID=/^[A-Za-z0-9._:-]{1,128}$/, SAFE_RUN_ID=/^[0-9]{1,20}$/;
 const HOSTS=Object.freeze({host1:{repository:REPO_A,expectedHostId:"host1"},host2:{repository:REPO_B,expectedHostId:"host2"},host3:{repository:REPO_A,expectedHostId:"host3"},host4:{repository:REPO_B,expectedHostId:"host4"}});
 function requireRunId(value,field){if(typeof value!=="string"||!SAFE_RUN_ID.test(value))throw new TypeError(field+"_INVALID");return value;}
 function requireTestId(value){if(typeof value!=="string"||!SAFE_ID.test(value)||value.length>64)throw new TypeError("TEST_ID_INVALID");return value;}
-function sentinelPayload(testId){return{testSuite:"P59.63",testId,testRepositoryAlias:REPO_A,sentinel:"GLOBAL_CROSS_RUN_SENTINEL",evidence_proposals:[],claims:[]};}
+function sentinelPayload(testId,seedWorkflowRunId){return{testSuite:"P59.63",testId,testRepositoryAlias:REPO_A,sentinel:"GLOBAL_CROSS_RUN_SENTINEL",seedWorkflowRunId,evidence_proposals:[],claims:[]};}
 async function readJson(response,label){const raw=await readBoundedResponseText(response,16384);try{return{httpStatus:response.status,body:JSON.parse(raw)};}catch{throw new Error(label+"_RESPONSE_NOT_JSON");}}
 async function dispatch({endpoint,secret,taskId,payload,workflowRunId,expectedHostname}){
  const signed=buildSignedRequest({endpoint,secret,taskId,payload,workflowRunId,path:DISPATCH_PATH,expectedHostname});
@@ -27,6 +27,10 @@ export function validateSnapshot(result,{testId,seedRunId,hostRunIds,snapshotRun
   &&body?.seedReservationCount===1&&body?.hostReservationCount===4&&body?.overflowReservationCount===3
   &&Array.isArray(body?.distinctWorkflowRunIds)&&body.distinctWorkflowRunIds.length===6
   &&body.distinctWorkflowRunIds.every((v,i)=>v===expectedRuns[i])&&body?.expectedWorkflowRunIdsMatch===true
+  &&body?.seedWorkflowRunIdMatch===true&&body?.snapshotWorkflowRunIdMatch===true
+  &&body?.expectedHostSlotWorkflowRunIdsMatch===true
+  &&body?.hostSlotWorkflowRunIds&&Object.keys(body.hostSlotWorkflowRunIds).sort().join(",")==="host1,host2,host3,host4"
+  &&hostRunIds.every((runId,index)=>body.hostSlotWorkflowRunIds["host"+(index+1)]===runId)
   &&JSON.stringify(body?.distinctRepositories)===JSON.stringify([REPO_A,REPO_B])&&body?.expectedRepositoriesMatch===true
   &&body?.allReservationsPhase59_63===true&&body?.eventChainValid===true
   &&Number.isInteger(body?.eventCount)&&body.eventCount>0&&Number.isInteger(body?.controlBudgetRpcRequests)
@@ -39,19 +43,30 @@ export async function runCrossRunClient(env=process.env){
  if(typeof secret!=="string"||secret.length<32)throw new Error("OWNER_TEST_SECRET_MISSING");
  const mode=env.P59_63_MODE,testId=requireTestId(env.P59_63_TEST_ID),workflowRunId=requireRunId(String(env.GITHUB_RUN_ID||""),"CURRENT_WORKFLOW_RUN_ID");
  if(mode==="seed"){
-  const result=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-seed",payload:sentinelPayload(testId),workflowRunId,expectedHostname});
-  if(classifyDispatch(result)!=="completed")throw new Error("P59_63_SEED_NOT_COMPLETED");
-  const output={mode,testId,seedWorkflowRunId:workflowRunId,status:result.body.status};console.log("P59_63_SEED_RESULT "+JSON.stringify(output));return output;
+  const result=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-seed",payload:sentinelPayload(testId,workflowRunId),workflowRunId,expectedHostname});
+  const classification=classifyDispatch(result);
+  if(!["completed","duplicate"].includes(classification))throw new Error("P59_63_SEED_NOT_COMPLETED");
+  const output={mode,testId,seedWorkflowRunId:workflowRunId,status:result.body.status,idempotentReplay:classification==="duplicate"};console.log("P59_63_SEED_RESULT "+JSON.stringify(output));return output;
  }
  if(mode==="host"){
   const seedRunId=requireRunId(env.P59_63_SEED_WORKFLOW_RUN_ID,"SEED_WORKFLOW_RUN_ID");
   if(seedRunId===workflowRunId)throw new Error("SEED_AND_HOST_RUN_IDS_MUST_DIFFER");
   const hostSlot=env.P59_63_HOST_SLOT,host=HOSTS[hostSlot];if(!host)throw new Error("HOST_SLOT_INVALID");
   const runnerName=validateRunnerName(env.P59_63_RUNNER_NAME||"");
-  const duplicate=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-seed",payload:sentinelPayload(testId),workflowRunId,expectedHostname});
+  const slotIndex=Object.keys(HOSTS).indexOf(hostSlot);
+  const priorHostWorkflowRunIds=Object.keys(HOSTS).slice(0,slotIndex).map((slot,index)=>
+   requireRunId(env["P59_63_"+slot.toUpperCase()+"_WORKFLOW_RUN_ID"],"PRIOR_HOST_"+(index+1)+"_WORKFLOW_RUN_ID"));
+  for(const futureSlot of Object.keys(HOSTS).slice(slotIndex)){
+   const value=env["P59_63_"+futureSlot.toUpperCase()+"_WORKFLOW_RUN_ID"];
+   if(value!==undefined&&value!==null&&value!=="")throw new Error("FUTURE_HOST_RUN_ID_NOT_ALLOWED");
+  }
+  if(new Set([seedRunId,...priorHostWorkflowRunIds,workflowRunId]).size!==slotIndex+2)
+   throw new Error("HOST_STAGE_RUN_IDS_MUST_BE_DISTINCT");
+  const duplicate=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-seed",payload:sentinelPayload(testId,seedRunId),workflowRunId,expectedHostname});
   if(classifyDispatch(duplicate)!=="duplicate")throw new Error("P59_63_CROSS_RUN_SENTINEL_NOT_SUPPRESSED");
   const result=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-"+hostSlot+"-01",workflowRunId,expectedHostname,
-   payload:{testSuite:"P59.63",testId,testRepositoryAlias:host.repository,hostId:host.expectedHostId,runnerName,attemptIndex:1,evidence_proposals:[],claims:[]}});
+   payload:{testSuite:"P59.63",testId,testRepositoryAlias:host.repository,hostId:host.expectedHostId,runnerName,attemptIndex:1,
+    seedWorkflowRunId:seedRunId,priorHostWorkflowRunIds,evidence_proposals:[],claims:[]}});
   if(classifyDispatch(result)!=="completed")throw new Error("P59_63_HOST_TASK_NOT_COMPLETED");
   const output={mode,testId,hostSlot,repositoryAlias:host.repository,workflowRunId,runnerName,sentinelDuplicateSuppressed:true,uniqueTasksCompleted:1,uniqueTasksDenied:0};
   console.log("P59_63_HOST_RESULT "+JSON.stringify(output));return output;
@@ -64,7 +79,8 @@ export async function runCrossRunClient(env=process.env){
   for(let i=1;i<=4;i++){
    const repository=i%2===1?REPO_A:REPO_B;
    const result=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-overflow-"+i,workflowRunId,expectedHostname,
-    payload:{testSuite:"P59.63",testId,testRepositoryAlias:repository,hostId:"snapshot",runnerName:"snapshot",attemptIndex:i,evidence_proposals:[],claims:[]}});
+    payload:{testSuite:"P59.63",testId,testRepositoryAlias:repository,hostId:"snapshot",runnerName:"snapshot",attemptIndex:i,
+     seedWorkflowRunId:seedRunId,hostWorkflowRunIds,evidence_proposals:[],claims:[]}});
    overflow.push(classifyDispatch(result));
   }
   if(JSON.stringify(overflow)!==JSON.stringify(["completed","completed","completed","denied"]))throw new Error("P59_63_OVERFLOW_CONTRACT_FAILED:"+JSON.stringify(overflow));

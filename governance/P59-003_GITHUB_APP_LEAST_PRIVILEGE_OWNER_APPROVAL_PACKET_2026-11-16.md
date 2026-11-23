@@ -124,3 +124,39 @@ The implementation is committed on draft PR #42, stacked on PR #41 and draft PR 
 GitHub's Pull requests:write permission is technically powerful and may permit merge operations at the API level. The publisher code does not call a merge endpoint, but code-level intent is not a substitute for repository enforcement. Before App installation or token use, the owner must configure and verify a ruleset that requires PRs, required CI checks and at least one human approval; denies force-push/deletion; and does not list either App as a bypass actor. Branch protection is currently UNVERIFIED. PR #42 must remain draft/unmerged until the stacked PRs and owner approval are reviewed.
 
 This packet does not authorize App creation, installation, secret creation, AI inference, deployment, publication or any financial/account action. The compute worker remains hard-disabled for inference.
+
+
+## Phase59.64B owner-review addendum (23-Nov-2026)
+
+### Current PR and evidence state
+- PRs #44→#45→#46→#47→#48→#49→#50 are all open, draft, mergeable and unmerged. Review and merge only in that order after owner review; no assistant merge is authorized.
+- PR #50 is the current Phase59.64 candidate. Tested code head `3de92c7eb32ae594d3ea3f6da141a211a0ae6cb5` passed push #45106578746 and PR #45106583941. Final candidate checkpoint `e872f34afdbeae9350e84198d178fce63033bafd` passed #45107001561. Each: 32/32 offline, YAML PASS, 165-package lockfile integrity, 83/83 Workers runtime, 1/1 Workerd integration.
+- Candidate Worker #45106996804 selected P59-003 with no inference. Candidate Guard #45106996788 passed 111 checks. Master Worker #45097408304 selected P59-003 with no inference; master Guard #45011590613 passed 111 checks.
+
+### Repository-wide write-boundary caveat
+The P10CR constrained publisher remains the only P10CR publication workflow. It uses a read-only GITHUB_TOKEN, then a one-repository GitHub App token with Contents:write and Pull requests:write only after source validation and owner configuration. Its code creates one allowlisted branch/file and a draft PR only; no merge, release, deployment, force-push or deletion path exists.
+
+Two separate branch-scoped write workflows remain in the repository and were not invoked:
+1. `.github/workflows/phase59-25-cloud-operational-soak.yml`: legacy disposable test-branch writer using GITHUB_TOKEN Contents:write, restricted to the Phase59.25 soak branch and a disposable state branch.
+2. `.github/workflows/federation-lock-store.yml`: separate federation-locks branch CAS workflow with job-scoped Contents:write.
+
+These are not the P10CR publisher, but they are residual write-capable workflows. Before production, the owner must review and either disable them or explicitly retain their branch-scoped permissions with verified protections. Other project workflows remain unexecuted/read-only in P59-003.
+
+### Ruleset and branch-protection gate
+The repository rulesets API returned an empty list and the branch-protection API returned HTTP 403 to the integration. This does not prove that branch protection is absent; it means protection is UNVERIFIED. The owner must verify in GitHub Settings that required PR review, required CI, no force-push/deletion and no App bypass actor are enforced before App installation or publisher activation.
+
+### Owner approval sequence
+1. Review and merge PRs #44–#50 sequentially, with required CI and human approval.
+2. Verify master mission_state, queue, federation and continuity now reflect P59-003 as sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Master currently has stale V5 portfolio sequence_mode and old continuity, so do not start live runs until reconciled.
+3. Verify branch rulesets/protection in owner UI.
+4. Review the two legacy branch-scoped write workflows above.
+5. Only then create/install the least-privilege GitHub App and store owner secrets directly in the GitHub Environment. Never paste private keys or tokens into chat.
+6. Keep AI inference disabled until provider/model/data terms, zero-billing and quota controls are verified and separately approved.
+7. Do not enable public release, KYC, legal acceptance, payments, wallet signing or money movement through this packet.
+
+
+## Phase59.64C synthetic concurrency acceptance (23-Nov-2026)
+
+- Corrected code head `9868b642a57caa697dd60f740d3664bcdab50087` passed [PR CI #45107642156](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45107642156): 32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1.
+- Two concurrent host1 workflow-run identities produced exactly one settled host1 reservation and one winner. Two competing snapshot workflow-run identities produced exactly one settled overflow1 reservation; the losing run could not create overflow2. Final synthetic snapshot: eight settled, zero reserved, zero uncertain, six distinct run IDs, two repositories, valid event chain.
+- This does not replace physical independent-host testing. The six separate workflow runs remain owner-gated until PR stack merge, branch protection, Cloudflare Free account/aggregate usage, required-reviewer environment and test-only shared namespace are verified.

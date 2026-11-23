@@ -10,6 +10,89 @@ const SAFE_ID = /^[A-Za-z0-9._:-]{1,128}$/;
 const SAFE_RUN_ID = /^[0-9]{1,20}$/;
 const P59_63_REPOSITORIES = Object.freeze(["synthetic-org/p10cr-shadow-repo-a","synthetic-org/p10cr-shadow-repo-b"]);
 const encoder = new TextEncoder();
+function phase63HostPrerequisiteFailure(snapshot, context) {
+  if (snapshot?.httpStatus !== 200 || snapshot?.status !== "SNAPSHOT"
+    || snapshot?.eventChainValid !== true || !Array.isArray(snapshot?.reservations)) {
+    return "PRIOR_RESERVATION_SNAPSHOT_UNAVAILABLE";
+  }
+  const { testId, slot, seedWorkflowRunId, priorHostWorkflowRunIds, currentWorkflowRunId, currentRepository } = context;
+  const prefix = "p59-63-" + testId + "-";
+  const rows = snapshot.reservations.filter(row => row.phaseId === "P59.63" && row.taskId?.startsWith(prefix));
+  const matches = suffix => rows.filter(row => row.taskId === prefix + suffix);
+  const seedRows = matches("seed");
+  if (seedRows.length !== 1 || seedRows[0].workflowRunId !== seedWorkflowRunId
+    || seedRows[0].repository !== P59_63_REPOSITORIES[0] || seedRows[0].status !== "SETTLED") {
+    return "SEED_RESERVATION_NOT_SETTLED_OR_RUN_MISMATCH";
+  }
+  for (let priorSlot = 1; priorSlot < slot; priorSlot++) {
+    const priorRows = matches("host" + priorSlot + "-01");
+    const expectedRepository = priorSlot % 2 === 1 ? P59_63_REPOSITORIES[0] : P59_63_REPOSITORIES[1];
+    if (priorRows.length !== 1 || priorRows[0].workflowRunId !== priorHostWorkflowRunIds[priorSlot - 1]
+      || priorRows[0].repository !== expectedRepository || priorRows[0].status !== "SETTLED") {
+      return "PRIOR_HOST_RESERVATION_NOT_SETTLED_OR_RUN_MISMATCH";
+    }
+  }
+  for (let futureSlot = slot + 1; futureSlot <= 4; futureSlot++) {
+    if (matches("host" + futureSlot + "-01").length !== 0) return "FUTURE_HOST_STAGE_ALREADY_PRESENT";
+  }
+  const currentRows = matches("host" + slot + "-01");
+  if (currentRows.length > 1 || currentRows.some(row =>
+    row.workflowRunId !== currentWorkflowRunId || row.repository !== currentRepository || row.status !== "SETTLED")) {
+    return "CURRENT_HOST_SLOT_ALREADY_BOUND_OR_UNSETTLED";
+  }
+  return null;
+}
+
+function phase63SeedPrerequisiteFailure(snapshot, context) {
+  if (snapshot?.httpStatus !== 200 || snapshot?.status !== "SNAPSHOT"
+    || snapshot?.eventChainValid !== true || !Array.isArray(snapshot?.reservations)) {
+    return "SEED_RESERVATION_SNAPSHOT_UNAVAILABLE";
+  }
+  const { testId, seedWorkflowRunId, currentWorkflowRunId, replay } = context;
+  const prefix = "p59-63-" + testId + "-";
+  const rows = snapshot.reservations.filter(row => row.phaseId === "P59.63" && row.taskId?.startsWith(prefix));
+  const seeds = rows.filter(row => row.taskId === prefix + "seed");
+  if (seeds.length === 0) {
+    return seedWorkflowRunId === currentWorkflowRunId ? null : "SEED_REPLAY_PREREQUISITE_NOT_SETTLED";
+  }
+  if (seeds.length === 1 && seeds[0].workflowRunId === seedWorkflowRunId
+    && seeds[0].repository === P59_63_REPOSITORIES[0] && seeds[0].status === "SETTLED") return null;
+  return "SEED_ALREADY_BOUND_TO_DIFFERENT_RUN_OR_UNSETTLED";
+}
+
+function phase63SnapshotPrerequisiteFailure(snapshot, context) {
+  if (snapshot?.httpStatus !== 200 || snapshot?.status !== "SNAPSHOT"
+    || snapshot?.eventChainValid !== true || !Array.isArray(snapshot?.reservations)) {
+    return "SNAPSHOT_STAGE_RESERVATION_READBACK_UNAVAILABLE";
+  }
+  const { testId, seedWorkflowRunId, hostWorkflowRunIds, currentWorkflowRunId } = context;
+  if (new Set([seedWorkflowRunId, ...hostWorkflowRunIds, currentWorkflowRunId]).size !== 6) {
+    return "SNAPSHOT_STAGE_RUN_IDS_NOT_DISTINCT";
+  }
+  const prefix = "p59-63-" + testId + "-";
+  const rows = snapshot.reservations.filter(row => row.phaseId === "P59.63" && row.taskId?.startsWith(prefix));
+  const matches = suffix => rows.filter(row => row.taskId === prefix + suffix);
+  const seeds = matches("seed");
+  if (seeds.length !== 1 || seeds[0].workflowRunId !== seedWorkflowRunId
+    || seeds[0].repository !== P59_63_REPOSITORIES[0] || seeds[0].status !== "SETTLED") {
+    return "SNAPSHOT_SEED_NOT_SETTLED_OR_RUN_MISMATCH";
+  }
+  for (let slot = 1; slot <= 4; slot++) {
+    const hostRows = matches("host" + slot + "-01");
+    const expectedRepository = slot % 2 === 1 ? P59_63_REPOSITORIES[0] : P59_63_REPOSITORIES[1];
+    if (hostRows.length !== 1 || hostRows[0].workflowRunId !== hostWorkflowRunIds[slot - 1]
+      || hostRows[0].repository !== expectedRepository || hostRows[0].status !== "SETTLED") {
+      return "SNAPSHOT_HOST_SLOTS_NOT_SETTLED_OR_RUN_MISMATCH";
+    }
+  }
+  const overflowRows = rows.filter(row => /^overflow-[1-4]$/.test(String(row.taskId || "").slice(prefix.length)));
+  if (overflowRows.some(row => row.workflowRunId !== currentWorkflowRunId || row.status !== "SETTLED")
+    || overflowRows.some(row => row.taskId === prefix + "overflow-4")) {
+    return "SNAPSHOT_OVERFLOW_ALREADY_BOUND_OR_UNEXPECTED";
+  }
+  return null;
+}
+
 function response(status, body) {
   return Response.json(body, { status, headers: { "cache-control": "no-store" } });
 }
@@ -134,14 +217,27 @@ export default {
         const runIds = [...new Set(scoped.map(row => row.workflowRunId))].sort();
         const repositories = [...new Set(scoped.map(row => row.repository))].sort();
         const expectedRunIds = [payload.seedWorkflowRunId, ...hostRunIds, body.workflowRunId].sort();
-        const seedCount = scoped.filter(row => suffixOf(row) === "seed").length;
-        const hostCount = scoped.filter(row => /^host[1-4]-01$/.test(suffixOf(row))).length;
-        const overflowCount = scoped.filter(row => /^overflow-[1-3]$/.test(suffixOf(row))).length;
+        const seedRows = scoped.filter(row => suffixOf(row) === "seed");
+        const seedCount = seedRows.length;
+        const hostSlotWorkflowRunIds = Object.fromEntries([1, 2, 3, 4].map(slot => {
+          const matches = scoped.filter(row => suffixOf(row) === "host" + slot + "-01");
+          return ["host" + slot, matches.length === 1 ? matches[0].workflowRunId : null];
+        }));
+        const hostCount = Object.values(hostSlotWorkflowRunIds).filter(value => value !== null).length;
+        const overflowRows = scoped.filter(row => /^overflow-[1-3]$/.test(suffixOf(row)));
+        const overflowCount = overflowRows.length;
         const settledCount = scoped.filter(row => row.status === "SETTLED").length;
+        const expectedHostSlotWorkflowRunIdsMatch = [1, 2, 3, 4].every(slot =>
+          hostSlotWorkflowRunIds["host" + slot] === hostRunIds[slot - 1]);
+        const seedWorkflowRunIdMatch = seedRows.length === 1 && seedRows[0].workflowRunId === payload.seedWorkflowRunId;
+        const snapshotWorkflowRunIdMatch = overflowRows.length === 3
+          && overflowRows.every(row => row.workflowRunId === body.workflowRunId);
         return response(200, {
           ...summary, testId: payload.testId, reservationCount: scoped.length,
           settledReservations: settledCount, nonSettledReservations: scoped.length - settledCount,
           seedReservationCount: seedCount, hostReservationCount: hostCount, overflowReservationCount: overflowCount,
+          seedWorkflowRunIdMatch, snapshotWorkflowRunIdMatch,
+          hostSlotWorkflowRunIds, expectedHostSlotWorkflowRunIdsMatch,
           distinctWorkflowRunIds: runIds, distinctRepositories: repositories,
           expectedWorkflowRunIdsMatch: runIds.length === expectedRunIds.length && runIds.every((value, index) => value === expectedRunIds[index]),
           expectedRepositoriesMatch: repositories.length === 2 && repositories[0] === P59_63_REPOSITORIES[0] && repositories[1] === P59_63_REPOSITORIES[1],
@@ -159,6 +255,9 @@ export default {
       return response(403, { status: "REJECTED", reason: "SHADOW_ENVELOPE_NOT_AUTHORIZED" });
     }
     let budgetScope = null;
+    let phase63HostPrerequisite = null;
+    let phase63SeedPrerequisite = null;
+    let phase63SnapshotPrerequisite = null;
     const alias = body.payload?.testRepositoryAlias;
     if (alias !== undefined) {
       if (env?.NEXUS_SHADOW_TEST_MODE !== "true" || env?.NEXUS_CROSS_RUN_PROOF_ENABLED !== "true"
@@ -169,19 +268,46 @@ export default {
       }
       const suffix = body.taskId.slice(("p59-63-" + body.payload.testId + "-").length);
       if (suffix === "seed") {
-        if (alias !== P59_63_REPOSITORIES[0] || body.payload.sentinel !== "GLOBAL_CROSS_RUN_SENTINEL")
+        const seedWorkflowRunId = body.payload.seedWorkflowRunId;
+        if (alias !== P59_63_REPOSITORIES[0] || body.payload.sentinel !== "GLOBAL_CROSS_RUN_SENTINEL"
+          || !SAFE_RUN_ID.test(seedWorkflowRunId || "")) {
           return response(403, { status: "REJECTED", reason: "P59_63_SEED_NOT_AUTHORIZED" });
+        }
+        phase63SeedPrerequisite = {
+          testId: body.payload.testId, seedWorkflowRunId,
+          currentWorkflowRunId: body.workflowRunId
+        };
       } else {
         const hostMatch = /^host([1-4])-01$/.exec(suffix), overflowMatch = /^overflow-([1-4])$/.exec(suffix);
         if (hostMatch) {
           const slot = Number(hostMatch[1]), expectedRepo = slot % 2 === 1 ? P59_63_REPOSITORIES[0] : P59_63_REPOSITORIES[1];
+          const seedWorkflowRunId = body.payload.seedWorkflowRunId;
+          const priorHostWorkflowRunIds = body.payload.priorHostWorkflowRunIds;
           if (alias !== expectedRepo || body.payload.hostId !== "host" + slot || body.payload.attemptIndex !== 1
-            || typeof body.payload.runnerName !== "string" || body.payload.runnerName.length < 1 || body.payload.runnerName.length > 256)
+            || typeof body.payload.runnerName !== "string" || body.payload.runnerName.length < 1 || body.payload.runnerName.length > 256
+            || !SAFE_RUN_ID.test(seedWorkflowRunId || "") || !Array.isArray(priorHostWorkflowRunIds)
+            || priorHostWorkflowRunIds.length !== slot - 1
+            || !priorHostWorkflowRunIds.every(value => typeof value === "string" && SAFE_RUN_ID.test(value))
+            || new Set([seedWorkflowRunId, ...priorHostWorkflowRunIds, body.workflowRunId]).size !== slot + 1)
             return response(403, { status: "REJECTED", reason: "P59_63_HOST_ENVELOPE_NOT_AUTHORIZED" });
+          phase63HostPrerequisite = {
+            testId: body.payload.testId, slot, seedWorkflowRunId, priorHostWorkflowRunIds,
+            currentWorkflowRunId: body.workflowRunId, currentRepository: alias
+          };
         } else if (overflowMatch) {
           const index = Number(overflowMatch[1]), expectedRepo = index % 2 === 1 ? P59_63_REPOSITORIES[0] : P59_63_REPOSITORIES[1];
-          if (alias !== expectedRepo || body.payload.hostId !== "snapshot" || body.payload.attemptIndex !== index || body.payload.runnerName !== "snapshot")
+          const seedWorkflowRunId = body.payload.seedWorkflowRunId;
+          const hostWorkflowRunIds = body.payload.hostWorkflowRunIds;
+          if (alias !== expectedRepo || body.payload.hostId !== "snapshot" || body.payload.attemptIndex !== index
+            || body.payload.runnerName !== "snapshot" || !SAFE_RUN_ID.test(seedWorkflowRunId || "")
+            || !Array.isArray(hostWorkflowRunIds) || hostWorkflowRunIds.length !== 4
+            || !hostWorkflowRunIds.every(value => typeof value === "string" && SAFE_RUN_ID.test(value))
+            || new Set([seedWorkflowRunId, ...hostWorkflowRunIds, body.workflowRunId]).size !== 6)
             return response(403, { status: "REJECTED", reason: "P59_63_OVERFLOW_ENVELOPE_NOT_AUTHORIZED" });
+          phase63SnapshotPrerequisite = {
+            testId: body.payload.testId, seedWorkflowRunId, hostWorkflowRunIds,
+            currentWorkflowRunId: body.workflowRunId
+          };
         } else return response(403, { status: "REJECTED", reason: "P59_63_TASK_ID_NOT_AUTHORIZED" });
       }
       budgetScope = { testOnly: true, phaseId: "P59.63", repository: alias };
@@ -191,6 +317,21 @@ export default {
     try {
       const rpc = createSwarmRunRpc(env.SWARM_RUNS, env);
       const budgetRpc = createPlatformBudgetRpc(env.PLATFORM_BUDGET, env);
+      if (phase63SeedPrerequisite) {
+        const seedSnapshot = await budgetRpc("snapshot", {});
+        const failure = phase63SeedPrerequisiteFailure(seedSnapshot, phase63SeedPrerequisite);
+        if (failure) return response(409, { status: "SEED_STAGE_PREREQUISITE_FAILED", reason: failure });
+      }
+      if (phase63HostPrerequisite) {
+        const priorSnapshot = await budgetRpc("snapshot", {});
+        const failure = phase63HostPrerequisiteFailure(priorSnapshot, phase63HostPrerequisite);
+        if (failure) return response(409, { status: "HOST_STAGE_PREREQUISITE_FAILED", reason: failure });
+      }
+      if (phase63SnapshotPrerequisite) {
+        const snapshot = await budgetRpc("snapshot", {});
+        const failure = phase63SnapshotPrerequisiteFailure(snapshot, phase63SnapshotPrerequisite);
+        if (failure) return response(409, { status: "SNAPSHOT_STAGE_PREREQUISITE_FAILED", reason: failure });
+      }
       const prefix = typeof env.NEXUS_SHADOW_WORKER_ID === "string" ? env.NEXUS_SHADOW_WORKER_ID : "p10cr-shadow-dispatcher";
       const result = await dispatchMissionShadow({
         rpc, budgetRpc, taskId: body.taskId, workerId: prefix + "-" + crypto.randomUUID(),
