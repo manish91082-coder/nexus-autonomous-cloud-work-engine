@@ -319,6 +319,8 @@ class PublisherWorkflowGateTests(unittest.TestCase):
         self.assertIn(expected, source)
         self.assertIn("permission-contents: write", source)
         self.assertIn("permission-pull-requests: write", source)
+        self.assertIn("ENV_APPROVAL_MARKER: ${{ secrets.P10CR_PUBLISHER_ENV_APPROVED }}", source)
+        self.assertIn('P59-003-PUBLISHER-OWNER-APPROVED', source)
 
 
 
