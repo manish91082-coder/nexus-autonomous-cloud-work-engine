@@ -94,7 +94,7 @@ jobs:
         run: node --test ../independent-host-tests/host-client.test.mjs ../independent-host-tests/cross-run-client.test.mjs ../independent-host-tests/owner-preflight.test.mjs
 
       - name: Validate owner-gated independent-host workflow YAML syntax
-        run: ruby -e 'require "yaml"; [".github/workflows/phase59-62-independent-host-test.yml", ".github/workflows/phase59-63-independent-workflow-run-proof.yml"].each { |path| YAML.parse_file("../../../" + path) }; puts "YAML_SYNTAX_PASS"'
+        run: ruby -e 'require "yaml"; [".github/workflows/phase59-62-independent-host-test.yml", ".github/workflows/phase59-63-independent-workflow-run-proof.yml", ".github/workflows/p10cr-constrained-publisher.yml", ".github/workflows/mission-autonomous-worker.yml", ".github/workflows/phase59-35-quota-do-runtime-tests.yml"].each { |path| YAML.parse_file("../../../" + path) }; puts "YAML_SYNTAX_PASS"'
 
       - name: Set up Python 3.12 for mission task-scope safety tests
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0 (Node 24)
