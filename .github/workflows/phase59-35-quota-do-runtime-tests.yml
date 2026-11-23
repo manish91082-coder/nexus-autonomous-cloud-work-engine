@@ -25,6 +25,8 @@ on:
       - 'scripts/ai_task_executor.py'
       - 'scripts/worker_tick.py'
       - 'tests/test_ai_task_executor.py'
+      - 'tests/test_constrained_publisher.py'
+      - '.github/workflows/p10cr-constrained-publisher.yml'
       - '.github/workflows/phase59-63-independent-workflow-run-proof.yml'
       - '.github/workflows/phase59-35-quota-do-runtime-tests.yml'
   pull_request:
@@ -101,6 +103,10 @@ jobs:
       - name: Run P59-003 shared current-task guard and AI executor safety tests
         working-directory: .
         run: python3 -m unittest discover -s tests -p 'test_ai_task_executor.py' -v
+
+      - name: Run constrained publisher validation and owner-environment gate tests
+        working-directory: .
+        run: python3 -m unittest discover -s tests -p 'test_constrained_publisher.py' -v
 
       - name: Run Cloudflare Workers runtime tests
         run: npm test
