@@ -296,11 +296,15 @@ def _validate_api_request(method: str, path: str, payload: dict[str, Any] | None
             return
 
     if method == "GET" and parsed.path == root + "/pulls" and payload is None:
-        if query == {
-            "state": ["open"],
-            "head": [CANONICAL_REPOSITORY.split("/", 1)[0] + ":" + branch],
-            "base": ["master"],
-        }:
+        owner_prefix = CANONICAL_REPOSITORY.split("/", 1)[0] + ":"
+        heads = query.get("head", [])
+        branch = heads[0][len(owner_prefix):] if len(heads) == 1 and heads[0].startswith(owner_prefix) else ""
+        if (
+            set(query) == {"state", "head", "base"}
+            and query.get("state") == ["open"]
+            and query.get("base") == ["master"]
+            and re.fullmatch(branch_pattern, branch)
+        ):
             return
         raise PublisherError("publisher pull-request query is not allowlisted")
 
