@@ -5178,3 +5178,15 @@ Date: 2026-11-17
 - Residual write workflows: Phase59.25 disposable branch writer and federation-locks CAS writer remain uninvoked and require owner review. Branch protection remains UNVERIFIED.
 - P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. AI inference disabled; production OFF; spend ₹0; receipts ₹0. No live endpoint, deployment, App installation, KYC, legal acceptance, billing, publication, payment, signing or money movement.
 - Next safe engineering: Phase59.66 publisher API method/path allowlist and redirect rejection. Phase59.64D six-run live proof remains owner-gated on sequential PR #44–#50 review/merge, master state/queue/continuity reconciliation, branch protection, legacy writer review, existing Workers Free/account usage, test-only namespaces and required-reviewer environment.
+
+
+## PHASE 59.66 — CONSTRAINED PUBLISHER API ROUTE / REDIRECT GUARD (23-Nov-2026)
+
+- Report: `research/PHASE_59_66_PUBLISHER_API_ROUTE_ALLOWLIST_REDIRECT_GUARD_2026-11-23.md`.
+- Candidate branch `phase59-66-publisher-api-boundary`, draft PR #52 stacked on PR #51; master HEAD remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
+- Finding: `GitHubApi.request` accepted any method and any path under the canonical repository prefix and used the default urllib redirect-following opener. No live API call/token existed; this was a defense-in-depth finding.
+- Correction: exact GET/POST/PUT route/query/payload allowlist for master ref, deterministic worker ref, create ref, read/write sanitized draft file, list matching open PRs and create draft PR. Rejects noncanonical/absolute URLs, fragments, extra queries, mismatched run/attempt/branch, unexpected payloads, non-draft PRs and oversized content. `_RejectRedirectHandler` prevents following 3xx responses; they become fail-closed API errors.
+- Code commit `d8aa9b7fa5847c29dfcf02a7b51d9e98b2ef2fdc`; nine API boundary tests `78534898c520c0e99e43fb4a3cc4934438fddae8`; Phase59.35 branch/path wiring `4e6cf2032e8b2c5b608434f89ef82eb9d4d15b56`. Exact-head CI pending.
+- Phase59.65 remains accepted by exact-head CI #45109541094: offline 32/32; AI/task guard 20/20; publisher environment 24/24; YAML PASS; lockfile 165; Workers runtime 83/83; Workerd 1/1.
+- No live GitHub API request, token, App installation, environment marker, Cloudflare deployment, inference, KYC, legal acceptance, billing, publication, payment, signing or money movement. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED; spend ₹0; receipts ₹0.
+- Next: exact-head Phase59.66 CI. Physical six-run proof remains owner-gated on sequential PR #44–#52 review/merge, master state/queue/continuity reconciliation, branch protection, legacy writer review, Workers Free/account usage, test-only namespaces and required-reviewer publisher environment.
