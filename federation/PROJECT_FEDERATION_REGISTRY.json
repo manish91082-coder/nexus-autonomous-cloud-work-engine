@@ -31,7 +31,7 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase59.65 current-task and publisher environment guards accepted by exact-head CI #45109541094. Both worker paths share the P59-003-only guard; publisher job requires p10cr-publisher environment plus explicit environment attestation before App token mint. Owner environment settings remain unverified; no App or token created. Physical multi-host proof remains pending.",
+      "status": "P59-003 IN_PROGRESS; Phase59.65 current-task and publisher environment guards passed exact-head CI #45109541094. Phase59.66 implements strict publisher API method/route/query/payload allowlists and rejects redirects; nine tests, exact-head CI pending. No live API request or App token.",
       "last_observed_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
@@ -241,7 +241,7 @@
         "continuity_guard_run_id": 44009214414,
         "continuity_guard_checks": 111
       },
-      "next": "Phase59.66 publisher API method/path allowlist and redirect rejection; Phase59.64D six-run physical proof only after owner PR stack review/merge, master reconciliation, branch-protection and legacy-writer review, Workers Free/account usage and test-only namespace/environment approval.",
+      "next": "Verify Phase59.66 exact-head CI. Then owner-gated six-run proof only after sequential PR #44–#52 review/merge, master reconciliation, branch protection, legacy writer review, Workers Free/account usage and test-only namespace/environment approval.",
       "production_integrated": false,
       "ai_inference_enabled": false,
       "authorized_spend_inr": 0,
@@ -445,8 +445,8 @@
         "production_feature_flag": "OFF",
         "next": "Phase59.60: implement a separate account-scope platform budget DO and synthetic cross-run/cross-repository atomicity tests before any hosted deployment."
       },
-      "candidate_branch": "phase59-65-current-task-dispatch-guard",
-      "candidate_head": "2e530e11a36574abb3f79a53b82fa9a291abfc1d",
+      "candidate_branch": "phase59-66-publisher-api-boundary",
+      "candidate_head": "4e6cf2032e8b2c5b608434f89ef82eb9d4d15b56",
       "phase59_60": {
         "report": "research/PHASE_59_60_ACCOUNT_SCOPE_PLATFORM_BUDGET_ARBITER_2026-11-19.md",
         "branch": "phase59-60-account-scope-platform-budget",
@@ -1261,6 +1261,42 @@
           "app_credentials_created": false,
           "app_installed": false
         }
+      },
+      "phase59_66": {
+        "status": "IMPLEMENTED_CI_PENDING",
+        "report": "research/PHASE_59_66_PUBLISHER_API_ROUTE_ALLOWLIST_REDIRECT_GUARD_2026-11-23.md",
+        "branch": "phase59-66-publisher-api-boundary",
+        "pr_number": 52,
+        "pr_state": "DRAFT_OPEN_UNMERGED",
+        "parent_pr": 51,
+        "code_commit": "d8aa9b7fa5847c29dfcf02a7b51d9e98b2ef2fdc",
+        "test_commit": "78534898c520c0e99e43fb4a3cc4934438fddae8",
+        "workflow_commit": "4e6cf2032e8b2c5b608434f89ef82eb9d4d15b56",
+        "tested_code_head": "4e6cf2032e8b2c5b608434f89ef82eb9d4d15b56",
+        "new_tests": 9,
+        "total_publisher_test_methods": 33,
+        "api_methods": [
+          "GET",
+          "POST",
+          "PUT"
+        ],
+        "exact_routes": [
+          "master-ref",
+          "deterministic-worker-branch-ref",
+          "create-worker-ref",
+          "read-sanitized-draft-file",
+          "write-sanitized-draft-file",
+          "list-matching-open-draft-prs",
+          "create-draft-pr"
+        ],
+        "redirects": "REJECTED",
+        "live_api_requests": 0,
+        "app_token_created": false,
+        "exact_head_ci": "PENDING",
+        "ai_inference_enabled": false,
+        "authorized_spend_inr": 0,
+        "verified_realized_net_receipts_inr": 0,
+        "next": "Complete exact-head CI; owner-gated six-run proof remains blocked until owner prerequisites pass."
       }
     },
     {
