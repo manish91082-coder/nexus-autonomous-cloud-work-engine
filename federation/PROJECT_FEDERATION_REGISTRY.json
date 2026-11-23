@@ -31,7 +31,7 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS. Phase59.62 candidate code/test head dc82af59 passed exact-head Phase59.35 (8/8 offline host tests, YAML syntax, lockfile 165 packages, 83/83 Workers runtime), Phase59.62 dispatcher integration (4/4 dedicated, 83/83 full regression), Phase59.60 and Phase59.56 workflows. Draft PR #47 remains unmerged; master unchanged at 8856bf90. Current candidate inventory: 36 workflows, 18 Python scripts, 36 cloud/swarm JS modules, one package manifest and one lockfile. Live independent-host test remains owner-gated; no Cloudflare resources or secrets changed. P59-001 PAUSED; P59-002 BLOCKED. Production OFF, AI inference DISABLED, no live provider calls, spend ₹0 and verified receipts ₹0. Mission Worker #533 selected P59-003 (POLL_OK), AI remained WAITING_FOR_OWNER_CONFIGURATION with no inference; Mission Continuity Guard #340 passed 111 checks with zero errors. All Phase59.62 report/control/continuity writes fetched back. Live owner-gated host proof not started; master unchanged. Phase59.62 final candidate code/test head 7d0003ca passed 11/11 host-client/static workflow tests, YAML syntax, 165-package lockfile, 83/83 Workers runtime, 4/4 dispatcher integration, 83/83 full regression, Phase59.60 and Phase59.56. Additional audit fixed undefined runnerId payload, added 16 KiB streaming response bounds, enforced workers.dev preflight allowlist and corrected job-scoped aggregate key. Live hosted proof remains owner-gated; current four-host workflow is four jobs in one run. Phase59.63 will add separate workflow-run IDs and two synthetic repo aliases via one seed, four host runs and one snapshot, no Actions write token. Phase59.63 exact-head Workerd and CI passed; live six-run hosted proof remains owner-gated because PR #48 and parent stack #44-#47 are unmerged and the workflow_dispatch file is not yet on default master. P59-001 PAUSED; P59-002 BLOCKED; P59-003 sole active P0. No deployment, inference, spend or receipts. Phase59.63.1 endpoint pin hardening: exact owner-approved hostname enforced independently in workflow preflight and client; fresh manual test ID required; exact code/test head 12c58b8 passed 17/17 client tests, YAML, 83/83 Workers runtime, Phase59.63 Workerd 1/1, Phase59.56 2/2, Phase59.58 83/83, Phase59.60 8/8 and Phase59.62 4/4 plus 83/83. PR #48 remains draft/unmerged; actual six hosted runs remain owner-gated. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED; no deployment/inference/spend/receipts. Phase59.63.2 (22-Nov-2026): canonical repository/master/workflow_dispatch preflight passed exact-head CI #44978842862 on code/test head a3402ee892b22b946910cb17fc30283a92e6838a (29/29 offline tests, YAML PASS, 83/83 Workers runtime, Workerd 1/1, 165-package lockfile integrity). PR #49 draft/open/unmerged/mergeable, stacked on PR #48. No live endpoint request, deployment, inference, spend or receipt. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. V5 §11 adoption snapshot still names P59-001; explicit current owner sequencing override is recorded in mission state/queue: P59-003 sole P0, P59-001 PAUSED, P59-002 BLOCKED. V5 safety and revenue-recognition rules remain in force. Phase59.64A (23-Nov-2026): PR #50 draft/unmerged; tested code head 99558b02 passed exact-head CI #45105764381 (31/31 offline, YAML PASS, 165-package lockfile, 83/83 Workers, Workerd 1/1). Server now verifies exact settled seed/prior-host reservation rows before host slot dispatch; forged, premature and swapped IDs rejected in Workerd; sequential host1-4 accepted. Master unchanged; physical hosts/live six-run proof and 7/30-day soak pending owner gates. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED; AI inference disabled; spend ₹0; receipts ₹0. Phase59.64B (23-Nov-2026): tested code head 3de92c7e passed push CI #45106578746 and PR CI #45106583941; 32/32 offline, YAML PASS, 165-package lockfile, 83/83 Workers, Workerd 1/1. Seed/replay idempotency payload is identical; server gates seed replay, ordered host slots and snapshot/overflow against durable settled reservation rows. Candidate inventory 500 entries, 37 workflows, 42 cloud/swarm modules, 87 Python files, 74 action refs (55 SHA-pinned/19 mutable). Two legacy branch-scoped write workflows remain uninvoked and require owner review. Master state/queue/federation/continuity remain stale pending sequential PR stack merge. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED; AI inference disabled; spend ₹0; receipts ₹0. Phase59.64C candidate (23-Nov-2026): concurrent host-slot and snapshot-run Workerd tests added at 9868b642; not accepted. Superseded run #45107478190 failed only on per-bucket counter assertion shape after one-winner host-slot assertions passed; corrected push #45107637216 cancelled by workflow concurrency; corrected PR run #45107642156 pending. No live host proof/deployment/inference/spend/receipts. Phase59.64C (23-Nov-2026): corrected Workerd race proof passed PR CI #45107642156 on code head 9868b642. Concurrent same-host-slot and competing snapshot-run claims each produced exactly one durable winner; losing snapshot run could not create overflow2; final snapshot 8 settled, 0 reserved, 0 uncertain, 6 run IDs, 2 repositories, valid event chain. Physical multi-host and live six-run proof remain owner-gated.",
+      "status": "P59-003 IN_PROGRESS; Phase59.64C synthetic Workerd concurrency proof accepted. Phase59.65 implements a fail-closed AI executor selector bound to mission/root queue/nested queue-policy current_task=P59-003; P59-001 remains PAUSED and P59-002 BLOCKED. Fourteen deterministic regression tests added; exact-head CI pending. Compute/publisher separation remains code-level; two legacy branch-scoped writers and branch ruleset verification remain owner gates. Master remains unchanged. No live multi-host proof, deployment, inference, spend or receipts.",
       "last_observed_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
@@ -241,7 +241,7 @@
         "continuity_guard_run_id": 44009214414,
         "continuity_guard_checks": 111
       },
-      "next": "Phase59.62: prepare the independent-host test harness and owner preflight; pin the Cloudflare/Vitest test dependencies and add a lockfile. Keep live endpoint tests disabled until the owner verifies an existing Workers Free account, account-wide usage and the shared P10CR Durable Object namespace. Then run four independent standard GitHub-hosted runners, prove shared lease/quota/fencing behavior, and only after that start the bounded 7-day and 30-day soak.",
+      "next": "Exact-head CI for Phase59.65; then owner-gated Phase59.64D six independent workflow-run proof after sequential PR review/merge, master control-plane reconciliation, branch-protection verification, legacy writer review and zero-cost account/namespace setup. 7/30-day soak only after six-run acceptance.",
       "production_integrated": false,
       "ai_inference_enabled": false,
       "authorized_spend_inr": 0,
@@ -445,8 +445,8 @@
         "production_feature_flag": "OFF",
         "next": "Phase59.60: implement a separate account-scope platform budget DO and synthetic cross-run/cross-repository atomicity tests before any hosted deployment."
       },
-      "candidate_branch": "phase59-62-dependency-hardening",
-      "candidate_head": "7d0003ca4e8b3587db687ff7acd44013ef7f6413",
+      "candidate_branch": "phase59-65-current-task-dispatch-guard",
+      "candidate_head": "ccaa47b8e51e84fda86d4c21feba2e17ec8e8b03",
       "phase59_60": {
         "report": "research/PHASE_59_60_ACCOUNT_SCOPE_PLATFORM_BUDGET_ARBITER_2026-11-19.md",
         "branch": "phase59-60-account-scope-platform-budget",
@@ -1208,6 +1208,29 @@
         "authorized_spend_inr": 0,
         "verified_realized_net_receipts_inr": 0,
         "next": "Phase59.64D: owner-gated six independent workflow-run proof after sequential PR stack merge, master control-plane reconciliation, branch-protection verification, legacy writer review, existing Workers Free account/aggregate usage verification, test-only namespace and required-reviewer environment approval; then 7-day and 30-day soak."
+      },
+      "phase59_65": {
+        "status": "IMPLEMENTED_CI_PENDING",
+        "report": "research/PHASE_59_65_CURRENT_TASK_DISPATCH_GUARD_2026-11-23.md",
+        "branch": "phase59-65-current-task-dispatch-guard",
+        "pr_number": 51,
+        "pr_state": "DRAFT_OPEN_UNMERGED",
+        "parent_pr": 50,
+        "parent_head": "03fd68473cf42afdcae4938803ad22e3b7b99486",
+        "code_commit": "48af1d5c07b3fc5190cd5ae535861b5c43c49737",
+        "test_commit": "ccaa47b8e51e84fda86d4c21feba2e17ec8e8b03",
+        "tested_code_head": "ccaa47b8e51e84fda86d4c21feba2e17ec8e8b03",
+        "new_tests": 14,
+        "finding": "AI executor scanned all eligible READY/IN_PROGRESS tasks by priority without binding selection to mission.current_task, queue.current_task and queue_policy.current_task.",
+        "correction": "Exact P59-003-only fail-closed selector; verifies P59-001 PAUSED, P59-002 BLOCKED, P59-003 unique/P0/executable/owner_gate=false, mission ACTIVE and dependencies COMPLETED.",
+        "publisher_boundary_audit": "Compute remains contents:read; constrained publisher is the only P10CR write path; two legacy branch-scoped writers remain owner-review gates.",
+        "exact_head_ci": "PENDING",
+        "ai_inference_enabled": false,
+        "provider_gateway_adapter_ready": false,
+        "global_quota_adapter_ready": false,
+        "authorized_spend_inr": 0,
+        "verified_realized_net_receipts_inr": 0,
+        "next": "Verify exact-head Phase59.35 and Mission Worker CI, then proceed only to owner-gated Phase59.64D."
       }
     },
     {
