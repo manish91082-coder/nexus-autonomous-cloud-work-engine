@@ -42,6 +42,10 @@ def prepare_root(root, manifest=None, source=None):
     (root / "scripts" / "ai_task_executor.py").write_text(
         source if source is not None else SCRIPT.read_text(), encoding="utf-8"
     )
+    (root / "scripts" / "current_task_guard.py").write_text(
+        (SCRIPT.parent / "current_task_guard.py").read_text(encoding="utf-8"),
+        encoding="utf-8"
+    )
     (root / "control" / "automation_queue.json").write_text('{"tasks":[]}', encoding="utf-8")
     (root / "control" / "mission_state.json").write_text("{}", encoding="utf-8")
     (root / "control" / "ai_usage_state.json").write_text(
