@@ -2,10 +2,11 @@
 
 **Canonical master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
 **Candidate branch:** `phase59-66-publisher-api-boundary`  
-**Candidate checkpoint head before this continuity commit:** `fe5cc60a537678aac38b86a58a51967943db3eaf`  
-**Executable/test head:** `ccaa47b8e51e84fda86d4c21feba2e17ec8e8b03`  
-**PR #51:** draft/open/unmerged; stacked on PR #50 (Phase59.64C); exact-head CI pending  
-**Parent PR stack:** #44 → #45 → #46 → #47 → #48 → #49 → #50 remains draft/open/unmerged  
+**Candidate checkpoint head before this continuity commit:** `3284efe002989f7144a53f318470591ac58c0d73`  
+**Executable/test head:** `734e281ccbcb6d6493fa4c24f296a4153672cf0e`  
+**PR #51:** draft/open/unmerged; stacked on PR #50; Phase59.65 CI #45109541094 PASS
+**PR #52:** draft/open/unmerged; stacked on PR #51; Phase59.66 CI #45110233131 PASS  
+**Parent PR stack:** #44 → #45 → #46 → #47 → #48 → #49 → #50 → #51 → #52 remains draft/open/unmerged  
 **P59-003:** IN_PROGRESS, sole active P0  
 **P59-001:** PAUSED  
 **P59-002:** BLOCKED  
