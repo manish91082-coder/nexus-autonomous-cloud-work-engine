@@ -1,6 +1,13 @@
 import test from "node:test";import assert from "node:assert/strict";import fs from "node:fs";import {fileURLToPath} from "node:url";import {runCrossRunClient,validateSnapshot} from "./cross-run-client.mjs";
 const testId="phase63-unit",seed="810001",hosts=["810011","810012","810013","810014"],snapshotRun="810099";
 const repoA="synthetic-org/p10cr-shadow-repo-a",repoB="synthetic-org/p10cr-shadow-repo-b";
+test("seed and snapshot stages carry explicit prerequisite identities",()=>{
+ const client=fs.readFileSync(fileURLToPath(new URL("./cross-run-client.mjs",import.meta.url)),"utf8");
+ assert.ok(client.includes("seedWorkflowRunId,seedReplay"));
+ assert.ok(client.includes("sentinelPayload(testId,workflowRunId,false)"));
+ assert.ok(client.includes("sentinelPayload(testId,seedRunId,true)"));
+ assert.ok(client.includes("hostWorkflowRunIds,evidence_proposals"));
+});
 test("host client binds only the exact prior run IDs for its ordered slot",()=>{
  const client=fs.readFileSync(fileURLToPath(new URL("./cross-run-client.mjs",import.meta.url)),"utf8");
  assert.ok(client.includes("priorHostWorkflowRunIds"));

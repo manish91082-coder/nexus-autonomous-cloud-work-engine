@@ -43,6 +43,63 @@ function phase63HostPrerequisiteFailure(snapshot, context) {
   return null;
 }
 
+function phase63SeedPrerequisiteFailure(snapshot, context) {
+  if (snapshot?.httpStatus !== 200 || snapshot?.status !== "SNAPSHOT"
+    || snapshot?.eventChainValid !== true || !Array.isArray(snapshot?.reservations)) {
+    return "SEED_RESERVATION_SNAPSHOT_UNAVAILABLE";
+  }
+  const { testId, seedWorkflowRunId, currentWorkflowRunId, replay } = context;
+  const prefix = "p59-63-" + testId + "-";
+  const rows = snapshot.reservations.filter(row => row.phaseId === "P59.63" && row.taskId?.startsWith(prefix));
+  const seeds = rows.filter(row => row.taskId === prefix + "seed");
+  if (replay) {
+    if (currentWorkflowRunId === seedWorkflowRunId || seeds.length !== 1
+      || seeds[0].workflowRunId !== seedWorkflowRunId
+      || seeds[0].repository !== P59_63_REPOSITORIES[0] || seeds[0].status !== "SETTLED") {
+      return "SEED_REPLAY_PREREQUISITE_NOT_SETTLED";
+    }
+    return null;
+  }
+  if (seedWorkflowRunId !== currentWorkflowRunId) return "SEED_CREATION_RUN_ID_MISMATCH";
+  if (seeds.length === 0) return null;
+  if (seeds.length === 1 && seeds[0].workflowRunId === seedWorkflowRunId
+    && seeds[0].repository === P59_63_REPOSITORIES[0] && seeds[0].status === "SETTLED") return null;
+  return "SEED_ALREADY_BOUND_TO_DIFFERENT_RUN_OR_UNSETTLED";
+}
+
+function phase63SnapshotPrerequisiteFailure(snapshot, context) {
+  if (snapshot?.httpStatus !== 200 || snapshot?.status !== "SNAPSHOT"
+    || snapshot?.eventChainValid !== true || !Array.isArray(snapshot?.reservations)) {
+    return "SNAPSHOT_STAGE_RESERVATION_READBACK_UNAVAILABLE";
+  }
+  const { testId, seedWorkflowRunId, hostWorkflowRunIds, currentWorkflowRunId } = context;
+  if (new Set([seedWorkflowRunId, ...hostWorkflowRunIds, currentWorkflowRunId]).size !== 6) {
+    return "SNAPSHOT_STAGE_RUN_IDS_NOT_DISTINCT";
+  }
+  const prefix = "p59-63-" + testId + "-";
+  const rows = snapshot.reservations.filter(row => row.phaseId === "P59.63" && row.taskId?.startsWith(prefix));
+  const matches = suffix => rows.filter(row => row.taskId === prefix + suffix);
+  const seeds = matches("seed");
+  if (seeds.length !== 1 || seeds[0].workflowRunId !== seedWorkflowRunId
+    || seeds[0].repository !== P59_63_REPOSITORIES[0] || seeds[0].status !== "SETTLED") {
+    return "SNAPSHOT_SEED_NOT_SETTLED_OR_RUN_MISMATCH";
+  }
+  for (let slot = 1; slot <= 4; slot++) {
+    const hostRows = matches("host" + slot + "-01");
+    const expectedRepository = slot % 2 === 1 ? P59_63_REPOSITORIES[0] : P59_63_REPOSITORIES[1];
+    if (hostRows.length !== 1 || hostRows[0].workflowRunId !== hostWorkflowRunIds[slot - 1]
+      || hostRows[0].repository !== expectedRepository || hostRows[0].status !== "SETTLED") {
+      return "SNAPSHOT_HOST_SLOTS_NOT_SETTLED_OR_RUN_MISMATCH";
+    }
+  }
+  const overflowRows = rows.filter(row => /^overflow-[1-4]$/.test(String(row.taskId || "").slice(prefix.length)));
+  if (overflowRows.some(row => row.workflowRunId !== currentWorkflowRunId || row.status !== "SETTLED")
+    || overflowRows.some(row => row.taskId === prefix + "overflow-4")) {
+    return "SNAPSHOT_OVERFLOW_ALREADY_BOUND_OR_UNEXPECTED";
+  }
+  return null;
+}
+
 function response(status, body) {
   return Response.json(body, { status, headers: { "cache-control": "no-store" } });
 }
@@ -206,6 +263,8 @@ export default {
     }
     let budgetScope = null;
     let phase63HostPrerequisite = null;
+    let phase63SeedPrerequisite = null;
+    let phase63SnapshotPrerequisite = null;
     const alias = body.payload?.testRepositoryAlias;
     if (alias !== undefined) {
       if (env?.NEXUS_SHADOW_TEST_MODE !== "true" || env?.NEXUS_CROSS_RUN_PROOF_ENABLED !== "true"
@@ -216,8 +275,18 @@ export default {
       }
       const suffix = body.taskId.slice(("p59-63-" + body.payload.testId + "-").length);
       if (suffix === "seed") {
-        if (alias !== P59_63_REPOSITORIES[0] || body.payload.sentinel !== "GLOBAL_CROSS_RUN_SENTINEL")
+        const seedWorkflowRunId = body.payload.seedWorkflowRunId;
+        const seedReplay = body.payload.seedReplay;
+        if (alias !== P59_63_REPOSITORIES[0] || body.payload.sentinel !== "GLOBAL_CROSS_RUN_SENTINEL"
+          || !SAFE_RUN_ID.test(seedWorkflowRunId || "") || typeof seedReplay !== "boolean"
+          || (seedReplay === false && seedWorkflowRunId !== body.workflowRunId)
+          || (seedReplay === true && seedWorkflowRunId === body.workflowRunId)) {
           return response(403, { status: "REJECTED", reason: "P59_63_SEED_NOT_AUTHORIZED" });
+        }
+        phase63SeedPrerequisite = {
+          testId: body.payload.testId, seedWorkflowRunId,
+          currentWorkflowRunId: body.workflowRunId, replay: seedReplay
+        };
       } else {
         const hostMatch = /^host([1-4])-01$/.exec(suffix), overflowMatch = /^overflow-([1-4])$/.exec(suffix);
         if (hostMatch) {
@@ -237,8 +306,18 @@ export default {
           };
         } else if (overflowMatch) {
           const index = Number(overflowMatch[1]), expectedRepo = index % 2 === 1 ? P59_63_REPOSITORIES[0] : P59_63_REPOSITORIES[1];
-          if (alias !== expectedRepo || body.payload.hostId !== "snapshot" || body.payload.attemptIndex !== index || body.payload.runnerName !== "snapshot")
+          const seedWorkflowRunId = body.payload.seedWorkflowRunId;
+          const hostWorkflowRunIds = body.payload.hostWorkflowRunIds;
+          if (alias !== expectedRepo || body.payload.hostId !== "snapshot" || body.payload.attemptIndex !== index
+            || body.payload.runnerName !== "snapshot" || !SAFE_RUN_ID.test(seedWorkflowRunId || "")
+            || !Array.isArray(hostWorkflowRunIds) || hostWorkflowRunIds.length !== 4
+            || !hostWorkflowRunIds.every(value => typeof value === "string" && SAFE_RUN_ID.test(value))
+            || new Set([seedWorkflowRunId, ...hostWorkflowRunIds, body.workflowRunId]).size !== 6)
             return response(403, { status: "REJECTED", reason: "P59_63_OVERFLOW_ENVELOPE_NOT_AUTHORIZED" });
+          phase63SnapshotPrerequisite = {
+            testId: body.payload.testId, seedWorkflowRunId, hostWorkflowRunIds,
+            currentWorkflowRunId: body.workflowRunId
+          };
         } else return response(403, { status: "REJECTED", reason: "P59_63_TASK_ID_NOT_AUTHORIZED" });
       }
       budgetScope = { testOnly: true, phaseId: "P59.63", repository: alias };
@@ -248,10 +327,20 @@ export default {
     try {
       const rpc = createSwarmRunRpc(env.SWARM_RUNS, env);
       const budgetRpc = createPlatformBudgetRpc(env.PLATFORM_BUDGET, env);
+      if (phase63SeedPrerequisite) {
+        const seedSnapshot = await budgetRpc("snapshot", {});
+        const failure = phase63SeedPrerequisiteFailure(seedSnapshot, phase63SeedPrerequisite);
+        if (failure) return response(409, { status: "SEED_STAGE_PREREQUISITE_FAILED", reason: failure });
+      }
       if (phase63HostPrerequisite) {
         const priorSnapshot = await budgetRpc("snapshot", {});
         const failure = phase63HostPrerequisiteFailure(priorSnapshot, phase63HostPrerequisite);
         if (failure) return response(409, { status: "HOST_STAGE_PREREQUISITE_FAILED", reason: failure });
+      }
+      if (phase63SnapshotPrerequisite) {
+        const snapshot = await budgetRpc("snapshot", {});
+        const failure = phase63SnapshotPrerequisiteFailure(snapshot, phase63SnapshotPrerequisite);
+        if (failure) return response(409, { status: "SNAPSHOT_STAGE_PREREQUISITE_FAILED", reason: failure });
       }
       const prefix = typeof env.NEXUS_SHADOW_WORKER_ID === "string" ? env.NEXUS_SHADOW_WORKER_ID : "p10cr-shadow-dispatcher";
       const result = await dispatchMissionShadow({

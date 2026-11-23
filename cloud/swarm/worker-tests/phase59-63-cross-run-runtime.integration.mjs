@@ -22,12 +22,22 @@ describe("Phase59.63 independent workflow-run / cross-repository Workerd proof",
   const budget=createPlatformBudgetRpc(env.PHASE_59_63_PLATFORM_BUDGET,env);
   expect((await budget("testReset",{})).status).toBe("TEST_RESET");
   const testId="phase63-workerd-proof";
-  const sentinel={testSuite:"P59.63",testId,testRepositoryAlias:repoA,sentinel:"GLOBAL_CROSS_RUN_SENTINEL",evidence_proposals:[],claims:[]};
-  const seed=await call(envelope("p59-63-"+testId+"-seed","810001",sentinel));
+  const hostRuns=["810011","810012","810013","810014"],slots=["host1","host2","host3","host4"],snapshotRun="810099";
+  const seedPayload={testSuite:"P59.63",testId,testRepositoryAlias:repoA,sentinel:"GLOBAL_CROSS_RUN_SENTINEL",
+   seedWorkflowRunId:"810001",seedReplay:false,evidence_proposals:[],claims:[]};
+  const replayBeforeSeed=await call(envelope("p59-63-"+testId+"-seed","810011",{
+   ...seedPayload,seedWorkflowRunId:"810001",seedReplay:true}));
+  expect(replayBeforeSeed.httpStatus).toBe(409);expect(replayBeforeSeed.reason).toBe("SEED_REPLAY_PREREQUISITE_NOT_SETTLED");
+  const seed=await call(envelope("p59-63-"+testId+"-seed","810001",seedPayload));
   expect(seed.httpStatus).toBe(200);expect(seed.status).toBe("COMPLETED");
-  const hostRuns=["810011","810012","810013","810014"],slots=["host1","host2","host3","host4"];
-  const duplicates=await Promise.all(hostRuns.map(id=>call(envelope("p59-63-"+testId+"-seed",id,sentinel))));
+  const replayPayload={...seedPayload,seedReplay:true};
+  const duplicates=await Promise.all(hostRuns.map(id=>call(envelope("p59-63-"+testId+"-seed",id,replayPayload))));
   expect(duplicates.every(x=>x.status==="DUPLICATE_SUPPRESSED")).toBe(true);
+  const prematureOverflow=await call(envelope("p59-63-"+testId+"-overflow-1",snapshotRun,{
+   testSuite:"P59.63",testId,testRepositoryAlias:repoA,hostId:"snapshot",runnerName:"snapshot",attemptIndex:1,
+   seedWorkflowRunId:"810001",hostWorkflowRunIds:hostRuns,evidence_proposals:[],claims:[]}));
+  expect(prematureOverflow.httpStatus).toBe(409);
+  expect(prematureOverflow.reason).toBe("SNAPSHOT_HOST_SLOTS_NOT_SETTLED_OR_RUN_MISMATCH");
   const hostPayload=(i,prior)=>({
    testSuite:"P59.63",testId,testRepositoryAlias:i%2===0?repoA:repoB,hostId:slots[i],runnerName:"workerd-host-"+(i+1),
    attemptIndex:1,seedWorkflowRunId:"810001",priorHostWorkflowRunIds:prior,evidence_proposals:[],claims:[]});
@@ -49,10 +59,15 @@ describe("Phase59.63 independent workflow-run / cross-repository Workerd proof",
   hosts.push(host3);expect(host3.status).toBe("COMPLETED");
   const host4=await call(envelope("p59-63-"+testId+"-host4-01",hostRuns[3],hostPayload(3,[hostRuns[0],hostRuns[1],hostRuns[2]])));
   hosts.push(host4);expect(host4.status).toBe("COMPLETED");
-  const snapshotRun="810099",overflow=[];
+  const swappedOverflow=await call(envelope("p59-63-"+testId+"-overflow-1",snapshotRun,{
+   testSuite:"P59.63",testId,testRepositoryAlias:repoA,hostId:"snapshot",runnerName:"snapshot",attemptIndex:1,
+   seedWorkflowRunId:"810001",hostWorkflowRunIds:[hostRuns[1],hostRuns[0],hostRuns[2],hostRuns[3]],evidence_proposals:[],claims:[]}));
+  expect(swappedOverflow.httpStatus).toBe(409);
+  expect(swappedOverflow.reason).toBe("SNAPSHOT_HOST_SLOTS_NOT_SETTLED_OR_RUN_MISMATCH");
+  const overflow=[];
   for(let i=1;i<=4;i++)overflow.push(await call(envelope("p59-63-"+testId+"-overflow-"+i,snapshotRun,{
    testSuite:"P59.63",testId,testRepositoryAlias:i%2===1?repoA:repoB,hostId:"snapshot",runnerName:"snapshot",
-   attemptIndex:i,evidence_proposals:[],claims:[]})));
+   attemptIndex:i,seedWorkflowRunId:"810001",hostWorkflowRunIds:hostRuns,evidence_proposals:[],claims:[]})));
   expect(overflow.slice(0,3).every(x=>x.status==="COMPLETED")).toBe(true);
   expect(overflow[3].httpStatus).toBe(429);expect(overflow[3].status).toBe("WAITING_FOR_BUDGET");
   const snap=await call(envelope("p59-63-budget-snapshot-readback",snapshotRun,{
