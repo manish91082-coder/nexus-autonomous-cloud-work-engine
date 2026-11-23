@@ -31,7 +31,7 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase59.65 current-task and publisher environment guards passed exact-head CI #45109541094. Phase59.66 implements strict publisher API method/route/query/payload allowlists and rejects redirects; nine tests, exact-head CI pending. No live API request or App token.",
+      "status": "P59-003 IN_PROGRESS; Phase59.66 publisher API route/redirect guard accepted by exact-head CI #45110233131. 33 publisher tests, 20 AI task guard tests, 32 offline client tests, 5 workflow YAML files, 165-package lockfile, 83 Workers runtime tests and 1 Workerd integration passed. Owner PR retarget-to-master packet prepared; no merges or owner actions performed.",
       "last_observed_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
@@ -241,7 +241,7 @@
         "continuity_guard_run_id": 44009214414,
         "continuity_guard_checks": 111
       },
-      "next": "Verify Phase59.66 exact-head CI. Then owner-gated six-run proof only after sequential PR #44–#52 review/merge, master reconciliation, branch protection, legacy writer review, Workers Free/account usage and test-only namespace/environment approval.",
+      "next": "Phase59.67 sanitized-summary schema enforcement. Physical six-run proof remains owner-gated on sequential PR #44–#52 retarget/merge, master reconciliation, branch protection, legacy writer review, Workers Free/account usage and test-only namespace/environment approval.",
       "production_integrated": false,
       "ai_inference_enabled": false,
       "authorized_spend_inr": 0,
@@ -1263,7 +1263,7 @@
         }
       },
       "phase59_66": {
-        "status": "IMPLEMENTED_CI_PENDING",
+        "status": "ACCEPTED_CODE_AND_CI_PASS_OWNER_GATES_PENDING",
         "report": "research/PHASE_59_66_PUBLISHER_API_ROUTE_ALLOWLIST_REDIRECT_GUARD_2026-11-23.md",
         "branch": "phase59-66-publisher-api-boundary",
         "pr_number": 52,
@@ -1292,11 +1292,34 @@
         "redirects": "REJECTED",
         "live_api_requests": 0,
         "app_token_created": false,
-        "exact_head_ci": "PENDING",
+        "exact_head_ci": "SUCCESS",
         "ai_inference_enabled": false,
         "authorized_spend_inr": 0,
         "verified_realized_net_receipts_inr": 0,
-        "next": "Complete exact-head CI; owner-gated six-run proof remains blocked until owner prerequisites pass."
+        "next": "Phase59.67 sanitized-summary schema enforcement at publisher API boundary; physical six-run proof remains owner-gated.",
+        "ci_run_id": 45110233131,
+        "ci_status": "SUCCESS",
+        "tested_pr_head": "734e281ccbcb6d6493fa4c24f296a4153672cf0e",
+        "final_evidence_branch_head": "b35510251a108eb789a280896ee22c394202b49b",
+        "ai_task_guard_tests": "20/20",
+        "publisher_tests": "33/33",
+        "host_client_tests": "32/32",
+        "workers_runtime_tests": "83/83",
+        "workerd_integration": "1/1",
+        "workflow_yaml": "5/5 PASS",
+        "lockfile_packages": 165,
+        "failed_runs": [
+          {
+            "run_id": 45110017616,
+            "reason": "Two publisher API test errors: undefined local branch in GET /pulls allowlist."
+          },
+          {
+            "run_id": 45110119498,
+            "reason": "Same route-validator defect on pre-fix code head."
+          }
+        ],
+        "correction": "GET /pulls validator now derives owner-qualified branch from query and validates deterministic branch pattern; final run #45110233131 passed.",
+        "owner_merge_packet": "governance/P59-003_STACKED_PR_TO_MASTER_MERGE_OWNER_ACTION_PACKET_2026-11-23.md"
       }
     },
     {
