@@ -8,6 +8,9 @@ import sys
 from datetime import datetime, timezone
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from scripts.current_task_guard import select_current_task
 def read_json(path: str):
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
@@ -31,18 +34,10 @@ for task in tasks:
 if state.get("verified_realized_net_receipts_inr") != ledger.get("verified_realized_net_receipts_inr"):
     errors.append("mission state and revenue ledger totals differ")
 
-eligible = []
-for task in tasks:
-    if task.get("status") not in ("READY", "IN_PROGRESS"):
-        continue
-    if task.get("owner_gate"):
-        continue
-    if all(next((t.get("status") == "COMPLETED" for t in tasks if t.get("id") == dep), False)
-           for dep in task.get("depends_on", [])):
-        eligible.append(task)
-priority = {"P0": 0, "P1": 1, "P2": 2, "P3": 3}
-eligible.sort(key=lambda t: (priority.get(t.get("priority"), 9), t.get("id", "")))
-selected = eligible[0] if eligible else None
+selected, selection_reason = select_current_task(queue, state)
+eligible = [selected] if selected is not None else []
+if selected is None and selection_reason not in ("P59_003_OWNER_GATE_ACTIVE", "P59_003_NOT_EXECUTABLE"):
+    errors.append("current-task guard rejected queue: " + selection_reason)
 
 report = {
     "schema_version": "1.0",
@@ -56,6 +51,7 @@ report = {
     "phase": state.get("phase"),
     "queue_size": len(tasks),
     "eligible_task_count": len(eligible),
+    "current_task_selection_reason": selection_reason,
     "selected_task": None if selected is None else {
         "id": selected.get("id"),
         "title": selected.get("title"),
@@ -72,7 +68,7 @@ report = {
         "AI inference adapter is not deployed; no AI provider secret is read or logged.",
         "A successful poll is not proof of productive task completion or a continuously running process."
     ],
-    "next_engineering_step": "Implement the provider-neutral AI task executor with a strict zero-spend quota circuit-breaker and evidence-only task handlers."
+    "next_engineering_step": "Keep execution bound to P59-003; provider inference remains disabled until all zero-billing, global-quota and owner gates pass."
 }
 (ROOT / "worker_tick_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 print(json.dumps(report, ensure_ascii=False, indent=2))
