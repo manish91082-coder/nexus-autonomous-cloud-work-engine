@@ -45,7 +45,14 @@ describe("Phase59.63 independent workflow-run / cross-repository Workerd proof",
   expect(snap.reservationCount).toBe(8);expect(snap.settledReservations).toBe(8);expect(snap.nonSettledReservations).toBe(0);
   expect(snap.seedReservationCount).toBe(1);expect(snap.hostReservationCount).toBe(4);expect(snap.overflowReservationCount).toBe(3);
   expect(snap.distinctWorkflowRunIds).toHaveLength(6);expect(snap.expectedWorkflowRunIdsMatch).toBe(true);
+  expect(snap.seedWorkflowRunIdMatch).toBe(true);expect(snap.snapshotWorkflowRunIdMatch).toBe(true);
+  expect(snap.hostSlotWorkflowRunIds).toEqual({host1:"810011",host2:"810012",host3:"810013",host4:"810014"});
+  expect(snap.expectedHostSlotWorkflowRunIdsMatch).toBe(true);
   expect(snap.distinctRepositories).toEqual([repoA,repoB]);expect(snap.expectedRepositoriesMatch).toBe(true);
   expect(snap.allReservationsPhase59_63).toBe(true);expect(snap.eventChainValid).toBe(true);
+  const swapped=await call(envelope("p59-63-budget-snapshot-readback",snapshotRun,{
+   testId,seedWorkflowRunId:"810001",hostWorkflowRunIds:["810012","810011","810013","810014"]},"P59_003_BUDGET_SNAPSHOT"),"/internal/shadow-budget-snapshot");
+  expect(swapped.httpStatus).toBe(200);expect(swapped.expectedWorkflowRunIdsMatch).toBe(true);
+  expect(swapped.expectedHostSlotWorkflowRunIdsMatch).toBe(false);
  });
 });
