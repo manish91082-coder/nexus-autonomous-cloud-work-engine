@@ -148,5 +148,110 @@ class WorkerSafetyTests(unittest.TestCase):
         self.assertNotIn("exec(", source)
 
 
+class CurrentTaskSelectionTests(unittest.TestCase):
+    def setUp(self):
+        namespace = runpy.run_path(str(SCRIPT))
+        self.select = namespace["select_current_task"]
+        self.queue = {
+            "current_task": "P59-003",
+            "queue_policy": {"current_task": "P59-003"},
+            "tasks": [
+                {"id": "P59-001", "priority": "P0", "status": "PAUSED",
+                 "owner_gate": False, "depends_on": []},
+                {"id": "P59-002", "priority": "P1", "status": "BLOCKED",
+                 "owner_gate": False, "depends_on": ["P59-001"]},
+                {"id": "P59-003", "priority": "P0", "status": "IN_PROGRESS",
+                 "owner_gate": False, "depends_on": []},
+                {"id": "P00-999", "priority": "P0", "status": "READY",
+                 "owner_gate": False, "depends_on": []},
+            ],
+        }
+        self.mission = {"status": "ACTIVE", "current_task": "P59-003"}
+
+    def test_selects_only_p59_003_even_if_another_p0_task_is_ready(self):
+        task, reason = self.select(self.queue, self.mission)
+        self.assertEqual(reason, "CURRENT_TASK_SELECTED")
+        self.assertEqual(task["id"], "P59-003")
+
+    def test_rejects_root_queue_current_task_mismatch(self):
+        self.queue["current_task"] = "P59-001"
+        task, reason = self.select(self.queue, self.mission)
+        self.assertIsNone(task)
+        self.assertEqual(reason, "CURRENT_TASK_AUTHORITY_MISMATCH")
+
+    def test_rejects_nested_queue_policy_mismatch(self):
+        self.queue["queue_policy"]["current_task"] = "P59-001"
+        task, reason = self.select(self.queue, self.mission)
+        self.assertIsNone(task)
+        self.assertEqual(reason, "CURRENT_TASK_AUTHORITY_MISMATCH")
+
+    def test_rejects_mission_state_mismatch(self):
+        self.mission["current_task"] = "P59-001"
+        task, reason = self.select(self.queue, self.mission)
+        self.assertIsNone(task)
+        self.assertEqual(reason, "CURRENT_TASK_AUTHORITY_MISMATCH")
+
+    def test_rejects_non_active_mission(self):
+        self.mission["status"] = "PAUSED"
+        task, reason = self.select(self.queue, self.mission)
+        self.assertIsNone(task)
+        self.assertEqual(reason, "MISSION_NOT_ACTIVE")
+
+    def test_requires_p59_001_to_remain_paused(self):
+        self.queue["tasks"][0]["status"] = "READY"
+        task, reason = self.select(self.queue, self.mission)
+        self.assertIsNone(task)
+        self.assertEqual(reason, "P59_001_MUST_REMAIN_PAUSED")
+
+    def test_requires_p59_002_to_remain_blocked(self):
+        self.queue["tasks"][1]["status"] = "READY"
+        task, reason = self.select(self.queue, self.mission)
+        self.assertIsNone(task)
+        self.assertEqual(reason, "P59_002_MUST_REMAIN_BLOCKED")
+
+    def test_rejects_duplicate_p59_003_records(self):
+        self.queue["tasks"].append(dict(self.queue["tasks"][2]))
+        task, reason = self.select(self.queue, self.mission)
+        self.assertIsNone(task)
+        self.assertEqual(reason, "TASK_RECORD_COUNT_INVALID:P59-003")
+
+    def test_rejects_missing_p59_003_record(self):
+        self.queue["tasks"] = [t for t in self.queue["tasks"] if t["id"] != "P59-003"]
+        task, reason = self.select(self.queue, self.mission)
+        self.assertIsNone(task)
+        self.assertEqual(reason, "TASK_RECORD_COUNT_INVALID:P59-003")
+
+    def test_rejects_owner_gated_p59_003(self):
+        self.queue["tasks"][2]["owner_gate"] = True
+        task, reason = self.select(self.queue, self.mission)
+        self.assertIsNone(task)
+        self.assertEqual(reason, "P59_003_OWNER_GATE_ACTIVE")
+
+    def test_rejects_non_p0_p59_003(self):
+        self.queue["tasks"][2]["priority"] = "P1"
+        task, reason = self.select(self.queue, self.mission)
+        self.assertIsNone(task)
+        self.assertEqual(reason, "P59_003_PRIORITY_MISMATCH")
+
+    def test_rejects_non_executable_p59_003_status(self):
+        self.queue["tasks"][2]["status"] = "PAUSED"
+        task, reason = self.select(self.queue, self.mission)
+        self.assertIsNone(task)
+        self.assertEqual(reason, "P59_003_NOT_EXECUTABLE")
+
+    def test_rejects_incomplete_dependencies(self):
+        self.queue["tasks"][2]["depends_on"] = ["P59-001"]
+        task, reason = self.select(self.queue, self.mission)
+        self.assertIsNone(task)
+        self.assertEqual(reason, "P59_003_DEPENDENCY_NOT_COMPLETED:P59-001")
+
+    def test_rejects_malformed_task_record(self):
+        self.queue["tasks"].append("not-an-object")
+        task, reason = self.select(self.queue, self.mission)
+        self.assertIsNone(task)
+        self.assertEqual(reason, "TASK_RECORD_INVALID")
+
+
+
 if __name__ == "__main__":
     unittest.main()
