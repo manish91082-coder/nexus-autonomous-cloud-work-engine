@@ -160,3 +160,16 @@ The repository rulesets API returned an empty list and the branch-protection API
 - Corrected code head `9868b642a57caa697dd60f740d3664bcdab50087` passed [PR CI #45107642156](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45107642156): 32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1.
 - Two concurrent host1 workflow-run identities produced exactly one settled host1 reservation and one winner. Two competing snapshot workflow-run identities produced exactly one settled overflow1 reservation; the losing run could not create overflow2. Final synthetic snapshot: eight settled, zero reserved, zero uncertain, six distinct run IDs, two repositories, valid event chain.
 - This does not replace physical independent-host testing. The six separate workflow runs remain owner-gated until PR stack merge, branch protection, Cloudflare Free account/aggregate usage, required-reviewer environment and test-only shared namespace are verified.
+
+
+## Phase59.65 publisher environment approval requirement (23-Nov-2026)
+
+The constrained publisher job now declares the exact GitHub Environment `p10cr-publisher`. The job must remain blocked until the owner configures this environment with:
+
+1. At least one required reviewer who is not the workflow initiator (enable the platform's prevent-self-review option).
+2. Administrator bypass disabled where the repository plan/settings expose that control.
+3. Deployment branch policy restricted to the canonical `master` branch.
+4. Store `NEXUS_PUBLISHER_APP_CLIENT_ID` and `NEXUS_PUBLISHER_APP_PRIVATE_KEY` as **environment secrets** on `p10cr-publisher`, not repository-wide secrets.
+5. Keep the Publisher App installed only on `manish91082-coder/nexus-autonomous-cloud-work-engine`, with Metadata: read, Contents: write and Pull requests: write only. Do not grant Actions, Workflows, Administration, Secrets, Deployments or bypass permissions.
+
+The workflow's environment declaration is a fail-closed gate, not proof that the environment is configured. Until the owner verifies required reviewers, branch policy and secrets placement in GitHub Settings, the publisher remains NOT APPROVED and must not be activated. This addendum does not authorize App creation/installation or secret creation.
