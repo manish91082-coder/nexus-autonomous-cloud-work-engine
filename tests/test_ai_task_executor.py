@@ -253,5 +253,13 @@ class CurrentTaskSelectionTests(unittest.TestCase):
 
 
 
+    def test_bootstrap_worker_uses_the_same_current_task_guard(self):
+        worker_tick = SCRIPT.parent / "worker_tick.py"
+        source = worker_tick.read_text(encoding="utf-8")
+        self.assertIn("from scripts.current_task_guard import select_current_task", source)
+        self.assertIn("select_current_task(queue, state)", source)
+        self.assertNotIn("eligible.sort", source)
+
+
 if __name__ == "__main__":
     unittest.main()
