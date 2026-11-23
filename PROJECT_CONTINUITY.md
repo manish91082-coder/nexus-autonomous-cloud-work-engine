@@ -1,11 +1,11 @@
-# LATEST CONTINUITY UPDATE — PHASE 59.63.2 DEFAULT-BRANCH OWNER-PREFLIGHT GUARD (22-Nov-2026)
+# LATEST CONTINUITY UPDATE — PHASE 59.65 OWNER-DIRECTED CURRENT-TASK DISPATCH GUARD (23-Nov-2026)
 
 **Canonical master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
-**Candidate branch:** `phase59-64-default-branch-execution-guard`  
+**Candidate branch:** `phase59-65-current-task-dispatch-guard`  
 **Candidate checkpoint head before this continuity commit:** `fe5cc60a537678aac38b86a58a51967943db3eaf`  
-**Executable/test head:** `a3402ee892b22b946910cb17fc30283a92e6838a`  
-**PR #49:** draft/open/unmerged/mergeable; stacked on PR #48  
-**Parent PR stack:** #44 → #45 → #46 → #47 → #48 remains draft/open/unmerged  
+**Executable/test head:** `ccaa47b8e51e84fda86d4c21feba2e17ec8e8b03`  
+**PR #51:** draft/open/unmerged; stacked on PR #50 (Phase59.64C); exact-head CI pending  
+**Parent PR stack:** #44 → #45 → #46 → #47 → #48 → #49 → #50 remains draft/open/unmerged  
 **P59-003:** IN_PROGRESS, sole active P0  
 **P59-001:** PAUSED  
 **P59-002:** BLOCKED  
@@ -5164,3 +5164,16 @@ Date: 2026-11-17
 - Failed superseded runs #45107478190 and #45107482767 were assertion-shape failures only: the test treated per-bucket maps as scalars. Earlier single-winner host-slot assertions passed. Corrected assertion now checks every bucket. Push #45107637216 was cancelled by workflow concurrency; corrected PR run #45107642156 passed.
 - This is synthetic Workerd evidence, not physical multi-host acceptance. No live endpoint, deployment, App installation, AI inference, external provider call, spend or receipt.
 - P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Next is owner-gated Phase59.64D six independent workflow-run proof after sequential PR stack merge, master control-plane reconciliation, branch-protection verification, legacy writer review and zero-cost account/namespace setup. 7-day and 30-day soak follow only after exact six-run acceptance.
+
+
+## PHASE 59.65 — OWNER-DIRECTED CURRENT-TASK DISPATCH GUARD (23-Nov-2026)
+
+- Report: `research/PHASE_59_65_CURRENT_TASK_DISPATCH_GUARD_2026-11-23.md`.
+- Candidate branch: `phase59-65-current-task-dispatch-guard`, draft PR #51 stacked on PR #50; master HEAD remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
+- Finding: `scripts/ai_task_executor.py` previously scanned all READY/IN_PROGRESS tasks by priority without requiring agreement among mission.current_task, queue.current_task and queue_policy.current_task. A future unrelated READY P0 could be selected while P59-003 remained the sole active P0. No provider call occurred; the risk was latent because inference and both adapters remain disabled.
+- Correction: added `select_current_task`, requiring mission ACTIVE, three-way P59-003 identity agreement, exactly one record each for P59-003/P59-001/P59-002, P59-001 PAUSED, P59-002 BLOCKED, P59-003 P0 and executable with owner_gate=false, and completed dependencies. No substitute-task scan remains.
+- Code commit `48af1d5c07b3fc5190cd5ae535861b5c43c49737`; test commit/executable-test head `ccaa47b8e51e84fda86d4c21feba2e17ec8e8b03`. Fourteen deterministic tests added, including a READY P0 decoy; exact-head CI pending at checkpoint.
+- Publisher boundary audit: compute worker is contents:read and has no provider secrets; the constrained publisher uses read-only GITHUB_TOKEN for validation, and only owner-configured single-repository App token for sanitized hash/metadata draft PRs. No merge/release/deploy path. GitHub App PR-write capability still requires owner-verified rulesets.
+- Residual write workflows: Phase59.25 disposable branch writer and federation-locks CAS writer remain uninvoked and require owner review. Branch protection remains UNVERIFIED.
+- P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. AI inference disabled; production OFF; spend ₹0; receipts ₹0. No live endpoint, deployment, App installation, KYC, legal acceptance, billing, publication, payment, signing or money movement.
+- Next: exact-head Phase59.35 and Mission Worker CI; then owner-gated Phase59.64D after sequential PR #44–#50 review/merge, master state/queue/continuity reconciliation, ruleset verification, legacy writer review, Workers Free/account usage and namespace/environment approval. Six separate workflow runs precede 7-day and 30-day soak.
