@@ -15,7 +15,7 @@
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
-    "last_reconciled_from_mission_state": "2026-11-23: Phase59.65 now binds both worker_tick.py and ai_task_executor.py to a shared fail-closed P59-003 selector. It enforces mission/root/nested queue current-task agreement, P59-001 PAUSED, P59-002 BLOCKED, unique P59-003 P0 record, owner_gate=false and completed dependencies. Fifteen new deterministic tests; latest-head CI pending. Latest PR CI #45109105198 is pending on head 82e8714ccb08494ba1066c80ed81eb722390de2d; earlier run #45108874419 passed on a superseded head and is not final acceptance. Phase59.35 CI now also runs the Python P59-003 current-task/AI safety suite on Python 3.12; temporary subprocess fixtures copy scripts/current_task_guard.py. Latest PR run #45109292533 is pending on code/workflow head 90d33b23.",
+    "last_reconciled_from_mission_state": "2026-11-23: Phase59.65 code/CI accepted. Both worker_tick and AI executor use shared P59-003-only selector. Publisher job now requires p10cr-publisher GitHub Environment and environment approval marker before App token minting. Exact-head run #45109541094: 32/32 offline, 20/20 AI safety, 24/24 publisher, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1. Owner environment configuration remains unverified; no App token or install. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED.",
     "reconciliation_note": "Phase59.61 integrates the account-scope budget into the P59-003 shadow dispatcher. Budget reservation precedes durable registration/claim; settlement follows durable completion/readback; ambiguous outcomes remain idempotent/UNCERTAIN; exhaustion creates no task. PR #46 is draft/unmerged and stacked on #45/#44. No production deployment or AI inference. No revenue-source ranking while P59-003 is active. Phase59.63.2: P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. New preflight rejects non-canonical repo/ref/event before network. Spend ₹0; inference disabled; live proof remains owner-gated. Phase59.63.2 exact-head CI PASS. P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Canonical repository/master/workflow_dispatch guard now runs before live endpoint request. Spend ₹0; inference disabled; six-run hosted proof remains owner-gated. Phase59.64A (23-Nov-2026): server-side host-stage gate now checks actual settled seed and prior-host reservation rows against supplied workflow-run IDs and synthetic repository aliases; host client binds prior IDs; seed preflight rejects supplied run IDs. Exact-head CI #45105764381 SUCCESS: 31/31 offline, YAML PASS, 165 lockfile entries, 83/83 Workers, Workerd 1/1. PR #50 draft/unmerged. No live proof/deployment/inference/spend/receipts. Phase59.64B (23-Nov-2026): seed/replay now uses an identical idempotency payload and server-side durable seed-row inference; snapshot/overflow requires all four host slots settled under exact run IDs and repository aliases. Push #45106578746 and PR #45106583941 both SUCCESS: 32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1. Candidate current-head inventory: 500 entries, 37 workflows, 42 cloud/swarm modules, 87 Python files, 74 action references (55 SHA-pinned, 19 mutable). Two legacy branch-scoped write workflows remain uninvoked and require owner review. Master control-plane remains stale pending sequential PR stack merge. Phase59.65: generic priority scanning in ai_task_executor was replaced with exact P59-003 current-task authority validation; no substitute task can be selected. P59-001 remains PAUSED; P59-002 remains BLOCKED. Inference stays disabled; exact-head CI pending. Phase59.65: both bootstrap poller and AI executor use scripts/current_task_guard.py; generic priority scanning removed from both. No substitute task can be selected. P59-001 remains PAUSED; P59-002 remains BLOCKED. Inference remains disabled.",
     "execution_override": {
       "date": "2026-11-22",
@@ -3353,7 +3353,7 @@
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Phase59.65 shared task selector is implemented in worker_tick.py and ai_task_executor.py; 15 new tests. Latest-head CI pending. After CI, Phase59.64D remains owner-gated on PR stack review/merge, master reconciliation, ruleset verification, legacy writer review, Workers Free/account usage and test-only namespace approval.",
+        "next": "Phase59.65 code and CI accepted at run #45109541094. Next safe engineering: Phase59.66 publisher API method/path allowlist and redirect rejection. Phase59.64D physical six-run proof remains owner-gated.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -5870,7 +5870,7 @@
     "next": "Phase59.64D: owner-gated six independent workflow-run proof after sequential PR stack merge, master control-plane reconciliation, branch-protection verification, legacy writer review, existing Workers Free account/aggregate usage verification, test-only namespace and required-reviewer environment approval; then 7-day and 30-day soak."
   },
   "phase59_65": {
-    "status": "IMPLEMENTED_CI_PENDING",
+    "status": "ACCEPTED_CODE_AND_CI_PASS_OWNER_GATES_PENDING",
     "report": "research/PHASE_59_65_CURRENT_TASK_DISPATCH_GUARD_2026-11-23.md",
     "branch": "phase59-65-current-task-dispatch-guard",
     "pr_number": 51,
@@ -5889,17 +5889,37 @@
     "finding": "Both bootstrap poller and AI executor scanned all eligible tasks by priority without binding to the owner-directed current task.",
     "correction": "Shared P59-003-only fail-closed selector; enforces mission/root/nested current-task agreement, P59-001 PAUSED, P59-002 BLOCKED, P59-003 unique/P0/executable/owner_gate=false and completed dependencies.",
     "publisher_boundary_audit": "Compute contents:read; constrained publisher is only P10CR write path; two legacy branch-scoped writers remain owner-review gates.",
-    "exact_head_ci": "PENDING_LATEST_PR_HEAD",
+    "exact_head_ci": "SUCCESS",
     "ai_inference_enabled": false,
     "provider_gateway_adapter_ready": false,
     "global_quota_adapter_ready": false,
     "authorized_spend_inr": 0,
     "verified_realized_net_receipts_inr": 0,
-    "next": "Verify latest-head PR CI and Mission Worker push run; then owner-gated Phase59.64D.",
+    "next": "Phase59.66: constrain publisher API methods/routes and reject redirects. Phase59.64D six-run live proof remains owner-gated.",
     "latest_observed_ci_run_id": 45109292533,
     "latest_observed_ci_status": "PENDING",
     "latest_observed_pr_head": "90d33b2308774468edd36a9398d9535eafe43066",
     "python_safety_tests_in_phase59_35": true,
-    "isolated_test_fixture_copies_shared_guard": true
+    "isolated_test_fixture_copies_shared_guard": true,
+    "test_fixture_correction": "Copy scripts/current_task_guard.py into temporary subprocess fixture before running ai_task_executor.py.",
+    "ci_run_id": 45109541094,
+    "ci_status": "SUCCESS",
+    "tested_pr_head": "d970f0eb588f71b2590bb6565cbc798b79308a4d",
+    "host_client_tests": "32/32",
+    "ai_task_guard_tests": "20/20",
+    "publisher_tests": "24/24",
+    "workers_runtime_tests": "83/83",
+    "workerd_integration": "1/1",
+    "lockfile_packages": 165,
+    "workflow_yaml": "PASS",
+    "publisher_environment": {
+      "name": "p10cr-publisher",
+      "job_environment_required": true,
+      "approval_marker_secret": "P10CR_PUBLISHER_ENV_APPROVED",
+      "required_marker_value": "P59-003-PUBLISHER-OWNER-APPROVED",
+      "owner_configuration_verified": false,
+      "app_credentials_created": false,
+      "app_installed": false
+    }
   }
 }
