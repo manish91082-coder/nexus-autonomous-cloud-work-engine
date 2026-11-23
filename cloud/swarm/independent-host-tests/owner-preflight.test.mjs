@@ -57,11 +57,21 @@ test("requires a valid test ID and actual numeric GitHub run ID", () => {
   assert.throws(() => validateOwnerPreflight({ ...base, CURRENT_RUN_ID: "run-1" }), /CURRENT_GITHUB_RUN_ID_INVALID/);
 });
 
-test("host stage requires a valid slot and a distinct seed run ID", () => {
-  const host = { ...base, MODE: "host", HOST_SLOT: "host2", SEED_RUN_ID: "920000" };
-  assert.equal(validateOwnerPreflight(host).mode, "host");
-  assert.throws(() => validateOwnerPreflight({ ...host, HOST_SLOT: "host5" }), /HOST_SLOT_INVALID/);
-  assert.throws(() => validateOwnerPreflight({ ...host, SEED_RUN_ID: "920001" }), /SEED_AND_HOST_RUN_IDS_MUST_DIFFER/);
+test("host stage requires a valid slot and all prior host-run IDs in order", () => {
+  const host1 = { ...base, MODE: "host", HOST_SLOT: "host1", SEED_RUN_ID: "920000" };
+  assert.equal(validateOwnerPreflight(host1).mode, "host");
+  assert.throws(() => validateOwnerPreflight({ ...host1, HOST_SLOT: "host5" }), /HOST_SLOT_INVALID/);
+  assert.throws(() => validateOwnerPreflight({ ...host1, SEED_RUN_ID: "920001" }), /SEED_AND_HOST_RUN_IDS_MUST_BE_DISTINCT|HOST_RUN_IDS_MUST_BE_DISTINCT/);
+  assert.throws(() => validateOwnerPreflight({ ...host1, HOST1_RUN_ID: "920010" }), /FUTURE_HOST_RUN_ID_NOT_ALLOWED/);
+  assert.throws(() => validateOwnerPreflight({ ...base, MODE: "host", HOST_SLOT: "host2", SEED_RUN_ID: "920000" }), /HOST1_WORKFLOW_RUN_ID_INVALID/);
+  const host2 = { ...base, MODE: "host", HOST_SLOT: "host2", SEED_RUN_ID: "920000", HOST1_RUN_ID: "920010" };
+  assert.equal(validateOwnerPreflight(host2).mode, "host");
+  assert.throws(() => validateOwnerPreflight({ ...host2, HOST2_RUN_ID: "920011" }), /FUTURE_HOST_RUN_ID_NOT_ALLOWED/);
+  const host3 = { ...base, MODE: "host", HOST_SLOT: "host3", SEED_RUN_ID: "920000", HOST1_RUN_ID: "920010", HOST2_RUN_ID: "920011" };
+  assert.equal(validateOwnerPreflight(host3).mode, "host");
+  assert.throws(() => validateOwnerPreflight({ ...host3, HOST2_RUN_ID: "" }), /HOST2_WORKFLOW_RUN_ID_INVALID/);
+  const host4 = { ...base, MODE: "host", HOST_SLOT: "host4", SEED_RUN_ID: "920000", HOST1_RUN_ID: "920010", HOST2_RUN_ID: "920011", HOST3_RUN_ID: "920012" };
+  assert.equal(validateOwnerPreflight(host4).mode, "host");
 });
 
 test("host stage rejects duplicate supplied prior run IDs", () => {
