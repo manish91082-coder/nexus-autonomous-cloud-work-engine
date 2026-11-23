@@ -89,3 +89,12 @@ After the owner independently verifies Workers Free eligibility and aggregate ac
 The owner must verify that the budget namespace and every P10CR dispatcher instance use the same account-scope Durable Object namespace. If the account contains unaccounted workloads, if the plan is not Free, or if namespace sharing cannot be proven, stop. No paid fallback or account rotation.
 
 **No deployment, secret configuration, endpoint activation, terms acceptance, account change or spend has been performed.** The internal 5% resource caps and 80% stop thresholds remain proposed guardrails pending live owner dashboard verification.
+
+
+## Phase59.64B hosted-proof readiness update (23-Nov-2026)
+
+- Candidate code head `3de92c7eb32ae594d3ea3f6da141a211a0ae6cb5` passed push #45106578746 and PR #45106583941. Final candidate checkpoint `e872f34afdbeae9350e84198d178fce63033bafd` passed #45107001561. All were SUCCESS: 32/32 offline, YAML PASS, 165-package lockfile integrity, 83/83 Workers runtime, 1/1 Workerd.
+- Server now verifies the actual settled seed reservation and all earlier host-slot reservations against the exact supplied workflow-run IDs and synthetic repository aliases before accepting a host. Seed/replay payloads remain identical for idempotency. Snapshot/overflow is rejected until all four host slots are settled and the snapshot run ID is distinct.
+- Synthetic Workerd rejects pre-seed replay, premature overflow, forged seed, premature host2/host3, swapped host IDs and swapped snapshot IDs; sequential host1–4 then settles, overflow1–3 settle and overflow4 is denied by the shared cap. Final readback: eight settled, zero reserved, zero uncertain, six run IDs, two repositories, valid event chain.
+- This remains Workerd synthetic evidence only. No Cloudflare account was accessed or verified, no namespace was created/bound, no Worker was deployed, no endpoint was called and no secret was configured.
+- Owner must still verify the existing Workers Free plan and aggregate account usage, prove one shared test-only Durable Object namespace across all workflow runs, configure the exact endpoint hostname and required-reviewer GitHub Environment, then approve the six separate manual workflow runs. No paid fallback, account rotation or hidden billing.

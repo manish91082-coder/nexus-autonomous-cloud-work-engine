@@ -128,3 +128,12 @@ The Phase59.64A/64B override and current checkpoint are on the unmerged candidat
 ## Next engineering step
 
 Phase59.64C: add concurrent same-slot and competing snapshot-run failure-injection tests, prove one durable winner and no split snapshot, and audit the publisher/legacy branch-scoped write boundary. Live six-run proof remains owner-gated until PR stack #44→#50 is reviewed and merged in order, branch protection is verified in owner UI, existing Workers Free account and aggregate usage are confirmed, test-only namespaces are configured, and the required-reviewer environment is approved. Start 7-day soak only after exact six-run acceptance; 30-day soak follows the 7-day gate.
+
+
+## Post-checkpoint verification
+
+- Final candidate checkpoint before this evidence-only commit: `e872f34afdbeae9350e84198d178fce63033bafd`; [Phase59.35 CI #45107001561](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45107001561) completed SUCCESS on that exact branch head. It re-ran the same executable code and test files: 32/32 offline tests, YAML PASS, 165-package lockfile integrity, 83/83 Workers runtime and 1/1 Workerd integration.
+- Candidate Mission Worker [#45106996804](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45106996804) SUCCESS: `POLL_OK`, selected P59-003, AI executor `WAITING_FOR_OWNER_CONFIGURATION`, zero inference requests.
+- Candidate Continuity Guard [#45106996788](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45106996788) SUCCESS: 111 checks, zero errors.
+- Master Mission Worker [#45097408304](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45097408304) and master Guard [#45011590613](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45011590613) remain the latest verified master control-plane runs: Worker selected P59-003 with no inference; Guard passed 111 checks.
+- PRs #44–#50 are all open, draft, mergeable and unmerged in a sequential stack. PR #50 base is `phase59-64-default-branch-execution-guard`; head before this evidence-only commit was `e872f34afdbeae9350e84198d178fce63033bafd`.
