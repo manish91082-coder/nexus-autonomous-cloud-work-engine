@@ -7,7 +7,7 @@
 **Candidate branch:** `phase59-65-current-task-dispatch-guard`  
 **PR:** #51, draft/open/unmerged, stacked on PR #50  
 **Code/test workflow head:** `2e530e11a36574abb3f79a53b82fa9a291abfc1d`  
-**Exact-head CI:** PENDING  
+**Exact-head CI:** pending; latest observed PR run #45109105198 on head `82e8714ccb08494ba1066c80ed81eb722390de2d`  
 **Spend:** ₹0  
 **AI inference:** DISABLED  
 **Verified realized net receipts:** ₹0
@@ -64,7 +64,7 @@ Added 15 deterministic tests in `tests/test_ai_task_executor.py` (20 test method
 - Bootstrap worker imports and calls the same shared guard.
 - Bootstrap worker no longer contains generic priority sorting.
 
-No test enables a real provider call.
+No test enables a real provider call. Earlier PR run #45108874419 completed successfully on superseded head `24e34d33b5c37a5e4fa8e0db2a16a7f31ef021e9`; it does not cover the shared-guard refactor and is not final acceptance.
 
 ## 4. Read-only compute / constrained publisher boundary audit
 
