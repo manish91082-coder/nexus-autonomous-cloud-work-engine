@@ -5,6 +5,7 @@ on:
     paths:
       - 'scripts/worker_tick.py'
       - 'scripts/ai_task_executor.py'
+      - 'scripts/current_task_guard.py'
       - 'scripts/mission_guard.py'
       - 'scripts/swarm_runtime.py'
       - 'scripts/swarm_coordinator.py'

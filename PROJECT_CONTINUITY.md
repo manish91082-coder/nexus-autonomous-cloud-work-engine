@@ -1,11 +1,11 @@
-# LATEST CONTINUITY UPDATE — PHASE 59.63.2 DEFAULT-BRANCH OWNER-PREFLIGHT GUARD (22-Nov-2026)
+# LATEST CONTINUITY UPDATE — PHASE 59.65 OWNER-DIRECTED CURRENT-TASK DISPATCH GUARD (23-Nov-2026)
 
 **Canonical master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
-**Candidate branch:** `phase59-64-default-branch-execution-guard`  
+**Candidate branch:** `phase59-65-current-task-dispatch-guard`  
 **Candidate checkpoint head before this continuity commit:** `fe5cc60a537678aac38b86a58a51967943db3eaf`  
-**Executable/test head:** `a3402ee892b22b946910cb17fc30283a92e6838a`  
-**PR #49:** draft/open/unmerged/mergeable; stacked on PR #48  
-**Parent PR stack:** #44 → #45 → #46 → #47 → #48 remains draft/open/unmerged  
+**Executable/test head:** `ccaa47b8e51e84fda86d4c21feba2e17ec8e8b03`  
+**PR #51:** draft/open/unmerged; stacked on PR #50 (Phase59.64C); exact-head CI pending  
+**Parent PR stack:** #44 → #45 → #46 → #47 → #48 → #49 → #50 remains draft/open/unmerged  
 **P59-003:** IN_PROGRESS, sole active P0  
 **P59-001:** PAUSED  
 **P59-002:** BLOCKED  
@@ -5164,3 +5164,17 @@ Date: 2026-11-17
 - Failed superseded runs #45107478190 and #45107482767 were assertion-shape failures only: the test treated per-bucket maps as scalars. Earlier single-winner host-slot assertions passed. Corrected assertion now checks every bucket. Push #45107637216 was cancelled by workflow concurrency; corrected PR run #45107642156 passed.
 - This is synthetic Workerd evidence, not physical multi-host acceptance. No live endpoint, deployment, App installation, AI inference, external provider call, spend or receipt.
 - P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Next is owner-gated Phase59.64D six independent workflow-run proof after sequential PR stack merge, master control-plane reconciliation, branch-protection verification, legacy writer review and zero-cost account/namespace setup. 7-day and 30-day soak follow only after exact six-run acceptance.
+
+
+## PHASE 59.65 — OWNER-DIRECTED CURRENT-TASK AND PUBLISHER-APPROVAL GUARDS (23-Nov-2026)
+
+- Report: `research/PHASE_59_65_CURRENT_TASK_DISPATCH_GUARD_2026-11-23.md`.
+- Candidate PR #51 remains draft/open/unmerged, stacked on PR #50; master HEAD remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
+- Source audit found generic priority scanning in both `scripts/worker_tick.py` and `scripts/ai_task_executor.py`. Added shared `scripts/current_task_guard.py`; both now require mission ACTIVE, three-way current-task agreement on P59-003, exactly one record each for P59-003/P59-001/P59-002, P59-001 PAUSED, P59-002 BLOCKED, P59-003 P0/executable/owner_gate=false and completed dependencies. Generic priority scanning removed.
+- Added 15 deterministic task-scope tests (20 AI safety tests total) and one publisher environment gate test (24 publisher tests total). Phase59.35 CI runs both Python suites on Python 3.12.
+- Publisher job now declares GitHub Environment `p10cr-publisher`; App token minting also requires environment secret `P10CR_PUBLISHER_ENV_APPROVED` to equal `P59-003-PUBLISHER-OWNER-APPROVED` plus both App credentials. Owner packet requires pre-creation, required reviewer(s), prevent self-review, master-only deployment branch, no bypass where supported, and environment secrets only. No environment, marker or App credential has been created.
+- Exact-head [Phase59.35 CI #45109541094](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45109541094) SUCCESS on tested PR head `d970f0eb588f71b2590bb6565cbc798b79308a4d`: offline 32/32; AI/task guard 20/20; publisher 24/24; YAML PASS; lockfile 165 packages; Workers runtime 83/83; Workerd 1/1. All 13 steps completed. Earlier #45109349269 passed task guard/runtime before the publisher environment gate was added.
+- Publisher boundary: compute remains contents:read and no provider secrets; one constrained publisher creates only deterministic draft PRs. GitHub App PR-write capability and actual environment reviewer settings remain owner-unverified.
+- Residual write workflows: Phase59.25 disposable branch writer and federation-locks CAS writer remain uninvoked and require owner review. Branch protection remains UNVERIFIED.
+- P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. AI inference disabled; production OFF; spend ₹0; receipts ₹0. No live endpoint, deployment, App installation, KYC, legal acceptance, billing, publication, payment, signing or money movement.
+- Next safe engineering: Phase59.66 publisher API method/path allowlist and redirect rejection. Phase59.64D six-run live proof remains owner-gated on sequential PR #44–#50 review/merge, master state/queue/continuity reconciliation, branch protection, legacy writer review, existing Workers Free/account usage, test-only namespaces and required-reviewer environment.

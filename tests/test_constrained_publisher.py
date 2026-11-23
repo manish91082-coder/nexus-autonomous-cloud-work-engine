@@ -311,5 +311,18 @@ class PublisherApiTests(unittest.TestCase):
             publish_plan(self.plan, self.api)
 
 
+class PublisherWorkflowGateTests(unittest.TestCase):
+    def test_publisher_write_job_requires_owner_review_environment(self):
+        workflow = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "p10cr-constrained-publisher.yml"
+        source = workflow.read_text(encoding="utf-8")
+        expected = "  publish-draft:\n    environment:\n      name: p10cr-publisher\n"
+        self.assertIn(expected, source)
+        self.assertIn("permission-contents: write", source)
+        self.assertIn("permission-pull-requests: write", source)
+        self.assertIn("ENV_APPROVAL_MARKER: ${{ secrets.P10CR_PUBLISHER_ENV_APPROVED }}", source)
+        self.assertIn('P59-003-PUBLISHER-OWNER-APPROVED', source)
+
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -17,6 +17,9 @@ import urllib.request
 from datetime import datetime, timezone
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from scripts.current_task_guard import ACTIVE_MISSION_TASK_ID, select_current_task
 STATE_PATH = ROOT / "control/ai_usage_state.json"
 APPROVAL_PATH = ROOT / "control/ai_inference_approval.json"
 REPORT_PATH = ROOT / "ai_worker_report.json"
@@ -130,6 +133,8 @@ def validate_approval_manifest(manifest: dict, selected_model: str):
     return True, "APPROVAL_MANIFEST_VALID"
 
 
+
+
 def main():
     now = datetime.now(timezone.utc)
     today = now.date().isoformat()
@@ -232,25 +237,13 @@ def main():
 
     queue = read_json(QUEUE_PATH)
     mission = read_json(MISSION_PATH)
-    tasks = queue.get("tasks", [])
-    priority = {"P0": 0, "P1": 1, "P2": 2, "P3": 3}
-    eligible = []
-    for task in tasks:
-        if task.get("status") not in ("READY", "IN_PROGRESS"):
-            continue
-        if task.get("owner_gate"):
-            continue
-        deps_ok = all(
-            any(t.get("id") == dep and t.get("status") == "COMPLETED" for t in tasks)
-            for dep in task.get("depends_on", [])
-        )
-        if deps_ok:
-            eligible.append(task)
-    eligible.sort(key=lambda t: (priority.get(t.get("priority"), 9), t.get("id", "")))
-    if not eligible:
-        emit("NO_ELIGIBLE_TASK", {"reason": "No unblocked task is available."})
-
-    task = eligible[0]
+    task, selection_reason = select_current_task(queue, mission)
+    if task is None:
+        emit("NO_ELIGIBLE_TASK", {
+            "reason": selection_reason,
+            "required_current_task": ACTIVE_MISSION_TASK_ID,
+            "no_provider_request": True,
+        })
     prompt = f"""You are a bounded research and engineering assistant for the lawful ₹10 Cr autonomous revenue mission.
 Mission phase: {mission.get('phase')}
 Task ID: {task.get('id')}
