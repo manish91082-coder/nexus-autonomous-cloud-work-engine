@@ -3542,8 +3542,11 @@
     "authorized_spend_inr": 0,
     "verified_realized_net_receipts_inr": 0,
     "next": "Verify latest-head PR CI and Mission Worker push run; then owner-gated Phase59.64D.",
-    "latest_observed_ci_run_id": 45109105198,
+    "latest_observed_ci_run_id": 45109292533,
     "latest_observed_ci_status": "PENDING",
-    "latest_observed_pr_head": "82e8714ccb08494ba1066c80ed81eb722390de2d"
+    "latest_observed_pr_head": "90d33b2308774468edd36a9398d9535eafe43066",
+    "python_safety_tests_in_phase59_35": true,
+    "isolated_test_fixture_copies_shared_guard": true,
+    "test_fixture_correction": "Copy scripts/current_task_guard.py into temporary subprocess fixture before running ai_task_executor.py."
   }
 }
