@@ -21,8 +21,32 @@ describe("Phase59.63 independent workflow-run / cross-repository Workerd proof",
  it("settles one seed, four host run identities and three overflow tasks under shared cap eight",async()=>{
   const budget=createPlatformBudgetRpc(env.PHASE_59_63_PLATFORM_BUDGET,env);
   expect((await budget("testReset",{})).status).toBe("TEST_RESET");
+
+  // Concurrent same-slot race: exactly one workflow-run identity may bind host1.
+  const raceTestId="phase63-concurrent-host-proof",raceSeedRun="820001",raceHostRuns=["820011","820012"];
+  const raceSeedPayload={testSuite:"P59.63",testId:raceTestId,testRepositoryAlias:repoA,
+   sentinel:"GLOBAL_CROSS_RUN_SENTINEL",seedWorkflowRunId:raceSeedRun,evidence_proposals:[],claims:[]};
+  const raceSeed=await call(envelope("p59-63-"+raceTestId+"-seed",raceSeedRun,raceSeedPayload));
+  expect(raceSeed.status).toBe("COMPLETED");
+  const raceHostPayload={testSuite:"P59.63",testId:raceTestId,testRepositoryAlias:repoA,hostId:"host1",
+   runnerName:"concurrent-host1",attemptIndex:1,seedWorkflowRunId:raceSeedRun,
+   priorHostWorkflowRunIds:[],evidence_proposals:[],claims:[]};
+  const raceResponses=await Promise.all(raceHostRuns.map(id=>
+   call(envelope("p59-63-"+raceTestId+"-host1-01",id,raceHostPayload))));
+  const raceSnapshot=await budget("snapshot",{});
+  const raceRows=raceSnapshot.reservations.filter(row=>row.taskId==="p59-63-"+raceTestId+"-host1-01");
+  expect(raceSnapshot.eventChainValid).toBe(true);
+  expect(raceRows.length).toBe(1);
+  expect(raceRows[0].status).toBe("SETTLED");
+  expect(raceHostRuns).toContain(raceRows[0].workflowRunId);
+  expect(raceResponses.filter(result=>result.status==="COMPLETED").length).toBe(1);
+  expect(raceSnapshot.reserved).toBe(0);expect(raceSnapshot.uncertain).toBe(0);
+
+  // Reset the synthetic ledger before the ordered six-run end-to-end proof.
+  expect((await budget("testReset",{})).status).toBe("TEST_RESET");
   const testId="phase63-workerd-proof";
-  const hostRuns=["810011","810012","810013","810014"],slots=["host1","host2","host3","host4"],snapshotRun="810099";
+  const hostRuns=["810011","810012","810013","810014"],slots=["host1","host2","host3","host4"];
+  const snapshotCandidates=["810099","810100"];let snapshotRun=snapshotCandidates[0];
   const seedPayload={testSuite:"P59.63",testId,testRepositoryAlias:repoA,sentinel:"GLOBAL_CROSS_RUN_SENTINEL",
    seedWorkflowRunId:"810001",evidence_proposals:[],claims:[]};
   const replayBeforeSeed=await call(envelope("p59-63-"+testId+"-seed","810011",seedPayload));
@@ -63,8 +87,25 @@ describe("Phase59.63 independent workflow-run / cross-repository Workerd proof",
    seedWorkflowRunId:"810001",hostWorkflowRunIds:[hostRuns[1],hostRuns[0],hostRuns[2],hostRuns[3]],evidence_proposals:[],claims:[]}));
   expect(swappedOverflow.httpStatus).toBe(409);
   expect(swappedOverflow.reason).toBe("SNAPSHOT_HOST_SLOTS_NOT_SETTLED_OR_RUN_MISMATCH");
-  const overflow=[];
-  for(let i=1;i<=4;i++)overflow.push(await call(envelope("p59-63-"+testId+"-overflow-"+i,snapshotRun,{
+  // Competing snapshot runs must bind all overflow rows to exactly one winner.
+  const competingOverflow=await Promise.all(snapshotCandidates.map(runId=>call(envelope("p59-63-"+testId+"-overflow-1",runId,{
+   testSuite:"P59.63",testId,testRepositoryAlias:repoA,hostId:"snapshot",runnerName:"snapshot",attemptIndex:1,
+   seedWorkflowRunId:"810001",hostWorkflowRunIds:hostRuns,evidence_proposals:[],claims:[]}))));
+  const snapshotRace=await budget("snapshot",{});
+  const overflowOneRows=snapshotRace.reservations.filter(row=>row.taskId==="p59-63-"+testId+"-overflow-1");
+  expect(overflowOneRows.length).toBe(1);
+  expect(overflowOneRows[0].status).toBe("SETTLED");
+  snapshotRun=overflowOneRows[0].workflowRunId;
+  expect(snapshotCandidates).toContain(snapshotRun);
+  expect(competingOverflow.filter(result=>result.status==="COMPLETED").length).toBe(1);
+  const losingSnapshotRun=snapshotCandidates.find(runId=>runId!==snapshotRun);
+  const splitOverflow=await call(envelope("p59-63-"+testId+"-overflow-2",losingSnapshotRun,{
+   testSuite:"P59.63",testId,testRepositoryAlias:repoB,hostId:"snapshot",runnerName:"snapshot",attemptIndex:2,
+   seedWorkflowRunId:"810001",hostWorkflowRunIds:hostRuns,evidence_proposals:[],claims:[]}));
+  expect(splitOverflow.httpStatus).toBe(409);
+  expect(splitOverflow.reason).toBe("SNAPSHOT_OVERFLOW_ALREADY_BOUND_OR_UNEXPECTED");
+  const overflow=[competingOverflow.find(result=>result.status==="COMPLETED")];
+  for(let i=2;i<=4;i++)overflow.push(await call(envelope("p59-63-"+testId+"-overflow-"+i,snapshotRun,{
    testSuite:"P59.63",testId,testRepositoryAlias:i%2===1?repoA:repoB,hostId:"snapshot",runnerName:"snapshot",
    attemptIndex:i,seedWorkflowRunId:"810001",hostWorkflowRunIds:hostRuns,evidence_proposals:[],claims:[]})));
   expect(overflow.slice(0,3).every(x=>x.status==="COMPLETED")).toBe(true);
