@@ -40,7 +40,8 @@ describe("Phase59.63 independent workflow-run / cross-repository Workerd proof",
   expect(raceRows[0].status).toBe("SETTLED");
   expect(raceHostRuns).toContain(raceRows[0].workflowRunId);
   expect(raceResponses.filter(result=>result.status==="COMPLETED").length).toBe(1);
-  expect(raceSnapshot.reserved).toBe(0);expect(raceSnapshot.uncertain).toBe(0);
+  expect(Object.values(raceSnapshot.reserved).every(value=>value===0)).toBe(true);
+  expect(Object.values(raceSnapshot.uncertain).every(value=>value===0)).toBe(true);
 
   // Reset the synthetic ledger before the ordered six-run end-to-end proof.
   expect((await budget("testReset",{})).status).toBe("TEST_RESET");
