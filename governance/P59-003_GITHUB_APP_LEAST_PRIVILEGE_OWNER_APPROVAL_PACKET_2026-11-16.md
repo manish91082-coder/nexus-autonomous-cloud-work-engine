@@ -169,7 +169,7 @@ The constrained publisher job now declares the exact GitHub Environment `p10cr-p
 1. At least one required reviewer who is not the workflow initiator (enable the platform's prevent-self-review option).
 2. Administrator bypass disabled where the repository plan/settings expose that control.
 3. Deployment branch policy restricted to the canonical `master` branch.
-4. Store `NEXUS_PUBLISHER_APP_CLIENT_ID` and `NEXUS_PUBLISHER_APP_PRIVATE_KEY` as **environment secrets** on `p10cr-publisher`, not repository-wide secrets.
+4. Pre-create `p10cr-publisher` before any publisher workflow run; GitHub may auto-create a missing environment without protection rules. Store `NEXUS_PUBLISHER_APP_CLIENT_ID`, `NEXUS_PUBLISHER_APP_PRIVATE_KEY` and `P10CR_PUBLISHER_ENV_APPROVED` as **environment secrets** on `p10cr-publisher`, not repository-wide secrets. Set the non-credential attestation marker exactly to `P59-003-PUBLISHER-OWNER-APPROVED` only after verifying required reviewers, no self-review, no bypass and master-only deployment policy.
 5. Keep the Publisher App installed only on `manish91082-coder/nexus-autonomous-cloud-work-engine`, with Metadata: read, Contents: write and Pull requests: write only. Do not grant Actions, Workflows, Administration, Secrets, Deployments or bypass permissions.
 
 The workflow's environment declaration is a fail-closed gate, not proof that the environment is configured. Until the owner verifies required reviewers, branch policy and secrets placement in GitHub Settings, the publisher remains NOT APPROVED and must not be activated. This addendum does not authorize App creation/installation or secret creation.
