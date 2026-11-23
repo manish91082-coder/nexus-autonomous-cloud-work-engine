@@ -24,13 +24,12 @@ describe("Phase59.63 independent workflow-run / cross-repository Workerd proof",
   const testId="phase63-workerd-proof";
   const hostRuns=["810011","810012","810013","810014"],slots=["host1","host2","host3","host4"],snapshotRun="810099";
   const seedPayload={testSuite:"P59.63",testId,testRepositoryAlias:repoA,sentinel:"GLOBAL_CROSS_RUN_SENTINEL",
-   seedWorkflowRunId:"810001",seedReplay:false,evidence_proposals:[],claims:[]};
-  const replayBeforeSeed=await call(envelope("p59-63-"+testId+"-seed","810011",{
-   ...seedPayload,seedWorkflowRunId:"810001",seedReplay:true}));
+   seedWorkflowRunId:"810001",evidence_proposals:[],claims:[]};
+  const replayBeforeSeed=await call(envelope("p59-63-"+testId+"-seed","810011",seedPayload));
   expect(replayBeforeSeed.httpStatus).toBe(409);expect(replayBeforeSeed.reason).toBe("SEED_REPLAY_PREREQUISITE_NOT_SETTLED");
   const seed=await call(envelope("p59-63-"+testId+"-seed","810001",seedPayload));
   expect(seed.httpStatus).toBe(200);expect(seed.status).toBe("COMPLETED");
-  const replayPayload={...seedPayload,seedReplay:true};
+  const replayPayload=seedPayload;
   const duplicates=await Promise.all(hostRuns.map(id=>call(envelope("p59-63-"+testId+"-seed",id,replayPayload))));
   expect(duplicates.every(x=>x.status==="DUPLICATE_SUPPRESSED")).toBe(true);
   const prematureOverflow=await call(envelope("p59-63-"+testId+"-overflow-1",snapshotRun,{

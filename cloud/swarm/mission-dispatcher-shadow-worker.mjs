@@ -52,16 +52,9 @@ function phase63SeedPrerequisiteFailure(snapshot, context) {
   const prefix = "p59-63-" + testId + "-";
   const rows = snapshot.reservations.filter(row => row.phaseId === "P59.63" && row.taskId?.startsWith(prefix));
   const seeds = rows.filter(row => row.taskId === prefix + "seed");
-  if (replay) {
-    if (currentWorkflowRunId === seedWorkflowRunId || seeds.length !== 1
-      || seeds[0].workflowRunId !== seedWorkflowRunId
-      || seeds[0].repository !== P59_63_REPOSITORIES[0] || seeds[0].status !== "SETTLED") {
-      return "SEED_REPLAY_PREREQUISITE_NOT_SETTLED";
-    }
-    return null;
+  if (seeds.length === 0) {
+    return seedWorkflowRunId === currentWorkflowRunId ? null : "SEED_REPLAY_PREREQUISITE_NOT_SETTLED";
   }
-  if (seedWorkflowRunId !== currentWorkflowRunId) return "SEED_CREATION_RUN_ID_MISMATCH";
-  if (seeds.length === 0) return null;
   if (seeds.length === 1 && seeds[0].workflowRunId === seedWorkflowRunId
     && seeds[0].repository === P59_63_REPOSITORIES[0] && seeds[0].status === "SETTLED") return null;
   return "SEED_ALREADY_BOUND_TO_DIFFERENT_RUN_OR_UNSETTLED";
@@ -276,16 +269,13 @@ export default {
       const suffix = body.taskId.slice(("p59-63-" + body.payload.testId + "-").length);
       if (suffix === "seed") {
         const seedWorkflowRunId = body.payload.seedWorkflowRunId;
-        const seedReplay = body.payload.seedReplay;
         if (alias !== P59_63_REPOSITORIES[0] || body.payload.sentinel !== "GLOBAL_CROSS_RUN_SENTINEL"
-          || !SAFE_RUN_ID.test(seedWorkflowRunId || "") || typeof seedReplay !== "boolean"
-          || (seedReplay === false && seedWorkflowRunId !== body.workflowRunId)
-          || (seedReplay === true && seedWorkflowRunId === body.workflowRunId)) {
+          || !SAFE_RUN_ID.test(seedWorkflowRunId || "")) {
           return response(403, { status: "REJECTED", reason: "P59_63_SEED_NOT_AUTHORIZED" });
         }
         phase63SeedPrerequisite = {
           testId: body.payload.testId, seedWorkflowRunId,
-          currentWorkflowRunId: body.workflowRunId, replay: seedReplay
+          currentWorkflowRunId: body.workflowRunId
         };
       } else {
         const hostMatch = /^host([1-4])-01$/.exec(suffix), overflowMatch = /^overflow-([1-4])$/.exec(suffix);
