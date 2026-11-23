@@ -112,7 +112,7 @@ test("workflow binds canonical repository/ref/event, actual run IDs and ordered 
   assert.ok(workflow.includes("CURRENT_RUN_ID: ${{ github.run_id }}"));
   assert.ok(workflow.includes("GITHUB_RUN_ID: ${{ github.run_id }}"));
   for (const slot of [1, 2, 3, 4]) {
-    assert.ok(workflow.includes(`HOST${slot}_RUN_ID: ${{ inputs.host${slot}_workflow_run_id }}`));
+    assert.ok(workflow.includes("HOST" + slot + "_RUN_ID: ${{ inputs.host" + slot + "_workflow_run_id }}"));
   }
   assert.ok(workflow.indexOf("validateOwnerPreflight") < workflow.indexOf("Execute one owner-approved protocol stage"));
   assert.ok(workflow.includes("validateOwnerPreflight"));

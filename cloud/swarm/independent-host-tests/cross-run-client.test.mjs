@@ -1,6 +1,14 @@
 import test from "node:test";import assert from "node:assert/strict";import fs from "node:fs";import {fileURLToPath} from "node:url";import {runCrossRunClient,validateSnapshot} from "./cross-run-client.mjs";
 const testId="phase63-unit",seed="810001",hosts=["810011","810012","810013","810014"],snapshotRun="810099";
 const repoA="synthetic-org/p10cr-shadow-repo-a",repoB="synthetic-org/p10cr-shadow-repo-b";
+test("host client binds only the exact prior run IDs for its ordered slot",()=>{
+ const client=fs.readFileSync(fileURLToPath(new URL("./cross-run-client.mjs",import.meta.url)),"utf8");
+ assert.ok(client.includes("priorHostWorkflowRunIds"));
+ assert.ok(client.includes("seedWorkflowRunId:seedRunId"));
+ assert.ok(client.includes("FUTURE_HOST_RUN_ID_NOT_ALLOWED"));
+ assert.ok(client.includes("HOST_STAGE_RUN_IDS_MUST_BE_DISTINCT"));
+});
+
 test("snapshot validator requires six distinct workflow-run IDs and two fixed repository aliases",()=>{
  const valid={httpStatus:200,body:{status:"BUDGET_SNAPSHOT",testId,committedDispatches:8,reservedDispatches:0,uncertainDispatches:0,reservationCount:8,
  settledReservations:8,nonSettledReservations:0,seedReservationCount:1,hostReservationCount:4,overflowReservationCount:3,

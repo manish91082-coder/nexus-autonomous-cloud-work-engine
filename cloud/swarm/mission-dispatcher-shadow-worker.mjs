@@ -10,6 +10,39 @@ const SAFE_ID = /^[A-Za-z0-9._:-]{1,128}$/;
 const SAFE_RUN_ID = /^[0-9]{1,20}$/;
 const P59_63_REPOSITORIES = Object.freeze(["synthetic-org/p10cr-shadow-repo-a","synthetic-org/p10cr-shadow-repo-b"]);
 const encoder = new TextEncoder();
+function phase63HostPrerequisiteFailure(snapshot, context) {
+  if (snapshot?.httpStatus !== 200 || snapshot?.status !== "SNAPSHOT"
+    || snapshot?.eventChainValid !== true || !Array.isArray(snapshot?.reservations)) {
+    return "PRIOR_RESERVATION_SNAPSHOT_UNAVAILABLE";
+  }
+  const { testId, slot, seedWorkflowRunId, priorHostWorkflowRunIds, currentWorkflowRunId, currentRepository } = context;
+  const prefix = "p59-63-" + testId + "-";
+  const rows = snapshot.reservations.filter(row => row.phaseId === "P59.63" && row.taskId?.startsWith(prefix));
+  const matches = suffix => rows.filter(row => row.taskId === prefix + suffix);
+  const seedRows = matches("seed");
+  if (seedRows.length !== 1 || seedRows[0].workflowRunId !== seedWorkflowRunId
+    || seedRows[0].repository !== P59_63_REPOSITORIES[0] || seedRows[0].status !== "SETTLED") {
+    return "SEED_RESERVATION_NOT_SETTLED_OR_RUN_MISMATCH";
+  }
+  for (let priorSlot = 1; priorSlot < slot; priorSlot++) {
+    const priorRows = matches("host" + priorSlot + "-01");
+    const expectedRepository = priorSlot % 2 === 1 ? P59_63_REPOSITORIES[0] : P59_63_REPOSITORIES[1];
+    if (priorRows.length !== 1 || priorRows[0].workflowRunId !== priorHostWorkflowRunIds[priorSlot - 1]
+      || priorRows[0].repository !== expectedRepository || priorRows[0].status !== "SETTLED") {
+      return "PRIOR_HOST_RESERVATION_NOT_SETTLED_OR_RUN_MISMATCH";
+    }
+  }
+  for (let futureSlot = slot + 1; futureSlot <= 4; futureSlot++) {
+    if (matches("host" + futureSlot + "-01").length !== 0) return "FUTURE_HOST_STAGE_ALREADY_PRESENT";
+  }
+  const currentRows = matches("host" + slot + "-01");
+  if (currentRows.length > 1 || currentRows.some(row =>
+    row.workflowRunId !== currentWorkflowRunId || row.repository !== currentRepository || row.status !== "SETTLED")) {
+    return "CURRENT_HOST_SLOT_ALREADY_BOUND_OR_UNSETTLED";
+  }
+  return null;
+}
+
 function response(status, body) {
   return Response.json(body, { status, headers: { "cache-control": "no-store" } });
 }
@@ -172,6 +205,7 @@ export default {
       return response(403, { status: "REJECTED", reason: "SHADOW_ENVELOPE_NOT_AUTHORIZED" });
     }
     let budgetScope = null;
+    let phase63HostPrerequisite = null;
     const alias = body.payload?.testRepositoryAlias;
     if (alias !== undefined) {
       if (env?.NEXUS_SHADOW_TEST_MODE !== "true" || env?.NEXUS_CROSS_RUN_PROOF_ENABLED !== "true"
@@ -188,9 +222,19 @@ export default {
         const hostMatch = /^host([1-4])-01$/.exec(suffix), overflowMatch = /^overflow-([1-4])$/.exec(suffix);
         if (hostMatch) {
           const slot = Number(hostMatch[1]), expectedRepo = slot % 2 === 1 ? P59_63_REPOSITORIES[0] : P59_63_REPOSITORIES[1];
+          const seedWorkflowRunId = body.payload.seedWorkflowRunId;
+          const priorHostWorkflowRunIds = body.payload.priorHostWorkflowRunIds;
           if (alias !== expectedRepo || body.payload.hostId !== "host" + slot || body.payload.attemptIndex !== 1
-            || typeof body.payload.runnerName !== "string" || body.payload.runnerName.length < 1 || body.payload.runnerName.length > 256)
+            || typeof body.payload.runnerName !== "string" || body.payload.runnerName.length < 1 || body.payload.runnerName.length > 256
+            || !SAFE_RUN_ID.test(seedWorkflowRunId || "") || !Array.isArray(priorHostWorkflowRunIds)
+            || priorHostWorkflowRunIds.length !== slot - 1
+            || !priorHostWorkflowRunIds.every(value => typeof value === "string" && SAFE_RUN_ID.test(value))
+            || new Set([seedWorkflowRunId, ...priorHostWorkflowRunIds, body.workflowRunId]).size !== slot + 1)
             return response(403, { status: "REJECTED", reason: "P59_63_HOST_ENVELOPE_NOT_AUTHORIZED" });
+          phase63HostPrerequisite = {
+            testId: body.payload.testId, slot, seedWorkflowRunId, priorHostWorkflowRunIds,
+            currentWorkflowRunId: body.workflowRunId, currentRepository: alias
+          };
         } else if (overflowMatch) {
           const index = Number(overflowMatch[1]), expectedRepo = index % 2 === 1 ? P59_63_REPOSITORIES[0] : P59_63_REPOSITORIES[1];
           if (alias !== expectedRepo || body.payload.hostId !== "snapshot" || body.payload.attemptIndex !== index || body.payload.runnerName !== "snapshot")
@@ -204,6 +248,11 @@ export default {
     try {
       const rpc = createSwarmRunRpc(env.SWARM_RUNS, env);
       const budgetRpc = createPlatformBudgetRpc(env.PLATFORM_BUDGET, env);
+      if (phase63HostPrerequisite) {
+        const priorSnapshot = await budgetRpc("snapshot", {});
+        const failure = phase63HostPrerequisiteFailure(priorSnapshot, phase63HostPrerequisite);
+        if (failure) return response(409, { status: "HOST_STAGE_PREREQUISITE_FAILED", reason: failure });
+      }
       const prefix = typeof env.NEXUS_SHADOW_WORKER_ID === "string" ? env.NEXUS_SHADOW_WORKER_ID : "p10cr-shadow-dispatcher";
       const result = await dispatchMissionShadow({
         rpc, budgetRpc, taskId: body.taskId, workerId: prefix + "-" + crypto.randomUUID(),

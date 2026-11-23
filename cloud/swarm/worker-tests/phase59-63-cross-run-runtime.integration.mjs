@@ -28,10 +28,27 @@ describe("Phase59.63 independent workflow-run / cross-repository Workerd proof",
   const hostRuns=["810011","810012","810013","810014"],slots=["host1","host2","host3","host4"];
   const duplicates=await Promise.all(hostRuns.map(id=>call(envelope("p59-63-"+testId+"-seed",id,sentinel))));
   expect(duplicates.every(x=>x.status==="DUPLICATE_SUPPRESSED")).toBe(true);
-  const hosts=await Promise.all(hostRuns.map((id,i)=>call(envelope("p59-63-"+testId+"-"+slots[i]+"-01",id,{
+  const hostPayload=(i,prior)=>({
    testSuite:"P59.63",testId,testRepositoryAlias:i%2===0?repoA:repoB,hostId:slots[i],runnerName:"workerd-host-"+(i+1),
-   attemptIndex:1,evidence_proposals:[],claims:[]}))));
-  expect(hosts.every(x=>x.status==="COMPLETED")).toBe(true);
+   attemptIndex:1,seedWorkflowRunId:"810001",priorHostWorkflowRunIds:prior,evidence_proposals:[],claims:[]});
+  const forgedSeed=await call(envelope("p59-63-"+testId+"-host1-01","810011",{
+   ...hostPayload(0,[]),seedWorkflowRunId:"810099"}));
+  expect(forgedSeed.httpStatus).toBe(409);expect(forgedSeed.reason).toBe("SEED_RESERVATION_NOT_SETTLED_OR_RUN_MISMATCH");
+  const prematureHost2=await call(envelope("p59-63-"+testId+"-host2-01","810012",hostPayload(1,["810010"])));
+  expect(prematureHost2.httpStatus).toBe(409);expect(prematureHost2.reason).toBe("PRIOR_HOST_RESERVATION_NOT_SETTLED_OR_RUN_MISMATCH");
+  const hosts=[];
+  const host1=await call(envelope("p59-63-"+testId+"-host1-01",hostRuns[0],hostPayload(0,[])));
+  hosts.push(host1);expect(host1.status).toBe("COMPLETED");
+  const prematureHost3=await call(envelope("p59-63-"+testId+"-host3-01",hostRuns[2],hostPayload(2,[hostRuns[0],"810012"])));
+  expect(prematureHost3.httpStatus).toBe(409);expect(prematureHost3.reason).toBe("PRIOR_HOST_RESERVATION_NOT_SETTLED_OR_RUN_MISMATCH");
+  const host2=await call(envelope("p59-63-"+testId+"-host2-01",hostRuns[1],hostPayload(1,[hostRuns[0]])));
+  hosts.push(host2);expect(host2.status).toBe("COMPLETED");
+  const swappedHost3=await call(envelope("p59-63-"+testId+"-host3-01",hostRuns[2],hostPayload(2,[hostRuns[1],hostRuns[0]])));
+  expect(swappedHost3.httpStatus).toBe(409);expect(swappedHost3.reason).toBe("PRIOR_HOST_RESERVATION_NOT_SETTLED_OR_RUN_MISMATCH");
+  const host3=await call(envelope("p59-63-"+testId+"-host3-01",hostRuns[2],hostPayload(2,[hostRuns[0],hostRuns[1]])));
+  hosts.push(host3);expect(host3.status).toBe("COMPLETED");
+  const host4=await call(envelope("p59-63-"+testId+"-host4-01",hostRuns[3],hostPayload(3,[hostRuns[0],hostRuns[1],hostRuns[2]])));
+  hosts.push(host4);expect(host4.status).toBe("COMPLETED");
   const snapshotRun="810099",overflow=[];
   for(let i=1;i<=4;i++)overflow.push(await call(envelope("p59-63-"+testId+"-overflow-"+i,snapshotRun,{
    testSuite:"P59.63",testId,testRepositoryAlias:i%2===1?repoA:repoB,hostId:"snapshot",runnerName:"snapshot",

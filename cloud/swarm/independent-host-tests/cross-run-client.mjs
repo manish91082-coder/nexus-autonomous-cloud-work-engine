@@ -52,10 +52,21 @@ export async function runCrossRunClient(env=process.env){
   if(seedRunId===workflowRunId)throw new Error("SEED_AND_HOST_RUN_IDS_MUST_DIFFER");
   const hostSlot=env.P59_63_HOST_SLOT,host=HOSTS[hostSlot];if(!host)throw new Error("HOST_SLOT_INVALID");
   const runnerName=validateRunnerName(env.P59_63_RUNNER_NAME||"");
+  const slotIndex=Object.keys(HOSTS).indexOf(hostSlot);
+  const seedRunId=requireRunId(env.P59_63_SEED_WORKFLOW_RUN_ID,"SEED_WORKFLOW_RUN_ID");
+  const priorHostWorkflowRunIds=Object.keys(HOSTS).slice(0,slotIndex).map((slot,index)=>
+   requireRunId(env["P59_63_"+slot.toUpperCase()+"_WORKFLOW_RUN_ID"],"PRIOR_HOST_"+(index+1)+"_WORKFLOW_RUN_ID"));
+  for(const futureSlot of Object.keys(HOSTS).slice(slotIndex)){
+   const value=env["P59_63_"+futureSlot.toUpperCase()+"_WORKFLOW_RUN_ID"];
+   if(value!==undefined&&value!==null&&value!=="")throw new Error("FUTURE_HOST_RUN_ID_NOT_ALLOWED");
+  }
+  if(new Set([seedRunId,...priorHostWorkflowRunIds,workflowRunId]).size!==slotIndex+2)
+   throw new Error("HOST_STAGE_RUN_IDS_MUST_BE_DISTINCT");
   const duplicate=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-seed",payload:sentinelPayload(testId),workflowRunId,expectedHostname});
   if(classifyDispatch(duplicate)!=="duplicate")throw new Error("P59_63_CROSS_RUN_SENTINEL_NOT_SUPPRESSED");
   const result=await dispatch({endpoint,secret,taskId:"p59-63-"+testId+"-"+hostSlot+"-01",workflowRunId,expectedHostname,
-   payload:{testSuite:"P59.63",testId,testRepositoryAlias:host.repository,hostId:host.expectedHostId,runnerName,attemptIndex:1,evidence_proposals:[],claims:[]}});
+   payload:{testSuite:"P59.63",testId,testRepositoryAlias:host.repository,hostId:host.expectedHostId,runnerName,attemptIndex:1,
+    seedWorkflowRunId:seedRunId,priorHostWorkflowRunIds,evidence_proposals:[],claims:[]}});
   if(classifyDispatch(result)!=="completed")throw new Error("P59_63_HOST_TASK_NOT_COMPLETED");
   const output={mode,testId,hostSlot,repositoryAlias:host.repository,workflowRunId,runnerName,sentinelDuplicateSuppressed:true,uniqueTasksCompleted:1,uniqueTasksDenied:0};
   console.log("P59_63_HOST_RESULT "+JSON.stringify(output));return output;
