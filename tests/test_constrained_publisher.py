@@ -2,7 +2,9 @@ import base64
 import json
 import tempfile
 import unittest
+import urllib.error
 from pathlib import Path
+from unittest.mock import patch
 from urllib.parse import parse_qs, urlsplit
 
 from scripts.constrained_publisher import (
@@ -12,7 +14,10 @@ from scripts.constrained_publisher import (
     WORKFLOW_NAME,
     WORKFLOW_PATH,
     ApiError,
+    GitHubApi,
     PublisherError,
+    _RejectRedirectHandler,
+    _validate_api_request,
     build_publish_plan,
     publish_plan,
 )
@@ -321,6 +326,115 @@ class PublisherWorkflowGateTests(unittest.TestCase):
         self.assertIn("permission-pull-requests: write", source)
         self.assertIn("ENV_APPROVAL_MARKER: ${{ secrets.P10CR_PUBLISHER_ENV_APPROVED }}", source)
         self.assertIn('P59-003-PUBLISHER-OWNER-APPROVED', source)
+
+
+
+class PublisherApiBoundaryTests(unittest.TestCase):
+    ROOT = "/repos/" + CANONICAL_REPOSITORY
+    BRANCH = "automation/p10cr/worker-run-12345-attempt-1"
+    FILE = "research/worker-drafts/ai-run-12345-attempt-1.json"
+
+    def test_all_internal_publisher_routes_are_allowlisted(self):
+        content = base64.b64encode(b'{"safe":true}').decode("ascii")
+        _validate_api_request("GET", self.ROOT + "/git/ref/heads/master")
+        _validate_api_request("GET", self.ROOT + "/git/ref/heads/" + self.BRANCH)
+        _validate_api_request("POST", self.ROOT + "/git/refs", {
+            "ref": "refs/heads/" + self.BRANCH, "sha": MASTER_SHA
+        })
+        _validate_api_request("GET", self.ROOT + "/contents/" + self.FILE + "?ref=" + self.BRANCH)
+        _validate_api_request("PUT", self.ROOT + "/contents/" + self.FILE, {
+            "message": "Add sanitized P10CR worker draft summary for run 12345",
+            "content": content,
+            "branch": self.BRANCH,
+        })
+        _validate_api_request(
+            "GET",
+            self.ROOT + "/pulls?state=open&head=manish91082-coder%3A" + self.BRANCH + "&base=master",
+        )
+        _validate_api_request("POST", self.ROOT + "/pulls", {
+            "title": "P10CR AI worker draft evidence: run 12345 attempt 1",
+            "head": self.BRANCH,
+            "base": "master",
+            "body": "Untrusted evidence summary; human review required.",
+            "draft": True,
+        })
+
+    def test_rejects_unsupported_methods_and_unknown_routes(self):
+        for method, path in (
+            ("DELETE", self.ROOT + "/git/refs/heads/" + self.BRANCH),
+            ("PATCH", self.ROOT + "/pulls/1"),
+            ("POST", self.ROOT + "/issues"),
+            ("PUT", self.ROOT + "/contents/README.md"),
+        ):
+            with self.subTest(method=method, path=path):
+                with self.assertRaises(PublisherError):
+                    _validate_api_request(method, path, {})
+
+    def test_rejects_noncanonical_or_absolute_api_paths(self):
+        for path in (
+            "/repos/another-owner/other-repo/git/ref/heads/master",
+            "https://api.github.com" + self.ROOT + "/git/ref/heads/master",
+            "//evil.example/" + self.ROOT.lstrip("/"),
+            self.ROOT + "/git/ref/heads/master#fragment",
+        ):
+            with self.subTest(path=path):
+                with self.assertRaises(PublisherError):
+                    _validate_api_request("GET", path)
+
+    def test_rejects_swapped_or_extra_content_query(self):
+        path = self.ROOT + "/contents/" + self.FILE
+        with self.assertRaises(PublisherError):
+            _validate_api_request("GET", path + "?ref=automation%2Fp10cr%2Fworker-run-99999-attempt-1")
+        with self.assertRaises(PublisherError):
+            _validate_api_request("GET", path + "?ref=" + self.BRANCH + "&download=1")
+
+    def test_rejects_content_payload_branch_mismatch(self):
+        payload = {
+            "message": "Add sanitized P10CR worker draft summary for run 12345",
+            "content": base64.b64encode(b'{"safe":true}').decode("ascii"),
+            "branch": "automation/p10cr/worker-run-99999-attempt-1",
+        }
+        with self.assertRaises(PublisherError):
+            _validate_api_request("PUT", self.ROOT + "/contents/" + self.FILE, payload)
+
+    def test_rejects_non_draft_pull_request_or_wrong_base(self):
+        payload = {
+            "title": "P10CR AI worker draft evidence: run 12345 attempt 1",
+            "head": self.BRANCH,
+            "base": "release",
+            "body": "Untrusted evidence summary; human review required.",
+            "draft": True,
+        }
+        with self.assertRaises(PublisherError):
+            _validate_api_request("POST", self.ROOT + "/pulls", payload)
+        payload["base"] = "master"
+        payload["draft"] = False
+        with self.assertRaises(PublisherError):
+            _validate_api_request("POST", self.ROOT + "/pulls", payload)
+
+    def test_rejects_pull_request_query_for_non_deterministic_branch(self):
+        path = self.ROOT + "/pulls?state=open&head=manish91082-coder%3Aautomation%2Fother-branch&base=master"
+        with self.assertRaises(PublisherError):
+            _validate_api_request("GET", path)
+
+    def test_redirect_handler_refuses_redirect(self):
+        handler = _RejectRedirectHandler()
+        request = urllib.request.Request("https://api.github.com/repos/example/repo")
+        self.assertIsNone(handler.redirect_request(request, None, 302, "Found", {}, "https://evil.example/steal"))
+
+    def test_github_api_never_follows_redirect(self):
+        class RedirectOpener:
+            def open(self, request, timeout):
+                raise urllib.error.HTTPError(request.full_url, 302, "Found", {}, None)
+
+        opener = RedirectOpener()
+        with patch("scripts.constrained_publisher.urllib.request.build_opener", return_value=opener) as build:
+            with self.assertRaises(ApiError) as raised:
+                GitHubApi("x" * 24).request("GET", self.ROOT + "/git/ref/heads/master")
+        self.assertEqual(raised.exception.status, 302)
+        handler = build.call_args.args[0]
+        self.assertIsInstance(handler, _RejectRedirectHandler)
+
 
 
 
