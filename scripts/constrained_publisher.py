@@ -233,6 +233,103 @@ def build_publish_plan(
     }
 
 
+def _validate_api_request(method: str, path: str, payload: dict[str, Any] | None = None) -> None:
+    """Allow only the exact GitHub REST routes used by the draft-only publisher."""
+    if method not in {"GET", "POST", "PUT"}:
+        raise PublisherError("publisher HTTP method is not allowlisted")
+    if not isinstance(path, str):
+        raise PublisherError("publisher API path must be a string")
+    parsed = urllib.parse.urlsplit(path)
+    if parsed.scheme or parsed.netloc or parsed.fragment or parsed.path.startswith("//"):
+        raise PublisherError("publisher API path must be a relative canonical route")
+    root = "/repos/" + CANONICAL_REPOSITORY
+    if not parsed.path.startswith(root + "/"):
+        raise PublisherError("publisher API path is outside the canonical repository")
+    try:
+        query = urllib.parse.parse_qs(parsed.query, keep_blank_values=True, strict_parsing=True) if parsed.query else {}
+    except ValueError as exc:
+        raise PublisherError("publisher API query is malformed") from exc
+
+    branch_pattern = r"automation/p10cr/worker-run-([1-9][0-9]*)-attempt-([1-9][0-9]*)"
+    branch_ref = re.fullmatch(re.escape(root) + r"/git/ref/heads/(" + branch_pattern + r")", parsed.path)
+    if method == "GET" and parsed.path == root + "/git/ref/heads/master" and not query and payload is None:
+        return
+    if method == "GET" and branch_ref and not query and payload is None:
+        return
+
+    if method == "POST" and parsed.path == root + "/git/refs" and not query:
+        if not isinstance(payload, dict) or set(payload) != {"ref", "sha"}:
+            raise PublisherError("publisher ref payload is not allowlisted")
+        ref = payload.get("ref")
+        sha = payload.get("sha")
+        if not isinstance(ref, str) or not re.fullmatch(r"refs/heads/" + branch_pattern, ref):
+            raise PublisherError("publisher ref name is not allowlisted")
+        if not isinstance(sha, str) or not re.fullmatch(r"[a-f0-9]{40}", sha):
+            raise PublisherError("publisher ref target SHA is invalid")
+        return
+
+    content_match = re.fullmatch(
+        re.escape(root) + r"/contents/research/worker-drafts/ai-run-([1-9][0-9]*)-attempt-([1-9][0-9]*)\.json",
+        parsed.path,
+    )
+    if content_match:
+        run_id, attempt = content_match.groups()
+        branch = f"automation/p10cr/worker-run-{run_id}-attempt-{attempt}"
+        if method == "GET" and query == {"ref": [branch]} and payload is None:
+            return
+        if method == "PUT" and not query:
+            if not isinstance(payload, dict) or set(payload) != {"message", "content", "branch"}:
+                raise PublisherError("publisher content payload is not allowlisted")
+            if payload.get("branch") != branch:
+                raise PublisherError("publisher content branch does not match the file path")
+            if payload.get("message") != f"Add sanitized P10CR worker draft summary for run {run_id}":
+                raise PublisherError("publisher content commit message is not allowlisted")
+            encoded = payload.get("content")
+            if not isinstance(encoded, str):
+                raise PublisherError("publisher content encoding is invalid")
+            try:
+                decoded = base64.b64decode(encoded, validate=True)
+            except Exception as exc:
+                raise PublisherError("publisher content encoding is invalid") from exc
+            if not decoded or len(decoded) > MAX_REPORT_BYTES:
+                raise PublisherError("publisher content size is outside the limit")
+            return
+
+    if method == "GET" and parsed.path == root + "/pulls" and payload is None:
+        if query == {
+            "state": ["open"],
+            "head": [CANONICAL_REPOSITORY.split("/", 1)[0] + ":" + branch],
+            "base": ["master"],
+        }:
+            return
+        raise PublisherError("publisher pull-request query is not allowlisted")
+
+    if method == "POST" and parsed.path == root + "/pulls" and not query:
+        if not isinstance(payload, dict) or set(payload) != {"title", "head", "base", "body", "draft"}:
+            raise PublisherError("publisher pull-request payload is not allowlisted")
+        match = re.fullmatch(branch_pattern, payload.get("head", "") if isinstance(payload.get("head"), str) else "")
+        if not match:
+            raise PublisherError("publisher pull-request head is not allowlisted")
+        run_id, attempt = match.groups()
+        if payload.get("base") != "master" or payload.get("draft") is not True:
+            raise PublisherError("publisher may create draft PRs to master only")
+        if payload.get("title") != f"P10CR AI worker draft evidence: run {run_id} attempt {attempt}":
+            raise PublisherError("publisher pull-request title is not allowlisted")
+        body = payload.get("body")
+        if not isinstance(body, str) or not 1 <= len(body) <= 4096:
+            raise PublisherError("publisher pull-request body is outside the size limit")
+        return
+
+    raise PublisherError("publisher API route/method is not allowlisted")
+
+
+class _RejectRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """Never forward the scoped GitHub App token through an HTTP redirect."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
 class GitHubApi:
     """Small standard-library REST client. Token is never included in errors/logs."""
 
@@ -242,8 +339,7 @@ class GitHubApi:
         self._token = token
 
     def request(self, method: str, path: str, payload: dict[str, Any] | None = None) -> Any:
-        if not path.startswith("/repos/" + CANONICAL_REPOSITORY + "/"):
-            raise PublisherError("publisher API path is outside the canonical repository")
+        _validate_api_request(method, path, payload)
         data = None if payload is None else json.dumps(payload).encode("utf-8")
         request = urllib.request.Request(
             "https://api.github.com" + path,
@@ -258,7 +354,8 @@ class GitHubApi:
             },
         )
         try:
-            with urllib.request.urlopen(request, timeout=20) as response:
+            opener = urllib.request.build_opener(_RejectRedirectHandler())
+            with opener.open(request, timeout=20) as response:
                 body = response.read(1024 * 1024)
                 return json.loads(body.decode("utf-8")) if body else {}
         except urllib.error.HTTPError as exc:
