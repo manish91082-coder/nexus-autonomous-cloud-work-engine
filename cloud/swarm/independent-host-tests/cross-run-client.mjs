@@ -27,6 +27,10 @@ export function validateSnapshot(result,{testId,seedRunId,hostRunIds,snapshotRun
   &&body?.seedReservationCount===1&&body?.hostReservationCount===4&&body?.overflowReservationCount===3
   &&Array.isArray(body?.distinctWorkflowRunIds)&&body.distinctWorkflowRunIds.length===6
   &&body.distinctWorkflowRunIds.every((v,i)=>v===expectedRuns[i])&&body?.expectedWorkflowRunIdsMatch===true
+  &&body?.seedWorkflowRunIdMatch===true&&body?.snapshotWorkflowRunIdMatch===true
+  &&body?.expectedHostSlotWorkflowRunIdsMatch===true
+  &&body?.hostSlotWorkflowRunIds&&Object.keys(body.hostSlotWorkflowRunIds).sort().join(",")==="host1,host2,host3,host4"
+  &&hostRunIds.every((runId,index)=>body.hostSlotWorkflowRunIds["host"+(index+1)]===runId)
   &&JSON.stringify(body?.distinctRepositories)===JSON.stringify([REPO_A,REPO_B])&&body?.expectedRepositoriesMatch===true
   &&body?.allReservationsPhase59_63===true&&body?.eventChainValid===true
   &&Number.isInteger(body?.eventCount)&&body.eventCount>0&&Number.isInteger(body?.controlBudgetRpcRequests)
