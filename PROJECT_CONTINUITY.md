@@ -56,12 +56,14 @@ Intermediate failures and fixes are recorded in the Phase59.69 report. Earlier s
 
 - Master Worker #588, run `45276398411`, SUCCESS on master HEAD; queue selected P59-003; AI executor `WAITING_FOR_OWNER_CONFIGURATION`; zero inference requests.
 - Master Guard #394, run `45163468164`, SUCCESS, 111 checks, zero errors.
-- Candidate Worker #599, run `45320801123`, SUCCESS; `POLL_OK` selected P59-003; AI executor `WAITING_FOR_OWNER_CONFIGURATION`; zero inference requests.
-- Candidate Guard #408, run `45319095489`, SUCCESS, 111 checks, zero errors.
+- Candidate Worker #601, run `45321415382`, SUCCESS; `POLL_OK` selected P59-003; AI executor `WAITING_FOR_OWNER_CONFIGURATION`; 111 checks; zero inference requests.
+- Candidate Guard #411, run `45321483043`, SUCCESS on initial PR #55 head, 111 checks, zero errors.
+- PR #55 initial-head CI #539, run `45321506379`, SUCCESS at `14b1fcbca35885c817d27f990b6d4624e5231897`; later commits in this checkpoint update only reports/control evidence, not executable code.
 
 Read-only artifact digest comparisons:
 - Master Worker #588 legacy artifact ID `14867217432`, size 1900 bytes, downloaded ZIP SHA-256 `d019c66456f1394ae7eaa382b6ab3d8aedf8e1110af1ef70ebd9ba251c6c906b`, matching GitHub API metadata. It has the pre-Phase59.69 run-only name and is intentionally not accepted by the new attempt-bound verifier.
 - Candidate Worker #599 artifact ID `14887411312`, name `mission-autonomous-worker-45320801123-attempt-1`, size 1936 bytes, downloaded ZIP SHA-256 `903600cc177fd0f41cb22c40448b6bdde25f73ff3e0b1d37d2829771b50266be`, matching GitHub API metadata. It is a feature-branch run and is intentionally ineligible for publisher acceptance because source branch must be master.
+- Latest Candidate Worker #601 artifact ID `14888305665`, name `mission-autonomous-worker-45321415382-attempt-1`, size 1927 bytes, downloaded ZIP SHA-256 `d83845f6bf8580e430765f1351547c1ab6dab497eb185bc9006bbd8539081d41`, matching GitHub API metadata; exact three report files present. It is a feature-branch run and intentionally ineligible for publisher acceptance because source branch must be master.
 
 These readbacks verify artifact metadata/digest consistency; they do not constitute a publisher run or physical multi-host proof.
 
