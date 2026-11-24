@@ -1058,6 +1058,11 @@ class PublisherAmbiguousWriteRecoveryTests(unittest.TestCase):
         self.assertEqual(retry["number"], successes[0]["number"])
         self.assert_one_committed_publication(api)
 
+        workflow = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "p10cr-constrained-publisher.yml"
+        workflow_source = workflow.read_text(encoding="utf-8")
+        self.assertIn("group: p10cr-single-constrained-publisher", workflow_source)
+        self.assertIn("cancel-in-progress: false", workflow_source)
+
 
 if __name__ == "__main__":
     unittest.main()
