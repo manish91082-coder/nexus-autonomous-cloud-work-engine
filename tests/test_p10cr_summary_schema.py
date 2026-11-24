@@ -62,7 +62,7 @@ def valid_artifact():
     digest = "b" * 64
     return {
         "id": 67890,
-        "name": f"{ARTIFACT_PREFIX}12345",
+        "name": f"{ARTIFACT_PREFIX}12345-attempt-1",
         "digest": "sha256:" + digest,
         "size_in_bytes": 2048,
         "created_at": "2026-11-24T03:00:00Z",
