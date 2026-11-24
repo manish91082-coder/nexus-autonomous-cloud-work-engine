@@ -88,6 +88,7 @@ class FakeApi:
         self.pull_requests = []
         self.calls = []
         self.override_pr_head_sha = None
+        self.override_pr_base_sha = None
 
     def request(self, method, path, payload=None):
         self.calls.append((method, path, payload))
@@ -183,7 +184,7 @@ class FakeApi:
                 },
                 "base": {
                     "ref": payload["base"],
-                    "sha": self.master_sha,
+                    "sha": self.override_pr_base_sha or self.master_sha,
                     "repo": {"full_name": CANONICAL_REPOSITORY},
                 },
             }
