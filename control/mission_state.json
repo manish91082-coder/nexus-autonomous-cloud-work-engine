@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "P59.68_PUBLISHER_BRANCH_BASE_AND_PR_REF_INTEGRITY",
+  "phase": "P59.69_IMMUTABLE_WORKFLOW_ARTIFACT_PROVENANCE",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "Phase59.68 deterministic publisher branch-base/diff and draft-PR head/base integrity accepted by exact-head PR CI #45318616477 at 18edf6f2. Only empty-at-current-master or one-commit/one-expected-summary-file branches are accepted; behind/diverged/contaminated branches and mismatched PR refs fail closed. PR #54 remains draft/unmerged. No live API, token, deployment, inference or spend.",
+  "current_focus": "Phase59.69 immutable workflow ID and exact run-attempt artifact provenance implemented and accepted by exact-head CI #45321056047 at 603d293f. Publisher verifies canonical repository/workflow/run/attempt/head, one exact non-expired artifact, GitHub SHA-256 digest, archive byte count, bounded exact ZIP entries, and per-file hashes before reading worker output. Summary schema v2 binds workflow ID and artifact identity. PR #55 is prepared as a draft child of #54; master remains unchanged. No publisher token, live inference, deployment, spend or receipts.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -62,18 +62,20 @@
   ],
   "last_exact_head_ci_status": {
     "status": "SUCCESS",
-    "run_id": 45318616477,
-    "head_sha": "18edf6f2b65f11e63b02c0007e7b6f96a3a22fd4",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45318616477",
+    "run_id": 45321056047,
+    "head_sha": "603d293f4eee1fbd6d13dc195a4e55b7e6f71479",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45321056047",
     "tests": {
+      "host_client": "32/32",
       "ai_task_guard": "20/20",
-      "publisher": "39/39",
-      "summary_schema": "20/20",
+      "publisher": "42/42",
+      "summary_schema": "22/22",
+      "artifact_provenance": "26/26",
       "workers_runtime": "83/83",
       "workerd_integration": "1/1",
       "workflow_yaml": "5/5",
       "lockfile_packages": 165,
-      "host_client_step": "PASS"
+      "final_steps": "15/15 SUCCESS"
     }
   },
   "phase46_control_commits": [
@@ -149,7 +151,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.69: bind publisher to immutable GitHub workflow ID and exact source-run artifact identity; verify exactly one non-expired artifact for the canonical run and its digest/metadata before processing. Keep mocked/read-only; physical six-run proof remains owner-gated.",
+  "next_focus": "Phase59.70: offline end-to-end publisher event/replay/no-token dry-run. Prove WAITING_FOR_OWNER_CONFIGURATION is a no-op before any publisher API call or App token mint; duplicate event delivery is idempotent; wrong workflow/run attempt/branch, expired artifact, altered digest and tampered summary fail before writes. Physical six-run proof remains owner-gated.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -159,7 +161,7 @@
     "082dc6c11bce97f5c2d715ea5d9bd3ae15889e3c",
     "81fecc16ee919cc509e7d7bc304c553583a5de5d"
   ],
-  "last_observed_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+  "last_observed_head": "603d293f4eee1fbd6d13dc195a4e55b7e6f71479",
   "phase53_research_order": [
     "WORDPRESS_PLUGIN_ECOSYSTEM",
     "GOOGLE_WORKSPACE_MARKETPLACE",
@@ -168,7 +170,7 @@
     "CHROME_WEB_STORE"
   ],
   "phase53_research_checkpoint": "14-Nov completed: WP webhook / Action Scheduler / COD fraud generic hypotheses NO-GO; Workspace attachment archival / invoice extraction / approvals / notification clones NO-GO. Formula Integrity technical matrix completed; HOLD due event/identity/API/quotas plus no proven recurring demand. Continue P53-001 Google Workspace problem-first research beyond these categories.",
-  "last_observed_at": "2026-11-17T03:11:20Z",
+  "last_observed_at": "2026-11-24",
   "resume_checkpoint": "research/PHASE_59_60_ACCOUNT_SCOPE_PLATFORM_BUDGET_ARBITER_2026-11-19.md",
   "last_observed_head_semantics": "Exact master HEAD 9cdc16a28e9bd958cb5eec78548e464988123e10 was independently checked by Mission Continuity Guard #244 (111 checks, zero errors) and Mission Autonomous AI Worker #444 (POLL_OK selected P59-003; AI inference disabled). This final checkpoint commit records those exact-head runs.",
   "phase53_latest_report": "research/PHASE_53_FORMULA_INTEGRITY_TECHNICAL_FEASIBILITY_2026-11-14.md",
@@ -2383,7 +2385,7 @@
     "independent_physical_hosts_proven": false,
     "live_deployment": false
   },
-  "candidate_branch": "phase59-68-publisher-branch-integrity",
+  "candidate_branch": "phase59-69-artifact-provenance",
   "phase59_57": {
     "report": "research/PHASE_59_57_CONSTRAINED_PUBLISHER_SEPARATION_2026-11-17.md",
     "branch": "phase59-57-constrained-publisher-separation",
@@ -2443,8 +2445,8 @@
     "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
   },
   "last_updated": "2026-11-24",
-  "candidate_code_head": "5c76f785a25f9c08e20326700bea79d5ff147cde",
-  "candidate_tested_head": "18edf6f2b65f11e63b02c0007e7b6f96a3a22fd4",
+  "candidate_code_head": "603d293f4eee1fbd6d13dc195a4e55b7e6f71479",
+  "candidate_tested_head": "603d293f4eee1fbd6d13dc195a4e55b7e6f71479",
   "phase59_58": {
     "report": "research/PHASE_59_58_DURABLE_DISPATCHER_SPECIALIST_GRAPH_INTEGRATION_2026-11-18.md",
     "branch": "phase59-58-durable-dispatcher-shadow-integration",
@@ -2896,7 +2898,7 @@
     "verified_realized_net_receipts_inr": 0,
     "next": "Owner reviews and merges PRs #44→#45→#46→#47→#48 in order; configures the existing Cloudflare Free test-only namespace pair and required GitHub environment approval; then manually executes six separate workflow runs. Only after exact snapshot acceptance start 7-day soak, then 30-day soak."
   },
-  "candidate_head": "18edf6f2b65f11e63b02c0007e7b6f96a3a22fd4",
+  "candidate_head": "603d293f4eee1fbd6d13dc195a4e55b7e6f71479",
   "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
   "next": "Phase59.67: enforce sanitized draft-summary schema and provenance at the publisher API boundary. In parallel, Phase59.64D physical six-run proof remains owner-gated on sequential PR retarget/merge, master reconciliation, branch-protection and legacy-writer review, Workers Free/account usage and test-only namespace/environment setup.",
   "ai_inference_enabled": false,
@@ -3780,5 +3782,108 @@
       45318598461
     ],
     "next": "Phase59.69 immutable workflow ID and artifact provenance binding; six-run physical proof remains owner-gated."
+  },
+  "phase59_69": {
+    "status": "ACCEPTED_CODE_AND_EXACT_HEAD_CI_PASS_OWNER_GATES_PENDING",
+    "report": "research/PHASE_59_69_IMMUTABLE_WORKFLOW_ARTIFACT_PROVENANCE_2026-11-24.md",
+    "owner_packet": "governance/P59-003_STACKED_PR_TO_MASTER_MERGE_OWNER_ACTION_PACKET_2026-11-24.md",
+    "branch": "phase59-69-artifact-provenance",
+    "parent_pr": 54,
+    "pr_number": 55,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "tested_code_head": "603d293f4eee1fbd6d13dc195a4e55b7e6f71479",
+    "ci_run_id": 45321056047,
+    "ci_status": "SUCCESS",
+    "workflow_id": 415454534,
+    "repository_id": 1454085952,
+    "artifact_name_template": "mission-autonomous-worker-<GITHUB_RUN_ID>-attempt-<GITHUB_RUN_ATTEMPT>",
+    "tests": {
+      "host_client": "32/32",
+      "ai_task_guard": "20/20",
+      "publisher": "42/42",
+      "summary_schema": "22/22",
+      "artifact_provenance": "26/26",
+      "workers_runtime": "83/83",
+      "workerd_integration": "1/1",
+      "workflow_yaml": "5/5",
+      "lockfile_packages": 165
+    },
+    "implementation": {
+      "exact_run_api_metadata": true,
+      "exact_attempt_artifact_name": true,
+      "exactly_one_matching_artifact": true,
+      "artifact_listing_complete": true,
+      "nonexpired_artifact_required": true,
+      "github_artifact_sha256_verified": true,
+      "archive_size_verified": true,
+      "bounded_safe_zip_extraction": true,
+      "exact_three_report_files": true,
+      "per_file_sha256_manifest": true,
+      "bearer_never_forwarded_to_artifact_storage": true,
+      "summary_schema_version": "2.0",
+      "raw_model_output_excluded": true
+    },
+    "actual_readbacks": {
+      "master_worker_588": {
+        "run_id": 45276398411,
+        "artifact_id": 14867217432,
+        "legacy_name": true,
+        "size_in_bytes": 1900,
+        "sha256": "d019c66456f1394ae7eaa382b6ab3d8aedf8e1110af1ef70ebd9ba251c6c906b",
+        "downloaded_digest_match": true,
+        "files": 3,
+        "ai_status": "WAITING_FOR_OWNER_CONFIGURATION"
+      },
+      "candidate_worker_599": {
+        "run_id": 45320801123,
+        "run_attempt": 1,
+        "artifact_id": 14887411312,
+        "name": "mission-autonomous-worker-45320801123-attempt-1",
+        "size_in_bytes": 1936,
+        "sha256": "903600cc177fd0f41cb22c40448b6bdde25f73ff3e0b1d37d2829771b50266be",
+        "downloaded_digest_match": true,
+        "files": 3,
+        "head_branch": "phase59-69-artifact-provenance",
+        "source_eligible": false
+      }
+    },
+    "failures_corrected": [
+      {
+        "run_id": 45320328030,
+        "reason": "Publisher tests lacked verified artifact fixtures; corrected all call sites and added missing-attestation rejection."
+      },
+      {
+        "run_id": 45320352277,
+        "reason": "ZIP mode check rejected regular files without explicit file-type bits; corrected using stat.S_IFMT while continuing to reject symlinks."
+      },
+      {
+        "run_id": 45320771090,
+        "reason": "Publisher fixtures still used run-only artifact names after attempt binding; fixtures/schema were updated."
+      },
+      {
+        "run_id": 45320796433,
+        "reason": "Stale run-only artifact-name check remained after exact-attempt selection; removed and reran."
+      }
+    ],
+    "superseded_cancelled_runs": [
+      45320348022,
+      45320387764,
+      45320425148,
+      45320783935,
+      45320787424,
+      45320791956,
+      45320821041
+    ],
+    "live_publisher_api_requests": 0,
+    "app_token_created": false,
+    "cloudflare_deployed": false,
+    "ai_inference_enabled": false,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "physical_multi_host_proven": false,
+    "live_six_workflow_run_proof_started": false,
+    "soak_7d_started": false,
+    "soak_30d_started": false,
+    "next": "Phase59.70 offline end-to-end publisher event/replay/no-token dry-run; physical six-run proof remains owner-gated."
   }
 }
