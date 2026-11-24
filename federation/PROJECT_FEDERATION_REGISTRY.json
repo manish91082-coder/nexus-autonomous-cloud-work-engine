@@ -31,8 +31,8 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase59.67 strict worker-artifact and published-summary schema/provenance enforcement accepted by exact-head PR CI #45317418741 at 16d5a85. 20 summary-schema tests, 33 publisher tests, 20 AI/task guard tests, 32 host-client tests, 5 workflow YAML checks, 165-package lockfile, 83 Workers runtime tests and 1 Workerd integration passed. PR #53 is draft/unmerged. No live API calls, token, deployment, inference or spend.",
-      "last_observed_head": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc",
+      "status": "P59-003 IN_PROGRESS; Phase59.68 publisher branch-base/diff and draft-PR head/base integrity accepted by exact-head CI #45318616477 at 18edf6f2. Only an empty current-master branch or exactly one commit/one expected summary file is accepted; stale/behind/diverged/contaminated branches and mismatched PR refs fail closed. PR #54 draft/unmerged. No live API, token, deployment, inference or spend.",
+      "last_observed_head": "18edf6f2b65f11e63b02c0007e7b6f96a3a22fd4",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
       "phase59_14_report": "research/PHASE_59_14_B4_CRASH_RECOVERY_AND_WORKFLOW_INVENTORY_2026-11-15.md",
@@ -241,7 +241,7 @@
         "continuity_guard_run_id": 44009214414,
         "continuity_guard_checks": 111
       },
-      "next": "Phase59.68: harden deterministic publisher branch ancestry, one-file diff and draft-PR head/base verification; then owner-gated independent multi-host proof.",
+      "next": "Phase59.69: verify immutable GitHub workflow identity and exact source-run artifact metadata/digest before accepting worker output.",
       "production_integrated": false,
       "ai_inference_enabled": false,
       "authorized_spend_inr": 0,
@@ -445,8 +445,8 @@
         "production_feature_flag": "OFF",
         "next": "Phase59.60: implement a separate account-scope platform budget DO and synthetic cross-run/cross-repository atomicity tests before any hosted deployment."
       },
-      "candidate_branch": "phase59-67-sanitized-summary-schema",
-      "candidate_head": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc",
+      "candidate_branch": "phase59-68-publisher-branch-integrity",
+      "candidate_head": "18edf6f2b65f11e63b02c0007e7b6f96a3a22fd4",
       "phase59_60": {
         "report": "research/PHASE_59_60_ACCOUNT_SCOPE_PLATFORM_BUDGET_ARBITER_2026-11-19.md",
         "branch": "phase59-60-account-scope-platform-budget",
@@ -1369,6 +1369,39 @@
           "final_automation_queue_checkpoint": "77a9a05c20f960b860d4c29a79a520a78d50111b",
           "final_federation_registry_checkpoint": "4a5ff98740860c36b4d94f959586c2378b3fce36"
         }
+      },
+      "phase59_68": {
+        "status": "ACCEPTED_CODE_AND_EXACT_HEAD_CI_PASS_OWNER_GATES_PENDING",
+        "report": "research/PHASE_59_68_PUBLISHER_BRANCH_BASE_AND_PR_REF_INTEGRITY_2026-11-24.md",
+        "branch": "phase59-68-publisher-branch-integrity",
+        "pr_number": 54,
+        "pr_state": "DRAFT_OPEN_UNMERGED",
+        "parent_pr": 53,
+        "tested_head": "18edf6f2b65f11e63b02c0007e7b6f96a3a22fd4",
+        "ci_run_id": 45318616477,
+        "ci_status": "SUCCESS",
+        "tests": {
+          "ai_task_guard": "20/20",
+          "publisher": "39/39",
+          "summary_schema": "20/20",
+          "workers_runtime": "83/83",
+          "workerd_integration": "1/1",
+          "workflow_yaml": "5/5",
+          "lockfile_packages": 165,
+          "host_client_step": "PASS"
+        },
+        "controls": [
+          "canonical compare route",
+          "current-master ancestry and zero-behind check",
+          "empty branch or exact one-commit/one-file diff only",
+          "re-read branch and compare after write",
+          "draft PR head/base SHA and canonical repository binding"
+        ],
+        "live_api_requests": 0,
+        "ai_inference_enabled": false,
+        "authorized_spend_inr": 0,
+        "verified_realized_net_receipts_inr": 0,
+        "next": "Phase59.69 immutable workflow ID and source-run artifact identity/digest verification; physical six-run proof remains owner-gated."
       }
     },
     {
