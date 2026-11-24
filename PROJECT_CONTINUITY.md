@@ -5194,3 +5194,32 @@ Date: 2026-11-17
 - PR stack #44–#52 remains draft/open/unmerged. The owner packet explains why PRs #45–#52 must be retargeted to `master` after each parent PR merges; merging them into their current intermediate base would not land the full stack on master. No retarget or merge performed.
 - P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. AI inference disabled; production OFF; spend ₹0; receipts ₹0.
 - Next safe engineering: Phase59.67 sanitized-summary schema/provenance enforcement at the publisher API boundary. Physical six-run proof remains owner-gated on sequential PR retarget/merge, master reconciliation, branch protection, legacy writer review, Workers Free/account usage and test-only namespaces/environment.
+
+
+## PHASE 59.67 — SANITIZED SUMMARY SCHEMA AND PROVENANCE ENFORCEMENT
+Date: 2026-11-24
+
+- Canonical master HEAD remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`; no master write or merge.
+- Candidate branch: `phase59-67-sanitized-summary-schema`; exact tested code/test HEAD `16d5a85d3b53e2bf5a4a4aea7401869044d09cfc`.
+- PR #53 is draft/open/unmerged, mergeable, based on Phase59.66. PRs #44–#53 remain a sequential draft stack; no owner action or retarget/merge occurred.
+- Added `scripts/p10cr_summary_schema.py`, `schemas/p10cr-worker-draft-summary-v1.schema.json`, and `tests/test_p10cr_summary_schema.py`; updated constrained publisher, publisher fixtures and Phase59.35 CI.
+- Worker artifact requires exact fields, UTC timestamp, canonical P59-003 task/provider, bounded usage, all safety flags, deterministic verification note, bounded output and no duplicate JSON keys.
+- Published summary uses a closed JSON Schema; binds canonical repository/workflow/event/master branch/run ID/attempt/head SHA; contains only model-output SHA-256 and byte count, never raw output; remains `UNVERIFIED_PROPOSAL` and requires human evidence review.
+- GitHub Contents PUT validation binds summary run ID/attempt to deterministic path. Publisher plan is revalidated for exact fields, canonical summary bytes, digest, branch and path before any API request. Tampered-plan test proves rejection before fake API access.
+- Exact-head PR CI [#45317418741](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45317418741) SUCCESS at `16d5a85d3b53e2bf5a4a4aea7401869044d09cfc`: host client 32/32; AI/task guard 20/20; publisher 33/33; summary schema/provenance 20/20; Workers runtime 83/83 across four files; Workerd 1/1; workflow YAML 5/5; lockfile 165 packages.
+- Earlier superseded push/PR runs were cancelled by the shared concurrency group while a prior run was active; they are cancellations, not test failures. Final exact-head PR run passed.
+- Latest master Mission Worker #588 [run 45276398411](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45276398411) SUCCESS on master HEAD: queue POLL_OK selected P59-003; AI executor WAITING_FOR_OWNER_CONFIGURATION; zero inference requests; no publisher action. Latest master Continuity Guard #394 [run 45163468164](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45163468164) SUCCESS. Master combined-status API returned no status contexts; branch protection remains UNVERIFIED.
+- P59-003 remains the sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No revenue-source/product discovery or other-project execution.
+- No live publisher API request, GitHub App token, Cloudflare deployment, AI inference, KYC, legal acceptance, public release, billing, payment, signing or money movement. AI inference disabled. Authorized spend ₹0; verified realized net receipts/PCNE ₹0. Other projects remain isolated/read-only.
+- Owner merge packet updated through PR #53: `governance/P59-003_STACKED_PR_TO_MASTER_MERGE_OWNER_ACTION_PACKET_2026-11-23.md` (see exact file path in branch).
+- Next engineering step: Phase59.68 — deterministic publisher branch-base/ancestry and one-file/one-commit diff validation; verify draft PR base/head SHA before owner-gated six-run proof. Physical multi-host proof and 7/30-day soak remain pending.
+
+
+### Phase59.67 final evidence/control reference reconciliation
+- Technical report commit: `ac1dcd7cf70882e98698ac5072651d8c1f84055f`.
+- Owner stacked-PR packet commit: `204339b089be558f59cb85041439fe76c126dc5a`; packet includes PR #53 as landing step 10 after PR #52.
+- Mission state checkpoint: `d0c60e661649e6c15a2031f86f1e05e462fad948`.
+- Automation queue checkpoint: `77a9a05c20f960b860d4c29a79a520a78d50111b`.
+- Federation registry checkpoint: `4a5ff98740860c36b4d94f959586c2378b3fce36`.
+- All these are candidate-branch evidence/control commits. Master remains unchanged and its historical continuity/queue snapshot must be reconciled only after owner-approved sequential merges.
+- The exact executable/test head remains `16d5a85d3b53e2bf5a4a4aea7401869044d09cfc`; documentation/control commits do not change tested executable content.

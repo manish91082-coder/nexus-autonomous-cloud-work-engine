@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "P59.66_PUBLISHER_API_BOUNDARY_HARDENING",
+  "phase": "P59.67_SANITIZED_SUMMARY_SCHEMA_AND_PROVENANCE_ENFORCEMENT",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "Phase59.66 code and exact-head CI accepted: publisher API methods/routes/queries/payloads are strictly allowlisted and redirects fail closed. Nine new tests pass. The owner PR retarget-to-master packet is prepared; no merges, App tokens or live API calls.",
+  "current_focus": "Phase59.67 strict worker-artifact and published-summary schema/provenance enforcement accepted by exact-head PR CI #45317418741 at 16d5a85. Report, mission state, queue, federation and continuity updated on the candidate branch; PR #53 remains draft/unmerged. No live API calls, inference, deployment or spend.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -23,20 +23,21 @@
     "spend",
     "AI_provider_account_and_secret_setup"
   ],
-  "updated_at": "2026-11-23",
+  "updated_at": "2026-11-24",
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
-    "run_number": 543,
-    "run_id": 44861996471,
+    "run_number": 588,
+    "run_id": 45276398411,
     "conclusion": "success",
-    "head_sha": "7c9d9cd17b98f2f00626d83c624f448761d3f01a",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44861996471",
-    "completed_at": "2026-11-21T03:36:47Z",
-    "trigger": "push",
+    "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45276398411",
+    "completed_at": "2026-11-23T22:06:30Z",
+    "trigger": "schedule",
     "checks": [
       "POLL_OK selected P59-003",
-      "AI WAITING_FOR_OWNER_CONFIGURATION; no inference request",
-      "zero errors"
+      "AI executor WAITING_FOR_OWNER_CONFIGURATION",
+      "zero inference requests",
+      "no productive publisher action"
     ]
   },
   "verified_platform_credited_net_earnings_inr": 0,
@@ -59,7 +60,22 @@
     "CREATOR_IP_ROYALTIES_STOCK_ASSETS",
     "GAMES_SPONSORSHIP_AFFILIATE_ADVERTISING"
   ],
-  "last_exact_head_ci_status": "Phase59.64C tested code head 9868b642a57caa697dd60f740d3664bcdab50087 passed PR CI #45107642156: 32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1. Concurrent host-slot and snapshot-run single-winner proofs PASS.",
+  "last_exact_head_ci_status": {
+    "status": "SUCCESS",
+    "run_id": 45317418741,
+    "head_sha": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45317418741",
+    "tests": {
+      "host_client": "32/32",
+      "ai_task_guard": "20/20",
+      "publisher": "33/33",
+      "summary_schema": "20/20",
+      "workers_runtime": "83/83",
+      "workerd_integration": "1/1",
+      "workflow_yaml": "5/5",
+      "lockfile_packages": 165
+    }
+  },
   "phase46_control_commits": [
     "72230902a478552d007d94d330e216238c9b2982",
     "ae552163e2b1e65590fc98454d8f7817bc73fa92",
@@ -133,7 +149,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.64D: owner-gated six independent workflow-run proof after sequential PR stack merge, master control-plane reconciliation, branch-protection verification, legacy writer review, existing Workers Free account/aggregate usage verification, test-only namespace and required-reviewer environment approval; then 7-day and 30-day soak.",
+  "next_focus": "Phase59.68: verify deterministic publisher branch base/ancestry and exact one-file/one-commit diff; reject pre-existing branch contamination, behind-master state and mismatched draft PR head/base before owner-gated six-run proof.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -529,13 +545,13 @@
     "US_BUILDING_PERMIT_CONTRACTOR_LEAD_SCRAPING"
   ],
   "latest_verified_continuity_guard": {
-    "run_number": 350,
-    "run_id": 44861996479,
+    "name": "Mission Continuity Guard",
+    "run_number": 394,
+    "run_id": 45163468164,
     "conclusion": "success",
-    "head_sha": "7c9d9cd17b98f2f00626d83c624f448761d3f01a",
-    "checks": 111,
-    "errors": 0,
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/44861996479"
+    "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45163468164",
+    "completed_at": "2026-11-23T11:15:05Z"
   },
   "automation_schedule_audit": {
     "checked_at": "2026-11-14T19:34:00+05:30",
@@ -936,21 +952,29 @@
   },
   "latest_master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
   "latest_control_plane_worker_run": {
-    "run_id": 43998553989,
-    "run_number": 485,
+    "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
+    "run_number": 588,
+    "run_id": 45276398411,
     "conclusion": "success",
     "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-    "ai_inference": "disabled; no request",
-    "selected_task": "P59-003",
-    "queue_poll": "POLL_OK"
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45276398411",
+    "completed_at": "2026-11-23T22:06:30Z",
+    "trigger": "schedule",
+    "checks": [
+      "POLL_OK selected P59-003",
+      "AI executor WAITING_FOR_OWNER_CONFIGURATION",
+      "zero inference requests",
+      "no productive publisher action"
+    ]
   },
   "latest_control_plane_guard_run": {
-    "run_id": 43927317601,
-    "run_number": 288,
+    "name": "Mission Continuity Guard",
+    "run_number": 394,
+    "run_id": 45163468164,
     "conclusion": "success",
     "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-    "checks": 111,
-    "errors": []
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45163468164",
+    "completed_at": "2026-11-23T11:15:05Z"
   },
   "phase59_19_report": "research/PHASE_59_19_FEDERATION_QUOTA_ARBITER_PROTOTYPE_2026-11-15.md",
   "phase59_19_pr_number": 3,
@@ -2359,7 +2383,7 @@
     "independent_physical_hosts_proven": false,
     "live_deployment": false
   },
-  "candidate_branch": "phase59-66-publisher-api-boundary",
+  "candidate_branch": "phase59-67-sanitized-summary-schema",
   "phase59_57": {
     "report": "research/PHASE_59_57_CONSTRAINED_PUBLISHER_SEPARATION_2026-11-17.md",
     "branch": "phase59-57-constrained-publisher-separation",
@@ -2418,9 +2442,9 @@
     "control_checkpoint_commit": "17584db552c559cdb9d44d46aee004303ccdec25",
     "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
   },
-  "last_updated": "2026-11-23",
-  "candidate_code_head": "a3402ee892b22b946910cb17fc30283a92e6838a",
-  "candidate_tested_head": "a3402ee892b22b946910cb17fc30283a92e6838a",
+  "last_updated": "2026-11-24",
+  "candidate_code_head": "e3779bc1dcdd84e4d91ec7e19bc35051aee56572",
+  "candidate_tested_head": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc",
   "phase59_58": {
     "report": "research/PHASE_59_58_DURABLE_DISPATCHER_SPECIALIST_GRAPH_INTEGRATION_2026-11-18.md",
     "branch": "phase59-58-durable-dispatcher-shadow-integration",
@@ -2872,7 +2896,7 @@
     "verified_realized_net_receipts_inr": 0,
     "next": "Owner reviews and merges PRs #44→#45→#46→#47→#48 in order; configures the existing Cloudflare Free test-only namespace pair and required GitHub environment approval; then manually executes six separate workflow runs. Only after exact snapshot acceptance start 7-day soak, then 30-day soak."
   },
-  "candidate_head": "734e281ccbcb6d6493fa4c24f296a4153672cf0e",
+  "candidate_head": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc",
   "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
   "next": "Phase59.67: enforce sanitized draft-summary schema and provenance at the publisher API boundary. In parallel, Phase59.64D physical six-run proof remains owner-gated on sequential PR retarget/merge, master reconciliation, branch-protection and legacy-writer review, Workers Free/account usage and test-only namespace/environment setup.",
   "ai_inference_enabled": false,
@@ -3602,7 +3626,7 @@
     "ai_inference_enabled": false,
     "authorized_spend_inr": 0,
     "verified_realized_net_receipts_inr": 0,
-    "next": "Phase59.67 sanitized-summary schema enforcement at publisher API boundary; physical six-run proof remains owner-gated.",
+    "next": "Phase59.67 accepted by exact-head CI #45317418741. Next Phase59.68 publisher branch-base/ancestry and PR head/base integrity.",
     "ci_run_id": 45110233131,
     "ci_status": "SUCCESS",
     "tested_pr_head": "734e281ccbcb6d6493fa4c24f296a4153672cf0e",
@@ -3626,5 +3650,83 @@
     ],
     "correction": "GET /pulls validator now derives owner-qualified branch from query and validates deterministic branch pattern; final run #45110233131 passed.",
     "owner_merge_packet": "governance/P59-003_STACKED_PR_TO_MASTER_MERGE_OWNER_ACTION_PACKET_2026-11-23.md"
+  },
+  "phase59_67": {
+    "status": "ACCEPTED_CODE_AND_EXACT_HEAD_CI_PASS_OWNER_GATES_PENDING",
+    "report": "research/PHASE_59_67_SANITIZED_SUMMARY_SCHEMA_PROVENANCE_2026-11-24.md",
+    "branch": "phase59-67-sanitized-summary-schema",
+    "pr_number": 53,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "parent_pr": 52,
+    "code_head": "e3779bc1dcdd84e4d91ec7e19bc35051aee56572",
+    "tested_head": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc",
+    "commits": [
+      "3f6fde5f849344365f81daa1b3e3ab3cb5b0221f",
+      "daba4f04969882afd486f42900ff4d8da6a036ff",
+      "cc89de3cdd932db8647490918b8c5be616154d87",
+      "3cadaea49ba0beffe0d49dabc8896477d9c091d3",
+      "f904a55c715d897f0c6710c98f1d3ef3199de7c6",
+      "ef71bf0fede3d91b47c9fa8b5eacbbf04f9158ce",
+      "d364c4452f5bf3ec750a8230b4e5a0710c2b8fb8",
+      "2ca29ee05b82abfc30ce52ea954fbf7960995f6b",
+      "91cc5b615a00028f8583ba1eece5a21a7975b0ee",
+      "e3779bc1dcdd84e4d91ec7e19bc35051aee56572",
+      "bc2b83264437884cff8d983957326f9c3e902cc3",
+      "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc"
+    ],
+    "ci_run_id": 45317418741,
+    "ci_status": "SUCCESS",
+    "tests": {
+      "host_client": "32/32",
+      "ai_task_guard": "20/20",
+      "publisher": "33/33",
+      "summary_schema": "20/20",
+      "workers_runtime": "83/83 across 4 files",
+      "workerd_integration": "1/1",
+      "workflow_yaml": "5/5 PASS",
+      "lockfile_packages": 165
+    },
+    "controls": [
+      "exact worker report keys",
+      "UTC timestamp",
+      "canonical P59-003 title/provider",
+      "duplicate JSON key rejection",
+      "closed JSON Schema",
+      "provenance binding to repository/workflow/event/branch/run/attempt/head SHA",
+      "raw model output excluded; SHA-256 and byte count only",
+      "canonical summary serialization",
+      "PUT path run/attempt binding",
+      "publish-plan revalidation before API call",
+      "tampered plan rejected before any API call"
+    ],
+    "live_api_requests": 0,
+    "github_app_token_created": false,
+    "cloudflare_deployed": false,
+    "ai_inference_enabled": false,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "failures": [],
+    "superseded_cancelled_runs": [
+      45317057265,
+      45317065326,
+      45317309535,
+      45317317510,
+      45317321026,
+      45317412358
+    ],
+    "next": "Phase59.68 publisher branch-base/ancestry and draft-PR head/base integrity; six-run proof remains owner-gated.",
+    "report_commit": "ac1dcd7cf70882e98698ac5072651d8c1f84055f",
+    "owner_packet_commit": "204339b089be558f59cb85041439fe76c126dc5a",
+    "control_commits": {
+      "mission_state": "98f23144f27e420953a36c128f29de31a799205e",
+      "automation_queue": "93c1b7ab928992a11a15afb96c459da5da001438",
+      "federation_registry": "27bf48fef361caae569429d509711433a098e700",
+      "project_continuity": "51f282500cd702aa2159ec32678feec58a637757",
+      "final_mission_state_before_report_ref": "31fa9969816a770ce24a0fbe49b90305208418a5",
+      "final_mission_state_checkpoint": "d0c60e661649e6c15a2031f86f1e05e462fad948",
+      "final_automation_queue_checkpoint": "77a9a05c20f960b860d4c29a79a520a78d50111b",
+      "final_federation_registry_checkpoint": "4a5ff98740860c36b4d94f959586c2378b3fce36"
+    },
+    "current_candidate_branch_head_before_control_finalization": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc"
   }
 }

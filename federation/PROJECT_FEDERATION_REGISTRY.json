@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "federation_id": "MANISH-AI-PROJECT-FEDERATION-2026",
-  "updated_at": "2026-11-23",
+  "updated_at": "2026-11-24",
   "purpose": "Cross-project coordination only; never merge missions, budgets, data, revenue ledgers or safety boundaries.",
   "authority": {
     "federation_controller": "manish91082-coder/nexus-autonomous-cloud-work-engine",
@@ -31,8 +31,8 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase59.66 publisher API route/redirect guard accepted by exact-head CI #45110233131. 33 publisher tests, 20 AI task guard tests, 32 offline client tests, 5 workflow YAML files, 165-package lockfile, 83 Workers runtime tests and 1 Workerd integration passed. Owner PR retarget-to-master packet prepared; no merges or owner actions performed.",
-      "last_observed_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+      "status": "P59-003 IN_PROGRESS; Phase59.67 strict worker-artifact and published-summary schema/provenance enforcement accepted by exact-head PR CI #45317418741 at 16d5a85. 20 summary-schema tests, 33 publisher tests, 20 AI/task guard tests, 32 host-client tests, 5 workflow YAML checks, 165-package lockfile, 83 Workers runtime tests and 1 Workerd integration passed. PR #53 is draft/unmerged. No live API calls, token, deployment, inference or spend.",
+      "last_observed_head": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
       "phase59_14_report": "research/PHASE_59_14_B4_CRASH_RECOVERY_AND_WORKFLOW_INVENTORY_2026-11-15.md",
@@ -241,7 +241,7 @@
         "continuity_guard_run_id": 44009214414,
         "continuity_guard_checks": 111
       },
-      "next": "Phase59.67 sanitized-summary schema enforcement. Physical six-run proof remains owner-gated on sequential PR #44–#52 retarget/merge, master reconciliation, branch protection, legacy writer review, Workers Free/account usage and test-only namespace/environment approval.",
+      "next": "Phase59.68: harden deterministic publisher branch ancestry, one-file diff and draft-PR head/base verification; then owner-gated independent multi-host proof.",
       "production_integrated": false,
       "ai_inference_enabled": false,
       "authorized_spend_inr": 0,
@@ -445,8 +445,8 @@
         "production_feature_flag": "OFF",
         "next": "Phase59.60: implement a separate account-scope platform budget DO and synthetic cross-run/cross-repository atomicity tests before any hosted deployment."
       },
-      "candidate_branch": "phase59-66-publisher-api-boundary",
-      "candidate_head": "4e6cf2032e8b2c5b608434f89ef82eb9d4d15b56",
+      "candidate_branch": "phase59-67-sanitized-summary-schema",
+      "candidate_head": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc",
       "phase59_60": {
         "report": "research/PHASE_59_60_ACCOUNT_SCOPE_PLATFORM_BUDGET_ARBITER_2026-11-19.md",
         "branch": "phase59-60-account-scope-platform-budget",
@@ -1320,6 +1320,55 @@
         ],
         "correction": "GET /pulls validator now derives owner-qualified branch from query and validates deterministic branch pattern; final run #45110233131 passed.",
         "owner_merge_packet": "governance/P59-003_STACKED_PR_TO_MASTER_MERGE_OWNER_ACTION_PACKET_2026-11-23.md"
+      },
+      "phase59_67": {
+        "status": "ACCEPTED_CODE_AND_EXACT_HEAD_CI_PASS_OWNER_GATES_PENDING",
+        "report": "research/PHASE_59_67_SANITIZED_SUMMARY_SCHEMA_PROVENANCE_2026-11-24.md",
+        "branch": "phase59-67-sanitized-summary-schema",
+        "pr_number": 53,
+        "pr_state": "DRAFT_OPEN_UNMERGED",
+        "parent_pr": 52,
+        "tested_head": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc",
+        "ci_run_id": 45317418741,
+        "ci_status": "SUCCESS",
+        "tests": {
+          "host_client": "32/32",
+          "ai_task_guard": "20/20",
+          "publisher": "33/33",
+          "summary_schema": "20/20",
+          "workers_runtime": "83/83",
+          "workerd_integration": "1/1",
+          "workflow_yaml": "5/5",
+          "lockfile_packages": 165
+        },
+        "controls": [
+          "closed worker artifact contract",
+          "duplicate JSON key rejection",
+          "UTC timestamp",
+          "exact P59-003 task/provider identity",
+          "closed published summary schema",
+          "canonical workflow/run/attempt/head provenance",
+          "raw output fingerprint only",
+          "final API PUT schema/path validation",
+          "publisher plan/content revalidation before API call"
+        ],
+        "live_api_requests": 0,
+        "ai_inference_enabled": false,
+        "authorized_spend_inr": 0,
+        "verified_realized_net_receipts_inr": 0,
+        "next": "Phase59.68 publisher branch-base/ancestry and draft-PR head/base integrity; six-run physical proof remains owner-gated.",
+        "report_commit": "ac1dcd7cf70882e98698ac5072651d8c1f84055f",
+        "owner_packet_commit": "204339b089be558f59cb85041439fe76c126dc5a",
+        "control_commits": {
+          "mission_state": "98f23144f27e420953a36c128f29de31a799205e",
+          "automation_queue": "93c1b7ab928992a11a15afb96c459da5da001438",
+          "federation_registry": "27bf48fef361caae569429d509711433a098e700",
+          "project_continuity": "51f282500cd702aa2159ec32678feec58a637757",
+          "final_mission_state_before_report_ref": "31fa9969816a770ce24a0fbe49b90305208418a5",
+          "final_mission_state_checkpoint": "d0c60e661649e6c15a2031f86f1e05e462fad948",
+          "final_automation_queue_checkpoint": "77a9a05c20f960b860d4c29a79a520a78d50111b",
+          "final_federation_registry_checkpoint": "4a5ff98740860c36b4d94f959586c2378b3fce36"
+        }
       }
     },
     {
@@ -1425,7 +1474,7 @@
     "state_writer": "One authorized publisher per repository control-plane path; other workers submit isolated branches/PRs.",
     "conflict_resolution": "Never last-write-wins for mission state, queues, constitutions, revenue ledgers or evidence registers.",
     "run_deduplication": "Idempotency key + workflow run ID + project/task identity.",
-    "quota_arbitration": "Not deployed. Next build per-project GitHub Actions/API quota reservations and fair scheduling; GITHUB_TOKEN budget and secondary content limits require bounded commits/heartbeats.",
+    "quota_arbitration": "Cross-project federation quota arbitration is NOT deployed. P10CR account-scope platform budget has synthetic Durable Object tests and dispatcher shadow integration only; no live cross-run/cross-repository hosted proof or cross-project writes. Keep all project clients read-only until separate validation and owner approval.",
     "thread_identity": "Record chat_thread_ref or automation_id where available; missing identity remains unknown.",
     "max_active_leases": 8
   },
@@ -1442,6 +1491,7 @@
     "This registry is a coordination contract, not proof other repos currently enforce locks."
   ],
   "next_actions": [
+    "P10CR Phase59.68 publisher branch-base/ancestry and draft-PR head/base integrity hardening; keep physical six-run proof owner-gated.",
     "Phase59.62: prepare the independent-host test harness and owner preflight; in parallel pin the Cloudflare/Vitest test dependencies and add a lockfile. Keep live endpoint tests disabled until the owner verifies an existing Workers Free account, account-wide usage and the shared P10CR Durable Object namespace. Then run four independent standard GitHub-hosted runners, prove shared lease/quota/fencing behavior, and only after that start the bounded 7-day and 30-day soak.",
     "Protect federation-locks branch from force push and deletion with a GitHub ruleset; verify bypass actors and recovery.",
     "Prepare least-privilege GitHub App scoped to the Nexus controller repository; owner installs/approves through official GitHub UI.",

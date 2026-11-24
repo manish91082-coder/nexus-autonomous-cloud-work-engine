@@ -15,8 +15,8 @@
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
-    "last_reconciled_from_mission_state": "2026-11-23: Phase59.66 code and exact-head CI accepted (#45110233131). Publisher API is limited to seven exact GET/POST/PUT route/payload shapes; redirects rejected. Python AI/task guard 20/20, publisher 33/33, offline 32/32, YAML 5/5, lockfile 165, Workers 83/83, Workerd 1/1. Two earlier route-validator test failures were fixed and transparently recorded. Owner PR retarget/merge packet prepared; no owner action performed.",
-    "reconciliation_note": "Phase59.61 integrates the account-scope budget into the P59-003 shadow dispatcher. Budget reservation precedes durable registration/claim; settlement follows durable completion/readback; ambiguous outcomes remain idempotent/UNCERTAIN; exhaustion creates no task. PR #46 is draft/unmerged and stacked on #45/#44. No production deployment or AI inference. No revenue-source ranking while P59-003 is active. Phase59.63.2: P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. New preflight rejects non-canonical repo/ref/event before network. Spend ₹0; inference disabled; live proof remains owner-gated. Phase59.63.2 exact-head CI PASS. P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Canonical repository/master/workflow_dispatch guard now runs before live endpoint request. Spend ₹0; inference disabled; six-run hosted proof remains owner-gated. Phase59.64A (23-Nov-2026): server-side host-stage gate now checks actual settled seed and prior-host reservation rows against supplied workflow-run IDs and synthetic repository aliases; host client binds prior IDs; seed preflight rejects supplied run IDs. Exact-head CI #45105764381 SUCCESS: 31/31 offline, YAML PASS, 165 lockfile entries, 83/83 Workers, Workerd 1/1. PR #50 draft/unmerged. No live proof/deployment/inference/spend/receipts. Phase59.64B (23-Nov-2026): seed/replay now uses an identical idempotency payload and server-side durable seed-row inference; snapshot/overflow requires all four host slots settled under exact run IDs and repository aliases. Push #45106578746 and PR #45106583941 both SUCCESS: 32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1. Candidate current-head inventory: 500 entries, 37 workflows, 42 cloud/swarm modules, 87 Python files, 74 action references (55 SHA-pinned, 19 mutable). Two legacy branch-scoped write workflows remain uninvoked and require owner review. Master control-plane remains stale pending sequential PR stack merge. Phase59.65: generic priority scanning in ai_task_executor was replaced with exact P59-003 current-task authority validation; no substitute task can be selected. P59-001 remains PAUSED; P59-002 remains BLOCKED. Inference stays disabled; exact-head CI pending. Phase59.65: both bootstrap poller and AI executor use scripts/current_task_guard.py; generic priority scanning removed from both. No substitute task can be selected. P59-001 remains PAUSED; P59-002 remains BLOCKED. Inference remains disabled. Phase59.66: constrained publisher API client now rejects unsupported methods/routes, noncanonical paths, extra queries, mismatched branches, non-draft PR payloads and redirects; only the deterministic sanitized draft-PR routes are allowed. Phase59.66 accepted by CI #45110233131; next safe engineering is Phase59.67 sanitized-summary schema enforcement. Physical six-run proof remains owner-gated.",
+    "last_reconciled_from_mission_state": "2026-11-24: Phase59.67 strict worker-artifact and published-summary schema/provenance enforcement accepted by exact-head PR CI #45317418741 at 16d5a85. Raw model output excluded; duplicate keys/unknown fields rejected; summary provenance bound to actual workflow run/attempt/head; final Contents PUT and publisher plan revalidate canonical content. PR #53 draft/unmerged; no owner actions. Master remains 8856bf90; latest master Worker #588 and Guard #394 succeeded. Spend ₹0; inference disabled.",
+    "reconciliation_note": "Phase59.61 integrates the account-scope budget into the P59-003 shadow dispatcher. Budget reservation precedes durable registration/claim; settlement follows durable completion/readback; ambiguous outcomes remain idempotent/UNCERTAIN; exhaustion creates no task. PR #46 is draft/unmerged and stacked on #45/#44. No production deployment or AI inference. No revenue-source ranking while P59-003 is active. Phase59.63.2: P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. New preflight rejects non-canonical repo/ref/event before network. Spend ₹0; inference disabled; live proof remains owner-gated. Phase59.63.2 exact-head CI PASS. P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. Canonical repository/master/workflow_dispatch guard now runs before live endpoint request. Spend ₹0; inference disabled; six-run hosted proof remains owner-gated. Phase59.64A (23-Nov-2026): server-side host-stage gate now checks actual settled seed and prior-host reservation rows against supplied workflow-run IDs and synthetic repository aliases; host client binds prior IDs; seed preflight rejects supplied run IDs. Exact-head CI #45105764381 SUCCESS: 31/31 offline, YAML PASS, 165 lockfile entries, 83/83 Workers, Workerd 1/1. PR #50 draft/unmerged. No live proof/deployment/inference/spend/receipts. Phase59.64B (23-Nov-2026): seed/replay now uses an identical idempotency payload and server-side durable seed-row inference; snapshot/overflow requires all four host slots settled under exact run IDs and repository aliases. Push #45106578746 and PR #45106583941 both SUCCESS: 32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1. Candidate current-head inventory: 500 entries, 37 workflows, 42 cloud/swarm modules, 87 Python files, 74 action references (55 SHA-pinned, 19 mutable). Two legacy branch-scoped write workflows remain uninvoked and require owner review. Master control-plane remains stale pending sequential PR stack merge. Phase59.65: generic priority scanning in ai_task_executor was replaced with exact P59-003 current-task authority validation; no substitute task can be selected. P59-001 remains PAUSED; P59-002 remains BLOCKED. Inference stays disabled; exact-head CI pending. Phase59.65: both bootstrap poller and AI executor use scripts/current_task_guard.py; generic priority scanning removed from both. No substitute task can be selected. P59-001 remains PAUSED; P59-002 remains BLOCKED. Inference remains disabled. Phase59.66: constrained publisher API client now rejects unsupported methods/routes, noncanonical paths, extra queries, mismatched branches, non-draft PR payloads and redirects; only the deterministic sanitized draft-PR routes are allowed. Phase59.66 accepted by CI #45110233131; next safe engineering is Phase59.67 sanitized-summary schema enforcement. Physical six-run proof remains owner-gated. Phase59.67 (24-Nov-2026): strict worker artifact and published summary contracts, JSON Schema 2020-12, duplicate-key rejection, UTC/task/provider/provenance validation, raw output fingerprint-only, final PUT and plan revalidation. Exact-head PR CI #45317418741 SUCCESS: host 32/32, AI guard 20/20, publisher 33/33, summary schema 20/20, Workers 83/83, Workerd 1/1, YAML 5/5, lockfile 165. PR #53 draft/unmerged. P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No live API, token, deployment, inference, spend or receipts.",
     "execution_override": {
       "date": "2026-11-22",
       "authority": "Explicit current owner instruction",
@@ -31,7 +31,8 @@
         "other project mission execution"
       ],
       "v5_safety_and_revenue_rules_preserved": true
-    }
+    },
+    "p0_execution_invariant": "P59-003 is the sole active P0; P59-001 remains PAUSED; P59-002 remains BLOCKED."
   },
   "tasks": [
     {
@@ -3332,7 +3333,7 @@
       "depends_on": [],
       "idempotency_key": "phase59-autonomous-swarm-foundation-v1",
       "owner_gate": false,
-      "last_updated": "2026-11-23",
+      "last_updated": "2026-11-24",
       "acceptance": [
         "Complete source-level inventory of every .github/workflows file, mission runtime script, dependencies, triggers, permissions, secrets references and state writes before editing existing automation.",
         "Map existing deterministic worker, continuity guard, queue poller, AI executor stub and all current workflow run outcomes; verify exact HEAD and no-regression boundary.",
@@ -3344,16 +3345,17 @@
         "Keep P59-002 blocked until a product passes all V5 hard gates; preserve owner approval for account/KYC/terms/spend/publication.",
         "Run failure injection, duplicate delivery, prompt-injection, quota exhaustion, schedule delay, state corruption and unauthorized action tests.",
         "Update continuity, mission_state, queue and report; fetch-back verify every modified file and exact commit.",
-        "Integrate the account-scope budget into the P59-003 shadow dispatcher: reserve before task registration/claim, settle only after durable completion readback, preserve UNCERTAIN on ambiguous outcomes, and reject budget exhaustion before task registration."
+        "Integrate the account-scope budget into the P59-003 shadow dispatcher: reserve before task registration/claim, settle only after durable completion readback, preserve UNCERTAIN on ambiguous outcomes, and reject budget exhaustion before task registration.",
+        "Published worker summaries use a closed versioned schema; provenance binds canonical repository/workflow/event/branch/run/attempt/head SHA; raw model output is excluded; final publisher plan and Contents API boundary revalidate canonical bytes."
       ],
       "evidence": {
-        "report": "research/PHASE_59_62_DEPENDENCY_HARDENING_AND_INDEPENDENT_HOST_PREFLIGHT_2026-11-20.md",
+        "report": "research/PHASE_59_67_SANITIZED_SUMMARY_SCHEMA_PROVENANCE_2026-11-24.md",
         "decision": "GO_STAGED_ZERO_COST_FIRST_HYBRID_SWARM_ARCHITECTURE",
         "architecture": "DETERMINISTIC_ORCHESTRATOR_PLUS_SPECIALIST_LLM_WORKERS_PLUS_EVIDENCE_CRITIC_PLUS_HUMAN_GATES",
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Phase59.66 publisher API route/redirect guard accepted by exact-head CI #45110233131. Owner PR retarget-to-master sequence packet prepared. Next safe engineering: Phase59.67 sanitized-summary schema enforcement; physical six-run proof remains owner-gated.",
+        "next": "Phase59.68: deterministic publisher branch-base/ancestry and PR head/base integrity. Physical six-run proof remains owner-gated.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -4697,6 +4699,43 @@
           "authorized_spend_inr": 0,
           "verified_realized_net_receipts_inr": 0,
           "next": "Phase59.64D: owner-gated six independent workflow-run proof after sequential PR stack merge, master control-plane reconciliation, branch-protection verification, legacy writer review, existing Workers Free account/aggregate usage verification, test-only namespace and required-reviewer environment approval; then 7-day and 30-day soak."
+        },
+        "phase59_67": {
+          "status": "ACCEPTED_CODE_AND_EXACT_HEAD_CI_PASS_OWNER_GATES_PENDING",
+          "branch": "phase59-67-sanitized-summary-schema",
+          "pr_number": 53,
+          "pr_state": "DRAFT_OPEN_UNMERGED",
+          "tested_head": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc",
+          "ci_run_id": 45317418741,
+          "ci_status": "SUCCESS",
+          "tests": {
+            "host_client": "32/32",
+            "ai_task_guard": "20/20",
+            "publisher": "33/33",
+            "summary_schema": "20/20",
+            "workers_runtime": "83/83",
+            "workerd_integration": "1/1",
+            "workflow_yaml": "5/5",
+            "lockfile_packages": 165
+          },
+          "raw_model_output_included": false,
+          "provenance_bound": true,
+          "live_api_requests": 0,
+          "ai_inference_enabled": false,
+          "authorized_spend_inr": 0,
+          "verified_realized_net_receipts_inr": 0,
+          "report_commit": "ac1dcd7cf70882e98698ac5072651d8c1f84055f",
+          "owner_packet_commit": "204339b089be558f59cb85041439fe76c126dc5a",
+          "control_commits": {
+            "mission_state": "98f23144f27e420953a36c128f29de31a799205e",
+            "automation_queue": "93c1b7ab928992a11a15afb96c459da5da001438",
+            "federation_registry": "27bf48fef361caae569429d509711433a098e700",
+            "project_continuity": "51f282500cd702aa2159ec32678feec58a637757",
+            "final_mission_state_before_report_ref": "31fa9969816a770ce24a0fbe49b90305208418a5",
+            "final_mission_state_checkpoint": "d0c60e661649e6c15a2031f86f1e05e462fad948",
+            "final_automation_queue_checkpoint": "77a9a05c20f960b860d4c29a79a520a78d50111b",
+            "final_federation_registry_checkpoint": "4a5ff98740860c36b4d94f959586c2378b3fce36"
+          }
         }
       },
       "blocker": "Owner review/merge of stacked PRs #44→#45→#46→#47→#48→#49→#50; reconcile stale master control plane and queue sequence policy; verify branch protection in owner UI; verify existing Cloudflare Workers Free account and account-wide aggregate usage; configure required-reviewer GitHub environment, exact endpoint hostname pin and isolated test-only namespace; review/disable or explicitly retain the legacy Phase59.25 disposable-branch writer and separate federation-locks writer. Then execute six distinct workflow_dispatch runs. Physical multi-host proof and 7/30-day soak remain pending.",
@@ -4747,7 +4786,7 @@
   "dead_letter": [],
   "updated_at": "2026-11-23",
   "current_task": "P59-003",
-  "last_updated": "2026-11-23",
+  "last_updated": "2026-11-24",
   "sequence_note": "Phase59.62 final code/test head 7d0003ca PASS: 11/11 offline host-client/static workflow tests; YAML syntax PASS; lockfile valid (165 packages); 83/83 Workers runtime; 4/4 dispatcher integration; 83/83 full regression; Phase59.60 and Phase59.56 exact-head workflows PASS. Source audit fixed undefined runnerId payload, added streaming 16 KiB response bound, enforced workers.dev preflight allowlist and aligned aggregate identity keys. Live host test remains owner-gated. Next Phase59.63: manual-only one seed run + four separately dispatched host workflow runs using actual GITHUB_RUN_ID values + two synthetic P10CR repository aliases + one shared test-only DO + one read-only snapshot. No Actions write token or automated dispatch. Keep P59-001 PAUSED and P59-002 BLOCKED; no revenue research.",
   "last_reconciled_from_mission_state": "2026-11-23: Phase59.64B push #45106578746 and PR #45106583941 SUCCESS on code/test head 3de92c7e (32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1). Server gates seed replay, host slots and snapshot/overflow against durable settled reservation evidence. Candidate inventory 500 entries/37 workflows/42 cloud-swarm modules/87 Python files. Master remains stale until PR stack #44→#50 is reviewed/merged. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No live deployment/inference/spend/receipts. Post-checkpoint: final candidate head e872f34a passed #45107001561; candidate Worker #45106996804 selected P59-003 with no inference; candidate Guard #45106996788 passed 111 checks. Phase59.64C candidate commit 9868b642 adds concurrent same-host-slot and competing snapshot-run tests. Superseded run #45107478190 failed only on per-bucket counter assertion shape after one-winner host-slot assertions passed; corrected push #45107637216 was cancelled by concurrency; corrected PR run #45107642156 is pending. Phase64C is not accepted. Phase59.64C accepted on corrected head 9868b642 via PR CI #45107642156: 32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1. Concurrent same-slot and competing snapshot-run tests each produced one durable winner; losing snapshot could not split overflow; final snapshot 8 settled/0 reserved/0 uncertain/6 run IDs/2 repositories/event chain valid. Live six-run proof and soak remain owner-gated.",
   "phase59_46": {
