@@ -210,14 +210,18 @@ def validate_artifact_listing(
 ) -> dict[str, Any]:
     artifacts = listing.get("artifacts")
     if (
-        listing.get("total_count") != 1
-        or not isinstance(artifacts, list)
-        or len(artifacts) != 1
+        not isinstance(artifacts, list)
+        or listing.get("total_count") != len(artifacts)
     ):
-        raise ArtifactProvenanceError("source run must contain exactly one artifact")
-    item = artifacts[0]
-    if not isinstance(item, dict):
-        raise ArtifactProvenanceError("artifact metadata is invalid")
+        raise ArtifactProvenanceError("source run artifact listing is incomplete")
+    expected_name = f"{ARTIFACT_PREFIX}{source['run_id']}-attempt-{source['run_attempt']}"
+    matches = [
+        item for item in artifacts
+        if isinstance(item, dict) and item.get("name") == expected_name
+    ]
+    if len(matches) != 1:
+        raise ArtifactProvenanceError("source run must contain exactly one artifact for this run attempt")
+    item = matches[0]
     artifact_id = _positive_int(item.get("id"), "artifact ID")
     expected_name = f"{ARTIFACT_PREFIX}{source['run_id']}"
     if item.get("name") != expected_name or item.get("expired") is not False:
@@ -270,7 +274,7 @@ def validate_artifact_attestation(
     if not isinstance(artifact, dict) or set(artifact) != expected_keys:
         raise ArtifactProvenanceError("artifact attestation fields do not match the closed contract")
     _positive_int(artifact.get("id"), "artifact ID")
-    if artifact.get("name") != f"{ARTIFACT_PREFIX}{expected_source['run_id']}":
+    if artifact.get("name") != f"{ARTIFACT_PREFIX}{expected_source['run_id']}-attempt-{expected_source['run_attempt']}":
         raise ArtifactProvenanceError("artifact attestation name is not bound to the source run")
     if not isinstance(artifact.get("digest"), str) or not re.fullmatch(r"sha256:[a-f0-9]{64}", artifact["digest"]):
         raise ArtifactProvenanceError("artifact attestation digest is invalid")
