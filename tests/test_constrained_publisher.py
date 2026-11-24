@@ -514,8 +514,9 @@ class PublisherWorkflowGateTests(unittest.TestCase):
     def test_publisher_write_job_requires_owner_review_environment(self):
         workflow = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "p10cr-constrained-publisher.yml"
         source = workflow.read_text(encoding="utf-8")
-        expected = "  publish-draft:\n    environment:\n      name: p10cr-publisher\n"
+        expected = "  publish-draft:\n    needs: prepare-draft\n"
         self.assertIn(expected, source)
+        self.assertIn("environment:\n      name: p10cr-publisher", source)
         self.assertIn("permission-contents: write", source)
         self.assertIn("permission-pull-requests: write", source)
         self.assertIn("ENV_APPROVAL_MARKER: ${{ secrets.P10CR_PUBLISHER_ENV_APPROVED }}", source)
@@ -826,7 +827,8 @@ class PublisherEventFlowTests(unittest.TestCase):
         plan_bytes = base64.b64decode(encoded, validate=True)
         self.assertLessEqual(len(plan_bytes), 131072)
         plan = json.loads(plan_bytes)
-        self.assertNotIn(valid_report()["output"], plan["content_base64"])
+        published_content = base64.b64decode(plan["content_base64"]).decode("utf-8")
+        self.assertNotIn(valid_report()["output"], published_content)
         self.assertEqual(plan["summary"]["task"]["id"], "P59-003")
 
     def test_waiting_validation_exports_false_and_no_plan_output(self):
