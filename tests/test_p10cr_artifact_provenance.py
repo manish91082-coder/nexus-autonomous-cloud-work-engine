@@ -206,7 +206,7 @@ class ArtifactMetadataTests(unittest.TestCase):
 
     def test_ignores_prior_attempt_artifacts_and_selects_exact_attempt(self):
         listing = json.loads(json.dumps(self.listing))
-        prior = dict(listing["artifacts"][0], id=67889, name=f"{ARTIFACT_PREFIX}{RUN_ID}-attempt-0")
+        prior = dict(listing["artifacts"][0], id=67889, name=f"{ARTIFACT_PREFIX}{RUN_ID}-attempt-2")
         listing["artifacts"].append(prior)
         listing["total_count"] = 2
         artifact = validate_artifact_listing(listing, self.source, NOW)
@@ -341,6 +341,23 @@ class ArtifactDownloadTests(unittest.TestCase):
         self.opener.listing = valid_listing(self.opener.archive)
         with self.assertRaises(ArtifactProvenanceError):
             self.run_verify()
+
+
+class WorkflowArtifactContractTests(unittest.TestCase):
+    def test_worker_artifact_name_binds_run_id_and_attempt(self):
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / ".github" / "workflows" / "mission-autonomous-worker.yml").read_text(encoding="utf-8")
+        self.assertIn(
+            "name: mission-autonomous-worker-${{ github.run_id }}-attempt-${{ github.run_attempt }}",
+            workflow,
+        )
+
+    def test_publisher_verifies_digest_before_summary_validation(self):
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / ".github" / "workflows" / "p10cr-constrained-publisher.yml").read_text(encoding="utf-8")
+        self.assertIn("scripts/p10cr_artifact_provenance.py verify-download", workflow)
+        self.assertIn("--artifact-metadata-file publisher-artifact-metadata.json", workflow)
+        self.assertNotIn("gh run download", workflow)
 
 
 class ArtifactAttestationTests(unittest.TestCase):
