@@ -138,3 +138,18 @@ Earlier runs on superseded heads were cancelled while the shared workflow concur
 **Phase59.68 — deterministic publisher branch-base and PR-head integrity.** Before owner-gated live execution, verify that a pre-existing deterministic worker branch contains only the single expected summary commit relative to the exact current master base, reject unexpected commits/files or a branch behind master, and verify the created/reused draft PR's base and head SHA. Keep all tests synthetic and no-network except mocked API clients.
 
 Physical six-run proof remains owner-gated and must not start until the stacked PRs are landed, master controls reconciled, owner configuration verified and explicit owner approval is present.
+
+
+## 8. Canonical evidence/control commits
+
+- Validator module: `3f6fde5f849344365f81daa1b3e3ab3cb5b0221f`
+- Publisher integration: `daba4f04969882afd486f42900ff4d8da6a036ff`
+- Strict summary JSON Schema: `f904a55c715d897f0c6710c98f1d3ef3199de7c6`
+- Final regression-test head: `16d5a85d3b53e2bf5a4a4aea7401869044d09cfc`
+- Owner merge packet update through PR #53: `204339b089be558f59cb85041439fe76c126dc5a`
+- Mission state checkpoint: `98f23144f27e420953a36c128f29de31a799205e`
+- Automation queue checkpoint: `93c1b7ab928992a11a15afb96c459da5da001438`
+- Federation registry checkpoint: `27bf48fef361caae569429d509711433a098e700`
+- Project continuity checkpoint: `eb48e94802073b7af3ebf48ac8620fd68a9f4fdb`
+
+All material writes were fetched back from the candidate branch. The final evidence branch head after report/control/continuity updates is `eb48e94802073b7af3ebf48ac8620fd68a9f4fdb`; the executable/test content remains the exact CI-tested head `16d5a85d3b53e2bf5a4a4aea7401869044d09cfc`.
