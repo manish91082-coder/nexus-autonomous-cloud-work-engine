@@ -223,9 +223,8 @@ def validate_artifact_listing(
         raise ArtifactProvenanceError("source run must contain exactly one artifact for this run attempt")
     item = matches[0]
     artifact_id = _positive_int(item.get("id"), "artifact ID")
-    expected_name = f"{ARTIFACT_PREFIX}{source['run_id']}"
-    if item.get("name") != expected_name or item.get("expired") is not False:
-        raise ArtifactProvenanceError("artifact name or expiry state is invalid")
+    if item.get("expired") is not False:
+        raise ArtifactProvenanceError("artifact expiry state is invalid")
     size = _positive_int(item.get("size_in_bytes"), "artifact size", MAX_ARCHIVE_BYTES)
     digest = item.get("digest")
     if not isinstance(digest, str) or not re.fullmatch(r"sha256:[a-f0-9]{64}", digest):
