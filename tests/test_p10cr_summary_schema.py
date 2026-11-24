@@ -94,6 +94,13 @@ class WorkerArtifactSchemaTests(unittest.TestCase):
             load_json_object(b'{"status":"DRAFT_READY_FOR_EVIDENCE_REVIEW","status":"WAITING"}', "fixture")
 
 
+    def test_rejects_model_identifier_with_whitespace(self):
+        report = valid_report()
+        for model in ("bad model", "model\\nforged", ""):
+            report["model"] = model
+            with self.subTest(model=model), self.assertRaises(SummaryValidationError):
+                validate_worker_report(report)
+
 class PublishedSummarySchemaTests(unittest.TestCase):
     def setUp(self):
         self.report = valid_report()
@@ -123,6 +130,12 @@ class PublishedSummarySchemaTests(unittest.TestCase):
         wrong["head_sha"] = "b" * 40
         with self.assertRaises(SummaryValidationError):
             validate_summary(self.summary, expected_source=wrong)
+
+    def test_rejects_non_string_source_event(self):
+        invalid = json.loads(json.dumps(self.summary))
+        invalid["source"]["event"] = ["schedule"]
+        with self.assertRaises(SummaryValidationError):
+            validate_summary(invalid)
 
     def test_rejects_boolean_run_id_and_raw_output_flag(self):
         invalid = json.loads(json.dumps(self.summary))
