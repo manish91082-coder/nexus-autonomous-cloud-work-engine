@@ -148,6 +148,22 @@ class PublishedSummarySchemaTests(unittest.TestCase):
         with self.assertRaises(SummaryValidationError):
             validate_summary(extra)
 
+    def test_rejects_wrong_immutable_workflow_id(self):
+        invalid = json.loads(json.dumps(self.summary))
+        invalid["source"]["workflow_id"] = WORKFLOW_ID + 1
+        with self.assertRaises(SummaryValidationError):
+            validate_summary(invalid)
+
+    def test_rejects_artifact_digest_and_run_binding_mismatch(self):
+        invalid = json.loads(json.dumps(self.summary))
+        invalid["artifact"]["archive_sha256"] = "e" * 64
+        with self.assertRaises(SummaryValidationError):
+            validate_summary(invalid)
+        invalid = json.loads(json.dumps(self.summary))
+        invalid["artifact"]["name"] = f"{ARTIFACT_PREFIX}99999"
+        with self.assertRaises(SummaryValidationError):
+            validate_summary(invalid)
+
     def test_rejects_source_provenance_mismatch(self):
         wrong = dict(self.source)
         wrong["head_sha"] = "b" * 40
