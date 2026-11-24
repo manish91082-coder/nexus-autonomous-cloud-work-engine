@@ -251,6 +251,22 @@ class PublisherValidationTests(unittest.TestCase):
     def plan(self, event=None):
         return build_publish_plan(event or valid_event(), self.root, artifact_metadata=valid_artifact_metadata())
 
+    def test_missing_artifact_attestation_is_rejected(self):
+        with self.assertRaises(PublisherError):
+            build_publish_plan(valid_event(), self.root)
+
+    def test_artifact_attestation_from_another_run_is_rejected(self):
+        attestation = valid_artifact_metadata()
+        attestation["source"]["run_id"] = 99999
+        with self.assertRaises(PublisherError):
+            build_publish_plan(valid_event(), self.root, artifact_metadata=attestation)
+
+    def test_artifact_digest_mismatch_is_rejected(self):
+        attestation = valid_artifact_metadata()
+        attestation["artifact"]["archive_sha256"] = "e" * 64
+        with self.assertRaises(PublisherError):
+            build_publish_plan(valid_event(), self.root, artifact_metadata=attestation)
+
     def test_builds_deterministic_allowlisted_plan(self):
         plan = self.plan()
         self.assertEqual(plan["branch"], BRANCH_PREFIX + "12345-attempt-1")
