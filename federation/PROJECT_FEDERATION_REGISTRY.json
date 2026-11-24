@@ -31,7 +31,7 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase59.70 offline publisher event/replay/no-token dry-run accepted by exact-head CI #45324208218 at 70f87678. Publisher rechecks artifact expiry, binds consumed worker-report bytes to the verified artifact manifest, and separates read-only preparation from conditional owner-gated publishing. WAITING events skip environment approval, App-token mint and publisher writes. PR #56 draft/unmerged, child of #55. No live publisher API, App token, inference, deployment or spend; physical six-run proof remains owner-gated.",
+      "status": "P59-003 IN_PROGRESS; Phase59.70 offline publisher event/replay/no-token dry-run accepted by exact-head CI #45324208218 at 70f87678. Publisher rechecks artifact expiry, binds consumed worker-report bytes to the verified artifact manifest, and separates read-only preparation from conditional owner-gated publishing. WAITING events skip environment approval, App-token mint and publisher writes. PR #56 draft/unmerged, child of #55. No live publisher API, App token, inference, deployment or spend; physical six-run proof remains owner-gated. Post-checkpoint Worker #607 run 45324774926 selected P59-003/P0, POLL_OK, AI WAITING_FOR_OWNER_CONFIGURATION, inference 0; artifact #14888254776 SHA-256 independently matched GitHub digest. Guard #420 run 45324822115 passed 111 checks/0 errors. Final PR-head CI #45324862089 SUCCESS on evidence-only head e8b70996.",
       "last_observed_head": "70f876788e125ba7cc4a5032f571d2bd848da9d9",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
@@ -241,7 +241,7 @@
         "continuity_guard_run_id": 44009214414,
         "continuity_guard_checks": 111
       },
-      "next": "Phase59.71 offline publisher ambiguous-write recovery and replay-race injection; owner-gated six-independent-workflow-run proof and 7/30-day soak remain pending.",
+      "next": "Phase59.71 offline publisher ambiguous-write recovery and replay-race injection; then owner-gated six-independent-workflow-run proof and 7/30-day soak.",
       "production_integrated": false,
       "ai_inference_enabled": false,
       "authorized_spend_inr": 0,
@@ -1527,7 +1527,30 @@
         "physical_multi_host_proven": false,
         "live_six_workflow_run_proof_started": false,
         "soak_7d_started": false,
-        "soak_30d_started": false
+        "soak_30d_started": false,
+        "post_checkpoint_worker_run": {
+          "run_id": 45324774926,
+          "run_number": 607,
+          "head_sha": "2005efa93731d106f64cfcdb2b6ace0a3ee050ae",
+          "result": "POLL_OK",
+          "selected_task": "P59-003",
+          "ai_executor_status": "WAITING_FOR_OWNER_CONFIGURATION",
+          "inference_requests": 0,
+          "artifact_id": 14888254776,
+          "artifact_digest": "sha256:60fbf3df3d12c1b34c79e43792f3944bc2bafa3b0cfee6f63be7cd7ace51b401",
+          "independently_verified": true
+        },
+        "post_checkpoint_guard_run": {
+          "run_id": 45324822115,
+          "run_number": 420,
+          "head_sha": "bc1babc81520dcea628b454ceb1393d52dc961b2",
+          "result": "PASS",
+          "checks": 111,
+          "errors": 0
+        },
+        "final_pr_ci_run_id": 45324862089,
+        "final_pr_ci_status": "SUCCESS",
+        "report_commit": "708c37f18e82bacd8f6a138f7c930b34617bcca0"
       }
     },
     {
