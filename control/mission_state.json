@@ -3721,8 +3721,11 @@
       "mission_state": "98f23144f27e420953a36c128f29de31a799205e",
       "automation_queue": "93c1b7ab928992a11a15afb96c459da5da001438",
       "federation_registry": "27bf48fef361caae569429d509711433a098e700",
-      "project_continuity": "eb48e94802073b7af3ebf48ac8620fd68a9f4fdb",
-      "final_mission_state_before_report_ref": "31fa9969816a770ce24a0fbe49b90305208418a5"
+      "project_continuity": "51f282500cd702aa2159ec32678feec58a637757",
+      "final_mission_state_before_report_ref": "31fa9969816a770ce24a0fbe49b90305208418a5",
+      "final_mission_state_checkpoint": "d0c60e661649e6c15a2031f86f1e05e462fad948",
+      "final_automation_queue_checkpoint": "77a9a05c20f960b860d4c29a79a520a78d50111b",
+      "final_federation_registry_checkpoint": "4a5ff98740860c36b4d94f959586c2378b3fce36"
     },
     "current_candidate_branch_head_before_control_finalization": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc"
   }
