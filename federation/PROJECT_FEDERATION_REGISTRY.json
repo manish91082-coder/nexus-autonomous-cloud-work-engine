@@ -1454,7 +1454,42 @@
         "live_six_workflow_run_proof_started": false,
         "soak_7d_started": false,
         "soak_30d_started": false,
-        "next": "Phase59.70 offline end-to-end publisher event/replay/no-token dry-run; physical six-run proof remains owner-gated."
+        "next": "Phase59.70 offline end-to-end publisher event/replay/no-token dry-run; physical six-run proof remains owner-gated.",
+        "pr_initial_head": "14b1fcbca35885c817d27f990b6d4624e5231897",
+        "pr_ci_run_id": 45321506379,
+        "pr_ci_status": "SUCCESS",
+        "pr_ci_head_sha": "14b1fcbca35885c817d27f990b6d4624e5231897",
+        "pr_url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/55",
+        "latest_candidate_worker_run": {
+          "run_number": 601,
+          "run_id": 45321415382,
+          "head_sha": "2a6d1d9e4769cfbe8363d3e721818365682f0ae6",
+          "status": "SUCCESS",
+          "selected_task": "P59-003",
+          "guard_checks": 111,
+          "ai_executor": "WAITING_FOR_OWNER_CONFIGURATION",
+          "inference_requests": 0
+        },
+        "latest_candidate_guard_run": {
+          "run_number": 411,
+          "run_id": 45321483043,
+          "head_sha": "14b1fcbca35885c817d27f990b6d4624e5231897",
+          "status": "SUCCESS",
+          "checks": 111,
+          "errors": 0
+        },
+        "latest_candidate_artifact_readback": {
+          "run_id": 45321415382,
+          "run_attempt": 1,
+          "artifact_id": 14888305665,
+          "name": "mission-autonomous-worker-45321415382-attempt-1",
+          "size_in_bytes": 1927,
+          "sha256": "d83845f6bf8580e430765f1351547c1ab6dab497eb185bc9006bbd8539081d41",
+          "downloaded_digest_match": true,
+          "files": 3,
+          "head_branch": "phase59-69-artifact-provenance",
+          "source_eligible": false
+        }
       }
     },
     {
