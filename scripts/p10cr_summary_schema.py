@@ -31,7 +31,7 @@ SECRET_PATTERNS = (
     re.compile(r"gh[pousr]_[A-Za-z0-9]{20,}"),
     re.compile(r"github_pat_[A-Za-z0-9_]{20,}"),
     re.compile(r"sk-[A-Za-z0-9]{20,}"),
-    re.compile(r"Bearer\\s+[A-Za-z0-9._-]{20,}", re.IGNORECASE),
+    re.compile(r"Bearer\s+[A-Za-z0-9._-]{20,}", re.IGNORECASE),
     re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----"),
 )
 FORBIDDEN_KEYS = {
@@ -259,7 +259,7 @@ def validate_summary(summary: dict[str, Any], expected_source: dict[str, Any] | 
 
 def serialize_summary(summary: dict[str, Any]) -> bytes:
     validate_summary(summary)
-    return (json.dumps(summary, ensure_ascii=False, sort_keys=True, indent=2) + "\\n").encode("utf-8")
+    return (json.dumps(summary, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8")
 
 
 def decode_summary_content(encoded: str, expected_run_id: int, expected_attempt: int) -> tuple[dict[str, Any], bytes]:
