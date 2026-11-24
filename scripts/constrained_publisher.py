@@ -127,6 +127,16 @@ def build_publish_plan(
         return None
 
     raw = report_path.read_bytes()
+    report_manifest = next(
+        (entry for entry in artifact["files"] if entry.get("name") == "ai_worker_report.json"),
+        None,
+    )
+    if (
+        not isinstance(report_manifest, dict)
+        or len(raw) != report_manifest.get("size_in_bytes")
+        or sha256(raw) != report_manifest.get("sha256")
+    ):
+        raise PublisherError("worker report bytes differ from the verified artifact file manifest")
     try:
         report = load_json_object(raw, "worker report")
     except SummaryValidationError as exc:
