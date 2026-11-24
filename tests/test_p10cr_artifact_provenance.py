@@ -204,7 +204,7 @@ class ArtifactMetadataTests(unittest.TestCase):
         self.assertEqual(artifact["size_in_bytes"], len(self.archive))
         self.assertEqual(artifact["digest"], self.listing["artifacts"][0]["digest"])
 
-    def test_ignores_prior_attempt_artifacts_and_selects_exact_attempt(self):
+    def test_ignores_other_attempt_artifacts_and_selects_exact_attempt(self):
         listing = json.loads(json.dumps(self.listing))
         prior = dict(listing["artifacts"][0], id=67889, name=f"{ARTIFACT_PREFIX}{RUN_ID}-attempt-2")
         listing["artifacts"].append(prior)
@@ -212,6 +212,11 @@ class ArtifactMetadataTests(unittest.TestCase):
         artifact = validate_artifact_listing(listing, self.source, NOW)
         self.assertEqual(artifact["id"], 67890)
         self.assertEqual(artifact["name"], f"{ARTIFACT_PREFIX}{RUN_ID}-attempt-{ATTEMPT}")
+
+    def test_rejects_previous_attempt_artifact_for_current_rerun(self):
+        source = dict(self.source, run_attempt=2)
+        with self.assertRaises(ArtifactProvenanceError):
+            validate_artifact_listing(self.listing, source, NOW)
 
     def test_rejects_multiple_artifacts(self):
         listing = json.loads(json.dumps(self.listing))
