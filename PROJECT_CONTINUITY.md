@@ -5365,6 +5365,23 @@ Date: 2026-11-24
 - Corrected runs #45323826471, #45324009281, #45324094575 and final exact-head run #45324208218 passed.
 - Superseded/cancelled runs are documented in the Phase59.70 report and are not counted as failures of the accepted head.
 
+### Post-checkpoint Worker, Guard and PR verification
+
+**Candidate Mission Autonomous AI Worker #607**
+- Run #45324774926 completed SUCCESS on candidate head `2005efa93731d106f64cfcdb2b6ace0a3ee050ae`.
+- Queue result: `POLL_OK`; selected `P59-003`, priority P0, status IN_PROGRESS.
+- AI executor: `WAITING_FOR_OWNER_CONFIGURATION`; inference requests: 0.
+- Artifact ID `14888254776`, name `mission-autonomous-worker-45324774926-attempt-1`.
+- GitHub artifact digest `sha256:60fbf3df3d12c1b34c79e43792f3944bc2bafa3b0cfee6f63be7cd7ace51b401` was independently verified against the downloaded ZIP. The ZIP contained exactly the three expected JSON reports.
+
+**Candidate Mission Continuity Guard #420**
+- Run #45324822115 completed SUCCESS on candidate head `bc1babc81520dcea628b454ceb1393d52dc961b2`.
+- 111 checks, zero errors; guard phase `P59.70_OFFLINE_PUBLISHER_EVENT_REPLAY_NO_TOKEN_DRY_RUN`.
+
+**Final PR-head CI**
+- Run #45324862089 completed SUCCESS on evidence-only PR head `e8b7099617aef8968ba5a011bcbc330e7180370f`.
+- The tested executable/test head remains `70f876788e125ba7cc4a5032f571d2bd848da9d9`; subsequent commits are evidence/control updates only.
+
 ### Mission and safety state
 
 - P59-003 remains the sole active P0.
