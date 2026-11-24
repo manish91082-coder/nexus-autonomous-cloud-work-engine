@@ -43,8 +43,8 @@ MAX_COMPRESSION_RATIO = 100
 API_BASE = "https://api.github.com"
 SHA256_RE = re.compile(r"^[a-f0-9]{64}$")
 RUN_ID_RE = re.compile(r"^[1-9][0-9]{0,19}$")
-AZURE_ARTIFACT_HOST_RE = re.compile(r"^productionresultssa[0-9]+\\.blob\\.core\\.windows\\.net$")
-AWS_ARTIFACT_HOST_RE = re.compile(r"^github-production-repository-file-[a-f0-9]+\\.s3\\.amazonaws\\.com$")
+AZURE_ARTIFACT_HOST_RE = re.compile(r"^productionresultssa[0-9]+\.blob\.core\.windows\.net$")
+AWS_ARTIFACT_HOST_RE = re.compile(r"^github-production-repository-file-[a-f0-9]+\.s3\.amazonaws\.com$")
 
 
 class ArtifactProvenanceError(ValueError):
