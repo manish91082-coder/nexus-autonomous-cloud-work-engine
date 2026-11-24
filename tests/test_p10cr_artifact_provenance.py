@@ -285,7 +285,9 @@ class ArtifactDownloadTests(unittest.TestCase):
         self.assertIsNone(self.opener.blob_headers)
 
     def test_rejects_archive_digest_mismatch(self):
-        self.opener.archive = self.archive + b"x"
+        mutated = bytearray(self.archive)
+        mutated[-1] ^= 1
+        self.opener.archive = bytes(mutated)
         with self.assertRaises(ArtifactProvenanceError):
             self.run_verify()
 
