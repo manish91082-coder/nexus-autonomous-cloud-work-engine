@@ -22,6 +22,18 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from scripts.p10cr_summary_schema import (
+    SummaryValidationError,
+    build_summary,
+    decode_summary_content,
+    load_json_object,
+    serialize_summary,
+    validate_summary,
+)
+
 CANONICAL_REPOSITORY = "manish91082-coder/nexus-autonomous-cloud-work-engine"
 WORKFLOW_NAME = "Mission Autonomous AI Worker (bounded, fail-closed)"
 WORKFLOW_PATH = ".github/workflows/mission-autonomous-worker.yml"
@@ -142,83 +154,19 @@ def build_publish_plan(
 
     raw = report_path.read_bytes()
     try:
-        report = json.loads(raw.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise PublisherError("worker report is not valid UTF-8 JSON") from exc
-    if not isinstance(report, dict):
-        raise PublisherError("worker report must be a JSON object")
-    _reject_forbidden_keys(report)
+        report = load_json_object(raw, "worker report")
+    except SummaryValidationError as exc:
+        raise PublisherError(str(exc)) from exc
 
     # A normal disabled/blocked run is a successful no-op, never a publish event.
     if report.get("status") != "DRAFT_READY_FOR_EVIDENCE_REVIEW":
         return None
 
-    if report.get("schema_version") != "1.0":
-        raise PublisherError("unsupported worker report schema")
-    if report.get("execution_mode") != "BOUNDED_AI_DRAFT_ONLY":
-        raise PublisherError("worker execution mode is not draft-only")
-    if report.get("task_id") != ALLOWED_TASK_ID:
-        raise PublisherError("publisher is restricted to P59-003")
-    if report.get("model_output_is_untrusted") is not True:
-        raise PublisherError("model output must be explicitly marked untrusted")
-    if report.get("no_code_execution") is not True:
-        raise PublisherError("code execution safety assertion is missing")
-    if report.get("no_publication_or_money_movement") is not True:
-        raise PublisherError("publication/money-movement safety assertion is missing")
-
-    output = report.get("output")
-    if not isinstance(output, str) or not output.strip():
-        raise PublisherError("draft output must be a non-empty string")
-    output_bytes = output.encode("utf-8")
-    if len(output_bytes) > MAX_OUTPUT_BYTES:
-        raise PublisherError("model output exceeds the bounded size")
-    if any(pattern.search(output) for pattern in SECRET_PATTERNS):
-        raise PublisherError("secret-like material detected in model output")
-
-    provider = report.get("provider")
-    model = report.get("model")
-    timestamp = report.get("timestamp_utc")
-    task_title = report.get("task_title", "")
-    calls = report.get("daily_calls_used")
-    cap = report.get("daily_call_cap")
-    if not isinstance(provider, str) or not provider.strip() or len(provider) > 128:
-        raise PublisherError("provider identity is invalid")
-    if not isinstance(model, str) or not model.strip() or len(model) > 256:
-        raise PublisherError("model identity is invalid")
-    if not isinstance(timestamp, str) or len(timestamp) > 64:
-        raise PublisherError("worker timestamp is invalid")
-    if not isinstance(task_title, str) or len(task_title) > 256:
-        raise PublisherError("task title is invalid")
-    if not isinstance(calls, int) or isinstance(calls, bool) or not 1 <= calls <= 6:
-        raise PublisherError("daily call count is outside the hard cap")
-    if not isinstance(cap, int) or isinstance(cap, bool) or not 1 <= cap <= 6 or calls > cap:
-        raise PublisherError("daily call cap is invalid")
-
-    summary = {
-        "schema_version": "1.0",
-        "record_type": "P10CR_AI_WORKER_DRAFT_SUMMARY",
-        "source": source,
-        "task": {"id": ALLOWED_TASK_ID, "title": task_title},
-        "provider": {"name": provider, "model": model},
-        "usage": {"daily_calls_used": calls, "daily_call_cap": cap},
-        "model_output": {
-            "sha256": sha256(output_bytes),
-            "bytes": len(output_bytes),
-            "raw_content_included": False,
-            "trust": "UNVERIFIED_PROPOSAL",
-        },
-        "review": {
-            "status": "REQUIRES_HUMAN_EVIDENCE_REVIEW",
-            "automatic_acceptance": False,
-            "automatic_task_completion": False,
-        },
-        "safety": {
-            "model_output_is_untrusted": True,
-            "no_generated_code_execution": True,
-            "no_publication_or_money_movement": True,
-        },
-    }
-    content = (json.dumps(summary, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8")
+    try:
+        summary = build_summary(source, report)
+        content = serialize_summary(summary)
+    except SummaryValidationError as exc:
+        raise PublisherError(str(exc)) from exc
     run_id = source["run_id"]
     attempt = source["run_attempt"]
     branch = f"{BRANCH_PREFIX}{run_id}-attempt-{attempt}"
@@ -293,6 +241,10 @@ def _validate_api_request(method: str, path: str, payload: dict[str, Any] | None
                 raise PublisherError("publisher content encoding is invalid") from exc
             if not decoded or len(decoded) > MAX_REPORT_BYTES:
                 raise PublisherError("publisher content size is outside the limit")
+            try:
+                decode_summary_content(encoded, int(run_id), int(attempt))
+            except SummaryValidationError as exc:
+                raise PublisherError(str(exc)) from exc
             return
 
     if method == "GET" and parsed.path == root + "/pulls" and payload is None:
@@ -374,19 +326,33 @@ class GitHubApi:
 
 def publish_plan(plan: dict[str, Any], api: Any) -> dict[str, Any]:
     """Create/reuse one allowlisted branch and one draft PR. There is no merge path."""
+    if not isinstance(plan, dict) or set(plan) != {
+        "repository", "branch", "path", "content_base64", "content_sha256", "summary"
+    }:
+        raise PublisherError("publisher plan fields do not match the strict contract")
     repo = plan["repository"]
+    if repo != CANONICAL_REPOSITORY:
+        raise PublisherError("publisher plan repository is not canonical")
     owner, _ = repo.split("/", 1)
+    summary = plan["summary"]
+    try:
+        validate_summary(summary)
+        run_id = summary["source"]["run_id"]
+        attempt = summary["source"]["run_attempt"]
+        content = base64.b64decode(plan["content_base64"], validate=True)
+        canonical_content = serialize_summary(summary)
+    except (SummaryValidationError, ValueError) as exc:
+        raise PublisherError("publisher plan summary/content is invalid") from exc
     branch = plan["branch"]
     path = plan["path"]
-    if not branch.startswith(BRANCH_PREFIX) or not re.fullmatch(
-        r"automation/p10cr/worker-run-[1-9][0-9]*-attempt-[1-9][0-9]*", branch
-    ):
-        raise PublisherError("publisher branch is outside the deterministic allowlist")
-    if not re.fullmatch(r"research/worker-drafts/ai-run-[1-9][0-9]*-attempt-[1-9][0-9]*\.json", path):
-        raise PublisherError("publisher file path is outside the deterministic allowlist")
-    content = base64.b64decode(plan["content_base64"], validate=True)
-    if sha256(content) != plan["content_sha256"]:
-        raise PublisherError("publisher plan digest mismatch")
+    if branch != f"{BRANCH_PREFIX}{run_id}-attempt-{attempt}":
+        raise PublisherError("publisher branch does not match verified provenance")
+    if path != f"research/worker-drafts/ai-run-{run_id}-attempt-{attempt}.json":
+        raise PublisherError("publisher file path does not match verified provenance")
+    if not isinstance(plan.get("content_sha256"), str) or not re.fullmatch(r"[a-f0-9]{64}", plan["content_sha256"]):
+        raise PublisherError("publisher plan digest format is invalid")
+    if content != canonical_content or sha256(content) != plan["content_sha256"]:
+        raise PublisherError("publisher plan content does not match the validated summary")
 
     root = f"/repos/{repo}"
     master = api.request("GET", root + "/git/ref/heads/master")
