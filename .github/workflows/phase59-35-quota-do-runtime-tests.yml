@@ -37,7 +37,7 @@ on:
       - '.github/workflows/phase59-63-independent-workflow-run-proof.yml'
       - '.github/workflows/phase59-35-quota-do-runtime-tests.yml'
   pull_request:
-    branches: [master, phase59-57-constrained-publisher-separation, phase59-61-budget-dispatcher-integration, phase59-62-dependency-hardening, phase59-63-independent-workflow-run-proof, phase59-64-default-branch-execution-guard, phase59-64-host-slot-run-identity-binding, phase59-65-current-task-dispatch-guard, phase59-66-publisher-api-boundary, phase59-67-sanitized-summary-schema, phase59-68-publisher-branch-integrity, phase59-69-artifact-provenance, phase59-70-offline-publisher-dry-run]
+    branches: [master, phase59-57-constrained-publisher-separation, phase59-61-budget-dispatcher-integration, phase59-62-dependency-hardening, phase59-63-independent-workflow-run-proof, phase59-64-default-branch-execution-guard, phase59-64-host-slot-run-identity-binding, phase59-65-current-task-dispatch-guard, phase59-66-publisher-api-boundary, phase59-67-sanitized-summary-schema, phase59-68-publisher-branch-integrity, phase59-69-artifact-provenance]
   workflow_dispatch:
 
 permissions:
