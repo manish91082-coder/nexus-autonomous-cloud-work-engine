@@ -207,7 +207,7 @@ def _validate_api_request(method: str, path: str, payload: dict[str, Any] | None
 
     decoded_path = urllib.parse.unquote(parsed.path)
     compare_match = re.fullmatch(
-        re.escape(root) + r"/compare/master\\.\\.\\.(" + branch_pattern + r")",
+        re.escape(root) + r"/compare/master\.\.\.(" + branch_pattern + r")",
         decoded_path,
     )
     if method == "GET" and compare_match and not query and payload is None:
@@ -485,7 +485,7 @@ def publish_plan(plan: dict[str, Any], api: Any) -> dict[str, Any]:
         if branch_state != "ONE_SUMMARY_COMMIT":
             raise PublisherError("publisher branch contains a file without the exact expected one-commit diff")
         try:
-            existing_bytes = base64.b64decode(existing.get("content", "").replace("\\n", ""), validate=True)
+            existing_bytes = base64.b64decode(existing.get("content", "").replace("\n", ""), validate=True)
         except Exception as exc:
             raise PublisherError("existing branch file encoding is invalid") from exc
         if existing_bytes != content:
