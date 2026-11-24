@@ -54,13 +54,22 @@ def valid_report():
         "no_code_execution": True,
         "no_publication_or_money_movement": True,
         "task_id": ALLOWED_TASK_ID,
-        "task_title": "P59-003 bounded swarm foundation",
-        "provider": "Approved provider fixture",
+        "task_title": "Audit and implement zero-cost-first autonomous multi-agent research and execution swarm",
+        "provider": "Cloudflare Workers AI",
         "model": "approved-model-fixture",
         "daily_calls_used": 1,
         "daily_call_cap": 6,
         "output": "UNVERIFIED proposal only. No executable source code.",
+        "verification_note": "Model output is an unverified draft. URLs, eligibility, payout terms and claims must be independently checked before registry updates or task completion.",
     }
+
+
+def valid_summary_content():
+    with tempfile.TemporaryDirectory() as directory:
+        root = Path(directory)
+        (root / "ai_worker_report.json").write_text(json.dumps(valid_report()), encoding="utf-8")
+        plan = build_publish_plan(valid_event(), root)
+        return plan["content_base64"]
 
 
 class FakeApi:
@@ -335,7 +344,7 @@ class PublisherApiBoundaryTests(unittest.TestCase):
     FILE = "research/worker-drafts/ai-run-12345-attempt-1.json"
 
     def test_all_internal_publisher_routes_are_allowlisted(self):
-        content = base64.b64encode(b'{"safe":true}').decode("ascii")
+        content = valid_summary_content()
         _validate_api_request("GET", self.ROOT + "/git/ref/heads/master")
         _validate_api_request("GET", self.ROOT + "/git/ref/heads/" + self.BRANCH)
         _validate_api_request("POST", self.ROOT + "/git/refs", {
