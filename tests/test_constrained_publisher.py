@@ -1036,15 +1036,22 @@ class PublisherAmbiguousWriteRecoveryTests(unittest.TestCase):
                 return ("success", publish_plan(self.plan, api))
             except ApiError as exc:
                 return ("api_error", exc.status)
+            except PublisherError as exc:
+                return ("publisher_error", str(exc))
 
         with ThreadPoolExecutor(max_workers=2) as pool:
             outcomes = list(pool.map(lambda _: invoke(), range(2)))
 
         successes = [value for kind, value in outcomes if kind == "success"]
-        errors = [value for kind, value in outcomes if kind == "api_error"]
+        errors = [(kind, value) for kind, value in outcomes if kind != "success"]
         self.assertEqual(len(successes), 1, outcomes)
         self.assertEqual(successes[0]["status"], "DRAFT_PR_CREATED")
-        self.assertEqual(errors, [409])
+        self.assertEqual(len(errors), 1, outcomes)
+        if errors[0][0] == "api_error":
+            self.assertEqual(errors[0][1], 409)
+        else:
+            self.assertEqual(errors[0][0], "publisher_error")
+            self.assertIn("exact expected one-commit diff", errors[0][1])
 
         retry = publish_plan(self.plan, api)
         self.assertEqual(retry["status"], "EXISTING_DRAFT_PR")
