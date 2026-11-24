@@ -5,7 +5,7 @@
 **Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
 **Master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
 **Candidate branch:** `phase59-70-offline-publisher-dry-run`  
-**Candidate head / exact tested code+test head:** `70f876788e125ba7cc4a5032f571d2bd848da9d9`  
+**Exact tested code+test HEAD:** `70f876788e125ba7cc4a5032f571d2bd848da9d9` (subsequent evidence/control commits are documentation-only; current evidence branch head is recorded in `PROJECT_CONTINUITY.md`).  
 **Parent branch:** `phase59-69-artifact-provenance` at `816b42f2ae1a99182fe8f6c97ef7ceab8f261d39`  
 **Draft PR:** [#56](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/56), open/unmerged, mergeable, stacked on PR #55.  
 **Exact-head CI:** [Phase59.35 run #45324208218 — SUCCESS](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45324208218).
