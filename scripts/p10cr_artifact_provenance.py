@@ -260,6 +260,7 @@ def validate_artifact_listing(
 def validate_artifact_attestation(
     attestation: dict[str, Any],
     expected_source: dict[str, Any],
+    now: datetime | None = None,
 ) -> dict[str, Any]:
     if not isinstance(attestation, dict) or set(attestation) != {"schema_version", "source", "artifact"}:
         raise ArtifactProvenanceError("artifact attestation fields do not match the closed contract")
@@ -280,8 +281,12 @@ def validate_artifact_attestation(
     size = _positive_int(artifact.get("size_in_bytes"), "artifact size", MAX_ARCHIVE_BYTES)
     created = _utc(artifact.get("created_at"), "artifact created_at")
     expires = _utc(artifact.get("expires_at"), "artifact expires_at")
-    if expires <= created:
-        raise ArtifactProvenanceError("artifact attestation lifetime is invalid")
+    current = now or datetime.now(timezone.utc)
+    if current.tzinfo is None or current.utcoffset() != timezone.utc.utcoffset(current):
+        raise ArtifactProvenanceError("artifact attestation verification clock must be UTC")
+    current_utc = current.astimezone(timezone.utc)
+    if created > current_utc or expires <= current_utc or expires <= created:
+        raise ArtifactProvenanceError("artifact attestation is expired or has an invalid lifetime")
     archive_sha = artifact.get("archive_sha256")
     if not isinstance(archive_sha, str) or not SHA256_RE.fullmatch(archive_sha):
         raise ArtifactProvenanceError("verified archive digest is invalid")
