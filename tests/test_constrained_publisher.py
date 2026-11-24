@@ -5,7 +5,7 @@ import unittest
 import urllib.error
 from pathlib import Path
 from unittest.mock import patch
-from urllib.parse import parse_qs, urlsplit
+from urllib.parse import parse_qs, unquote, urlsplit
 
 from scripts.constrained_publisher import (
     ALLOWED_TASK_ID,
@@ -72,13 +72,22 @@ def valid_summary_content():
         return plan["content_base64"]
 
 
+def quote_branch(branch):
+    from urllib.parse import quote
+    return quote(branch, safe="")
+
+
 class FakeApi:
     def __init__(self):
         self.master_sha = MASTER_SHA
         self.branches = {}
+        self.branch_bases = {}
+        self.branch_commits = {}
+        self.branch_files = {}
         self.files = {}
         self.pull_requests = []
         self.calls = []
+        self.override_pr_head_sha = None
 
     def request(self, method, path, payload=None):
         self.calls.append((method, path, payload))
@@ -89,11 +98,32 @@ class FakeApi:
         if method == "GET" and route.endswith("/git/ref/heads/master"):
             return {"object": {"sha": self.master_sha}}
 
+        if method == "GET" and "/compare/master..." in route:
+            branch = unquote(route.split("/compare/master...", 1)[1])
+            if branch not in self.branches:
+                raise ApiError(404, "Reference not found")
+            base_sha = self.branch_bases.get(branch, self.master_sha)
+            ahead = self.branch_commits.get(branch, 0)
+            behind = 0 if base_sha == self.master_sha else 1
+            files = self.branch_files.get(branch, [])
+            return {
+                "status": "identical" if ahead == 0 and behind == 0 else "ahead",
+                "ahead_by": ahead,
+                "behind_by": behind,
+                "total_commits": ahead,
+                "base_commit": {"sha": self.master_sha},
+                "merge_base_commit": {"sha": base_sha},
+                "files": files,
+            }
+
         if route.endswith("/git/refs") and method == "POST":
             branch = payload["ref"].removeprefix("refs/heads/")
             if branch in self.branches:
                 raise ApiError(422, "Reference already exists")
             self.branches[branch] = payload["sha"]
+            self.branch_bases[branch] = payload["sha"]
+            self.branch_commits[branch] = 0
+            self.branch_files[branch] = []
             return {"ref": payload["ref"]}
 
         if "/git/ref/heads/" in route and method == "GET":
@@ -116,7 +146,18 @@ class FakeApi:
             key = (branch, path_value)
             if key in self.files:
                 raise ApiError(409, "File already exists")
-            self.files[key] = base64.b64decode(payload["content"], validate=True)
+            raw = base64.b64decode(payload["content"], validate=True)
+            self.files[key] = raw
+            self.branch_commits[branch] = 1
+            additions = max(1, len(raw.splitlines()))
+            self.branch_files[branch] = [{
+                "filename": path_value,
+                "status": "added",
+                "additions": additions,
+                "deletions": 0,
+                "changes": additions,
+            }]
+            self.branches[branch] = "b" * 40
             return {"content": {"path": path_value}}
 
         if route.endswith("/pulls") and method == "GET":
@@ -134,8 +175,17 @@ class FakeApi:
                 "state": "open",
                 "draft": payload["draft"],
                 "html_url": f"https://github.com/{CANONICAL_REPOSITORY}/pull/{number}",
-                "head": {"label": f"manish91082-coder:{payload['head']}"},
-                "base": {"ref": payload["base"]},
+                "head": {
+                    "label": f"manish91082-coder:{payload['head']}",
+                    "ref": payload["head"],
+                    "sha": self.override_pr_head_sha or self.branches[payload["head"]],
+                    "repo": {"full_name": CANONICAL_REPOSITORY},
+                },
+                "base": {
+                    "ref": payload["base"],
+                    "sha": self.master_sha,
+                    "repo": {"full_name": CANONICAL_REPOSITORY},
+                },
             }
             self.pull_requests.append(pr)
             return pr
@@ -312,15 +362,46 @@ class PublisherApiTests(unittest.TestCase):
             self.assertNotIn("/merge", path)
             self.assertFalse(method == "PUT" and "/contents/" not in path and path.endswith("/master"))
 
+
+    def test_rejects_preexisting_branch_with_extra_commit_or_file(self):
+        branch = self.plan["branch"]
+        self.api.branches[branch] = "c" * 40
+        self.api.branch_bases[branch] = MASTER_SHA
+        self.api.branch_commits[branch] = 2
+        self.api.branch_files[branch] = [
+            {"filename": self.plan["path"], "status": "added", "additions": 1, "deletions": 0, "changes": 1},
+            {"filename": "unexpected.txt", "status": "added", "additions": 1, "deletions": 0, "changes": 1},
+        ]
+        with self.assertRaises(PublisherError):
+            publish_plan(self.plan, self.api)
+        self.assertEqual(len(self.api.pull_requests), 0)
+
+    def test_rejects_preexisting_branch_behind_or_diverged_from_master(self):
+        branch = self.plan["branch"]
+        self.api.branches[branch] = "d" * 40
+        self.api.branch_bases[branch] = "c" * 40
+        self.api.branch_commits[branch] = 0
+        self.api.branch_files[branch] = []
+        with self.assertRaises(PublisherError):
+            publish_plan(self.plan, self.api)
+        self.assertEqual(len(self.api.pull_requests), 0)
+
+    def test_rejects_existing_pr_with_mismatched_head_sha(self):
+        publish_plan(self.plan, self.api)
+        self.api.pull_requests[0]["head"]["sha"] = "c" * 40
+        with self.assertRaises(PublisherError):
+            publish_plan(self.plan, self.api)
+
+    def test_rejects_new_pr_response_with_mismatched_head_sha(self):
+        self.api.override_pr_head_sha = "c" * 40
+        with self.assertRaises(PublisherError):
+            publish_plan(self.plan, self.api)
+        self.assertEqual(len(self.api.pull_requests), 1)
+        self.assertTrue(self.api.pull_requests[0]["draft"])
+
     def test_existing_non_draft_pr_is_rejected(self):
-        self.api.pull_requests.append({
-            "number": 99,
-            "state": "open",
-            "draft": False,
-            "html_url": "https://example.invalid/pr/99",
-            "head": {"label": f"manish91082-coder:{self.plan['branch']}"},
-            "base": {"ref": "master"},
-        })
+        publish_plan(self.plan, self.api)
+        self.api.pull_requests[0]["draft"] = False
         with self.assertRaises(PublisherError):
             publish_plan(self.plan, self.api)
 
@@ -347,6 +428,7 @@ class PublisherApiBoundaryTests(unittest.TestCase):
         content = valid_summary_content()
         _validate_api_request("GET", self.ROOT + "/git/ref/heads/master")
         _validate_api_request("GET", self.ROOT + "/git/ref/heads/" + self.BRANCH)
+        _validate_api_request("GET", self.ROOT + "/compare/master..." + quote_branch(self.BRANCH))
         _validate_api_request("POST", self.ROOT + "/git/refs", {
             "ref": "refs/heads/" + self.BRANCH, "sha": MASTER_SHA
         })
