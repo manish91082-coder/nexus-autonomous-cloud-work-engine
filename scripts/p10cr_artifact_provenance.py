@@ -403,7 +403,8 @@ class GitHubArtifactVerifier:
                     ):
                         raise ArtifactProvenanceError("artifact ZIP contains an unsafe entry")
                     mode = info.external_attr >> 16
-                    if mode and not stat.S_ISREG(mode):
+                    file_type = stat.S_IFMT(mode)
+                    if mode and file_type not in (0, stat.S_IFREG):
                         raise ArtifactProvenanceError("artifact ZIP entry is not a regular file")
                     if not 1 <= info.file_size <= MAX_FILE_BYTES:
                         raise ArtifactProvenanceError("artifact file size is outside the limit")
