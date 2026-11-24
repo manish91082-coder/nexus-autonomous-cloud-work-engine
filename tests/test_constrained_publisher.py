@@ -769,22 +769,120 @@ class PublisherEventFlowTests(unittest.TestCase):
         with self.assertRaises(PublisherError):
             build_publish_plan(valid_event(), self.artifact_dir, artifact_metadata=metadata)
 
-    def test_workflow_mints_app_token_only_after_publishable_and_owner_gates(self):
+    def test_workflow_skips_owner_environment_for_nonpublishable_events(self):
+        workflow = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "p10cr-constrained-publisher.yml"
+        source = workflow.read_text(encoding="utf-8")
+        prepare_index = source.index("  prepare-draft:")
+        publish_job_index = source.index("  publish-draft:")
+        prepare_block = source[prepare_index:publish_job_index]
+        publish_block = source[publish_job_index:]
+        self.assertNotIn("environment:", prepare_block)
+        self.assertIn("needs: prepare-draft", publish_block)
+        self.assertIn("if: ${{ needs.prepare-draft.result == 'success' && needs.prepare-draft.outputs.publishable == 'true' }}", publish_block)
+        self.assertIn("environment:\n      name: p10cr-publisher", publish_block)
+
+    def test_workflow_mints_app_token_only_after_plan_validation_and_owner_gate(self):
         workflow = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "p10cr-constrained-publisher.yml"
         source = workflow.read_text(encoding="utf-8")
         validation_index = source.index("- name: Validate source run and sanitized P59-003 draft")
+        publish_job_index = source.index("  publish-draft:")
+        plan_index = source.index("- name: Revalidate sanitized plan before owner token gate")
         owner_index = source.index("- name: Check owner-installed Publisher App configuration")
         token_index = source.index("- name: Mint one-repository, narrowly scoped Publisher App token")
         publish_index = source.index("- name: Create or reuse allowlisted draft PR only")
-        self.assertLess(validation_index, owner_index)
+        self.assertLess(validation_index, publish_job_index)
+        self.assertLess(plan_index, owner_index)
         self.assertLess(owner_index, token_index)
         self.assertLess(token_index, publish_index)
         token_step = source[token_index:publish_index]
         publish_step = source[publish_index:]
-        gate = "if: steps.validation.outputs.publishable == 'true' && steps.owner_gate.outputs.configured == 'true'"
+        gate = "if: steps.plan_validation.outputs.valid == 'true' && steps.owner_gate.outputs.configured == 'true'"
         self.assertIn(gate, token_step)
         self.assertIn(gate, publish_step)
         self.assertEqual(source.count("actions/create-github-app-token@"), 1)
+
+    def test_validate_command_exports_only_a_bounded_sanitized_plan(self):
+        self.write_inputs()
+        output_path = self.root / "github-output.txt"
+        argv = [
+            "constrained_publisher.py", "validate",
+            "--event-file", str(self.event_path),
+            "--artifact-dir", str(self.artifact_dir),
+            "--artifact-metadata-file", str(self.metadata_path),
+            "--repo", CANONICAL_REPOSITORY,
+            "--plan-file", str(self.plan_path),
+        ]
+        stdout = io.StringIO()
+        with (
+            patch("sys.argv", argv),
+            patch.dict("os.environ", {"GITHUB_OUTPUT": str(output_path)}, clear=True),
+            redirect_stdout(stdout),
+        ):
+            result = main()
+        self.assertEqual(result, 0)
+        outputs = output_path.read_text(encoding="utf-8")
+        self.assertIn("publishable=true", outputs)
+        encoded = next(line.split("=", 1)[1] for line in outputs.splitlines() if line.startswith("plan_b64="))
+        plan_bytes = base64.b64decode(encoded, validate=True)
+        self.assertLessEqual(len(plan_bytes), 131072)
+        plan = json.loads(plan_bytes)
+        self.assertNotIn(valid_report()["output"], plan["content_base64"])
+        self.assertEqual(plan["summary"]["task"]["id"], "P59-003")
+
+    def test_waiting_validation_exports_false_and_no_plan_output(self):
+        report = valid_report()
+        report["status"] = "WAITING_FOR_OWNER_CONFIGURATION"
+        self.write_inputs(report=report)
+        output_path = self.root / "github-output.txt"
+        self.plan_path.write_text("stale-plan", encoding="utf-8")
+        argv = [
+            "constrained_publisher.py", "validate",
+            "--event-file", str(self.event_path),
+            "--artifact-dir", str(self.artifact_dir),
+            "--artifact-metadata-file", str(self.metadata_path),
+            "--repo", CANONICAL_REPOSITORY,
+            "--plan-file", str(self.plan_path),
+        ]
+        stdout = io.StringIO()
+        with (
+            patch("sys.argv", argv),
+            patch.dict("os.environ", {"GITHUB_OUTPUT": str(output_path)}, clear=True),
+            redirect_stdout(stdout),
+        ):
+            result = main()
+        self.assertEqual(result, 0)
+        outputs = output_path.read_text(encoding="utf-8")
+        self.assertIn("publishable=false", outputs)
+        self.assertNotIn("plan_b64=", outputs)
+        self.assertFalse(self.plan_path.exists())
+
+    def test_publish_plan_cli_rejects_tampered_summary_before_token_read(self):
+        self.write_inputs()
+        metadata = json.loads(self.metadata_path.read_text(encoding="utf-8"))
+        plan = build_publish_plan(valid_event(), self.artifact_dir, artifact_metadata=metadata)
+        plan["summary"]["task"]["title"] = "tampered"
+        encoded = base64.b64encode(json.dumps(plan).encode("utf-8")).decode("ascii")
+
+        def fake_getenv(name, default=None):
+            if name == "P10CR_VALIDATED_PLAN_B64":
+                return encoded
+            if name == "NEXUS_PUBLISHER_TOKEN":
+                raise AssertionError("publisher token must not be read for an invalid plan")
+            return default
+
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        with (
+            patch("sys.argv", ["constrained_publisher.py", "publish-plan", "--plan-base64-env", "P10CR_VALIDATED_PLAN_B64"]),
+            patch("scripts.constrained_publisher.os.getenv", side_effect=fake_getenv),
+            patch("scripts.constrained_publisher.GitHubApi") as api_class,
+            redirect_stdout(stdout),
+            redirect_stderr(stderr),
+        ):
+            result = main()
+        self.assertEqual(result, 2)
+        self.assertIn("PUBLISHER_REJECTED", stderr.getvalue())
+        api_class.assert_not_called()
 
 
 if __name__ == "__main__":
