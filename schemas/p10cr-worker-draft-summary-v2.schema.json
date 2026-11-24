@@ -1,0 +1,291 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/blob/master/schemas/p10cr-worker-draft-summary-v2.schema.json",
+  "title": "P10CR sanitized worker draft summary v2 with immutable artifact provenance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "record_type",
+    "worker_timestamp_utc",
+    "source",
+    "artifact",
+    "task",
+    "provider",
+    "usage",
+    "model_output",
+    "review",
+    "safety"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "2.0"
+    },
+    "record_type": {
+      "const": "P10CR_AI_WORKER_DRAFT_SUMMARY"
+    },
+    "worker_timestamp_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "repository_id",
+        "head_repository_id",
+        "workflow",
+        "workflow_path",
+        "workflow_id",
+        "event",
+        "branch",
+        "run_id",
+        "run_attempt",
+        "head_sha"
+      ],
+      "properties": {
+        "repository": {
+          "const": "manish91082-coder/nexus-autonomous-cloud-work-engine"
+        },
+        "repository_id": {
+          "const": 1454085952
+        },
+        "head_repository_id": {
+          "const": 1454085952
+        },
+        "workflow": {
+          "const": "Mission Autonomous AI Worker (bounded, fail-closed)"
+        },
+        "workflow_path": {
+          "const": ".github/workflows/mission-autonomous-worker.yml"
+        },
+        "workflow_id": {
+          "const": 415454534
+        },
+        "event": {
+          "enum": [
+            "schedule",
+            "push"
+          ]
+        },
+        "branch": {
+          "const": "master"
+        },
+        "run_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "run_attempt": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "head_sha": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "digest",
+        "size_in_bytes",
+        "created_at",
+        "expires_at",
+        "archive_sha256",
+        "files"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^mission-autonomous-worker-[1-9][0-9]{0,19}$"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "size_in_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1048576
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "archive_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "files": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "sha256",
+              "size_in_bytes"
+            ],
+            "properties": {
+              "name": {
+                "enum": [
+                  "ai_worker_report.json",
+                  "mission_guard_report.json",
+                  "worker_tick_report.json"
+                ]
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "size_in_bytes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65536
+              }
+            }
+          }
+        }
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title"
+      ],
+      "properties": {
+        "id": {
+          "const": "P59-003"
+        },
+        "title": {
+          "const": "Audit and implement zero-cost-first autonomous multi-agent research and execution swarm"
+        }
+      }
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "model"
+      ],
+      "properties": {
+        "name": {
+          "const": "Cloudflare Workers AI"
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9@._/-]{1,256}$"
+        }
+      }
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "daily_calls_used",
+        "daily_call_cap"
+      ],
+      "properties": {
+        "daily_calls_used": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        "daily_call_cap": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6
+        }
+      }
+    },
+    "model_output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "bytes",
+        "raw_content_included",
+        "trust"
+      ],
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32768
+        },
+        "raw_content_included": {
+          "const": false
+        },
+        "trust": {
+          "const": "UNVERIFIED_PROPOSAL"
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "automatic_acceptance",
+        "automatic_task_completion"
+      ],
+      "properties": {
+        "status": {
+          "const": "REQUIRES_HUMAN_EVIDENCE_REVIEW"
+        },
+        "automatic_acceptance": {
+          "const": false
+        },
+        "automatic_task_completion": {
+          "const": false
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model_output_is_untrusted",
+        "no_generated_code_execution",
+        "no_publication_or_money_movement"
+      ],
+      "properties": {
+        "model_output_is_untrusted": {
+          "const": true
+        },
+        "no_generated_code_execution": {
+          "const": true
+        },
+        "no_publication_or_money_movement": {
+          "const": true
+        }
+      }
+    }
+  }
+}
