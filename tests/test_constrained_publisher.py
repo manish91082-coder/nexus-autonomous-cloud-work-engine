@@ -858,6 +858,37 @@ class PublisherEventFlowTests(unittest.TestCase):
         self.assertNotIn("plan_b64=", outputs)
         self.assertFalse(self.plan_path.exists())
 
+    def test_validate_plan_cli_accepts_valid_plan_without_token(self):
+        self.write_inputs()
+        metadata = json.loads(self.metadata_path.read_text(encoding="utf-8"))
+        plan = build_publish_plan(valid_event(), self.artifact_dir, artifact_metadata=metadata)
+        encoded = base64.b64encode(json.dumps(plan, sort_keys=True).encode("utf-8")).decode("ascii")
+        output_path = self.root / "plan-validation-output.txt"
+
+        def fake_getenv(name, default=None):
+            if name == "P10CR_VALIDATED_PLAN_B64":
+                return encoded
+            if name == "GITHUB_OUTPUT":
+                return str(output_path)
+            if name == "NEXUS_PUBLISHER_TOKEN":
+                raise AssertionError("valid plan preflight must not read or mint a publisher token")
+            return default
+
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        with (
+            patch("sys.argv", ["constrained_publisher.py", "validate-plan", "--plan-base64-env", "P10CR_VALIDATED_PLAN_B64"]),
+            patch("scripts.constrained_publisher.os.getenv", side_effect=fake_getenv),
+            patch("scripts.constrained_publisher.GitHubApi") as api_class,
+            redirect_stdout(stdout),
+            redirect_stderr(stderr),
+        ):
+            result = main()
+        self.assertEqual(result, 0, stderr.getvalue())
+        self.assertIn("valid=true", output_path.read_text(encoding="utf-8"))
+        self.assertIn("write_token_requested", stdout.getvalue())
+        api_class.assert_not_called()
+
     def test_publish_plan_cli_rejects_tampered_summary_before_token_read(self):
         self.write_inputs()
         metadata = json.loads(self.metadata_path.read_text(encoding="utf-8"))
