@@ -1,4 +1,5 @@
 import base64
+import hashlib
 import json
 import unittest
 from pathlib import Path
@@ -60,6 +61,8 @@ def valid_source():
 
 def valid_artifact():
     digest = "b" * 64
+    report_bytes = json.dumps(valid_report()).encode("utf-8")
+    report_digest = hashlib.sha256(report_bytes).hexdigest()
     return {
         "id": 67890,
         "name": f"{ARTIFACT_PREFIX}12345-attempt-1",
@@ -69,7 +72,7 @@ def valid_artifact():
         "expires_at": "2026-12-08T03:00:00Z",
         "archive_sha256": digest,
         "files": [
-            {"name": "ai_worker_report.json", "sha256": "a" * 64, "size_in_bytes": 100},
+            {"name": "ai_worker_report.json", "sha256": report_digest, "size_in_bytes": len(report_bytes)},
             {"name": "mission_guard_report.json", "sha256": "c" * 64, "size_in_bytes": 100},
             {"name": "worker_tick_report.json", "sha256": "d" * 64, "size_in_bytes": 100},
         ],
