@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "Phase59.67 strict worker-artifact and published-summary schema/provenance enforcement accepted by exact-head PR CI #45317418741 at 16d5a85. Raw model output is excluded; duplicate keys and unknown fields are rejected; API PUT and publisher plan revalidate canonical summary and bind run/attempt to deterministic path. PR #53 remains draft/unmerged. No live API calls, inference, deployment or spend.",
+  "current_focus": "Phase59.67 strict worker-artifact and published-summary schema/provenance enforcement accepted by exact-head PR CI #45317418741 at 16d5a85. Report, mission state, queue, federation and continuity updated on the candidate branch; PR #53 remains draft/unmerged. No live API calls, inference, deployment or spend.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -3714,6 +3714,15 @@
       45317321026,
       45317412358
     ],
-    "next": "Phase59.68 publisher branch-base/ancestry and draft-PR head/base integrity; six-run proof remains owner-gated."
+    "next": "Phase59.68 publisher branch-base/ancestry and draft-PR head/base integrity; six-run proof remains owner-gated.",
+    "report_commit": "aa8df48e2a585be5661276027c9534aa31fd1089",
+    "owner_packet_commit": "204339b089be558f59cb85041439fe76c126dc5a",
+    "control_commits": {
+      "mission_state": "98f23144f27e420953a36c128f29de31a799205e",
+      "automation_queue": "93c1b7ab928992a11a15afb96c459da5da001438",
+      "federation_registry": "27bf48fef361caae569429d509711433a098e700",
+      "project_continuity": "eb48e94802073b7af3ebf48ac8620fd68a9f4fdb"
+    },
+    "current_candidate_branch_head_before_control_finalization": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc"
   }
 }
