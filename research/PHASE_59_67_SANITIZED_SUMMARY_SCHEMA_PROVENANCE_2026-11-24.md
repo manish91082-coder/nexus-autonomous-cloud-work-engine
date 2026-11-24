@@ -152,4 +152,4 @@ Physical six-run proof remains owner-gated and must not start until the stacked 
 - Federation registry checkpoint: `27bf48fef361caae569429d509711433a098e700`
 - Project continuity checkpoint: `eb48e94802073b7af3ebf48ac8620fd68a9f4fdb`
 
-All material writes were fetched back from the candidate branch. The final evidence branch head after report/control/continuity updates is `eb48e94802073b7af3ebf48ac8620fd68a9f4fdb`; the executable/test content remains the exact CI-tested head `16d5a85d3b53e2bf5a4a4aea7401869044d09cfc`.
+All material writes were fetched back from the candidate branch. The continuity checkpoint commit `eb48e94802073b7af3ebf48ac8620fd68a9f4fdb` preceded the final report/control-reference updates; those later commits are documentation and control-plane metadata only. The executable/test content remains the exact CI-tested head `16d5a85d3b53e2bf5a4a4aea7401869044d09cfc`.
