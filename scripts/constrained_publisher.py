@@ -319,9 +319,9 @@ def _validate_branch_compare(
         files = []
     if not isinstance(files, list):
         raise PublisherError("publisher branch comparison file list is invalid")
-    if allow_empty and ahead == 0 and total == 0 and files == [] and branch_sha == expected_base_sha:
+    if allow_empty and ahead == 0 and total == 0 and files == [] and branch_sha == expected_base_sha and result.get("status") == "identical":
         return "EMPTY"
-    if ahead != 1 or total != 1 or branch_sha == expected_base_sha or len(files) != 1:
+    if ahead != 1 or total != 1 or branch_sha == expected_base_sha or len(files) != 1 or result.get("status") != "ahead":
         raise PublisherError("publisher branch must contain exactly one commit and one summary file")
     file_entry = files[0]
     if not isinstance(file_entry, dict):
@@ -333,8 +333,8 @@ def _validate_branch_compare(
         file_entry.get("filename") != expected_path
         or file_entry.get("status") != "added"
         or not isinstance(additions, int) or isinstance(additions, bool) or additions < 1
-        or deletions != 0
-        or changes != additions
+        or not isinstance(deletions, int) or isinstance(deletions, bool) or deletions != 0
+        or not isinstance(changes, int) or isinstance(changes, bool) or changes != additions
     ):
         raise PublisherError("publisher branch diff contains unexpected files or modifications")
     return "ONE_SUMMARY_COMMIT"
@@ -357,6 +357,10 @@ def _validate_draft_pr(
         or not isinstance(base, dict)
         or base.get("ref") != "master"
         or base.get("sha") != expected_base_sha
+        or not isinstance(head.get("repo"), dict)
+        or head["repo"].get("full_name") != CANONICAL_REPOSITORY
+        or not isinstance(base.get("repo"), dict)
+        or base["repo"].get("full_name") != CANONICAL_REPOSITORY
     ):
         raise PublisherError("publisher draft PR head/base identity does not match the verified refs")
 
