@@ -23,6 +23,7 @@ on:
       - 'cloud/swarm/independent-host-tests/**'
       - 'scripts/current_task_guard.py'
       - 'scripts/constrained_publisher.py'
+      - 'scripts/p10cr_summary_schema.py'
       - 'scripts/ai_task_executor.py'
       - 'scripts/worker_tick.py'
       - 'tests/test_ai_task_executor.py'
