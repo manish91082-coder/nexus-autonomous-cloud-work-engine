@@ -115,7 +115,7 @@ def valid_listing(archive=None):
         "total_count": 1,
         "artifacts": [{
             "id": 67890,
-            "name": f"{ARTIFACT_PREFIX}{RUN_ID}",
+            "name": f"{ARTIFACT_PREFIX}{RUN_ID}-attempt-{ATTEMPT}",
             "size_in_bytes": len(archive),
             "digest": "sha256:" + hashlib.sha256(archive).hexdigest(),
             "expired": False,
@@ -203,6 +203,15 @@ class ArtifactMetadataTests(unittest.TestCase):
         self.assertEqual(artifact["id"], 67890)
         self.assertEqual(artifact["size_in_bytes"], len(self.archive))
         self.assertEqual(artifact["digest"], self.listing["artifacts"][0]["digest"])
+
+    def test_ignores_prior_attempt_artifacts_and_selects_exact_attempt(self):
+        listing = json.loads(json.dumps(self.listing))
+        prior = dict(listing["artifacts"][0], id=67889, name=f"{ARTIFACT_PREFIX}{RUN_ID}-attempt-0")
+        listing["artifacts"].append(prior)
+        listing["total_count"] = 2
+        artifact = validate_artifact_listing(listing, self.source, NOW)
+        self.assertEqual(artifact["id"], 67890)
+        self.assertEqual(artifact["name"], f"{ARTIFACT_PREFIX}{RUN_ID}-attempt-{ATTEMPT}")
 
     def test_rejects_multiple_artifacts(self):
         listing = json.loads(json.dumps(self.listing))
