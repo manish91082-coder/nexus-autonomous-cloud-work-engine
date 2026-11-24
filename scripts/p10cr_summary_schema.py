@@ -136,7 +136,10 @@ def validate_worker_report(report: dict[str, Any]) -> bytes:
     output = report.get("output")
     if not isinstance(output, str) or not output.strip():
         raise SummaryValidationError("draft output must be a non-empty string")
-    output_bytes = output.encode("utf-8")
+    try:
+        output_bytes = output.encode("utf-8")
+    except UnicodeEncodeError as exc:
+        raise SummaryValidationError("model output is not valid UTF-8 text") from exc
     if not 1 <= len(output_bytes) <= MAX_OUTPUT_BYTES:
         raise SummaryValidationError("model output exceeds the bounded size")
     if any(pattern.search(output) for pattern in SECRET_PATTERNS):
@@ -193,6 +196,7 @@ def validate_summary(summary: dict[str, Any], expected_source: dict[str, Any] | 
         or source.get("workflow") != WORKFLOW_NAME
         or source.get("workflow_path") != WORKFLOW_PATH
         or source.get("branch") != "master"
+        or not isinstance(source.get("event"), str)
         or source.get("event") not in ALLOWED_EVENTS
     ):
         raise SummaryValidationError("summary source provenance is not allowlisted")
