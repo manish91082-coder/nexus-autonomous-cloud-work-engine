@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "P59.67_SANITIZED_SUMMARY_SCHEMA_AND_PROVENANCE_ENFORCEMENT",
+  "phase": "P59.68_PUBLISHER_BRANCH_BASE_AND_PR_REF_INTEGRITY",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "Phase59.67 strict worker-artifact and published-summary schema/provenance enforcement accepted by exact-head PR CI #45317418741 at 16d5a85. Report, mission state, queue, federation and continuity updated on the candidate branch; PR #53 remains draft/unmerged. No live API calls, inference, deployment or spend.",
+  "current_focus": "Phase59.68 deterministic publisher branch-base/diff and draft-PR head/base integrity accepted by exact-head PR CI #45318616477 at 18edf6f2. Only empty-at-current-master or one-commit/one-expected-summary-file branches are accepted; behind/diverged/contaminated branches and mismatched PR refs fail closed. PR #54 remains draft/unmerged. No live API, token, deployment, inference or spend.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -62,18 +62,18 @@
   ],
   "last_exact_head_ci_status": {
     "status": "SUCCESS",
-    "run_id": 45317418741,
-    "head_sha": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45317418741",
+    "run_id": 45318616477,
+    "head_sha": "18edf6f2b65f11e63b02c0007e7b6f96a3a22fd4",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45318616477",
     "tests": {
-      "host_client": "32/32",
       "ai_task_guard": "20/20",
-      "publisher": "33/33",
+      "publisher": "39/39",
       "summary_schema": "20/20",
       "workers_runtime": "83/83",
       "workerd_integration": "1/1",
       "workflow_yaml": "5/5",
-      "lockfile_packages": 165
+      "lockfile_packages": 165,
+      "host_client_step": "PASS"
     }
   },
   "phase46_control_commits": [
@@ -149,7 +149,7 @@
     "disposition": "Private frozen prototype; no submission; no latest-source game CI evidence"
   },
   "phase52_plan": "research/PHASE_52_CREATOR_IP_DISTRIBUTION_QUALIFICATION_PLAN_2026-11-13.md",
-  "next_focus": "Phase59.68: verify deterministic publisher branch base/ancestry and exact one-file/one-commit diff; reject pre-existing branch contamination, behind-master state and mismatched draft PR head/base before owner-gated six-run proof.",
+  "next_focus": "Phase59.69: bind publisher to immutable GitHub workflow ID and exact source-run artifact identity; verify exactly one non-expired artifact for the canonical run and its digest/metadata before processing. Keep mocked/read-only; physical six-run proof remains owner-gated.",
   "phase52_control_commits": [
     "584696dbcda999ab162a4031525eb28d40fff32d",
     "a13d9084d44a7e3da6c3a8c70905ecf1539cd8de",
@@ -2383,7 +2383,7 @@
     "independent_physical_hosts_proven": false,
     "live_deployment": false
   },
-  "candidate_branch": "phase59-67-sanitized-summary-schema",
+  "candidate_branch": "phase59-68-publisher-branch-integrity",
   "phase59_57": {
     "report": "research/PHASE_59_57_CONSTRAINED_PUBLISHER_SEPARATION_2026-11-17.md",
     "branch": "phase59-57-constrained-publisher-separation",
@@ -2443,8 +2443,8 @@
     "candidate_tested_head": "17584db552c559cdb9d44d46aee004303ccdec25"
   },
   "last_updated": "2026-11-24",
-  "candidate_code_head": "e3779bc1dcdd84e4d91ec7e19bc35051aee56572",
-  "candidate_tested_head": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc",
+  "candidate_code_head": "5c76f785a25f9c08e20326700bea79d5ff147cde",
+  "candidate_tested_head": "18edf6f2b65f11e63b02c0007e7b6f96a3a22fd4",
   "phase59_58": {
     "report": "research/PHASE_59_58_DURABLE_DISPATCHER_SPECIALIST_GRAPH_INTEGRATION_2026-11-18.md",
     "branch": "phase59-58-durable-dispatcher-shadow-integration",
@@ -2896,7 +2896,7 @@
     "verified_realized_net_receipts_inr": 0,
     "next": "Owner reviews and merges PRs #44→#45→#46→#47→#48 in order; configures the existing Cloudflare Free test-only namespace pair and required GitHub environment approval; then manually executes six separate workflow runs. Only after exact snapshot acceptance start 7-day soak, then 30-day soak."
   },
-  "candidate_head": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc",
+  "candidate_head": "18edf6f2b65f11e63b02c0007e7b6f96a3a22fd4",
   "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
   "next": "Phase59.67: enforce sanitized draft-summary schema and provenance at the publisher API boundary. In parallel, Phase59.64D physical six-run proof remains owner-gated on sequential PR retarget/merge, master reconciliation, branch-protection and legacy-writer review, Workers Free/account usage and test-only namespace/environment setup.",
   "ai_inference_enabled": false,
@@ -3714,7 +3714,7 @@
       45317321026,
       45317412358
     ],
-    "next": "Phase59.68 publisher branch-base/ancestry and draft-PR head/base integrity; six-run proof remains owner-gated.",
+    "next": "Phase59.68 accepted by exact-head CI #45318616477. Next Phase59.69 immutable worker workflow ID and artifact provenance.",
     "report_commit": "ac1dcd7cf70882e98698ac5072651d8c1f84055f",
     "owner_packet_commit": "204339b089be558f59cb85041439fe76c126dc5a",
     "control_commits": {
@@ -3728,5 +3728,57 @@
       "final_federation_registry_checkpoint": "4a5ff98740860c36b4d94f959586c2378b3fce36"
     },
     "current_candidate_branch_head_before_control_finalization": "16d5a85d3b53e2bf5a4a4aea7401869044d09cfc"
+  },
+  "phase59_68": {
+    "status": "ACCEPTED_CODE_AND_EXACT_HEAD_CI_PASS_OWNER_GATES_PENDING",
+    "report": "research/PHASE_59_68_PUBLISHER_BRANCH_BASE_AND_PR_REF_INTEGRITY_2026-11-24.md",
+    "branch": "phase59-68-publisher-branch-integrity",
+    "pr_number": 54,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "parent_pr": 53,
+    "code_head": "5c76f785a25f9c08e20326700bea79d5ff147cde",
+    "tested_head": "18edf6f2b65f11e63b02c0007e7b6f96a3a22fd4",
+    "ci_run_id": 45318616477,
+    "ci_status": "SUCCESS",
+    "commits": [
+      "e759b91d3713a36ed8cff9d362d54ec27bef953c",
+      "3ff836cfddea4aa06f93f6d9a4e87b95b3c4d0ad",
+      "301ecad9a0782b34c52cee35e243d759116048fd",
+      "5c76f785a25f9c08e20326700bea79d5ff147cde",
+      "f11714c9967b6d213f7e331765721eb2a3dd8723",
+      "d4d9f819988e773860a2b220a09484d158aa4d7a",
+      "149d5a5cf5b4d6979914db95e2133dc2e1159cf3",
+      "18edf6f2b65f11e63b02c0007e7b6f96a3a22fd4"
+    ],
+    "tests": {
+      "ai_task_guard": "20/20",
+      "publisher": "39/39",
+      "summary_schema": "20/20",
+      "workers_runtime": "83/83 across 4 files",
+      "workerd_integration": "1/1",
+      "workflow_yaml": "5/5 PASS",
+      "lockfile_packages": 165,
+      "host_client_step": "PASS"
+    },
+    "controls": [
+      "exact allowlisted master...deterministic-branch compare route",
+      "branch either empty at exact current master or exactly one commit ahead",
+      "one added expected summary file only; no deletion/extra file/commit",
+      "behind/diverged/stale base rejected",
+      "branch ref re-read and compare after write",
+      "existing summary bytes must match canonical plan",
+      "draft PR state/head ref/head SHA/base ref/base SHA/head repo/base repo verified"
+    ],
+    "live_api_requests": 0,
+    "github_app_token_created": false,
+    "cloudflare_deployed": false,
+    "ai_inference_enabled": false,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "failures": [],
+    "superseded_cancelled_runs": [
+      45318598461
+    ],
+    "next": "Phase59.69 immutable workflow ID and artifact provenance binding; six-run physical proof remains owner-gated."
   }
 }
