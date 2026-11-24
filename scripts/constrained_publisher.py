@@ -654,6 +654,7 @@ def main() -> int:
             raise PublisherError("validated publisher plan is unavailable") from exc
         if saved != plan:
             raise PublisherError("publisher plan changed after validation")
+        validate_publish_plan(plan)
         token = os.getenv("NEXUS_PUBLISHER_TOKEN", "")
         if not token:
             raise PublisherError("owner-approved scoped publisher token is unavailable")
