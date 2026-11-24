@@ -205,6 +205,18 @@ def _validate_api_request(method: str, path: str, payload: dict[str, Any] | None
     if method == "GET" and branch_ref and not query and payload is None:
         return
 
+    decoded_path = urllib.parse.unquote(parsed.path)
+    compare_match = re.fullmatch(
+        re.escape(root) + r"/compare/master\\.\\.\\.(" + branch_pattern + r")",
+        decoded_path,
+    )
+    if method == "GET" and compare_match and not query and payload is None:
+        compare_branch = compare_match.group(1)
+        expected_path = root + "/compare/master..." + urllib.parse.quote(compare_branch, safe="")
+        if path != expected_path:
+            raise PublisherError("publisher compare route is not canonically encoded")
+        return
+
     if method == "POST" and parsed.path == root + "/git/refs" and not query:
         if not isinstance(payload, dict) or set(payload) != {"ref", "sha"}:
             raise PublisherError("publisher ref payload is not allowlisted")
@@ -277,6 +289,76 @@ def _validate_api_request(method: str, path: str, payload: dict[str, Any] | None
         return
 
     raise PublisherError("publisher API route/method is not allowlisted")
+
+
+def _validate_branch_compare(
+    result: dict[str, Any],
+    expected_base_sha: str,
+    expected_path: str,
+    branch_sha: str,
+    allow_empty: bool,
+) -> str:
+    """Require an isolated branch: either empty or exactly one summary-file commit."""
+    if not isinstance(result, dict):
+        raise PublisherError("publisher branch comparison response is invalid")
+    base = result.get("base_commit")
+    merge_base = result.get("merge_base_commit")
+    if not isinstance(base, dict) or base.get("sha") != expected_base_sha:
+        raise PublisherError("publisher compare base no longer matches the observed master SHA")
+    if not isinstance(merge_base, dict) or merge_base.get("sha") != expected_base_sha:
+        raise PublisherError("publisher branch is not directly based on the current master")
+    ahead = result.get("ahead_by")
+    behind = result.get("behind_by")
+    total = result.get("total_commits")
+    if any(not isinstance(value, int) or isinstance(value, bool) for value in (ahead, behind, total)):
+        raise PublisherError("publisher branch comparison counters are invalid")
+    if behind != 0:
+        raise PublisherError("publisher branch is behind or diverged from current master")
+    files = result.get("files")
+    if files is None:
+        files = []
+    if not isinstance(files, list):
+        raise PublisherError("publisher branch comparison file list is invalid")
+    if allow_empty and ahead == 0 and total == 0 and files == [] and branch_sha == expected_base_sha:
+        return "EMPTY"
+    if ahead != 1 or total != 1 or branch_sha == expected_base_sha or len(files) != 1:
+        raise PublisherError("publisher branch must contain exactly one commit and one summary file")
+    file_entry = files[0]
+    if not isinstance(file_entry, dict):
+        raise PublisherError("publisher branch diff entry is invalid")
+    additions = file_entry.get("additions")
+    deletions = file_entry.get("deletions")
+    changes = file_entry.get("changes")
+    if (
+        file_entry.get("filename") != expected_path
+        or file_entry.get("status") != "added"
+        or not isinstance(additions, int) or isinstance(additions, bool) or additions < 1
+        or deletions != 0
+        or changes != additions
+    ):
+        raise PublisherError("publisher branch diff contains unexpected files or modifications")
+    return "ONE_SUMMARY_COMMIT"
+
+
+def _validate_draft_pr(
+    pr: dict[str, Any],
+    branch: str,
+    branch_sha: str,
+    expected_base_sha: str,
+) -> None:
+    if not isinstance(pr, dict) or pr.get("state") != "open" or pr.get("draft") is not True:
+        raise PublisherError("publisher PR must remain open and draft")
+    head = pr.get("head")
+    base = pr.get("base")
+    if (
+        not isinstance(head, dict)
+        or head.get("ref") != branch
+        or head.get("sha") != branch_sha
+        or not isinstance(base, dict)
+        or base.get("ref") != "master"
+        or base.get("sha") != expected_base_sha
+    ):
+        raise PublisherError("publisher draft PR head/base identity does not match the verified refs")
 
 
 class _RejectRedirectHandler(urllib.request.HTTPRedirectHandler):
@@ -362,7 +444,7 @@ def publish_plan(plan: dict[str, Any], api: Any) -> dict[str, Any]:
 
     branch_ref_path = root + "/git/ref/heads/" + urllib.parse.quote(branch, safe="/")
     try:
-        api.request("GET", branch_ref_path)
+        branch_ref = api.request("GET", branch_ref_path)
     except ApiError as exc:
         if exc.status != 404:
             raise
@@ -371,8 +453,14 @@ def publish_plan(plan: dict[str, Any], api: Any) -> dict[str, Any]:
         except ApiError as create_error:
             if create_error.status not in (409, 422):
                 raise
-            # A concurrent retry may have created the same deterministic branch.
-            api.request("GET", branch_ref_path)
+        branch_ref = api.request("GET", branch_ref_path)
+
+    branch_sha = (branch_ref.get("object") or {}).get("sha")
+    if not isinstance(branch_sha, str) or not re.fullmatch(r"[a-f0-9]{40}", branch_sha):
+        raise PublisherError("deterministic publisher branch ref is invalid")
+    compare_path = root + "/compare/master..." + urllib.parse.quote(branch, safe="")
+    compare = api.request("GET", compare_path)
+    branch_state = _validate_branch_compare(compare, base_sha, path, branch_sha, allow_empty=True)
 
     encoded_path = urllib.parse.quote(path, safe="/")
     content_query = urllib.parse.urlencode({"ref": branch})
@@ -382,22 +470,35 @@ def publish_plan(plan: dict[str, Any], api: Any) -> dict[str, Any]:
     except ApiError as exc:
         if exc.status != 404:
             raise
+        if branch_state != "EMPTY":
+            raise PublisherError("publisher branch diff claims a summary commit but its file is missing")
         api.request(
             "PUT",
             root + "/contents/" + encoded_path,
             {
-                "message": f"Add sanitized P10CR worker draft summary for run {plan['summary']['source']['run_id']}",
+                "message": f"Add sanitized P10CR worker draft summary for run {run_id}",
                 "content": plan["content_base64"],
                 "branch": branch,
             },
         )
     else:
+        if branch_state != "ONE_SUMMARY_COMMIT":
+            raise PublisherError("publisher branch contains a file without the exact expected one-commit diff")
         try:
-            existing_bytes = base64.b64decode(existing.get("content", "").replace("\n", ""), validate=True)
+            existing_bytes = base64.b64decode(existing.get("content", "").replace("\\n", ""), validate=True)
         except Exception as exc:
             raise PublisherError("existing branch file encoding is invalid") from exc
         if existing_bytes != content:
             raise PublisherError("existing deterministic branch contains different content")
+
+    # Re-read both refs and compare after any write; a concurrent or pre-existing
+    # branch mutation must fail before a draft PR can be created or reused.
+    branch_ref = api.request("GET", branch_ref_path)
+    branch_sha = (branch_ref.get("object") or {}).get("sha")
+    if not isinstance(branch_sha, str) or not re.fullmatch(r"[a-f0-9]{40}", branch_sha):
+        raise PublisherError("publisher branch ref changed to an invalid SHA")
+    compare = api.request("GET", compare_path)
+    _validate_branch_compare(compare, base_sha, path, branch_sha, allow_empty=False)
 
     pull_query = urllib.parse.urlencode({
         "state": "open",
@@ -407,8 +508,7 @@ def publish_plan(plan: dict[str, Any], api: Any) -> dict[str, Any]:
     existing_prs = api.request("GET", root + "/pulls?" + pull_query)
     if isinstance(existing_prs, list) and existing_prs:
         pr = existing_prs[0]
-        if pr.get("draft") is not True:
-            raise PublisherError("existing publisher PR is not a draft")
+        _validate_draft_pr(pr, branch, branch_sha, base_sha)
         return {"status": "EXISTING_DRAFT_PR", "number": pr.get("number"), "url": pr.get("html_url")}
 
     run_id = plan["summary"]["source"]["run_id"]
@@ -435,8 +535,9 @@ def publish_plan(plan: dict[str, Any], api: Any) -> dict[str, Any]:
             "draft": True,
         },
     )
-    if pr.get("draft") is not True or not isinstance(pr.get("number"), int):
+    if not isinstance(pr.get("number"), int):
         raise PublisherError("GitHub did not confirm creation of a draft PR")
+    _validate_draft_pr(pr, branch, branch_sha, base_sha)
     return {"status": "DRAFT_PR_CREATED", "number": pr["number"], "url": pr.get("html_url")}
 
 
