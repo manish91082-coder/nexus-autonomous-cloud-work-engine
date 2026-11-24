@@ -16,15 +16,16 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publish-draft:
-    environment:
-      name: p10cr-publisher
+  prepare-draft:
     if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'master' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       actions: read
       contents: read
+    outputs:
+      publishable: ${{ steps.validation.outputs.publishable }}
+      plan_b64: ${{ steps.validation.outputs.plan_b64 }}
     steps:
       - name: Checkout canonical publisher policy
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -41,22 +42,51 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          python3 scripts/p10cr_artifact_provenance.py verify-download \
-            --event-file "$GITHUB_EVENT_PATH" \
-            --repo "$GITHUB_REPOSITORY" \
-            --token "$GH_TOKEN" \
-            --output-dir publisher-input \
+          python3 scripts/p10cr_artifact_provenance.py verify-download \\
+            --event-file "$GITHUB_EVENT_PATH" \\
+            --repo "$GITHUB_REPOSITORY" \\
+            --token "$GH_TOKEN" \\
+            --output-dir publisher-input \\
             --metadata-file publisher-artifact-metadata.json
 
       - name: Validate source run and sanitized P59-003 draft
         id: validation
         run: |
-          python3 scripts/constrained_publisher.py validate \
-            --event-file "$GITHUB_EVENT_PATH" \
-            --artifact-dir publisher-input \
-            --artifact-metadata-file publisher-artifact-metadata.json \
-            --repo "$GITHUB_REPOSITORY" \
+          python3 scripts/constrained_publisher.py validate \\
+            --event-file "$GITHUB_EVENT_PATH" \\
+            --artifact-dir publisher-input \\
+            --artifact-metadata-file publisher-artifact-metadata.json \\
+            --repo "$GITHUB_REPOSITORY" \\
             --plan-file publisher-plan.json
+
+  publish-draft:
+    needs: prepare-draft
+    if: ${{ needs.prepare-draft.result == 'success' && needs.prepare-draft.outputs.publishable == 'true' }}
+    environment:
+      name: p10cr-publisher
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout canonical publisher policy
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: master
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+
+      - name: Revalidate sanitized plan before owner token gate
+        id: plan_validation
+        env:
+          P10CR_VALIDATED_PLAN_B64: ${{ needs.prepare-draft.outputs.plan_b64 }}
+        run: |
+          python3 scripts/constrained_publisher.py validate-plan \\
+            --plan-base64-env P10CR_VALIDATED_PLAN_B64
 
       - name: Check owner-installed Publisher App configuration without exposing secrets
         id: owner_gate
@@ -74,7 +104,7 @@ jobs:
 
       - name: Mint one-repository, narrowly scoped Publisher App token
         id: app_token
-        if: steps.validation.outputs.publishable == 'true' && steps.owner_gate.outputs.configured == 'true'
+        if: steps.plan_validation.outputs.valid == 'true' && steps.owner_gate.outputs.configured == 'true'
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           client-id: ${{ secrets.NEXUS_PUBLISHER_APP_CLIENT_ID }}
@@ -86,13 +116,10 @@ jobs:
           permission-pull-requests: write
 
       - name: Create or reuse allowlisted draft PR only
-        if: steps.validation.outputs.publishable == 'true' && steps.owner_gate.outputs.configured == 'true'
+        if: steps.plan_validation.outputs.valid == 'true' && steps.owner_gate.outputs.configured == 'true'
         env:
           NEXUS_PUBLISHER_TOKEN: ${{ steps.app_token.outputs.token }}
+          P10CR_VALIDATED_PLAN_B64: ${{ needs.prepare-draft.outputs.plan_b64 }}
         run: |
-          python3 scripts/constrained_publisher.py publish \
-            --event-file "$GITHUB_EVENT_PATH" \
-            --artifact-dir publisher-input \
-            --artifact-metadata-file publisher-artifact-metadata.json \
-            --repo "$GITHUB_REPOSITORY" \
-            --plan-file publisher-plan.json
+          python3 scripts/constrained_publisher.py publish-plan \\
+            --plan-base64-env P10CR_VALIDATED_PLAN_B64
