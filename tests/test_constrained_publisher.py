@@ -1,8 +1,12 @@
 import base64
+import hashlib
+import io
 import json
 import tempfile
 import unittest
 import urllib.error
+from contextlib import redirect_stderr, redirect_stdout
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
 from urllib.parse import parse_qs, unquote, urlsplit
@@ -24,6 +28,7 @@ from scripts.constrained_publisher import (
     _RejectRedirectHandler,
     _validate_api_request,
     build_publish_plan,
+    main,
     publish_plan,
 )
 
@@ -71,8 +76,13 @@ def valid_report():
     }
 
 
-def valid_artifact_metadata():
+def valid_artifact_metadata(report_bytes=None):
     digest = "b" * 64
+    report_bytes = report_bytes if report_bytes is not None else json.dumps(valid_report()).encode("utf-8")
+    report_digest = hashlib.sha256(report_bytes).hexdigest()
+    now = datetime.now(timezone.utc).replace(microsecond=0)
+    created_at = (now - timedelta(minutes=1)).isoformat().replace("+00:00", "Z")
+    expires_at = (now + timedelta(days=14)).isoformat().replace("+00:00", "Z")
     return {
         "schema_version": "1.0",
         "source": {
@@ -93,11 +103,11 @@ def valid_artifact_metadata():
             "name": f"{ARTIFACT_PREFIX}12345-attempt-1",
             "digest": "sha256:" + digest,
             "size_in_bytes": 2048,
-            "created_at": "2026-11-24T03:00:00Z",
-            "expires_at": "2026-12-08T03:00:00Z",
+            "created_at": created_at,
+            "expires_at": expires_at,
             "archive_sha256": digest,
             "files": [
-                {"name": "ai_worker_report.json", "sha256": "a" * 64, "size_in_bytes": 100},
+                {"name": "ai_worker_report.json", "sha256": report_digest, "size_in_bytes": len(report_bytes)},
                 {"name": "mission_guard_report.json", "sha256": "c" * 64, "size_in_bytes": 100},
                 {"name": "worker_tick_report.json", "sha256": "d" * 64, "size_in_bytes": 100},
             ],
@@ -108,8 +118,9 @@ def valid_artifact_metadata():
 def valid_summary_content():
     with tempfile.TemporaryDirectory() as directory:
         root = Path(directory)
-        (root / "ai_worker_report.json").write_text(json.dumps(valid_report()), encoding="utf-8")
-        plan = build_publish_plan(valid_event(), root, artifact_metadata=valid_artifact_metadata())
+        report_bytes = json.dumps(valid_report()).encode("utf-8")
+        (root / "ai_worker_report.json").write_bytes(report_bytes)
+        plan = build_publish_plan(valid_event(), root, artifact_metadata=valid_artifact_metadata(report_bytes))
         return plan["content_base64"]
 
 
@@ -249,7 +260,9 @@ class PublisherValidationTests(unittest.TestCase):
         self.temp.cleanup()
 
     def plan(self, event=None):
-        return build_publish_plan(event or valid_event(), self.root, artifact_metadata=valid_artifact_metadata())
+        report_path = self.root / "ai_worker_report.json"
+        report_bytes = report_path.read_bytes() if report_path.exists() else None
+        return build_publish_plan(event or valid_event(), self.root, artifact_metadata=valid_artifact_metadata(report_bytes))
 
     def test_missing_artifact_attestation_is_rejected(self):
         with self.assertRaises(PublisherError):
@@ -384,7 +397,8 @@ class PublisherApiTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
         (self.root / "ai_worker_report.json").write_text(json.dumps(valid_report()), encoding="utf-8")
-        self.plan = build_publish_plan(valid_event(), self.root, artifact_metadata=valid_artifact_metadata())
+        report_bytes = (self.root / "ai_worker_report.json").read_bytes()
+        self.plan = build_publish_plan(valid_event(), self.root, artifact_metadata=valid_artifact_metadata(report_bytes))
         self.api = FakeApi()
 
     def tearDown(self):
@@ -621,6 +635,156 @@ class PublisherApiBoundaryTests(unittest.TestCase):
         self.assertIsInstance(handler, _RejectRedirectHandler)
 
 
+
+
+
+
+class PublisherEventFlowTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name)
+        self.artifact_dir = self.root / "artifact"
+        self.artifact_dir.mkdir()
+        self.event_path = self.root / "event.json"
+        self.metadata_path = self.root / "artifact-attestation.json"
+        self.plan_path = self.root / "publisher-plan.json"
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def write_inputs(self, report=None, event=None, metadata_mutator=None):
+        report = report or valid_report()
+        report_bytes = json.dumps(report).encode("utf-8")
+        (self.artifact_dir / "ai_worker_report.json").write_bytes(report_bytes)
+        event = event or valid_event()
+        self.event_path.write_text(json.dumps(event), encoding="utf-8")
+        metadata = valid_artifact_metadata(report_bytes)
+        if metadata_mutator:
+            metadata_mutator(metadata)
+        self.metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+        return event, metadata
+
+    def invoke_publish(self):
+        argv = [
+            "constrained_publisher.py", "publish",
+            "--event-file", str(self.event_path),
+            "--artifact-dir", str(self.artifact_dir),
+            "--artifact-metadata-file", str(self.metadata_path),
+            "--repo", CANONICAL_REPOSITORY,
+            "--plan-file", str(self.plan_path),
+        ]
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        with (
+            patch("sys.argv", argv),
+            patch.dict("os.environ", {"NEXUS_PUBLISHER_TOKEN": "test-token-must-not-be-read"}, clear=True),
+            patch("scripts.constrained_publisher.GitHubApi") as api_class,
+            patch("scripts.constrained_publisher.os.getenv", side_effect=AssertionError("publisher token must not be read before deterministic validation")),
+            redirect_stdout(stdout),
+            redirect_stderr(stderr),
+        ):
+            result = main()
+        return result, stdout.getvalue(), stderr.getvalue(), api_class
+
+    def test_waiting_for_owner_configuration_is_noop_before_token_read_or_api(self):
+        report = valid_report()
+        report["status"] = "WAITING_FOR_OWNER_CONFIGURATION"
+        self.write_inputs(report=report)
+        result, stdout, stderr, api_class = self.invoke_publish()
+        self.assertEqual(result, 0, stderr)
+        payload = json.loads(stdout)
+        self.assertEqual(payload["status"], "NO_PUBLISHABLE_P59_003_DRAFT")
+        self.assertFalse(payload["write_token_used"])
+        api_class.assert_not_called()
+        self.assertFalse(self.plan_path.exists())
+
+    def test_duplicate_workflow_run_event_delivery_reuses_one_draft_pr(self):
+        self.write_inputs()
+        metadata = json.loads(self.metadata_path.read_text(encoding="utf-8"))
+        plan_one = build_publish_plan(valid_event(), self.artifact_dir, artifact_metadata=metadata)
+        plan_two = build_publish_plan(valid_event(), self.artifact_dir, artifact_metadata=metadata)
+        self.assertEqual(plan_one, plan_two)
+        api = FakeApi()
+        first = publish_plan(plan_one, api)
+        writes_after_first = [call for call in api.calls if call[0] in {"POST", "PUT"}]
+        second = publish_plan(plan_two, api)
+        writes_after_second = [call for call in api.calls if call[0] in {"POST", "PUT"}]
+        self.assertEqual(first["status"], "DRAFT_PR_CREATED")
+        self.assertEqual(second["status"], "EXISTING_DRAFT_PR")
+        self.assertEqual(first["number"], second["number"])
+        self.assertEqual(len(api.pull_requests), 1)
+        self.assertEqual(len(api.files), 1)
+        self.assertEqual(len(writes_after_first), 3)
+        self.assertEqual(len(writes_after_second), 3)
+
+    def test_wrong_workflow_attempt_branch_expiry_and_digest_fail_before_token_or_api(self):
+        cases = []
+
+        wrong_workflow = valid_event()
+        wrong_workflow["workflow_run"]["workflow_id"] += 1
+        cases.append(("wrong workflow", wrong_workflow, None))
+
+        wrong_attempt = valid_event()
+        wrong_attempt["workflow_run"]["run_attempt"] = 2
+        cases.append(("wrong run attempt", wrong_attempt, None))
+
+        wrong_branch = valid_event()
+        wrong_branch["workflow_run"]["head_branch"] = "feature/untrusted"
+        cases.append(("wrong branch", wrong_branch, None))
+
+        def expire(metadata):
+            now = datetime.now(timezone.utc).replace(microsecond=0)
+            metadata["artifact"]["created_at"] = (now - timedelta(hours=2)).isoformat().replace("+00:00", "Z")
+            metadata["artifact"]["expires_at"] = (now - timedelta(hours=1)).isoformat().replace("+00:00", "Z")
+        cases.append(("expired artifact", valid_event(), expire))
+
+        def alter_digest(metadata):
+            metadata["artifact"]["archive_sha256"] = "f" * 64
+        cases.append(("altered digest", valid_event(), alter_digest))
+
+        for label, event, metadata_mutator in cases:
+            with self.subTest(label=label):
+                self.write_inputs(event=event, metadata_mutator=metadata_mutator)
+                result, stdout, stderr, api_class = self.invoke_publish()
+                self.assertEqual(result, 2, f"{label}: {stdout} {stderr}")
+                self.assertIn("PUBLISHER_REJECTED", stderr)
+                api_class.assert_not_called()
+
+    def test_tampered_summary_plan_fails_before_token_or_api(self):
+        self.write_inputs()
+        metadata = json.loads(self.metadata_path.read_text(encoding="utf-8"))
+        plan = build_publish_plan(valid_event(), self.artifact_dir, artifact_metadata=metadata)
+        plan["summary"]["task"]["title"] = "tampered summary"
+        self.plan_path.write_text(json.dumps(plan), encoding="utf-8")
+        result, stdout, stderr, api_class = self.invoke_publish()
+        self.assertEqual(result, 2, stdout)
+        self.assertIn("PUBLISHER_REJECTED", stderr)
+        api_class.assert_not_called()
+
+    def test_worker_report_tampering_after_artifact_verification_fails_before_api(self):
+        self.write_inputs()
+        metadata = json.loads(self.metadata_path.read_text(encoding="utf-8"))
+        report_path = self.artifact_dir / "ai_worker_report.json"
+        report_path.write_text(json.dumps(valid_report() | {"output": "changed after attestation"}), encoding="utf-8")
+        with self.assertRaises(PublisherError):
+            build_publish_plan(valid_event(), self.artifact_dir, artifact_metadata=metadata)
+
+    def test_workflow_mints_app_token_only_after_publishable_and_owner_gates(self):
+        workflow = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "p10cr-constrained-publisher.yml"
+        source = workflow.read_text(encoding="utf-8")
+        validation_index = source.index("- name: Validate source run and sanitized P59-003 draft")
+        owner_index = source.index("- name: Check owner-installed Publisher App configuration")
+        token_index = source.index("- name: Mint one-repository, narrowly scoped Publisher App token")
+        publish_index = source.index("- name: Create or reuse allowlisted draft PR only")
+        self.assertLess(validation_index, owner_index)
+        self.assertLess(owner_index, token_index)
+        self.assertLess(token_index, publish_index)
+        token_step = source[token_index:publish_index]
+        publish_step = source[publish_index:]
+        gate = "if: steps.validation.outputs.publishable == 'true' && steps.owner_gate.outputs.configured == 'true'"
+        self.assertIn(gate, token_step)
+        self.assertIn(gate, publish_step)
+        self.assertEqual(source.count("actions/create-github-app-token@"), 1)
 
 
 if __name__ == "__main__":
