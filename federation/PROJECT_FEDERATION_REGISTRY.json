@@ -31,8 +31,8 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase59.68 publisher branch-base/diff and draft-PR head/base integrity accepted by exact-head CI #45318616477 at 18edf6f2. Only an empty current-master branch or exactly one commit/one expected summary file is accepted; stale/behind/diverged/contaminated branches and mismatched PR refs fail closed. PR #54 draft/unmerged. No live API, token, deployment, inference or spend.",
-      "last_observed_head": "18edf6f2b65f11e63b02c0007e7b6f96a3a22fd4",
+      "status": "P59-003 IN_PROGRESS; Phase59.69 immutable workflow ID 415454534 and exact run-attempt artifact provenance accepted by exact-head CI #45321056047 at 603d293f. Publisher verifies source run API metadata, one exact non-expired attempt-bound artifact, GitHub SHA-256 digest, byte count, bounded ZIP and per-file hashes; summary schema v2 binds artifact identity. PR #55 draft/unmerged, stacked on #54. No publisher API write, App token, inference, deployment or spend. Latest candidate Worker #603 selected P59-003 and its attempt-bound artifact digest matched GitHub metadata; candidate Guard #414 passed 111 checks.",
+      "last_observed_head": "603d293f4eee1fbd6d13dc195a4e55b7e6f71479",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
       "phase59_14_report": "research/PHASE_59_14_B4_CRASH_RECOVERY_AND_WORKFLOW_INVENTORY_2026-11-15.md",
@@ -1402,6 +1402,97 @@
         "authorized_spend_inr": 0,
         "verified_realized_net_receipts_inr": 0,
         "next": "Phase59.69 immutable workflow ID and source-run artifact identity/digest verification; physical six-run proof remains owner-gated."
+      },
+      "phase59_69": {
+        "status": "ACCEPTED_CODE_AND_EXACT_HEAD_CI_PASS_OWNER_GATES_PENDING",
+        "report": "research/PHASE_59_69_IMMUTABLE_WORKFLOW_ARTIFACT_PROVENANCE_2026-11-24.md",
+        "branch": "phase59-69-artifact-provenance",
+        "parent_pr": 54,
+        "pr_number": 55,
+        "pr_state": "DRAFT_OPEN_UNMERGED",
+        "tested_head": "603d293f4eee1fbd6d13dc195a4e55b7e6f71479",
+        "ci_run_id": 45321056047,
+        "ci_status": "SUCCESS",
+        "workflow_id": 415454534,
+        "repository_id": 1454085952,
+        "artifact_name_template": "mission-autonomous-worker-<GITHUB_RUN_ID>-attempt-<GITHUB_RUN_ATTEMPT>",
+        "tests": {
+          "host_client": "32/32",
+          "ai_task_guard": "20/20",
+          "publisher": "42/42",
+          "summary_schema": "22/22",
+          "artifact_provenance": "26/26",
+          "workers_runtime": "83/83",
+          "workerd_integration": "1/1",
+          "workflow_yaml": "5/5",
+          "lockfile_packages": 165
+        },
+        "actual_artifact_readbacks": {
+          "master_worker_588": {
+            "artifact_id": 14867217432,
+            "size_in_bytes": 1900,
+            "sha256": "d019c66456f1394ae7eaa382b6ab3d8aedf8e1110af1ef70ebd9ba251c6c906b",
+            "downloaded_digest_match": true,
+            "legacy_name": true
+          },
+          "candidate_worker_599": {
+            "artifact_id": 14887411312,
+            "size_in_bytes": 1936,
+            "sha256": "903600cc177fd0f41cb22c40448b6bdde25f73ff3e0b1d37d2829771b50266be",
+            "downloaded_digest_match": true,
+            "attempt_bound_name": true,
+            "branch_eligible": false
+          }
+        },
+        "ai_inference_enabled": false,
+        "live_publisher_api_requests": 0,
+        "app_token_created": false,
+        "cloudflare_deployed": false,
+        "authorized_spend_inr": 0,
+        "verified_realized_net_receipts_inr": 0,
+        "physical_multi_host_proven": false,
+        "live_six_workflow_run_proof_started": false,
+        "soak_7d_started": false,
+        "soak_30d_started": false,
+        "next": "Phase59.70 offline end-to-end publisher event/replay/no-token dry-run; physical six-run proof remains owner-gated.",
+        "pr_initial_head": "14b1fcbca35885c817d27f990b6d4624e5231897",
+        "pr_ci_run_id": 45321506379,
+        "pr_ci_status": "SUCCESS",
+        "pr_ci_head_sha": "14b1fcbca35885c817d27f990b6d4624e5231897",
+        "pr_url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/55",
+        "latest_candidate_worker_run": {
+          "run_number": 603,
+          "run_id": 45321816324,
+          "head_sha": "0ea6aa6d8adf19770bf31de3f04f22b71889b467",
+          "status": "SUCCESS",
+          "selected_task": "P59-003",
+          "guard_checks": 111,
+          "ai_executor": "WAITING_FOR_OWNER_CONFIGURATION",
+          "inference_requests": 0
+        },
+        "latest_candidate_guard_run": {
+          "run_number": 414,
+          "run_id": 45321841401,
+          "head_sha": "381d7589aae29f55ba60eafd813438a2b0697339",
+          "status": "SUCCESS",
+          "checks": 111,
+          "errors": 0
+        },
+        "latest_candidate_artifact_readback": {
+          "run_id": 45321816324,
+          "run_attempt": 1,
+          "artifact_id": 14887811662,
+          "name": "mission-autonomous-worker-45321816324-attempt-1",
+          "size_in_bytes": 1925,
+          "sha256": "70da672b34e6710bc8c04f5ad33b640714179442c3cfcbf05cc76f97142209ee",
+          "downloaded_digest_match": true,
+          "files": 3,
+          "head_branch": "phase59-69-artifact-provenance",
+          "source_eligible": false
+        },
+        "pr_latest_head_before_control_refresh": "381d7589aae29f55ba60eafd813438a2b0697339",
+        "pr_ci_latest_completed_run_id": 45321506379,
+        "pr_ci_latest_completed_status": "SUCCESS"
       }
     },
     {
@@ -1524,9 +1615,9 @@
     "This registry is a coordination contract, not proof other repos currently enforce locks."
   ],
   "next_actions": [
-    "P10CR Phase59.68 publisher branch-base/ancestry and draft-PR head/base integrity hardening; keep physical six-run proof owner-gated.",
-    "Phase59.62: prepare the independent-host test harness and owner preflight; in parallel pin the Cloudflare/Vitest test dependencies and add a lockfile. Keep live endpoint tests disabled until the owner verifies an existing Workers Free account, account-wide usage and the shared P10CR Durable Object namespace. Then run four independent standard GitHub-hosted runners, prove shared lease/quota/fencing behavior, and only after that start the bounded 7-day and 30-day soak.",
-    "Protect federation-locks branch from force push and deletion with a GitHub ruleset; verify bypass actors and recovery.",
+    "P10CR Phase59.70: build offline end-to-end publisher event/replay/no-token dry-run; prove WAITING_FOR_OWNER_CONFIGURATION is a no-op before API/App token, duplicate delivery is idempotent, and stale attempt/expired artifact/digest/workflow mismatches fail before writes.",
+    "P10CR Phase59.64D: owner-gated six distinct workflow-run proof only after sequential PR #44→#55 stack review/merge, master control-plane reconciliation, branch protection, legacy writer review, existing Workers Free account/aggregate usage verification, test-only namespace and required-reviewer environment approval.",
+    "Verify existing Cloudflare Workers Free account and account-wide aggregate usage; keep deployment disabled until owner verification and explicit approval.",
     "Prepare least-privilege GitHub App scoped to the Nexus controller repository; owner installs/approves through official GitHub UI.",
     "Implement shared GitHub Actions/API quota reservations and fairness; unknown capacity remains fail-closed.",
     "Integrate P10CR worker claim/assert/release with the lock service after duplicate-run and stale-fence tests.",

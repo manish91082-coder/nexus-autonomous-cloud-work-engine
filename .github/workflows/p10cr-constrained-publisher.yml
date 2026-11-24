@@ -37,13 +37,16 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Download source worker artifact with read-only token
+      - name: Verify immutable source workflow and exact artifact digest before extraction
         env:
           GH_TOKEN: ${{ github.token }}
-          SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
         run: |
-          mkdir -p publisher-input
-          gh run download "$SOURCE_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "mission-autonomous-worker-$SOURCE_RUN_ID" --dir publisher-input
+          python3 scripts/p10cr_artifact_provenance.py verify-download \
+            --event-file "$GITHUB_EVENT_PATH" \
+            --repo "$GITHUB_REPOSITORY" \
+            --token "$GH_TOKEN" \
+            --output-dir publisher-input \
+            --metadata-file publisher-artifact-metadata.json
 
       - name: Validate source run and sanitized P59-003 draft
         id: validation
@@ -51,6 +54,7 @@ jobs:
           python3 scripts/constrained_publisher.py validate \
             --event-file "$GITHUB_EVENT_PATH" \
             --artifact-dir publisher-input \
+            --artifact-metadata-file publisher-artifact-metadata.json \
             --repo "$GITHUB_REPOSITORY" \
             --plan-file publisher-plan.json
 
@@ -89,5 +93,6 @@ jobs:
           python3 scripts/constrained_publisher.py publish \
             --event-file "$GITHUB_EVENT_PATH" \
             --artifact-dir publisher-input \
+            --artifact-metadata-file publisher-artifact-metadata.json \
             --repo "$GITHUB_REPOSITORY" \
             --plan-file publisher-plan.json

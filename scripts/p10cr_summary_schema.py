@@ -13,6 +13,8 @@ import re
 from datetime import datetime, timezone
 from typing import Any
 
+from scripts.p10cr_artifact_provenance import ArtifactProvenanceError, validate_artifact_attestation
+
 CANONICAL_REPOSITORY = "manish91082-coder/nexus-autonomous-cloud-work-engine"
 WORKFLOW_NAME = "Mission Autonomous AI Worker (bounded, fail-closed)"
 WORKFLOW_PATH = ".github/workflows/mission-autonomous-worker.yml"
@@ -44,13 +46,14 @@ WORKER_REPORT_KEYS = {
     "task_id", "task_title", "provider", "model", "daily_calls_used",
     "daily_call_cap", "output", "verification_note",
 }
+SUMMARY_VERSION = "2.0"
 SUMMARY_KEYS = {
-    "schema_version", "record_type", "worker_timestamp_utc", "source", "task",
+    "schema_version", "record_type", "worker_timestamp_utc", "source", "artifact", "task",
     "provider", "usage", "model_output", "review", "safety",
 }
 SOURCE_KEYS = {
-    "repository", "workflow", "workflow_path", "event", "branch",
-    "run_id", "run_attempt", "head_sha",
+    "repository", "repository_id", "head_repository_id", "workflow", "workflow_path",
+    "workflow_id", "event", "branch", "run_id", "run_attempt", "head_sha",
 }
 
 
@@ -147,13 +150,25 @@ def validate_worker_report(report: dict[str, Any]) -> bytes:
     return output_bytes
 
 
-def build_summary(source: dict[str, Any], report: dict[str, Any]) -> dict[str, Any]:
+def build_summary(
+    source: dict[str, Any],
+    report: dict[str, Any],
+    artifact: dict[str, Any],
+) -> dict[str, Any]:
     output_bytes = validate_worker_report(report)
+    try:
+        validate_artifact_attestation(
+            {"schema_version": "1.0", "source": source, "artifact": artifact},
+            source,
+        )
+    except ArtifactProvenanceError as exc:
+        raise SummaryValidationError("source artifact provenance is invalid") from exc
     summary = {
-        "schema_version": "1.0",
+        "schema_version": SUMMARY_VERSION,
         "record_type": "P10CR_AI_WORKER_DRAFT_SUMMARY",
         "worker_timestamp_utc": report["timestamp_utc"],
         "source": source,
+        "artifact": artifact,
         "task": {"id": ALLOWED_TASK_ID, "title": TASK_TITLE},
         "provider": {"name": PROVIDER_NAME, "model": report["model"]},
         "usage": {
@@ -177,15 +192,18 @@ def build_summary(source: dict[str, Any], report: dict[str, Any]) -> dict[str, A
             "no_publication_or_money_movement": True,
         },
     }
-    validate_summary(summary, expected_source=source)
+    validate_summary(summary, expected_source=source, expected_artifact=artifact)
     return summary
 
-
-def validate_summary(summary: dict[str, Any], expected_source: dict[str, Any] | None = None) -> None:
+def validate_summary(
+    summary: dict[str, Any],
+    expected_source: dict[str, Any] | None = None,
+    expected_artifact: dict[str, Any] | None = None,
+) -> None:
     """Validate every field that may cross the publisher API boundary."""
     _exact_keys(summary, SUMMARY_KEYS, "published summary")
     _reject_forbidden(summary)
-    if summary.get("schema_version") != "1.0" or summary.get("record_type") != "P10CR_AI_WORKER_DRAFT_SUMMARY":
+    if summary.get("schema_version") != SUMMARY_VERSION or summary.get("record_type") != "P10CR_AI_WORKER_DRAFT_SUMMARY":
         raise SummaryValidationError("published summary type/version is invalid")
     _utc_timestamp(summary.get("worker_timestamp_utc"), "summary worker timestamp")
 
@@ -193,8 +211,11 @@ def validate_summary(summary: dict[str, Any], expected_source: dict[str, Any] | 
     _exact_keys(source, SOURCE_KEYS, "summary source")
     if (
         source.get("repository") != CANONICAL_REPOSITORY
+        or source.get("repository_id") != 1454085952
+        or source.get("head_repository_id") != 1454085952
         or source.get("workflow") != WORKFLOW_NAME
         or source.get("workflow_path") != WORKFLOW_PATH
+        or source.get("workflow_id") != 415454534
         or source.get("branch") != "master"
         or not isinstance(source.get("event"), str)
         or source.get("event") not in ALLOWED_EVENTS
@@ -210,6 +231,17 @@ def validate_summary(summary: dict[str, Any], expected_source: dict[str, Any] | 
         raise SummaryValidationError("summary source head SHA is invalid")
     if expected_source is not None and source != expected_source:
         raise SummaryValidationError("summary provenance differs from the verified workflow event")
+
+    artifact = summary.get("artifact")
+    try:
+        validate_artifact_attestation(
+            {"schema_version": "1.0", "source": source, "artifact": artifact},
+            source,
+        )
+    except ArtifactProvenanceError as exc:
+        raise SummaryValidationError("summary artifact provenance is invalid") from exc
+    if expected_artifact is not None and artifact != expected_artifact:
+        raise SummaryValidationError("summary artifact differs from the verified source artifact")
 
     task = summary.get("task")
     _exact_keys(task, {"id", "title"}, "summary task")
@@ -259,7 +291,6 @@ def validate_summary(summary: dict[str, Any], expected_source: dict[str, Any] | 
         "no_publication_or_money_movement": True,
     }:
         raise SummaryValidationError("summary safety contract is invalid")
-
 
 def serialize_summary(summary: dict[str, Any]) -> bytes:
     validate_summary(summary)

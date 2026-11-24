@@ -25,6 +25,11 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+from scripts.p10cr_artifact_provenance import (
+    ArtifactProvenanceError,
+    validate_artifact_attestation,
+    validate_source_event as validate_verified_source_event,
+)
 from scripts.p10cr_summary_schema import (
     SummaryValidationError,
     build_summary,
@@ -82,48 +87,10 @@ def _reject_forbidden_keys(value: Any, path: str = "$") -> None:
 
 
 def validate_source_event(event: dict[str, Any], expected_repo: str) -> dict[str, Any]:
-    if event.get("action") != "completed":
-        raise PublisherError("source event is not a completed workflow_run event")
-    repository = (event.get("repository") or {}).get("full_name")
-    if repository != expected_repo or repository != CANONICAL_REPOSITORY:
-        raise PublisherError("source repository is not the canonical P10CR repository")
-
-    run = event.get("workflow_run")
-    if not isinstance(run, dict):
-        raise PublisherError("workflow_run payload is missing")
-    if run.get("name") != WORKFLOW_NAME or run.get("path") != WORKFLOW_PATH:
-        raise PublisherError("source workflow identity mismatch")
-    if run.get("head_branch") != "master":
-        raise PublisherError("source run must originate from canonical master")
-    if run.get("event") not in ALLOWED_EVENTS:
-        raise PublisherError("source event type is not allowlisted")
-    if run.get("conclusion") != "success":
-        raise PublisherError("source workflow did not succeed")
-
-    head_repository = (run.get("head_repository") or {}).get("full_name")
-    if head_repository != CANONICAL_REPOSITORY:
-        raise PublisherError("source head repository mismatch")
-
-    head_sha = run.get("head_sha")
-    if not isinstance(head_sha, str) or not re.fullmatch(r"[a-f0-9]{40}", head_sha):
-        raise PublisherError("source head SHA is invalid")
-    run_id = run.get("id")
-    attempt = run.get("run_attempt", 1)
-    if not isinstance(run_id, int) or isinstance(run_id, bool) or run_id < 1:
-        raise PublisherError("source run ID is invalid")
-    if not isinstance(attempt, int) or isinstance(attempt, bool) or not 1 <= attempt <= 100:
-        raise PublisherError("source run attempt is invalid")
-
-    return {
-        "repository": CANONICAL_REPOSITORY,
-        "workflow": WORKFLOW_NAME,
-        "workflow_path": WORKFLOW_PATH,
-        "event": run["event"],
-        "branch": "master",
-        "run_id": run_id,
-        "run_attempt": attempt,
-        "head_sha": head_sha,
-    }
+    try:
+        return validate_verified_source_event(event, expected_repo)
+    except ArtifactProvenanceError as exc:
+        raise PublisherError(str(exc)) from exc
 
 
 def _find_report(artifact_dir: Path) -> Path | None:
@@ -146,8 +113,15 @@ def build_publish_plan(
     event: dict[str, Any],
     artifact_dir: Path,
     expected_repo: str = CANONICAL_REPOSITORY,
+    artifact_metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any] | None:
     source = validate_source_event(event, expected_repo)
+    if not isinstance(artifact_metadata, dict):
+        raise PublisherError("verified source artifact attestation is required")
+    try:
+        artifact = validate_artifact_attestation(artifact_metadata, source)
+    except ArtifactProvenanceError as exc:
+        raise PublisherError("source artifact attestation is invalid") from exc
     report_path = _find_report(artifact_dir)
     if report_path is None:
         return None
@@ -163,7 +137,7 @@ def build_publish_plan(
         return None
 
     try:
-        summary = build_summary(source, report)
+        summary = build_summary(source, report, artifact)
         content = serialize_summary(summary)
     except SummaryValidationError as exc:
         raise PublisherError(str(exc)) from exc
@@ -568,18 +542,27 @@ def main() -> int:
     validate = sub.add_parser("validate")
     validate.add_argument("--event-file", required=True)
     validate.add_argument("--artifact-dir", required=True)
+    validate.add_argument("--artifact-metadata-file", required=True)
     validate.add_argument("--repo", default=CANONICAL_REPOSITORY)
     validate.add_argument("--plan-file", required=True)
     publish = sub.add_parser("publish")
     publish.add_argument("--event-file", required=True)
     publish.add_argument("--artifact-dir", required=True)
+    publish.add_argument("--artifact-metadata-file", required=True)
     publish.add_argument("--repo", default=CANONICAL_REPOSITORY)
     publish.add_argument("--plan-file", required=True)
 
     args = parser.parse_args()
     try:
         event = _read_event(Path(args.event_file))
-        plan = build_publish_plan(event, Path(args.artifact_dir), args.repo)
+        try:
+            artifact_metadata = load_json_object(
+                Path(args.artifact_metadata_file).read_bytes(),
+                "verified source artifact attestation",
+            )
+        except (OSError, SummaryValidationError) as exc:
+            raise PublisherError("verified source artifact attestation is unavailable or invalid") from exc
+        plan = build_publish_plan(event, Path(args.artifact_dir), args.repo, artifact_metadata)
         plan_path = Path(args.plan_file)
         if args.command == "validate":
             if plan is None:

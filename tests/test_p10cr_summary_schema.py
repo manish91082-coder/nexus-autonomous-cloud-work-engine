@@ -3,6 +3,7 @@ import json
 import unittest
 from pathlib import Path
 
+from scripts.p10cr_artifact_provenance import ARTIFACT_PREFIX, CANONICAL_REPOSITORY_ID, WORKFLOW_ID
 from scripts.constrained_publisher import PublisherError, build_publish_plan, publish_plan
 from scripts.p10cr_summary_schema import (
     CANONICAL_REPOSITORY,
@@ -44,13 +45,34 @@ def valid_report():
 def valid_source():
     return {
         "repository": CANONICAL_REPOSITORY,
+        "repository_id": CANONICAL_REPOSITORY_ID,
+        "head_repository_id": CANONICAL_REPOSITORY_ID,
         "workflow": WORKFLOW_NAME,
         "workflow_path": WORKFLOW_PATH,
+        "workflow_id": WORKFLOW_ID,
         "event": "schedule",
         "branch": "master",
         "run_id": 12345,
         "run_attempt": 1,
         "head_sha": "a" * 40,
+    }
+
+
+def valid_artifact():
+    digest = "b" * 64
+    return {
+        "id": 67890,
+        "name": f"{ARTIFACT_PREFIX}12345-attempt-1",
+        "digest": "sha256:" + digest,
+        "size_in_bytes": 2048,
+        "created_at": "2026-11-24T03:00:00Z",
+        "expires_at": "2026-12-08T03:00:00Z",
+        "archive_sha256": digest,
+        "files": [
+            {"name": "ai_worker_report.json", "sha256": "a" * 64, "size_in_bytes": 100},
+            {"name": "mission_guard_report.json", "sha256": "c" * 64, "size_in_bytes": 100},
+            {"name": "worker_tick_report.json", "sha256": "d" * 64, "size_in_bytes": 100},
+        ],
     }
 
 
@@ -105,10 +127,11 @@ class PublishedSummarySchemaTests(unittest.TestCase):
     def setUp(self):
         self.report = valid_report()
         self.source = valid_source()
-        self.summary = build_summary(self.source, self.report)
+        self.artifact = valid_artifact()
+        self.summary = build_summary(self.source, self.report, self.artifact)
 
     def test_summary_is_strict_and_excludes_raw_model_output(self):
-        validate_summary(self.summary, expected_source=self.source)
+        validate_summary(self.summary, expected_source=self.source, expected_artifact=self.artifact)
         encoded = serialize_summary(self.summary)
         decoded = encoded.decode("utf-8")
         self.assertNotIn(self.report["output"], decoded)
@@ -124,6 +147,22 @@ class PublishedSummarySchemaTests(unittest.TestCase):
         extra["provider"]["account_id"] = "not-allowed"
         with self.assertRaises(SummaryValidationError):
             validate_summary(extra)
+
+    def test_rejects_wrong_immutable_workflow_id(self):
+        invalid = json.loads(json.dumps(self.summary))
+        invalid["source"]["workflow_id"] = WORKFLOW_ID + 1
+        with self.assertRaises(SummaryValidationError):
+            validate_summary(invalid)
+
+    def test_rejects_artifact_digest_and_run_binding_mismatch(self):
+        invalid = json.loads(json.dumps(self.summary))
+        invalid["artifact"]["archive_sha256"] = "e" * 64
+        with self.assertRaises(SummaryValidationError):
+            validate_summary(invalid)
+        invalid = json.loads(json.dumps(self.summary))
+        invalid["artifact"]["name"] = f"{ARTIFACT_PREFIX}99999"
+        with self.assertRaises(SummaryValidationError):
+            validate_summary(invalid)
 
     def test_rejects_source_provenance_mismatch(self):
         wrong = dict(self.source)
@@ -184,11 +223,11 @@ class PublishedSummarySchemaTests(unittest.TestCase):
             decode_summary_content(encoded, 12345, 1)
 
     def test_committed_json_schema_is_closed(self):
-        schema_path = Path(__file__).resolve().parents[1] / "schemas" / "p10cr-worker-draft-summary-v1.schema.json"
+        schema_path = Path(__file__).resolve().parents[1] / "schemas" / "p10cr-worker-draft-summary-v2.schema.json"
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
         self.assertEqual(schema["$schema"], "https://json-schema.org/draft/2020-12/schema")
         self.assertIs(schema["additionalProperties"], False)
-        for key in ("source", "task", "provider", "usage", "model_output", "review", "safety"):
+        for key in ("source", "artifact", "task", "provider", "usage", "model_output", "review", "safety"):
             self.assertIs(schema["properties"][key]["additionalProperties"], False)
 
 
@@ -203,20 +242,22 @@ class PublisherPlanBoundaryTests(unittest.TestCase):
             (root / "ai_worker_report.json").write_text(json.dumps(valid_report()), encoding="utf-8")
             event = {
                 "action": "completed",
-                "repository": {"full_name": CANONICAL_REPOSITORY},
+                "repository": {"id": CANONICAL_REPOSITORY_ID, "full_name": CANONICAL_REPOSITORY},
                 "workflow_run": {
+                    "workflow_id": WORKFLOW_ID,
                     "name": WORKFLOW_NAME,
                     "path": WORKFLOW_PATH,
                     "head_branch": "master",
                     "event": "schedule",
                     "conclusion": "success",
+                    "status": "completed",
                     "head_sha": "a" * 40,
                     "id": 12345,
                     "run_attempt": 1,
-                    "head_repository": {"full_name": CANONICAL_REPOSITORY},
+                    "head_repository": {"id": CANONICAL_REPOSITORY_ID, "full_name": CANONICAL_REPOSITORY},
                 },
             }
-            plan = build_publish_plan(event, root)
+            plan = build_publish_plan(event, root, artifact_metadata={"schema_version": "1.0", "source": valid_source(), "artifact": valid_artifact()})
 
         class NoCallApi:
             def __init__(self):
