@@ -137,6 +137,12 @@ class PublishedSummarySchemaTests(unittest.TestCase):
         with self.assertRaises(SummaryValidationError):
             validate_summary(invalid)
 
+    def test_rejects_model_identifier_with_whitespace(self):
+        invalid = json.loads(json.dumps(self.summary))
+        invalid["provider"]["model"] = "model name with spaces"
+        with self.assertRaises(SummaryValidationError):
+            validate_summary(invalid)
+
     def test_rejects_boolean_run_id_and_raw_output_flag(self):
         invalid = json.loads(json.dumps(self.summary))
         invalid["source"]["run_id"] = True
