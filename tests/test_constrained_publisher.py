@@ -249,7 +249,7 @@ class PublisherValidationTests(unittest.TestCase):
         self.temp.cleanup()
 
     def plan(self, event=None):
-        return build_publish_plan(event or valid_event(), self.root)
+        return build_publish_plan(event or valid_event(), self.root, artifact_metadata=valid_artifact_metadata())
 
     def test_builds_deterministic_allowlisted_plan(self):
         plan = self.plan()
