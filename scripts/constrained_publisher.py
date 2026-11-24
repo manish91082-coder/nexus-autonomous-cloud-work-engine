@@ -47,6 +47,7 @@ ALLOWED_TASK_ID = "P59-003"
 BRANCH_PREFIX = "automation/p10cr/worker-run-"
 MAX_REPORT_BYTES = 65536
 MAX_OUTPUT_BYTES = 32768
+MAX_PUBLISH_PLAN_BYTES = 131072
 SECRET_PATTERNS = (
     re.compile(r"gh[pousr]_[A-Za-z0-9]{20,}"),
     re.compile(r"github_pat_[A-Za-z0-9_]{20,}"),
@@ -394,8 +395,8 @@ class GitHubApi:
             raise PublisherError(f"GitHub API transport failed: {type(exc).__name__}") from None
 
 
-def publish_plan(plan: dict[str, Any], api: Any) -> dict[str, Any]:
-    """Create/reuse one allowlisted branch and one draft PR. There is no merge path."""
+def validate_publish_plan(plan: dict[str, Any]) -> dict[str, Any]:
+    """Validate the complete sanitized plan without reading a token or making a request."""
     if not isinstance(plan, dict) or set(plan) != {
         "repository", "branch", "path", "content_base64", "content_sha256", "summary"
     }:
@@ -423,7 +424,29 @@ def publish_plan(plan: dict[str, Any], api: Any) -> dict[str, Any]:
         raise PublisherError("publisher plan digest format is invalid")
     if content != canonical_content or sha256(content) != plan["content_sha256"]:
         raise PublisherError("publisher plan content does not match the validated summary")
+    return {
+        "repository": repo,
+        "owner": owner,
+        "summary": summary,
+        "run_id": run_id,
+        "attempt": attempt,
+        "content": content,
+        "branch": branch,
+        "path": path,
+    }
 
+
+def publish_plan(plan: dict[str, Any], api: Any) -> dict[str, Any]:
+    """Create/reuse one allowlisted branch and one draft PR. There is no merge path."""
+    validated = validate_publish_plan(plan)
+    repo = validated["repository"]
+    owner = validated["owner"]
+    summary = validated["summary"]
+    run_id = validated["run_id"]
+    attempt = validated["attempt"]
+    content = validated["content"]
+    branch = validated["branch"]
+    path = validated["path"]
     root = f"/repos/{repo}"
     master = api.request("GET", root + "/git/ref/heads/master")
     base_sha = (master.get("object") or {}).get("sha")
@@ -561,9 +584,30 @@ def main() -> int:
     publish.add_argument("--artifact-metadata-file", required=True)
     publish.add_argument("--repo", default=CANONICAL_REPOSITORY)
     publish.add_argument("--plan-file", required=True)
+    publish_plan_cmd = sub.add_parser("publish-plan")
+    publish_plan_cmd.add_argument("--plan-base64-env", default="P10CR_VALIDATED_PLAN_B64")
 
     args = parser.parse_args()
     try:
+        if args.command == "publish-plan":
+            encoded_plan = os.getenv(args.plan_base64_env, "")
+            if not isinstance(encoded_plan, str) or not encoded_plan or len(encoded_plan) > MAX_PUBLISH_PLAN_BYTES * 2:
+                raise PublisherError("validated publisher plan output is unavailable or oversized")
+            try:
+                plan_bytes = base64.b64decode(encoded_plan, validate=True)
+                if not plan_bytes or len(plan_bytes) > MAX_PUBLISH_PLAN_BYTES:
+                    raise PublisherError("validated publisher plan byte size is outside the limit")
+                plan = load_json_object(plan_bytes, "validated publisher plan")
+            except (ValueError, SummaryValidationError) as exc:
+                raise PublisherError("validated publisher plan output is invalid") from exc
+            validate_publish_plan(plan)
+            token = os.getenv("NEXUS_PUBLISHER_TOKEN", "")
+            if not token:
+                raise PublisherError("owner-approved scoped publisher token is unavailable")
+            result = publish_plan(plan, GitHubApi(token))
+            print(json.dumps(result, ensure_ascii=False))
+            return 0
+
         event = _read_event(Path(args.event_file))
         try:
             artifact_metadata = load_json_object(
@@ -580,7 +624,11 @@ def main() -> int:
                 _write_output("publishable", "false")
                 print(json.dumps({"status": "NO_PUBLISHABLE_P59_003_DRAFT", "write_token_requested": False}))
                 return 0
-            plan_path.write_text(json.dumps(plan, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+            plan_bytes = (json.dumps(plan, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8")
+            if len(plan_bytes) > MAX_PUBLISH_PLAN_BYTES:
+                raise PublisherError("validated publisher plan exceeds the job-output size limit")
+            plan_path.write_bytes(plan_bytes)
+            _write_output("plan_b64", base64.b64encode(plan_bytes).decode("ascii"))
             _write_output("publishable", "true")
             print(json.dumps({
                 "status": "VALIDATED_DRAFT_SUMMARY",
