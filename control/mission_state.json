@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "Phase59.69 immutable workflow ID and exact run-attempt artifact provenance implemented and accepted by exact-head CI #45321056047 at 603d293f. Publisher verifies canonical repository/workflow/run/attempt/head, one exact non-expired artifact, GitHub SHA-256 digest, archive byte count, bounded exact ZIP entries, and per-file hashes before reading worker output. Summary schema v2 binds workflow ID and artifact identity. PR #55 is prepared as a draft child of #54; master remains unchanged. No publisher token, live inference, deployment, spend or receipts. Latest candidate Worker #601 (run 45321415382) again selected P59-003 with 111 checks, AI executor WAITING_FOR_OWNER_CONFIGURATION and zero inference; its attempt-bound artifact #14888305665 (1927 bytes) was downloaded and its SHA-256 matched GitHub metadata. Candidate Guard #411 passed 111 checks on initial PR #55 head. PR-triggered CI #539 passed on initial PR head 14b1fcb; later branch commits are report/control evidence only.",
+  "current_focus": "Phase59.69 immutable workflow ID and exact run-attempt artifact provenance implemented and accepted by exact-head CI #45321056047 at 603d293f. Publisher verifies canonical repository/workflow/run/attempt/head, one exact non-expired artifact, GitHub SHA-256 digest, archive byte count, bounded exact ZIP entries, and per-file hashes before reading worker output. Summary schema v2 binds workflow ID and artifact identity. PR #55 is prepared as a draft child of #54; master remains unchanged. No publisher token, live inference, deployment, spend or receipts. Latest candidate Worker #601 (run 45321415382) again selected P59-003 with 111 checks, AI executor WAITING_FOR_OWNER_CONFIGURATION and zero inference; its attempt-bound artifact #14888305665 (1927 bytes) was downloaded and its SHA-256 matched GitHub metadata. Candidate Guard #411 passed 111 checks on initial PR #55 head. PR-triggered CI #539 passed on initial PR head 14b1fcb; later branch commits are report/control evidence only. Latest candidate Worker #603 (run 45321816324) again selected P59-003, passed 111 checks, and remained WAITING_FOR_OWNER_CONFIGURATION with zero inference. Attempt-bound artifact #14887811662 (1925 bytes) downloaded with SHA-256 70da672b34e6710bc8c04f5ad33b640714179442c3cfcbf05cc76f97142209ee matching GitHub metadata. Candidate Guard #414 passed 111 checks at branch head 381d7589. PR CI #539 passed at initial PR head; final-head PR run #545 is pending.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -3857,6 +3857,18 @@
         "files": 3,
         "head_branch": "phase59-69-artifact-provenance",
         "source_eligible": false
+      },
+      "candidate_worker_603": {
+        "run_id": 45321816324,
+        "run_attempt": 1,
+        "artifact_id": 14887811662,
+        "name": "mission-autonomous-worker-45321816324-attempt-1",
+        "size_in_bytes": 1925,
+        "sha256": "70da672b34e6710bc8c04f5ad33b640714179442c3cfcbf05cc76f97142209ee",
+        "downloaded_digest_match": true,
+        "files": 3,
+        "head_branch": "phase59-69-artifact-provenance",
+        "source_eligible": false
       }
     },
     "failures_corrected": [
@@ -3903,9 +3915,9 @@
     "pr_ci_head_sha": "14b1fcbca35885c817d27f990b6d4624e5231897",
     "pr_url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/55",
     "latest_candidate_worker_run": {
-      "run_number": 601,
-      "run_id": 45321415382,
-      "head_sha": "2a6d1d9e4769cfbe8363d3e721818365682f0ae6",
+      "run_number": 603,
+      "run_id": 45321816324,
+      "head_sha": "0ea6aa6d8adf19770bf31de3f04f22b71889b467",
       "status": "SUCCESS",
       "selected_task": "P59-003",
       "guard_checks": 111,
@@ -3913,24 +3925,27 @@
       "inference_requests": 0
     },
     "latest_candidate_guard_run": {
-      "run_number": 411,
-      "run_id": 45321483043,
-      "head_sha": "14b1fcbca35885c817d27f990b6d4624e5231897",
+      "run_number": 414,
+      "run_id": 45321841401,
+      "head_sha": "381d7589aae29f55ba60eafd813438a2b0697339",
       "status": "SUCCESS",
       "checks": 111,
       "errors": 0
     },
     "latest_candidate_artifact_readback": {
-      "run_id": 45321415382,
+      "run_id": 45321816324,
       "run_attempt": 1,
-      "artifact_id": 14888305665,
-      "name": "mission-autonomous-worker-45321415382-attempt-1",
-      "size_in_bytes": 1927,
-      "sha256": "d83845f6bf8580e430765f1351547c1ab6dab497eb185bc9006bbd8539081d41",
+      "artifact_id": 14887811662,
+      "name": "mission-autonomous-worker-45321816324-attempt-1",
+      "size_in_bytes": 1925,
+      "sha256": "70da672b34e6710bc8c04f5ad33b640714179442c3cfcbf05cc76f97142209ee",
       "downloaded_digest_match": true,
       "files": 3,
       "head_branch": "phase59-69-artifact-provenance",
       "source_eligible": false
-    }
+    },
+    "pr_latest_head_before_control_refresh": "381d7589aae29f55ba60eafd813438a2b0697339",
+    "pr_ci_latest_completed_run_id": 45321506379,
+    "pr_ci_latest_completed_status": "SUCCESS"
   }
 }
