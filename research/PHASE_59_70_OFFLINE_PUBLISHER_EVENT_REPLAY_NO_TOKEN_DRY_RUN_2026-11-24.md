@@ -5,7 +5,7 @@
 **Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
 **Master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
 **Candidate branch:** `phase59-70-offline-publisher-dry-run`  
-**Exact tested code+test HEAD:** `70f876788e125ba7cc4a5032f571d2bd848da9d9` (subsequent evidence/control commits are documentation-only; current evidence branch head is recorded in `PROJECT_CONTINUITY.md`).  
+**Exact tested code+test HEAD:** `70f876788e125ba7cc4a5032f571d2bd848da9d9` (subsequent evidence/control commits are documentation-only; use the GitHub branch ref for the current evidence HEAD).  
 **Parent branch:** `phase59-69-artifact-provenance` at `816b42f2ae1a99182fe8f6c97ef7ceab8f261d39`  
 **Draft PR:** [#56](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/56), open/unmerged, mergeable, stacked on PR #55.  
 **Exact-head CI:** [Phase59.35 run #45324208218 — SUCCESS](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45324208218).
@@ -115,7 +115,34 @@ Runtime pins: Node `22.16.0`, npm `11.6.3`. Install lifecycle scripts remain dis
 - Final run #45324208218 passed on the final code/test head `70f876788e125ba7cc4a5032f571d2bd848da9d9`, including the valid-plan preflight test.
 - Intermediate runs #45323990673, #45323955778, #45323926167, #45323890820 and #45324019602 were cancelled/superseded by newer commits; they are not counted as test failures.
 
-## 5. Material commits
+## 5. Post-checkpoint operational evidence
+
+The candidate control-plane Worker and Guard were executed after the Phase59.70 queue/state updates:
+
+**Mission Autonomous AI Worker #607**
+- Run: [#45324774926](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45324774926)
+- Candidate head: `2005efa93731d106f64cfcdb2b6ace0a3ee050ae`
+- Queue result: `POLL_OK`
+- Selected task: `P59-003`, priority P0, status IN_PROGRESS.
+- AI executor: `WAITING_FOR_OWNER_CONFIGURATION`.
+- Inference requests: 0.
+- Artifact: `mission-autonomous-worker-45324774926-attempt-1`, ID `14888254776`.
+- GitHub artifact digest: `sha256:60fbf3df3d12c1b34c79e43792f3944bc2bafa3b0cfee6f63be7cd7ace51b401`.
+- Downloaded ZIP SHA-256 independently matched the GitHub artifact digest. ZIP contained exactly three expected JSON files; the worker report, mission guard report and worker tick report were readable and matched the artifact listing.
+
+**Mission Continuity Guard #420**
+- Run: [#45324822115](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45324822115)
+- Candidate head: `bc1babc81520dcea628b454ceb1393d52dc961b2`
+- Result: PASS; 111 checks; zero errors.
+- Guard report phase: `P59.70_OFFLINE_PUBLISHER_EVENT_REPLAY_NO_TOKEN_DRY_RUN`.
+- Verified realized net receipts: ₹0.
+
+**Final PR-head validation**
+- [PR workflow run #45324862089](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45324862089) completed SUCCESS on evidence-only head `e8b7099617aef8968ba5a011bcbc330e7180370f`.
+- The PR-head run repeated the same 32/20/53/22/26 offline suites, 83/83 Workers runtime tests, 1/1 Workerd integration, 5/5 YAML and 165-package lockfile checks.
+- No live AI provider, publisher write API or App token was used by these verification runs.
+
+## 6. Material commits
 
 | Commit | Change |
 |---|---|
@@ -135,7 +162,7 @@ Runtime pins: Node `22.16.0`, npm `11.6.3`. Install lifecycle scripts remain dis
 
 All writes are on the candidate branch and are fetch-back verifiable. No master write or merge occurred.
 
-## 6. Mission and safety state
+## 7. Mission and safety state
 
 - P59-003 remains the sole active P0.
 - P59-001 remains PAUSED.
@@ -151,7 +178,7 @@ All writes are on the candidate branch and are fetch-back verifiable. No master 
 - Revenue ledger unchanged.
 - Other project repositories remain isolated/read-only.
 
-## 7. Remaining gates
+## 8. Remaining gates
 
 Phase59.70 does not prove physical multi-host atomicity. Still pending:
 
@@ -164,7 +191,7 @@ Phase59.70 does not prove physical multi-host atomicity. Still pending:
 7. Verify eight settled reservations, zero residual reserved/uncertain capacity, two repository aliases, six distinct actual run IDs and a valid event chain.
 8. Start the seven-day soak only after physical proof; start the thirty-day soak only after the seven-day acceptance.
 
-## 8. Next engineering step
+## 9. Next engineering step
 
 **Phase59.71 — offline publisher ambiguous-write recovery and replay-race injection.**
 
