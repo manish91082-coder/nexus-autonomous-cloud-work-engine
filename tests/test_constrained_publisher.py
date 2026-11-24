@@ -3,8 +3,10 @@ import hashlib
 import io
 import json
 import tempfile
+import threading
 import unittest
 import urllib.error
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import redirect_stderr, redirect_stdout
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -246,6 +248,64 @@ class FakeApi:
         if "/merge" in route:
             raise AssertionError("publisher must never call a merge endpoint")
         raise ApiError(404, f"unexpected route {method} {route}")
+
+
+class AmbiguousResponseApi(FakeApi):
+    """Fake API that commits a write, then loses exactly one acknowledgement."""
+
+    def __init__(self, failure_point):
+        super().__init__()
+        self.failure_point = failure_point
+        self.failed = False
+        self.committed_writes = {"branch": 0, "file": 0, "pr": 0}
+
+    def request(self, method, path, payload=None):
+        result = super().request(method, path, payload)
+        parsed = urlsplit(path)
+        point = None
+        if method == "POST" and parsed.path.endswith("/git/refs"):
+            point = "branch"
+        elif method == "PUT" and "/contents/" in parsed.path:
+            point = "file"
+        elif method == "POST" and parsed.path.endswith("/pulls"):
+            point = "pr"
+        if point:
+            self.committed_writes[point] += 1
+            if point == self.failure_point and not self.failed:
+                self.failed = True
+                raise ApiError(599, "simulated acknowledgement loss after server commit")
+        return result
+
+
+class ConcurrentReplayApi(FakeApi):
+    """Synchronize two duplicate deliveries after both observe a missing summary file."""
+
+    def __init__(self):
+        super().__init__()
+        self.content_read_barrier = threading.Barrier(2)
+        self.content_read_lock = threading.Lock()
+        self.content_read_count = 0
+        self.committed_writes = {"branch": 0, "file": 0, "pr": 0}
+
+    def request(self, method, path, payload=None):
+        parsed = urlsplit(path)
+        if method == "GET" and "/contents/" in parsed.path:
+            wait_for_peer = False
+            with self.content_read_lock:
+                if self.content_read_count < 2:
+                    self.content_read_count += 1
+                    wait_for_peer = True
+            if wait_for_peer:
+                self.content_read_barrier.wait(timeout=10)
+
+        result = super().request(method, path, payload)
+        if method == "POST" and parsed.path.endswith("/git/refs"):
+            self.committed_writes["branch"] += 1
+        elif method == "PUT" and "/contents/" in parsed.path:
+            self.committed_writes["file"] += 1
+        elif method == "POST" and parsed.path.endswith("/pulls"):
+            self.committed_writes["pr"] += 1
+        return result
 
 
 class PublisherValidationTests(unittest.TestCase):
@@ -916,6 +976,80 @@ class PublisherEventFlowTests(unittest.TestCase):
         self.assertEqual(result, 2)
         self.assertIn("PUBLISHER_REJECTED", stderr.getvalue())
         api_class.assert_not_called()
+
+
+class PublisherAmbiguousWriteRecoveryTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name)
+        report_bytes = json.dumps(valid_report()).encode("utf-8")
+        (self.root / "ai_worker_report.json").write_bytes(report_bytes)
+        self.plan = build_publish_plan(
+            valid_event(),
+            self.root,
+            artifact_metadata=valid_artifact_metadata(report_bytes),
+        )
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def assert_one_committed_publication(self, api):
+        self.assertEqual(api.committed_writes, {"branch": 1, "file": 1, "pr": 1})
+        self.assertEqual(len(api.branches), 1)
+        self.assertEqual(len(api.files), 1)
+        self.assertEqual(len(api.pull_requests), 1)
+        self.assertTrue(api.pull_requests[0]["draft"])
+
+    def test_retry_recovers_lost_ack_after_branch_creation(self):
+        api = AmbiguousResponseApi("branch")
+        with self.assertRaises(ApiError) as raised:
+            publish_plan(self.plan, api)
+        self.assertEqual(raised.exception.status, 599)
+        result = publish_plan(self.plan, api)
+        self.assertEqual(result["status"], "DRAFT_PR_CREATED")
+        self.assert_one_committed_publication(api)
+
+    def test_retry_recovers_lost_ack_after_contents_put(self):
+        api = AmbiguousResponseApi("file")
+        with self.assertRaises(ApiError) as raised:
+            publish_plan(self.plan, api)
+        self.assertEqual(raised.exception.status, 599)
+        result = publish_plan(self.plan, api)
+        self.assertEqual(result["status"], "DRAFT_PR_CREATED")
+        self.assert_one_committed_publication(api)
+
+    def test_retry_recovers_lost_ack_after_draft_pr_creation(self):
+        api = AmbiguousResponseApi("pr")
+        with self.assertRaises(ApiError) as raised:
+            publish_plan(self.plan, api)
+        self.assertEqual(raised.exception.status, 599)
+        result = publish_plan(self.plan, api)
+        self.assertEqual(result["status"], "EXISTING_DRAFT_PR")
+        self.assertEqual(result["number"], 1)
+        self.assert_one_committed_publication(api)
+
+    def test_concurrent_duplicate_delivery_recovers_after_one_contents_conflict(self):
+        api = ConcurrentReplayApi()
+
+        def invoke():
+            try:
+                return ("success", publish_plan(self.plan, api))
+            except ApiError as exc:
+                return ("api_error", exc.status)
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            outcomes = list(pool.map(lambda _: invoke(), range(2)))
+
+        successes = [value for kind, value in outcomes if kind == "success"]
+        errors = [value for kind, value in outcomes if kind == "api_error"]
+        self.assertEqual(len(successes), 1, outcomes)
+        self.assertEqual(successes[0]["status"], "DRAFT_PR_CREATED")
+        self.assertEqual(errors, [409])
+
+        retry = publish_plan(self.plan, api)
+        self.assertEqual(retry["status"], "EXISTING_DRAFT_PR")
+        self.assertEqual(retry["number"], successes[0]["number"])
+        self.assert_one_committed_publication(api)
 
 
 if __name__ == "__main__":
