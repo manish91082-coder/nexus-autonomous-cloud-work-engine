@@ -4724,13 +4724,14 @@
           "ai_inference_enabled": false,
           "authorized_spend_inr": 0,
           "verified_realized_net_receipts_inr": 0,
-          "report_commit": "aa8df48e2a585be5661276027c9534aa31fd1089",
+          "report_commit": "ac1dcd7cf70882e98698ac5072651d8c1f84055f",
           "owner_packet_commit": "204339b089be558f59cb85041439fe76c126dc5a",
           "control_commits": {
             "mission_state": "98f23144f27e420953a36c128f29de31a799205e",
             "automation_queue": "93c1b7ab928992a11a15afb96c459da5da001438",
             "federation_registry": "27bf48fef361caae569429d509711433a098e700",
-            "project_continuity": "eb48e94802073b7af3ebf48ac8620fd68a9f4fdb"
+            "project_continuity": "eb48e94802073b7af3ebf48ac8620fd68a9f4fdb",
+            "final_mission_state_before_report_ref": "31fa9969816a770ce24a0fbe49b90305208418a5"
           }
         }
       },
