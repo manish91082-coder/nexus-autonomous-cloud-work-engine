@@ -161,7 +161,7 @@ Intermediate failures were retained and corrected:
 - Master HEAD remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`; no master write or merge.
 - Candidate branch: `phase59-69-artifact-provenance`.
 - Parent PR #54 remains draft/open/unmerged.
-- Phase59.69 PR #55 is open, draft, mergeable, and unmerged; base is `phase59-68-publisher-branch-integrity`, head is `14b1fcbca35885c817d27f990b6d4624e5231897`, 30 commits / 16 changed files. [PR #55](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/55). PR-triggered exact-head CI [run #539](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45321506379) also completed SUCCESS at that PR head.
+- Phase59.69 PR #55 is open, draft, mergeable, and unmerged; base is `phase59-68-publisher-branch-integrity`. At creation its head was `14b1fcbca35885c817d27f990b6d4624e5231897` (30 commits / 16 changed files). [PR #55](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/55). PR-triggered exact-head CI [run #539](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45321506379) completed SUCCESS at that initial PR head; later branch-head updates in this phase are evidence/control-plane-only and do not change the tested code/test SHA.
 - GitHub App is not installed; no App token minted.
 - Cloudflare Workers Free plan and account-wide aggregate usage remain owner-unverified.
 - Publisher environment required reviewers and owner attestation remain unconfigured.
