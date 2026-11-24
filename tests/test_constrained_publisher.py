@@ -399,6 +399,29 @@ class PublisherApiTests(unittest.TestCase):
         self.assertEqual(len(self.api.pull_requests), 1)
         self.assertTrue(self.api.pull_requests[0]["draft"])
 
+    def test_rejects_new_pr_response_with_mismatched_base_sha(self):
+        self.api.override_pr_base_sha = "c" * 40
+        with self.assertRaises(PublisherError):
+            publish_plan(self.plan, self.api)
+        self.assertEqual(len(self.api.pull_requests), 1)
+        self.assertTrue(self.api.pull_requests[0]["draft"])
+
+    def test_rejects_branch_with_wrong_summary_path(self):
+        branch = self.plan["branch"]
+        self.api.branches[branch] = "b" * 40
+        self.api.branch_bases[branch] = MASTER_SHA
+        self.api.branch_commits[branch] = 1
+        self.api.branch_files[branch] = [{
+            "filename": "research/worker-drafts/unexpected.json",
+            "status": "added",
+            "additions": 1,
+            "deletions": 0,
+            "changes": 1,
+        }]
+        with self.assertRaises(PublisherError):
+            publish_plan(self.plan, self.api)
+        self.assertEqual(len(self.api.pull_requests), 0)
+
     def test_existing_non_draft_pr_is_rejected(self):
         publish_plan(self.plan, self.api)
         self.api.pull_requests[0]["draft"] = False
@@ -429,6 +452,10 @@ class PublisherApiBoundaryTests(unittest.TestCase):
         _validate_api_request("GET", self.ROOT + "/git/ref/heads/master")
         _validate_api_request("GET", self.ROOT + "/git/ref/heads/" + self.BRANCH)
         _validate_api_request("GET", self.ROOT + "/compare/master..." + quote_branch(self.BRANCH))
+        with self.assertRaises(PublisherError):
+            _validate_api_request("GET", self.ROOT + "/compare/main..." + quote_branch(self.BRANCH))
+        with self.assertRaises(PublisherError):
+            _validate_api_request("GET", self.ROOT + "/compare/master..." + quote_branch("automation/p10cr/other"))
         _validate_api_request("POST", self.ROOT + "/git/refs", {
             "ref": "refs/heads/" + self.BRANCH, "sha": MASTER_SHA
         })
