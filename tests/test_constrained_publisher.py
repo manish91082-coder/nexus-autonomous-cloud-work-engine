@@ -7,6 +7,11 @@ from pathlib import Path
 from unittest.mock import patch
 from urllib.parse import parse_qs, unquote, urlsplit
 
+from scripts.p10cr_artifact_provenance import (
+    ARTIFACT_PREFIX,
+    CANONICAL_REPOSITORY_ID,
+    WORKFLOW_ID,
+)
 from scripts.constrained_publisher import (
     ALLOWED_TASK_ID,
     BRANCH_PREFIX,
@@ -29,17 +34,19 @@ MASTER_SHA = "a" * 40
 def valid_event():
     return {
         "action": "completed",
-        "repository": {"full_name": CANONICAL_REPOSITORY},
+        "repository": {"id": CANONICAL_REPOSITORY_ID, "full_name": CANONICAL_REPOSITORY},
         "workflow_run": {
+            "workflow_id": WORKFLOW_ID,
             "name": WORKFLOW_NAME,
             "path": WORKFLOW_PATH,
             "head_branch": "master",
             "event": "schedule",
             "conclusion": "success",
+            "status": "completed",
             "head_sha": MASTER_SHA,
             "id": 12345,
             "run_attempt": 1,
-            "head_repository": {"full_name": CANONICAL_REPOSITORY},
+            "head_repository": {"id": CANONICAL_REPOSITORY_ID, "full_name": CANONICAL_REPOSITORY},
         },
     }
 
@@ -64,11 +71,45 @@ def valid_report():
     }
 
 
+def valid_artifact_metadata():
+    digest = "b" * 64
+    return {
+        "schema_version": "1.0",
+        "source": {
+            "repository": CANONICAL_REPOSITORY,
+            "repository_id": CANONICAL_REPOSITORY_ID,
+            "head_repository_id": CANONICAL_REPOSITORY_ID,
+            "workflow": WORKFLOW_NAME,
+            "workflow_path": WORKFLOW_PATH,
+            "workflow_id": WORKFLOW_ID,
+            "event": "schedule",
+            "branch": "master",
+            "run_id": 12345,
+            "run_attempt": 1,
+            "head_sha": MASTER_SHA,
+        },
+        "artifact": {
+            "id": 67890,
+            "name": f"{ARTIFACT_PREFIX}12345",
+            "digest": "sha256:" + digest,
+            "size_in_bytes": 2048,
+            "created_at": "2026-11-24T03:00:00Z",
+            "expires_at": "2026-12-08T03:00:00Z",
+            "archive_sha256": digest,
+            "files": [
+                {"name": "ai_worker_report.json", "sha256": "a" * 64, "size_in_bytes": 100},
+                {"name": "mission_guard_report.json", "sha256": "c" * 64, "size_in_bytes": 100},
+                {"name": "worker_tick_report.json", "sha256": "d" * 64, "size_in_bytes": 100},
+            ],
+        },
+    }
+
+
 def valid_summary_content():
     with tempfile.TemporaryDirectory() as directory:
         root = Path(directory)
         (root / "ai_worker_report.json").write_text(json.dumps(valid_report()), encoding="utf-8")
-        plan = build_publish_plan(valid_event(), root)
+        plan = build_publish_plan(valid_event(), root, artifact_metadata=valid_artifact_metadata())
         return plan["content_base64"]
 
 
@@ -327,7 +368,7 @@ class PublisherApiTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
         (self.root / "ai_worker_report.json").write_text(json.dumps(valid_report()), encoding="utf-8")
-        self.plan = build_publish_plan(valid_event(), self.root)
+        self.plan = build_publish_plan(valid_event(), self.root, artifact_metadata=valid_artifact_metadata())
         self.api = FakeApi()
 
     def tearDown(self):
