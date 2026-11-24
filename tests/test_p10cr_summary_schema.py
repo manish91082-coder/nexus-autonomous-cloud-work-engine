@@ -3,6 +3,7 @@ import json
 import unittest
 from pathlib import Path
 
+from scripts.constrained_publisher import PublisherError, build_publish_plan, publish_plan
 from scripts.p10cr_summary_schema import (
     CANONICAL_REPOSITORY,
     PROVIDER_NAME,
@@ -170,6 +171,47 @@ class PublishedSummarySchemaTests(unittest.TestCase):
         self.assertIs(schema["additionalProperties"], False)
         for key in ("source", "task", "provider", "usage", "model_output", "review", "safety"):
             self.assertIs(schema["properties"][key]["additionalProperties"], False)
+
+
+
+class PublisherPlanBoundaryTests(unittest.TestCase):
+    def test_tampered_plan_is_rejected_before_any_api_call(self):
+        import tempfile
+        from scripts.constrained_publisher import CANONICAL_REPOSITORY
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "ai_worker_report.json").write_text(json.dumps(valid_report()), encoding="utf-8")
+            event = {
+                "action": "completed",
+                "repository": {"full_name": CANONICAL_REPOSITORY},
+                "workflow_run": {
+                    "name": WORKFLOW_NAME,
+                    "path": WORKFLOW_PATH,
+                    "head_branch": "master",
+                    "event": "schedule",
+                    "conclusion": "success",
+                    "head_sha": "a" * 40,
+                    "id": 12345,
+                    "run_attempt": 1,
+                    "head_repository": {"full_name": CANONICAL_REPOSITORY},
+                },
+            }
+            plan = build_publish_plan(event, root)
+
+        class NoCallApi:
+            def __init__(self):
+                self.calls = []
+
+            def request(self, method, path, payload=None):
+                self.calls.append((method, path, payload))
+                raise AssertionError("API must not be called for a tampered plan")
+
+        api = NoCallApi()
+        plan["summary"]["task"]["title"] = "tampered task"
+        with self.assertRaises(PublisherError):
+            publish_plan(plan, api)
+        self.assertEqual(api.calls, [])
 
 
 if __name__ == "__main__":
