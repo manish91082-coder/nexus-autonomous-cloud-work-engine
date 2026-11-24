@@ -129,6 +129,22 @@ This old artifact name intentionally does not satisfy the new attempt-bound name
 
 This candidate run is intentionally ineligible for publisher acceptance because its head branch is not `master`. It proves the worker workflow emits the new attempt-bound name, not that the publisher accepted or published anything.
 
+### Latest candidate Worker #601 (post-queue/state reconciliation)
+
+- Run ID: `45321415382`; run attempt: 1
+- Candidate branch: `phase59-69-artifact-provenance`
+- Candidate head at execution: `2a6d1d9e4769cfbe8363d3e721818365682f0ae6`
+- Queue result: `POLL_OK`; selected task: `P59-003`
+- AI executor: `WAITING_FOR_OWNER_CONFIGURATION`; no inference request.
+- Guard preflight: 111 checks, zero errors.
+- Artifact ID: `14888305665`
+- Name: `mission-autonomous-worker-45321415382-attempt-1`
+- Size: `1927` bytes
+- GitHub digest and downloaded ZIP SHA-256: `d83845f6bf8580e430765f1351547c1ab6dab497eb185bc9006bbd8539081d41`
+- Exact three expected report files present.
+
+This newer candidate run is also intentionally ineligible for publisher acceptance because it ran on a feature branch, not `master`. It proves current worker selection, AI-disabled behavior and attempt-bound artifact production; no publisher job consumed it.
+
 ## 7. Failure and correction audit
 
 Intermediate failures were retained and corrected:
@@ -145,7 +161,7 @@ Intermediate failures were retained and corrected:
 - Master HEAD remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`; no master write or merge.
 - Candidate branch: `phase59-69-artifact-provenance`.
 - Parent PR #54 remains draft/open/unmerged.
-- New Phase59.69 PR #55 is intended to remain draft/open/unmerged and stacked on PR #54.
+- Phase59.69 PR #55 is open, draft, mergeable, and unmerged; base is `phase59-68-publisher-branch-integrity`, head is `14b1fcbca35885c817d27f990b6d4624e5231897`, 30 commits / 16 changed files. [PR #55](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/55). PR-triggered exact-head CI [run #539](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45321506379) also completed SUCCESS at that PR head.
 - GitHub App is not installed; no App token minted.
 - Cloudflare Workers Free plan and account-wide aggregate usage remain owner-unverified.
 - Publisher environment required reviewers and owner attestation remain unconfigured.
