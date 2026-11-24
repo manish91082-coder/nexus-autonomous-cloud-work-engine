@@ -2,7 +2,7 @@ name: Phase 59.35 Cloudflare Workers SQLite Durable Object Runtime Tests
 
 on:
   push:
-    branches: [master, phase59-35-quota-do-runtime-tests, phase59-36-cross-worker-caller, phase59-37-internal-caller-auth, phase59-39-transactional-telemetry-ingestion, phase59-40-telemetry-driven-admission, phase59-41-quota-client-lifecycle, phase59-42-secondary-rate-limit-controller, phase59-43-lease-renewal-uncertain-reconciliation, phase59-44-read-only-shadow-worker, phase59-53-project-cell-durable-swarm-ledger, phase59-58-durable-dispatcher-shadow-integration, phase59-61-budget-dispatcher-integration, phase59-62-dependency-hardening, phase59-63-independent-workflow-run-proof, phase59-64-default-branch-execution-guard, phase59-64-host-slot-run-identity-binding, phase59-65-current-task-dispatch-guard, phase59-66-publisher-api-boundary, phase59-67-sanitized-summary-schema, phase59-68-publisher-branch-integrity, phase59-69-artifact-provenance]
+    branches: [master, phase59-35-quota-do-runtime-tests, phase59-36-cross-worker-caller, phase59-37-internal-caller-auth, phase59-39-transactional-telemetry-ingestion, phase59-40-telemetry-driven-admission, phase59-41-quota-client-lifecycle, phase59-42-secondary-rate-limit-controller, phase59-43-lease-renewal-uncertain-reconciliation, phase59-44-read-only-shadow-worker, phase59-53-project-cell-durable-swarm-ledger, phase59-58-durable-dispatcher-shadow-integration, phase59-61-budget-dispatcher-integration, phase59-62-dependency-hardening, phase59-63-independent-workflow-run-proof, phase59-64-default-branch-execution-guard, phase59-64-host-slot-run-identity-binding, phase59-65-current-task-dispatch-guard, phase59-66-publisher-api-boundary, phase59-67-sanitized-summary-schema, phase59-68-publisher-branch-integrity, phase59-69-artifact-provenance, phase59-70-offline-publisher-dry-run]
     paths:
       - 'cloud/swarm/quota-ledger-do.mjs'
       - 'cloud/swarm/swarm-run-do.mjs'
@@ -111,7 +111,7 @@ jobs:
         working-directory: .
         run: python3 -m unittest discover -s tests -p 'test_ai_task_executor.py' -v
 
-      - name: Run constrained publisher validation and owner-environment gate tests
+      - name: Run constrained publisher validation, owner gate, event replay and no-token dry-run tests
         working-directory: .
         run: python3 -m unittest discover -s tests -p 'test_constrained_publisher.py' -v
 

@@ -3347,16 +3347,20 @@
         "Update continuity, mission_state, queue and report; fetch-back verify every modified file and exact commit.",
         "Integrate the account-scope budget into the P59-003 shadow dispatcher: reserve before task registration/claim, settle only after durable completion readback, preserve UNCERTAIN on ambiguous outcomes, and reject budget exhaustion before task registration.",
         "Published worker summaries use a closed versioned schema; provenance binds canonical repository/workflow/event/branch/run/attempt/head SHA; raw model output is excluded; final publisher plan and Contents API boundary revalidate canonical bytes.",
-        "Constrained publisher accepts only an empty deterministic branch at exact current master or one commit containing exactly one expected sanitized summary file; rejects stale/behind/diverged/contaminated branches and verifies draft PR head/base ref, SHA and repository."
+        "Constrained publisher accepts only an empty deterministic branch at exact current master or one commit containing exactly one expected sanitized summary file; rejects stale/behind/diverged/contaminated branches and verifies draft PR head/base ref, SHA and repository.",
+        "Recheck artifact-attestation creation/expiry against the current UTC verification clock at publisher consumption; bind the exact consumed ai_worker_report.json bytes and byte count to the verified artifact file manifest.",
+        "Split constrained publishing into a read-only prepare-draft job and a conditional owner-environment-gated publish-draft job; WAITING_FOR_OWNER_CONFIGURATION must emit no plan and skip environment approval, App-token minting and publisher API writes.",
+        "Bound the sanitized summary-plan job output to 131072 bytes; validate it in a pure no-token/no-network command before the owner token gate and revalidate before publisher API writes.",
+        "Offline failure/replay tests must prove duplicate workflow_run delivery reuses one deterministic draft PR, and wrong workflow/run attempt/branch, expired artifact, altered digest, report mutation and tampered summary fail before publisher writes."
       ],
       "evidence": {
-        "report": "research/PHASE_59_68_PUBLISHER_BRANCH_BASE_AND_PR_REF_INTEGRITY_2026-11-24.md",
-        "decision": "GO_STAGED_ZERO_COST_FIRST_HYBRID_SWARM_ARCHITECTURE",
+        "report": "research/PHASE_59_70_OFFLINE_PUBLISHER_EVENT_REPLAY_NO_TOKEN_DRY_RUN_2026-11-24.md",
+        "decision": "P59-003 remains sole active P0; Phase59.70 offline publisher event/replay/no-token dry-run accepted by exact-head CI; owner-gated physical proof remains pending.",
         "architecture": "DETERMINISTIC_ORCHESTRATOR_PLUS_SPECIALIST_LLM_WORKERS_PLUS_EVIDENCE_CRITIC_PLUS_HUMAN_GATES",
         "provider_configured": false,
         "swarm_deployed": false,
         "spend_inr": 0,
-        "next": "Phase59.69: immutable GitHub workflow ID and source-run artifact identity/digest verification; physical six-run proof remains owner-gated.",
+        "next": "Phase59.71: offline publisher ambiguous-write recovery and replay-race injection; then owner-gated six-independent-workflow-run proof after PR stack and cloud/account prerequisites.",
         "phase59_8b": "IMPLEMENTATION_COMMITTED_CI_PENDING",
         "runtime": "scripts/swarm_runtime.py",
         "tests": "tests/test_swarm_runtime.py",
@@ -4760,6 +4764,56 @@
           "ai_inference_enabled": false,
           "authorized_spend_inr": 0,
           "verified_realized_net_receipts_inr": 0
+        },
+        "phase59_70": {
+          "status": "ACCEPTED_CODE_AND_EXACT_HEAD_CI_PASS_OWNER_GATES_PENDING",
+          "branch": "phase59-70-offline-publisher-dry-run",
+          "pr_number": 56,
+          "pr_state": "DRAFT_OPEN_UNMERGED",
+          "parent_pr": 55,
+          "tested_head": "70f876788e125ba7cc4a5032f571d2bd848da9d9",
+          "ci_run_id": 45324208218,
+          "ci_status": "SUCCESS",
+          "tests": {
+            "host_client": "32/32",
+            "ai_task_guard": "20/20",
+            "publisher": "53/53",
+            "summary_schema": "22/22",
+            "artifact_provenance": "26/26",
+            "workers_runtime": "83/83",
+            "workerd_integration": "1/1",
+            "workflow_yaml": "5/5",
+            "lockfile_packages": 165
+          },
+          "live_publisher_api_requests": 0,
+          "app_token_created": false,
+          "ai_inference_enabled": false,
+          "spend_inr": 0,
+          "receipts_inr": 0
+        },
+        "latest_candidate_worker_run": {
+          "run_id": 45324774926,
+          "run_number": 607,
+          "result": "POLL_OK",
+          "selected_task": "P59-003",
+          "ai_executor_status": "WAITING_FOR_OWNER_CONFIGURATION",
+          "inference_requests": 0,
+          "artifact_id": 14888254776,
+          "artifact_digest": "sha256:60fbf3df3d12c1b34c79e43792f3944bc2bafa3b0cfee6f63be7cd7ace51b401",
+          "independently_verified": true
+        },
+        "latest_candidate_guard_run": {
+          "run_id": 45324822115,
+          "run_number": 420,
+          "result": "PASS",
+          "checks": 111,
+          "errors": 0
+        },
+        "latest_pr_ci": {
+          "run_id": 45324862089,
+          "result": "SUCCESS",
+          "head_sha": "e8b7099617aef8968ba5a011bcbc330e7180370f",
+          "note": "Evidence-only PR head; executable code/test head remains 70f876788e125ba7cc4a5032f571d2bd848da9d9."
         }
       },
       "blocker": "Owner review/merge of stacked PRs #44→#55; reconcile stale master control plane and queue sequence policy; verify branch protection in owner UI; verify existing Cloudflare Workers Free account and account-wide aggregate usage; configure required-reviewer GitHub Environment, exact endpoint hostname pin and isolated test-only namespace; review/disable or explicitly retain the legacy Phase59.25 disposable-branch writer and separate federation-locks writer. Then execute six distinct workflow_dispatch runs. Physical multi-host proof and 7/30-day soak remain pending.",
@@ -4812,7 +4866,7 @@
   "current_task": "P59-003",
   "last_updated": "2026-11-24",
   "sequence_note": "Current owner directive remains authoritative over the V5 adoption-time portfolio pointer: P59-003 only until swarm acceptance; P59-001 PAUSED; P59-002 BLOCKED.",
-  "last_reconciled_from_mission_state": "2026-11-23: Phase59.64B push #45106578746 and PR #45106583941 SUCCESS on code/test head 3de92c7e (32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1). Server gates seed replay, host slots and snapshot/overflow against durable settled reservation evidence. Candidate inventory 500 entries/37 workflows/42 cloud-swarm modules/87 Python files. Master remains stale until PR stack #44→#50 is reviewed/merged. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No live deployment/inference/spend/receipts. Post-checkpoint: final candidate head e872f34a passed #45107001561; candidate Worker #45106996804 selected P59-003 with no inference; candidate Guard #45106996788 passed 111 checks. Phase59.64C candidate commit 9868b642 adds concurrent same-host-slot and competing snapshot-run tests. Superseded run #45107478190 failed only on per-bucket counter assertion shape after one-winner host-slot assertions passed; corrected push #45107637216 was cancelled by concurrency; corrected PR run #45107642156 is pending. Phase64C is not accepted. Phase59.64C accepted on corrected head 9868b642 via PR CI #45107642156: 32/32 offline, YAML PASS, lockfile 165, Workers 83/83, Workerd 1/1. Concurrent same-slot and competing snapshot-run tests each produced one durable winner; losing snapshot could not split overflow; final snapshot 8 settled/0 reserved/0 uncertain/6 run IDs/2 repositories/event chain valid. Live six-run proof and soak remain owner-gated.",
+  "last_reconciled_from_mission_state": "2026-11-24: Phase59.70 accepted by exact-head CI #45324208218 at 70f876788e125ba7cc4a5032f571d2bd848da9d9. Publisher now rechecks artifact expiry, binds consumed report bytes to the verified manifest, and separates read-only prepare from conditional owner-gated publishing. WAITING events skip the publisher environment and App-token path. Offline replay, no-token and tamper-rejection tests passed. PR #56 draft/unmerged, stacked on #55; master remains 8856bf90. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No live publisher API, App token, deployment, inference, spend or receipts. Post-checkpoint candidate Worker #607 (run 45324774926) returned POLL_OK and selected P59-003/P0; AI executor WAITING_FOR_OWNER_CONFIGURATION, inference requests 0; artifact #14888254776 SHA-256 independently matched GitHub digest 60fbf3df3d12c1b34c79e43792f3944bc2bafa3b0cfee6f63be7cd7ace51b401. Candidate Guard #420 (run 45324822115) passed 111 checks, zero errors. Final PR-head CI #45324862089 SUCCESS on evidence-only head e8b70996.",
   "phase59_46": {
     "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
     "pr_number": 27,
@@ -6077,7 +6131,7 @@
     "live_six_workflow_run_proof_started": false,
     "soak_7d_started": false,
     "soak_30d_started": false,
-    "next": "Phase59.70 offline end-to-end publisher event/replay/no-token dry-run; physical six-run proof remains owner-gated.",
+    "next": "Phase59.70 accepted by exact-head CI #45324208218; Phase59.71 offline publisher ambiguous-write recovery and replay-race injection is next.",
     "pr_initial_head": "14b1fcbca35885c817d27f990b6d4624e5231897",
     "pr_ci_run_id": 45321506379,
     "pr_ci_status": "SUCCESS",
@@ -6116,5 +6170,69 @@
     "pr_latest_head_before_control_refresh": "381d7589aae29f55ba60eafd813438a2b0697339",
     "pr_ci_latest_completed_run_id": 45321506379,
     "pr_ci_latest_completed_status": "SUCCESS"
-  }
+  },
+  "phase59_70": {
+    "status": "ACCEPTED_CODE_AND_EXACT_HEAD_CI_PASS_OWNER_GATES_PENDING",
+    "report": "research/PHASE_59_70_OFFLINE_PUBLISHER_EVENT_REPLAY_NO_TOKEN_DRY_RUN_2026-11-24.md",
+    "branch": "phase59-70-offline-publisher-dry-run",
+    "pr_number": 56,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "parent_pr": 55,
+    "tested_head": "70f876788e125ba7cc4a5032f571d2bd848da9d9",
+    "ci_run_id": 45324208218,
+    "ci_status": "SUCCESS",
+    "tests": {
+      "host_client": "32/32",
+      "ai_task_guard": "20/20",
+      "publisher": "53/53",
+      "summary_schema": "22/22",
+      "artifact_provenance": "26/26",
+      "workers_runtime": "83/83",
+      "workerd_integration": "1/1",
+      "workflow_yaml": "5/5",
+      "lockfile_packages": 165
+    },
+    "controls": [
+      "artifact expiry checked at consumption time",
+      "worker report bytes/size matched to artifact manifest",
+      "read-only prepare job separated from conditional owner-gated publish job",
+      "non-publishable WAITING event skips owner environment and App-token step",
+      "bounded sanitized plan output and pure pre-token validation",
+      "duplicate event replay idempotent in fake API",
+      "wrong workflow/attempt/branch, expired artifact, altered digest, report mutation and tampered summary rejected before writes"
+    ],
+    "live_publisher_api_requests": 0,
+    "app_token_created": false,
+    "cloudflare_deployed": false,
+    "ai_inference_enabled": false,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "physical_multi_host_proven": false,
+    "live_six_workflow_run_proof_started": false,
+    "soak_7d_started": false,
+    "soak_30d_started": false,
+    "next": "Phase59.71 offline publisher ambiguous-write recovery and replay-race injection.",
+    "post_checkpoint_worker_run": {
+      "run_id": 45324774926,
+      "run_number": 607,
+      "result": "POLL_OK",
+      "selected_task": "P59-003",
+      "ai_executor_status": "WAITING_FOR_OWNER_CONFIGURATION",
+      "inference_requests": 0,
+      "artifact_id": 14888254776,
+      "artifact_digest": "sha256:60fbf3df3d12c1b34c79e43792f3944bc2bafa3b0cfee6f63be7cd7ace51b401",
+      "independently_verified": true
+    },
+    "post_checkpoint_guard_run": {
+      "run_id": 45324822115,
+      "run_number": 420,
+      "result": "PASS",
+      "checks": 111,
+      "errors": 0
+    },
+    "final_pr_ci_run_id": 45324862089,
+    "final_pr_ci_status": "SUCCESS",
+    "report_commit": "708c37f18e82bacd8f6a138f7c930b34617bcca0"
+  },
+  "reconciliation_note": " Phase59.70 (24-Nov-2026): publisher attestation expiry is rechecked at consumption and the consumed worker-report bytes/size are bound to the artifact manifest. Read-only prepare job emits a bounded sanitized plan; the owner environment exists only on the conditional publish job, so WAITING_FOR_OWNER_CONFIGURATION skips environment approval, App-token minting and publisher writes. Exact-head CI #45324208218 SUCCESS: host32/32, AI guard20/20, publisher53/53, summary22/22, artifact provenance26/26, Workers83/83, Workerd1/1, YAML5/5, lockfile165. PR #56 draft/unmerged, child of #55. No live publisher API, token, deployment, inference, spend or receipts. Next Phase59.71 offline ambiguous-write/replay-race injection. Post-checkpoint verification: Worker #607 selected P59-003 and made zero inference requests; its downloaded artifact ZIP digest matched GitHub metadata. Guard #420 passed 111/111 with zero errors. PR-head CI #45324862089 SUCCESS on documentation-only evidence head e8b70996; executable/test head remains 70f87678."
 }
