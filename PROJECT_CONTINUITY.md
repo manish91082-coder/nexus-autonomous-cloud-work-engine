@@ -5223,3 +5223,22 @@ Date: 2026-11-24
 - Federation registry checkpoint: `4a5ff98740860c36b4d94f959586c2378b3fce36`.
 - All these are candidate-branch evidence/control commits. Master remains unchanged and its historical continuity/queue snapshot must be reconciled only after owner-approved sequential merges.
 - The exact executable/test head remains `16d5a85d3b53e2bf5a4a4aea7401869044d09cfc`; documentation/control commits do not change tested executable content.
+
+
+## PHASE 59.68 — PUBLISHER BRANCH BASE, DIFF AND DRAFT PR REF INTEGRITY
+Date: 2026-11-24
+
+- Canonical master HEAD remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`; no master write, merge or deployment.
+- Candidate branch: `phase59-68-publisher-branch-integrity`; exact tested code/test HEAD `18edf6f2b65f11e63b02c0007e7b6f96a3a22fd4`.
+- PR #54 is draft/open/unmerged, based on Phase59.67. PRs #44–#54 remain a sequential owner-review stack.
+- Added a narrowly allowlisted GitHub Compare route for the deterministic worker-run/attempt branch.
+- Publisher accepts only an empty branch at the exact current master SHA or exactly one commit ahead with exactly one added expected sanitized-summary file, zero deletions and zero behind. Extra commits/files, wrong paths, modified files, stale merge bases and diverged/behind branches fail closed.
+- Branch ref and compare are re-read after summary write. Existing file bytes must match the canonical plan.
+- Existing/new draft PR must be open and draft, with exact head ref/SHA, base master ref/SHA, and canonical head/base repositories.
+- Mocked regression tests cover contaminated branches, stale ancestry, wrong summary paths/content and mismatched existing/new PR head/base identities. No live GitHub API calls were made.
+- Exact-head PR CI [#45318616477](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45318616477) SUCCESS at `18edf6f2b65f11e63b02c0007e7b6f96a3a22fd4`: AI/task guard 20/20; publisher 39/39; summary schema 20/20; Workers runtime 83/83 across four files; Workerd 1/1; workflow YAML 5/5; lockfile 165 packages; independent-host client workflow step PASS.
+- Latest master Mission Worker #588 [run 45276398411](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45276398411) SUCCESS on master HEAD: P59-003 selected, AI executor WAITING_FOR_OWNER_CONFIGURATION, zero inference requests and no publisher action. Latest master Continuity Guard #394 [run 45163468164](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45163468164) SUCCESS. Master combined-status API has no status contexts; branch protection remains UNVERIFIED.
+- P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No revenue-source/product discovery or unrelated project work.
+- No live publisher API request, GitHub App token, Cloudflare deployment, AI inference, KYC, legal acceptance, public release, billing, payment, signing or money movement. AI inference disabled; authorized spend ₹0; verified realized net receipts/PCNE ₹0. Other project repositories remain isolated/read-only.
+- Owner stacked-PR packet updated through PR #54. No PR was retargeted, marked ready or merged.
+- Next engineering step: Phase59.69 — immutable GitHub workflow ID and exact source-run artifact identity/digest validation before accepting worker output. Physical six-run proof and 7/30-day soak remain owner-gated/pending.
