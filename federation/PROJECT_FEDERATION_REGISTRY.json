@@ -31,7 +31,7 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase59.69 immutable workflow ID 415454534 and exact run-attempt artifact provenance accepted by exact-head CI #45321056047 at 603d293f. Publisher verifies source run API metadata, one exact non-expired attempt-bound artifact, GitHub SHA-256 digest, byte count, bounded ZIP and per-file hashes; summary schema v2 binds artifact identity. PR #55 draft/unmerged, stacked on #54. No publisher API write, App token, inference, deployment or spend.",
+      "status": "P59-003 IN_PROGRESS; Phase59.69 immutable workflow ID 415454534 and exact run-attempt artifact provenance accepted by exact-head CI #45321056047 at 603d293f. Publisher verifies source run API metadata, one exact non-expired attempt-bound artifact, GitHub SHA-256 digest, byte count, bounded ZIP and per-file hashes; summary schema v2 binds artifact identity. PR #55 draft/unmerged, stacked on #54. No publisher API write, App token, inference, deployment or spend. Latest candidate Worker #603 selected P59-003 and its attempt-bound artifact digest matched GitHub metadata; candidate Guard #414 passed 111 checks.",
       "last_observed_head": "603d293f4eee1fbd6d13dc195a4e55b7e6f71479",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
@@ -1461,9 +1461,9 @@
         "pr_ci_head_sha": "14b1fcbca35885c817d27f990b6d4624e5231897",
         "pr_url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/55",
         "latest_candidate_worker_run": {
-          "run_number": 601,
-          "run_id": 45321415382,
-          "head_sha": "2a6d1d9e4769cfbe8363d3e721818365682f0ae6",
+          "run_number": 603,
+          "run_id": 45321816324,
+          "head_sha": "0ea6aa6d8adf19770bf31de3f04f22b71889b467",
           "status": "SUCCESS",
           "selected_task": "P59-003",
           "guard_checks": 111,
@@ -1471,25 +1471,28 @@
           "inference_requests": 0
         },
         "latest_candidate_guard_run": {
-          "run_number": 411,
-          "run_id": 45321483043,
-          "head_sha": "14b1fcbca35885c817d27f990b6d4624e5231897",
+          "run_number": 414,
+          "run_id": 45321841401,
+          "head_sha": "381d7589aae29f55ba60eafd813438a2b0697339",
           "status": "SUCCESS",
           "checks": 111,
           "errors": 0
         },
         "latest_candidate_artifact_readback": {
-          "run_id": 45321415382,
+          "run_id": 45321816324,
           "run_attempt": 1,
-          "artifact_id": 14888305665,
-          "name": "mission-autonomous-worker-45321415382-attempt-1",
-          "size_in_bytes": 1927,
-          "sha256": "d83845f6bf8580e430765f1351547c1ab6dab497eb185bc9006bbd8539081d41",
+          "artifact_id": 14887811662,
+          "name": "mission-autonomous-worker-45321816324-attempt-1",
+          "size_in_bytes": 1925,
+          "sha256": "70da672b34e6710bc8c04f5ad33b640714179442c3cfcbf05cc76f97142209ee",
           "downloaded_digest_match": true,
           "files": 3,
           "head_branch": "phase59-69-artifact-provenance",
           "source_eligible": false
-        }
+        },
+        "pr_latest_head_before_control_refresh": "381d7589aae29f55ba60eafd813438a2b0697339",
+        "pr_ci_latest_completed_run_id": 45321506379,
+        "pr_ci_latest_completed_status": "SUCCESS"
       }
     },
     {
