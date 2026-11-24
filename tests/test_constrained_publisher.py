@@ -352,7 +352,16 @@ class PublisherApiTests(unittest.TestCase):
 
     def test_existing_branch_with_different_content_is_rejected(self):
         branch = self.plan["branch"]
-        self.api.branches[branch] = MASTER_SHA
+        self.api.branches[branch] = "b" * 40
+        self.api.branch_bases[branch] = MASTER_SHA
+        self.api.branch_commits[branch] = 1
+        self.api.branch_files[branch] = [{
+            "filename": self.plan["path"],
+            "status": "added",
+            "additions": 1,
+            "deletions": 0,
+            "changes": 1,
+        }]
         self.api.files[(branch, self.plan["path"])] = b"different content"
         with self.assertRaises(PublisherError):
             publish_plan(self.plan, self.api)
