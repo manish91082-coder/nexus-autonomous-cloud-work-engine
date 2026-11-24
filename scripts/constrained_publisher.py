@@ -584,12 +584,14 @@ def main() -> int:
     publish.add_argument("--artifact-metadata-file", required=True)
     publish.add_argument("--repo", default=CANONICAL_REPOSITORY)
     publish.add_argument("--plan-file", required=True)
+    validate_plan_cmd = sub.add_parser("validate-plan")
+    validate_plan_cmd.add_argument("--plan-base64-env", default="P10CR_VALIDATED_PLAN_B64")
     publish_plan_cmd = sub.add_parser("publish-plan")
     publish_plan_cmd.add_argument("--plan-base64-env", default="P10CR_VALIDATED_PLAN_B64")
 
     args = parser.parse_args()
     try:
-        if args.command == "publish-plan":
+        if args.command in {"validate-plan", "publish-plan"}:
             encoded_plan = os.getenv(args.plan_base64_env, "")
             if not isinstance(encoded_plan, str) or not encoded_plan or len(encoded_plan) > MAX_PUBLISH_PLAN_BYTES * 2:
                 raise PublisherError("validated publisher plan output is unavailable or oversized")
@@ -601,6 +603,10 @@ def main() -> int:
             except (ValueError, SummaryValidationError) as exc:
                 raise PublisherError("validated publisher plan output is invalid") from exc
             validate_publish_plan(plan)
+            if args.command == "validate-plan":
+                _write_output("valid", "true")
+                print(json.dumps({"status": "VALIDATED_SANITIZED_PUBLISHER_PLAN", "write_token_requested": False}))
+                return 0
             token = os.getenv("NEXUS_PUBLISHER_TOKEN", "")
             if not token:
                 raise PublisherError("owner-approved scoped publisher token is unavailable")
