@@ -1,12 +1,12 @@
-# CURRENT CONTINUITY CHECKPOINT — PHASE 59.69
+# CURRENT CONTINUITY CHECKPOINT — PHASE 59.70
 
 **Date:** 2026-11-24  
 **Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
 **Master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
-**Current candidate branch:** `phase59-69-artifact-provenance`  
-**Exact tested code/test HEAD:** `603d293f4eee1fbd6d13dc195a4e55b7e6f71479`  
-**Exact-head CI:** [Phase59.35 run #538 — SUCCESS](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45321056047)  
-**Current PR:** #55 draft/open/unmerged, child of PR #54 (no PR has been merged or retargeted).
+**Current candidate branch:** `phase59-70-offline-publisher-dry-run`  
+**Exact tested code/test HEAD:** `70f876788e125ba7cc4a5032f571d2bd848da9d9`  
+**Exact-head CI:** [Phase59.35 run #45324208218 — SUCCESS](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45324208218)  
+**Current PR:** #56 draft/open/unmerged, child of PR #55 (no PR has been merged or retargeted).
 
 ## Mission authority and task state
 
@@ -5336,3 +5336,54 @@ Date: 2026-11-24
 - No live publisher API request, GitHub App token, Cloudflare deployment, AI inference, KYC, legal acceptance, public release, billing, payment, signing or money movement. AI inference disabled; authorized spend ₹0; verified realized net receipts/PCNE ₹0. Other project repositories remain isolated/read-only.
 - Owner stacked-PR packet updated through PR #54. No PR was retargeted, marked ready or merged.
 - Next engineering step: Phase59.69 — immutable GitHub workflow ID and exact source-run artifact identity/digest validation before accepting worker output. Physical six-run proof and 7/30-day soak remain owner-gated/pending.
+
+## PHASE 59.70 — OFFLINE PUBLISHER EVENT REPLAY AND NO-TOKEN DRY-RUN (24-Nov-2026)
+
+**Status:** ACCEPTED for offline code, workflow-contract and exact-head CI. Physical hosted proof remains pending.
+
+- Technical report: `research/PHASE_59_70_OFFLINE_PUBLISHER_EVENT_REPLAY_NO_TOKEN_DRY_RUN_2026-11-24.md`.
+- Branch: `phase59-70-offline-publisher-dry-run`.
+- Tested code/test HEAD: `70f876788e125ba7cc4a5032f571d2bd848da9d9`.
+- PR #56 is draft/open/unmerged, stacked on PR #55. No PR has been merged or retargeted.
+- Exact-head CI run #45324208218 completed SUCCESS: host client 32/32, AI/current-task guard 20/20, publisher 53/53, summary schema 22/22, artifact provenance 26/26, Workers runtime 83/83, Workerd 1/1, workflow YAML 5/5, lockfile 165 packages; final workflow steps 15/15 SUCCESS.
+
+### Accepted changes
+
+1. Artifact-attestation expiry is rechecked against the current UTC clock when the publisher consumes it.
+2. The exact bytes and size of `ai_worker_report.json` must match the verified artifact manifest before a publish plan is built.
+3. The constrained publisher workflow is split into:
+   - `prepare-draft`: read-only source-run/artifact verification and sanitized plan preparation; no publisher environment and no App-token action.
+   - `publish-draft`: runs only when the prepare job emits `publishable=true`; this is the only job attached to the `p10cr-publisher` required-reviewer environment.
+4. A bounded sanitized plan (maximum 131,072 bytes) is passed as a job output. A pure `validate-plan` command checks it before the owner token gate; `publish-plan` revalidates before publisher API writes.
+5. `WAITING_FOR_OWNER_CONFIGURATION` emits `publishable=false`, no plan output, and skips the publish job. It therefore skips environment approval, App-token minting and publisher write API calls. The prepare job still performs read-only source-run/artifact provenance GETs.
+6. Offline replay tests prove duplicate event delivery reuses one deterministic branch/file/draft PR without additional writes.
+7. Wrong workflow ID, run attempt, source branch, expired artifact, altered digest, post-attestation report mutation and tampered summary all fail before publisher writes.
+
+### CI failure and correction
+
+- Superseded run #45323587075 failed because the summary-schema publisher fixture used a placeholder report digest/size. The fixture was corrected to compute the digest and byte count from the exact serialized report.
+- Corrected runs #45323826471, #45324009281, #45324094575 and final exact-head run #45324208218 passed.
+- Superseded/cancelled runs are documented in the Phase59.70 report and are not counted as failures of the accepted head.
+
+### Mission and safety state
+
+- P59-003 remains the sole active P0.
+- P59-001 remains PAUSED; P59-002 remains BLOCKED.
+- AI inference remains DISABLED; specialist roles remain deterministic/shadow-only.
+- No live publisher API write or GitHub App token was used.
+- No Cloudflare deployment, KYC, legal acceptance, billing, payment, signing, public product release or money movement occurred.
+- Authorized spend ₹0; verified realized net receipts ₹0; revenue ledger unchanged.
+- Other project repositories remain isolated/read-only.
+
+### Still pending
+
+- Sequential owner review/merge of the stacked PR chain #44 onward, with each child retargeted to master only after its parent is merged and verified.
+- Master control-plane reconciliation, branch protection/required-reviewer verification and review of legacy branch-scoped writers.
+- Existing Cloudflare Workers Free account and aggregate usage verification, test-only Durable Object namespace setup, and least-privilege GitHub App owner installation.
+- Six distinct hosted workflow runs against one shared test-only namespace; physical multi-host atomicity is not yet proven.
+- Seven-day soak followed by thirty-day soak.
+
+### Next engineering task
+
+**Phase59.71 — offline publisher ambiguous-write recovery and replay-race injection.** Simulate lost acknowledgements after branch creation, Contents PUT and draft-PR creation; prove retry/readback recovers the same deterministic branch/file/PR without duplicate writes. Keep live publishing disabled until owner gates and physical proof pass.
+
