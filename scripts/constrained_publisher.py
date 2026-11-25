@@ -48,6 +48,8 @@ BRANCH_PREFIX = "automation/p10cr/worker-run-"
 MAX_REPORT_BYTES = 65536
 MAX_OUTPUT_BYTES = 32768
 MAX_PUBLISH_PLAN_BYTES = 131072
+MAX_PUBLISH_ATTEMPTS = 2
+RETRYABLE_PUBLISH_HTTP_STATUSES = {408, 409, 500, 502, 503, 504, 599}
 SECRET_PATTERNS = (
     re.compile(r"gh[pousr]_[A-Za-z0-9]{20,}"),
     re.compile(r"github_pat_[A-Za-z0-9_]{20,}"),
@@ -552,6 +554,33 @@ def publish_plan(plan: dict[str, Any], api: Any) -> dict[str, Any]:
     return {"status": "DRAFT_PR_CREATED", "number": pr["number"], "url": pr.get("html_url")}
 
 
+def publish_plan_with_recovery(
+    plan: dict[str, Any],
+    api: Any,
+    max_attempts: int = MAX_PUBLISH_ATTEMPTS,
+) -> dict[str, Any]:
+    """Perform bounded readback/retry only for ambiguous writes or stale compare snapshots."""
+    validate_publish_plan(plan)
+    if not isinstance(max_attempts, int) or isinstance(max_attempts, bool) or not 1 <= max_attempts <= 3:
+        raise PublisherError("publisher recovery attempt bound must be between one and three")
+    for attempt in range(max_attempts):
+        try:
+            return publish_plan(plan, api)
+        except ApiError as exc:
+            retryable = exc.status in RETRYABLE_PUBLISH_HTTP_STATUSES
+            if not retryable or attempt + 1 >= max_attempts:
+                raise
+        except PublisherError as exc:
+            message = str(exc)
+            retryable = (
+                message.startswith("GitHub API transport failed:")
+                or message == "publisher branch contains a file without the exact expected one-commit diff"
+            )
+            if not retryable or attempt + 1 >= max_attempts:
+                raise
+    raise PublisherError("publisher recovery exhausted its bounded attempts")
+
+
 def _write_output(name: str, value: str) -> None:
     output_path = os.getenv("GITHUB_OUTPUT")
     if output_path:
@@ -610,7 +639,7 @@ def main() -> int:
             token = os.getenv("NEXUS_PUBLISHER_TOKEN", "")
             if not token:
                 raise PublisherError("owner-approved scoped publisher token is unavailable")
-            result = publish_plan(plan, GitHubApi(token))
+            result = publish_plan_with_recovery(plan, GitHubApi(token))
             print(json.dumps(result, ensure_ascii=False))
             return 0
 

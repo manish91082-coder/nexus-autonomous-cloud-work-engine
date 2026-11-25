@@ -1,3 +1,55 @@
+# CURRENT CONTINUITY CHECKPOINT — PHASE 59.71 PUBLISHER AMBIGUOUS-WRITE RECOVERY
+
+**Checkpoint date:** 2026-11-25  
+**Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
+**Master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
+**Candidate branch:** `phase59-71-publisher-ambiguous-write-recovery`  
+**Tested code head:** `686c4926db7bda702ba56713cd6c82b0211cb590`  
+**Evidence branch head before control updates:** `48419ad6803a64efa2e5dfff1fbf68da07d15e76`  
+**PR #57:** [Draft/open/unmerged](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/57), child of PR #56; base `phase59-70-offline-publisher-dry-run`. No merge or retarget was performed.  
+**Phase report:** [PHASE_59_71_PUBLISHER_AMBIGUOUS_WRITE_RECOVERY_2026-11-24.md](research/PHASE_59_71_PUBLISHER_AMBIGUOUS_WRITE_RECOVERY_2026-11-24.md)
+
+## Mission authority
+
+- P59-003 is the sole active P0.
+- P59-001 remains PAUSED.
+- P59-002 remains BLOCKED.
+- Do not restart revenue-source ranking, product discovery or unrelated asset work while P59-003 acceptance gates remain open.
+- AI inference DISABLED; spend ₹0; verified realized net receipts ₹0.
+- No KYC, legal acceptance, billing, public release, payment, signing, money movement or untrusted-code execution.
+
+## Phase59.71 accepted engineering evidence
+
+- Added bounded `publish_plan_with_recovery` in `scripts/constrained_publisher.py`; default two attempts, hard maximum three.
+- Ambiguous write recovery restarts the deterministic publisher state machine through branch, compare, exact file and draft-PR readbacks. No blind write replay or unbounded retry.
+- Final exact-head CI [#45325920285](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45325920285) SUCCESS on `686c4926db7bda702ba56713cd6c82b0211cb590`.
+- Tests: host 32/32; AI task guard 20/20; publisher 57/57; summary 22/22; artifact provenance 26/26; Workers/workerd 83/83; isolated Workerd 1/1; YAML 5/5; lockfile 165 packages.
+- Lost acknowledgement after branch creation, contents PUT, draft PR creation and concurrent duplicate delivery all pass final tests.
+- Initial concurrent replay assertion failure [#45325645593](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45325645593) was corrected; final recovery/race tests pass. Cancelled run #45325782583 is superseded, not a failure.
+- Master Worker [#45525144002](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45525144002), run #612, SUCCESS on master; `POLL_OK`, selected P59-003, AI `WAITING_FOR_OWNER_CONFIGURATION`, zero inference.
+- Master Guard [#45398270050](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45398270050), run #424, SUCCESS, 111 checks, zero errors.
+
+## Compute/publisher separation truth
+
+On the candidate branch, `mission-autonomous-worker.yml` is read-only (`contents:read`), checkout credentials are not persisted, there is no direct commit/push, no publisher App token, no Cloudflare provider secret and all AI enablement flags are false. Reports are uploaded as attempt-bound artifacts. The constrained publisher's write-capable App token remains conditional on the `p10cr-publisher` environment and explicit owner configuration.
+
+**Master is not yet updated:** master `mission-autonomous-worker.yml` still has `contents:write` and its legacy direct commit step. The read-only candidate change is not effective on master until the sequential draft PR stack is owner-reviewed, merged and fetched back. Two legacy branch-scoped writers also remain owner-review items.
+
+## Remaining acceptance gates
+
+- Sequential review/merge of PRs #44–#57 with per-parent diff/CI revalidation.
+- Master state/queue/federation/continuity reconciliation after merge.
+- Branch protection and required-reviewer environment verification in owner UI.
+- Existing Cloudflare Workers Free plan and aggregate usage verification.
+- Owner-approved test-only Durable Object namespaces.
+- Six distinct workflow-run physical proof, then 7-day and 30-day soak.
+
+## Next engineering step
+
+**Phase59.72:** add exact-head regression tests that fail if the compute worker regains write permission, checkout credential persistence, direct Git writes, publisher App credentials or provider secrets; assert that only the conditional owner-gated publisher receives scoped write capability. Then run exact-head CI. Physical hosted proof remains owner-gated.
+
+---
+
 # CURRENT CONTINUITY CHECKPOINT — PHASE 59.70
 
 **Date:** 2026-11-24  

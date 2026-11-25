@@ -4862,11 +4862,11 @@
     }
   ],
   "dead_letter": [],
-  "updated_at": "2026-11-24",
+  "updated_at": "2026-11-25",
   "current_task": "P59-003",
-  "last_updated": "2026-11-24",
-  "sequence_note": "Current owner directive remains authoritative over the V5 adoption-time portfolio pointer: P59-003 only until swarm acceptance; P59-001 PAUSED; P59-002 BLOCKED.",
-  "last_reconciled_from_mission_state": "2026-11-24: Phase59.70 accepted by exact-head CI #45324208218 at 70f876788e125ba7cc4a5032f571d2bd848da9d9. Publisher now rechecks artifact expiry, binds consumed report bytes to the verified manifest, and separates read-only prepare from conditional owner-gated publishing. WAITING events skip the publisher environment and App-token path. Offline replay, no-token and tamper-rejection tests passed. PR #56 draft/unmerged, stacked on #55; master remains 8856bf90. P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No live publisher API, App token, deployment, inference, spend or receipts. Post-checkpoint candidate Worker #607 (run 45324774926) returned POLL_OK and selected P59-003/P0; AI executor WAITING_FOR_OWNER_CONFIGURATION, inference requests 0; artifact #14888254776 SHA-256 independently matched GitHub digest 60fbf3df3d12c1b34c79e43792f3944bc2bafa3b0cfee6f63be7cd7ace51b401. Candidate Guard #420 (run 45324822115) passed 111 checks, zero errors. Final PR-head CI #45324862089 SUCCESS on evidence-only head e8b70996.",
+  "last_updated": "2026-11-25",
+  "sequence_note": "Owner-directed swarm-first sequence remains authoritative: P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No revenue-source ranking, product discovery or unrelated asset work until P59-003 acceptance gates pass.",
+  "last_reconciled_from_mission_state": "2026-11-25: Phase59.71 reconciled against master HEAD 8856bf908f93e265cefd5c739f7f46b3dd995b3c and candidate code head 686c4926db7bda702ba56713cd6c82b0211cb590. Master Worker #612 selected P59-003 with inference disabled; Guard #424 passed 111/111. Candidate Phase59.71 CI #45325920285 passed publisher recovery/race tests 57/57 and full Workers runtime 83/83. PR #57 draft/unmerged, child of PR #56.",
   "phase59_46": {
     "report": "research/PHASE_59_46_CONCURRENT_INSTALLATION_QUOTA_ARBITRATION_2026-11-16.md",
     "pr_number": 27,
@@ -6234,5 +6234,100 @@
     "final_pr_ci_status": "SUCCESS",
     "report_commit": "708c37f18e82bacd8f6a138f7c930b34617bcca0"
   },
-  "reconciliation_note": " Phase59.70 (24-Nov-2026): publisher attestation expiry is rechecked at consumption and the consumed worker-report bytes/size are bound to the artifact manifest. Read-only prepare job emits a bounded sanitized plan; the owner environment exists only on the conditional publish job, so WAITING_FOR_OWNER_CONFIGURATION skips environment approval, App-token minting and publisher writes. Exact-head CI #45324208218 SUCCESS: host32/32, AI guard20/20, publisher53/53, summary22/22, artifact provenance26/26, Workers83/83, Workerd1/1, YAML5/5, lockfile165. PR #56 draft/unmerged, child of #55. No live publisher API, token, deployment, inference, spend or receipts. Next Phase59.71 offline ambiguous-write/replay-race injection. Post-checkpoint verification: Worker #607 selected P59-003 and made zero inference requests; its downloaded artifact ZIP digest matched GitHub metadata. Guard #420 passed 111/111 with zero errors. PR-head CI #45324862089 SUCCESS on documentation-only evidence head e8b70996; executable/test head remains 70f87678."
+  "reconciliation_note": "Phase59.71: bounded publisher readback recovery added for ambiguous branch/file/draft-PR writes; duplicate replay and one-winner concurrent delivery tests pass. Exact CI #45325920285 SUCCESS on 686c4926db7bda702ba56713cd6c82b0211cb590. Master remains unchanged; candidate compute is contents:read with no direct commit/push or provider secrets, but master still has the older write-capable worker until the sequential PR stack is merged. No live publisher API, App token, Cloudflare deployment, inference, spend or receipts. P59-003 remains sole active P0; P59-001 PAUSED; P59-002 BLOCKED.",
+  "phase59_71": {
+    "status": "ACCEPTED_OFFLINE_AMBIGUOUS_WRITE_RECOVERY_AND_REPLAY_RACE_EXACT_HEAD_CI_PASS_OWNER_GATES_PENDING",
+    "report": "research/PHASE_59_71_PUBLISHER_AMBIGUOUS_WRITE_RECOVERY_2026-11-24.md",
+    "branch": "phase59-71-publisher-ambiguous-write-recovery",
+    "parent_branch": "phase59-70-offline-publisher-dry-run",
+    "parent_head": "2c6524dafbbe78888fd0a074c08b44ac35e24cd0",
+    "pr_number": 57,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "parent_pr": 56,
+    "code_head": "686c4926db7bda702ba56713cd6c82b0211cb590",
+    "tested_head": "686c4926db7bda702ba56713cd6c82b0211cb590",
+    "evidence_head": "48419ad6803a64efa2e5dfff1fbf68da07d15e76",
+    "ci_run_id": 45325920285,
+    "ci_status": "SUCCESS",
+    "tests": {
+      "host_client": "32/32",
+      "ai_task_guard": "20/20",
+      "publisher": "57/57",
+      "summary_schema": "22/22",
+      "artifact_provenance": "26/26",
+      "workers_runtime": "83/83",
+      "workerd_integration": "1/1",
+      "workflow_yaml": "5/5",
+      "lockfile_packages": 165
+    },
+    "recovery": {
+      "default_max_attempts": 2,
+      "hard_max_attempts": 3,
+      "retryable_statuses": [
+        408,
+        409,
+        500,
+        502,
+        503,
+        504,
+        599
+      ],
+      "lost_ack_after_branch_creation": "PASS",
+      "lost_ack_after_contents_put": "PASS",
+      "lost_ack_after_draft_pr_creation": "PASS",
+      "concurrent_duplicate_delivery": "ONE_WINNER_ONE_FAIL_CLOSED_OR_RECONCILED_REPLAY_PASS",
+      "unbounded_retry": false,
+      "blind_write_replay": false
+    },
+    "candidate_compute_boundary": {
+      "contents_permission": "read",
+      "checkout_persist_credentials": false,
+      "direct_git_commit_or_push": false,
+      "publisher_token_in_compute": false,
+      "provider_secrets_in_compute": false,
+      "ai_flags_hard_false": true,
+      "artifact_upload_only": true
+    },
+    "master_candidate_difference": {
+      "master_worker_still_has_contents_write": true,
+      "master_worker_still_has_direct_commit_step": true,
+      "candidate_stack_has_read_only_compute": true,
+      "requires_sequential_stack_merge": true
+    },
+    "live_effects": {
+      "publisher_write_api_requests": 0,
+      "github_app_token_created": false,
+      "cloudflare_deployed": false,
+      "ai_inference_requests": 0,
+      "authorized_spend_inr": 0,
+      "verified_realized_net_receipts_inr": 0
+    },
+    "latest_master_worker_run": {
+      "run_id": 45525144002,
+      "run_number": 612,
+      "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+      "status": "SUCCESS",
+      "selected_task": "P59-003",
+      "ai_executor": "WAITING_FOR_OWNER_CONFIGURATION",
+      "inference_requests": 0
+    },
+    "latest_master_guard_run": {
+      "run_id": 45398270050,
+      "run_number": 424,
+      "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+      "status": "SUCCESS",
+      "checks": 111,
+      "errors": 0
+    },
+    "failed_runs_corrected": [
+      {
+        "run_id": 45325645593,
+        "reason": "Concurrent duplicate-delivery test initially expected only HTTP 409; test contract was corrected to accept deterministic fail-closed stale-diff outcome while preserving one-winner and replay-readback invariants."
+      }
+    ],
+    "cancelled_superseded_runs": [
+      45325782583
+    ],
+    "next": "Phase59.72: add exact-head read-only compute / single constrained publisher permission regression tests; then owner-gated six independent workflow-run proof."
+  }
 }

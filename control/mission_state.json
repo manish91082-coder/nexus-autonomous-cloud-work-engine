@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "P59.70_OFFLINE_PUBLISHER_EVENT_REPLAY_NO_TOKEN_DRY_RUN",
+  "phase": "P59.71_PUBLISHER_AMBIGUOUS_WRITE_RECOVERY",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -23,15 +23,15 @@
     "spend",
     "AI_provider_account_and_secret_setup"
   ],
-  "updated_at": "2026-11-24",
+  "updated_at": "2026-11-25",
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
-    "run_number": 588,
-    "run_id": 45276398411,
+    "run_number": 612,
+    "run_id": 45525144002,
     "conclusion": "success",
     "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45276398411",
-    "completed_at": "2026-11-23T22:06:30Z",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45525144002",
+    "completed_at": "2026-11-25T01:21:40Z",
     "trigger": "schedule",
     "checks": [
       "POLL_OK selected P59-003",
@@ -161,7 +161,7 @@
     "082dc6c11bce97f5c2d715ea5d9bd3ae15889e3c",
     "81fecc16ee919cc509e7d7bc304c553583a5de5d"
   ],
-  "last_observed_head": "70f876788e125ba7cc4a5032f571d2bd848da9d9",
+  "last_observed_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
   "phase53_research_order": [
     "WORDPRESS_PLUGIN_ECOSYSTEM",
     "GOOGLE_WORKSPACE_MARKETPLACE",
@@ -2900,7 +2900,7 @@
   },
   "candidate_head": "603d293f4eee1fbd6d13dc195a4e55b7e6f71479",
   "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "next": "Phase59.71 offline publisher ambiguous-write recovery and replay-race injection; owner-gated six-run proof and 7/30-day soak remain pending.",
+  "next": "Phase59.72: add exact-head regression tests for read-only compute and the single constrained publisher; then owner-gated six independent workflow-run proof.",
   "ai_inference_enabled": false,
   "phase59_63_1": {
     "phase": "P59.63.1_ENDPOINT_HOST_PIN_HARDENING",
@@ -4085,5 +4085,111 @@
     "head_sha": "e8b7099617aef8968ba5a011bcbc330e7180370f",
     "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45324862089",
     "note": "Documentation/evidence-only PR head; executable code/test head remains 70f876788e125ba7cc4a5032f571d2bd848da9d9."
+  },
+  "latest_master_guard_run": {
+    "name": "Mission Continuity Guard",
+    "run_number": 424,
+    "run_id": 45398270050,
+    "conclusion": "success",
+    "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45398270050",
+    "completed_at": "2026-11-24T12:55:58Z",
+    "checks": 111,
+    "errors": 0
+  },
+  "phase59_71": {
+    "status": "ACCEPTED_OFFLINE_AMBIGUOUS_WRITE_RECOVERY_AND_REPLAY_RACE_EXACT_HEAD_CI_PASS_OWNER_GATES_PENDING",
+    "report": "research/PHASE_59_71_PUBLISHER_AMBIGUOUS_WRITE_RECOVERY_2026-11-24.md",
+    "branch": "phase59-71-publisher-ambiguous-write-recovery",
+    "parent_branch": "phase59-70-offline-publisher-dry-run",
+    "parent_head": "2c6524dafbbe78888fd0a074c08b44ac35e24cd0",
+    "pr_number": 57,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "parent_pr": 56,
+    "code_head": "686c4926db7bda702ba56713cd6c82b0211cb590",
+    "tested_head": "686c4926db7bda702ba56713cd6c82b0211cb590",
+    "evidence_head": "48419ad6803a64efa2e5dfff1fbf68da07d15e76",
+    "ci_run_id": 45325920285,
+    "ci_status": "SUCCESS",
+    "tests": {
+      "host_client": "32/32",
+      "ai_task_guard": "20/20",
+      "publisher": "57/57",
+      "summary_schema": "22/22",
+      "artifact_provenance": "26/26",
+      "workers_runtime": "83/83",
+      "workerd_integration": "1/1",
+      "workflow_yaml": "5/5",
+      "lockfile_packages": 165
+    },
+    "recovery": {
+      "default_max_attempts": 2,
+      "hard_max_attempts": 3,
+      "retryable_statuses": [
+        408,
+        409,
+        500,
+        502,
+        503,
+        504,
+        599
+      ],
+      "lost_ack_after_branch_creation": "PASS",
+      "lost_ack_after_contents_put": "PASS",
+      "lost_ack_after_draft_pr_creation": "PASS",
+      "concurrent_duplicate_delivery": "ONE_WINNER_ONE_FAIL_CLOSED_OR_RECONCILED_REPLAY_PASS",
+      "unbounded_retry": false,
+      "blind_write_replay": false
+    },
+    "candidate_compute_boundary": {
+      "contents_permission": "read",
+      "checkout_persist_credentials": false,
+      "direct_git_commit_or_push": false,
+      "publisher_token_in_compute": false,
+      "provider_secrets_in_compute": false,
+      "ai_flags_hard_false": true,
+      "artifact_upload_only": true
+    },
+    "master_candidate_difference": {
+      "master_worker_still_has_contents_write": true,
+      "master_worker_still_has_direct_commit_step": true,
+      "candidate_stack_has_read_only_compute": true,
+      "requires_sequential_stack_merge": true
+    },
+    "live_effects": {
+      "publisher_write_api_requests": 0,
+      "github_app_token_created": false,
+      "cloudflare_deployed": false,
+      "ai_inference_requests": 0,
+      "authorized_spend_inr": 0,
+      "verified_realized_net_receipts_inr": 0
+    },
+    "latest_master_worker_run": {
+      "run_id": 45525144002,
+      "run_number": 612,
+      "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+      "status": "SUCCESS",
+      "selected_task": "P59-003",
+      "ai_executor": "WAITING_FOR_OWNER_CONFIGURATION",
+      "inference_requests": 0
+    },
+    "latest_master_guard_run": {
+      "run_id": 45398270050,
+      "run_number": 424,
+      "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+      "status": "SUCCESS",
+      "checks": 111,
+      "errors": 0
+    },
+    "failed_runs_corrected": [
+      {
+        "run_id": 45325645593,
+        "reason": "Concurrent duplicate-delivery test initially expected only HTTP 409; test contract was corrected to accept deterministic fail-closed stale-diff outcome while preserving one-winner and replay-readback invariants."
+      }
+    ],
+    "cancelled_superseded_runs": [
+      45325782583
+    ],
+    "next": "Phase59.72: add exact-head read-only compute / single constrained publisher permission regression tests; then owner-gated six independent workflow-run proof."
   }
 }
