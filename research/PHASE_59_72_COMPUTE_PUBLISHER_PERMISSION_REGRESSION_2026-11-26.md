@@ -134,3 +134,13 @@ The candidate workflow has no productive commit/push step and uses checkout with
 **Phase59.73 — sequential PR stack and master-control reconciliation preflight.**
 
 Prepare a machine-verifiable stack manifest for PRs #44 onward: exact parent/child branch, base SHA, head SHA, changed-file allowlist, required CI evidence and post-merge readback. No automatic merge. Then prove that the owner merge sequence cannot skip a parent or retarget a child against an unverified base. Keep live six-run proof owner-gated until the complete stack and owner prerequisites are satisfied.
+
+
+## 11. Final candidate PR and post-checkpoint verification
+
+- Draft PR #58 is open, mergeable and unmerged; base `phase59-71-publisher-ambiguous-write-recovery` at `30abe577bf3742d7200d118207d9edf955025b86`; head `phase59-72-workflow-permission-regression` at final evidence/control head `5ec9afd3ff2da49e8488089dcecabd418f8158e0`.
+- PR #58 is a child of PR #57. PR #57 remains open, draft and unmerged. Neither PR was marked ready or merged.
+- Post-checkpoint candidate Worker #621 / [run 45746603025](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45746603025) completed SUCCESS on control checkpoint `2076dfd1bd3dc2ea0f069bba779fd8ec581d01a5`; mission guard 111/111 with zero errors, queue poll POLL_OK selected P59-003, AI executor WAITING_FOR_OWNER_CONFIGURATION, zero inference.
+- Final evidence-branch Continuity Guard #431 / [run 45746675602](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45746675602) completed SUCCESS on final evidence/control head `5ec9afd3ff2da49e8488089dcecabd418f8158e0`; 111 checks, zero errors.
+- The exact code/test head remains `99954b82bbeb34671bda95a8f086670609ee7955` and its dedicated permission-regression run #619 remains the acceptance run for the 8 new tests. Later commits only record report/control/continuity evidence.
+- Master remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`. Candidate-only permission hardening is not yet active on master.
