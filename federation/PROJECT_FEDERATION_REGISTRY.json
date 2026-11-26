@@ -1656,7 +1656,7 @@
         "pr_number": 58,
         "pr_state": "DRAFT_OPEN_UNMERGED",
         "code_head": "99954b82bbeb34671bda95a8f086670609ee7955",
-        "report_commit": "852c1a518b6e748fe7c64044b69f766aa8a479bf",
+        "report_commit": "aa1d9335046731da67a6d83e47a97f6db6b3b3a3",
         "ci_run_id": 45746313748,
         "ci_status": "SUCCESS",
         "permission_regression_tests": "8/8",
@@ -1672,7 +1672,10 @@
         "correction_commit": "99954b82bbeb34671bda95a8f086670609ee7955",
         "authorized_spend_inr": 0,
         "verified_realized_net_receipts_inr": 0,
-        "next": "Phase59.73 sequential PR-stack reconciliation preflight; no automatic merge."
+        "next": "Phase59.73 sequential PR-stack reconciliation preflight; no automatic merge.",
+        "final_evidence_head": "5ec9afd3ff2da49e8488089dcecabd418f8158e0",
+        "post_checkpoint_worker_run_id": 45746603025,
+        "final_guard_run_id": 45746675602
       }
     },
     {
