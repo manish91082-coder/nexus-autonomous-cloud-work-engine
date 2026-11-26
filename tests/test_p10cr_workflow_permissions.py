@@ -227,7 +227,7 @@ class P10CRWorkflowPermissionBoundaryTests(unittest.TestCase):
 
     def test_publisher_guard_detects_missing_owner_gate(self):
         mutated = self.publisher.replace(
-            "owner_gate.outputs.configured == 'true' and ",
+            "owner_gate.outputs.configured == 'true'",
             "",
         )
         with self.assertRaises(AssertionError):
