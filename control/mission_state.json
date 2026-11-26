@@ -2,7 +2,7 @@
   "schema_version": "2.5",
   "mission": "INR_10_CR_AUTONOMOUS_REVENUE",
   "status": "ACTIVE",
-  "phase": "P59.71_PUBLISHER_AMBIGUOUS_WRITE_RECOVERY",
+  "phase": "P59.72_COMPUTE_PUBLISHER_PERMISSION_REGRESSION",
   "canonical_branch": "master",
   "master_plan": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
   "continuity": "PROJECT_CONTINUITY.md",
@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "Phase59.70 accepted by exact-head CI #45324208218 at code/test HEAD 70f876788e125ba7cc4a5032f571d2bd848da9d9. Publisher rechecks attestation expiry at consumption, binds consumed worker-report bytes to the artifact manifest, and separates read-only prepare from conditional owner-gated publish. WAITING_FOR_OWNER_CONFIGURATION produces no plan output and skips the publisher environment/token/API path. Duplicate event replay is idempotent in the offline fake-API test; wrong workflow/run attempt/branch, expired artifact, altered digest, report mutation and tampered summary fail before publisher writes. PR #56 is draft/open/unmerged. Master remains 8856bf90. No live publisher API, App token, deployment, inference, spend or receipts. Post-checkpoint candidate Worker #607 (run 45324774926) returned POLL_OK, selected P59-003/P0, and remained WAITING_FOR_OWNER_CONFIGURATION with zero inference; its 3-file artifact SHA-256 matched GitHub metadata. Candidate Guard #420 (run 45324822115) passed 111 checks with zero errors. Final PR-head CI #45324862089 also passed on documentation-only head e8b70996.",
+  "current_focus": "Phase59.72 accepted by candidate bounded Worker #619 (run 45746313748) on exact code/test head 99954b82bbeb34671bda95a8f086670609ee7955. Added 8 standard-library permission-boundary regression tests and wired them into mission-autonomous-worker.yml. Tests enforce contents:read-only compute, persist-credentials:false, no direct git writes, no publisher App/provider secrets in compute, all AI/provider/quota/owner flags false, and one owner-gated SHA-pinned publisher token path. Worker #619 selected P59-003/P0, mission guard 111 checks/0 errors, all bounded worker suites passed, AI executor WAITING_FOR_OWNER_CONFIGURATION and zero inference. PR #58 is draft/open/unmerged child of PR #57. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c and still has the historical contents:write/direct-commit worker path; candidate split is not active on master. No App token, live publisher API write, deployment, inference or spend. Next Phase59.73: sequential PR-stack reconciliation preflight; owner-only physical six-run proof remains gated.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -23,22 +23,19 @@
     "spend",
     "AI_provider_account_and_secret_setup"
   ],
-  "updated_at": "2026-11-25",
+  "updated_at": "2026-11-26",
   "latest_verified_workflow_run": {
     "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
-    "run_number": 612,
-    "run_id": 45525144002,
+    "run_number": 621,
+    "run_id": 45746603025,
     "conclusion": "success",
-    "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45525144002",
-    "completed_at": "2026-11-25T01:21:40Z",
-    "trigger": "schedule",
-    "checks": [
-      "POLL_OK selected P59-003",
-      "AI executor WAITING_FOR_OWNER_CONFIGURATION",
-      "zero inference requests",
-      "no productive publisher action"
-    ]
+    "head_sha": "2076dfd1bd3dc2ea0f069bba779fd8ec581d01a5",
+    "branch": "phase59-72-workflow-permission-regression",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45746603025",
+    "completed_at": "2026-11-26T03:05:02Z",
+    "selected_task": "P59-003",
+    "ai_executor": "WAITING_FOR_OWNER_CONFIGURATION",
+    "inference_requests": 0
   },
   "verified_platform_credited_net_earnings_inr": 0,
   "verified_bank_settled_net_receipts_inr": 0,
@@ -4191,5 +4188,91 @@
       45325782583
     ],
     "next": "Phase59.72: add exact-head read-only compute / single constrained publisher permission regression tests; then owner-gated six independent workflow-run proof."
+  },
+  "latest_master_verified_workflow_run": {
+    "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
+    "run_number": 617,
+    "run_id": 45742739967,
+    "conclusion": "success",
+    "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45742739967",
+    "completed_at": "2026-11-26T02:29:26Z",
+    "selected_task": "P59-003",
+    "ai_executor": "WAITING_FOR_OWNER_CONFIGURATION",
+    "inference_requests": 0
+  },
+  "phase59_72": {
+    "status": "ACCEPTED_EXACT_HEAD_CI_PASS",
+    "report": "research/PHASE_59_72_COMPUTE_PUBLISHER_PERMISSION_REGRESSION_2026-11-26.md",
+    "branch": "phase59-72-workflow-permission-regression",
+    "parent_branch": "phase59-71-publisher-ambiguous-write-recovery",
+    "parent_pr": 57,
+    "pr_number": 58,
+    "pr_state": "DRAFT_OPEN_UNMERGED",
+    "code_head": "99954b82bbeb34671bda95a8f086670609ee7955",
+    "report_commit": "aa1d9335046731da67a6d83e47a97f6db6b3b3a3",
+    "ci_run_id": 45746313748,
+    "ci_run_number": 619,
+    "ci_status": "SUCCESS",
+    "tests": {
+      "workflow_permission_boundary": "8/8",
+      "swarm_runtime": "17/17",
+      "swarm_coordinator": "7/7",
+      "ai_task_safety": "20/20",
+      "msme_product_smoke": "3/3",
+      "recruitment_assurance": "7/7",
+      "mission_guard_checks": 111,
+      "mission_guard_errors": 0
+    },
+    "mutation_detection": [
+      "worker contents:write regression",
+      "checkout persist-credentials:true regression",
+      "publisher App-token injection",
+      "direct git push",
+      "missing owner gate",
+      "publisher permission-scope escalation"
+    ],
+    "ai_inference_requests": 0,
+    "publisher_app_tokens_minted": 0,
+    "live_publisher_api_writes": 0,
+    "cloudflare_deployments": 0,
+    "authorized_spend_inr": 0,
+    "verified_realized_net_receipts_inr": 0,
+    "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "master_worker_write_permission_still_present": true,
+    "master_worker_direct_commit_step_still_present": true,
+    "failure_run_id": 45746259365,
+    "failure_reason": "Mutation-test fixture used 'and' rather than the YAML '&&' predicate, so it failed to remove the owner-gate condition. Corrected in 99954b82; exact-head rerun passed.",
+    "final_evidence_head": "5ec9afd3ff2da49e8488089dcecabd418f8158e0",
+    "post_checkpoint_worker_run": {
+      "run_id": 45746603025,
+      "run_number": 621,
+      "conclusion": "success",
+      "head_sha": "2076dfd1bd3dc2ea0f069bba779fd8ec581d01a5",
+      "selected_task": "P59-003",
+      "mission_guard_checks": 111,
+      "mission_guard_errors": 0,
+      "inference_requests": 0
+    },
+    "final_guard_run": {
+      "run_id": 45746675602,
+      "run_number": 431,
+      "conclusion": "success",
+      "head_sha": "5ec9afd3ff2da49e8488089dcecabd418f8158e0",
+      "checks": 111,
+      "errors": 0
+    }
+  },
+  "latest_verified_guard_run": {
+    "name": "Mission Continuity Guard",
+    "run_number": 431,
+    "run_id": 45746675602,
+    "conclusion": "success",
+    "head_sha": "5ec9afd3ff2da49e8488089dcecabd418f8158e0",
+    "branch": "phase59-72-workflow-permission-regression",
+    "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45746675602",
+    "completed_at": "2026-11-26T03:05:43Z",
+    "checks": 111,
+    "errors": 0
   }
 }

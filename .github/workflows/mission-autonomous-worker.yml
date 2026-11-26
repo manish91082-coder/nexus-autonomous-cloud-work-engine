@@ -13,6 +13,7 @@ on:
       - 'tests/test_swarm_coordinator.py'
       - 'schemas/swarm-contracts-v1.schema.json'
       - 'tests/test_ai_task_executor.py'
+      - 'tests/test_p10cr_workflow_permissions.py'
       - 'tests/test_msme_ops_desk.py'
       - 'tests/test_recruitment_revenue_assurance.py'
       - 'products/msme-ops-desk-lite/**'
@@ -25,6 +26,7 @@ on:
       - 'control/ai_inference_approval.json'
       - 'governance/P59-003_AI_INFERENCE_OWNER_APPROVAL_PACKET_2026-11-19.md'
       - '.github/workflows/mission-autonomous-worker.yml'
+      - '.github/workflows/p10cr-constrained-publisher.yml'
   workflow_dispatch:
   schedule:
     # Five-minute wake-up. Each run is bounded and exits; this is not a permanent daemon.
@@ -52,6 +54,8 @@ jobs:
           python-version: '3.12'
       - name: Validate control-plane state
         run: python3 scripts/mission_guard.py
+      - name: Enforce P10CR compute/publisher permission boundary
+        run: python3 -m unittest discover -s tests -p 'test_p10cr_workflow_permissions.py' -v
       - name: Run deterministic swarm runtime contract and failure-injection tests
         run: python3 -m unittest discover -s tests -p 'test_swarm_runtime.py' -v
       - name: Run bounded parallel coordinator tests

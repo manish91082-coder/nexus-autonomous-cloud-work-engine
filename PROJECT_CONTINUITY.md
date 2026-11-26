@@ -5456,3 +5456,32 @@ Date: 2026-11-24
 
 **Phase59.71 — offline publisher ambiguous-write recovery and replay-race injection.** Simulate lost acknowledgements after branch creation, Contents PUT and draft-PR creation; prove retry/readback recovers the same deterministic branch/file/PR without duplicate writes. Keep live publishing disabled until owner gates and physical proof pass.
 
+
+
+## PHASE 59.72 — READ-ONLY COMPUTE / SINGLE CONSTRAINED PUBLISHER PERMISSION REGRESSION
+Date: 2026-11-26
+
+- Phase59.72 report: `research/PHASE_59_72_COMPUTE_PUBLISHER_PERMISSION_REGRESSION_2026-11-26.md`.
+- Candidate branch: `phase59-72-workflow-permission-regression`, parent `phase59-71-publisher-ambiguous-write-recovery`; PR #58 is draft/open/unmerged and a child of PR #57.
+- Tested code head `99954b82bbeb34671bda95a8f086670609ee7955`; report commit `852c1a518b6e748fe7c64044b69f766aa8a479bf`.
+- Added `tests/test_p10cr_workflow_permissions.py`, a standard-library-only 8-test regression contract. It enforces compute `contents:read`, checkout `persist-credentials:false`, no direct git push/commit/tag, no Publisher App token/credentials or provider secrets in compute, all seven AI/provider/quota/owner flags explicitly false, read-only prepare/publish GITHUB_TOKEN permissions, the `p10cr-publisher` environment, deterministic plan + owner approval before token minting, a SHA-pinned Publisher App token action, and only the constrained publisher workflow referencing the Publisher App token/secrets.
+- Mission worker workflow now runs the permission regression before other tests and queue polling; its path filter includes the test and publisher workflow.
+- Exact-head candidate Worker #619 / [run 45746313748](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45746313748) SUCCESS on `99954b82bbeb34671bda95a8f086670609ee7955`: mission guard 111 checks/0 errors; permission boundary 8/8; swarm runtime 17/17; coordinator 7/7; AI safety 20/20; MSME smoke 3/3; recruitment assurance 7/7. Queue poll POLL_OK selected P59-003/P0; AI executor WAITING_FOR_OWNER_CONFIGURATION; zero inference.
+- Initial run #618 / [45746259365](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45746259365) FAILED only because a mutation test used the wrong conjunction string (`and` rather than YAML `&&`), so it did not actually remove the owner-gate predicate. Corrected in commit `99954b82`; exact-head run #619 passed. Preserve this failure in the audit history.
+- Master remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`. Master Worker #617 / [run 45742739967](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45742739967) SUCCESS selected P59-003, remained WAITING_FOR_OWNER_CONFIGURATION and made zero inference requests. Master Guard #428 / [run 45606993264](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45606993264) SUCCESS with 111 checks and zero errors.
+- **Critical master/candidate difference:** master still has the historical mission-worker `contents:write` permission and direct productive commit step. Phase59.72 and the read-only compute/publisher split are candidate-only until the stacked PR chain is owner-reviewed, sequentially merged and fetched back. A no-inference master run does not eliminate the broad permission.
+- P59-003 remains sole active P0 / IN_PROGRESS. P59-001 remains PAUSED; P59-002 remains BLOCKED. Other project repositories remain isolated/read-only.
+- No Publisher App token, live publisher API write, Cloudflare deployment, AI inference, KYC, legal acceptance, billing, public release, payment, signing or money movement. Authorized spend ₹0; verified realized net receipts / PCNE ₹0; revenue ledger unchanged.
+- **Next engineering step: Phase59.73 — sequential PR-stack reconciliation preflight.** Build and test a machine-verifiable manifest of each stacked PR's parent/child branch, base/head SHA, changed-file allowlist, exact CI evidence and post-merge readback. Do not merge automatically. Physical six-run proof remains owner-gated until the stack is on master and owner account/protection prerequisites are verified; 7-day then 30-day soak remain pending.
+
+
+### Phase59.72 final evidence reconciliation — 26-Nov-2026
+
+- Final report commit: `aa1d9335046731da67a6d83e47a97f6db6b3b3a3`.
+- Mission state final-evidence update commit: `a8cf399c217b5072e640da42a17063a9276bd674`.
+- Automation queue final-evidence update commit: `a3285881af92edc2755ff96e9a54f341bbf2e28a`.
+- Federation P10CR final-evidence update commit: `3e2af0eb3db9dde209f6cf606904ebea0ee1c381`; no other project record was changed.
+- Post-checkpoint Worker #621 / [45746603025](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45746603025) SUCCESS: 111 guard checks, zero errors, POLL_OK selected P59-003, WAITING_FOR_OWNER_CONFIGURATION, zero inference.
+- Final Continuity Guard #431 / [45746675602](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45746675602) SUCCESS on evidence/control head `5ec9afd3ff2da49e8488089dcecabd418f8158e0`: 111 checks, zero errors.
+- Exact code/test acceptance remains Worker #619 / [45746313748](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45746313748) on `99954b82bbeb34671bda95a8f086670609ee7955`.
+- PR #58 remains draft/open/unmerged and mergeable; it is stacked on PR #57. No PR was marked ready, retargeted or merged.
