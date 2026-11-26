@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "federation_id": "MANISH-AI-PROJECT-FEDERATION-2026",
-  "updated_at": "2026-11-25",
+  "updated_at": "2026-11-26",
   "purpose": "Cross-project coordination only; never merge missions, budgets, data, revenue ledgers or safety boundaries.",
   "authority": {
     "federation_controller": "manish91082-coder/nexus-autonomous-cloud-work-engine",
@@ -31,7 +31,7 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase59.71 bounded publisher ambiguous-write recovery and concurrent replay-race tests accepted by exact-head CI #45325920285 (57/57 publisher, 83/83 Workers runtime). Candidate branch phase59-71-publisher-ambiguous-write-recovery, code head 686c4926db7bda702ba56713cd6c82b0211cb590, PR #57 draft/unmerged child of PR #56. Master HEAD 8856bf908f93e265cefd5c739f7f46b3dd995b3c unchanged; master worker still has the historical contents:write/direct-commit path until sequential PR stack merge. Candidate worker is read-only and publisher is owner-gated. Master Worker #612 selected P59-003 with inference disabled; Guard #424 passed 111/111. No live API writes, App token, deployment, inference, spend or receipts. P59-001 PAUSED; P59-002 BLOCKED.",
+      "status": "P59-003 IN_PROGRESS; Phase59.72 compute/publisher permission regression accepted on candidate branch phase59-72-workflow-permission-regression, PR #58 draft/unmerged child of PR #57. Exact code/test head 99954b82bbeb34671bda95a8f086670609ee7955 passed bounded Worker #619 / run 45746313748: permission boundary 8/8, mission guard 111 checks/0 errors, runtime17/17, coordinator7/7, AI safety20/20, product smoke3/3, recruitment assurance7/7. Candidate worker is contents:read-only, checkout credentials not persisted, no direct git writes, no publisher token/provider secrets, AI flags false. Only constrained publisher workflow may mint the SHA-pinned one-repository App token after deterministic plan and owner environment gates. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c and still has the historical contents:write/direct-commit worker path; candidate separation is not active on master. P59-001 PAUSED; P59-002 BLOCKED. No App token, live publisher API writes, deployment, inference, spend or receipts. Next Phase59.73: sequential PR-stack reconciliation preflight; physical multi-host proof and 7/30-day soak remain owner-gated.",
       "last_observed_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
@@ -1646,6 +1646,33 @@
           45325782583
         ],
         "next": "Phase59.72: add exact-head read-only compute / single constrained publisher permission regression tests; then owner-gated six independent workflow-run proof."
+      },
+      "phase59_72": {
+        "status": "ACCEPTED_EXACT_HEAD_CI_PASS",
+        "report": "research/PHASE_59_72_COMPUTE_PUBLISHER_PERMISSION_REGRESSION_2026-11-26.md",
+        "branch": "phase59-72-workflow-permission-regression",
+        "parent_branch": "phase59-71-publisher-ambiguous-write-recovery",
+        "parent_pr": 57,
+        "pr_number": 58,
+        "pr_state": "DRAFT_OPEN_UNMERGED",
+        "code_head": "99954b82bbeb34671bda95a8f086670609ee7955",
+        "report_commit": "852c1a518b6e748fe7c64044b69f766aa8a479bf",
+        "ci_run_id": 45746313748,
+        "ci_status": "SUCCESS",
+        "permission_regression_tests": "8/8",
+        "mission_guard": "111_CHECKS_0_ERRORS",
+        "worker_run_selected_task": "P59-003/P0",
+        "ai_executor": "WAITING_FOR_OWNER_CONFIGURATION",
+        "ai_inference_requests": 0,
+        "publisher_app_tokens_minted": 0,
+        "live_publisher_api_writes": 0,
+        "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+        "master_worker_contents_write_still_present": true,
+        "initial_failure_run": 45746259365,
+        "correction_commit": "99954b82bbeb34671bda95a8f086670609ee7955",
+        "authorized_spend_inr": 0,
+        "verified_realized_net_receipts_inr": 0,
+        "next": "Phase59.73 sequential PR-stack reconciliation preflight; no automatic merge."
       }
     },
     {
@@ -1768,14 +1795,8 @@
     "This registry is a coordination contract, not proof other repos currently enforce locks."
   ],
   "next_actions": [
-    "Phase59.72: add exact-head regression tests for read-only compute and the single constrained publisher; then owner-gated six independent workflow-run proof and 7/30-day soak after owner prerequisites.",
-    "P10CR Phase59.64D: owner-gated six distinct workflow-run proof only after sequential PR #44→#56 stack review/merge, master control-plane reconciliation, branch protection, legacy writer review, existing Workers Free account/aggregate usage verification, test-only namespace and required-reviewer environment approval.",
-    "Verify existing Cloudflare Workers Free account and account-wide aggregate usage; keep deployment disabled until owner verification and explicit approval.",
-    "Prepare least-privilege GitHub App scoped to the Nexus controller repository; owner installs/approves through official GitHub UI.",
-    "Implement shared GitHub Actions/API quota reservations and fairness; unknown capacity remains fail-closed.",
-    "Integrate P10CR worker claim/assert/release with the lock service after duplicate-run and stale-fence tests.",
-    "Add read-only Flash Loan status client; do not mutate its research queue or workflows.",
-    "Run 7-day and 30-day soak tests before cross-project write permissions.",
-    "Resume P59-001 portfolio-wide revenue-source ranking after safe swarm handoff."
+    "P10CR: Phase59.73 sequential PR-stack reconciliation preflight; preserve P59-003 as sole active P0.",
+    "P10CR: keep physical six-run proof, GitHub App installation, branch protection and 7/30-day soak owner-gated.",
+    "Other project repositories remain isolated/read-only; do not import their queues or execute their missions."
   ]
 }
