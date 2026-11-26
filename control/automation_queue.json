@@ -15,7 +15,7 @@
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
-    "last_reconciled_from_mission_state": "2026-11-26 Phase59.72 candidate checkpoint: mission state commit d0f0d7c0e78547f5d8e9fa5209f72a77e2295bbe; exact code/test head 99954b82bbeb34671bda95a8f086670609ee7955; bounded Worker #619 / run 45746313748 SUCCESS.",
+    "last_reconciled_from_mission_state": "2026-11-26 Phase59.72 final evidence reconciliation; mission state commit a8cf399c217b5072e640da42a17063a9276bd674; code/test head 99954b82bbeb34671bda95a8f086670609ee7955; post-checkpoint Worker #621 SUCCESS and final Guard #431 SUCCESS.",
     "reconciliation_note": "Phase59.72 accepted on candidate branch phase59-72-workflow-permission-regression. Added 8 standard-library workflow permission regressions and wired them into the bounded compute worker. Exact-head run #45746313748 SUCCESS: permission boundary 8/8, mission guard 111/0, runtime 17/17, coordinator 7/7, AI safety 20/20, product smoke 3/3, recruitment assurance 7/7. Queue poll selected P59-003/P0; AI executor WAITING_FOR_OWNER_CONFIGURATION; inference 0. PR #58 draft/unmerged child of PR #57. Master remains 8856bf90 and still contains the historical contents:write/direct-commit worker path; candidate read-only split is not active on master. Initial mutation-test failure #45746259365 corrected in 99954b82. No App token, publisher API writes, deployment, inference, spend or receipts. Next Phase59.73: sequential PR-stack reconciliation preflight. Owner-gated physical six-run proof and 7/30-day soak remain pending.",
     "execution_override": {
       "date": "2026-11-22",
@@ -6367,6 +6367,10 @@
     "ci_run_id": 45746313748,
     "tested_head": "99954b82bbeb34671bda95a8f086670609ee7955",
     "report": "research/PHASE_59_72_COMPUTE_PUBLISHER_PERMISSION_REGRESSION_2026-11-26.md",
-    "next": "Phase59.73 sequential PR-stack reconciliation preflight"
+    "next": "Phase59.73 sequential PR-stack reconciliation preflight",
+    "report_commit": "aa1d9335046731da67a6d83e47a97f6db6b3b3a3",
+    "final_evidence_head": "5ec9afd3ff2da49e8488089dcecabd418f8158e0",
+    "post_checkpoint_worker_run_id": 45746603025,
+    "final_guard_run_id": 45746675602
   }
 }
