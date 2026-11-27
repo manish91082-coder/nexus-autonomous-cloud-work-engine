@@ -1,0 +1,517 @@
+{
+  "schema_version": "p10cr-stacked-pr-preflight-v1",
+  "phase": "59.73",
+  "observed_at_utc": "2026-11-27T03:02:00Z",
+  "repository": "manish91082-coder/nexus-autonomous-cloud-work-engine",
+  "decision": "PREFLIGHT_COMPLETE_HOLD_NO_MERGE",
+  "canonical_master": {
+    "ref": "master",
+    "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "branch_metadata_protected": false,
+    "visible_rulesets": 0,
+    "branch_protection_endpoint": "403_RESOURCE_NOT_ACCESSIBLE_BY_INTEGRATION",
+    "interpretation": "GitHub branch metadata says protected=false and the rulesets endpoint is empty; treat master as unprotected until owner configures and verifies a ruleset."
+  },
+  "master_control_snapshot": {
+    "mission_state_phase": "PHASE_59_53_PROJECT_CELL_DURABLE_SWARM_RUN_LEDGER",
+    "updated_at": "2026-11-16",
+    "current_task": "P59-003",
+    "queue_current_task": "P59-003",
+    "queue_policy_current_task": "P59-003",
+    "task_statuses": {
+      "P59-003": "IN_PROGRESS/P0",
+      "P59-001": "PAUSED/P0",
+      "P59-002": "BLOCKED/P1"
+    }
+  },
+  "latest_master_runs": {
+    "worker": {
+      "run_id": 45931322794,
+      "conclusion": "success",
+      "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+      "created_at": "2026-11-27T02:57:19Z",
+      "selected_task": "P59-003",
+      "queue_poll": "POLL_OK",
+      "ai_executor": "WAITING_FOR_OWNER_CONFIGURATION",
+      "inference_requests": 0,
+      "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45931322794"
+    },
+    "guard": {
+      "run_id": 45810846507,
+      "conclusion": "success",
+      "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+      "created_at": "2026-11-26T11:28:06Z",
+      "checks": 111,
+      "errors": 0,
+      "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45810846507"
+    }
+  },
+  "master_inventory": {
+    "recursive_tree_entries": 441,
+    "recursive_tree_truncated": false,
+    "workflow_files": 29,
+    "python_runtime_scripts": 17,
+    "cloud_swarm_mjs_modules": 18,
+    "dependency_manifests": 1,
+    "lockfiles": 0,
+    "python_dependency_manifest": false,
+    "write_permission_workflows": [
+      {
+        "path": ".github/workflows/mission-autonomous-worker.yml",
+        "scope": "workflow-level contents:write; direct conditional git commit/push path"
+      },
+      {
+        "path": ".github/workflows/federation-lock-store.yml",
+        "scope": "job-level contents:write restricted to federation-locks branch probe"
+      },
+      {
+        "path": ".github/workflows/phase59-25-cloud-operational-soak.yml",
+        "scope": "workflow-level contents:write for isolated disposable test branch and cleanup"
+      }
+    ],
+    "mutable_action_tag_workflows": [
+      ".github/workflows/build-ai-ops-starter.yml",
+      ".github/workflows/build-csv-to-action.yml",
+      ".github/workflows/build-message-action-demo.yml",
+      ".github/workflows/build-orbit-relay.yml",
+      ".github/workflows/build-revenue-ops-control.yml",
+      ".github/workflows/build-travel-revenue-demo.yml",
+      ".github/workflows/nexus-bounty-agent.yml",
+      ".github/workflows/nexus-funded-job-scan.yml",
+      ".github/workflows/nexus-jobbi-gigs.yml",
+      ".github/workflows/package-recruitment-product.yml",
+      ".github/workflows/recruitment-browser-qa.yml"
+    ],
+    "prior_inventory_correction": "Phase59.44 listed six mutable-action workflows. Current-head source scan finds eleven; five build workflows were omitted from the earlier list. Current master is the authority for this snapshot.",
+    "workflows_missing_timeout": [
+      ".github/workflows/build-travel-revenue-demo.yml",
+      ".github/workflows/package-recruitment-product.yml"
+    ],
+    "master_dependency_manifest": {
+      "path": "cloud/swarm/worker-tests/package.json",
+      "dependencies": {
+        "@cloudflare/vitest-plugin": "latest",
+        "vitest": "^4.1.0"
+      },
+      "lockfile_present": false,
+      "workflow_install": "npm install --no-audit --no-fund"
+    },
+    "mission_worker_secret_refs": [
+      "MISSION_AI_ENABLED",
+      "MISSION_AI_ZERO_BILLING_CONFIRMED",
+      "CLOUDFLARE_ACCOUNT_ID",
+      "CLOUDFLARE_API_TOKEN",
+      "CLOUDFLARE_AI_MODEL"
+    ],
+    "p10cr_master_worker_write_boundary": "NOT_ACCEPTABLE_FOR_PRODUCTION: contents:write and conditional direct git commit/push remain on master; candidate split not merged",
+    "candidate_lockfile": "PR #58 adds package-lock.json; not present on master",
+    "concurrency": "Per-workflow/per-repository concurrency groups are not a global account-wide Actions/API quota arbiter."
+  },
+  "candidate_parent": {
+    "branch": "phase59-72-workflow-permission-regression",
+    "pr": 58,
+    "head_sha": "ee9089d487aef9c0e7ca1830b64a4e85a0ed9f43",
+    "draft": true,
+    "merged": false
+  },
+  "stack": [
+    {
+      "pr": 44,
+      "title": "P59-003 swarm foundation: phases 59.54–59.59",
+      "base": "master",
+      "base_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+      "head": "phase59-58-durable-dispatcher-shadow-integration",
+      "head_sha": "b1330ce4aa4a5cc0fbf1407576950c49cb3b7fe2",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 70,
+      "changed_files": 32,
+      "reviews": 0
+    },
+    {
+      "pr": 45,
+      "title": "Phase 59.60: account-scope platform budget arbiter",
+      "base": "phase59-58-durable-dispatcher-shadow-integration",
+      "base_sha": "b1330ce4aa4a5cc0fbf1407576950c49cb3b7fe2",
+      "head": "phase59-60-account-scope-platform-budget",
+      "head_sha": "3a57698702ed173831d82ea78f3972f2c08b32c2",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 13,
+      "changed_files": 19,
+      "reviews": 0
+    },
+    {
+      "pr": 46,
+      "title": "Phase 59.61: integrate account-scope budget with durable dispatcher",
+      "base": "phase59-60-account-scope-platform-budget",
+      "base_sha": "3a57698702ed173831d82ea78f3972f2c08b32c2",
+      "head": "phase59-61-budget-dispatcher-integration",
+      "head_sha": "774ee957c69d85f366b4a34bb6d53d0daab26d3a",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 35,
+      "changed_files": 16,
+      "reviews": 0
+    },
+    {
+      "pr": 47,
+      "title": "Phase 59.62: dependency hardening and owner-gated independent-host proof",
+      "base": "phase59-61-budget-dispatcher-integration",
+      "base_sha": "774ee957c69d85f366b4a34bb6d53d0daab26d3a",
+      "head": "phase59-62-dependency-hardening",
+      "head_sha": "a3a5466b3c6ca9c0a2ae1af1bf9f5875fb915a4e",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 102,
+      "changed_files": 37,
+      "reviews": 0
+    },
+    {
+      "pr": 48,
+      "title": "Phase 59.63: prove separate workflow-run cross-repository quota scope",
+      "base": "phase59-62-dependency-hardening",
+      "base_sha": "a3a5466b3c6ca9c0a2ae1af1bf9f5875fb915a4e",
+      "head": "phase59-63-independent-workflow-run-proof",
+      "head_sha": "7fa8f3d17774884629a28f32c905bc21de0da0a4",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 24,
+      "changed_files": 20,
+      "reviews": 0
+    },
+    {
+      "pr": 49,
+      "title": "Phase 59.63.2: enforce canonical master-only owner-gated hosted proof",
+      "base": "phase59-63-independent-workflow-run-proof",
+      "base_sha": "7fa8f3d17774884629a28f32c905bc21de0da0a4",
+      "head": "phase59-64-default-branch-execution-guard",
+      "head_sha": "4af63f9841db32af58db7f17831df3e24dfc6f1d",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 34,
+      "changed_files": 11,
+      "reviews": 0
+    },
+    {
+      "pr": 50,
+      "title": "Phase 59.64: enforce ordered, durable six-run proof prerequisites",
+      "base": "phase59-64-default-branch-execution-guard",
+      "base_sha": "4af63f9841db32af58db7f17831df3e24dfc6f1d",
+      "head": "phase59-64-host-slot-run-identity-binding",
+      "head_sha": "03fd68473cf42afdcae4938803ad22e3b7b99486",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 18,
+      "changed_files": 18,
+      "reviews": 0
+    },
+    {
+      "pr": 51,
+      "title": "Phase 59.65: enforce owner-directed P59-003 task selection",
+      "base": "phase59-64-host-slot-run-identity-binding",
+      "base_sha": "03fd68473cf42afdcae4938803ad22e3b7b99486",
+      "head": "phase59-65-current-task-dispatch-guard",
+      "head_sha": "20e889fa1a8fce58c3103c0b251e390a3dfbb957",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 41,
+      "changed_files": 14,
+      "reviews": 0
+    },
+    {
+      "pr": 52,
+      "title": "Phase 59.66: constrain publisher API routes and reject redirects",
+      "base": "phase59-65-current-task-dispatch-guard",
+      "base_sha": "20e889fa1a8fce58c3103c0b251e390a3dfbb957",
+      "head": "phase59-66-publisher-api-boundary",
+      "head_sha": "7d2b00579d36a402c7e33b78a3ae69c06351740c",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 19,
+      "changed_files": 9,
+      "reviews": 0
+    },
+    {
+      "pr": 53,
+      "title": "Phase 59.67: enforce strict sanitized summary schema and source provenance",
+      "base": "phase59-66-publisher-api-boundary",
+      "base_sha": "7d2b00579d36a402c7e33b78a3ae69c06351740c",
+      "head": "phase59-67-sanitized-summary-schema",
+      "head_sha": "8b9c65a20ddfd8d7cd8804b074f5a2167a3db63c",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 31,
+      "changed_files": 12,
+      "reviews": 0
+    },
+    {
+      "pr": 54,
+      "title": "Phase 59.68: verify constrained publisher branch ancestry and PR refs",
+      "base": "phase59-67-sanitized-summary-schema",
+      "base_sha": "8b9c65a20ddfd8d7cd8804b074f5a2167a3db63c",
+      "head": "phase59-68-publisher-branch-integrity",
+      "head_sha": "c9bc96b4489fd0db67c6c6654254dc91e35b75a2",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 14,
+      "changed_files": 9,
+      "reviews": 0
+    },
+    {
+      "pr": 55,
+      "title": "Phase 59.69: bind publisher to immutable workflow and exact run-attempt artifact",
+      "base": "phase59-68-publisher-branch-integrity",
+      "base_sha": "c9bc96b4489fd0db67c6c6654254dc91e35b75a2",
+      "head": "phase59-69-artifact-provenance",
+      "head_sha": "816b42f2ae1a99182fe8f6c97ef7ceab8f261d39",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 40,
+      "changed_files": 16,
+      "reviews": 0
+    },
+    {
+      "pr": 56,
+      "title": "Phase59.70: offline publisher event replay and no-token dry-run",
+      "base": "phase59-69-artifact-provenance",
+      "base_sha": "816b42f2ae1a99182fe8f6c97ef7ceab8f261d39",
+      "head": "phase59-70-offline-publisher-dry-run",
+      "head_sha": "2c6524dafbbe78888fd0a074c08b44ac35e24cd0",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 24,
+      "changed_files": 11,
+      "reviews": 0
+    },
+    {
+      "pr": 57,
+      "title": "Phase 59.71: bounded publisher ambiguous-write recovery and replay-race proof",
+      "base": "phase59-70-offline-publisher-dry-run",
+      "base_sha": "2c6524dafbbe78888fd0a074c08b44ac35e24cd0",
+      "head": "phase59-71-publisher-ambiguous-write-recovery",
+      "head_sha": "30abe577bf3742d7200d118207d9edf955025b86",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 10,
+      "changed_files": 8,
+      "reviews": 0
+    },
+    {
+      "pr": 58,
+      "title": "Phase 59.72: enforce read-only compute and single constrained publisher permissions",
+      "base": "phase59-71-publisher-ambiguous-write-recovery",
+      "base_sha": "30abe577bf3742d7200d118207d9edf955025b86",
+      "head": "phase59-72-workflow-permission-regression",
+      "head_sha": "ee9089d487aef9c0e7ca1830b64a4e85a0ed9f43",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 13,
+      "changed_files": 7,
+      "reviews": 0
+    }
+  ],
+  "stack_order": [
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58
+  ],
+  "absorbed_ancestry": [
+    {
+      "pr": 40,
+      "head": "e2b7fe6fc9be2c68628d1b4fd072fc3fa86d8d6d",
+      "relationship": "ancestor of PR44; compare PR40→PR44 is ahead 48 / behind 0"
+    },
+    {
+      "pr": 41,
+      "head": "290e2601a430d46bb5027675b5774aea37da6104",
+      "relationship": "ancestor in PR40→PR41→PR42→PR44 chain; do not merge separately"
+    },
+    {
+      "pr": 42,
+      "head": "40247b56592bd28ec129fef1b8f905c6d1ab6adf",
+      "relationship": "ancestor of PR44; compare PR42→PR44 is ahead 36 / behind 0"
+    }
+  ],
+  "parallel_conflicts": [
+    {
+      "pr": 43,
+      "base": "master",
+      "base_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+      "head": "phase59-54-deterministic-shadow-runner",
+      "head_sha": "c52f1651fbf9f2d435636e41bcc3d06f00765fec",
+      "draft": false,
+      "merged": false,
+      "mergeable": true,
+      "commits": 7,
+      "changed_files": 3,
+      "relationship": "diverged from PR44; compare PR43→PR44 is diverged, PR44 ahead 70 / PR43 ahead 7 from master merge base",
+      "disposition": "HOLD; do not merge alongside PR44 without explicit owner disposition"
+    }
+  ],
+  "legacy_open_prs": [
+    {
+      "pr": 19,
+      "title": "Phase 59.41: quota-bound worker client lifecycle",
+      "base_sha": "5d6881add92b2a8bacc2bdcbf8f4cdeae34bda9c",
+      "head_sha": "7a2042ddf9b7d025b0b461638f4ea7af9fa5d41d",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 13,
+      "changed_files": 4,
+      "disposition": "stale-base; outside current stack; audit before any merge"
+    },
+    {
+      "pr": 24,
+      "title": "Phase 59.45A: global quota identity audit and independent-host proof plan",
+      "base_sha": "5f79bd9d72e272205d55c0dbb55eb9af513a6595",
+      "head_sha": "30ee5c3c56c22f45d70a90c31bb9e7a7b8a249a2",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "commits": 1,
+      "changed_files": 1,
+      "disposition": "stale-base; superseded evidence likely; verify before any merge"
+    },
+    {
+      "pr": 26,
+      "title": "Phase 59.45B: enforce canonical installation-wide GitHub quota scope",
+      "base_sha": "5f79bd9d72e272205d55c0dbb55eb9af513a6595",
+      "head_sha": "21c6d345ef92ba92327b7a3e90b633fd814fcbdd",
+      "draft": true,
+      "merged": false,
+      "mergeable": false,
+      "commits": 83,
+      "changed_files": 30,
+      "disposition": "stale divergent branch; do not merge without full diff/rebase audit"
+    }
+  ],
+  "review_audit": {
+    "prs": "44–58",
+    "submitted_reviews": 0,
+    "all_prs_draft": true,
+    "all_open": true,
+    "all_unmerged": true,
+    "all_mergeable": true
+  },
+  "ci_evidence": {
+    "pr58_code_head": {
+      "sha": "99954b82bbeb34671bda95a8f086670609ee7955",
+      "run_id": 45746313748,
+      "conclusion": "success",
+      "permission_regression": "8/8",
+      "mission_guard": "111/111, errors 0",
+      "swarm_runtime": "17/17",
+      "coordinator": "7/7",
+      "ai_safety": "20/20",
+      "product_smoke": "3/3",
+      "recruitment": "7/7",
+      "selected_task": "P59-003",
+      "inference_requests": 0
+    },
+    "pr58_final_head": {
+      "sha": "ee9089d487aef9c0e7ca1830b64a4e85a0ed9f43",
+      "run_id": 45746929504,
+      "conclusion": "success",
+      "check": "Mission Continuity Guard only; 111 checks, zero errors"
+    },
+    "pr58_post_code_test_delta": {
+      "base_sha": "99954b82bbeb34671bda95a8f086670609ee7955",
+      "head_sha": "ee9089d487aef9c0e7ca1830b64a4e85a0ed9f43",
+      "commits": 10,
+      "changed_files": [
+        "PROJECT_CONTINUITY.md",
+        "control/automation_queue.json",
+        "control/mission_state.json",
+        "federation/PROJECT_FEDERATION_REGISTRY.json",
+        "research/PHASE_59_72_COMPUTE_PUBLISHER_PERMISSION_REGRESSION_2026-11-26.md"
+      ],
+      "interpretation": "Only evidence/control files changed after code test; no code changed. Keep code-head CI and final-head guard as separate evidence."
+    },
+    "pr57_final_head": {
+      "sha": "30abe577bf3742d7200d118207d9edf955025b86",
+      "runtime_run_id": 45537622886,
+      "runtime_conclusion": "success",
+      "guard_run_id": 45537617182,
+      "guard_conclusion": "success"
+    },
+    "pr44_to_56": "EXACT_HEAD_CI_MATRIX_NOT_AUDITED_IN_PHASE59_73; must verify before each merge"
+  },
+  "owner_gates": {
+    "master_branch_protection": "BLOCKED_UNPROTECTED",
+    "branch_rulesets": "NONE_VISIBLE",
+    "github_app_owner_packet": "PREPARED_NOT_APPROVED",
+    "publisher_app_installed": false,
+    "human_reviews": "NONE",
+    "explicit_owner_merge_approval": false,
+    "physical_multi_host_proof": "NOT_STARTED",
+    "soak_7_day": "NOT_STARTED",
+    "soak_30_day": "NOT_STARTED"
+  },
+  "merge_policy": {
+    "allowed_sequence": "PR44 → PR45 → PR46 → PR47 → PR48 → PR49 → PR50 → PR51 → PR52 → PR53 → PR54 → PR55 → PR56 → PR57 → PR58",
+    "require_after_each_merge": [
+      "re-fetch master HEAD",
+      "verify child base ref and SHA exactly equal newly merged parent head",
+      "re-run exact-head required CI",
+      "read back mission_state.json",
+      "read back automation_queue.json",
+      "read back PROJECT_FEDERATION_REGISTRY.json",
+      "read back PROJECT_CONTINUITY.md"
+    ],
+    "no_automatic_merge": true,
+    "do_not_merge_separately": [
+      40,
+      41,
+      42
+    ],
+    "unresolved_parallel_root": [
+      43
+    ],
+    "unresolved_legacy_prs": [
+      19,
+      24,
+      26
+    ]
+  },
+  "actions_taken": {
+    "master_mutated": false,
+    "pr_merged": false,
+    "pr_retargeted": false,
+    "owner_settings_changed": false,
+    "generated_code_executed": false,
+    "ai_inference": false,
+    "external_provider_calls": 0,
+    "authorized_spend_inr": 0,
+    "pcne_inr": 0,
+    "other_projects_changed": false
+  }
+}
