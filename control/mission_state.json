@@ -4341,6 +4341,12 @@
     "candidate_worker_selected_task": "P59-003",
     "candidate_inference_requests": 0,
     "candidate_guard_checks": 111,
-    "candidate_guard_errors": 0
+    "candidate_guard_errors": 0,
+    "preflight_checkpoint_sha": "b807662a3994fe6564604e98aba968570af68457",
+    "evidence_checkpoint_parent_sha": "129e501ebe8041547a849f9081d3052d09bd3729",
+    "final_control_worker_run_id": 45933047407,
+    "final_control_guard_run_id": 45933047390,
+    "final_control_worker_inference_requests": 0,
+    "final_control_guard_checks": 111
   }
 }

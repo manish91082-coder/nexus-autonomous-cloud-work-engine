@@ -155,3 +155,11 @@ These are unresolved legacy P59 branches. Do not merge or retarget them without 
 - Candidate Continuity Guard [#45932894371](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45932894371) SUCCESS on the exact branch head: 111 checks, zero errors.
 - All six changed artifacts were fetched back from GitHub and their blob SHAs matched the created blobs.
 - This is a read-only preflight/evidence checkpoint. It is not a merge, a production deployment, a physical multi-host proof or a soak.
+
+
+### Final control-checkpoint verification — 27-Nov-2026
+
+- Evidence/control parent checkpoint: `129e501ebe8041547a849f9081d3052d09bd3729`.
+- Worker [#45933047407](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45933047407) SUCCESS on that exact checkpoint: `POLL_OK`, selected P59-003, `WAITING_FOR_OWNER_CONFIGURATION`, zero inference.
+- Guard [#45933047390](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45933047390) SUCCESS on that exact checkpoint: 111 checks, zero errors.
+- The subsequent final commit contains only this evidence reconciliation in the report, manifest, mission state, queue, federation P10CR record and continuity. The resulting head will receive its own bounded Worker/Guard verification; no master write or merge is involved.
