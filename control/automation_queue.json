@@ -6428,6 +6428,30 @@
     "preflight_checkpoint_sha": "b807662a3994fe6564604e98aba968570af68457",
     "evidence_checkpoint_parent_sha": "129e501ebe8041547a849f9081d3052d09bd3729",
     "final_control_worker_run_id": 45933047407,
-    "final_control_guard_run_id": 45933047390
+    "final_control_guard_run_id": 45933047390,
+    "phase59_31_baseline": {
+      "path": "research/PHASE_59_31_SWARM_FIRST_FORENSIC_AUDIT_AND_RECOVERY_2026-11-15.md",
+      "audited_master_head": "e41e60a90b6f19da2d3aa7bce21c7ad6a149f15a",
+      "recursive_tree_entries": 376,
+      "workflow_files": 23,
+      "key_findings": [
+        "worker selected tasks but did not execute them",
+        "durable SQLite prototype and specialist handlers were not wired to scheduled worker",
+        "GitHub API quota guard was per-invocation, not global cross-run/cross-repository",
+        "quota arbiter prototype was not safe to activate",
+        "compute/publisher separation was incomplete",
+        "branch protection visibility was unverified"
+      ],
+      "current_master_comparison": {
+        "head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+        "recursive_tree_entries": 441,
+        "workflow_files": 29,
+        "tree_entry_delta": 65,
+        "workflow_delta": 6,
+        "master_worker_write_permission_still_present": true,
+        "candidate_phases_59_54_to_59_72_merged": false
+      }
+    },
+    "candidate_lockfile_introduced_in_pr": 47
   }
 }

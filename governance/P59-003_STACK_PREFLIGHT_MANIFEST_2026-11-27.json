@@ -104,8 +104,17 @@
       "CLOUDFLARE_AI_MODEL"
     ],
     "p10cr_master_worker_write_boundary": "NOT_ACCEPTABLE_FOR_PRODUCTION: contents:write and conditional direct git commit/push remain on master; candidate split not merged",
-    "candidate_lockfile": "PR #58 adds package-lock.json; not present on master",
-    "concurrency": "Per-workflow/per-repository concurrency groups are not a global account-wide Actions/API quota arbiter."
+    "candidate_lockfile": "The candidate stack adds package-lock.json and pinned Node dependency versions in PR #47 (Phase59.62); present in descendants through PR #58, not present on master.",
+    "concurrency": "Per-workflow/per-repository concurrency groups are not a global account-wide Actions/API quota arbiter.",
+    "phase59_31_baseline": {
+      "head": "e41e60a90b6f19da2d3aa7bce21c7ad6a149f15a",
+      "tree_entries": 376,
+      "workflow_files": 23,
+      "current_head_tree_entries": 441,
+      "current_head_workflow_files": 29,
+      "tree_entry_delta": 65,
+      "workflow_delta": 6
+    }
   },
   "candidate_parent": {
     "branch": "phase59-72-workflow-permission-regression",
@@ -561,6 +570,29 @@
       "checks": 111,
       "errors": 0,
       "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45932894371"
+    }
+  },
+  "phase59_31_forensic_report": {
+    "path": "research/PHASE_59_31_SWARM_FIRST_FORENSIC_AUDIT_AND_RECOVERY_2026-11-15.md",
+    "audited_master_head": "e41e60a90b6f19da2d3aa7bce21c7ad6a149f15a",
+    "recursive_tree_entries": 376,
+    "workflow_files": 23,
+    "key_findings": [
+      "worker selected tasks but did not execute them",
+      "durable SQLite prototype and specialist handlers were not wired to scheduled worker",
+      "GitHub API quota guard was per-invocation, not global cross-run/cross-repository",
+      "quota arbiter prototype was not safe to activate",
+      "compute/publisher separation was incomplete",
+      "branch protection visibility was unverified"
+    ],
+    "current_master_comparison": {
+      "head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+      "recursive_tree_entries": 441,
+      "workflow_files": 29,
+      "tree_entry_delta": 65,
+      "workflow_delta": 6,
+      "master_worker_write_permission_still_present": true,
+      "candidate_phases_59_54_to_59_72_merged": false
     }
   }
 }

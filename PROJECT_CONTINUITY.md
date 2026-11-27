@@ -5517,3 +5517,9 @@ Date: 2026-11-27
 - Worker [#45933047407](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45933047407) SUCCESS on that exact checkpoint: `POLL_OK`, selected P59-003, `WAITING_FOR_OWNER_CONFIGURATION`, zero inference.
 - Guard [#45933047390](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45933047390) SUCCESS on that exact checkpoint: 111 checks, zero errors.
 - The subsequent final commit contains only this evidence reconciliation in the report, manifest, mission state, queue, federation P10CR record and continuity. The resulting head will receive its own bounded Worker/Guard verification; no master write or merge is involved.
+
+### Phase59.31 baseline and candidate-lockfile correction — 27-Nov-2026
+
+- Re-read the actual Phase59.31 swarm forensic report at `e41e60a90b6f19da2d3aa7bce21c7ad6a149f15a`: 376 tree entries / 23 workflows; it documented that the worker only selected tasks, durable execution and specialist handlers were disconnected, the quota guard was per-invocation, and publisher separation was incomplete.
+- Current master `8856bf90`: 441 tree entries / 29 workflows, a delta of +65 entries / +6 workflows. Phase59.53 added the project-cell durable run ledger, but production dispatcher/publisher separation remains candidate-only.
+- Corrected the dependency provenance note: the candidate `package-lock.json` and exact Node dependency pins were introduced in PR #47 (Phase59.62), not PR #58. They remain absent from master.

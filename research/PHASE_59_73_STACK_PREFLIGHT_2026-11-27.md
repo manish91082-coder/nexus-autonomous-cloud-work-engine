@@ -84,7 +84,7 @@ Master has one Node manifest at `cloud/swarm/worker-tests/package.json`:
 - no master lockfile
 - runtime workflow uses `npm install`, not `npm ci`
 
-PR #58 adds a lockfile to its candidate branch, but that fix is not on master. Do not describe master dependencies as reproducibly locked.
+The candidate stack adds a locked dependency set in PR #47 (Phase59.62), retained through PR #58; that fix is not on master. Do not describe master dependencies as reproducibly locked.
 
 ### Mission boundary
 
@@ -163,3 +163,11 @@ These are unresolved legacy P59 branches. Do not merge or retarget them without 
 - Worker [#45933047407](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45933047407) SUCCESS on that exact checkpoint: `POLL_OK`, selected P59-003, `WAITING_FOR_OWNER_CONFIGURATION`, zero inference.
 - Guard [#45933047390](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45933047390) SUCCESS on that exact checkpoint: 111 checks, zero errors.
 - The subsequent final commit contains only this evidence reconciliation in the report, manifest, mission state, queue, federation P10CR record and continuity. The resulting head will receive its own bounded Worker/Guard verification; no master write or merge is involved.
+
+
+
+## Phase59.31 forensic-baseline reconciliation
+
+The requested Phase59.31 swarm-first forensic report is `research/PHASE_59_31_SWARM_FIRST_FORENSIC_AUDIT_AND_RECOVERY_2026-11-15.md`, audited at master `e41e60a90b6f19da2d3aa7bce21c7ad6a149f15a`, with 376 tree entries and 23 workflows. It identified that the worker only selected a task, the SQLite durable executor and specialist handlers were not wired to the scheduled worker, the GitHub API quota guard was per-invocation rather than global, the quota prototype was not safe to activate, and there was no constrained publisher boundary.
+
+Current master `8856bf908f93e265cefd5c739f7f46b3dd995b3c` has 441 tree entries and 29 workflows (+65 entries, +6 workflows). Phase59.53 added the project-cell durable SwarmRunDO ledger, but the live master mission worker remains write-capable and the production dispatcher/publisher separation is still not merged. The Phase59.54–59.72 work exists in the unmerged candidate stack, not on master. The Phase59.31 report is therefore a historical baseline, not a current readiness certificate.

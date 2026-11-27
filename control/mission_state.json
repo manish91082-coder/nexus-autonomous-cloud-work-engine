@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "Phase59.73 preflight completed on a child candidate branch. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c; P59-003 remains the sole active P0. Current master inventory: 29 workflows, 17 Python runtime scripts, 18 cloud/swarm modules, one dependency manifest, zero lockfiles, three write-capable workflows, eleven mutable-action workflows and two missing timeouts. PRs #44–#58 form the linear candidate stack; all are open/unmerged with zero submitted reviews. PR #44 contains PR #40–#42 ancestry; PR #43 is a diverged parallel root. Master reports protected=false and zero visible rulesets. No merge, retarget, deployment, inference, generated-code execution or spend occurred. Candidate preflight checkpoint b807662 verified by Worker #45932894355 SUCCESS (POLL_OK selected P59-003; inference 0) and Guard #45932894371 SUCCESS (111 checks, 0 errors).",
+  "current_focus": "Phase59.73 preflight completed on a child candidate branch. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c; P59-003 remains the sole active P0. Current master inventory: 29 workflows, 17 Python runtime scripts, 18 cloud/swarm modules, one dependency manifest, zero lockfiles, three write-capable workflows, eleven mutable-action workflows and two missing timeouts. PRs #44–#58 form the linear candidate stack; all are open/unmerged with zero submitted reviews. PR #44 contains PR #40–#42 ancestry; PR #43 is a diverged parallel root. Master reports protected=false and zero visible rulesets. No merge, retarget, deployment, inference, generated-code execution or spend occurred. Candidate preflight checkpoint b807662 verified by Worker #45932894355 SUCCESS (POLL_OK selected P59-003; inference 0) and Guard #45932894371 SUCCESS (111 checks, 0 errors). Phase59.31 historical forensic baseline reconciled: 23 workflows/376 tree entries at e41e60; current master has 29 workflows/441 entries. Candidate lockfile was introduced in PR #47, not PR #58.",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -4347,6 +4347,30 @@
     "final_control_worker_run_id": 45933047407,
     "final_control_guard_run_id": 45933047390,
     "final_control_worker_inference_requests": 0,
-    "final_control_guard_checks": 111
+    "final_control_guard_checks": 111,
+    "phase59_31_baseline": {
+      "path": "research/PHASE_59_31_SWARM_FIRST_FORENSIC_AUDIT_AND_RECOVERY_2026-11-15.md",
+      "audited_master_head": "e41e60a90b6f19da2d3aa7bce21c7ad6a149f15a",
+      "recursive_tree_entries": 376,
+      "workflow_files": 23,
+      "key_findings": [
+        "worker selected tasks but did not execute them",
+        "durable SQLite prototype and specialist handlers were not wired to scheduled worker",
+        "GitHub API quota guard was per-invocation, not global cross-run/cross-repository",
+        "quota arbiter prototype was not safe to activate",
+        "compute/publisher separation was incomplete",
+        "branch protection visibility was unverified"
+      ],
+      "current_master_comparison": {
+        "head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+        "recursive_tree_entries": 441,
+        "workflow_files": 29,
+        "tree_entry_delta": 65,
+        "workflow_delta": 6,
+        "master_worker_write_permission_still_present": true,
+        "candidate_phases_59_54_to_59_72_merged": false
+      }
+    },
+    "candidate_lockfile_introduced_in_pr": 47
   }
 }
