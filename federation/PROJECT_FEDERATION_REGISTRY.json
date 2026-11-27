@@ -31,7 +31,7 @@
       "queue": "control/automation_queue.json",
       "scope": "₹10Cr cumulative PCNE portfolio; V5 revenue rules",
       "role": "FEDERATION_CONTROLLER_AND_PROJECT",
-      "status": "P59-003 IN_PROGRESS; Phase59.72 compute/publisher permission regression accepted on candidate branch phase59-72-workflow-permission-regression, PR #58 draft/unmerged child of PR #57. Exact code/test head 99954b82bbeb34671bda95a8f086670609ee7955 passed bounded Worker #619 / run 45746313748: permission boundary 8/8, mission guard 111 checks/0 errors, runtime17/17, coordinator7/7, AI safety20/20, product smoke3/3, recruitment assurance7/7. Candidate worker is contents:read-only, checkout credentials not persisted, no direct git writes, no publisher token/provider secrets, AI flags false. Only constrained publisher workflow may mint the SHA-pinned one-repository App token after deterministic plan and owner environment gates. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c and still has the historical contents:write/direct-commit worker path; candidate separation is not active on master. P59-001 PAUSED; P59-002 BLOCKED. No App token, live publisher API writes, deployment, inference, spend or receipts. Next Phase59.73: sequential PR-stack reconciliation preflight; physical multi-host proof and 7/30-day soak remain owner-gated.",
+      "status": "P59-003 IN_PROGRESS; Phase59.73 PR-stack preflight completed on candidate branch; master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c. PR #44–#58 are open/unmerged with zero reviews; #44 absorbs #40–#42 ancestry; #43 is a diverged parallel Phase59.54 root. Master is not protected (branch metadata protected=false; no visible rulesets). No merge, deployment, AI inference, generated-code execution or spend. Next Phase59.74: exact-head CI and changed-file/ancestry audit.",
       "last_observed_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
       "latest_b4_test_commit": "eda24e43232ec7732c9cf4956eebca522a1543b0",
       "latest_b4_report": "research/PHASE_59_12_B4_DURABLE_EXECUTION_PROTOTYPE_2026-11-15.md",
@@ -1676,6 +1676,75 @@
         "final_evidence_head": "5ec9afd3ff2da49e8488089dcecabd418f8158e0",
         "post_checkpoint_worker_run_id": 45746603025,
         "final_guard_run_id": 45746675602
+      },
+      "phase59_73": {
+        "report": "research/PHASE_59_73_STACK_PREFLIGHT_2026-11-27.md",
+        "manifest": "governance/P59-003_STACK_PREFLIGHT_MANIFEST_2026-11-27.json",
+        "branch": "phase59-73-stack-preflight",
+        "parent_sha": "ee9089d487aef9c0e7ca1830b64a4e85a0ed9f43",
+        "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+        "merge_order": [
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58
+        ],
+        "branch_protection": "UNPROTECTED",
+        "reviews": 0,
+        "pr43": "DIVERGED_HOLD",
+        "legacy_prs": [
+          19,
+          24,
+          26
+        ],
+        "no_merge": true,
+        "ai_inference": false,
+        "spend_inr": 0,
+        "pcne_inr": 0,
+        "candidate_branch_head": "b807662a3994fe6564604e98aba968570af68457",
+        "candidate_worker_run_id": 45932894355,
+        "candidate_guard_run_id": 45932894371,
+        "candidate_inference_requests": 0,
+        "candidate_guard_checks": 111,
+        "preflight_checkpoint_sha": "b807662a3994fe6564604e98aba968570af68457",
+        "evidence_checkpoint_parent_sha": "129e501ebe8041547a849f9081d3052d09bd3729",
+        "final_control_worker_run_id": 45933047407,
+        "final_control_guard_run_id": 45933047390,
+        "phase59_31_baseline": {
+          "path": "research/PHASE_59_31_SWARM_FIRST_FORENSIC_AUDIT_AND_RECOVERY_2026-11-15.md",
+          "audited_master_head": "e41e60a90b6f19da2d3aa7bce21c7ad6a149f15a",
+          "recursive_tree_entries": 376,
+          "workflow_files": 23,
+          "key_findings": [
+            "worker selected tasks but did not execute them",
+            "durable SQLite prototype and specialist handlers were not wired to scheduled worker",
+            "GitHub API quota guard was per-invocation, not global cross-run/cross-repository",
+            "quota arbiter prototype was not safe to activate",
+            "compute/publisher separation was incomplete",
+            "branch protection visibility was unverified"
+          ],
+          "current_master_comparison": {
+            "head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+            "recursive_tree_entries": 441,
+            "workflow_files": 29,
+            "tree_entry_delta": 65,
+            "workflow_delta": 6,
+            "master_worker_write_permission_still_present": true,
+            "candidate_phases_59_54_to_59_72_merged": false
+          }
+        },
+        "candidate_lockfile_introduced_in_pr": 47
       }
     },
     {
