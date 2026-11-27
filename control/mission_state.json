@@ -11,7 +11,7 @@
   "active_build_limit": 1,
   "execution_mode": "SWARM_FOUNDATION_FIRST; P59-003_ONLY; CLOUD_ONLY; ZERO_SPEND_DEFAULT; AI_INFERENCE_DISABLED; OWNER_GATES_FAIL_CLOSED",
   "last_verified_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
-  "current_focus": "Phase59.73 preflight completed on a child candidate branch. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c; P59-003 remains the sole active P0. Current master inventory: 29 workflows, 17 Python runtime scripts, 18 cloud/swarm modules, one dependency manifest, zero lockfiles, three write-capable workflows, eleven mutable-action workflows and two missing timeouts. PRs #44–#58 form the linear candidate stack; all are open/unmerged with zero submitted reviews. PR #44 contains PR #40–#42 ancestry; PR #43 is a diverged parallel root. Master reports protected=false and zero visible rulesets. No merge, retarget, deployment, inference, generated-code execution or spend occurred.",
+  "current_focus": "Phase59.73 preflight completed on a child candidate branch. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c; P59-003 remains the sole active P0. Current master inventory: 29 workflows, 17 Python runtime scripts, 18 cloud/swarm modules, one dependency manifest, zero lockfiles, three write-capable workflows, eleven mutable-action workflows and two missing timeouts. PRs #44–#58 form the linear candidate stack; all are open/unmerged with zero submitted reviews. PR #44 contains PR #40–#42 ancestry; PR #43 is a diverged parallel root. Master reports protected=false and zero visible rulesets. No merge, retarget, deployment, inference, generated-code execution or spend occurred. Candidate preflight checkpoint b807662 verified by Worker #45932894355 SUCCESS (POLL_OK selected P59-003; inference 0) and Guard #45932894371 SUCCESS (111 checks, 0 errors).",
   "owner_gates": [
     "account_creation_if_required",
     "KYC_if_required",
@@ -4334,6 +4334,13 @@
     "ai_inference": false,
     "authorized_spend_inr": 0,
     "pcne_inr": 0,
-    "next": "Phase59.74 stack-wide exact-head CI and changed-file/ancestry audit."
+    "next": "Phase59.74 stack-wide exact-head CI and changed-file/ancestry audit.",
+    "candidate_branch_head": "b807662a3994fe6564604e98aba968570af68457",
+    "candidate_worker_run_id": 45932894355,
+    "candidate_guard_run_id": 45932894371,
+    "candidate_worker_selected_task": "P59-003",
+    "candidate_inference_requests": 0,
+    "candidate_guard_checks": 111,
+    "candidate_guard_errors": 0
   }
 }

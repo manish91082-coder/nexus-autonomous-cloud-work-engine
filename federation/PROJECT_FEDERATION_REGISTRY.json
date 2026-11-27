@@ -1711,7 +1711,12 @@
         "no_merge": true,
         "ai_inference": false,
         "spend_inr": 0,
-        "pcne_inr": 0
+        "pcne_inr": 0,
+        "candidate_branch_head": "b807662a3994fe6564604e98aba968570af68457",
+        "candidate_worker_run_id": 45932894355,
+        "candidate_guard_run_id": 45932894371,
+        "candidate_inference_requests": 0,
+        "candidate_guard_checks": 111
       }
     },
     {

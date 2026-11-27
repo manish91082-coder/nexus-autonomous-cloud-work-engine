@@ -512,6 +512,33 @@
     "external_provider_calls": 0,
     "authorized_spend_inr": 0,
     "pcne_inr": 0,
-    "other_projects_changed": false
+    "other_projects_changed": false,
+    "branch_created": true
+  },
+  "candidate_preflight_branch": {
+    "branch": "phase59-73-stack-preflight",
+    "head_sha": "b807662a3994fe6564604e98aba968570af68457",
+    "base_sha": "ee9089d487aef9c0e7ca1830b64a4e85a0ed9f43",
+    "status": "PUSHED_AND_FETCHED_BACK"
+  },
+  "post_checkpoint_runs": {
+    "worker": {
+      "run_id": 45932894355,
+      "conclusion": "success",
+      "head_sha": "b807662a3994fe6564604e98aba968570af68457",
+      "selected_task": "P59-003",
+      "queue_poll": "POLL_OK",
+      "ai_executor": "WAITING_FOR_OWNER_CONFIGURATION",
+      "inference_requests": 0,
+      "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45932894355"
+    },
+    "guard": {
+      "run_id": 45932894371,
+      "conclusion": "success",
+      "head_sha": "b807662a3994fe6564604e98aba968570af68457",
+      "checks": 111,
+      "errors": 0,
+      "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45932894371"
+    }
   }
 }
