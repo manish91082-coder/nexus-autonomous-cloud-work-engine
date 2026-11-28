@@ -1,9 +1,9 @@
-# CURRENT CONTINUITY CHECKPOINT — PHASE 59.71 PUBLISHER AMBIGUOUS-WRITE RECOVERY
+# CURRENT CONTINUITY CHECKPOINT — PHASE 59.74 EXACT-HEAD CI AND FILE OWNERSHIP AUDIT
 
-**Checkpoint date:** 2026-11-25  
+**Checkpoint date:** 2026-11-28  
 **Canonical repository:** `manish91082-coder/nexus-autonomous-cloud-work-engine`  
 **Master HEAD:** `8856bf908f93e265cefd5c739f7f46b3dd995b3c` (unchanged)  
-**Candidate branch:** `phase59-71-publisher-ambiguous-write-recovery`  
+**Candidate branch:** `phase59-74-exact-head-ci-file-ownership-audit`  
 **Tested code head:** `686c4926db7bda702ba56713cd6c82b0211cb590`  
 **Evidence branch head before control updates:** `48419ad6803a64efa2e5dfff1fbf68da07d15e76`  
 **PR #57:** [Draft/open/unmerged](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/pull/57), child of PR #56; base `phase59-70-offline-publisher-dry-run`. No merge or retarget was performed.  
@@ -5523,3 +5523,23 @@ Date: 2026-11-27
 - Re-read the actual Phase59.31 swarm forensic report at `e41e60a90b6f19da2d3aa7bce21c7ad6a149f15a`: 376 tree entries / 23 workflows; it documented that the worker only selected tasks, durable execution and specialist handlers were disconnected, the quota guard was per-invocation, and publisher separation was incomplete.
 - Current master `8856bf90`: 441 tree entries / 29 workflows, a delta of +65 entries / +6 workflows. Phase59.53 added the project-cell durable run ledger, but production dispatcher/publisher separation remains candidate-only.
 - Corrected the dependency provenance note: the candidate `package-lock.json` and exact Node dependency pins were introduced in PR #47 (Phase59.62), not PR #58. They remain absent from master.
+
+
+## PHASE 59.74 — EXACT-HEAD CI AND CHANGED-FILE OWNERSHIP AUDIT
+Date: 2026-11-28
+
+- Canonical master HEAD independently confirmed unchanged at `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
+- Latest master Worker #633 [run 46099915392](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/46099915392) SUCCESS on master HEAD. Logs confirm POLL_OK selected P59-003, AI executor WAITING_FOR_OWNER_CONFIGURATION, inference requests 0; the conditional commit/push branch did not execute.
+- Latest master Guard #440 [run 45990204124](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45990204124) SUCCESS on master HEAD; 111 checks, zero errors.
+- Candidate Worker #630 [run 45933580845](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45933580845) and Guard #439 [run 45933580872](https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45933580872) both SUCCESS on exact parent `e9035495c4fa07525aadf890c88a2dd3798224a7`.
+- Exact-head Actions audit for PR44–58: 48 observed runs, 47 SUCCESS, 1 CANCELLED, 0 FAILED. PR51 runtime run 45109825118 was CANCELLED; its guard succeeded. PR58 final head has guard only; its full runtime tests passed on earlier code head 99954b82 and must remain a separate evidence claim.
+- All PR44–58 remain open/draft/unmerged/mergeable with zero submitted reviews. The parent/child base/head SHA chain is exact and linear.
+- Changed-file audit: 239 changed-file entries, 105 pairwise shared-path intersections. The four control/continuity files recur across all 15 PRs; runtime workflow, publisher code/tests and dispatcher files also recur. These are expected stacked-path overlaps, not proof of merge conflicts; strict sequential merge and cumulative re-review are mandatory.
+- PR47 changes 37 files including 19 workflows and requires explicit human security review. PR43 remains a diverged parallel root with one overlapping test file; PR19/#24 are stale-base with no current-stack path overlap; PR26 is stale/divergent, mergeable=false and overlaps two current-stack paths. PR40–42 are absorbed ancestry of PR44.
+- Master branch metadata reports protected=false; visible rulesets collection is empty; branch-protection endpoint returned 403 to the connected integration. No protection settings were changed.
+- P59-001 PAUSED; P59-002 BLOCKED; P59-003 remains sole active P0/IN_PROGRESS.
+- No master mutation, PR merge/retarget, generated-code execution, AI inference, provider calls, App token mint, deployment, KYC, legal acceptance, billing, public release, payments or money movement. Spend ₹0; PCNE ₹0. Other project repositories unchanged.
+- Report: `research/PHASE_59_74_EXACT_HEAD_CI_AND_FILE_OWNERSHIP_AUDIT_2026-11-28.md`.
+- Machine manifest: `governance/P59-003_STACK_CI_FILE_OWNERSHIP_AUDIT_2026-11-28.json`.
+- Next: Phase59.75 owner branch-protection/GitHub App prerequisites, successful PR51 exact-head runtime revalidation, and explicit PR43/legacy disposition before sequential merge readiness.
+

@@ -15,8 +15,8 @@
     "mission_authority": "MASTER_PLAN_10CR_AUTONOMOUS_REVENUE_ECOSYSTEM_V5.md",
     "current_task": "P59-003",
     "portfolio_ranking_file": "PORTFOLIO_REVENUE_SOURCE_RANKING_V5.md",
-    "last_reconciled_from_mission_state": "2026-11-27 Phase59.73 candidate checkpoint b807662 fetched back; Worker 45932894355 SUCCESS; Guard 45932894371 SUCCESS.",
-    "reconciliation_note": "Phase59.73 preflight completed on a child candidate branch. Master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c; P59-003 remains the sole active P0. Current master inventory: 29 workflows, 17 Python runtime scripts, 18 cloud/swarm modules, one dependency manifest, zero lockfiles, three write-capable workflows, eleven mutable-action workflows and two missing timeouts. PRs #44–#58 form the linear candidate stack; all are open/unmerged with zero submitted reviews. PR #44 contains PR #40–#42 ancestry; PR #43 is a diverged parallel root. Master reports protected=false and zero visible rulesets. No merge, retarget, deployment, inference, generated-code execution or spend occurred.",
+    "last_reconciled_from_mission_state": "2026-11-28 Phase59.74 candidate checkpoint; master remains 8856bf908f93e265cefd5c739f7f46b3dd995b3c; P59-003 remains sole active P0.",
+    "reconciliation_note": "Phase59.74 exact-head audit: PR44–58 are a linear draft/unmerged stack with zero submitted reviews; 48 exact-head Actions runs observed (47 success, 1 cancelled). PR51 runtime requires rerun; PR58 final head has guard only and separate earlier code-head runtime evidence. Master is unprotected; owner gates remain pending. No merge or master write. P59-001 PAUSED; P59-002 BLOCKED.",
     "execution_override": {
       "date": "2026-11-22",
       "authority": "Explicit current owner instruction",
@@ -3333,7 +3333,7 @@
       "depends_on": [],
       "idempotency_key": "phase59-autonomous-swarm-foundation-v1",
       "owner_gate": false,
-      "last_updated": "2026-11-27",
+      "last_updated": "2026-11-28",
       "acceptance": [
         "Complete source-level inventory of every .github/workflows file, mission runtime script, dependencies, triggers, permissions, secrets references and state writes before editing existing automation.",
         "Map existing deterministic worker, continuity guard, queue poller, AI executor stub and all current workflow run outcomes; verify exact HEAD and no-regression boundary.",
@@ -3351,7 +3351,8 @@
         "Recheck artifact-attestation creation/expiry against the current UTC verification clock at publisher consumption; bind the exact consumed ai_worker_report.json bytes and byte count to the verified artifact file manifest.",
         "Split constrained publishing into a read-only prepare-draft job and a conditional owner-environment-gated publish-draft job; WAITING_FOR_OWNER_CONFIGURATION must emit no plan and skip environment approval, App-token minting and publisher API writes.",
         "Bound the sanitized summary-plan job output to 131072 bytes; validate it in a pure no-token/no-network command before the owner token gate and revalidate before publisher API writes.",
-        "Offline failure/replay tests must prove duplicate workflow_run delivery reuses one deterministic draft PR, and wrong workflow/run attempt/branch, expired artifact, altered digest, report mutation and tampered summary fail before publisher writes."
+        "Offline failure/replay tests must prove duplicate workflow_run delivery reuses one deterministic draft PR, and wrong workflow/run attempt/branch, expired artifact, altered digest, report mutation and tampered summary fail before publisher writes.",
+        "Before any stack merge, verify exact-head CI and changed-file/ancestry ownership for PR44–PR58; require successful exact-head runtime evidence, human review, protected master branch and explicit owner approval; merge sequentially with readback after every merge."
       ],
       "evidence": {
         "report": "research/PHASE_59_70_OFFLINE_PUBLISHER_EVENT_REPLAY_NO_TOKEN_DRY_RUN_2026-11-24.md",
@@ -4912,13 +4913,21 @@
         "Thread-safe shared run-wide request budget and fail-closed safety reserve tested in GitHub Actions.",
         "Exact-head cloud soak and regression CI passed; disposable branch cleanup verified."
       ],
-      "pause_reason": null
+      "pause_reason": null,
+      "phase59_74": {
+        "status": "AUDIT_COMPLETE_HOLD_NO_MERGE",
+        "report": "research/PHASE_59_74_EXACT_HEAD_CI_AND_FILE_OWNERSHIP_AUDIT_2026-11-28.md",
+        "manifest": "governance/P59-003_STACK_CI_FILE_OWNERSHIP_AUDIT_2026-11-28.json",
+        "exact_head_runs": 48,
+        "success": 47,
+        "cancelled": 1
+      }
     }
   ],
   "dead_letter": [],
-  "updated_at": "2026-11-27",
+  "updated_at": "2026-11-28",
   "current_task": "P59-003",
-  "last_updated": "2026-11-27",
+  "last_updated": "2026-11-28",
   "sequence_note": "Owner-directed swarm-first sequence remains authoritative: P59-003 sole active P0; P59-001 PAUSED; P59-002 BLOCKED. No revenue-source ranking, product discovery or unrelated asset work until P59-003 acceptance gates pass.",
   "last_reconciled_from_mission_state": "2026-11-25: Phase59.71 reconciled against master HEAD 8856bf908f93e265cefd5c739f7f46b3dd995b3c and candidate code head 686c4926db7bda702ba56713cd6c82b0211cb590. Master Worker #612 selected P59-003 with inference disabled; Guard #424 passed 111/111. Candidate Phase59.71 CI #45325920285 passed publisher recovery/race tests 57/57 and full Workers runtime 83/83. PR #57 draft/unmerged, child of PR #56.",
   "phase59_46": {
@@ -6453,5 +6462,19 @@
       }
     },
     "candidate_lockfile_introduced_in_pr": 47
+  },
+  "phase59_74": {
+    "status": "AUDIT_COMPLETE_HOLD_NO_MERGE",
+    "branch": "phase59-74-exact-head-ci-file-ownership-audit",
+    "master_head": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "report": "research/PHASE_59_74_EXACT_HEAD_CI_AND_FILE_OWNERSHIP_AUDIT_2026-11-28.md",
+    "manifest": "governance/P59-003_STACK_CI_FILE_OWNERSHIP_AUDIT_2026-11-28.json",
+    "exact_head_runs": 48,
+    "successful_runs": 47,
+    "cancelled_runs": 1,
+    "changed_file_entries": 239,
+    "pairwise_shared_path_intersections": 105,
+    "blocker": "PR51 exact-head runtime cancelled; master branch unprotected; zero reviews; GitHub App not approved/installed.",
+    "next": "Phase59.75 owner prerequisite and exact-head runtime revalidation"
   }
 }

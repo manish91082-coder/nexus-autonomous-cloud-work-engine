@@ -1,0 +1,600 @@
+{
+  "schema_version": "1.0",
+  "phase": "PHASE_59_74_EXACT_HEAD_CI_AND_FILE_OWNERSHIP_AUDIT",
+  "observed_at": "2026-11-28",
+  "repository": "manish91082-coder/nexus-autonomous-cloud-work-engine",
+  "decision": "AUDIT_COMPLETE_HOLD_NO_MERGE",
+  "scope": {
+    "sole_active_task": "P59-003",
+    "P59_001": "PAUSED",
+    "P59_002": "BLOCKED",
+    "excluded": [
+      "revenue-source ranking",
+      "product/source research",
+      "unrelated asset discovery",
+      "other project repositories"
+    ],
+    "no_master_mutation": true
+  },
+  "canonical_master": {
+    "branch": "master",
+    "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+    "compare_status": "identical",
+    "protected": false,
+    "visible_rulesets": [],
+    "branch_protection_endpoint": "HTTP 403 to connected integration; branch metadata independently reports protected=false",
+    "owner_merge_approval": false
+  },
+  "master_control_snapshot": {
+    "mission_state_phase": "PHASE_59_73_STACK_PREFLIGHT",
+    "mission_state_updated_at": "2026-11-27",
+    "mission_state_current_task": "P59-003",
+    "queue_updated_at": "2026-11-27",
+    "queue_current_task": "P59-003",
+    "task_statuses": {
+      "P59_001": "PAUSED",
+      "P59_002": "BLOCKED",
+      "P59_003": "IN_PROGRESS"
+    },
+    "note": "Master control documents remain historical at Phase59.53/2026-11-16; Phase59.73 and Phase59.74 updates are candidate-only until sequential merge."
+  },
+  "latest_master_runs": {
+    "worker": {
+      "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
+      "run_number": 633,
+      "run_id": 46099915392,
+      "conclusion": "success",
+      "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+      "created_at": "2026-11-28T02:49:17Z",
+      "selected_task": "P59-003",
+      "queue_poll": "POLL_OK",
+      "ai_executor": "WAITING_FOR_OWNER_CONFIGURATION",
+      "inference_requests": 0,
+      "log_evidence": "Worker log shows selected_task P59-003, MISSION_AI_ENABLED and ZERO_BILLING variables empty, AI executor reports no inference request. Conditional commit step did not execute its inner git commit/push commands because no DRAFT_READY_FOR_EVIDENCE_REVIEW report was produced.",
+      "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/46099915392"
+    },
+    "guard": {
+      "name": "Mission Continuity Guard",
+      "run_number": 440,
+      "run_id": 45990204124,
+      "conclusion": "success",
+      "head_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+      "created_at": "2026-11-27T11:24:21Z",
+      "checks": 111,
+      "errors": 0,
+      "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45990204124"
+    }
+  },
+  "latest_candidate_runs": {
+    "worker": {
+      "name": "Mission Autonomous AI Worker (bounded, fail-closed)",
+      "run_number": 630,
+      "run_id": 45933580845,
+      "conclusion": "success",
+      "head_sha": "e9035495c4fa07525aadf890c88a2dd3798224a7",
+      "selected_task": "P59-003",
+      "queue_poll": "POLL_OK",
+      "ai_executor": "WAITING_FOR_OWNER_CONFIGURATION",
+      "inference_requests": 0,
+      "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45933580845"
+    },
+    "guard": {
+      "name": "Mission Continuity Guard",
+      "run_number": 439,
+      "run_id": 45933580872,
+      "conclusion": "success",
+      "head_sha": "e9035495c4fa07525aadf890c88a2dd3798224a7",
+      "checks": 111,
+      "errors": 0,
+      "url": "https://github.com/manish91082-coder/nexus-autonomous-cloud-work-engine/actions/runs/45933580872"
+    }
+  },
+  "candidate_pr59": {
+    "number": 59,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "mergeable": true,
+    "base": "phase59-72-workflow-permission-regression",
+    "base_sha": "ee9089d487aef9c0e7ca1830b64a4e85a0ed9f43",
+    "head": "phase59-73-stack-preflight",
+    "head_sha": "e9035495c4fa07525aadf890c88a2dd3798224a7",
+    "worker_run_id": 45933580845,
+    "guard_run_id": 45933580872
+  },
+  "stack_order": [
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58
+  ],
+  "pr_stack": [
+    {
+      "pr": 44,
+      "base": "master",
+      "base_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+      "head": "phase59-58-durable-dispatcher-shadow-integration",
+      "head_sha": "b1330ce4aa4a5cc0fbf1407576950c49cb3b7fe2",
+      "files": 32,
+      "runs": 15,
+      "success": 15,
+      "cancelled": 0,
+      "run_ids": [
+        44229758179,
+        44229758177,
+        44229758304,
+        44229758233,
+        44229758334,
+        44229758145,
+        44229758153,
+        44229758262,
+        44229758390,
+        44229758312,
+        44229758216,
+        44229758325,
+        44229758155,
+        44229758303,
+        44229754694
+      ],
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    },
+    {
+      "pr": 45,
+      "base": "phase59-58-durable-dispatcher-shadow-integration",
+      "base_sha": "b1330ce4aa4a5cc0fbf1407576950c49cb3b7fe2",
+      "head": "phase59-60-account-scope-platform-budget",
+      "head_sha": "3a57698702ed173831d82ea78f3972f2c08b32c2",
+      "files": 19,
+      "runs": 3,
+      "success": 3,
+      "cancelled": 0,
+      "run_ids": [
+        44451450193,
+        44451444030,
+        44451444150
+      ],
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    },
+    {
+      "pr": 46,
+      "base": "phase59-60-account-scope-platform-budget",
+      "base_sha": "3a57698702ed173831d82ea78f3972f2c08b32c2",
+      "head": "phase59-61-budget-dispatcher-integration",
+      "head_sha": "774ee957c69d85f366b4a34bb6d53d0daab26d3a",
+      "files": 16,
+      "runs": 2,
+      "success": 2,
+      "cancelled": 0,
+      "run_ids": [
+        44454189817,
+        44454184477
+      ],
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    },
+    {
+      "pr": 47,
+      "base": "phase59-61-budget-dispatcher-integration",
+      "base_sha": "774ee957c69d85f366b4a34bb6d53d0daab26d3a",
+      "head": "phase59-62-dependency-hardening",
+      "head_sha": "a3a5466b3c6ca9c0a2ae1af1bf9f5875fb915a4e",
+      "files": 37,
+      "runs": 3,
+      "success": 3,
+      "cancelled": 0,
+      "run_ids": [
+        44669392601,
+        44669392600,
+        44669392563
+      ],
+      "workflow_files": 19,
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    },
+    {
+      "pr": 48,
+      "base": "phase59-62-dependency-hardening",
+      "base_sha": "a3a5466b3c6ca9c0a2ae1af1bf9f5875fb915a4e",
+      "head": "phase59-63-independent-workflow-run-proof",
+      "head_sha": "7fa8f3d17774884629a28f32c905bc21de0da0a4",
+      "files": 20,
+      "runs": 6,
+      "success": 6,
+      "cancelled": 0,
+      "run_ids": [
+        44862109389,
+        44862109441,
+        44862109395,
+        44862109437,
+        44862109453,
+        44862105398
+      ],
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    },
+    {
+      "pr": 49,
+      "base": "phase59-63-independent-workflow-run-proof",
+      "base_sha": "7fa8f3d17774884629a28f32c905bc21de0da0a4",
+      "head": "phase59-64-default-branch-execution-guard",
+      "head_sha": "4af63f9841db32af58db7f17831df3e24dfc6f1d",
+      "files": 11,
+      "runs": 2,
+      "success": 2,
+      "cancelled": 0,
+      "run_ids": [
+        44979262428,
+        44979258272
+      ],
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    },
+    {
+      "pr": 50,
+      "base": "phase59-64-default-branch-execution-guard",
+      "base_sha": "4af63f9841db32af58db7f17831df3e24dfc6f1d",
+      "head": "phase59-64-host-slot-run-identity-binding",
+      "head_sha": "03fd68473cf42afdcae4938803ad22e3b7b99486",
+      "files": 18,
+      "runs": 3,
+      "success": 3,
+      "cancelled": 0,
+      "run_ids": [
+        45108025392,
+        45108021301,
+        45108021154
+      ],
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    },
+    {
+      "pr": 51,
+      "base": "phase59-64-host-slot-run-identity-binding",
+      "base_sha": "03fd68473cf42afdcae4938803ad22e3b7b99486",
+      "head": "phase59-65-current-task-dispatch-guard",
+      "head_sha": "20e889fa1a8fce58c3103c0b251e390a3dfbb957",
+      "files": 14,
+      "runs": 2,
+      "success": 1,
+      "cancelled": 1,
+      "run_ids": [
+        45109825118,
+        45109820765
+      ],
+      "blocker": "Exact-head runtime run 45109825118 was cancelled; guard 45109820765 succeeded. No successful runtime run on this exact head was observed.",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    },
+    {
+      "pr": 52,
+      "base": "phase59-65-current-task-dispatch-guard",
+      "base_sha": "20e889fa1a8fce58c3103c0b251e390a3dfbb957",
+      "head": "phase59-66-publisher-api-boundary",
+      "head_sha": "7d2b00579d36a402c7e33b78a3ae69c06351740c",
+      "files": 9,
+      "runs": 2,
+      "success": 2,
+      "cancelled": 0,
+      "run_ids": [
+        45110749371,
+        45110743455
+      ],
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    },
+    {
+      "pr": 53,
+      "base": "phase59-66-publisher-api-boundary",
+      "base_sha": "7d2b00579d36a402c7e33b78a3ae69c06351740c",
+      "head": "phase59-67-sanitized-summary-schema",
+      "head_sha": "8b9c65a20ddfd8d7cd8804b074f5a2167a3db63c",
+      "files": 12,
+      "runs": 1,
+      "success": 1,
+      "cancelled": 0,
+      "run_ids": [
+        45318191691
+      ],
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    },
+    {
+      "pr": 54,
+      "base": "phase59-67-sanitized-summary-schema",
+      "base_sha": "8b9c65a20ddfd8d7cd8804b074f5a2167a3db63c",
+      "head": "phase59-68-publisher-branch-integrity",
+      "head_sha": "c9bc96b4489fd0db67c6c6654254dc91e35b75a2",
+      "files": 9,
+      "runs": 2,
+      "success": 2,
+      "cancelled": 0,
+      "run_ids": [
+        45319101287,
+        45319095489
+      ],
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    },
+    {
+      "pr": 55,
+      "base": "phase59-68-publisher-branch-integrity",
+      "base_sha": "c9bc96b4489fd0db67c6c6654254dc91e35b75a2",
+      "head": "phase59-69-artifact-provenance",
+      "head_sha": "816b42f2ae1a99182fe8f6c97ef7ceab8f261d39",
+      "files": 16,
+      "runs": 2,
+      "success": 2,
+      "cancelled": 0,
+      "run_ids": [
+        45321966976,
+        45321961125
+      ],
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    },
+    {
+      "pr": 56,
+      "base": "phase59-69-artifact-provenance",
+      "base_sha": "816b42f2ae1a99182fe8f6c97ef7ceab8f261d39",
+      "head": "phase59-70-offline-publisher-dry-run",
+      "head_sha": "2c6524dafbbe78888fd0a074c08b44ac35e24cd0",
+      "files": 11,
+      "runs": 2,
+      "success": 2,
+      "cancelled": 0,
+      "run_ids": [
+        45325239087,
+        45325233120
+      ],
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    },
+    {
+      "pr": 57,
+      "base": "phase59-70-offline-publisher-dry-run",
+      "base_sha": "2c6524dafbbe78888fd0a074c08b44ac35e24cd0",
+      "head": "phase59-71-publisher-ambiguous-write-recovery",
+      "head_sha": "30abe577bf3742d7200d118207d9edf955025b86",
+      "files": 8,
+      "runs": 2,
+      "success": 2,
+      "cancelled": 0,
+      "run_ids": [
+        45537622886,
+        45537617182
+      ],
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    },
+    {
+      "pr": 58,
+      "base": "phase59-71-publisher-ambiguous-write-recovery",
+      "base_sha": "30abe577bf3742d7200d118207d9edf955025b86",
+      "head": "phase59-72-workflow-permission-regression",
+      "head_sha": "ee9089d487aef9c0e7ca1830b64a4e85a0ed9f43",
+      "files": 7,
+      "runs": 1,
+      "success": 1,
+      "cancelled": 0,
+      "run_ids": [
+        45746929504
+      ],
+      "note": "Final PR head has guard only. Separate code/test head 99954b82bbeb34671bda95a8f086670609ee7955 passed run 45746313748; do not collapse these two evidence claims.",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "submitted_reviews": 0
+    }
+  ],
+  "exact_head_ci_summary": {
+    "observed_exact_pr_head_runs": 48,
+    "success": 47,
+    "cancelled": 1,
+    "failed": 0,
+    "caveat": "Counts are all runs returned by the Actions API filtered by each exact head SHA, not proof that branch protection required every check. PR #51 runtime run was cancelled; PR #58 final head has only guard, with runtime evidence on its earlier code head."
+  },
+  "PR58_separate_code_head_evidence": {
+    "tested_code_sha": "99954b82bbeb34671bda95a8f086670609ee7955",
+    "run_id": 45746313748,
+    "conclusion": "success",
+    "tests": {
+      "permission_regression": "8/8",
+      "mission_guard": "111/111",
+      "swarm_runtime": "17/17",
+      "coordinator": "7/7",
+      "ai_safety": "20/20",
+      "product_smoke": "3/3",
+      "recruitment": "7/7"
+    },
+    "final_pr_head_sha": "ee9089d487aef9c0e7ca1830b64a4e85a0ed9f43",
+    "final_head_guard_run_id": 45746929504,
+    "final_head_guard_conclusion": "success",
+    "limitation": "Runtime test evidence is on the earlier code head; final head has guard only."
+  },
+  "file_ownership": {
+    "PR44_to_58_changed_file_entries_total": 239,
+    "pairwise_PR_intersections": 105,
+    "shared_control_paths_present_in_all_15": [
+      "PROJECT_CONTINUITY.md",
+      "control/automation_queue.json",
+      "control/mission_state.json",
+      "federation/PROJECT_FEDERATION_REGISTRY.json"
+    ],
+    "repeated_path_hotspots": [
+      {
+        "path": ".github/workflows/phase59-35-quota-do-runtime-tests.yml",
+        "prs": 12
+      },
+      {
+        "path": "tests/test_constrained_publisher.py",
+        "prs": 8
+      },
+      {
+        "path": "scripts/constrained_publisher.py",
+        "prs": 7
+      },
+      {
+        "path": ".github/workflows/mission-autonomous-worker.yml",
+        "prs": 5
+      },
+      {
+        "path": "cloud/swarm/mission-dispatcher-shadow-worker.mjs",
+        "prs": 5
+      },
+      {
+        "path": ".github/workflows/p10cr-constrained-publisher.yml",
+        "prs": 4
+      },
+      {
+        "path": "cloud/swarm/platform-budget-do.mjs",
+        "prs": 4
+      }
+    ],
+    "PR47_scope_note": "PR #47 changes 37 files, including 19 workflow files; mandatory human security review is required before merge.",
+    "interpretation": "Shared paths are expected in a linear stacked-PR design and are not themselves proof of merge conflicts. They require strict sequential merge and cumulative diff re-review after each parent lands."
+  },
+  "parallel_and_legacy_disposition": {
+    "absorbed_ancestry": [
+      {
+        "pr": 40,
+        "relationship": "ancestor in PR44 chain; do not merge separately"
+      },
+      {
+        "pr": 41,
+        "relationship": "ancestor in PR44 chain; do not merge separately"
+      },
+      {
+        "pr": 42,
+        "relationship": "ancestor in PR44 chain; do not merge separately"
+      }
+    ],
+    "parallel_pr43": {
+      "state": "open",
+      "draft": false,
+      "merged": false,
+      "mergeable": true,
+      "base_sha": "8856bf908f93e265cefd5c739f7f46b3dd995b3c",
+      "head_sha": "c52f1651fbf9f2d435636e41bcc3d06f00765fec",
+      "changed_files": 3,
+      "overlap_with_PR44": [
+        "cloud/swarm/worker-tests/swarm-run-ledger-runtime.test.mjs"
+      ],
+      "relationship": "DIVERGED_PARALLEL_ROOT",
+      "disposition": "HOLD; explicit owner disposition required before any merge."
+    },
+    "legacy": [
+      {
+        "pr": 19,
+        "base_sha": "5d6881add92b2a8bacc2bdcbf8f4cdeae34bda9c",
+        "head_sha": "7a2042ddf9b7d025b0b461638f4ea7af9fa5d41d",
+        "changed_files": 4,
+        "overlap_with_current_stack": 0,
+        "disposition": "STALE_BASE; audit and explicit disposition before any merge/retarget."
+      },
+      {
+        "pr": 24,
+        "base_sha": "5f79bd9d72e272205d55c0dbb55eb9af513a6595",
+        "head_sha": "30ee5c3c56c22f45d70a90c31bb9e7a7b8a249a2",
+        "changed_files": 1,
+        "overlap_with_current_stack": 0,
+        "disposition": "STALE_BASE; audit and explicit disposition before any merge/retarget."
+      },
+      {
+        "pr": 26,
+        "base_sha": "5f79bd9d72e272205d55c0dbb55eb9af513a6595",
+        "head_sha": "21c6d345ef92ba92327b7a3e90b633fd814fcbdd",
+        "changed_files": 30,
+        "overlap_with_current_stack": 2,
+        "mergeable": false,
+        "overlap_paths": [
+          ".github/workflows/phase59-35-quota-do-runtime-tests.yml",
+          "cloud/swarm/worker-tests/vitest.config.mjs"
+        ],
+        "disposition": "STALE_DIVERGENT; do not merge or retarget without full diff/rebase audit."
+      }
+    ]
+  },
+  "owner_gates": {
+    "master_branch_protected": false,
+    "visible_rulesets": 0,
+    "branch_protection_read": "403",
+    "github_app_owner_packet": "PREPARED_NOT_APPROVED",
+    "publisher_app_installed": false,
+    "human_reviews_on_PR44_to_58": 0,
+    "explicit_owner_merge_approval": false,
+    "physical_multi_host_proof": "NOT_STARTED",
+    "soak_7_day": "NOT_STARTED",
+    "soak_30_day": "NOT_STARTED"
+  },
+  "actions_taken": {
+    "master_mutated": false,
+    "PR_merged": false,
+    "PR_retargeted": false,
+    "owner_settings_changed": false,
+    "generated_code_executed": false,
+    "AI_inference": false,
+    "external_provider_calls": 0,
+    "publisher_app_tokens_minted": 0,
+    "deployments": 0,
+    "authorized_spend_inr": 0,
+    "verified_PCNE_inr": 0,
+    "other_project_repositories_changed": false
+  },
+  "next_engineering_step": "Phase59.75: obtain/verify owner branch-protection and GitHub App prerequisites; rerun the cancelled PR51 exact-head runtime job or require a fresh exact-head CI pass; then perform reviewer disposition and sequential merge readiness without auto-merge."
+}
