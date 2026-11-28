@@ -5543,3 +5543,11 @@ Date: 2026-11-28
 - Machine manifest: `governance/P59-003_STACK_CI_FILE_OWNERSHIP_AUDIT_2026-11-28.json`.
 - Next: Phase59.75 owner branch-protection/GitHub App prerequisites, successful PR51 exact-head runtime revalidation, and explicit PR43/legacy disposition before sequential merge readiness.
 
+
+
+### Phase59.74 control-plane drift correction — 28-Nov-2026
+
+- Re-read canonical master control files after the Phase59.74 checkpoint. Master mission state remains Phase59.53 / updated 2026-11-16 / last_verified_head `d6d78ed5cd9d377433c79bd8d213d66098e54f12`; current master remains `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
+- Master queue remains updated 2026-11-16 and selects P59-003, with P59-001 PAUSED and P59-002 BLOCKED, but its sequence_mode still describes V5 portfolio aggregation/parallel source research. Candidate queue explicitly carries swarm-foundation-first.
+- Master federation registry remains updated 2026-11-16 and its P10CR record still references Phase59.44 / last-observed head `9cdc16a28e9bd958cb5eec78548e464988123e10`.
+- This is governance drift, not a task-status change. Candidate updates are not canonical until the owner-approved sequential stack is merged. No direct master edit was made.

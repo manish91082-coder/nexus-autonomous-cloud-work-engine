@@ -126,3 +126,14 @@ Still not approved/installed:
 **Phase59.75:** keep P59-003 as sole active P0; obtain/verify owner branch-protection and GitHub App prerequisites; secure a successful exact-head runtime rerun for PR #51; complete human review/disposition for PR #43 and stale PRs #19/#24/#26; then proceed with the approved sequential merge order. No automatic merge.
 
 P59-001 remains PAUSED. P59-002 remains BLOCKED. The swarm foundation is not yet accepted.
+
+
+## 9. Master control-plane drift — material correction
+
+A second direct read of the canonical master control files shows that they remain stale relative to the current master commit:
+
+- Master `control/mission_state.json`: phase `PHASE_59_53_PROJECT_CELL_DURABLE_SWARM_RUN_LEDGER`, `updated_at=2026-11-16`, and `last_verified_head=d6d78ed5cd9d377433c79bd8d213d66098e54f12`, while current master is `8856bf908f93e265cefd5c739f7f46b3dd995b3c`.
+- Master `control/automation_queue.json`: `updated_at=2026-11-16`, current task P59-003, and task statuses P59-001 PAUSED / P59-002 BLOCKED / P59-003 IN_PROGRESS. However, its `sequence_mode` still says V5 portfolio aggregation / parallel source research.
+- Master federation registry: `updated_at=2026-11-16`; the P10CR status still references Phase59.44 and last-observed head `9cdc16a28e9bd958cb5eec78548e464988123e10`.
+
+The candidate branch has a swarm-foundation-first queue override and updated Phase59.73/59.74 records, but these are not canonical until the stack is approved and sequentially merged. This is an additional governance reconciliation requirement; no direct master edit was made.
